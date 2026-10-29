@@ -4,6 +4,7 @@ import type {
   PutObjectLockConfigurationCommandOutput,
   PutObjectRetentionCommandOutput,
 } from "@aws-sdk/client-s3";
+
 export const putObjectLockConfigurationExamplePayload: {
   data: PutObjectLockConfigurationCommandOutput;
 } = {
@@ -18,6 +19,7 @@ export const putObjectLockConfigurationExamplePayload: {
     },
   },
 };
+
 export const getObjectLockConfigurationExamplePayload: {
   data: GetObjectLockConfigurationCommandOutput;
 } = {
@@ -42,6 +44,7 @@ export const getObjectLockConfigurationExamplePayload: {
     },
   },
 };
+
 export const putObjectRetentionExamplePayload: {
   data: PutObjectRetentionCommandOutput;
 } = {
@@ -57,6 +60,7 @@ export const putObjectRetentionExamplePayload: {
     },
   },
 };
+
 export const getObjectRetentionExamplePayload: {
   data: GetObjectRetentionCommandOutput;
 } = {

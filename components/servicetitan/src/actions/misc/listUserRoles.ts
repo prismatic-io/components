@@ -5,6 +5,7 @@ import { listUserRolesInputs } from "../../inputs";
 import { listUserRolesOutputSchema } from "../../outputSchemas";
 import type { UserRoles } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listUserRoles = action({
   display: {
     label: "List User Roles",
@@ -21,6 +22,7 @@ export const listUserRoles = action({
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
   ) => {
     const client = createClient(connection, "settings", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<UserRoles>(client, "/user-roles", {
         includeTotal,

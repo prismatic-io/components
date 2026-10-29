@@ -5,6 +5,7 @@ import { listJourneysExamplePayload } from "../../examplePayloads";
 import { listJourneysInputs } from "../../inputs";
 import { listJourneysOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listJourneys = action({
   examplePayload: listJourneysExamplePayload,
   display: {
@@ -22,18 +23,19 @@ export const listJourneys = action({
     { connection, journeyStatus, journeyNameFilter, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
       status: journeyStatus,
       nameSearch: journeyNameFilter,
     };
+
     const data = await paginateResults(client, JOURNEYS_PATH, fetchAll, params);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listJourneysExamplePayload.data,
   }),
 });

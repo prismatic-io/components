@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, events, webhookFriendlyName } from "./common";
+
 const webhookUrl = input({
   label: "Webhook URL",
   placeholder: "Enter a webhook URL",
@@ -9,6 +10,7 @@ const webhookUrl = input({
   clean: util.types.toString,
   comments: "The URL where SendGrid will send event data.",
 });
+
 const webhookEnabled = input({
   label: "Enabled",
   type: "boolean",
@@ -17,6 +19,7 @@ const webhookEnabled = input({
   comments: "When true, enables the Event Webhook.",
   clean: util.types.toBool,
 });
+
 const webhookId = input({
   label: "Webhook ID",
   placeholder: "Enter a webhook ID",
@@ -27,6 +30,7 @@ const webhookId = input({
   comments: "The unique identifier for the Event Webhook configuration.",
   dataSource: "selectWebhook",
 });
+
 const signatureVerificationEnabled = input({
   label: "Enable Signature Verification",
   type: "boolean",
@@ -35,6 +39,7 @@ const signatureVerificationEnabled = input({
   comments: "When true, enables signature verification for webhook requests.",
   clean: util.types.toBool,
 });
+
 const testWebhookUrl = input({
   label: "Test URL",
   placeholder: "Enter a test URL",
@@ -44,6 +49,7 @@ const testWebhookUrl = input({
   clean: util.types.toString,
   comments: "The URL where the test event will be sent.",
 });
+
 export const createWebhookInputs = {
   sendGridConnection: connectionInput,
   url: webhookUrl,
@@ -51,6 +57,7 @@ export const createWebhookInputs = {
   friendlyName: webhookFriendlyName,
   enabled: webhookEnabled,
 };
+
 export const updateWebhookInputs = {
   sendGridConnection: connectionInput,
   webhookId,
@@ -59,21 +66,26 @@ export const updateWebhookInputs = {
   friendlyName: webhookFriendlyName,
   enabled: webhookEnabled,
 };
+
 export const getWebhookInputs = {
   sendGridConnection: connectionInput,
   webhookId,
 };
+
 export const listWebhooksInputs = {
   sendGridConnection: connectionInput,
 };
+
 export const deleteWebhookInputs = {
   sendGridConnection: connectionInput,
   webhookId,
 };
+
 export const testWebhookInputs = {
   sendGridConnection: connectionInput,
   url: testWebhookUrl,
 };
+
 export const toggleSignatureVerificationInputs = {
   sendGridConnection: connectionInput,
   webhookId,

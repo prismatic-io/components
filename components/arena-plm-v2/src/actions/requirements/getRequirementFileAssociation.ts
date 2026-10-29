@@ -4,6 +4,7 @@ import { getRequirementFileAssociationExamplePayload } from "../../examplePayloa
 import { getRequirementFileAssociationInputs } from "../../inputs";
 import { requirementFileAssociationSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirementFileAssociation = action({
   display: {
     label: "Get Requirement File Association",

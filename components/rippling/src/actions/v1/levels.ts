@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { getLevelsExamplePayload } from "../../examplePayloads";
 import { getLevelsInputs } from "../../inputs";
 import { paginateV1Results } from "../../utils/pagination";
+
 const getLevels = action({
   display: {
     label: "Get Levels (V1)",
@@ -23,6 +24,7 @@ const getLevels = action({
     });
   },
 });
+
 export default {
   getLevels,
 };

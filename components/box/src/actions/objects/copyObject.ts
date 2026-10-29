@@ -5,6 +5,7 @@ import { copyObjectExamplePayload } from "../../examplePayloads";
 import { copyObjectInputs } from "../../inputs";
 import { copyObjectOutputSchema } from "../../outputSchemas";
 import { getPathEntries, pathLeafName } from "../../util";
+
 export const copyObject = action({
   display: {
     label: "Copy Object",
@@ -22,6 +23,7 @@ export const copyObject = action({
       util.types.toString(toPath),
       false,
     );
+
     const {
       id: sourceId,
       type: sourceType,
@@ -33,9 +35,11 @@ export const copyObject = action({
       type: destType,
       name: destName,
     } = toPathEntries.slice(-2)[0];
+
     if (destType !== FOLDER_TYPE) {
       throw Error(`'${destName} is not a folder`);
     }
+
     let data: unknown;
     if (sourceType === FOLDER_TYPE) {
       const result = await client.folders.copyFolder(
@@ -55,6 +59,7 @@ export const copyObject = action({
     } else {
       throw Error(`'${sourceName}' is neither a file nor a folder`);
     }
+
     return {
       data,
     };
@@ -62,10 +67,9 @@ export const copyObject = action({
   examplePerform: async (
     _context,
     { fromPath, toPath },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const sourceName = pathLeafName(fromPath);
+
     return {
       data: {
         ...copyObjectExamplePayload.data,

@@ -13,6 +13,7 @@ import mobileApps from "./mobileApps";
 import softwareUpdates from "./softwareUpdates";
 import subscriptions from "./subscriptions";
 import users from "./users";
+
 export default {
   ...audits,
   ...compliancePolicy,

@@ -6,6 +6,7 @@ import {
 } from "@prismatic-io/spectral";
 import { connect } from "amqplib";
 import { amqpConnection } from "./connections";
+
 export const createClient = async (
   connection: Connection,
   debug: boolean,
@@ -17,6 +18,7 @@ export const createClient = async (
       `Unsupported authorization method ${connection.key}.`,
     );
   }
+
   const { host, port, password, protocol, username, vhost } = connection.fields;
   try {
     const client = await connect({
@@ -27,6 +29,7 @@ export const createClient = async (
       protocol: util.types.toString(protocol),
       vhost: util.types.toString(vhost),
     });
+
     if (debug) {
       client.on("error", (err) => logger.error("AMQP connection error:", err));
       client.on("close", () => logger.info("AMQP connection closed"));
@@ -35,6 +38,7 @@ export const createClient = async (
       );
       client.on("unblocked", () => logger.info("AMQP connection unblocked"));
     }
+
     return client;
   } catch (err) {
     throw new ConnectionError(

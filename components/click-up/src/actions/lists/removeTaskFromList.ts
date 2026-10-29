@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { removeTaskFromListExamplePayload } from "../../examplePayloads";
 import { removeTaskFromListInputs } from "../../inputs";
+
 export const removeTaskFromList = action({
   display: {
     label: "Remove Task from List",
@@ -15,7 +16,9 @@ export const removeTaskFromList = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(`/list/${listId}/task/${taskId}`);
+
     return {
       data,
     };

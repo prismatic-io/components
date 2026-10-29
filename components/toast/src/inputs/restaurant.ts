@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../utils";
 import { connection } from "./shared";
+
 const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -10,6 +11,7 @@ const fetchAll = input({
   required: false,
   default: "false",
 });
+
 const lastModified = input({
   label: "Last Modified",
   type: "string",
@@ -20,10 +22,12 @@ const lastModified = input({
   placeholder: "2020-03-01T00:00:00.000-0000",
   clean: cleanStringInput,
 });
+
 export const listAccessibleRestaurantsInputs = {
   connection,
   lastModified,
 };
+
 const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -35,6 +39,7 @@ const pageSize = input({
   placeholder: "100",
   clean: cleanStringInput,
 });
+
 const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -45,12 +50,14 @@ const pageToken = input({
   placeholder: "cDoyLHM6MQ==",
   clean: cleanStringInput,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and page token controls for paginated results.",
   inputs: { pageSize, pageToken },
 });
+
 export const listConnectedRestaurantsInputs = {
   connection,
   lastModified: input({

@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
 import type { PlannerChangesObject, PlannerTaskChange } from "../types";
+
 export const resolvePlannerTaskChanges = (
   data: PlannerChangesObject | undefined,
 ): PlannerTaskChange[] => {
@@ -9,10 +10,9 @@ export const resolvePlannerTaskChanges = (
     (record): PlannerTaskChange => ({ changeType: "created", record }),
   );
 };
+
 export const newestCreatedDateTime = (
-  tasks: {
-    createdDateTime?: string | null;
-  }[],
+  tasks: { createdDateTime?: string | null }[],
 ): string | undefined => {
   let newest: number | undefined;
   for (const { createdDateTime } of tasks) {
@@ -23,10 +23,9 @@ export const newestCreatedDateTime = (
   }
   return newest === undefined ? undefined : new Date(newest).toISOString();
 };
+
 export const latestCreatedDateTime = (
-  tasks: {
-    createdDateTime?: string | null;
-  }[],
+  tasks: { createdDateTime?: string | null }[],
   current: string,
 ): string => {
   const newest = newestCreatedDateTime(tasks);
@@ -35,6 +34,7 @@ export const latestCreatedDateTime = (
     ? newest
     : currentDate.toISOString();
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";

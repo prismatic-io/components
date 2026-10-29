@@ -2,6 +2,7 @@ import { action, outputSchema } from "@prismatic-io/spectral";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
 import { deleteInstanceWebhooksOutputSchema } from "../../outputSchemas";
 import { deleteInstanceWebhooksgql } from "../graphql/webhooks/deleteInstanceWebhooksgql";
+
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -17,6 +18,7 @@ export const deleteInstanceWebhooks = action({
     const { data } = await deleteInstanceWebhooksgql.perform(context, {
       shopifyConnection: params.shopifyConnection,
     });
+
     return { data };
   },
 });

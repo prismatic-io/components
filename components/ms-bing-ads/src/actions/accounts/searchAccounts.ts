@@ -9,6 +9,7 @@ import type {
   SearchAccountsResponse,
 } from "../../types";
 import { toArray } from "../../util";
+
 export const searchAccounts = action({
   display: {
     label: "Search Accounts",
@@ -32,6 +33,7 @@ export const searchAccounts = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<SearchAccountsResponse>({
       debug,
       args: {
@@ -78,6 +80,7 @@ export const searchAccounts = action({
       soapAction: SOAP_ACTION.SearchAccounts,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data: response?.Accounts?.AdvertiserAccount
         ? {

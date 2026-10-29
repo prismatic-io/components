@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDealUsersInputs } from "../../inputs";
 import { getDealUsersExamplePayload } from "../../examplePayloads";
 import { getDealUsersOutputSchema } from "../../outputSchemas";
+
 export const getDealUsers = action({
   display: {
     label: "Get Deal Users",

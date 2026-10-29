@@ -1,6 +1,7 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { validateConnection } from "./util";
+
 export const createClient = (connection: Connection, debug = false) => {
   validateConnection(connection);
   const { dataCenter } = connection.fields;

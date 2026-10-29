@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../client";
 import { selectWebhookExamplePayload } from "../examplePayloads";
 import { selectWebhookInputs } from "../inputs";
 import { getAllWebhookEntries } from "../util";
+
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
@@ -11,12 +12,14 @@ export const selectWebhook = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
+
     const { entries } = await getAllWebhookEntries(client);
     const webhooks = await Promise.all(
       (entries || []).map((entry) =>
         client.webhooks.getWebhookById(util.types.toString(entry.id)),
       ),
     );
+
     return {
       result: (webhooks || []).map((webhook) => ({
         label: util.types.toString(webhook.address),

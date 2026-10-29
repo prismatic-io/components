@@ -4,6 +4,7 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { jamfBearerToken, jamfClientCredentials } from "./connections";
+
 const fetchAccessToken = async (
   connection: Connection,
   baseUrl: string,
@@ -12,9 +13,7 @@ const fetchAccessToken = async (
     const clientId = util.types.toString(connection.fields.clientId);
     const clientSecret = util.types.toString(connection.fields.clientSecret);
     const authClient = createHttpClient({ baseUrl });
-    const response = await authClient.post<{
-      access_token: string;
-    }>(
+    const response = await authClient.post<{ access_token: string }>(
       "/api/v1/oauth/token",
       new URLSearchParams({
         grant_type: "client_credentials",
@@ -25,6 +24,7 @@ const fetchAccessToken = async (
     );
     return response.data.access_token;
   }
+
   if (connection.key === jamfBearerToken.key) {
     const username = util.types.toString(connection.fields.username);
     const password = util.types.toString(connection.fields.password);
@@ -35,18 +35,21 @@ const fetchAccessToken = async (
       baseUrl,
       headers: { Authorization: `Basic ${credentials}` },
     });
-    const response = await authClient.post<{
-      token: string;
-    }>("/api/v1/auth/token");
+    const response = await authClient.post<{ token: string }>(
+      "/api/v1/auth/token",
+    );
     return response.data.token;
   }
+
   throw new ConnectionError(
     connection,
     `Unsupported connection type: ${connection.key}`,
   );
 };
+
 export const getBaseUrl = (connection: Connection): string =>
   util.types.toString(connection.fields.baseUrl).replace(/\/$/, "");
+
 export const createClient = async (
   connection: Connection,
   debug = false,
@@ -63,6 +66,7 @@ export const createClient = async (
     debug,
   });
 };
+
 export const createClassicClient = async (
   connection: Connection,
   debug = false,

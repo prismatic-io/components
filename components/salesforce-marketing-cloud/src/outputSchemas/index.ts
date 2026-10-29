@@ -10,7 +10,10 @@ export {
   listAutomationsOutputSchema,
 } from "./automations";
 export { campaignOutputSchema, listCampaignsOutputSchema } from "./campaigns";
-export { categoryOutputSchema, listCategoriesOutputSchema } from "./categories";
+export {
+  categoryOutputSchema,
+  listCategoriesOutputSchema,
+} from "./categories";
 export {
   createContactOutputSchema,
   deleteContactOutputSchema,

@@ -4,6 +4,7 @@ import connections, {
   conversionsToken,
 } from "../connections";
 import { API_URL, DEFAULT_VERSION } from "../constants";
+
 export const validateConversionsConnection = (connection: Connection) => {
   if (connection.key !== conversionsToken.key) {
     throw new Error(
@@ -11,6 +12,7 @@ export const validateConversionsConnection = (connection: Connection) => {
     );
   }
 };
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -20,8 +22,10 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getBaseUrl = (version = DEFAULT_VERSION): string =>
   `${API_URL}/v${version}.0`;
+
 export const getAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
@@ -30,6 +34,7 @@ export const getAuthHeaders = (
   );
   return { Authorization: `Bearer ${token}` };
 };
+
 export const clientCredentialsConnection = (connection: Connection) => {
   if (connection.key !== clientCredentials.key) {
     throw new Error(
@@ -37,6 +42,7 @@ export const clientCredentialsConnection = (connection: Connection) => {
     );
   }
 };
+
 export const getAppId = (connection: Connection) => {
   return util.types.toString(connection.fields.clientId);
 };

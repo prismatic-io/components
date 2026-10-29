@@ -16,6 +16,7 @@ import {
   filterByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollProfileAndListChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Profiles and Lists",
@@ -38,14 +39,17 @@ export const pollProfileAndListChangesTrigger = pollingTrigger({
         `Unsupported resource type: ${params.pollProfileOrListResourceType}`,
       );
     }
+
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+
     const isBackfill = !state?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt =
       state?.lastPolledAt ??
       (params.lookBackDate
         ? new Date(`${params.lookBackDate}T00:00:00Z`).toISOString()
         : now);
+
     if (!isBackfill && !params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -53,12 +57,15 @@ export const pollProfileAndListChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const filter = `${KLAVIYO_FILTER_OPS.GREATER_THAN}(${config.updatedAtField},${lastPolledAt})`;
+
     const allRecords = await fetchProfileOrListRecords(
       params.connection,
       params.pollProfileOrListResourceType as KlaviyoPollableResource,
       filter,
     );
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
@@ -67,11 +74,15 @@ export const pollProfileAndListChangesTrigger = pollingTrigger({
       isBackfill || params.showNewRecords,
       isBackfill || params.showUpdatedRecords,
     );
+
     const totalMatched = created.length + updated.length;
+
     context.logger.debug(
       `Polled ${allRecords.length} ${params.pollProfileOrListResourceType} records (server-side filtered), ${created.length} new and ${updated.length} updated since last poll.`,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

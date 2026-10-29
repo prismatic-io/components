@@ -4,6 +4,7 @@ import actions from "./actions";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export default component({
   key: "airtable",
   documentationUrl: "https://prismatic.io/docs/components/airtable/",

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { LIST_PRODUCT_IMAGES_DATASOURCE_REFERENCE } from "../../constants";
 import { cleanStringInput } from "../../util";
+
 export const imageId = input({
   label: "Image ID",
   type: "string",
@@ -11,6 +12,7 @@ export const imageId = input({
   clean: util.types.toString,
   dataSource: LIST_PRODUCT_IMAGES_DATASOURCE_REFERENCE,
 });
+
 export const imageURL = input({
   label: "Image URL",
   type: "string",
@@ -20,6 +22,7 @@ export const imageURL = input({
   placeholder: "Enter image URL",
   clean: util.types.toString,
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -29,6 +32,7 @@ export const fileName = input({
   placeholder: "Enter file name",
   clean: util.types.toString,
 });
+
 export const imagePosition = input({
   label: "Image Position",
   type: "string",
@@ -39,6 +43,7 @@ export const imagePosition = input({
   placeholder: "Enter position number",
   clean: cleanStringInput,
 });
+
 export const imageAlt = input({
   label: "Image Alt",
   type: "string",

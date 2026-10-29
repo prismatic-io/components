@@ -1,11 +1,13 @@
 import { action, input, util } from "@prismatic-io/spectral";
 import type { ApprovalToolOutput } from "../../types/tools";
+
 export const createHumanApprovalTool = action({
   display: {
     label: "Agent: Create Human Approval Tool",
     description:
       "Create a tool that requires human approval before the agent can proceed",
   },
+
   inputs: {
     name: input({
       label: "Tool Name",
@@ -14,6 +16,7 @@ export const createHumanApprovalTool = action({
       default: "Human Approval",
       comments: "Name for the approval tool",
     }),
+
     description: input({
       label: "Tool Description",
       type: "text",
@@ -22,6 +25,7 @@ export const createHumanApprovalTool = action({
       comments:
         "Description that helps the agent understand when to use this tool",
     }),
+
     parameters: input({
       label: "Parameters Schema",
       type: "code",
@@ -49,11 +53,13 @@ export const createHumanApprovalTool = action({
       ),
     }),
   },
+
   perform: async (_, params) => {
     const toolName = util.types.toString(params.name) || "Human Approval";
     const toolDescription =
       util.types.toString(params.description) ||
       "Request human approval before proceeding with this action";
+
     // biome-ignore lint/suspicious/noExplicitAny: Dynamic schema types from OpenAI require flexibility
     let parametersSchema: any;
     if (params.parameters) {
@@ -74,6 +80,7 @@ export const createHumanApprovalTool = action({
         required: ["reason"],
       };
     }
+
     const toolConfig = {
       type: "function" as const,
       function: {
@@ -84,11 +91,13 @@ export const createHumanApprovalTool = action({
         needsApproval: true,
       },
     };
+
     const output: ApprovalToolOutput = {
       type: "approval",
       tool: toolConfig,
       toolName: toolName,
     };
+
     return {
       data: output,
     };

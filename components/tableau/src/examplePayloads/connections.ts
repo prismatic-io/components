@@ -9,6 +9,7 @@ const connectionObject = {
     name: "Sales Data",
   },
 };
+
 export const listConnectionsExamplePayload = {
   data: {
     pagination: {
@@ -21,9 +22,11 @@ export const listConnectionsExamplePayload = {
     },
   },
 };
+
 export const searchConnectionsExamplePayload = {
   data: [connectionObject],
 };
+
 export const updateConnectionExamplePayload = {
   data: {
     connection: connectionObject,

@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { sendSMSExamplePayload } from "../../examplePayloads";
 import { sendSMSInputs } from "../../inputs";
 import { createPayload } from "../../payload";
+
 export const sendSMS = action({
   display: {
     label: "Send SMS",
@@ -18,6 +19,7 @@ export const sendSMS = action({
       from: util.types.toString(from),
       message: util.types.toString(message),
     });
+
     const result = await twilioClient.messages.create(payload);
     return {
       data: result.toJSON(),

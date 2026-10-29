@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { paginateResults } from "../util";
 import { connectionInput } from "../inputs";
 import type { Contact } from "../types";
+
 export const selectContact = dataSource({
   display: {
     label: "Select Contact",
@@ -13,7 +14,9 @@ export const selectContact = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const response = await paginateResults<Contact>(client, "/contacts", true);
+
     const result = response.data
       .map<Element>((contact) => ({
         label: [contact.first_name, contact.last_name, `<${contact.email}>`]
@@ -22,6 +25,7 @@ export const selectContact = dataSource({
         key: contact.id.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

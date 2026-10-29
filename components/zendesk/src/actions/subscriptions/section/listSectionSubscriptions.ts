@@ -4,6 +4,7 @@ import { listSectionSubscriptionsOutputSchema } from "../../../outputSchemas";
 import type { PaginatedResponse, Subscription } from "../../../types";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { listSectionSubscriptionsExamplePayload } from "../../../examplePayloads";
+
 export const listSectionSubscriptions = action({
   display: {
     label: "List Section Subscriptions",
@@ -16,14 +17,12 @@ export const listSectionSubscriptions = action({
       "page[size]": pagination.pageLimit,
       "page[after]": pagination.cursor,
     };
+
     const { data } = await client.get<
-      | PaginatedResponse<{
-          subscriptions: Subscription[];
-        }>
-      | {
-          subscriptions: Subscription[];
-        }
+      | PaginatedResponse<{ subscriptions: Subscription[] }>
+      | { subscriptions: Subscription[] }
     >(`/help_center/sections/${sectionId}/subscriptions`, { params });
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listUsersExamplePayload } from "../../examplePayloads";
 import { connectionInput, limit, paramsInputFields, sort } from "../../inputs";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -17,6 +18,7 @@ export const listUsers = action({
         ...paramsInputFields,
       },
     });
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { positionsExamplePayload } from "../examplePayloads";
 import { connectionInput, page } from "../inputs";
+
 export const positions = dataSource({
   display: {
     label: "Fetch Positions",

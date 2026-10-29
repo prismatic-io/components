@@ -13,7 +13,9 @@ export const viewOnboardingRequest = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await client.get(`/onboarding_requests/form`);
+
     return {
       data,
     };

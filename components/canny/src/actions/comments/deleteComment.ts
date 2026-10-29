@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteCommentExamplePayload } from "../../examplePayloads";
 import { deleteCommentInputs } from "../../inputs";
 import { deleteCommentOutputSchema } from "../../outputSchemas";
+
 export const deleteComment = action({
   display: {
     label: "Delete Comment",
@@ -21,8 +22,7 @@ export const deleteComment = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteCommentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteCommentExamplePayload,
   examplePayload: deleteCommentExamplePayload,
 });

@@ -3,6 +3,7 @@ import { createDataManagerClient } from "../../client";
 import { ingestOfflineConversionsExamplePayload } from "../../examplePayloads";
 import { ingestOfflineConversionsInputs } from "../../inputs";
 import { ingestOfflineConversionsOutputSchema } from "../../outputSchemas";
+
 export const ingestOfflineConversions = action({
   display: {
     label: "Ingest Offline Conversions",
@@ -24,17 +25,18 @@ export const ingestOfflineConversions = action({
       debugEnabled: context.debug.enabled,
       logger: context.logger,
     });
+
     const body = {
       destinations,
       events,
       validateOnly,
       encoding,
     };
+
     const { data } = await client.post("/events:ingest", body);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ingestOfflineConversionsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    ingestOfflineConversionsExamplePayload,
   examplePayload: ingestOfflineConversionsExamplePayload,
 });

@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, region } from "../inputs";
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -25,15 +26,8 @@ export const selectUser = dataSource({
           label: user.name ? `${user.name} (${user.email})` : user.email,
           key: user.id,
         }))
-        .sort(
-          (
-            a: {
-              label: string;
-            },
-            b: {
-              label: string;
-            },
-          ) => (a.label < b.label ? -1 : 1),
+        .sort((a: { label: string }, b: { label: string }) =>
+          a.label < b.label ? -1 : 1,
         );
       return { result };
     }

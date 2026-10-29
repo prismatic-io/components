@@ -4,6 +4,7 @@ import { getDealFollowersInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getDealFollowersExamplePayload } from "../../examplePayloads";
 import { getDealFollowersOutputSchema } from "../../outputSchemas";
+
 export const getDealFollowers = action({
   display: {
     label: "Get Deal Followers",

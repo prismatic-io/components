@@ -1,8 +1,10 @@
 import { adAccountId, myConnectionField, version } from "./common";
+
 export const selectAdAccountInputs = {
   connection: myConnectionField,
   version,
 };
+
 export const selectAdsInAccountInputs = {
   connection: myConnectionField,
   adAccountId: {
@@ -11,6 +13,7 @@ export const selectAdsInAccountInputs = {
   },
   version,
 };
+
 export const selectAdSetInputs = {
   connection: myConnectionField,
   adAccountId: {
@@ -19,6 +22,7 @@ export const selectAdSetInputs = {
   },
   version,
 };
+
 export const selectAdCreativeInputs = {
   connection: myConnectionField,
   adAccountId: {
@@ -27,6 +31,7 @@ export const selectAdCreativeInputs = {
   },
   version,
 };
+
 export const selectCampaignInAccountInputs = {
   connection: myConnectionField,
   adAccountId: {
@@ -35,6 +40,7 @@ export const selectCampaignInAccountInputs = {
   },
   version,
 };
+
 export const selectBusinessNameInputs = {
   connection: myConnectionField,
   version,

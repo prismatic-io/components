@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { selectPaymentInputs } from "../inputs";
 import { fetchAllPages, sortByLabel } from "../util";
+
 export const selectPayment = dataSource({
   display: {
     label: "Select Payment",
@@ -10,6 +11,7 @@ export const selectPayment = dataSource({
   inputs: selectPaymentInputs,
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
+
     const allPayments = await fetchAllPages(
       client,
       "/v2/payments",
@@ -18,6 +20,7 @@ export const selectPayment = dataSource({
         additionalParams: { limit: 100 },
       },
     );
+
     const result = (allPayments.payments as Record<string, unknown>[])
       .map((payment: Record<string, unknown>) => {
         const amountMoney = payment.amount_money as
@@ -29,12 +32,14 @@ export const selectPayment = dataSource({
         const label = payment.reference_id
           ? `${payment.reference_id as string} (${amount})`
           : `${(payment.id as string).substring(0, 12)}... (${amount})`;
+
         return {
           label,
           key: payment.id as string,
         };
       })
       .sort(sortByLabel);
+
     return {
       result,
     };

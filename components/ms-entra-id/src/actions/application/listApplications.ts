@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listApplicationsExamplePayload as examplePayload } from "../../examplePayloads";
 import { listApplicationsInputs as inputs } from "../../inputs/application";
 import { getConsistencyLevelHeader, getValues } from "../../util";
+
 export const listApplications = action({
   display: {
     label: "List Applications",

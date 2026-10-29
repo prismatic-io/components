@@ -7,6 +7,7 @@ import {
   expirationDateTime,
   getAllPaginatedResults,
 } from "./common";
+
 const changeType = input({
   label: "Change Type",
   type: "string",
@@ -17,6 +18,7 @@ const changeType = input({
   placeholder: "Enter change type (e.g., created,updated,deleted)",
   clean: util.types.toString,
 });
+
 const notificationUrl = input({
   label: "Notification URL",
   type: "string",
@@ -26,6 +28,7 @@ const notificationUrl = input({
   placeholder: "Enter notification URL",
   clean: util.types.toString,
 });
+
 const resource = input({
   label: "Resource",
   type: "string",
@@ -36,6 +39,7 @@ const resource = input({
   placeholder: "Enter resource path (e.g., /users)",
   clean: util.types.toString,
 });
+
 export const createSubscriptionInputs = {
   connection,
   changeType,
@@ -51,6 +55,7 @@ export const createSubscriptionInputs = {
     clean: cleanHeaders,
   }),
 };
+
 const subscriptionId = input({
   label: "Subscription ID",
   type: "string",
@@ -61,7 +66,9 @@ const subscriptionId = input({
   clean: util.types.toString,
   dataSource: "selectSubscription",
 });
+
 export const deleteSubscriptionInputs = { connection, subscriptionId };
+
 export const getSubscriptionInputs = {
   connection,
   subscriptionId: input({
@@ -69,6 +76,7 @@ export const getSubscriptionInputs = {
     comments: "The ID of the subscription to read.",
   }),
 };
+
 export const listSubscriptionsInputs = {
   connection,
   getAllPaginatedResults: input({
@@ -76,6 +84,7 @@ export const listSubscriptionsInputs = {
     comments: "When true, automatically fetches all pages of subscriptions.",
   }),
 };
+
 export const updateSubscriptionInputs = {
   connection,
   subscriptionId: input({
@@ -91,6 +100,7 @@ export const updateSubscriptionInputs = {
     required: false,
   }),
 };
+
 export const deleteInstancedSubscriptionsInputs = {
   connection,
 };

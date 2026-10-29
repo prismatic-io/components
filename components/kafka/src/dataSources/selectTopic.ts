@@ -4,6 +4,7 @@ import { INTERNAL_TOPIC_PREFIX } from "../constants";
 import { selectTopicExamplePayload } from "../examplePayloads";
 import { selectTopicInputs } from "../inputs";
 import { withAdmin } from "../utils";
+
 export const selectTopic = dataSource({
   display: {
     label: "Select Topic",
@@ -12,6 +13,7 @@ export const selectTopic = dataSource({
   inputs: selectTopicInputs,
   perform: async (_context, params) => {
     const { connection, brokers, clientId } = params;
+
     const kafka = createClient(
       {
         clientId,
@@ -20,13 +22,16 @@ export const selectTopic = dataSource({
       },
       false,
     );
+
     const topics = await withAdmin(kafka, (admin) => admin.listTopics());
+
     const result = topics
       .filter((topic) => !topic.startsWith(INTERNAL_TOPIC_PREFIX))
       .map<Element>((topic) => ({
         label: topic,
         key: topic,
       }));
+
     return { result };
   },
   dataSourceType: "picklist",

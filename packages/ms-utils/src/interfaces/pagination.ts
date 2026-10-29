@@ -1,10 +1,12 @@
 import type { BoundaryHttpClient as HttpClient } from "./boundary";
+
 export interface ODataResponse<T = unknown> {
   value: T[];
   "@odata.nextLink"?: string;
   "@odata.context": string;
   nextLink?: string;
 }
+
 export interface PaginateOptions {
   client: HttpClient;
   endpoint: string;

@@ -3,6 +3,7 @@ import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { createConversationExamplePayload } from "../../examplePayloads";
 import { createConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const createConversation = action({
   display: {
     label: "Create Conversation",
@@ -22,19 +23,19 @@ export const createConversation = action({
       is_private: isPrivate || undefined,
       team_id: teamId || undefined,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { conversationName, isPrivate },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const name = conversationName
       .toLowerCase()
       .replace(/[^a-z0-9_-]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 80);
+
     return {
       data: {
         ...createConversationExamplePayload,

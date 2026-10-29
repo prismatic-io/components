@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { aggregationOptions, connectionInput, pipeline } from "../inputs";
 import { aggregateExamplePayload } from "../examplePayloads";
 import type { ErrorWithMessage } from "../types";
+
 export const aggregate = action({
   display: {
     label: "Aggregate",
@@ -19,6 +20,7 @@ export const aggregate = action({
       debug: context.debug.enabled,
       logger: context.logger,
     });
+
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
@@ -26,6 +28,7 @@ export const aggregate = action({
       for await (const doc of cursor) {
         results.push(doc);
       }
+
       return {
         data: results,
       };

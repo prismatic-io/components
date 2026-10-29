@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { updateTableRecordInputs } from "../../../inputs";
 import { buildPayload, putTable } from "../../../util";
+
 export const updateTableRecord = action({
   display: {
     label: "Update Table Record",
@@ -33,9 +34,7 @@ export const updateTableRecord = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: {} },
   }),
   inputs: updateTableRecordInputs,

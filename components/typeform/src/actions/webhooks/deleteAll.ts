@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection, formId, url } from "../../inputs";
 import { deleteWebhookFunction, listAllWebhooks } from "../../util";
 import { DELETED_RESOURCE, NO_WEBHOOKS_FOUND } from "../../constants";
+
 export const deleteAllInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -22,6 +23,7 @@ export const deleteAllInstanceWebhooks = action({
   },
   perform: async (context, { connection, formId, url }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await listAllWebhooks(client, formId);
     const webhookUrl = url ? url : context.webhookUrls[context.flow.name];
     const webhooks = data.items.filter((webhook) => webhook.url === webhookUrl);

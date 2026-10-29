@@ -2,6 +2,7 @@ import { Connection, dataSource, Element } from "@prismatic-io/spectral";
 import { createDeepSeekClient } from "../client";
 import { connection } from "../inputs/general";
 import { ListModelsResponse } from "../interfaces";
+
 export const selectModel = dataSource({
   display: {
     label: "Select Model",
@@ -22,6 +23,7 @@ export const selectModel = dataSource({
         key: id,
       };
     });
+
     return { result };
   },
 });

@@ -5,6 +5,7 @@ import {
   cleanStringInput,
 } from "../util";
 import { connectionInput, version } from "./common";
+
 const metadataInput = input({
   label: "Metadata",
   placeholder: "Enter metadata as JSON array",
@@ -32,6 +33,7 @@ const metadataInput = input({
     "See [JSforce Metadata API documentation](https://jsforce.github.io/document/#create-metadata) for related documentation.",
   clean: util.types.toObject,
 });
+
 export const fullNameInput = input({
   label: "Full Name Identifier",
   placeholder: "Enter full name identifier",
@@ -41,6 +43,7 @@ export const fullNameInput = input({
     "The unique full name identifier for Salesforce Metadata objects (e.g., CustomObject API name).",
   clean: util.types.toString,
 });
+
 const objectFullName = input({
   label: "Object Full Name",
   placeholder: "Enter object full name",
@@ -51,6 +54,7 @@ const objectFullName = input({
     "The full API name of the Salesforce custom object (e.g., Widget__c).",
   clean: cleanSingleItemList,
 });
+
 const objectFullNames = input({
   label: "Object Full Names",
   placeholder: "Enter object full names as JSON array",
@@ -62,6 +66,7 @@ const objectFullNames = input({
   example: JSON.stringify(["TestObject1__c", "TestObject2__c"], null, 2),
   clean: cleanStringArray,
 });
+
 const metadataType = input({
   label: "Metadata Type",
   type: "string",
@@ -71,6 +76,7 @@ const metadataType = input({
   example: "CustomObject",
   clean: cleanStringInput,
 });
+
 export const listObjectMetadataInputs = {
   connection: connectionInput,
   version,
@@ -79,6 +85,7 @@ export const listObjectMetadataInputs = {
     default: "CustomObject",
   },
 };
+
 export const getObjectMetadataByNameInputs = {
   connection: connectionInput,
   fullName: objectFullName,
@@ -88,6 +95,7 @@ export const getObjectMetadataByNameInputs = {
     default: "CustomObject",
   },
 };
+
 export const createObjectsFromMetadataInputs = {
   connection: connectionInput,
   metadata: metadataInput,
@@ -97,6 +105,7 @@ export const createObjectsFromMetadataInputs = {
     default: "CustomObject",
   },
 };
+
 export const createFieldsFromMetadataInputs = {
   connection: connectionInput,
   metadata: {
@@ -121,6 +130,7 @@ export const createFieldsFromMetadataInputs = {
     default: "CustomField",
   },
 };
+
 export const updateMetadataInputs = {
   connection: connectionInput,
   metadata: {
@@ -146,6 +156,7 @@ export const updateMetadataInputs = {
     default: "CustomField",
   },
 };
+
 export const deleteMetadataInputs = {
   connection: connectionInput,
   fullNames: objectFullNames,

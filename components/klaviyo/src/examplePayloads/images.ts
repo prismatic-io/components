@@ -4,9 +4,8 @@ import type {
   PatchImageResponse,
   PostImageResponse,
 } from "klaviyo-api";
-export const getImageExamplePayload: {
-  data: GetImageResponse;
-} = {
+
+export const getImageExamplePayload: { data: GetImageResponse } = {
   data: {
     data: {
       type: "image",
@@ -25,9 +24,8 @@ export const getImageExamplePayload: {
     },
   },
 };
-export const listImagesExamplePayload: {
-  data: GetImageResponseCollection;
-} = {
+
+export const listImagesExamplePayload: { data: GetImageResponseCollection } = {
   data: {
     data: [
       {
@@ -53,9 +51,8 @@ export const listImagesExamplePayload: {
     },
   },
 };
-export const updateImageExamplePayload: {
-  data: PatchImageResponse;
-} = {
+
+export const updateImageExamplePayload: { data: PatchImageResponse } = {
   data: {
     data: {
       type: "image",
@@ -74,9 +71,8 @@ export const updateImageExamplePayload: {
     },
   },
 };
-export const uploadImageExamplePayload: {
-  data: PostImageResponse;
-} = {
+
+export const uploadImageExamplePayload: { data: PostImageResponse } = {
   data: {
     data: {
       type: "image",
@@ -95,6 +91,7 @@ export const uploadImageExamplePayload: {
     },
   },
 };
+
 export const selectImageExamplePayload = {
   result: [{ label: "Example Image", key: "155463624" }],
 };

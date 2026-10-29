@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
 import { getCollectionPayload } from "../../examplePayloads";
 import { getCollectionInputs } from "../../inputs";
+
 export const getCollection = action({
   display: {
     label: "Get Collection",
@@ -9,8 +10,10 @@ export const getCollection = action({
   },
   perform: async (context, { connection, collectionId }) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const response = await client.get(`/collections/${collectionId}`);
     const { data } = response;
+
     return { data };
   },
   inputs: getCollectionInputs,

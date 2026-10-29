@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, bulkSendBatchId } from "../inputs";
+
 export const getBulkSendBatchStatus = action({
   display: {
     label: "Get Bulk Send Status",

@@ -1,6 +1,7 @@
 import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { cleanNumberInput, cleanStringInput } from "../util";
 import { connection, fetchAll, odataParams } from "./common";
+
 const displayName = input({
   label: "Display Name",
   comments:
@@ -11,6 +12,7 @@ const displayName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const version = input({
   label: "Version",
   comments:
@@ -21,6 +23,7 @@ const version = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const sizeInByte = input({
   label: "Size In Byte",
   comments: "Discovered application size in bytes.",
@@ -30,6 +33,7 @@ const sizeInByte = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 const deviceCount = input({
   label: "Device Count",
   comments: "The number of devices that have installed this application.",
@@ -39,6 +43,7 @@ const deviceCount = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 const publisher = input({
   label: "Publisher",
   comments:
@@ -50,6 +55,7 @@ const publisher = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const platform = input({
   label: "Platform",
   comments:
@@ -109,6 +115,7 @@ const platform = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const createDetectedAppInputs = {
   connection,
   displayName,
@@ -118,6 +125,7 @@ export const createDetectedAppInputs = {
   publisher,
   platform,
 };
+
 const detectedAppIdForDelete = input({
   label: "Detected App ID",
   comments: "Unique Identifier for the detected app to delete.",
@@ -128,10 +136,12 @@ const detectedAppIdForDelete = input({
   dataSource: "selectDetectedApp",
   clean: cleanStringInput,
 });
+
 export const deleteDetectedAppInputs = {
   connection,
   detectedAppId: detectedAppIdForDelete,
 };
+
 const detectedAppIdForGet = input({
   label: "Detected App ID",
   comments: "Unique Identifier for the detected app to retrieve.",
@@ -142,10 +152,12 @@ const detectedAppIdForGet = input({
   dataSource: "selectDetectedApp",
   clean: cleanStringInput,
 });
+
 export const getDetectedAppInputs = {
   connection,
   detectedAppId: detectedAppIdForGet,
 };
+
 const listPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -156,6 +168,7 @@ const listPagination = structuredObjectInput({
     $skipToken: odataParams.$skipToken,
   },
 });
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -170,12 +183,14 @@ const listFilters = structuredObjectInput({
     $format: odataParams.$format,
   },
 });
+
 export const listDetectedAppsInputs = {
   connection,
   fetchAll,
   pagination: listPagination,
   filters: listFilters,
 };
+
 const detectedAppIdForUpdate = input({
   label: "Detected App ID",
   comments: "Unique Identifier for the detected app to update.",
@@ -186,6 +201,7 @@ const detectedAppIdForUpdate = input({
   dataSource: "selectDetectedApp",
   clean: cleanStringInput,
 });
+
 export const updateDetectedAppInputs = {
   connection,
   detectedAppId: detectedAppIdForUpdate,

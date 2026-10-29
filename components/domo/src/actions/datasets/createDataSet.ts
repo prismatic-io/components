@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createDataSetExamplePayload } from "../../examplePayloads";
 import { createDataSetInputs } from "../../inputs";
 import type { CreateDataSetBody } from "../types/CreateDataSetBody";
+
 export const createDataSet = action({
   display: {
     label: "Create Data Set",
@@ -32,4 +33,5 @@ export const createDataSet = action({
   },
   inputs: createDataSetInputs,
 });
+
 export default { createDataSet };

@@ -4,6 +4,7 @@ import { listTicketTemplateAttributesExamplePayload } from "../../examplePayload
 import { listTicketTemplateAttributesInputs } from "../../inputs";
 import { attributeDefinitionFullRepListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listTicketTemplateAttributes = action({
   display: {
     label: "List Ticket Template Attributes",
@@ -19,18 +20,21 @@ export const listTicketTemplateAttributes = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         includePossibleValues: params.includePossibleValues,
         creatableOnly: params.creatableOnly,
         editableOnly: params.editableOnly,
         searchableOnly: params.searchableOnly,
       };
+
       const { data } = await client.get(
         `/settings/tickets/templates/${params.templateGuid}/attributes`,
         {
           params: queryParams,
         },
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

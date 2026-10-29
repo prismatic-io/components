@@ -1,5 +1,6 @@
 import { commitSchema } from "./commits";
 import { bool, deletedSchema, list, obj, str } from "./shared";
+
 export const branchSchema = obj({
   name: str,
   merged: bool,
@@ -11,8 +12,13 @@ export const branchSchema = obj({
   web_url: str,
   commit: commitSchema,
 });
+
 export const branchListSchema = list(branchSchema);
+
 export const createBranchOutputSchema = branchSchema;
+
 export const getBranchOutputSchema = branchSchema;
+
 export const listBranchesOutputSchema = branchListSchema;
+
 export const deleteBranchOutputSchema = deletedSchema;

@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { updateAccountInputs } from "../../inputs";
 import { updateAccountExamplePayload } from "../../examplePayloads";
+
 export const updateAccount = action({
   display: {
     label: "Update Account",
@@ -31,5 +32,6 @@ export const updateAccount = action({
     return { data };
   },
   inputs: updateAccountInputs,
+
   examplePayload: updateAccountExamplePayload,
 });

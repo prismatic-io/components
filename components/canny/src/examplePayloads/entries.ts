@@ -68,6 +68,7 @@ export const listEntriesExamplePayload = {
     ],
   },
 };
+
 export const createEntryExamplePayload = {
   data: { id: "553c3ef8b8cdcd1501ba8888" },
 };

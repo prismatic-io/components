@@ -10,6 +10,7 @@ import { createPlanExamplePayload } from "../../examplePayloads";
 import { createPlanOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { createPlanInputs } from "../../inputs";
+
 export const createPlan = action({
   display: {
     label: "Create Plan",
@@ -24,6 +25,7 @@ export const createPlan = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, groupId, title }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post<PlannerPlan & Etagged>(
       PLANNER_ENDPOINTS.PLANS,
       {
@@ -36,9 +38,7 @@ export const createPlan = action({
   examplePerform: async (
     _context,
     { groupId, title },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createPlanExamplePayload.data,
       title,

@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanGroupTypes, toOptionalString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft Entra ID connection to use.",
 });
+
 export const odataParams = {
   $deltatoken: input({
     label: "Delta Token",
@@ -117,6 +119,7 @@ export const odataParams = {
     clean: toOptionalString,
   }),
 };
+
 export const odataQueryParams = structuredObjectInput({
   label: "OData Query Parameters",
   required: false,
@@ -132,6 +135,7 @@ export const odataQueryParams = structuredObjectInput({
     $top: odataParams.$top,
   },
 });
+
 export const additionalProperties = input({
   label: "Additional Properties",
   type: "code",
@@ -142,6 +146,7 @@ export const additionalProperties = input({
   clean: (value: unknown) => cleanCodeInput(value, "Additional Properties"),
   example: JSON.stringify({ uniqueName: "Test Name" }, null, 2),
 });
+
 export const userId = input({
   label: "User ID",
   comments: "The unique identifier of the user.",
@@ -152,6 +157,7 @@ export const userId = input({
   clean: util.types.toString,
   dataSource: "selectUser",
 });
+
 export const groupId = input({
   label: "Group ID",
   comments: "The unique identifier of the group.",
@@ -162,6 +168,7 @@ export const groupId = input({
   clean: util.types.toString,
   dataSource: "selectGroup",
 });
+
 export const eventualConsistencyLevelHeader = input({
   label: "Eventual Consistency Level Header",
   comments:
@@ -171,6 +178,7 @@ export const eventualConsistencyLevelHeader = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const memberId = input({
   label: "Member ID",
   comments: "The unique identifier of the member.",
@@ -181,6 +189,7 @@ export const memberId = input({
   clean: util.types.toString,
   dataSource: "selectGroupMember",
 });
+
 export const groupTypes = input({
   label: "Group Types",
   type: "string",
@@ -198,6 +207,7 @@ export const groupTypes = input({
   ],
   clean: cleanGroupTypes,
 });
+
 export const uniqueName = input({
   label: "Unique Name",
   comments:
@@ -207,6 +217,7 @@ export const uniqueName = input({
   placeholder: "Enter unique name",
   clean: util.types.toString,
 });
+
 export const useAsUpsert = input({
   label: "Use as Upsert",
   type: "boolean",
@@ -216,6 +227,7 @@ export const useAsUpsert = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const deltaURL = input({
   label: "Delta URL",
   type: "string",
@@ -226,6 +238,7 @@ export const deltaURL = input({
   placeholder: "Enter delta URL",
   clean: util.types.toString,
 });
+
 export const returnMinimal = input({
   label: "Return Minimal",
   type: "boolean",
@@ -235,6 +248,7 @@ export const returnMinimal = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const getAllPaginatedResults = input({
   label: "Fetch All",
   type: "boolean",
@@ -244,6 +258,7 @@ export const getAllPaginatedResults = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const expirationDateTime = input({
   label: "Expiration Date Time",
   type: "string",

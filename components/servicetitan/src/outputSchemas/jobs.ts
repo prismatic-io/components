@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const jobSchema = {
   type: "object" as const,
   properties: {
@@ -222,6 +223,7 @@ const jobSchema = {
     "externalData",
   ],
 };
+
 const jobCancelReasonSchema = {
   type: "object" as const,
   properties: {
@@ -246,10 +248,15 @@ const jobCancelReasonSchema = {
   },
   required: ["id", "name", "active", "createdOn", "modifiedOn"],
 };
+
 export const createJobOutputSchema = jobSchema;
+
 export const getJobOutputSchema = jobSchema;
+
 export const updateJobOutputSchema = jobSchema;
+
 export const listJobsOutputSchema = listEnvelope(jobSchema);
+
 export const listJobCancelReasonsOutputSchema = listEnvelope(
   jobCancelReasonSchema,
 );

@@ -4,6 +4,7 @@ import {
   resourceLinksSchema,
   toManyRelationshipSchema,
 } from "./shared";
+
 const listResourceObject = {
   type: "object" as const,
   properties: {
@@ -30,6 +31,7 @@ const listResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const createListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -38,6 +40,7 @@ export const createListOutputSchema = {
   },
   required: ["data"],
 };
+
 export const getListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +53,7 @@ export const getListOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listListsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -65,8 +69,11 @@ export const listListsOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const updateListOutputSchema = createListOutputSchema;
+
 export const deleteListOutputSchema = {
   type: "string" as const,
 };
+
 export { listListProfilesOutputSchema } from "./profiles";

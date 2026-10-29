@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { getBusinessPartnerExamplePayload } from "../../../examplePayloads";
 import { getBusinessPartnerInputs } from "../../../inputs";
+
 export const getBusinessPartner = action({
   display: {
     label: "Get Business Partner (V2)",

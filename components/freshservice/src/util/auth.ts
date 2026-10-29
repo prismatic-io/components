@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { freshserviceApiKeyConnection } from "../connections";
+
 export const getClientConfig = (connection: Connection) => {
   switch (connection.key) {
     case freshserviceApiKeyConnection.key: {

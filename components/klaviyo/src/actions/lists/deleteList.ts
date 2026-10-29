@@ -4,6 +4,7 @@ import { getApi } from "../../api";
 import { deleteListInputs as inputs } from "../../inputs";
 import { deleteListExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const deleteList = action({
   display: {
     label: "Delete List",
@@ -16,6 +17,7 @@ export const deleteList = action({
     if (debug) {
       context.logger.debug({ connection, listId, debug });
     }
+
     await listsApi.deleteList(listId);
     return {
       data: "List deleted successfully.",

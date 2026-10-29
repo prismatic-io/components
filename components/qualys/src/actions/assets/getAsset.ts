@@ -4,6 +4,7 @@ import { getAssetExamplePayload } from "../../examplePayloads";
 import { getAssetInputs } from "../../inputs";
 import { getAssetOutputSchema } from "../../outputSchemas";
 import type { GatewayAssetResponse } from "../../types";
+
 export const getAsset = action({
   display: {
     label: "Get Asset",
@@ -25,6 +26,7 @@ export const getAsset = action({
           params: { assetId },
         }),
     );
+
     return { data: response.data };
   },
   examplePayload: getAssetExamplePayload,

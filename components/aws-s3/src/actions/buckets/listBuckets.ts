@@ -4,6 +4,7 @@ import { listBucketsExamplePayload } from "../../examplePayloads";
 import { listBucketsInputs } from "../../inputs";
 import { listBucketsOutputSchema } from "../../outputSchemas";
 import { listAllBuckets } from "../../utils";
+
 export const listBuckets = action({
   display: {
     label: "List Buckets",

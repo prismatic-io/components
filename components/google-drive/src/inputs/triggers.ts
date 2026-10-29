@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanArrayInput, lookBackDateClean } from "../util";
+
 export const triggerEvents = input({
   label: "Trigger Events",
   type: "string",
@@ -19,6 +20,7 @@ export const triggerEvents = input({
   required: false,
   clean: cleanArrayInput,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -29,4 +31,5 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pushNotificationWebhookInputs = {};

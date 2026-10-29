@@ -1,6 +1,8 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringArray } from "../util";
 import { accountIdInput, connectionInput, customerIdInput } from "./common";
+
 const budgetsBodyInput = input({
   label: "Budgets",
   type: "code",
@@ -21,6 +23,7 @@ const budgetsBodyInput = input({
   ),
   clean: util.types.toObject,
 });
+
 const budgetIdsInput = input({
   label: "Budget IDs",
   placeholder: "Enter budget ID",
@@ -32,12 +35,14 @@ const budgetIdsInput = input({
   example: "8901234",
   clean: cleanStringArray,
 });
+
 export const addBudgetsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
   customerId: { ...customerIdInput, required: true },
   budgets: budgetsBodyInput,
 };
+
 export const updateBudgetsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -59,6 +64,7 @@ export const updateBudgetsInputs = {
     ),
   },
 };
+
 export const deleteBudgetsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -69,6 +75,7 @@ export const deleteBudgetsInputs = {
     comments: "An array of budget identifiers to delete.",
   },
 };
+
 export const getBudgetsByIdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },

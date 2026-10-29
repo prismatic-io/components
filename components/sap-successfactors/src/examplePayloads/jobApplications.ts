@@ -15,6 +15,7 @@ export const createJobApplicationExamplePayload = {
     appLastModifiedDateTime: "/Date(1673884433000+0000)/",
   },
 };
+
 export const listJobApplicationsExamplePayload = {
   data: [createJobApplicationExamplePayload.data],
 };

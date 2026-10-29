@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listMobileAppsExamplePayload } from "../../examplePayloads";
 import { listMobileAppsInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listMobileApps = action({
   display: {
     label: "List Mobile Apps",

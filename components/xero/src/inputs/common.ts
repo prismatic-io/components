@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanStringInput } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Xero connection to use.",
 });
+
 export const contactId = input({
   label: "Contact ID",
   type: "string",
@@ -16,6 +18,7 @@ export const contactId = input({
   dataSource: "selectContact",
   clean: cleanStringInput,
 });
+
 export const invoiceId = input({
   label: "Invoice ID",
   type: "string",
@@ -26,6 +29,7 @@ export const invoiceId = input({
   dataSource: "selectInvoice",
   clean: util.types.toString,
 });
+
 export const accountId = input({
   label: "Account ID",
   type: "string",
@@ -36,6 +40,7 @@ export const accountId = input({
   dataSource: "selectAccount",
   clean: util.types.toString,
 });
+
 export const notes = input({
   label: "Notes",
   type: "string",
@@ -45,6 +50,7 @@ export const notes = input({
   example: "These are example notes.",
   clean: cleanStringInput,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -54,6 +60,7 @@ export const description = input({
   placeholder: "Enter description",
   clean: cleanStringInput,
 });
+
 export const purchaseTaxType = input({
   label: "Purchase Tax Type",
   type: "string",
@@ -64,6 +71,7 @@ export const purchaseTaxType = input({
   placeholder: "Enter purchase tax type",
   clean: cleanStringInput,
 });
+
 export const dateString = input({
   label: "Date String",
   type: "string",
@@ -73,6 +81,7 @@ export const dateString = input({
   example: "2021-05-27T00:00:00",
   clean: cleanStringInput,
 });
+
 export const fieldValues = input({
   label: "Optional Values",
   type: "string",
@@ -83,6 +92,7 @@ export const fieldValues = input({
   placeholder: "Enter optional values",
   example: "exampleValue",
 });
+
 export const additionalFields = input({
   label: "Additional Fields",
   type: "code",
@@ -92,6 +102,7 @@ export const additionalFields = input({
   required: false,
   clean: (value: unknown) => cleanCodeInput(value, "Additional Fields"),
 });
+
 export const page = input({
   label: "Page Number",
   type: "string",
@@ -102,6 +113,7 @@ export const page = input({
   placeholder: "Enter page number",
   clean: cleanStringInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -111,6 +123,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const modifiedAfter = input({
   label: "Modified After",
   type: "string",
@@ -121,6 +134,7 @@ export const modifiedAfter = input({
   placeholder: "Enter modified after timestamp",
   clean: cleanStringInput,
 });
+
 export const where = input({
   label: "Where",
   type: "string",

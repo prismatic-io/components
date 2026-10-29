@@ -4,6 +4,7 @@ import { candidatesV3DataSourceExamplePayload } from "../../examplePayloads/v3/d
 import { connectionOnlyInputs } from "../../inputs/v3/common";
 import type { V3Candidate } from "../../types";
 import { fetchAllV3 } from "../../util/v3";
+
 export const candidatesV3 = dataSource({
   display: {
     label: "Fetch Candidate Names",

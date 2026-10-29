@@ -10,9 +10,11 @@ import {
 import { getPaymentDistributions } from "./getPaymentDistributions";
 import { getWorkerPaymentDistributionsMeta } from "./getWorkerPaymentDistributionsMeta";
 import { updateWorkerPayDistribution } from "./updateWorkerPayDistribution";
+
 const BASE = "https://api.adp.com";
 const TOKEN = "test-token";
 const AOID = "G3R47DSRZK5TRCFJ";
+
 const connection = createConnection(adpOauth2, {
   endpoint: API_ENDPOINT,
   tokenEndpoint: TOKEN_ENDPOINT,
@@ -21,6 +23,7 @@ const connection = createConnection(adpOauth2, {
   sslCert: "-----BEGIN CERTIFICATE-----\nCERT\n-----END CERTIFICATE-----",
   sslKey: "-----BEGIN PRIVATE KEY-----\nKEY\n-----END PRIVATE KEY-----",
 });
+
 const context = () => ({
   executionState: {
     [`ADP - ${connection.configVarKey}`]: {
@@ -29,11 +32,14 @@ const context = () => ({
     },
   },
 });
+
 const api = () =>
   nock(BASE, { reqheaders: { authorization: `Bearer ${TOKEN}` } });
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
+
 describe("getPaymentDistributions", () => {
   test("happy path returns the pay distributions", async () => {
     api()
@@ -52,6 +58,7 @@ describe("getPaymentDistributions", () => {
     );
     expect(result).toEqual(getPaymentDistributionsExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/payroll/v2/workers/${AOID}/pay-distributions`)
@@ -66,6 +73,7 @@ describe("getPaymentDistributions", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("getWorkerPaymentDistributionsMeta", () => {
   test("happy path returns the metadata", async () => {
     api()
@@ -79,6 +87,7 @@ describe("getWorkerPaymentDistributionsMeta", () => {
     );
     expect(result).toEqual(getWorkerPaymentDistributionsMetaExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get("/events/payroll/v1/worker.pay-distribution.change/meta")
@@ -93,6 +102,7 @@ describe("getWorkerPaymentDistributionsMeta", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("updateWorkerPayDistribution", () => {
   const paymentDistribution = {
     payDistribution: { distributionInstructions: [] },
@@ -103,6 +113,7 @@ describe("updateWorkerPayDistribution", () => {
     workAssignmentId: "WA-1",
     paymentDistribution,
   };
+
   test("happy path posts the change event and returns the response", async () => {
     api()
       .post("/events/payroll/v1/worker.pay-distribution.change", {
@@ -126,6 +137,7 @@ describe("updateWorkerPayDistribution", () => {
     );
     expect(result).toEqual(updateWorkerPayDistributionExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .post("/events/payroll/v1/worker.pay-distribution.change")

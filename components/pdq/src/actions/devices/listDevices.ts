@@ -5,6 +5,7 @@ import { listDevicesExamplePayload } from "../../examplePayloads/devices";
 import { listDevicesInputs } from "../../inputs";
 import { listDevicesOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listDevices = action({
   display: {
     label: "List Devices",
@@ -29,6 +30,7 @@ export const listDevices = action({
     },
   ) => {
     const client = createHttpClient(connection, context.debug.enabled);
+
     const data = await fetchAllData(
       client,
       DEVICES_ENDPOINT,
@@ -47,9 +49,7 @@ export const listDevices = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listDevicesExamplePayload.data,
   }),
   examplePayload: listDevicesExamplePayload,

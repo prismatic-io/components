@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { eventsInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { getEvents, extractUuidFromUri } from "../util";
+
 export const events = dataSource({
   display: {
     label: "Select Event",
@@ -33,6 +34,7 @@ export const events = dataSource({
       status,
       user,
     );
+
     return {
       result: data.map((event: { name: string; uri: string }) => ({
         key: returnUuidOnly ? extractUuidFromUri(event.uri) : event.uri,

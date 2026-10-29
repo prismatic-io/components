@@ -1,6 +1,7 @@
 import FormData from "form-data";
 import type { createClient } from "./client";
 import type { ChangesObject, RecordChange, SageHRRecord } from "./types";
+
 export const fetchAllRecords = async (
   client: ReturnType<typeof createClient>,
   endpoint: string,
@@ -9,19 +10,23 @@ export const fetchAllRecords = async (
   const allRecords: SageHRRecord[] = [];
   let page = 1;
   let hasMore = true;
+
   do {
     const { data } = await client.get(endpoint, {
       params: { ...params, page },
     });
     const records: SageHRRecord[] = data?.data || [];
     allRecords.push(...records);
+
     hasMore = !!data?.meta?.next_page;
     if (hasMore) {
       page = data.meta.next_page;
     }
   } while (hasMore);
+
   return allRecords;
 };
+
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {
     if (value !== null && value.trim() !== "") {
@@ -30,14 +35,17 @@ export const jsonInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 export const valueListInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value as string[];
   }
   return undefined;
 };
+
 const validateDataType = (value: unknown) => {
   const type = typeof value;
+
   switch (type) {
     case "string":
       if (value === "" || value === null) {
@@ -68,6 +76,7 @@ const validateDataType = (value: unknown) => {
       return false;
   }
 };
+
 export const resolvePollingRecordChanges = (
   data: ChangesObject | undefined,
 ): RecordChange[] => {
@@ -81,12 +90,15 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const generateForm = (data: Record<string, unknown>) => {
   const formData = new FormData();
+
   for (const [key, value] of Object.entries(data)) {
     if (validateDataType(value)) {
       formData.append(key, value as string);
     }
   }
+
   return formData;
 };

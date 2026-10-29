@@ -3,6 +3,7 @@ import { deleteRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { removeUserPermissionSetInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
+
 export const removeUserPermissionSet = action({
   display: {
     label: "Remove User Permission Set",
@@ -14,12 +15,15 @@ export const removeUserPermissionSet = action({
     { version, userName, permissionName, connection },
   ) => {
     const salesforceClient = await createSalesforceClient(connection, version);
+
     const userResponse = await salesforceClient
       .sobject("User")
       .findOne({ UserName: userName });
+
     const permissionResponse = await salesforceClient
       .sobject("PermissionSet")
       .findOne({ Name: permissionName });
+
     if (!userResponse?.Id) {
       throw new Error(`Unable to find User matching "${userName}"`);
     }
@@ -40,13 +44,13 @@ export const removeUserPermissionSet = action({
     const response = await salesforceClient
       .sobject("PermissionSetAssignment")
       .delete(permissionSetAssignmentResponse.Id);
+
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   inputs: removeUserPermissionSetInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

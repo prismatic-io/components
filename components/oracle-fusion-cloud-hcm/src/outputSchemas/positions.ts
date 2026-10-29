@@ -30,6 +30,7 @@ export const positionOutputSchema = {
     "EffectiveEndDate",
   ],
 };
+
 export const listPositionsOutputSchema = {
   type: "object" as const,
   properties: {

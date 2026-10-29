@@ -1,4 +1,5 @@
 import { pageInfoSchema, userErrorsArraySchema } from "./shared";
+
 const metafieldSchema = {
   type: "object" as const,
   properties: {
@@ -13,6 +14,7 @@ const metafieldSchema = {
     updatedAt: { type: "string" as const },
   },
 };
+
 export const listMetafieldsGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -20,6 +22,7 @@ export const listMetafieldsGqlOutputSchema = {
     pageInfo: pageInfoSchema,
   },
 };
+
 export const setMetafieldGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +30,7 @@ export const setMetafieldGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const deleteMetafieldGqlOutputSchema = {
   type: "object" as const,
   properties: {

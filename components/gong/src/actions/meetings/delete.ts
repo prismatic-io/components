@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, meetingId } from "../../inputs";
+
 export const deleteMeeting = action({
   display: {
     label: "Delete Gong Meeting",

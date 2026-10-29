@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { getWorkerExamplePayload } from "../../../examplePayloads";
 import { getWorkerInputs } from "../../../inputs";
+
 export const getWorker = action({
   display: {
     label: "Get Worker (V2)",

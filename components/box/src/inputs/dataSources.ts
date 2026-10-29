@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, limit, marker, offset } from "./common";
+
 export const contentType = input({
   label: "Content Type",
   placeholder: "Select content type",
@@ -15,6 +16,7 @@ export const contentType = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const selectContentInputs = {
   boxConnection: connectionInput,
   contentType,
@@ -22,6 +24,7 @@ export const selectContentInputs = {
   marker,
   offset,
 };
+
 export const selectWebhookInputs = {
   boxConnection: connectionInput,
 };

@@ -3,15 +3,18 @@ import nock from "nock";
 import { clickUpApiKeyConnection } from "../../connections/clickUpApiKeyConnection";
 import { createListExamplePayload } from "../../examplePayloads";
 import { createList } from "./createList";
+
 const API = "https://api.clickup.com";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
+
 interface Captured {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, unknown>;
 }
+
 const mockClickUp = (
   method: string,
   path: string,
@@ -34,15 +37,12 @@ const mockClickUp = (
     });
   return captured;
 };
+
 type ActionUnderTest = {
-  inputs: Record<
-    string,
-    {
-      type?: string;
-    }
-  >;
+  inputs: Record<string, { type?: string }>;
   perform: unknown;
 };
+
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
   const connectionKey = Object.keys(action.inputs).find(
     (key) => action.inputs[key].type === "connection",
@@ -52,6 +52,7 @@ const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
     { [connectionKey]: connection, ...params } as any,
   );
 };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -59,6 +60,7 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 describe("createList", () => {
   const params = {
     folderId: "457",
@@ -70,6 +72,7 @@ describe("createList", () => {
     assigneeInt: undefined,
     status: "red",
   };
+
   test("happy path posts only the populated fields and returns the response", async () => {
     const req = mockClickUp(
       "POST",

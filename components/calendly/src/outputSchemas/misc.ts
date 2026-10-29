@@ -13,6 +13,7 @@ export const createSingleUseSchedulingLinkOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const createShareOutputSchema = {
   type: "object",
   properties: {

@@ -3,6 +3,7 @@ import { getQueryJobResultsOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { getQueryJobResultsInputs } from "../../inputs";
 import { getQueryJobResultsExamplePayload } from "../../examplePayloads";
+
 export const getQueryJobResults = action({
   display: {
     label: "Get Bulk Query Job Results",
@@ -30,9 +31,8 @@ export const getQueryJobResults = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getQueryJobResultsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getQueryJobResultsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getQueryJobResultsOutputSchema,

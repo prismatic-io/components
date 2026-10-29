@@ -4,6 +4,7 @@ import { removeGuestFromFolderExamplePayload } from "../../examplePayloads";
 import { removeGuestFromFolderInputs } from "../../inputs";
 import { removeGuestFromFolderOutputSchema } from "../../outputSchemas";
 import type { RemoveGuestFromFolderQueryParams } from "../../types";
+
 export const removeGuestFromFolder = action({
   display: {
     label: "Remove Guest from Folder",
@@ -23,13 +24,16 @@ export const removeGuestFromFolder = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const params: RemoveGuestFromFolderQueryParams = {
       include_shared: includeShared,
     };
+
     const { data } = await client.delete(
       `/folder/${folderId}/guest/${guestId}`,
       { params },
     );
+
     return {
       data,
     };

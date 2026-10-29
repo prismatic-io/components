@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import type { Member } from "@slack/web-api/dist/types/response/UsersListResponse";
 import { createOauthClient } from "../client";
 import { selectUsersInputs } from "../inputs";
+
 export const selectUsers = dataSource({
   display: {
     label: "Select User",
@@ -15,6 +16,7 @@ export const selectUsers = dataSource({
     let users: Member[] = [];
     let cursor = null;
     let counter = 1;
+
     do {
       const data = await client.users.list({
         cursor,
@@ -24,12 +26,14 @@ export const selectUsers = dataSource({
       cursor = data.response_metadata?.next_cursor;
       counter += 1;
     } while (cursor && counter < 10);
+
     const objects = users.map<Element>((user) => ({
       key: user.id,
       label: params.showIdInDropdown
         ? `${user.name} (ID: ${user.id})`
         : `${user.name}`,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

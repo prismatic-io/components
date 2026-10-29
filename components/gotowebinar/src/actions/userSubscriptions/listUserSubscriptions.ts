@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createGotoWebinarClient } from "../../client";
 import { LIST_USER_SUBSCRIPTIONS_EXAMPLE_PAYLOAD } from "../../examplePayloads";
 import { listUserSubscriptionsInputs } from "../../inputs";
+
 export const listUserSubscriptions = action({
   display: {
     label: "List User Subscriptions",
@@ -17,6 +18,7 @@ export const listUserSubscriptions = action({
         product: "g2w",
       },
     });
+
     return {
       data,
     };

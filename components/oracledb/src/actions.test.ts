@@ -4,6 +4,7 @@ import {
 } from "@prismatic-io/spectral/dist/testing";
 import myComponent from ".";
 import { oracledbConnection } from "./connections";
+
 const harness = createHarness(myComponent);
 const connection = createConnection(oracledbConnection, {
   host: "localhost",
@@ -12,6 +13,7 @@ const connection = createConnection(oracledbConnection, {
   username: "system",
   password: "MyPasswd123",
 });
+
 describe("Verify querying works properly", () => {
   test("Test a queries with no named parameters", async () => {
     const TABLE_NAME = "no_named_params";
@@ -36,6 +38,7 @@ describe("Verify querying works properly", () => {
       { ID: 3, TEXT: "Additional text" },
     ]);
   });
+
   test("Test a queries with named parameters", async () => {
     const TABLE_NAME = "named_parameters";
     const queries = [
@@ -80,6 +83,7 @@ describe("Verify querying works properly", () => {
     });
     expect(result?.data).toMatchObject([{ ID: 2, TEXT: "Some more text" }]);
   });
+
   test("Test a queries with named parameter object", async () => {
     const TABLE_NAME = "named_parameters_object";
     const queries = [
@@ -119,6 +123,7 @@ describe("Verify querying works properly", () => {
     });
     expect(result?.data).toMatchObject([{ ID: 3, TEXT: "Additional text" }]);
   });
+
   test("Test a queries with named parameters and named parameters object together", async () => {
     const TABLE_NAME = "combined_parameters";
     const queries = [

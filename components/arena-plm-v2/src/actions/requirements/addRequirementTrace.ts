@@ -4,6 +4,7 @@ import { addRequirementTraceExamplePayload } from "../../examplePayloads";
 import { addRequirementTraceInputs } from "../../inputs";
 import { requirementTraceSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const addRequirementTrace = action({
   display: {
     label: "Add Requirement Trace",

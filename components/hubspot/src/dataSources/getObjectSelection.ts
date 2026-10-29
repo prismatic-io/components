@@ -3,6 +3,7 @@ import { getHubspotClient } from "../client";
 import { hubspotPaths } from "../constants";
 import { getObjectSelectionExamplePayload } from "../examplePayloads";
 import { getObjectSelectionInputs } from "../inputs";
+
 export const getObjectSelection = dataSource({
   display: {
     label: "Select Object",
@@ -16,6 +17,7 @@ export const getObjectSelection = dataSource({
   ) => {
     let customObjects = [];
     const client = getHubspotClient({ hubspotConnection: connection });
+
     if (includeCustomObjects) {
       const {
         data: { results },
@@ -33,6 +35,7 @@ export const getObjectSelection = dataSource({
         };
       });
     }
+
     const mappedObjects = objectsToSelect.map(async (hsObject) => {
       const apiKey = hsObject.replace(" ", "_").trim().toLowerCase();
       const {
@@ -46,6 +49,7 @@ export const getObjectSelection = dataSource({
         })),
       };
     }, []);
+
     return {
       result: [...customObjects, ...(await Promise.all(mappedObjects))],
     };

@@ -38,6 +38,7 @@ export const listUsersResponse = [
     ],
   },
 ];
+
 export const getUserResponse = {
   phoneNumber: "+00 123456789",
   profileId: "00000000-0000-0000-0000000000000000",
@@ -81,15 +82,18 @@ export const getUserResponse = {
   terms:
     "Digital Asset Management System Terms and Conditions <br/>\n<br/>\n  Overview<br/><br/>\n  All assets are free to use as long as these terms and conditions and license rules are followed.\nAll assets can not be used in paid advertising without the permission of Bynder.<br/><br/>",
 };
+
 export const createUserResponse = {
   id: "00000000-0000-0000-0000000000000000",
   username: "user123",
 };
+
 export const getSecurityProfileResponse = {
   name: "Internal Limited user",
   id: "00000000-0000-0000-0000000000000001",
   roles: ["MEDIADOWNLOAD", "SHARING", "MEDIAOVERVIEW", "MEDIAHIGHRES"],
 };
+
 export const listSecurityProfilesResponse = [
   getSecurityProfileResponse,
   {
@@ -98,6 +102,7 @@ export const listSecurityProfilesResponse = [
     roles: ["PUBLICCOLLECTIONS", "GROUPSHARING", "COLLECTIONS"],
   },
 ];
+
 export const getAssetResponse = {
   dateModified: "2017-03-09T12:09:29Z",
   propertyOptions: [
@@ -133,6 +138,7 @@ export const getAssetResponse = {
   transformBaseUrl:
     "https://example.bynder.com/transform/01234567-89ab-cdef-0123-456789abcdef/AssetName",
 };
+
 export const listAssetsResponse = [
   getAssetResponse,
   {
@@ -177,16 +183,20 @@ export const listAssetsResponse = [
       "https://example.bynder.com/transform/01234567-89ab-cdef-0123-456789abcdef/AssetName",
   },
 ];
+
 export const genericUpdateResponse = {
   message: "Accepted",
   statuscode: 202,
 };
+
 export const genericCreateResponse = {
   message: "Created",
   statuscode: 201,
 };
+
 export const getClosestS3EndpointResponse =
   "https://bynder-public-eu-central-1.s3.amazonaws.com/";
+
 export const initialiseUploadResponse = {
   s3file: {
     uploadid: "UPLOAD_ID",
@@ -206,9 +216,11 @@ export const initialiseUploadResponse = {
     "x-amz-date": "20160216T100755Z",
   },
 };
+
 export const registerUploadedChunkResponse = {
   status: "ok",
 };
+
 export const finaliseCompleteUploadResponse = {
   output: "final/2ba07d00-586a-4a44-b13c-c58598cfe828/",
   batchId: "00000000-0000-0000-0000000000000000",
@@ -222,14 +234,17 @@ export const finaliseCompleteUploadResponse = {
   locationType: "s3",
   success: 1,
 };
+
 export const finaliseCompleteUploadAndSaveAsNewAssetResponse = {
   itemId: "21F24BCF-DD76-4FE3-9B7C5936A2FA958C",
 };
+
 export const retrievePollStateResponse = {
   itemsDone: ["00000000-0000-0000-0000000000000000"],
   itemsFailed: [],
   itemsRejected: [],
 };
+
 export const saveAsNewAssetResponse = {
   accessRequestId: "00000000-0000-0000-0000000000000000",
   mediaid: "00000000-0000-0000-0000000000000000",
@@ -250,11 +265,13 @@ export const saveAsNewAssetResponse = {
     },
   ],
 };
+
 export const downloadSpecificAssetItemResponse = {
   disclaimer:
     "<p>1. The photographs and video in the mediabank are to be used by anyone and everyone.</p>",
   s3_file: "___TEMPORARY_DOWNLOAD_URL___",
 };
+
 export const getCollectionResponse = {
   userId: "48817BA7-2FC3-4A43-918761514D322C15",
   dateModified: "March, 08 2017 14:17:37 +0000",
@@ -279,6 +296,7 @@ export const getCollectionResponse = {
   description: "Collection 1 with various assets.",
   IsPublic: 1,
 };
+
 export const listCollectionsResponse = {
   collections: [
     getCollectionResponse,
@@ -309,6 +327,7 @@ export const listCollectionsResponse = {
   ],
   count: 151,
 };
+
 export const getAccountInformationResponse = {
   availableLanguages: [
     "nl_NL",
@@ -325,6 +344,7 @@ export const getAccountInformationResponse = {
   timeZone: "Europe/Amsterdam",
   isOpenImageBank: false,
 };
+
 export const listCampaignsResponse = [
   {
     dateStart: "2017-02-01T00:00:00+00:00",
@@ -363,6 +383,7 @@ export const listCampaignsResponse = [
     campaignMetaproperties: "00000000-0000-0000-0000-000000000000",
   },
 ];
+
 export const getCampaignResponse = {
   dateStart: "2017-02-01T00:00:00+00:00",
   description: "Campaign example",
@@ -381,6 +402,7 @@ export const getCampaignResponse = {
     "https://bynder-public-eu-central-1.s3.eu-central-1.amazonaws.com:443/workflow/campaign/988BBB04-F0E2-4A28-B5F892890849BAFE/FEE78434-649A-449B-A62A1C6C6D59CAC3/500x500.jpg",
   campaignMetaproperties: "00000000-0000-0000-0000-000000000000",
 };
+
 export const createCampaignResponse = {
   name: "Example campaign",
   key: "excp",
@@ -390,6 +412,7 @@ export const createCampaignResponse = {
   responsibleID: "00000000-0000-0000-0000-000000000000",
   campaignMetaproperties: "00000000-0000-0000-0000-000000000000",
 };
+
 export const getJobResponse = {
   job_stages: [
     {
@@ -435,6 +458,7 @@ export const getJobResponse = {
     id: "00000000-0000-0000-0000-000000000000",
   },
 };
+
 export const listJobsResponse = [
   {
     job_stages: [
@@ -486,6 +510,7 @@ export const listJobsResponse = [
   },
   getJobResponse,
 ];
+
 export const getMediaOfJobResponse = [
   {
     original_url: "https://url.to.file/original.png",
@@ -545,10 +570,12 @@ export const getMediaOfJobResponse = [
     ],
   },
 ];
+
 export const updateJobResponse = {
   status: "Created",
   job_id: "00000000-0000-0000-0000-000000000000",
 };
+
 export const createJobResponse = {
   name: "Job Example",
   description: "Job Description",
@@ -577,6 +604,7 @@ export const createJobResponse = {
     },
   ],
 };
+
 export const listOrdersResponse = [
   {
     id: "00000000-0000-0000-0000-000000000000",
@@ -599,12 +627,14 @@ export const listOrdersResponse = [
     currency_symbol: "36",
   },
 ];
+
 export const getOrderInfoResponse = {
   id: "00000000-0000-0000-0000000000000000",
   dateCreated: "2015-06-01T08:36:18Z",
   status: "IN_PRODUCTION",
   orderReference: "NL0456",
 };
+
 export const getOrderResponse = [
   {
     id: "00000000-0000-0000-0000-000000000000",
@@ -647,6 +677,7 @@ export const getOrderResponse = [
     metaproperties: null,
   },
 ];
+
 export const listBrandsResponse = [
   {
     image: "___URL_TO_BYNDER_CDN___",
@@ -676,6 +707,7 @@ export const listBrandsResponse = [
     subBrands: [],
   },
 ];
+
 export const uploadChunkResponse = {
   PostResponse: {
     Location: [
@@ -688,6 +720,7 @@ export const uploadChunkResponse = {
   filename:
     "api_uploads/00000000-0000-0000-0000000000000000/00000000-0000-0000-0000000000000000/Logo.png/p5",
 };
+
 export const listMetapropertiesResponse = {
   Colours: {
     isMultiselect: 0,
@@ -775,6 +808,7 @@ export const listMetapropertiesResponse = {
     options: [],
   },
 };
+
 export const getJobPresetResponse = {
   preset: {
     ID: "00000000-0000-0000-0000-000000000000",
@@ -796,18 +830,21 @@ export const getJobPresetResponse = {
     ],
   },
 };
+
 export const selectCampaignResponse = [
   {
     key: "123",
     label: "Campaign Name (ID: 123)",
   },
 ];
+
 export const selectCollectionResponse = [
   {
     key: "123",
     label: "Collection Name (ID: 123)",
   },
 ];
+
 export const selectJobResponse = [
   {
     key: "123",

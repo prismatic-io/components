@@ -4,6 +4,7 @@ import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
 import { handleErrors } from "./util";
+
 export default component({
   key: "ms-dynamics",
   public: true,

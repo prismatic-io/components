@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getApplicationExamplePayload } from "../../examplePayloads/applications";
 import { getApplicationInputs } from "../../inputs/applications";
 import type { Application } from "../../interfaces/application";
+
 export const getApplication = action({
   display: {
     label: "Get Application",
@@ -17,6 +18,7 @@ export const getApplication = action({
         params: { expand },
       },
     );
+
     return { data };
   },
   examplePayload: getApplicationExamplePayload,

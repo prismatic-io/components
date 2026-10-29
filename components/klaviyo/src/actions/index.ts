@@ -7,6 +7,7 @@ import misc from "./misc";
 import profiles from "./profiles";
 import segments from "./segments";
 import templates from "./templates";
+
 export default {
   ...accounts,
   ...images,

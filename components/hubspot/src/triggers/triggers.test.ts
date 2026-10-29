@@ -1,6 +1,7 @@
 import { resolvePollingRecordChanges } from "../util";
 import { pollChangesCustomObjectsTrigger } from "./pollChangesCustomObjectsTrigger";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 describe("polling trigger batching", () => {
   test.each([
     ["New and Updated Records", pollChangesTrigger],
@@ -16,6 +17,7 @@ describe("polling trigger batching", () => {
       Function,
     );
   });
+
   test("resolvePollingRecordChanges flattens created then updated into tagged items", () => {
     const created = {
       id: "1",
@@ -37,6 +39,7 @@ describe("polling trigger batching", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({})).toEqual([]);
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);

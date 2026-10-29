@@ -5,6 +5,7 @@ import { getBillExamplePayload } from "../../examplePayloads";
 import { OBJECT_AP_BILL } from "../../constants";
 import { getBillInputs } from "../../inputs";
 import { getBillOutputSchema } from "../../outputSchemas";
+
 export const getBill = action({
   display: {
     label: "Get Bill",

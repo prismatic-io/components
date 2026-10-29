@@ -1,9 +1,11 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "../connections";
+
 const getBaseUrl = (connection: Connection): string => {
   const restInstanceUrl = util.types.toString(
     connection.token?.rest_instance_url,
   );
+
   if (!restInstanceUrl) {
     throw new ConnectionError(
       connection,
@@ -11,10 +13,13 @@ const getBaseUrl = (connection: Connection): string => {
         "Verify the Marketing Cloud connection is configured correctly.",
     );
   }
+
   return restInstanceUrl.replace(/\/$/, "");
 };
+
 const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
+
   if (!connectionKeys.includes(connection.key)) {
     throw new ConnectionError(
       connection,
@@ -22,6 +27,7 @@ const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getAuthenticatedConnectionDetails = (
   connection: Connection,
 ): {
@@ -29,7 +35,9 @@ export const getAuthenticatedConnectionDetails = (
   baseUrl: string;
 } => {
   validateConnection(connection);
+
   const accessToken = util.types.toString(connection.token?.access_token);
   const baseUrl = getBaseUrl(connection);
+
   return { accessToken, baseUrl };
 };

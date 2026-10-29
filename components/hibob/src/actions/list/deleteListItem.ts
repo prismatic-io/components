@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { deleteListItemExamplePayload } from "../../examplePayloads";
 import { deleteListItemInputs } from "../../inputs";
+
 export const deleteListItem = action({
   display: {
     label: "Delete List Item",
@@ -9,6 +10,7 @@ export const deleteListItem = action({
   },
   perform: async (context, { connection, listName, itemId }) => {
     const client = getClient(connection, context.debug.enabled);
+
     await client.delete(`/company/named-lists/${listName}/${itemId}`);
     return {
       data: {

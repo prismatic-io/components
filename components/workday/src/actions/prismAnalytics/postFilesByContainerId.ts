@@ -5,6 +5,7 @@ import { SERVICES } from "../../constants";
 import { postFilesByContainerIdExamplePayload } from "../../examplePayloads";
 import { postFilesByContainerIdInputs } from "../../inputs";
 import { postFilesByContainerIdOutputSchema } from "../../outputSchemas";
+
 export const postFilesByContainerId = action({
   display: {
     label: "Upload Files by Container ID",
@@ -14,8 +15,10 @@ export const postFilesByContainerId = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, tenant, fileContainerId, file }) => {
     const client = getClient(connection, context.debug.enabled);
+
     const formData = new FormData();
     formData.append("file", file.data);
+
     const { data } = await client.post(
       `${SERVICES.prismAnalytics}/${tenant}/fileContainers/${fileContainerId}/files`,
       formData,
@@ -26,6 +29,7 @@ export const postFilesByContainerId = action({
         },
       },
     );
+
     return { data };
   },
   examplePerform: async () => postFilesByContainerIdExamplePayload,

@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, storeHash, webhookIdInput } from "../../inputs";
+
 export const deleteWebhookAction = action({
   display: {
     label: "Delete Webhook",
@@ -18,6 +19,7 @@ export const deleteWebhookAction = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/hooks/${webhook_id}`;
+
     try {
       const response = await client.delete(endpoint);
       return {
@@ -29,6 +31,7 @@ export const deleteWebhookAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash: storeHash,

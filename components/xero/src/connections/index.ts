@@ -1,4 +1,5 @@
 import { oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
+
 export const xeroOAuth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",
@@ -66,6 +67,7 @@ export const xeroOAuth = oauth2Connection({
     },
   },
 });
+
 export const xeroOAuthClientCredentials = oauth2Connection({
   key: "xeroOAuthClientCredentials",
   display: {
@@ -84,6 +86,7 @@ export const xeroOAuthClientCredentials = oauth2Connection({
       comments: "The OAuth 2.0 Token URL for Xero",
       default: "https://identity.xero.com/connect/token",
     },
+
     scopes: {
       label: "Scopes",
       placeholder: "Scopes",
@@ -115,4 +118,5 @@ export const xeroOAuthClientCredentials = oauth2Connection({
     },
   },
 });
+
 export default [xeroOAuth, xeroOAuthClientCredentials];

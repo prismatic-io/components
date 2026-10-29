@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createJobExamplePayload } from "../../examplePayloads";
 import { createJobInputs } from "../../inputs";
 import { createJobOutputSchema } from "../../outputSchemas";
+
 export const createJob = action({
   display: {
     label: "Create Job",

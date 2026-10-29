@@ -4,6 +4,7 @@ import { BING_API, SOAP_ACTION } from "../../constants";
 import { getCustomerExamplePayload } from "../../examplePayloads";
 import { getCustomerInputs } from "../../inputs/customers";
 import type { GetCustomerResponse } from "../../types";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",
@@ -17,6 +18,7 @@ export const getCustomer = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<GetCustomerResponse>({
       debug,
       args: { CustomerId: customerId },
@@ -24,6 +26,7 @@ export const getCustomer = action({
       soapAction: SOAP_ACTION.GetCustomer,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data: response,
     };

@@ -3,6 +3,7 @@ import { connection } from "../../inputs/general";
 import { LIST_MODELS_EXAMPLE_PAYLOAD } from "../../examplePayloads";
 import { createDeepSeekClient } from "../../client";
 import { ListModelsResponse } from "../../interfaces";
+
 export const listModels = action({
   display: {
     label: "List Models",
@@ -15,6 +16,7 @@ export const listModels = action({
       context.debug.enabled,
     );
     const { data } = await client.get<ListModelsResponse>("/models");
+
     return { data };
   },
   inputs: {

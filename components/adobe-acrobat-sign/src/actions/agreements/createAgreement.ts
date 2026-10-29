@@ -3,6 +3,7 @@ import { createAgreementInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import type { ParticipantSetInfo, Role } from "../../types";
 import { createAgreementExamplePayload } from "../../examplePayloads";
+
 export const createAgreement = action({
   display: {
     label: "Create Agreement",
@@ -36,11 +37,13 @@ export const createAgreement = action({
         role: participantsSetInfoRole as Role,
       },
     ];
+
     if (additionalAgreementParticipants) {
       participantSetsInfo.push(
         ...(additionalAgreementParticipants as ParticipantSetInfo[]),
       );
     }
+
     const payload = {
       fileInfos: [
         {
@@ -52,9 +55,11 @@ export const createAgreement = action({
       signatureType,
       state: agreementState,
     };
+
     const {
       data: { id },
     } = await client.post("/agreements", payload);
+
     return {
       data: id,
     };

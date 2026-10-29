@@ -8,6 +8,7 @@ import flushAll from "./actions/flushAll";
 import deleteKey from "./actions/deleteKey";
 import connections from "./connections";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export default component({
   key: "redis",
   documentationUrl: "https://prismatic.io/docs/components/redis/",

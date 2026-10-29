@@ -5,6 +5,7 @@ import { deleteItamDeviceExamplePayload as examplePayload } from "../../exampleP
 import { deleteItamDeviceInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
 import { itamPath } from "../../util";
+
 export const deleteItamDevice = action({
   display: {
     label: "Delete Device (ITAM)",
@@ -15,7 +16,9 @@ export const deleteItamDevice = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(itamPath("devices", { op: "delete", id: deviceId }));
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

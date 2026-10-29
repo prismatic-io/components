@@ -1,4 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
+
 export type PollChangesTriggerParams = {
   connection: Connection;
   userId: string;
@@ -6,6 +7,7 @@ export type PollChangesTriggerParams = {
   getMessageDetails: boolean;
   lookBackDate: string;
 };
+
 export type PollChangesTriggerState = {
   historyId: string | undefined;
   lastPolledAt: string | undefined;

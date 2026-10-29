@@ -13,6 +13,7 @@ export const getWebhookExamplePayload = {
     url: "https://example.com/my/webhook/endpoint",
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {
     id: "we_1Mr5jULkdIwHu7ix1ibLTM0x",
@@ -20,6 +21,7 @@ export const deleteWebhookExamplePayload = {
     deleted: true,
   },
 };
+
 export const deleteWebhooksExamplePayload = {
   data: [
     {
@@ -39,6 +41,7 @@ export const deleteWebhooksExamplePayload = {
     },
   ],
 };
+
 export const listWebhooksExamplePayload = {
   data: {
     data: [getWebhookExamplePayload.data],

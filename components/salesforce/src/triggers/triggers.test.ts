@@ -15,11 +15,13 @@ import {
   webhook,
   workflowTrigger,
 } from ".";
+
 describe("test salesforce webhook trigger", () => {
   test("verify the return value of salesforce webhook trigger", async () => {
     const payload = defaultTriggerPayload();
     payload.body.data = "<xml><foo>bar</foo></xml>";
     payload.body.contentType = "text/xml; charset=utf-8";
+
     const expectedData = { xml: { foo: "bar" } };
     const expectedResponse = {
       statusCode: 200,
@@ -44,6 +46,7 @@ describe("test salesforce webhook trigger", () => {
     expect(response).toStrictEqual(expectedResponse);
   });
 });
+
 const outboundEnvelope = (
   notifications: string,
 ) => `<?xml version="1.0" encoding="UTF-8"?>
@@ -58,6 +61,7 @@ const outboundEnvelope = (
   </notifications>
  </soapenv:Body>
 </soapenv:Envelope>`;
+
 const accountNotification = (id: string, name: string) => `
    <Notification>
     <Id>04l5g00000${id}</Id>
@@ -80,6 +84,7 @@ const accountNotification = (id: string, name: string) => `
      <sf:LastModifiedDate>2026-10-14T15:04:05.000Z</sf:LastModifiedDate>
     </sObject>
    </Notification>`;
+
 const accountFields = {
   AccountNumber: 123,
   AnnualRevenue: 2500000,
@@ -96,6 +101,7 @@ const accountFields = {
   Website: "https://acme.example.com/?a=1&b=2",
   LastModifiedDate: "2026-10-14T15:04:05.000Z",
 };
+
 const invokeWithXmlResult = async (xmlTrigger, xml: string) => {
   const payload = defaultTriggerPayload();
   payload.body.data = xml;
@@ -103,8 +109,10 @@ const invokeWithXmlResult = async (xmlTrigger, xml: string) => {
   const { result } = await invokeTrigger(xmlTrigger, {}, payload);
   return result;
 };
+
 const invokeWithXml = async (xmlTrigger, xml: string) =>
   (await invokeWithXmlResult(xmlTrigger, xml))?.payload.body;
+
 describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () => {
   test("workflowTrigger parses an outbound message into the full envelope", async () => {
     const body = await invokeWithXml(
@@ -147,6 +155,7 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
       },
     });
   });
+
   test("flowOutboundMessageTrigger flattens multiple notifications", async () => {
     const body = await invokeWithXml(
       flowOutboundMessageTrigger,
@@ -173,6 +182,7 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
       ],
     });
   });
+
   test("flowOutboundMessageTrigger wraps a single notification in an array", async () => {
     const body = await invokeWithXml(
       flowOutboundMessageTrigger,
@@ -187,6 +197,7 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
       },
     ]);
   });
+
   test("webhook keeps attributes as strings and groups repeated tags", async () => {
     const body = await invokeWithXml(
       webhook,
@@ -211,6 +222,7 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
       },
     });
   });
+
   test("webhook rejects a __proto__ tag without polluting Object.prototype", async () => {
     await expect(
       invokeWithXml(webhook, "<__proto__><polluted>x</polluted></__proto__>"),
@@ -218,6 +230,7 @@ describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () =
     expect(({} as Record<string, unknown>).polluted).toBeUndefined();
   });
 });
+
 describe("XML webhook triggers acknowledge Salesforce with the SOAP response", () => {
   test.each([
     ["workflowTrigger", workflowTrigger],
@@ -230,6 +243,7 @@ describe("XML webhook triggers acknowledge Salesforce with the SOAP response", (
     expect(result?.response).toStrictEqual(WEBHOOK_SFDC_RESPONSE);
   });
 });
+
 describe("test salesforce pollChangesTrigger batching", () => {
   test("is opt-in batchable, dispatching one batch of 50 at a time", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -241,6 +255,7 @@ describe("test salesforce pollChangesTrigger batching", () => {
       Function,
     );
   });
+
   test("resolvePollingRecordChanges flattens created, updated, and deleted into tagged items", () => {
     const created = {
       CreatedDate: "2026-01-02",
@@ -267,6 +282,7 @@ describe("test salesforce pollChangesTrigger batching", () => {
       { changeType: "deleted", record: deleted },
     ]);
   });
+
   test("a record in both createdRecords and updatedRecords flattens to two items", () => {
     const bothBuckets = {
       Id: "001000000000005",
@@ -284,6 +300,7 @@ describe("test salesforce pollChangesTrigger batching", () => {
       { changeType: "updated", record: bothBuckets },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] when there are no changes", () => {
     expect(
       resolvePollingRecordChanges({
@@ -295,6 +312,7 @@ describe("test salesforce pollChangesTrigger batching", () => {
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
 });
+
 describe("polling output contract (frozen)", () => {
   const created: PollingTriggerObject = {
     Id: "001000000000001",
@@ -311,6 +329,7 @@ describe("polling output contract (frozen)", () => {
     deletedDate: "2026-08-10T12:00:07.000+0000",
     IsDeleted: true,
   };
+
   test("changesObject has exactly three keys in the documented order", () => {
     const { changesObject } = getPollingChanges(
       true,
@@ -327,6 +346,7 @@ describe("polling output contract (frozen)", () => {
     ]);
     expect(changesObject.deletedRecords).toEqual([deleted]);
   });
+
   test("a record created after the watermark is classified as created", () => {
     const { changesObject, changes } = getPollingChanges(
       true,
@@ -339,6 +359,7 @@ describe("polling output contract (frozen)", () => {
     expect(changesObject.updatedRecords).toEqual([]);
     expect(changes).toBe(1);
   });
+
   test("a record modified after creation is classified as updated", () => {
     const { changesObject, changes } = getPollingChanges(
       true,
@@ -351,6 +372,7 @@ describe("polling output contract (frozen)", () => {
     expect(changesObject.createdRecords).toEqual([]);
     expect(changes).toBe(1);
   });
+
   test("showNewRecords=false suppresses created records but still counts deletions", () => {
     const { changesObject, changes } = getPollingChanges(
       false,
@@ -364,6 +386,7 @@ describe("polling output contract (frozen)", () => {
     expect(changesObject.deletedRecords).toEqual([deleted]);
     expect(changes).toBe(1);
   });
+
   test("records strictly before the watermark are excluded", () => {
     const { changesObject, changes } = getPollingChanges(
       true,
@@ -376,6 +399,7 @@ describe("polling output contract (frozen)", () => {
     expect(changesObject.updatedRecords).toEqual([]);
     expect(changes).toBe(0);
   });
+
   test("a record exactly at the watermark is excluded (the boundary is exclusive)", () => {
     const atWatermark: PollingTriggerObject = {
       Id: "001000000000004",
@@ -394,8 +418,10 @@ describe("polling output contract (frozen)", () => {
     expect(changes).toBe(0);
   });
 });
+
 describe("pollChangesTrigger pagination wiring", () => {
   const resolver = pollChangesTrigger.triggerResolver;
+
   test("getNextPaginationState forwards a cursor the perform left on the payload", () => {
     const cursor: PollingCursor = {
       watermark: "2026-08-10T12:00:02Z",
@@ -412,11 +438,13 @@ describe("pollChangesTrigger pagination wiring", () => {
       ),
     ).toEqual(cursor);
   });
+
   test("getNextPaginationState returns null to end the drain", () => {
     expect(
       resolver?.getNextPaginationState?.({} as never, { payload: {} } as never),
     ).toBeNull();
   });
+
   test("getNextPaginationState is synchronous", () => {
     const result = resolver?.getNextPaginationState?.(
       {} as never,
@@ -424,6 +452,7 @@ describe("pollChangesTrigger pagination wiring", () => {
     );
     expect(result).not.toBeInstanceOf(Promise);
   });
+
   test("resolveItems is synchronous", () => {
     const result = resolver?.resolveItems?.(
       {} as never,

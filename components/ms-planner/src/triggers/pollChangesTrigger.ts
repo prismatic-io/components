@@ -15,6 +15,7 @@ import {
   latestCreatedDateTime,
   resolvePlannerTaskChanges,
 } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Tasks",
@@ -35,6 +36,7 @@ export const pollChangesTrigger = pollingTrigger({
       (lookBackDate
         ? new Date(Date.parse(lookBackDate) - 1).toISOString()
         : undefined);
+
     const client = createClient(connection, context.debug.enabled);
     const { fetched, created, newestCreatedDateTime, truncated } =
       await fetchTasksCreatedSince<PlannerTask & Etagged>(
@@ -42,6 +44,7 @@ export const pollChangesTrigger = pollingTrigger({
         PLANNER_ENDPOINTS.PLAN_TASKS(planId),
         lastPolledAt,
       );
+
     if (truncated) {
       throw new Error(
         `Plan ${planId} has more tasks than the ${MAX_PAGES}-page limit allows in one poll. Planner exposes no filter or ordering to resume a truncated walk, so no tasks were emitted and the polling cursor was not advanced.`,
@@ -51,6 +54,7 @@ export const pollChangesTrigger = pollingTrigger({
       ? latestCreatedDateTime(created, lastPolledAt)
       : (newestCreatedDateTime ?? new Date().toISOString());
     context.polling.setState({ lastPolledAt: nextCursor });
+
     if (context.debug.enabled) {
       context.logger.debug(
         lastPolledAt
@@ -58,6 +62,7 @@ export const pollChangesTrigger = pollingTrigger({
           : `Polled plan ${planId}: ${fetched} tasks fetched, cursor seeded at ${nextCursor}`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created } } },
       polledNoChanges: created.length === 0,

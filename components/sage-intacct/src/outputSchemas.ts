@@ -8,6 +8,7 @@ const xmlControlSchema = {
     dtdversion: { type: "array" as const, items: { type: "string" as const } },
   },
 };
+
 const xmlAuthenticationSchema = {
   type: "object" as const,
   properties: {
@@ -25,6 +26,7 @@ const xmlAuthenticationSchema = {
     },
   },
 };
+
 const xmlResultWithKeySchema = {
   type: "object" as const,
   properties: {
@@ -34,6 +36,7 @@ const xmlResultWithKeySchema = {
     key: { type: "array" as const, items: { type: "string" as const } },
   },
 };
+
 const xmlResultNoKeySchema = {
   type: "object" as const,
   properties: {
@@ -42,6 +45,7 @@ const xmlResultNoKeySchema = {
     controlid: { type: "array" as const, items: { type: "string" as const } },
   },
 };
+
 const xmlResultWithDataSchema = {
   type: "object" as const,
   properties: {
@@ -57,6 +61,7 @@ const xmlResultWithDataSchema = {
     },
   },
 };
+
 const xmlEnvelopeWithKeySchema = {
   type: "object" as const,
   properties: {
@@ -87,6 +92,7 @@ const xmlEnvelopeWithKeySchema = {
     },
   },
 };
+
 const xmlEnvelopeNoKeySchema = {
   type: "object" as const,
   properties: {
@@ -117,6 +123,7 @@ const xmlEnvelopeNoKeySchema = {
     },
   },
 };
+
 const xmlEnvelopeWithDataSchema = {
   type: "object" as const,
   properties: {
@@ -147,6 +154,7 @@ const xmlEnvelopeWithDataSchema = {
     },
   },
 };
+
 const sdkReadEnvelopeSchema = {
   type: "object" as const,
   properties: {
@@ -169,6 +177,7 @@ const sdkReadEnvelopeSchema = {
     "_data",
   ],
 };
+
 export const getCustomerOutputSchema = sdkReadEnvelopeSchema;
 export const getVendorOutputSchema = sdkReadEnvelopeSchema;
 export const getBillOutputSchema = sdkReadEnvelopeSchema;
@@ -179,16 +188,20 @@ export const getArPaymentOutputSchema = sdkReadEnvelopeSchema;
 export const getARAdjustmentOutputSchema = sdkReadEnvelopeSchema;
 export const getARAdjustmentLineOutputSchema = sdkReadEnvelopeSchema;
 export const getARAdvanceOutputSchema = sdkReadEnvelopeSchema;
+
 export const getProjectOutputSchema = {
   type: "object" as const,
   additionalProperties: true,
 };
+
 export const createContactOutputSchema = sdkReadEnvelopeSchema;
 export const createCustomerOutputSchema = sdkReadEnvelopeSchema;
 export const createVendorOutputSchema = sdkReadEnvelopeSchema;
+
 export const createARAdvanceOutputSchema = xmlEnvelopeWithKeySchema;
 export const createInvoiceOutputSchema = xmlEnvelopeWithKeySchema;
 export const createBillOutputSchema = xmlEnvelopeWithDataSchema;
+
 export const createProjectOutputSchema = {
   type: "object" as const,
   properties: {
@@ -196,10 +209,13 @@ export const createProjectOutputSchema = {
     PROJECTID: { type: "string" as const },
   },
 };
+
 export const updateVendorOutputSchema = sdkReadEnvelopeSchema;
+
 export const updateARAdjustmentOutputSchema = xmlEnvelopeWithKeySchema;
 export const updateARAdvanceOutputSchema = xmlEnvelopeWithKeySchema;
 export const updateInvoiceOutputSchema = xmlEnvelopeWithKeySchema;
+
 export const updateContactOutputSchema = {
   type: "object" as const,
   properties: {
@@ -213,6 +229,7 @@ export const updateContactOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const updateCustomerOutputSchema = {
   type: "object" as const,
   properties: {
@@ -224,6 +241,7 @@ export const updateCustomerOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const updateProjectOutputSchema = {
   type: "object" as const,
   properties: {
@@ -231,7 +249,9 @@ export const updateProjectOutputSchema = {
     PROJECTID: { type: "string" as const },
   },
 };
+
 export const deleteObjectOutputSchema = xmlEnvelopeNoKeySchema;
+
 export const queryAndListOutputSchema = {
   type: "array" as const,
   items: { type: "object" as const, additionalProperties: true },

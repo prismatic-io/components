@@ -9,6 +9,7 @@ import type {
   GetLinkedAccountsAndCustomersInfoResponse,
 } from "../../types";
 import { toArray } from "../../util";
+
 export const getLinkedAccountsAndCustomersInfo = action({
   display: {
     label: "Get Linked Accounts And Customers Info",
@@ -23,6 +24,7 @@ export const getLinkedAccountsAndCustomersInfo = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<GetLinkedAccountsAndCustomersInfoResponse>(
       {
         debug,
@@ -35,6 +37,7 @@ export const getLinkedAccountsAndCustomersInfo = action({
         targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
       },
     );
+
     return {
       data:
         response?.AccountsInfo?.AccountInfo ||

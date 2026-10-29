@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createGeminiClient } from "../../client";
 import { generateTextExamplePayload as examplePayload } from "../../examplePayloads/generatedContent";
 import { generateTextInputs } from "../../inputs/generatedContent";
+
 export const generateText = action({
   display: {
     label: "Generate Text",
@@ -31,6 +32,7 @@ export const generateText = action({
         ...extraParameters,
       },
     });
+
     return {
       data,
     };

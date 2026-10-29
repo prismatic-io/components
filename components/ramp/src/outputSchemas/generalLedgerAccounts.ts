@@ -1,4 +1,5 @@
 import { deleteResponseSchema, pageSchema } from "./shared";
+
 const generalLedgerAccountSchema = {
   type: "object" as const,
   properties: {
@@ -82,7 +83,9 @@ const generalLedgerAccountSchema = {
     "ramp_id",
   ],
 };
+
 export const getGeneralLedgerAccountOutputSchema = generalLedgerAccountSchema;
+
 export const listGeneralLedgerAccountsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -94,6 +97,8 @@ export const listGeneralLedgerAccountsOutputSchema = {
   },
   required: ["data", "page"],
 };
+
 export const updateGeneralLedgerAccountOutputSchema =
   generalLedgerAccountSchema;
+
 export const deleteGeneralLedgerAccountOutputSchema = deleteResponseSchema;

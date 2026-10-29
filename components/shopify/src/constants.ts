@@ -1,5 +1,6 @@
 export const DEFAULT_SHOPIFY_VERSION = "2026-07";
 export const DEFAULT_SHOPIFY_GRAPHQL_API_VERSION = "2026-07";
+
 export const GRAPHQL_EXAMPLE = `{
     products(first: 3) {
       edges {
@@ -10,9 +11,12 @@ export const GRAPHQL_EXAMPLE = `{
       }
     }
   }`;
+
 export const MAX_LIMIT = 250;
 export const POLLING_LIMIT = 50;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const WEBHOOK_TOPICS = [
   "APP_PURCHASES_ONE_TIME_UPDATE",
   "APP_SCOPES_UPDATE",
@@ -204,6 +208,7 @@ export const WEBHOOK_TOPICS = [
   "VARIANTS_IN_STOCK",
   "VARIANTS_OUT_OF_STOCK",
 ];
+
 export const WEBHOOK_TOPICS_MAP = {
   "app/uninstalled": "APP_UNINSTALLED",
   "app_subscriptions/update": "APP_SUBSCRIPTIONS_UPDATE",
@@ -350,17 +355,29 @@ export const WEBHOOK_TOPICS_MAP = {
   "themes/publish": "THEMES_PUBLISH",
   "themes/update": "THEMES_UPDATE",
 };
+
 export const LIST_PRODUCTS_DATASOURCE_REFERENCE = "listProducts";
+
 export const LIST_ORDERS_DATASOURCE_REFERENCE = "listOrders";
+
 export const LIST_LOCATIONS_DATASOURCE_REFERENCE = "listLocations";
+
 export const LIST_FULFILLMENT_ORDERS_DATASOURCE_REFERENCE =
   "listFulfillmentOrders";
+
 export const LIST_FULFILLMENTS_DATASOURCE_REFERENCE = "listFulfillments";
+
 export const LIST_CUSTOMERS_DATASOURCE_REFERENCE = "listCustomers";
+
 export const LIST_VARIANTS_DATASOURCE_REFERENCE = "listVariants";
+
 export const LIST_PRODUCT_IMAGES_DATASOURCE_REFERENCE = "listProductImages";
+
 export const LIST_INVENTORY_ITEMS_DATASOURCE_REFERENCE = "listInventoryItems";
+
 export const LIST_DRAFT_ORDERS_DATASOURCE_REFERENCE = "listDraftOrders";
+
 export const LIST_COLLECTIONS_DATASOURCE_REFERENCE = "listCollections";
+
 export const LIST_FULFILLMENT_SERVICES_DATASOURCE_REFERENCE =
   "listFulfillmentServices";

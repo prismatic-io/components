@@ -3,6 +3,7 @@ import { createMixpanelClient } from "../../client";
 import { customJQLQueryInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { customJQLQueryExamplePayload } from "../../examplePayloads";
+
 export const customJQLQuery = action({
   display: {
     label: "Custom JQL Query",
@@ -37,8 +38,7 @@ export const customJQLQuery = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => customJQLQueryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    customJQLQueryExamplePayload,
   examplePayload: customJQLQueryExamplePayload,
 });

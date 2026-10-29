@@ -1,4 +1,5 @@
 import type { content_v2_1 } from "googleapis";
+
 export const updateLocalInventoryExamplePayload: {
   data: content_v2_1.Schema$LocalInventory;
 } = {
@@ -20,9 +21,8 @@ export const updateLocalInventoryExamplePayload: {
     instoreProductLocation: "Aisle 5, Shelf 3",
   },
 };
-export const batchLocalInventoryExamplePayload: {
-  data: unknown;
-} = {
+
+export const batchLocalInventoryExamplePayload: { data: unknown } = {
   data: {
     entries: [
       {
@@ -47,6 +47,7 @@ export const batchLocalInventoryExamplePayload: {
     ],
   },
 };
+
 export const updateRegionalInventoryExamplePayload: {
   data: content_v2_1.Schema$RegionalInventory;
 } = {
@@ -64,9 +65,8 @@ export const updateRegionalInventoryExamplePayload: {
     availability: "in stock",
   },
 };
-export const batchRegionalInventoryExamplePayload: {
-  data: unknown;
-} = {
+
+export const batchRegionalInventoryExamplePayload: { data: unknown } = {
   data: {
     entries: [
       {

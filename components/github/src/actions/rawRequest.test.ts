@@ -3,10 +3,14 @@ import nock from "nock";
 import { oauth2 } from "../connections";
 import { rawRequestExamplePayload } from "../examplePayloads";
 import actions from "./index";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 const { rawRequest } = actions;
+
 afterEach(() => nock.cleanAll());
+
 describe("rawRequest", () => {
   test("forwards the GET to the given path and returns the response untouched", async () => {
     const scope = nock(BASE, {
@@ -15,6 +19,7 @@ describe("rawRequest", () => {
     })
       .get("/octocat")
       .reply(200, rawRequestExamplePayload.data);
+
     const { result } = await invoke(rawRequest, {
       connection: conn,
       method: "GET",
@@ -23,6 +28,7 @@ describe("rawRequest", () => {
       queryParams: [],
       responseType: "json",
     } as never);
+
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(rawRequestExamplePayload.data);
   });

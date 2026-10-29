@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { deleteObjectExamplePayload } from "../../examplePayloads";
 import { deleteObjectInputs } from "../../inputs";
 import { deleteObjectOutputSchema } from "../../outputSchemas";
+
 export const deleteObject = action({
   display: {
     label: "Delete Object",

@@ -14,6 +14,7 @@ import {
   handleDropboxError,
   validatePath,
 } from "../../util";
+
 export const saveFromUrl = action({
   display: {
     label: "Save From URL",
@@ -30,15 +31,18 @@ export const saveFromUrl = action({
     );
     validatePath(toPath);
     const dbx = createAuthorizedClient(dropboxConnection);
+
     try {
       const filesSaveUrl = await dbx.filesSaveUrl({
         path: toPath,
         url: urlToSave,
       });
+
       if (waitUntilComplete) {
         // @ts-expect-error - Dropbox SDK tagged union type; async_job_id exists at runtime
         const asyncJobId = filesSaveUrl.result.async_job_id;
         let filesSaveUrlCheckJobStatus: DropboxResponse<files.SaveUrlJobStatus>;
+
         do {
           filesSaveUrlCheckJobStatus = await dbx.filesSaveUrlCheckJobStatus({
             async_job_id: asyncJobId,
@@ -47,14 +51,13 @@ export const saveFromUrl = action({
         } while (filesSaveUrlCheckJobStatus.result[".tag"] === IN_PROGRESS_TAG);
         return { data: filesSaveUrlCheckJobStatus };
       }
+
       return { data: filesSaveUrl };
     } catch (err) {
       handleDropboxError(err, [toPath]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: saveFromUrlExamplePayload,
   }),
   inputs: saveFromUrlInputs,

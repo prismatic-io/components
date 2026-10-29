@@ -1,5 +1,6 @@
 import type { Connection as PrismaticConnection } from "@prismatic-io/spectral";
 import type { Connection, Schema } from "jsforce";
+
 export interface FlowMetadata {
   fullName: string;
   label?: string;
@@ -12,12 +13,14 @@ export interface FlowMetadata {
     | "SystemModeWithSharing";
   [key: string]: unknown;
 }
+
 export type FlowTriggerInstanceState =
   | {
       flowFullName?: string;
       outboundMessageFullName?: string;
     }
   | undefined;
+
 export type CreateFlowRecordSubscriptionParams = {
   version: string;
   name: string;
@@ -30,6 +33,7 @@ export type CreateFlowRecordSubscriptionParams = {
   dynamicFields?: unknown;
   client: Connection<Schema>;
 };
+
 export type OnInstanceDeployFlowFunctionParams = {
   version: string;
   prefix: string;
@@ -40,6 +44,7 @@ export type OnInstanceDeployFlowFunctionParams = {
   filterFormula?: string;
   connection: PrismaticConnection;
 };
+
 export type OnInstanceDeleteFlowFunctionParams = {
   version: string;
   prefix: string;

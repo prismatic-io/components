@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { deleteObjectCategoryExamplePayload } from "../../../examplePayloads";
 import { deleteObjectCategoryInputs } from "../../../inputs";
+
 export const deleteObjectCategory = action({
   display: {
     label: "Delete Object Category (V2)",

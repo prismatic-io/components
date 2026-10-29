@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../../client";
 import { createAttachmentExamplePayload as examplePayload } from "../../examplePayloads";
 import { createAttachmentInputs as inputs } from "../../inputs/assets";
+
 export const createAttachment = action({
   display: {
     label: "Create Attachment",
@@ -22,6 +23,7 @@ export const createAttachment = action({
       connection,
       debug: context.debug.enabled,
     }).request(mutation, { input: { ...input } });
+
     return {
       data: response,
     };

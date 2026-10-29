@@ -14,6 +14,7 @@ import {
   tags,
   taxExempt,
 } from "./common";
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -23,6 +24,7 @@ const firstName = input({
   comments: "The first name of the customer.",
   clean: util.types.toString,
 });
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -32,6 +34,7 @@ const lastName = input({
   comments: "The last name of the customer.",
   clean: util.types.toString,
 });
+
 const email = input({
   label: "Email",
   type: "string",
@@ -41,6 +44,7 @@ const email = input({
   comments: "The email address of the customer.",
   clean: util.types.toString,
 });
+
 const phone = input({
   label: "Phone",
   type: "string",
@@ -50,6 +54,7 @@ const phone = input({
   comments: "The phone number of the customer.",
   clean: cleanStringInput,
 });
+
 const addressListGql = input({
   label: "Address List",
   type: "code",
@@ -72,6 +77,7 @@ const addressListGql = input({
   ]),
   clean: (value) => cleanArrayCodeInput(value, "Address List"),
 });
+
 const notes = input({
   label: "Notes",
   type: "string",
@@ -81,6 +87,7 @@ const notes = input({
   comments: "A note about the customer.",
   clean: cleanStringInput,
 });
+
 const metafields = input({
   label: "Metafields",
   type: "code",
@@ -97,13 +104,16 @@ const metafields = input({
   ]),
   clean: (value) => cleanArrayCodeInput(value, "Metafields"),
 });
+
 export const countCustomersInputs = {
   shopifyConnection,
 };
+
 export const createAccountActivationURLInputs = {
   shopifyConnection,
   customerIdGql,
 };
+
 export const createCustomerInputs = {
   shopifyConnection,
   firstName,
@@ -117,6 +127,7 @@ export const createCustomerInputs = {
   metafields,
   additionalFields,
 };
+
 export const updateCustomerInputs = {
   shopifyConnection,
   customerIdGql,
@@ -150,14 +161,17 @@ export const updateCustomerInputs = {
   metafields,
   additionalFields,
 };
+
 export const deleteCustomerInputs = {
   shopifyConnection,
   customerIdGql,
 };
+
 export const getCustomerInputs = {
   shopifyConnection,
   customerIdGql,
 };
+
 export const listCustomersInputs = {
   shopifyConnection,
   getAlldata,

@@ -1,5 +1,6 @@
 import { trigger, util } from "@prismatic-io/spectral";
 import { adobeSignTriggerInputs } from "../inputs";
+
 export const adobeSignTrigger = trigger({
   display: {
     label: "Webhook",
@@ -9,6 +10,7 @@ export const adobeSignTrigger = trigger({
   perform: async (_, payload, { connection, strictValidation }) => {
     const headers = util.types.lowerCaseHeaders(payload.headers);
     const clientId = headers["x-adobesign-clientid"];
+
     if (strictValidation) {
       if (connection.fields?.clientId !== clientId) {
         return Promise.resolve({
@@ -20,6 +22,7 @@ export const adobeSignTrigger = trigger({
         });
       }
     }
+
     return Promise.resolve({
       payload,
       response: {

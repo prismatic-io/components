@@ -18,6 +18,7 @@ import {
   resolveRecordChanges,
   selectChangedRecords,
 } from "../util";
+
 export const raasReportPollingTrigger = pollingTrigger({
   display: {
     label: "Changed RaaS Report Rows",
@@ -60,11 +61,13 @@ export const raasReportPollingTrigger = pollingTrigger({
       context.logger,
     );
     context.polling.setState({ lastPolledAt: now, seen });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled RaaS report from ${window.since}: ${rows.length} rows, ${changed.length} changed`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { changed } } },
       polledNoChanges: changed.length === 0,

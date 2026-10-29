@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteScriptExamplePayload } from "../../examplePayloads";
 import { deleteScriptInputs } from "../../inputs";
+
 export const deleteScript = action({
   display: {
     label: "Delete Script",

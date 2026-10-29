@@ -3,6 +3,7 @@ import {
   requiredSpaceRefSchema,
   statusRefSchema,
 } from "./shared";
+
 const folderProperties = {
   id: { type: "string" },
   name: { type: "string" },
@@ -15,6 +16,7 @@ const folderProperties = {
   statuses: { type: "array", items: statusRefSchema },
   parent_folder: { type: "string" },
 };
+
 const folderRequired = [
   "id",
   "name",
@@ -24,17 +26,22 @@ const folderRequired = [
   "space",
   "task_count",
 ];
+
 const weakFolderListsSchema = {
   type: "array",
   items: { ...folderListItemSchema, required: [] },
 };
+
 const folderSchema = {
   type: "object" as const,
   properties: folderProperties,
   required: folderRequired,
 };
+
 export const createFolderOutputSchema = folderSchema;
+
 export const updateFolderOutputSchema = folderSchema;
+
 const subfolderSchema = {
   type: "object" as const,
   properties: {
@@ -60,6 +67,7 @@ const subfolderSchema = {
     "parent_folder",
   ],
 };
+
 export const getFolderOutputSchema = {
   type: "object" as const,
   properties: {
@@ -70,6 +78,7 @@ export const getFolderOutputSchema = {
   },
   required: [...folderRequired, "lists"],
 };
+
 export const listFoldersOutputSchema = {
   type: "object" as const,
   properties: {

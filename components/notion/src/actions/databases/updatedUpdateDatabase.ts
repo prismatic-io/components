@@ -3,6 +3,7 @@ import { updatedUpdateDatabaseOutputSchema } from "../../outputSchemas";
 import { updatedUpdateDatabaseInputs } from "../../inputs";
 import { createClient } from "../../client";
 import { updatedUpdateDatabaseExamplePayload } from "../../examplePayloads";
+
 export const updatedUpdateDatabase = action({
   display: {
     label: "Update Database",
@@ -20,6 +21,7 @@ export const updatedUpdateDatabase = action({
     { connection, databaseId, title, icon, cover, isInline, parent },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const payload = {
       title,
       icon,
@@ -27,15 +29,14 @@ export const updatedUpdateDatabase = action({
       is_inline: isInline ? util.types.toBool(isInline) : undefined,
       parent,
     };
+
     const { data } = await client.patch(`/databases/${databaseId}`, payload);
     return { data };
   },
   examplePerform: async (
     _context,
     { databaseId, title, icon, cover, isInline, parent },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updatedUpdateDatabaseExamplePayload.data,
       id: databaseId,

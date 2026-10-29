@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getMsBusinessCentralClient } from "../../client";
 import { paginateResults } from "ms-utils";
 import { listItemsInputs as inputs } from "../../inputs/items/listItemsInputs";
+
 export const listItems = action({
   display: {
     label: "List Items",
@@ -28,6 +29,7 @@ export const listItems = action({
       $search: odataQueryParams.$search,
       $select: odataQueryParams.$select,
     };
+
     return await paginateResults({
       client,
       endpoint: `/companies(${companyId})/items`,

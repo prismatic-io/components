@@ -4,8 +4,10 @@ import {
   smartsheetOAuth2,
   smartsheetTemplatedOAuth,
 } from "../connections";
+
 export * from "./clean";
 export * from "./polling";
+
 export const validateConnection = (
   connection: Connection,
 ): connection is Connection => {
@@ -23,14 +25,17 @@ export const validateConnection = (
   }
   return true;
 };
+
 export const getToken = (connection: Connection): string => {
   return util.types.toString(
     connection.token?.access_token || connection.fields?.apiKey,
   );
 };
+
 export const getBaseUrl = (connection: Connection): string => {
   return util.types.toString(connection.fields.baseUrl);
 };
+
 export const getHeaders = (connection: Connection): Record<string, string> => {
   const apiKey = getToken(connection);
   return {
@@ -38,6 +43,7 @@ export const getHeaders = (connection: Connection): Record<string, string> => {
     Accept: "application/json",
   };
 };
+
 export const cleanObjectInput = (value: unknown) => {
   const data = util.types.toObject(value);
   if (!data) {
@@ -48,16 +54,11 @@ export const cleanObjectInput = (value: unknown) => {
   }
   throw new Error("Object must be an array");
 };
+
 export const mapColumn = (
   key: string | number,
   value: unknown,
-  columnDataObject: Record<
-    string,
-    {
-      id: number;
-      type: string;
-    }
-  >,
+  columnDataObject: Record<string, { id: number; type: string }>,
 ) => {
   const { id: columnId, type: columnType } = columnDataObject[key];
   if (!columnId) {

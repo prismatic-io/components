@@ -1,5 +1,6 @@
 import type { Fulfillment } from "../../../types";
 import { getNumericId } from "../../../util";
+
 export const fulfillmentMapper = (fulfillment: Fulfillment) => ({
   id: fulfillment.id ? getNumericId(fulfillment.id) : null,
   order_id: fulfillment.order?.id ? getNumericId(fulfillment.order.id) : null,
@@ -11,6 +12,7 @@ export const fulfillmentMapper = (fulfillment: Fulfillment) => ({
     fulfillment.trackingInfo && fulfillment.trackingInfo.length > 0
       ? fulfillment.trackingInfo[0].company
       : null,
+
   location_id: fulfillment.location?.id
     ? getNumericId(fulfillment.location.id)
     : null,
@@ -40,6 +42,7 @@ export const fulfillmentMapper = (fulfillment: Fulfillment) => ({
       taxable: fullfilmentLineItem.lineItem?.taxable,
       gift_card: fullfilmentLineItem.lineItem?.isGiftCard,
       name: fullfilmentLineItem.lineItem?.name,
+
       price: fullfilmentLineItem.lineItem?.originalUnitPriceSet?.shopMoney,
       total_discount: fullfilmentLineItem.lineItem?.totalDiscountSet?.shopMoney,
       fulfillment_status: fullfilmentLineItem.lineItem?.fulfillmentStatus,

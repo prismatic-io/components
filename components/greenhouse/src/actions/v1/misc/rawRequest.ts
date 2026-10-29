@@ -7,7 +7,9 @@ import { HARVEST_BASE_URL } from "../../../constants";
 import { rawRequestExamplePayload } from "../../../examplePayloads";
 import { connectionInput, version } from "../../../inputs";
 import { generateBasicAuth } from "../../../util";
+
 const { debugRequest, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request (Harvest v1/v2)",

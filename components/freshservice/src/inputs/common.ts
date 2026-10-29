@@ -5,12 +5,14 @@ import {
   util,
 } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanNumberInput } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Freshservice connection to use.",
 });
+
 export const additionalFields = input({
   label: "Extra Body",
   type: "code",
@@ -20,6 +22,7 @@ export const additionalFields = input({
     "A JSON object of additional fields not covered by the standard inputs.",
   clean: (value) => cleanCodeInput(value, "Extra Body", true),
 });
+
 const perPage = input({
   label: "Items Per Page",
   type: "string",
@@ -29,6 +32,7 @@ const perPage = input({
   placeholder: "Enter page size",
   clean: cleanNumberInput,
 });
+
 const page = input({
   label: "Page Number",
   type: "string",
@@ -38,6 +42,7 @@ const page = input({
   placeholder: "Enter page number",
   clean: cleanNumberInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -45,12 +50,14 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { perPage, page },
 });
+
 export const additionalQueryParams = input({
   label: "Additional Query Parameters",
   type: "string",

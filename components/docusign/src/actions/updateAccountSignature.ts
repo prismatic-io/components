@@ -24,6 +24,7 @@ import {
   stampSizeMM,
 } from "../inputs";
 import { cleanObject } from "../utils";
+
 export const updateAccountSignature = action({
   display: {
     label: "Update Account Signature",

@@ -18,13 +18,18 @@ import type {
   PollingStream,
   Subscription,
 } from "./interfaces";
+
 const MAX_POLL_PAGES = 100;
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanBooleanInput = (value: unknown) =>
   value ? util.types.toBool(value) : undefined;
+
 export const cleanNumberInput = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const validateConnection = (
   connection: Connection,
 ): undefined | never => {
@@ -36,8 +41,10 @@ export const validateConnection = (
       "Invalid connection provided. Please provide a valid Microsoft Business Central Connection.",
     );
   }
+
   return;
 };
+
 export const swapEtagInObject = (data: Record<string, unknown>) => {
   if (data["@odata.etag"]) {
     data.etag = data["@odata.etag"];
@@ -45,12 +52,14 @@ export const swapEtagInObject = (data: Record<string, unknown>) => {
   }
   return data;
 };
+
 export const listSubscriptionsFn = async (
   client: HttpClient,
   instanceWebhooks: Set<string>,
   showInstanceWebhooks: boolean,
 ): Promise<Subscription> => {
   const { data } = await client.get<Subscription>("/subscriptions");
+
   if (showInstanceWebhooks && instanceWebhooks.size > 0) {
     const instanceSubscriptions = data.value.filter(({ notificationUrl }) =>
       instanceWebhooks.has(notificationUrl),
@@ -67,6 +76,7 @@ export const listSubscriptionsFn = async (
     value: data.value.map(swapEtagInObject) as Subscription["value"],
   };
 };
+
 export const createSubscriptionFn = async (
   client: HttpClient,
   notificationUrl: string,
@@ -79,6 +89,7 @@ export const createSubscriptionFn = async (
   swapEtagInObject(data);
   return data;
 };
+
 export const deleteAllSubscriptionsFn = async (
   client: HttpClient,
   instanceWebhooks: Set<string>,
@@ -89,7 +100,9 @@ export const deleteAllSubscriptionsFn = async (
     instanceWebhooks,
     true,
   );
+
   let subscriptionsToRemove: Subscription["value"];
+
   if (subscriptionResource) {
     subscriptionsToRemove = subscriptions.value.filter(
       ({ notificationUrl, resource }) =>
@@ -101,6 +114,7 @@ export const deleteAllSubscriptionsFn = async (
       instanceWebhooks.has(notificationUrl),
     );
   }
+
   await Promise.all(
     subscriptionsToRemove.map((subscription) =>
       client.delete(`/subscriptions('${subscription.subscriptionId}')`, {
@@ -110,21 +124,25 @@ export const deleteAllSubscriptionsFn = async (
   );
   return subscriptionsToRemove;
 };
+
 export const cleanDate = (rawValue: unknown) => {
   const defaultDate = new Date();
   defaultDate.setDate(defaultDate.getDate() + MAX_EXPIRATION_DAYS);
+
   const value = rawValue || defaultDate;
   if (value instanceof Date) {
     return value.toISOString();
   }
   return util.types.toString(value);
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({
     value,
     label,
   }),
 );
+
 export const fetchAllPagedSince = async (
   client: HttpClient,
   initialPath: string,
@@ -160,19 +178,18 @@ export const fetchAllPagedSince = async (
   }
   return { records, truncated: Boolean(nextLink), nextLink };
 };
+
 export const resolvePollingStart = (
   state: PollingState | undefined,
   lookBackDate: string | undefined,
   now: string,
-): {
-  since: string;
-  isBackfill: boolean;
-} => ({
+): { since: string; isBackfill: boolean } => ({
   since: state?.lastPolledAt ?? (lookBackDate || now),
   isBackfill:
     state?.backfillActive === true ||
     (!state?.lastPolledAt && Boolean(lookBackDate)),
 });
+
 export const resolvePollingStream = (
   state: PollingState | undefined,
   query: string,
@@ -181,6 +198,7 @@ export const resolvePollingStream = (
   state?.nextLink && state.streamStartedAt && state.streamQuery === query
     ? { streamStartedAt: state.streamStartedAt, nextLink: state.nextLink }
     : { streamStartedAt: now };
+
 export const nextPollingState = (
   round: {
     lastPolledAt: string;
@@ -199,6 +217,7 @@ export const nextPollingState = (
         ...(round.isBackfill ? { backfillActive: true } : {}),
       }
     : { lastPolledAt: round.stream.streamStartedAt };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -207,6 +226,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -215,6 +235,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -229,11 +250,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolveRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connectionInput, timestamp } from "./common";
+
 const jsonMessage = input({
   label: "Message",
   type: "string",
@@ -11,6 +12,7 @@ const jsonMessage = input({
   comments: "A JSON string containing the message of logs to send.",
   clean: toOptionalString,
 });
+
 const codeMessage = input({
   label: "Message",
   type: "code",
@@ -35,11 +37,13 @@ const codeMessage = input({
   comments: "A JSON object containing the message of logs to send.",
   clean: util.types.toObject,
 });
+
 export const sendLogsInputs = {
   jsonMessage,
   timestamp,
   newRelicConnection: connectionInput,
 };
+
 export const sendDetailedLogsInputs = {
   codeMessage,
   newRelicConnection: connectionInput,

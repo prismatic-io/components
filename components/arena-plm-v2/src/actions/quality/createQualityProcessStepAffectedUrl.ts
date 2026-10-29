@@ -5,6 +5,7 @@ import { createQualityProcessStepAffectedUrlInputs } from "../../inputs";
 import { qualityAffectedSchema } from "../../outputSchemas";
 import type { QualityStepAffectedUrlCreateVo } from "../../types";
 import { handleArenaError, toOptionalString } from "../../util";
+
 export const createQualityProcessStepAffectedUrl = action({
   display: {
     label: "Create Quality Process Step Affected URL",
@@ -20,6 +21,7 @@ export const createQualityProcessStepAffectedUrl = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: QualityStepAffectedUrlCreateVo = {
         guid: toOptionalString(params.guid),
         affected: {
@@ -28,10 +30,12 @@ export const createQualityProcessStepAffectedUrl = action({
           description: toOptionalString(params.description),
         },
       };
+
       const { data } = await client.post(
         `/qualityprocesses/${params.qualityProcessGuid}/steps/${params.stepGuid}/affected`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

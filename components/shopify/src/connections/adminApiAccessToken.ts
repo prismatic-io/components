@@ -1,5 +1,6 @@
 import { connection, input } from "@prismatic-io/spectral";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";
+
 export const adminApiAccessToken = connection({
   key: "adminApiAccessToken",
   display: {

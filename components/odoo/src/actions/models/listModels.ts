@@ -11,6 +11,7 @@ import {
 import { listModelsOutputSchema } from "../../outputSchemas";
 import type { Model } from "../../types";
 import { getFilters, paginateSearch } from "../../util";
+
 export const listModels = action({
   display: {
     label: "List Models",
@@ -59,9 +60,7 @@ export const listModels = action({
   examplePerform: async (
     _context,
     { nameSearch, modelSearch },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     if (!nameSearch && !modelSearch) {
       return listModelsExamplePayload;
     }

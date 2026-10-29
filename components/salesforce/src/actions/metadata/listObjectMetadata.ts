@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { listObjectMetadataInputs } from "../../inputs";
 import { listObjectMetadataExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const listObjectMetadata = action({
   display: {
     label: "List Metadata",
@@ -19,9 +20,8 @@ export const listObjectMetadata = action({
     const result = await executeSFAction(context, command);
     return { data: result };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listObjectMetadataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listObjectMetadataExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listMetadataOutputSchema,

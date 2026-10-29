@@ -5,6 +5,7 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import type { HttpErrorResponse } from "./types";
 import { validateConnection } from "./util";
+
 const fetchGatewayToken = async (
   gatewayUrl: string,
   username: string,
@@ -16,8 +17,10 @@ const fetchGatewayToken = async (
     new URLSearchParams({ username, password }),
     { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
   );
+
   return typeof response.data === "string" ? response.data : "";
 };
+
 const getConnectionFields = (
   connection: Connection,
 ): {
@@ -35,13 +38,16 @@ const getConnectionFields = (
     .toString(connection.fields.classicUrl)
     .replace(/\/$/, ""),
 });
+
 export const createGatewayClient = async (
   connection: Connection,
   debug = false,
 ): Promise<HttpClient> => {
   validateConnection(connection);
   const { gatewayUrl, username, password } = getConnectionFields(connection);
+
   const jwt = await fetchGatewayToken(gatewayUrl, username, password);
+
   return createHttpClient({
     baseUrl: gatewayUrl,
     headers: {
@@ -52,13 +58,16 @@ export const createGatewayClient = async (
     debug,
   });
 };
+
 export const createClassicClient = (
   connection: Connection,
   debug = false,
 ): HttpClient => {
   validateConnection(connection);
   const { classicUrl, username, password } = getConnectionFields(connection);
+
   const credentials = Buffer.from(`${username}:${password}`).toString("base64");
+
   return createHttpClient({
     baseUrl: classicUrl,
     headers: {
@@ -68,7 +77,9 @@ export const createClassicClient = (
     debug,
   });
 };
+
 export { createClassicClient as createTicketClient };
+
 export const gatewayRequest = async <T>(
   connection: Connection,
   debug = false,
@@ -80,6 +91,7 @@ export const gatewayRequest = async <T>(
   } catch (error: unknown) {
     const httpError = error as HttpErrorResponse;
     const status = httpError.response?.status;
+
     if (status === 429) {
       const retryAfter = httpError.response?.headers?.["retry-after"];
       throw new ConnectionError(
@@ -87,6 +99,7 @@ export const gatewayRequest = async <T>(
         `Rate limited by Qualys.${retryAfter ? ` Retry after ${retryAfter} seconds.` : ""}`,
       );
     }
+
     throw error;
   }
 };

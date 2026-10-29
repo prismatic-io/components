@@ -4,6 +4,7 @@ interface SpaceDueDatesFeature {
   remap_due_dates: boolean;
   remap_closed_due_date: boolean;
 }
+
 interface SpaceFeatures {
   due_dates: SpaceDueDatesFeature;
   time_tracking: {
@@ -31,6 +32,7 @@ interface SpaceFeatures {
     enabled: boolean;
   };
 }
+
 export interface SpaceBody {
   name: string;
   multiple_assignees: boolean;

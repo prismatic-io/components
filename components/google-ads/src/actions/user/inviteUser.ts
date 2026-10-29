@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { inviteUserExamplePayload } from "../../examplePayloads";
 import { inviteUserInputs } from "../../inputs";
 import { inviteUserOutputSchema } from "../../outputSchemas";
+
 export const inviteUser = action({
   display: {
     label: "Invite User",
@@ -23,6 +24,7 @@ export const inviteUser = action({
       debugEnabled: context.debug.enabled,
       logger: context.logger,
     });
+
     const { data } = await client.post(
       `customers/${customerId}/customerUserAccessInvitations:mutate`,
       {
@@ -34,10 +36,10 @@ export const inviteUser = action({
         },
       },
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => inviteUserExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    inviteUserExamplePayload,
   examplePayload: inviteUserExamplePayload,
 });

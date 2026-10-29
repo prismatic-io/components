@@ -7,6 +7,7 @@ import {
   stageIdInput,
 } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const stageName = input({
   label: "Name",
   type: "string",
@@ -17,6 +18,7 @@ const stageName = input({
   placeholder: "Enter stage name",
   clean: util.types.toString,
 });
+
 const stageNameOptional = input({
   label: "Name",
   type: "string",
@@ -27,6 +29,7 @@ const stageNameOptional = input({
   example: "Qualified Lead",
   placeholder: "Enter stage name",
 });
+
 const pipelineIdRequired = input({
   label: "Pipeline ID",
   type: "string",
@@ -36,6 +39,7 @@ const pipelineIdRequired = input({
   placeholder: "Enter Pipeline ID",
   clean: util.types.toNumber,
 });
+
 const pipelineIdOptional = input({
   label: "Pipeline ID",
   type: "string",
@@ -45,6 +49,7 @@ const pipelineIdOptional = input({
   example: "123",
   placeholder: "Enter Pipeline ID",
 });
+
 const dealProbability = input({
   label: "Deal Probability",
   type: "string",
@@ -54,6 +59,7 @@ const dealProbability = input({
   example: "75",
   placeholder: "Enter probability percentage",
 });
+
 const rottenFlag = input({
   label: "Rotten Flag",
   type: "boolean",
@@ -61,6 +67,7 @@ const rottenFlag = input({
   clean: util.types.toBool,
   comments: "Whether deals in this stage can become rotten",
 });
+
 const rottenFlagUpdate = input({
   label: "Rotten Flag",
   type: "boolean",
@@ -68,6 +75,7 @@ const rottenFlagUpdate = input({
   clean: (value: unknown) => util.types.toBool(value) || undefined,
   comments: "Whether deals in this stage can become rotten",
 });
+
 const rottenDays = input({
   label: "Rotten Days",
   type: "string",
@@ -78,6 +86,7 @@ const rottenDays = input({
   example: "30",
   placeholder: "Enter number of days",
 });
+
 const stagesPipelineId = input({
   label: "Pipeline ID",
   type: "string",
@@ -86,6 +95,7 @@ const stagesPipelineId = input({
   example: "123",
   placeholder: "Enter Pipeline ID",
 });
+
 const stageDealsFilterId = input({
   label: "Filter ID",
   type: "string",
@@ -95,6 +105,7 @@ const stageDealsFilterId = input({
   example: "123",
   placeholder: "Enter Filter ID",
 });
+
 export const addStageInputs = {
   connection: connectionInput,
   name: stageName,
@@ -103,6 +114,7 @@ export const addStageInputs = {
   rottenFlag,
   rottenDays,
 };
+
 export const updateStageInputs = {
   connection: connectionInput,
   id: stageIdInput,
@@ -112,6 +124,7 @@ export const updateStageInputs = {
   rottenFlag: rottenFlagUpdate,
   rottenDays,
 };
+
 export const getStagesInputs = {
   connection: connectionInput,
   pipelineId: stagesPipelineId,
@@ -119,6 +132,7 @@ export const getStagesInputs = {
   sortDirection,
   pagination: cursorPagination,
 };
+
 export const getStageDealsInputs = {
   connection: connectionInput,
   id: stageIdInput,
@@ -127,10 +141,12 @@ export const getStageDealsInputs = {
   sortBy,
   sortDirection,
 };
+
 export const deleteStageInputs = {
   connection: connectionInput,
   id: stageIdInput,
 };
+
 export const getStageInputs = {
   connection: connectionInput,
   id: stageIdInput,

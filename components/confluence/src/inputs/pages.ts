@@ -9,6 +9,7 @@ import {
   sort,
   spaceId,
 } from "./common";
+
 export const parentId = input({
   label: "Parent ID",
   type: "string",
@@ -18,6 +19,7 @@ export const parentId = input({
   example: "987654321",
   placeholder: "Enter parent page ID",
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -31,6 +33,7 @@ export const status = input({
   ],
   clean: util.types.toString,
 });
+
 export const title = input({
   label: "Title",
   type: "string",
@@ -40,6 +43,7 @@ export const title = input({
   example: "Product Documentation",
   placeholder: "Enter page title",
 });
+
 export const body = input({
   label: "Body",
   type: "code",
@@ -57,6 +61,7 @@ export const body = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const version = input({
   label: "Version",
   type: "code",
@@ -74,6 +79,7 @@ export const version = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const embedded = input({
   label: "Embedded",
   type: "boolean",
@@ -82,6 +88,7 @@ export const embedded = input({
     "When true, tags the content as embedded and creates content in NCS.",
   clean: util.types.toBool,
 });
+
 export const privateInput = input({
   label: "Private",
   type: "boolean",
@@ -90,6 +97,7 @@ export const privateInput = input({
     "When true, the page will be private and only the user who creates the page will have permission to view and edit it.",
   clean: util.types.toBool,
 });
+
 export const bodyFormat = input({
   label: "Body Format",
   type: "string",
@@ -107,6 +115,7 @@ export const bodyFormat = input({
   ],
   clean: cleanStringInput,
 });
+
 export const getDraft = input({
   label: "Get Draft",
   type: "string",
@@ -114,6 +123,7 @@ export const getDraft = input({
   comments: "When true, retrieves the draft version of the page.",
   clean: util.types.toBool,
 });
+
 export const previousVersion = input({
   label: "Version",
   type: "string",
@@ -124,6 +134,7 @@ export const previousVersion = input({
     "Retrieves a previously published version. Specify the previous version's number to retrieve its details.",
   clean: cleanNumberInput,
 });
+
 export const includeLabels = input({
   label: "Include Labels",
   type: "boolean",
@@ -132,6 +143,7 @@ export const includeLabels = input({
     "When true, includes labels associated with this page in the response. The number of results will be limited to 50 and sorted in the default sort order.",
   clean: util.types.toBool,
 });
+
 export const includeProperties = input({
   label: "Include Properties",
   type: "boolean",
@@ -140,6 +152,7 @@ export const includeProperties = input({
     "When true, includes content properties associated with this page in the response. The number of results will be limited to 50 and sorted in the default sort order.",
   clean: util.types.toBool,
 });
+
 export const includeOperations = input({
   label: "Include Operations",
   type: "boolean",
@@ -148,6 +161,7 @@ export const includeOperations = input({
     "When true, includes operations associated with this page in the response. The number of results will be limited to 50 and sorted in the default sort order.",
   clean: util.types.toBool,
 });
+
 export const includeLikes = input({
   label: "Include Likes",
   type: "boolean",
@@ -156,6 +170,7 @@ export const includeLikes = input({
     "When true, includes likes associated with this page in the response. The number of results will be limited to 50 and sorted in the default sort order.",
   clean: util.types.toBool,
 });
+
 export const includeVersions = input({
   label: "Include Versions",
   type: "boolean",
@@ -164,6 +179,7 @@ export const includeVersions = input({
     "When true, includes versions associated with this page in the response. The number of results will be limited to 50 and sorted in the default sort order.",
   clean: util.types.toBool,
 });
+
 export const includeVersion = input({
   label: "Include Version",
   type: "boolean",
@@ -173,6 +189,7 @@ export const includeVersion = input({
   clean: util.types.toBool,
   default: "true",
 });
+
 export const includeFavoritedByCurrentUserStatus = input({
   label: "Include Favorited By Current User Status",
   type: "boolean",
@@ -181,6 +198,7 @@ export const includeFavoritedByCurrentUserStatus = input({
     "When true, includes whether this page has been favorited by the current user.",
   clean: util.types.toBool,
 });
+
 export const purge = input({
   label: "Purge",
   type: "boolean",
@@ -189,6 +207,7 @@ export const purge = input({
     "When true, permanently deletes the page instead of moving it to trash.",
   clean: util.types.toBool,
 });
+
 export const draft = input({
   label: "Draft",
   type: "boolean",
@@ -196,6 +215,7 @@ export const draft = input({
   comments: "When true, deletes a page that is in draft status.",
   clean: util.types.toBool,
 });
+
 export const id = input({
   label: "Page IDs",
   type: "string",
@@ -206,6 +226,7 @@ export const id = input({
   placeholder: "Enter page IDs (comma-separated)",
   clean: cleanStringInput,
 });
+
 export const spaceIdFilter = input({
   label: "Space IDs",
   type: "string",
@@ -216,6 +237,7 @@ export const spaceIdFilter = input({
   placeholder: "Enter space IDs (comma-separated)",
   clean: cleanStringInput,
 });
+
 export const statusPages = input({
   label: "Status",
   type: "string",
@@ -226,6 +248,7 @@ export const statusPages = input({
   placeholder: "Enter status values (comma-separated)",
   clean: cleanStringInput,
 });
+
 export const titlePages = input({
   label: "Title",
   type: "string",
@@ -235,6 +258,7 @@ export const titlePages = input({
   placeholder: "Enter page title",
   clean: cleanStringInput,
 });
+
 export const bodyFormatPages = input({
   label: "Body Format",
   type: "string",
@@ -247,6 +271,7 @@ export const bodyFormatPages = input({
   ],
   clean: cleanStringInput,
 });
+
 export const depth = input({
   label: "Depth",
   type: "string",
@@ -259,6 +284,7 @@ export const depth = input({
   ],
   clean: cleanStringInput,
 });
+
 export const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -277,6 +303,7 @@ export const additionalFields = structuredObjectInput({
     includeFavoritedByCurrentUserStatus,
   },
 });
+
 export const createPageInputs = {
   connectionInput,
   spaceId,
@@ -288,17 +315,20 @@ export const createPageInputs = {
   privateInput,
   queryParameters,
 };
+
 export const deletePageInputs = {
   connectionInput,
   pageId,
   purge,
   draft,
 };
+
 export const getPageInputs = {
   connectionInput,
   pageId,
   additionalFields,
 };
+
 export const listPagesInputs = {
   connectionInput,
   fetchAll,
@@ -310,6 +340,7 @@ export const listPagesInputs = {
   titlePages,
   bodyFormatPages,
 };
+
 export const listPagesInSpaceInputs = {
   connectionInput,
   spaceId,
@@ -321,6 +352,7 @@ export const listPagesInSpaceInputs = {
   bodyFormatPages,
   pagination,
 };
+
 export const updatePageInputs = {
   connectionInput,
   pageId,

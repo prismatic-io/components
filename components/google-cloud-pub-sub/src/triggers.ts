@@ -1,4 +1,5 @@
 import { trigger } from "@prismatic-io/spectral";
+
 export const myTrigger = trigger({
   display: {
     label: "PubSub Notification",
@@ -14,4 +15,5 @@ export const myTrigger = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export default { myTrigger };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { listCustomersExamplePayload } from "../../examplePayloads";
 import { listCustomersInputs } from "../../inputs";
+
 export const listCustomers = action({
   display: {
     label: "List Customers",
@@ -15,6 +16,7 @@ export const listCustomers = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const queryParameters = {
       stateCode: params.stateCode || undefined,
       countryCode: params.countryCode || undefined,
@@ -25,6 +27,7 @@ export const listCustomers = action({
       page: pagination.page || undefined,
       pageSize: pagination.pageSize || undefined,
     };
+
     const { data } = await client.get("/customers", {
       params: queryParameters,
     });

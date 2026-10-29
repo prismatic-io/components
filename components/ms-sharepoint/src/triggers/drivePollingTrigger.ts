@@ -15,6 +15,7 @@ import type {
   PollingRecordChange,
   PollSiteChangesSeparatedChanges,
 } from "../interfaces";
+
 export const drivePollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Drive Items",
@@ -41,6 +42,7 @@ export const drivePollingTrigger = pollingTrigger({
     const client = await createClient(connection, debug.enabled);
     const state = polling.getState() as PollingState;
     const rootDelta = `/drives/${driveId}/root/delta`;
+
     if (context.batch?.enabled === true) {
       const { page, next, cursorState } = await fetchDeltaRound(
         client,
@@ -50,6 +52,7 @@ export const drivePollingTrigger = pollingTrigger({
         payload.paginationState as DeltaCursor | undefined,
       );
       polling.setState(cursorState);
+
       return {
         payload: {
           ...payload,
@@ -58,22 +61,30 @@ export const drivePollingTrigger = pollingTrigger({
         },
       };
     }
+
     let allChanges: PollSiteChangesSeparatedChanges = {};
+
     const endpoint = resolveDeltaUrl(state, driveId, rootDelta);
     const data = (await paginateResults<DriveDeltaResponse>(client, endpoint, {
       returnFullData: true,
       useTop: false,
       excludeParents: true,
     })) as DriveDeltaResponse;
+
     const newPollingState: PollingState = {};
+
     if (data.value.length > 0) {
       allChanges = separateDriveChanges(data.value);
     }
+
     newPollingState[driveId] = data["@odata.deltaLink"];
+
     polling.setState(newPollingState);
+
     if (debug.enabled) {
       logger.debug("Polling state:", newPollingState);
     }
+
     return Promise.resolve({
       payload: { ...payload, body: { data: allChanges } },
     });

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deletePersonPictureInputs } from "../../inputs";
 import { deletePersonPictureExamplePayload } from "../../examplePayloads";
 import { deletePersonPictureOutputSchema } from "../../outputSchemas";
+
 export const deletePersonPicture = action({
   display: {
     label: "Delete Person Picture",

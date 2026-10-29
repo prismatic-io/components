@@ -3,12 +3,14 @@ import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import { tableauConnection } from "../connections";
 import { getTableauClient } from "./auth";
 import { signIn } from "./signIn";
+
 const connection = createConnection(tableauConnection, {
   token: process.env.TABLEAU_TOKEN,
   tokenName: "firstToken",
   hostName: "prod-useast-b.online.tableau.com",
   siteId: "testprismatic",
 });
+
 describe.skip("Sign in", () => {
   test("verify the axios request works as expected", async () => {
     const client = createClient({
@@ -33,21 +35,26 @@ describe.skip("Sign in", () => {
           },
         },
       );
+
       expect(signInResult).toBeDefined();
     }
   });
+
   test("Verify the sign in function works as expected", async () => {
     const client = await signIn({
       tableauConnection: connection,
     });
+
     expect(client).toBeDefined();
   });
+
   test("Verify the Create Client calls the sign in function as expected", async () => {
     const client = await getTableauClient({
       tableauConnection: connection,
       timeout: 5000,
       debug: true,
     });
+
     expect(client).toBeDefined();
   });
 });

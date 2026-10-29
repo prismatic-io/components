@@ -3,6 +3,7 @@ import type { Element } from "@prismatic-io/spectral";
 import { createHttpClient } from "../client";
 import { connectionInput } from "../inputs";
 import { selectWebhookExamplePayload as examplePayload } from "../examplePayloads/dataSources";
+
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
@@ -14,7 +15,9 @@ export const selectWebhook = dataSource({
   perform: async (context, { connection }) => {
     const client = createHttpClient(connection, false);
     const { data } = await client.get("/webhooks");
+
     const webhooks = data?.Webhooks ?? [];
+
     const result: Element[] = webhooks
       .map((item: { Url?: string; ID?: number }) => ({
         label: item.Url || String(item.ID) || "",
@@ -23,6 +26,7 @@ export const selectWebhook = dataSource({
       .sort((a: Element, b: Element) =>
         (a.label || "").localeCompare(b.label || ""),
       );
+
     return { result };
   },
   dataSourceType: "picklist",

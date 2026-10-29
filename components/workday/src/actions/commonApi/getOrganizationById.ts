@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getOrganizationByIdExamplePayload } from "../../examplePayloads";
 import { getOrganizationByIdInputs } from "../../inputs";
 import { getOrganizationByIdOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationById = action({
   display: {
     label: "Get Organization by ID",

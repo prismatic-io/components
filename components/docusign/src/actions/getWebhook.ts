@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, connectId } from "../inputs";
 import { getWebhookPayload } from "../examplePayloads";
+
 export const getWebhook = action({
   display: {
     label: "Get Webhook",

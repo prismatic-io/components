@@ -4,6 +4,7 @@ import { listCommitsExamplePayload } from "../../examplePayloads";
 import { listCommitsInputs } from "../../inputs";
 import { listCommitsOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listCommits = action({
   display: {
     label: "List Commits",
@@ -28,9 +29,8 @@ export const listCommits = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCommitsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCommitsExamplePayload,
   examplePayload: listCommitsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

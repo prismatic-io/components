@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createWorkflowClient } from "../../client";
 import { listJobsResponse } from "../../examplePayloads";
 import { connection, extraParams, id, limit, page } from "../../inputs";
+
 export const listJobsByCampaign = action({
   display: {
     label: "List Jobs By Campaign",

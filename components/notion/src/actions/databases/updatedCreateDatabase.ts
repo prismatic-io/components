@@ -3,6 +3,7 @@ import { updatedCreateDatabaseOutputSchema } from "../../outputSchemas";
 import { updatedCreateDatabaseInputs } from "../../inputs";
 import { createClient } from "../../client";
 import { updatedCreateDatabaseExamplePayload } from "../../examplePayloads";
+
 export const updatedCreateDatabase = action({
   display: {
     label: "Create Database",
@@ -28,6 +29,7 @@ export const updatedCreateDatabase = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const payload = {
       parent,
       title,
@@ -38,15 +40,14 @@ export const updatedCreateDatabase = action({
         : undefined,
       description,
     };
+
     const { data } = await client.post("/databases", payload);
     return { data };
   },
   examplePerform: async (
     _context,
     { parent, title, icon, cover, description },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updatedCreateDatabaseExamplePayload.data,
       ...(parent ? { parent } : {}),

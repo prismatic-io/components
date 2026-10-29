@@ -3,6 +3,7 @@ import type { WebhookEventType } from "../types";
 import { toArrayOfStrings, toOptionalString } from "../util";
 import { WEBHOOK_EVENT_TYPES } from "../constants";
 import { connectionInput, fetchAll, pagination } from "./common";
+
 export const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -12,6 +13,7 @@ export const webhookId = input({
   placeholder: "Enter webhook ID",
   clean: util.types.toString,
 });
+
 export const webhookName = input({
   label: "Webhook Name",
   type: "string",
@@ -21,6 +23,7 @@ export const webhookName = input({
   placeholder: "Enter webhook name",
   clean: util.types.toString,
 });
+
 export const webhookEventType = input({
   label: "Event Type",
   type: "string",
@@ -33,6 +36,7 @@ export const webhookEventType = input({
   placeholder: "Select event type",
   clean: util.types.toString,
 });
+
 export const webhookObjectType = input({
   label: "Object Type",
   type: "string",
@@ -45,6 +49,7 @@ export const webhookObjectType = input({
   placeholder: "Select object type",
   clean: toOptionalString,
 });
+
 export const webhookObjectIds = input({
   label: "Object IDs",
   type: "string",
@@ -56,6 +61,7 @@ export const webhookObjectIds = input({
   example: "1234567890",
   clean: toArrayOfStrings,
 });
+
 export const webhookSubscriptionUrl = input({
   label: "Subscription URL",
   type: "string",
@@ -66,15 +72,18 @@ export const webhookSubscriptionUrl = input({
   placeholder: "Enter webhook URL",
   clean: util.types.toString,
 });
+
 export const listWebhooksInputs = {
   connection: connectionInput,
   fetchAll,
   pagination,
 };
+
 export const getWebhookInputs = {
   connection: connectionInput,
   webhookId,
 };
+
 export const createWebhookInputs = {
   connection: connectionInput,
   name: webhookName,
@@ -83,6 +92,7 @@ export const createWebhookInputs = {
   objectType: webhookObjectType,
   objectIds: webhookObjectIds,
 };
+
 export const updateWebhookInputs = {
   connection: connectionInput,
   webhookId,
@@ -96,10 +106,12 @@ export const updateWebhookInputs = {
   objectType: webhookObjectType,
   objectIds: webhookObjectIds,
 };
+
 export const deleteWebhookInputs = {
   connection: connectionInput,
   webhookId,
 };
+
 export const eventsWebhookInputs = {
   connection: connectionInput,
   eventType: webhookEventType,

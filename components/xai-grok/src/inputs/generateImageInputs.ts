@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
 import { additionalFields, connection } from "./generalInputs";
+
 const prompt = input({
   label: "Prompt",
   type: "string",
@@ -10,6 +11,7 @@ const prompt = input({
   placeholder: "A serene landscape with mountains and a lake at sunset",
   clean: util.types.toString,
 });
+
 const model = input({
   label: "Model",
   type: "string",
@@ -20,6 +22,7 @@ const model = input({
   dataSource: "selectModel",
   clean: util.types.toString,
 });
+
 const n = input({
   label: "Number of Images",
   type: "string",
@@ -29,6 +32,7 @@ const n = input({
   placeholder: "1",
   clean: toOptionalNumber,
 });
+
 export const generateImageInputs = {
   connection,
   prompt,

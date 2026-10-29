@@ -10,6 +10,7 @@ export const renewSubscriptionExamplePayload = {
     latestSupportedTlsVersion: "v1_2",
   },
 };
+
 export const deleteAllSubscriptionsExamplePayload = {
   data: {
     subscriptionsRemoved: [

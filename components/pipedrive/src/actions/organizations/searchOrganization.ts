@@ -4,6 +4,7 @@ import { searchOrganizationInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { searchOrganizationExamplePayload } from "../../examplePayloads";
 import { searchOrganizationOutputSchema } from "../../outputSchemas";
+
 export const searchOrganization = action({
   display: {
     label: "Search Organization",

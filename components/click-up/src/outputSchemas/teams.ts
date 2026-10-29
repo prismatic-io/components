@@ -1,6 +1,9 @@
 import { userGroupSchema, workspaceTeamUserSchema } from "./shared";
+
 export const createTeamOutputSchema = userGroupSchema;
+
 export const updateTeamOutputSchema = userGroupSchema;
+
 export const getTeamOutputSchema = {
   type: "object" as const,
   properties: {
@@ -8,6 +11,7 @@ export const getTeamOutputSchema = {
   },
   required: ["groups"],
 };
+
 export const getAuthorizedTeamsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -35,6 +39,7 @@ export const getAuthorizedTeamsOutputSchema = {
   },
   required: ["teams"],
 };
+
 export const getWorkspacePlanOutputSchema = {
   type: "object" as const,
   properties: {
@@ -42,6 +47,7 @@ export const getWorkspacePlanOutputSchema = {
     plan_id: { type: "integer" },
   },
 };
+
 export const getWorkspaceSeatsOutputSchema = {
   type: "object" as const,
   properties: {

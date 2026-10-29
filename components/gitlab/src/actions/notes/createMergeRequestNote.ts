@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { createMergeRequestNoteExamplePayload } from "../../examplePayloads";
 import { createMergeRequestNoteInputs } from "../../inputs";
 import { createMergeRequestNoteOutputSchema } from "../../outputSchemas";
+
 export const createMergeRequestNote = action({
   display: {
     label: "Create Merge Request Note",
@@ -24,9 +25,8 @@ export const createMergeRequestNote = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createMergeRequestNoteExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createMergeRequestNoteExamplePayload,
   examplePayload: createMergeRequestNoteExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

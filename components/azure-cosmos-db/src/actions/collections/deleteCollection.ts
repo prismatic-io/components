@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { deleteCollectionInputs } from "../../inputs";
 import { deleteCollectionExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const deleteCollection = action({
   display: {
     label: "Delete Collection",
@@ -10,6 +11,7 @@ export const deleteCollection = action({
   },
   perform: async (context, { connection, databaseId, collectionId }) => {
     const resourceLink = `dbs/${databaseId}/colls/${collectionId}`;
+
     const client = createCosmosDbClient({
       connection,
       verb: HttpVerb.DELETE,

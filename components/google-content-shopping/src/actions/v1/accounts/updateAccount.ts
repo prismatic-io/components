@@ -3,6 +3,7 @@ import { createClientMerchant } from "../../../client";
 import { updateAccountExamplePayload } from "../../../examplePayloads/v1";
 import { updateAccountInputs } from "../../../inputs/v1/accounts";
 import { accountResourceName } from "../../../util/resourceNames";
+
 export const updateAccountMerchant = action({
   display: {
     description:
@@ -22,16 +23,19 @@ export const updateAccountMerchant = action({
     },
   ) => {
     const client = createClientMerchant(connectionInput, context.debug.enabled);
+
     const requestBody = {
       accountName,
       ...(timeZone ? { timeZone: { id: timeZone } } : {}),
       languageCode,
     };
+
     const { data } = await client.patch(
       `/accounts/v1/${accountResourceName(account)}`,
       requestBody,
       { params: { updateMask } },
     );
+
     return { data };
   },
   examplePayload: updateAccountExamplePayload,

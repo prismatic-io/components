@@ -6,6 +6,7 @@ import { createItemFileAssociationInputs } from "../../inputs";
 import { itemFileSchema } from "../../outputSchemas";
 import type { ItemFileVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createItemFileAssociation = action({
   display: {
     label: "Create Item File Association",
@@ -38,13 +39,16 @@ export const createItemFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const formData = new FormData();
+
       if (file?.data) {
         formData.append("file", file.data, {
           filename: title || "upload",
           contentType: file.contentType,
         });
       }
+
       if (title) formData.append("file.title", title);
       if (description) formData.append("file.description", description);
       if (format) formData.append("file.format", format);
@@ -62,6 +66,7 @@ export const createItemFileAssociation = action({
           String(latestEditionAssociation),
         );
       if (primary !== undefined) formData.append("primary", String(primary));
+
       context.logger.info("Creating item file association", {
         itemGuid,
         hasFile: !!file?.data,
@@ -69,10 +74,12 @@ export const createItemFileAssociation = action({
         primary,
         latestEditionAssociation,
       });
+
       const response = await client.post(`/items/${itemGuid}/files`, formData, {
         headers: { ...formData.getHeaders() },
       });
       const fileAssociation: ItemFileVo = response.data;
+
       context.logger.info("Item file association created successfully", {
         itemGuid,
         associationGuid: fileAssociation.guid,
@@ -80,6 +87,7 @@ export const createItemFileAssociation = action({
         primary: fileAssociation.primary,
         latestEditionAssociation: fileAssociation.latestEditionAssociation,
       });
+
       return { data: fileAssociation };
     } catch (error) {
       handleArenaError(

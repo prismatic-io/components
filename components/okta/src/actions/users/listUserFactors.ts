@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUserFactorsExamplePayload } from "../../examplePayloads/users";
 import { listUserFactorsInputs } from "../../inputs/users";
 import type { Factor } from "../../interfaces/user";
+
 export const listUserFactors = action({
   display: {
     label: "List User Factors",
@@ -15,6 +16,7 @@ export const listUserFactors = action({
     const { data } = await client.get<Factor[]>(
       `/users/${encodeURIComponent(userId)}/factors`,
     );
+
     return { data };
   },
   examplePayload: getUserFactorsExamplePayload,

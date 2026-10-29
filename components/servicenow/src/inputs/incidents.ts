@@ -8,24 +8,28 @@ import {
   sysId,
   sysparmQuery,
 } from "./common";
+
 export const createIncidentInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   fieldValuesInput,
 };
+
 export const deleteIncidentInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   sysId,
 };
+
 export const getIncidentInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   sysId,
 };
+
 export const listIncidentsInputs = {
   connection,
   instanceUrlInput,
@@ -34,6 +38,7 @@ export const listIncidentsInputs = {
   fetchAll,
   pagination,
 };
+
 export const updateIncidentInputs = {
   connection,
   instanceUrlInput,

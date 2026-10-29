@@ -11,6 +11,7 @@ import {
   organization,
   sort,
 } from "./common";
+
 const emails = input({
   label: "Email",
   type: "string",
@@ -20,21 +21,26 @@ const emails = input({
   placeholder: "Enter email addresses",
   clean: (value) => value as string[],
 });
+
 export const deleteInviteeDataInputs = {
   connection,
   emails,
 };
+
 export const getCurrentUserInputs = {
   connection,
 };
+
 export const getUserInputs = {
   connection,
   uuid,
 };
+
 export const getUserAvailabilityScheduleInputs = {
   connection,
   uuid: { ...uuid, comments: "The UUID of the availability schedule." },
 };
+
 export const listUserAvailabilitySchedulesInputs = {
   connection,
   user: {
@@ -43,6 +49,7 @@ export const listUserAvailabilitySchedulesInputs = {
     comments: "A URI reference to a user",
   },
 };
+
 export const listUserBusyTimesInputs = {
   connection,
   user: {
@@ -59,6 +66,7 @@ export const listUserBusyTimesInputs = {
     comments: "Start time of the requested availability range",
   },
 };
+
 export const listUserEventTypesInputs = {
   connection,
   adminManaged,

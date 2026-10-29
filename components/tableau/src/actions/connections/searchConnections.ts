@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { searchConnectionsExamplePayload } from "../../examplePayloads";
 import { searchConnectionsInputs } from "../../inputs";
 import { listConnections } from "./listConnections";
+
 export const searchConnections = action({
   display: {
     label: "Search Connections",
@@ -17,6 +18,7 @@ export const searchConnections = action({
       pagination: params.pagination,
       timeout: params.timeout || 0,
     });
+
     const filteredResponse = projectsResult.data.connections.connection.filter(
       (connection: Record<string, Record<string, unknown>>) => {
         return (
@@ -25,9 +27,11 @@ export const searchConnections = action({
         );
       },
     );
+
     if (filteredResponse.length < 1) {
       throw new Error(`Unable to find Connections matching: ${search}`);
     }
+
     return {
       data: filteredResponse,
     };

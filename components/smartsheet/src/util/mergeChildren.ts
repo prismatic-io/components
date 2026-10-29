@@ -5,7 +5,9 @@ export const CHILD_TYPE = {
   SIGHT: "sight",
   TEMPLATE: "template",
 } as const;
+
 export type ChildType = (typeof CHILD_TYPE)[keyof typeof CHILD_TYPE];
+
 export const mergeMetadataChildren = (
   metadata: Record<string, unknown>,
   children: Array<Record<string, unknown>>,

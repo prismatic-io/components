@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { listId, subscriberHash, connectionInput } from "../../../inputs";
+
 export const archiveMember = action({
   display: {
     label: "Archive Member",
@@ -15,4 +16,5 @@ export const archiveMember = action({
   },
   inputs: { listId, subscriberHash, connection: connectionInput },
 });
+
 export default archiveMember;

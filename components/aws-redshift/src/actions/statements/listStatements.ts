@@ -7,6 +7,7 @@ import { createRedshiftClient } from "../../client";
 import { listStatementsInputs } from "../../inputs";
 import { listStatementsExamplePayload } from "../../examplePayloads";
 import { getAllStatements } from "../../util";
+
 export const listStatements = action({
   display: {
     label: "List Statements",
@@ -29,6 +30,7 @@ export const listStatements = action({
       awsRegion,
       context.debug.enabled,
     );
+
     if (fetchAll) {
       const { allStatements, lastResponse } = await getAllStatements({
         client,
@@ -38,6 +40,7 @@ export const listStatements = action({
         status,
         statementName: filters.statementName,
       });
+
       return {
         data: {
           ...(lastResponse as ListStatementsCommandOutput),
@@ -45,6 +48,7 @@ export const listStatements = action({
         },
       };
     }
+
     const command = new ListStatementsCommand({
       Database: filters.databaseName,
       WorkgroupName: filters.workgroupName,
@@ -54,7 +58,9 @@ export const listStatements = action({
       NextToken: pagination.nextToken,
       MaxResults: pagination.maxResults,
     });
+
     const response = await client.send(command);
+
     return { data: response };
   },
   examplePayload: listStatementsExamplePayload,

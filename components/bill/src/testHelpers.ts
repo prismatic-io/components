@@ -3,8 +3,11 @@ import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { billConnection } from "./connections";
 import { ApiUrls } from "./enums/apiUrls";
+
 export { nock };
+
 export const SANDBOX_BASE: string = ApiUrls.Sandbox;
+
 const LOGIN_RESPONSE_DATA = {
   sessionId: "test-session-id",
   orgId: "00801POTKMSVCTVAgcvw",
@@ -13,6 +16,7 @@ const LOGIN_RESPONSE_DATA = {
   error_code: "",
   error_message: "",
 };
+
 export const testConnection: Connection = createConnection(billConnection, {
   username: "integration@example.com",
   password: "test-password",
@@ -20,17 +24,15 @@ export const testConnection: Connection = createConnection(billConnection, {
   developerKey: "test-developer-key",
   useProductionUrl: false,
 });
+
 export const envelope = <T>(
   data: T,
-): {
-  response_status: number;
-  response_message: string;
-  response_data: T;
-} => ({
+): { response_status: number; response_message: string; response_data: T } => ({
   response_status: 0,
   response_message: "Success",
   response_data: data,
 });
+
 export const mockLogin = (): nock.Scope =>
   nock(SANDBOX_BASE)
     .persist()

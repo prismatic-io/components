@@ -9,6 +9,7 @@ import {
 } from "../../inputs/attachments/createAttachmentInputs";
 import { connectionInput } from "../../inputs/general";
 import type { Attachment } from "../../interfaces";
+
 export const createAttachment = action({
   display: {
     label: "Create Attachment",
@@ -23,15 +24,18 @@ export const createAttachment = action({
       context,
       context.debug.enabled,
     );
+
     const payload = {
       fileName,
       parentId,
       parentType,
     };
+
     const { data } = await client.post<Attachment>(
       `/companies(${companyId})/attachments`,
       payload,
     );
+
     return { data };
   },
   inputs: {

@@ -4,6 +4,7 @@ import { removeGuestFromTaskExamplePayload } from "../../examplePayloads";
 import { removeGuestFromTaskInputs } from "../../inputs";
 import { removeGuestFromTaskOutputSchema } from "../../outputSchemas";
 import type { AddGuestToTaskQueryParams } from "../../types";
+
 export const removeGuestFromTask = action({
   display: {
     label: "Remove Guest from Task",
@@ -30,14 +31,17 @@ export const removeGuestFromTask = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const params: AddGuestToTaskQueryParams = {
       include_shared: includeShared,
       custom_task_ids: customTaskIds,
       team_id: teamId,
     };
+
     const { data } = await client.delete(`/task/${taskId}/guest/${guestId}`, {
       params,
     });
+
     return {
       data,
     };

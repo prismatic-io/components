@@ -5,6 +5,7 @@ import { MAX_LIMIT } from "../constants";
 import { selectLocationsInputs } from "../inputs";
 import type { DataSourceRecord } from "../types";
 import { fetchData, getNumericId } from "../util";
+
 export const listLocations = dataSource({
   display: {
     label: "Select Location",
@@ -27,6 +28,7 @@ export const listLocations = dataSource({
         first: MAX_LIMIT,
       },
     );
+
     const result = locations.map((location) => {
       const numericId = getNumericId(location.id);
       return {

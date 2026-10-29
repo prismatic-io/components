@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { SUCCESS_RESPONSE } from "./constants";
+
 export const createTicketExamplePayload = {
   data: {
     ticket: {
@@ -42,15 +43,21 @@ export const createTicketExamplePayload = {
     },
   },
 };
+
 export const listTicketsExamplePayload = {
   data: {
     tickets: [createTicketExamplePayload.data.ticket],
   },
 };
+
 export const getTicketExamplePayload = createTicketExamplePayload;
+
 export const updateTicketExamplePayload = createTicketExamplePayload;
+
 export const moveTicketExamplePayload = createTicketExamplePayload;
+
 export const deleteTicketExamplePayload = SUCCESS_RESPONSE;
+
 export const createProblemExamplePayload = {
   data: {
     problem: {
@@ -97,13 +104,19 @@ export const createProblemExamplePayload = {
     },
   },
 };
+
 export const getProblemExamplePayload = createProblemExamplePayload;
+
 export const listProblemsExamplePayload = {
   data: { problems: [createProblemExamplePayload.data.problem] },
 };
+
 export const updateProblemExamplePayload = createProblemExamplePayload;
+
 export const moveProblemExamplePayload = createProblemExamplePayload;
+
 export const deleteProblemExamplePayload = SUCCESS_RESPONSE;
+
 export const createRequesterExamplePayload = {
   data: {
     requester: {
@@ -137,12 +150,17 @@ export const createRequesterExamplePayload = {
     },
   },
 };
+
 export const getRequesterExamplePayload = createRequesterExamplePayload;
+
 export const listRequestersExamplePayload = {
   data: { requesters: [createRequesterExamplePayload.data.requester] },
 };
+
 export const updateRequesterExamplePayload = createRequesterExamplePayload;
+
 export const deactivateRequesterExamplePayload = SUCCESS_RESPONSE;
+
 export const createAgentExamplePayload = {
   data: {
     agent: {
@@ -183,17 +201,23 @@ export const createAgentExamplePayload = {
     },
   },
 };
+
 export const getAgentExamplePayload = createAgentExamplePayload;
+
 export const listAgentsExamplePayload = {
   data: { agents: [createAgentExamplePayload.data.agent] },
 };
+
 export const updateAgentExamplePayload = createAgentExamplePayload;
+
 export const deactivateAgentExamplePayload = {
   data: {
     agent: { ...createAgentExamplePayload.data.agent, active: false },
   },
 };
+
 export const forgetAgentExamplePayload = SUCCESS_RESPONSE;
+
 export const createAssetExamplePayload = {
   data: {
     asset: {
@@ -233,14 +257,21 @@ export const createAssetExamplePayload = {
     },
   },
 };
+
 export const getAssetExamplePayload = createAssetExamplePayload;
+
 export const listAssetsExamplePayload = {
   data: { assets: [createAssetExamplePayload.data.asset] },
 };
+
 export const searchAssetExamplePayload = listAssetsExamplePayload;
+
 export const updateAssetExamplePayload = createAssetExamplePayload;
+
 export const deleteAssetExamplePayload = SUCCESS_RESPONSE;
+
 export const moveAssetExamplePayload = createAssetExamplePayload;
+
 export const createSoftwareExamplePayload = {
   data: {
     application: {
@@ -262,13 +293,19 @@ export const createSoftwareExamplePayload = {
     },
   },
 };
+
 export const updateSoftwareExamplePayload = createSoftwareExamplePayload;
+
 export const getSoftwareExamplePayload = createSoftwareExamplePayload;
+
 export const listSoftwareExamplePayload = {
   data: { applications: [createSoftwareExamplePayload.data.application] },
 };
+
 export const deleteSoftwareExamplePayload = SUCCESS_RESPONSE;
+
 export const moveSoftwareExamplePayload = createSoftwareExamplePayload;
+
 export const createServiceRequestExamplePayload = {
   data: {
     service_request: {
@@ -315,6 +352,7 @@ export const createServiceRequestExamplePayload = {
     },
   },
 };
+
 export const createOnboardingRequestExamplePayload = {
   data: {
     onboarding_request: {
@@ -347,6 +385,7 @@ export const createOnboardingRequestExamplePayload = {
     },
   },
 };
+
 export const viewOnboardingRequestExamplePayload = {
   data: {
     fields: [
@@ -362,6 +401,7 @@ export const viewOnboardingRequestExamplePayload = {
     ],
   },
 };
+
 export const listWorkspacesExamplePayload = {
   data: {
     workspaces: [
@@ -379,11 +419,13 @@ export const listWorkspacesExamplePayload = {
     ],
   },
 };
+
 export const getWorkspaceExamplePayload = {
   data: {
     workspace: listWorkspacesExamplePayload.data.workspaces[0],
   },
 };
+
 export const pollNewAndUpdatedTicketsTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -436,6 +478,7 @@ export const pollNewAndUpdatedTicketsTriggerExamplePayload: {
     globalDebug: false,
   },
 };
+
 const itamDevice = {
   device_id: 46,
   name: "db-080-westport",
@@ -469,6 +512,7 @@ const itamDevice = {
   customers: ["Finance", "Operations"],
   in_service: "yes",
 };
+
 export const createOrUpdateItamDeviceExamplePayload = {
   data: {
     action: "device added or updated",
@@ -480,6 +524,7 @@ export const createOrUpdateItamDeviceExamplePayload = {
     raw: ["device added or updated", 46, "db-080-westport", true, true],
   },
 };
+
 export const updateItamDeviceExamplePayload = {
   data: {
     action: "device added or updated",
@@ -491,9 +536,11 @@ export const updateItamDeviceExamplePayload = {
     raw: ["device added or updated", 46, "db-080-westport", true, false],
   },
 };
+
 export const getItamDeviceExamplePayload = {
   data: itamDevice,
 };
+
 export const listItamDevicesExamplePayload = {
   data: {
     meta: { page: 1, per_page: 100, total_count: 2 },
@@ -517,7 +564,9 @@ export const listItamDevicesExamplePayload = {
     ],
   },
 };
+
 export const deleteItamDeviceExamplePayload = SUCCESS_RESPONSE;
+
 const itamAsset = {
   id: 54,
   device_id: 46,
@@ -560,6 +609,7 @@ const itamAsset = {
   customer_id: 4,
   customer: "Finance",
 };
+
 export const createOrUpdateItamAssetExamplePayload = {
   data: {
     action: "asset added/edited.",
@@ -571,6 +621,7 @@ export const createOrUpdateItamAssetExamplePayload = {
     raw: ["asset added/edited.", 54, "main modem", true, true],
   },
 };
+
 export const updateItamAssetExamplePayload = {
   data: {
     action: "asset added/edited.",
@@ -582,9 +633,11 @@ export const updateItamAssetExamplePayload = {
     raw: ["asset added/edited.", 54, "main modem", true, false],
   },
 };
+
 export const getItamAssetExamplePayload = {
   data: itamAsset,
 };
+
 export const listItamAssetsExamplePayload = {
   data: {
     meta: { page: 1, per_page: 100, total_count: 2 },
@@ -606,4 +659,5 @@ export const listItamAssetsExamplePayload = {
     ],
   },
 };
+
 export const deleteItamAssetExamplePayload = SUCCESS_RESPONSE;

@@ -1,12 +1,14 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { MY_DRIVE } from "../constants";
 import { cleanIntegerInput, cleanStringInput } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Connection to use for Google Drive authorization.",
 });
+
 export const driveId = input({
   label: "Drive ID",
   type: "string",
@@ -17,6 +19,7 @@ export const driveId = input({
   example: "0AAvGyortvuqEXAMPLE",
   dataSource: "selectDrive",
 });
+
 export const folderId = input({
   label: "Folder ID",
   placeholder: "Enter Folder ID",
@@ -27,6 +30,7 @@ export const folderId = input({
   clean: cleanStringInput,
   dataSource: "selectFolder",
 });
+
 export const fields = input({
   label: "Fields",
   type: "string",
@@ -38,6 +42,7 @@ export const fields = input({
   example: "files(id,name,mimeType,size,modifiedTime)",
   clean: cleanStringInput,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -49,6 +54,7 @@ export const pageSize = input({
   default: "20",
   clean: cleanIntegerInput,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -59,12 +65,14 @@ export const pageToken = input({
   placeholder: "Enter page token",
   clean: cleanStringInput,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page-size and page-token controls for paging through results.",
   inputs: { pageSize, pageToken },
 });
+
 export const query = input({
   label: "Query",
   type: "string",
@@ -75,6 +83,7 @@ export const query = input({
   example: "name contains 'report'",
   clean: cleanStringInput,
 });
+
 export const searchQuery = input({
   label: "Search",
   type: "string",
@@ -84,6 +93,7 @@ export const searchQuery = input({
   example: "quarterly report 2024",
   clean: cleanStringInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",

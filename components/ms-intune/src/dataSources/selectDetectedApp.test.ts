@@ -7,9 +7,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listDetectedAppsExamplePayload } from "../examplePayloads";
 import { selectDetectedApp } from "./selectDetectedApp";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
 const PATH = "/v1.0/deviceManagement/detectedApps";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -21,16 +23,22 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listDetectedAppsExamplePayload.data;
+
 const invokeBare = async (): Promise<Element[]> =>
   (await invokeDataSource(selectDetectedApp, {
     connection,
   })) as unknown as Element[];
+
 describe("selectDetectedApp", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the detected app list to a bare array of label/key elements", async () => {
     nock(HOST).get(PATH).reply(200, listReply);
+
     const result = await invokeBare();
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
@@ -43,8 +51,10 @@ describe("selectDetectedApp", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty array when the API returns no detected apps", async () => {
     nock(HOST).get(PATH).reply(200, { value: [] });
+
     expect(await invokeBare()).toEqual([]);
   });
 });

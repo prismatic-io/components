@@ -4,6 +4,7 @@ import { ENS_CALLBACKS_PATH } from "../../constants";
 import { updateCallbackExamplePayload } from "../../examplePayloads";
 import { updateCallbackInputs } from "../../inputs";
 import { updateCallbackOutputSchema } from "../../outputSchemas";
+
 export const updateCallback = action({
   examplePayload: updateCallbackExamplePayload,
   display: {
@@ -22,19 +23,20 @@ export const updateCallback = action({
     { connection, callbackId, callbackName, callbackUrl, maxBatchSize },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body: Record<string, unknown> = { callbackId };
     if (callbackName) body.callbackName = callbackName;
     if (callbackUrl) body.url = callbackUrl;
     if (maxBatchSize) body.maxBatchSize = maxBatchSize;
+
     const { data } = await client.put(ENS_CALLBACKS_PATH, [body]);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { callbackId, callbackName, callbackUrl, maxBatchSize },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: [
       {
         ...updateCallbackExamplePayload.data[0],

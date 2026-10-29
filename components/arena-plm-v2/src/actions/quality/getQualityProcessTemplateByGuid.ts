@@ -4,6 +4,7 @@ import { getQualityProcessTemplateByGuidExamplePayload } from "../../examplePayl
 import { getQualityProcessTemplateByGuidInputs } from "../../inputs";
 import { qualityTemplateSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getQualityProcessTemplateByGuid = action({
   display: {
     label: "Get Quality Process Template by GUID",
@@ -19,9 +20,11 @@ export const getQualityProcessTemplateByGuid = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/settings/qualityprocesses/templates/${params.templateGuid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

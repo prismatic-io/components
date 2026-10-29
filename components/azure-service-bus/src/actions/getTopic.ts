@@ -9,6 +9,7 @@ import {
   subscriptionId,
   topicName,
 } from "../inputs";
+
 export const getTopic = action({
   display: {
     label: "Get Topic",
@@ -39,4 +40,5 @@ export const getTopic = action({
     topicName,
   },
 });
+
 export default { getTopic };

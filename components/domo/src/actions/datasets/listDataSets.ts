@@ -4,6 +4,7 @@ import { listDataSetsExamplePayload } from "../../examplePayloads";
 import { listDataSetsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 import type { ListDataSetsQueryParams } from "../types/ListDataSetsQueryParams";
+
 export const listDataSets = action({
   display: {
     label: "List DataSets",
@@ -29,4 +30,5 @@ export const listDataSets = action({
   },
   inputs: listDataSetsInputs,
 });
+
 export default { listDataSets };

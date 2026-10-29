@@ -8,12 +8,14 @@ import {
   jsonInputClean,
   valueListInputClean,
 } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Confluence connection to use.",
 });
+
 export const attachmentId = input({
   label: "Attachment ID",
   type: "string",
@@ -24,6 +26,7 @@ export const attachmentId = input({
   placeholder: "Enter attachment ID",
   dataSource: "listAttachments",
 });
+
 export const pageId = input({
   label: "Page ID",
   type: "string",
@@ -34,6 +37,7 @@ export const pageId = input({
   placeholder: "Enter page ID",
   dataSource: "listPages",
 });
+
 export const spaceId = input({
   label: "Space ID",
   type: "string",
@@ -44,6 +48,7 @@ export const spaceId = input({
   placeholder: "Enter space ID",
   dataSource: "listSpaces",
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -54,6 +59,7 @@ export const limit = input({
   example: "25",
   default: "25",
 });
+
 export const cursor = input({
   label: "Cursor",
   type: "string",
@@ -64,12 +70,14 @@ export const cursor = input({
   example: "c25hcHNob3RzLzE1NjQ4NjQ3MjMvMjU=",
   placeholder: "Enter cursor value",
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { limit, cursor },
 });
+
 export const sort = input({
   label: "Sort",
   type: "string",
@@ -87,6 +95,7 @@ export const sort = input({
   ],
   clean: cleanStringInput,
 });
+
 export const queryParameters = input({
   label: "Query Parameters",
   type: "string",
@@ -96,6 +105,7 @@ export const queryParameters = input({
     "Query parameters to pass in to the request. For example, key `include-versions`, value `true`.",
   clean: cleanKeyValList,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -105,6 +115,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results. When false, returns a single page.",
   clean: util.types.toBool,
 });
+
 const queryInput = input({
   label: "Query or Mutation",
   type: "code",
@@ -126,6 +137,7 @@ const queryInput = input({
   }`,
   clean: util.types.toString,
 });
+
 const variablesInput = input({
   label: "Variables",
   type: "string",
@@ -134,6 +146,7 @@ const variablesInput = input({
   comments: "Variables to pass in to the query or mutation.",
   clean: cleanKeyValPairInput,
 });
+
 const headersInput = input({
   label: "Headers",
   comments: "Custom headers to send along with the request.",
@@ -142,6 +155,7 @@ const headersInput = input({
   collection: "keyvaluelist",
   clean: cleanKeyValPairInput,
 });
+
 const resourceType = input({
   label: "Resource Type",
   type: "string",
@@ -154,6 +168,7 @@ const resourceType = input({
   ],
   clean: util.types.toString,
 });
+
 const eventType = input({
   label: "Event Type",
   type: "string",
@@ -164,6 +179,7 @@ const eventType = input({
   default: ["000xxx"],
   clean: valueListInputClean,
 });
+
 const functionSettings = input({
   label: "Function Settings",
   type: "code",
@@ -194,13 +210,16 @@ const functionSettings = input({
   clean: jsonInputClean,
   required: true,
 });
+
 const { debugRequest, ...httpInputsWithoutDebug } = httpClientInputs;
+
 export const graphqlRequestInputs = {
   connection: connectionInput,
   query: queryInput,
   variables: variablesInput,
   headers: headersInput,
 };
+
 export const rawRequestInputs = {
   connection: connectionInput,
   ...httpInputsWithoutDebug,

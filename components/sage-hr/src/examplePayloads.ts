@@ -66,6 +66,7 @@ export const listEmployeesExamplePayload = {
     },
   },
 };
+
 export const getEmployeeExamplePayload = {
   data: {
     data: {
@@ -124,6 +125,7 @@ export const getEmployeeExamplePayload = {
     },
   },
 };
+
 export const createEmployeeExamplePayload = {
   data: {
     data: {
@@ -131,6 +133,7 @@ export const createEmployeeExamplePayload = {
     },
   },
 };
+
 export const updateEmployeeExamplePayload = {
   data: {
     data: {
@@ -138,12 +141,15 @@ export const updateEmployeeExamplePayload = {
     },
   },
 };
+
 export const terminateEmployeeExamplePayload = {
   data: {},
 };
+
 export const rehireEmployeeExamplePayload = {
   data: {},
 };
+
 export const listTerminatedEmployeesExamplePayload = {
   data: {
     data: [
@@ -197,6 +203,7 @@ export const listTerminatedEmployeesExamplePayload = {
     },
   },
 };
+
 export const getTerminatedEmployeeExamplePayload = {
   data: {
     data: {
@@ -230,6 +237,7 @@ export const getTerminatedEmployeeExamplePayload = {
     },
   },
 };
+
 export const getEmployeeCompensationsExamplePayload = {
   data: {
     data: [
@@ -253,6 +261,7 @@ export const getEmployeeCompensationsExamplePayload = {
     },
   },
 };
+
 export const getEmployeeCustomFieldsExamplePayload = {
   data: {
     data: [
@@ -273,11 +282,13 @@ export const getEmployeeCustomFieldsExamplePayload = {
     ],
   },
 };
+
 export const updateEmployeeCustomFieldExamplePayload = {
   data: {
     data: null,
   },
 };
+
 export const listPositionsExamplePayload = {
   data: {
     data: [
@@ -304,6 +315,7 @@ export const listPositionsExamplePayload = {
     },
   },
 };
+
 export const listTeamsExamplePayload = {
   data: {
     data: [
@@ -324,6 +336,7 @@ export const listTeamsExamplePayload = {
     },
   },
 };
+
 const documentPayload = {
   id: 18,
   document_category_id: 15,
@@ -352,11 +365,13 @@ const documentPayload = {
   expiration_date: null,
   document_expires: false,
 };
+
 export const getDocumentExamplePayload = {
   data: {
     data: documentPayload,
   },
 };
+
 export const createDocumentExamplePayload = {
   data: {
     data: {
@@ -364,6 +379,7 @@ export const createDocumentExamplePayload = {
     },
   },
 };
+
 export const deleteDocumentExamplePayload = {
   data: {
     data: {
@@ -371,11 +387,13 @@ export const deleteDocumentExamplePayload = {
     },
   },
 };
+
 export const updateDocumentExamplePayload = {
   data: {
     data: documentPayload,
   },
 };
+
 export const listDocumentsExamplePayload = {
   data: {
     data: [
@@ -438,6 +456,7 @@ export const listDocumentsExamplePayload = {
     ],
   },
 };
+
 export const createProjectExamplePayload = {
   data: {
     data: {
@@ -445,6 +464,7 @@ export const createProjectExamplePayload = {
     },
   },
 };
+
 export const updateProjectExamplePayload = {
   data: {
     data: {
@@ -452,6 +472,7 @@ export const updateProjectExamplePayload = {
     },
   },
 };
+
 export const closeProjectExamplePayload = {
   data: {
     data: {
@@ -459,6 +480,7 @@ export const closeProjectExamplePayload = {
     },
   },
 };
+
 export const createProjectsExamplePayload = {
   data: {
     data: {
@@ -466,6 +488,7 @@ export const createProjectsExamplePayload = {
     },
   },
 };
+
 export const updateProjectsExamplePayload = {
   data: {
     data: {
@@ -473,11 +496,13 @@ export const updateProjectsExamplePayload = {
     },
   },
 };
+
 export const timeClockingInAndOutExamplePayload = {
   data: {
     errors: ["error 1", "error 2"],
   },
 };
+
 export const createTimeOffRequestsExamplePayload = {
   data: {
     data: {
@@ -485,6 +510,7 @@ export const createTimeOffRequestsExamplePayload = {
     },
   },
 };
+
 export const listTimeOffRequestsExamplePayload = {
   data: {
     data: [
@@ -527,6 +553,7 @@ export const listTimeOffRequestsExamplePayload = {
     },
   },
 };
+
 export const listTimeOffBalancesExamplePayload = {
   data: {
     data: [
@@ -543,9 +570,11 @@ export const listTimeOffBalancesExamplePayload = {
     ],
   },
 };
+
 export const selectEmployeeExamplePayload = {
   result: [{ label: "John Doe", key: "19" }],
 };
+
 export const teamsExamplePayload = {
   result: [
     {
@@ -554,9 +583,11 @@ export const teamsExamplePayload = {
     },
   ],
 };
+
 export const selectDocumentExamplePayload = {
   result: [{ label: "test_pdf.pdf", key: "18" }],
 };
+
 export const projectsExamplePayload = {
   result: [
     {
@@ -565,6 +596,7 @@ export const projectsExamplePayload = {
     },
   ],
 };
+
 export const positionsExamplePayload = {
   result: [
     {

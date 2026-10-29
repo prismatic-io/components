@@ -1,7 +1,9 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { connection } from "./common";
+
 const { debugRequest: _, ...httpInputs } = httpClientInputs;
+
 const apiType = input({
   label: "API",
   type: "string",
@@ -15,6 +17,7 @@ const apiType = input({
     "Which Jamf Pro API to target. The Pro API uses the /api base path; the Classic API uses /JSSResource.",
   clean: util.types.toString,
 });
+
 export const rawRequestInputs = {
   connection,
   apiType,

@@ -16,6 +16,7 @@ import {
   filterByDate,
   getVersionCreatedAt,
 } from "./utils";
+
 export const pagesPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Pages",
@@ -33,9 +34,11 @@ export const pagesPollingTrigger = pollingTrigger({
   perform: async (context, payload, { connectionInput, lookBackDate }) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
+
     if (!lastState?.lastPolled) {
       const seedDate = lookBackDate || now;
       context.polling.setState({ lastPolled: seedDate });
+
       if (!lookBackDate) {
         return {
           payload: {
@@ -46,19 +49,25 @@ export const pagesPollingTrigger = pollingTrigger({
         };
       }
     }
+
     const lastPolled = lastState?.lastPolled ?? lookBackDate ?? now;
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const pageLimit = context.batch?.enabled
       ? DEFAULT_BATCH_SIZE
       : DEFAULT_PAGE_LIMIT;
+
     const allPages = await paginateResults<Page>(
       client,
       UPDATED_PAGES_URL,
       PAGES_URL_REGEX,
       pageLimit,
     );
+
     const pages = filterByDate<Page>(allPages, lastPolled, getVersionCreatedAt);
+
     const data = categorizeByChangeType(pages, lastPolled);
+
     context.polling.setState({ lastPolled: now });
     return {
       payload: { ...payload, body: { data } },

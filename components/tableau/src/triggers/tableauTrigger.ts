@@ -14,6 +14,7 @@ import {
   getEventInfo,
   getTableauClient,
 } from "../util";
+
 const performFunction = async (
   context: ActionContext,
   payload: TriggerPayload,
@@ -38,14 +39,18 @@ const performFunction = async (
       `Event ${data.event_type} is not supported by this trigger.`,
     );
   }
+
   const client = await getTableauClient({
     tableauConnection: connectionInput,
     timeout,
     debug: context.debug.enabled,
     apiVersion,
   });
+
   const eventInfo = await getEventInfo(client, data);
+
   payload.body.data = eventInfo;
+
   return Promise.resolve({
     payload,
     response: {
@@ -53,6 +58,7 @@ const performFunction = async (
     },
   });
 };
+
 export const tableauTrigger = trigger({
   display: {
     label: "Webhook Events",

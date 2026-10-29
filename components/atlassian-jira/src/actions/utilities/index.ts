@@ -5,6 +5,7 @@ import { listIssueLinkTypes } from "./listIssueLinkTypes";
 import { listIssueTypes } from "./listIssueTypes";
 import { listPriorities } from "./listPriorities";
 import { queryV3 } from "./queryV3";
+
 export default {
   queryV3,
   getStatusList,

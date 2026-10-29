@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import type { DriveWatch, ManageWatchParams } from "../types";
 import { stopWatchWithErrorHandling } from "./stopWatch";
+
 export const manageWatch = async ({
   drive,
   spreadsheetId,
@@ -30,10 +31,13 @@ export const manageWatch = async ({
         expiration: util.types.toString(expiration),
       },
     });
+
     logger.info("New Drive watch created successfully");
+
     if (!res.data.id || !res.data.resourceId || !res.data.expiration) {
       throw new Error("Drive watch creation returned incomplete data");
     }
+
     return {
       channelId: res.data.id,
       resourceId: res.data.resourceId,

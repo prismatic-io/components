@@ -1,4 +1,5 @@
 import component from ".";
+
 describe("pagerduty", () => {
   it("should be a valid component", () => {
     expect(component).toBeDefined();

@@ -4,6 +4,7 @@ import { createClassicClient, gatewayRequest } from "../../client";
 import { ApiPlane } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -18,6 +19,7 @@ export const rawRequest = action({
   ) => {
     let baseUrl: string;
     let headers: Record<string, string>;
+
     if (selectedPlane === ApiPlane.Gateway) {
       const client = await gatewayRequest(connection, debug, async (c) => c);
       baseUrl = client.defaults?.baseURL || "";
@@ -27,6 +29,7 @@ export const rawRequest = action({
       baseUrl = client.defaults?.baseURL || "";
       headers = (client.defaults?.headers as Record<string, string>) || {};
     }
+
     const { data } = await sendRawRequest(
       baseUrl,
       { ...httpInputs, debugRequest: debug },

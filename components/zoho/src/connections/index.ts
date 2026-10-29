@@ -4,6 +4,7 @@ import {
   oauth2Connection,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 const zohoRegions = [
   {
     tld: "https://accounts.zoho.eu",
@@ -18,6 +19,7 @@ const zohoRegions = [
   { tld: "https://accounts.zohocloud.ca", location: "Canada" },
   { tld: "https://accounts.zoho.sa", location: "Saudi Arabia" },
 ];
+
 export const clientId = input({
   label: "Client ID",
   placeholder: "Enter Client ID",
@@ -28,6 +30,7 @@ export const clientId = input({
     "The Client ID for the Zoho API application. Generate this in the [Zoho API Console](https://api-console.zoho.com/).",
   example: "1000.ABC123XYZ456DEF789",
 });
+
 export const clientSecret = input({
   label: "Client Secret",
   placeholder: "Enter Client Secret",
@@ -38,6 +41,7 @@ export const clientSecret = input({
     "The Client Secret for the Zoho API application. Generate this in the [Zoho API Console](https://api-console.zoho.com/).",
   example: "1234567890abcdef1234567890abcdef12345678",
 });
+
 export const scopes = input({
   label: "Scopes",
   placeholder: "Enter space-separated scopes",
@@ -58,6 +62,7 @@ export const scopes = input({
   ].join(" "),
   example: "ZohoCRM.modules.ALL ZohoBooks.fullaccess.all",
 });
+
 export const ZohoConnection = oauth2Connection({
   key: "oauth2",
   display: {
@@ -107,6 +112,7 @@ export const ZohoConnection = oauth2Connection({
     clientSecret,
   },
 });
+
 export const zohoTemplatedConnection = oauth2Connection({
   key: "zohoTemplatedConnection",
   display: {
@@ -170,4 +176,5 @@ export const zohoTemplatedConnection = oauth2Connection({
     OAuth2Type.AuthorizationCode,
   ),
 });
+
 export default [zohoTemplatedConnection, ZohoConnection];

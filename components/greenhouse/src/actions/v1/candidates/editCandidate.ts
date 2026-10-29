@@ -21,7 +21,9 @@ import {
   version,
   website_addresses,
 } from "../../../inputs";
+
 import { generatePayload } from "../../../util";
+
 export const editCandidate = action({
   display: {
     label: "Edit Candidate (Harvest v1/v2)",

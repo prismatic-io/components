@@ -5,6 +5,7 @@ import { listBusinessUnitsInputs } from "../../inputs";
 import { listBusinessUnitsOutputSchema } from "../../outputSchemas";
 import type { BusinessUnits } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listBusinessUnits = action({
   display: {
     label: "List Business Units",
@@ -21,6 +22,7 @@ export const listBusinessUnits = action({
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
   ) => {
     const client = createClient(connection, "settings", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<BusinessUnits>(
         client,

@@ -5,6 +5,7 @@ import { listCategoriesExamplePayload } from "../../examplePayloads/categories";
 import { listCategoriesInputs } from "../../inputs/categories";
 import { listCategoriesOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listCategories = action({
   examplePayload: listCategoriesExamplePayload,
   display: {
@@ -19,21 +20,22 @@ export const listCategories = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(
       client,
       CATEGORIES_PATH,
       fetchAll,
       params,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listCategoriesExamplePayload.data,
   }),
 });

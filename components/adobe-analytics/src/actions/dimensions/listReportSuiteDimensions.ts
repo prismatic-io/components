@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listReportSuiteDimensionsExamplePayload } from "../../examplePayloads";
 import { listReportSuiteDimensionsInputs } from "../../inputs";
 import type { ReportSuiteDimension } from "../../types";
+
 export const listReportSuiteDimensions = action({
   display: {
     label: "List Dimensions for Report Suite",

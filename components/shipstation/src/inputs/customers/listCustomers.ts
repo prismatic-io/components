@@ -6,6 +6,7 @@ import {
   tagId,
 } from "../common";
 import { countryCode, stateCode } from "./common";
+
 export const listCustomersInputs = {
   connectionInput,
   stateCode,

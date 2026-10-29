@@ -5,6 +5,7 @@ import { listCampaignsExamplePayload } from "../../examplePayloads";
 import { listCampaignsInputs } from "../../inputs";
 import { listCampaignsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listCampaigns = action({
   examplePayload: listCampaignsExamplePayload,
   display: {
@@ -19,21 +20,22 @@ export const listCampaigns = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(
       client,
       CAMPAIGNS_PATH,
       fetchAll,
       params,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listCampaignsExamplePayload.data,
   }),
 });

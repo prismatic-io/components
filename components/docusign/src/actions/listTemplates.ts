@@ -3,6 +3,7 @@ import { getDocuSignClient } from "../client";
 import { listTemplatesPayload } from "../examplePayloads";
 import { paginateResults } from "../helpers/pagination";
 import { connection, fetchAll } from "../inputs";
+
 export const listTemplates = action({
   display: {
     label: "List Templates",

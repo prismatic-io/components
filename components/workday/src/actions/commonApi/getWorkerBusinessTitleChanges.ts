@@ -5,6 +5,7 @@ import { getWorkerBusinessTitleChangesExamplePayload } from "../../examplePayloa
 import { paginateResults } from "../../util/pagination";
 import { getWorkerBusinessTitleChangesInputs } from "../../inputs";
 import { getWorkerBusinessTitleChangesOutputSchema } from "../../outputSchemas";
+
 export const getWorkerBusinessTitleChanges = action({
   display: {
     label: "Get Worker Business Title Changes",

@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteJobInputs } from "../../inputs";
+
 export const deleteJob = action({
   display: {
     description: "Requests the deletion of the metadata of a job.",

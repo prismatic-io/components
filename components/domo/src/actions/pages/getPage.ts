@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { getPageExamplePayload } from "../../examplePayloads";
 import { getPageInputs } from "../../inputs";
+
 export const getPage = action({
   display: {
     label: "Get Page",
@@ -17,4 +18,5 @@ export const getPage = action({
   },
   inputs: getPageInputs,
 });
+
 export default { getPage };

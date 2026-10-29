@@ -4,6 +4,7 @@ import { ENS_SUBSCRIPTIONS_PATH } from "../../constants";
 import { getSubscriptionExamplePayload } from "../../examplePayloads";
 import { getSubscriptionInputs } from "../../inputs";
 import { getSubscriptionOutputSchema } from "../../outputSchemas";
+
 export const getSubscription = action({
   examplePayload: getSubscriptionExamplePayload,
   display: {
@@ -22,6 +23,7 @@ export const getSubscription = action({
     const { data } = await client.get(
       `${ENS_SUBSCRIPTIONS_PATH}/${encodeURIComponent(subscriptionId)}`,
     );
+
     return { data };
   },
 });

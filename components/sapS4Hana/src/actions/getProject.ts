@@ -7,6 +7,7 @@ import {
   projectSelect,
   projectExpand,
 } from "../inputs";
+
 export const getProject = action({
   display: {
     label: "Get Project",
@@ -22,7 +23,9 @@ export const getProject = action({
     const client = getSapClient(connectionInput, headers);
     try {
       const { data } = await client.get(
-        `/sap/opu/odata/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV/ProjectSet('${projectId}')?${projectSelect.length ? `$select=${projectSelect.join(",")}&` : ""}${projectExpand.length ? `$expand=${projectExpand.join(",")}&` : ""}`,
+        `/sap/opu/odata/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV/ProjectSet('${projectId}')?${
+          projectSelect.length ? `$select=${projectSelect.join(",")}&` : ""
+        }${projectExpand.length ? `$expand=${projectExpand.join(",")}&` : ""}`,
       );
       return { data };
     } catch (error) {

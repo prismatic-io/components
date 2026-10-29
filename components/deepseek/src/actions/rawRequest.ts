@@ -5,6 +5,7 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { validateConnection } from "../client";
 import { connection } from "../inputs/general";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -26,6 +27,7 @@ export const rawRequest = action({
         Authorization: `Bearer ${apiKey}`,
       },
     );
+
     return { data };
   },
 });

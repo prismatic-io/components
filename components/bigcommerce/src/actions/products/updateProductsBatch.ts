@@ -7,6 +7,7 @@ import {
   storeHash,
   uniqueProductBatch,
 } from "../../inputs";
+
 export const updateProductsBatch = action({
   display: {
     label: "Update Products (Batch)",
@@ -22,6 +23,7 @@ export const updateProductsBatch = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products`;
+
     try {
       const response = await client.put(endpoint, uniqueProductBatch);
       return {
@@ -33,6 +35,7 @@ export const updateProductsBatch = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

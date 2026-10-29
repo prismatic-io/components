@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteFileInputs } from "../../inputs";
 import { deleteFileOutputSchema } from "../../outputSchemas";
 import { deleteFileExamplePayload } from "../../examplePayloads";
+
 export const deleteFile = action({
   display: {
     label: "Delete File",
@@ -16,6 +17,7 @@ export const deleteFile = action({
       fields,
       supportsAllDrives: true,
     });
+
     return {
       data,
     };
@@ -25,9 +27,8 @@ export const deleteFile = action({
     type: "actionOutput",
     schema: deleteFileOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({ data: {} }),
+  examplePerform: async (): Promise<{ data: unknown }> => ({ data: {} }),
   examplePayload: deleteFileExamplePayload,
 });
+
 export default deleteFile;

@@ -4,6 +4,7 @@ import { getDealField } from "./getDealField";
 import { getDealFieldV2 } from "./getDealFieldV2";
 import { getDealFields } from "./getDealFields";
 import { getDealFieldsV2 } from "./getDealFieldsV2";
+
 export default {
   getDealFields,
   getDealFieldsV2,

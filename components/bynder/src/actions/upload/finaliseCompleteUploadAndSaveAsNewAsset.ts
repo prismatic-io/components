@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { finaliseCompleteUploadAndSaveAsNewAssetResponse } from "../../examplePayloads";
 import { chunks, connection, id, name, targetid } from "../../inputs";
+
 export const finaliseCompleteUploadAndSaveAsNewAsset = action({
   display: {
     label: "Finalize Complete Upload And Save As New Asset Additional",

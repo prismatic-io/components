@@ -10,6 +10,7 @@ import {
   getModifierId,
   storeHash,
 } from "../../inputs";
+
 export const createModifierImageAction = action({
   display: {
     label: "Create Modifier Image",
@@ -32,7 +33,9 @@ export const createModifierImageAction = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${product_id}/modifiers/${modifier_id}/values/${value_id}/image`;
+
     const formattedImageFile = image_file;
+
     try {
       const response = await client.post(endpoint, formattedImageFile, {
         headers: {
@@ -48,6 +51,7 @@ export const createModifierImageAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash: storeHash,

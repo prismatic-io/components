@@ -4,6 +4,7 @@ import { deleteItemImageExamplePayload } from "../../examplePayloads";
 import { deleteItemImageInputs } from "../../inputs";
 import { deleteItemImageOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteItemImage = action({
   display: {
     label: "Delete Item Image",

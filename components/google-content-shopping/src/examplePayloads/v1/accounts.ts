@@ -1,6 +1,4 @@
-export const getAccountExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+export const getAccountExamplePayload: { data: Record<string, unknown> } = {
   data: {
     name: "accounts/123456789",
     accountId: "123456789",
@@ -13,23 +11,21 @@ export const getAccountExamplePayload: {
     languageCode: "en-US",
   },
 };
+
 export const createAccountExamplePayload = getAccountExamplePayload;
-export const updateAccountExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const updateAccountExamplePayload: { data: Record<string, unknown> } = {
   data: {
     ...getAccountExamplePayload.data,
     accountName: "Example Merchant Store - Updated",
   },
 };
-export const deleteAccountExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const deleteAccountExamplePayload: { data: Record<string, unknown> } = {
   data: {},
 };
-export const listAccountsExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const listAccountsExamplePayload: { data: Record<string, unknown> } = {
   data: {
     accounts: [
       getAccountExamplePayload.data,

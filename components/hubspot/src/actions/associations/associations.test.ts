@@ -5,10 +5,13 @@ import { archiveAssociations } from "./archiveAssociations";
 import { createAssociations } from "./createAssociations";
 import { listAssociationTypes } from "./listAssociationTypes";
 import { readAssociations } from "./readAssociations";
+
 vi.mock("../../client");
+
 const mockedGetHubspotClient = getHubspotClient as MockedFunction<
   typeof getHubspotClient
 >;
+
 const context = { debug: { enabled: false } } as never;
 const hubspotConnection = { key: privateAppAccessToken.key, fields: {} };
 const base = {
@@ -17,6 +20,7 @@ const base = {
   fromObjectType: "contacts",
   toObjectType: "companies",
 };
+
 const labelsBody = {
   results: [
     { category: "HUBSPOT_DEFINED", typeId: 1, label: "Primary" },
@@ -24,13 +28,16 @@ const labelsBody = {
   ],
 };
 const LABELS_PATH = "/crm/associations/2026-09/contacts/companies/labels";
+
 const mockClient = (responses: { get?: unknown; post?: unknown }) => {
   const get = vi.fn().mockResolvedValue({ data: responses.get });
   const post = vi.fn().mockResolvedValue({ data: responses.post });
   mockedGetHubspotClient.mockReturnValue({ get, post } as never);
   return { get, post };
 };
+
 beforeEach(() => vi.clearAllMocks());
+
 describe("listAssociationTypes", () => {
   test("reads the dated labels path and returns v3 and dated keys", async () => {
     const { get } = mockClient({ get: labelsBody });
@@ -58,6 +65,7 @@ describe("listAssociationTypes", () => {
     });
   });
 });
+
 describe("readAssociations", () => {
   test("posts to dated batch/read and maps each target", async () => {
     const { post } = mockClient({
@@ -86,12 +94,7 @@ describe("readAssociations", () => {
       ...base,
       fromId: "1",
     } as never)) as {
-      data: {
-        status: string;
-        results: {
-          to: unknown[];
-        }[];
-      };
+      data: { status: string; results: { to: unknown[] }[] };
     };
     expect(post).toHaveBeenCalledWith(
       "/crm/associations/2026-09/contacts/companies/batch/read",
@@ -112,6 +115,7 @@ describe("readAssociations", () => {
     ]);
   });
 });
+
 describe("createAssociations", () => {
   const created = {
     status: "COMPLETE",
@@ -127,6 +131,7 @@ describe("createAssociations", () => {
       },
     ],
   };
+
   test("resolves a numeric type and posts the labeled batch/create body", async () => {
     const { get, post } = mockClient({ get: labelsBody, post: created });
     const result = (await createAssociations.perform(context, {
@@ -134,11 +139,7 @@ describe("createAssociations", () => {
       fromId: "1",
       toId: "2",
       associateType: "7",
-    } as never)) as {
-      data: {
-        results: Record<string, unknown>[];
-      };
-    };
+    } as never)) as { data: { results: Record<string, unknown>[] } };
     expect(get).toHaveBeenCalledWith(LABELS_PATH);
     expect(post).toHaveBeenCalledWith(
       "/crm/associations/2026-09/contacts/companies/batch/create",
@@ -161,19 +162,17 @@ describe("createAssociations", () => {
       ...created.results[0],
     });
   });
+
   test("a name returned by List Association Types resolves in Create", async () => {
     mockClient({ get: labelsBody });
     const listed = (await listAssociationTypes.perform(
       context,
       base as never,
     )) as {
-      data: {
-        results: {
-          name: string;
-        }[];
-      };
+      data: { results: { name: string }[] };
     };
     const name = listed.data.results[1].name;
+
     const { post } = mockClient({ get: labelsBody, post: created });
     await createAssociations.perform(context, {
       ...base,
@@ -185,6 +184,7 @@ describe("createAssociations", () => {
       { associationCategory: "USER_DEFINED", associationTypeId: 7 },
     ]);
   });
+
   test("an unknown type throws before any write", async () => {
     const { post } = mockClient({ get: labelsBody });
     await expect(
@@ -198,6 +198,7 @@ describe("createAssociations", () => {
     expect(post).not.toHaveBeenCalled();
   });
 });
+
 describe("archiveAssociations", () => {
   test("resolves the type and posts to dated batch/labels/archive, returning the response", async () => {
     const envelope = {

@@ -4,6 +4,7 @@ import { googleAdsSearchPath } from "../../constants";
 import { createClientLinkExamplePayload } from "../../examplePayloads";
 import { createClientLinkInputs } from "../../inputs";
 import { createClientLinkOutputSchema } from "../../outputSchemas";
+
 export const createClientLink = action({
   display: {
     label: "Create Client Link",
@@ -22,6 +23,7 @@ export const createClientLink = action({
       debugEnabled: context.debug.enabled,
       logger: context.logger,
     });
+
     const { data } = await client.post(
       `customers/${managerCustomerId}/customerClientLinks:mutate`,
       {
@@ -34,6 +36,7 @@ export const createClientLink = action({
       },
     );
     const resourceName = data.result.resourceName;
+
     const query = `SELECT customer_client_link.manager_link_id FROM customer_client_link WHERE customer_client_link.resource_name = "${resourceName}"`;
     const queryResponse = await client.post(
       googleAdsSearchPath(managerCustomerId),
@@ -43,6 +46,7 @@ export const createClientLink = action({
       ?.customerClientLink || {
       managerLinkId: undefined,
     };
+
     return {
       data: {
         resourceName,
@@ -52,8 +56,7 @@ export const createClientLink = action({
       },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createClientLinkExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createClientLinkExamplePayload,
   examplePayload: createClientLinkExamplePayload,
 });

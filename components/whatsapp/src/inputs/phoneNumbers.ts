@@ -6,6 +6,7 @@ import {
   COUNTRY_CODES_MODEL,
   LANGUAGES_MODEL,
 } from "../constants";
+
 const registerPhoneNumberId = input({
   label: "Phone Number ID",
   comments: "The ID of the phone number to register.",
@@ -15,6 +16,7 @@ const registerPhoneNumberId = input({
   example: "912345678912345",
   clean: util.types.toString,
 });
+
 const pin = input({
   label: "PIN",
   comments:
@@ -25,6 +27,7 @@ const pin = input({
   example: "123456",
   clean: util.types.toString,
 });
+
 const dataLocalizationRegion = input({
   label: "Data Localization Region",
   comments:
@@ -36,6 +39,7 @@ const dataLocalizationRegion = input({
   model: COUNTRY_CODES_MODEL,
   clean: cleanStringInput,
 });
+
 const verifyPhoneNumberId = input({
   label: "Phone Number ID to Verify",
   comments: "The ID of the phone number to verify.",
@@ -45,6 +49,7 @@ const verifyPhoneNumberId = input({
   example: "912345678912345",
   clean: util.types.toString,
 });
+
 const codeMethod = input({
   label: "Code Method",
   comments: "The method to use to send the verification code.",
@@ -55,6 +60,7 @@ const codeMethod = input({
   example: "SMS",
   clean: util.types.toString,
 });
+
 const language = input({
   label: "Language",
   comments: "The two-character language code for the verification message.",
@@ -65,12 +71,14 @@ const language = input({
   model: LANGUAGES_MODEL,
   clean: util.types.toString,
 });
+
 export const registerPhoneNumberInputs = {
   connection,
   phoneNumberId: registerPhoneNumberId,
   pin,
   dataLocalizationRegion,
 };
+
 export const requestVerificationCodeInputs = {
   connection,
   phoneNumberId: verifyPhoneNumberId,

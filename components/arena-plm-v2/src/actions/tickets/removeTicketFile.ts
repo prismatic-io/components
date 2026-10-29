@@ -4,6 +4,7 @@ import { removeTicketFileExamplePayload } from "../../examplePayloads";
 import { removeTicketFileInputs } from "../../inputs";
 import { removeTicketFileOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const removeTicketFile = action({
   display: {
     label: "Remove Ticket File",
@@ -18,9 +19,11 @@ export const removeTicketFile = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       await client.delete(
         `/tickets/${params.ticketGuid}/files/${params.associationGuid}`,
       );
+
       return {
         data: { success: true, message: "Ticket file removed successfully" },
       };

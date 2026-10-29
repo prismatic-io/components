@@ -408,6 +408,7 @@ export const getPersonsExamplePayload = {
     },
   },
 };
+
 const singlePersonV2 = {
   id: 5,
   owner_id: 18487521,
@@ -425,21 +426,25 @@ const singlePersonV2 = {
   active_flag: true,
   cc_email: "test-sandbox+person5@pipedrivemail.com",
 };
+
 export const addPersonExamplePayload = {
   data: {
     data: singlePersonV2,
   },
 };
+
 export const getPersonExamplePayload = {
   data: {
     data: singlePersonV2,
   },
 };
+
 export const updatePersonExamplePayload = {
   data: {
     data: singlePersonV2,
   },
 };
+
 export const deletePersonExamplePayload = {
   data: {
     data: {
@@ -447,6 +452,7 @@ export const deletePersonExamplePayload = {
     },
   },
 };
+
 export const searchPersonsExamplePayload = {
   data: {
     data: {
@@ -483,6 +489,7 @@ export const searchPersonsExamplePayload = {
     },
   },
 };
+
 export const mergePersonsExamplePayload = {
   data: {
     success: true,
@@ -555,6 +562,7 @@ export const mergePersonsExamplePayload = {
     },
   },
 };
+
 export const getPersonActivitiesExamplePayload = {
   data: {
     data: [
@@ -589,6 +597,7 @@ export const getPersonActivitiesExamplePayload = {
     },
   },
 };
+
 export const getPersonDealsExamplePayload = {
   data: {
     data: [
@@ -623,6 +632,7 @@ export const getPersonDealsExamplePayload = {
     },
   },
 };
+
 export const getPersonFilesExamplePayload = {
   data: {
     success: true,
@@ -662,6 +672,7 @@ export const getPersonFilesExamplePayload = {
     },
   },
 };
+
 export const getPersonFollowersExamplePayload = {
   data: {
     data: [
@@ -677,6 +688,7 @@ export const getPersonFollowersExamplePayload = {
     },
   },
 };
+
 export const addPersonFollowerExamplePayload = {
   data: {
     data: {
@@ -687,6 +699,7 @@ export const addPersonFollowerExamplePayload = {
     },
   },
 };
+
 export const deletePersonFollowerExamplePayload = {
   data: {
     data: {
@@ -694,6 +707,7 @@ export const deletePersonFollowerExamplePayload = {
     },
   },
 };
+
 export const getPersonMailMessagesExamplePayload = {
   data: {
     success: true,
@@ -744,6 +758,7 @@ export const getPersonMailMessagesExamplePayload = {
     },
   },
 };
+
 export const getPersonProductsExamplePayload = {
   data: {
     success: true,
@@ -787,6 +802,7 @@ export const getPersonProductsExamplePayload = {
     },
   },
 };
+
 export const getPersonUpdatesExamplePayload = {
   data: {
     success: true,
@@ -825,12 +841,14 @@ export const getPersonUpdatesExamplePayload = {
     },
   },
 };
+
 export const getPersonUsersExamplePayload = {
   data: {
     success: true,
     data: [18487521],
   },
 };
+
 export const deletePersonPictureExamplePayload = {
   data: {
     success: true,

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
@@ -6,6 +7,7 @@ export const connection = input({
   comments:
     "The connection to use for authenticating requests to Microsoft Bot Framework.",
 });
+
 export const serviceUrl = input({
   label: "Service URL",
   type: "string",
@@ -16,6 +18,7 @@ export const serviceUrl = input({
   comments:
     "The Service URL (also referred to as Base URI) to send requests to the Bot Framework. Varies per bot channel and region. Use https://directline.botframework.com/ for Direct Line connections.",
 });
+
 export const apiVersion = input({
   label: "API Version",
   type: "string",
@@ -26,6 +29,7 @@ export const apiVersion = input({
   placeholder: "Enter API version",
   comments: "The version of the Bot Framework API to call.",
 });
+
 export const botId = input({
   label: "Bot ID",
   type: "string",
@@ -35,6 +39,7 @@ export const botId = input({
   placeholder: "Enter Bot ID",
   comments: "The unique identifier of the bot receiving requests.",
 });
+
 export const conversationId = input({
   label: "Conversation ID",
   type: "string",
@@ -45,6 +50,7 @@ export const conversationId = input({
   comments:
     "The unique identifier of the conversation (refers to a channel, team, or direct message).",
 });
+
 export const channelAccountId = input({
   label: "Channel Account ID",
   type: "string",
@@ -56,6 +62,7 @@ export const channelAccountId = input({
   comments:
     "The unique identifier of the channel account (refers to conversation members such as bots and users).",
 });
+
 export const tenantId = input({
   label: "Tenant ID",
   type: "string",
@@ -65,6 +72,7 @@ export const tenantId = input({
   placeholder: "Enter Tenant ID",
   comments: "The tenant ID associated with the channel account.",
 });
+
 export const fromId = input({
   label: "From ID",
   type: "string",
@@ -74,6 +82,7 @@ export const fromId = input({
   placeholder: "Enter user ID",
   comments: "The unique identifier of the user sending the message.",
 });
+
 export const fromName = input({
   label: "From Name",
   type: "string",
@@ -83,6 +92,7 @@ export const fromName = input({
   placeholder: "Enter user name",
   comments: "The name of the user sending the message.",
 });
+
 export const cardPayload = input({
   label: "Card Payload",
   type: "code",
@@ -101,6 +111,7 @@ export const cardPayload = input({
   ),
   clean: util.types.toObject,
 });
+
 export const text = input({
   label: "Text",
   type: "string",
@@ -110,6 +121,7 @@ export const text = input({
   placeholder: "Enter message text",
   comments: "The text content of the message to send.",
 });
+
 export const textFormat = input({
   label: "Text Format",
   type: "string",
@@ -130,6 +142,7 @@ export const textFormat = input({
   example: "markdown",
   comments: "Text Format of the message to send",
 });
+
 export const selectConversationMemberInputs = {
   connection,
 };

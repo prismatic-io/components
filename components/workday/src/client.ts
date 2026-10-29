@@ -7,6 +7,7 @@ import connections from "./connections";
 import { HTTP_STATUS_UNAUTHORIZED } from "./constants";
 import type { ForceRefreshOptions, WorkdayHttpError } from "./types";
 import { getAccessToken, getBaseUrl, usesRefreshToken } from "./util";
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -16,6 +17,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getAuthorizationHeader = async (
   connection: Connection,
   { forceRefresh = false }: ForceRefreshOptions = {},
@@ -32,12 +34,14 @@ export const getAuthorizationHeader = async (
   }
   return `Bearer ${accessToken}`;
 };
+
 const isRetryableUnauthorized = (
   connection: Connection,
   error: unknown,
 ): boolean =>
   usesRefreshToken(connection) &&
   (error as WorkdayHttpError).response?.status === HTTP_STATUS_UNAUTHORIZED;
+
 export const withTokenRefreshRetry = async <T>(
   connection: Connection,
   send: (authorization: string) => Promise<T>,
@@ -53,6 +57,7 @@ export const withTokenRefreshRetry = async <T>(
     );
   }
 };
+
 export const getClient = (
   connection: Connection,
   debug = false,
@@ -74,9 +79,7 @@ export const getClient = (
   });
   client.interceptors.response.use(undefined, async (error) => {
     const config = error.config as
-      | (typeof error.config & {
-          _workdayTokenRetried?: boolean;
-        })
+      | (typeof error.config & { _workdayTokenRetried?: boolean })
       | undefined;
     if (
       !isRetryableUnauthorized(connection, error) ||

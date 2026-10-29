@@ -4,6 +4,7 @@ import { selectQueueExamplePayload } from "../examplePayloads";
 import { selectQueueInputs } from "../inputs";
 import type { PagedResponse, Queue } from "../types";
 import { getPaginatedData, toSortedPicklist } from "../util";
+
 export const selectQueue = dataSource({
   display: {
     label: "Select Queue",
@@ -14,15 +15,12 @@ export const selectQueue = dataSource({
   inputs: selectQueueInputs,
   perform: async (_context, { connection, serviceDeskId }) => {
     const { client } = await createClient(connection, false, true);
-    const {
-      data,
-    }: {
-      data: PagedResponse<Queue>;
-    } = await getPaginatedData<Queue>(
-      client,
-      `/servicedesk/${serviceDeskId}/queue`,
-      true,
-    );
+    const { data }: { data: PagedResponse<Queue> } =
+      await getPaginatedData<Queue>(
+        client,
+        `/servicedesk/${serviceDeskId}/queue`,
+        true,
+      );
     const result = toSortedPicklist(
       data.values,
       (q) => q.name,

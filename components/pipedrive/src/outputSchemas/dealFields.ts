@@ -23,6 +23,7 @@ const dealFieldRecordSchema = {
     options: {},
   },
 };
+
 const dealFieldV2RecordSchema = {
   type: "object",
   properties: {
@@ -40,6 +41,7 @@ const dealFieldV2RecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 export const getDealFieldsOutputSchema = {
   type: "object",
   properties: {
@@ -65,6 +67,7 @@ export const getDealFieldsOutputSchema = {
     },
   },
 };
+
 export const getDealFieldsV2OutputSchema = {
   type: "object",
   properties: {
@@ -82,6 +85,7 @@ export const getDealFieldsV2OutputSchema = {
     },
   },
 };
+
 export const getDealFieldOutputSchema = {
   type: "object",
   properties: {
@@ -94,6 +98,7 @@ export const getDealFieldOutputSchema = {
     },
   },
 };
+
 export const getDealFieldV2OutputSchema = {
   type: "object",
   properties: {
@@ -106,6 +111,7 @@ export const getDealFieldV2OutputSchema = {
     },
   },
 };
+
 export const deleteDealFieldOutputSchema = {
   type: "object",
   properties: {
@@ -123,6 +129,7 @@ export const deleteDealFieldOutputSchema = {
     },
   },
 };
+
 export const deleteDealFieldV2OutputSchema = {
   type: "object",
   properties: {

@@ -4,6 +4,7 @@ import { listJobsV3ExamplePayload } from "../../../examplePayloads/v3/jobs";
 import { listJobsV3Inputs } from "../../../inputs/v3/jobs";
 import type { V3Job } from "../../../types";
 import { generatePayload, paginateV3 } from "../../../util";
+
 export const listJobsV3 = action({
   display: {
     label: "List Jobs",
@@ -24,6 +25,7 @@ export const listJobsV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const filterParams = generatePayload({
       ids: idFilters.ids,
       requisition_id: requisitionId,
@@ -36,11 +38,13 @@ export const listJobsV3 = action({
       "updated_at[gte]": dateRangeFilters.updatedAtGte,
       "updated_at[lte]": dateRangeFilters.updatedAtLte,
     });
+
     const data = await paginateV3<V3Job>(client, "/jobs", fetchAll, {
       perPage,
       cursor,
       params: filterParams,
     });
+
     return { data };
   },
   examplePayload: listJobsV3ExamplePayload,

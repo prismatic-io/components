@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createDealExamplePayload } from "../../examplePayloads";
 import { createDealInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createDeal = action({
   display: {
     label: "Create Deal",
@@ -28,11 +29,13 @@ export const createDeal = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const { data } = await client.post(hubspotPaths.objects("deals"), {
       properties: {
         amount,
@@ -47,6 +50,7 @@ export const createDeal = action({
         ...dynamicValues,
       },
     });
+
     return { data };
   },
   inputs: createDealInputs,

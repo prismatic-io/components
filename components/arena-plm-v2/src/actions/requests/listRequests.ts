@@ -5,6 +5,7 @@ import { listRequestsInputs } from "../../inputs";
 import { listRequestsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listRequests = action({
   display: {
     label: "List Requests",
@@ -20,6 +21,7 @@ export const listRequests = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         number: params.number,
         title: params.title,
@@ -33,17 +35,22 @@ export const listRequests = action({
         offset: params.pagination?.offset,
         limit: params.pagination?.limit,
       };
+
       const url = "/requests";
+
       context.logger.info("Fetching requests from Arena");
+
       const data = await fetchArenaList(
         client,
         url,
         queryParams,
         params.fetchAll,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} requests`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Requests");

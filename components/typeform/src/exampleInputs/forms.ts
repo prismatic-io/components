@@ -46,9 +46,11 @@ export const updateFormInput = [
     },
   },
 ];
+
 export const cuiSettingsInput = {
   avatar: "https://images.typeform.com/images/4BKUhw8A9cSM",
 };
+
 export const fieldsInput = [
   {
     attachment: {
@@ -101,7 +103,9 @@ export const fieldsInput = [
     },
   },
 ];
+
 export const hiddenInput = ["id", "created_at", "last_updated_at"];
+
 export const logicInput = [
   {
     actions: [
@@ -158,6 +162,7 @@ export const logicInput = [
     type: "field",
   },
 ];
+
 export const settingsInput = {
   autosave_progress: true,
   facebook_pixel: "4347295725729872",
@@ -186,6 +191,7 @@ export const settingsInput = {
   show_time_to_complete: true,
   show_typeform_branding: false,
 };
+
 export const thankyouScreensInput = [
   {
     attachment: {
@@ -203,15 +209,18 @@ export const thankyouScreensInput = [
     title: "Thank you Title",
   },
 ];
+
 export const themeInput = {
   href: "https://api.typeform.com/themes/qHWOQ7",
 };
+
 export const variableInput = {
   age: 28,
   name: "typeform",
   price: 10.59,
   score: 0,
 };
+
 export const welcomeScreensInput = [
   {
     layout: {
@@ -239,6 +248,7 @@ export const welcomeScreensInput = [
     title: "Welcome Title",
   },
 ];
+
 export const workspaceInput = {
   href: "https://api.typeform.com/workspaces/Aw33bz",
 };

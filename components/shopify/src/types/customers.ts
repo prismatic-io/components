@@ -14,18 +14,22 @@ interface Address {
   provinceCode: string | null;
   countryCodeV2: string | null;
 }
+
 interface Order {
   id: string | null;
   name: string | null;
 }
+
 interface MarketingConsent {
   marketingState: string | null;
   marketingOptInLevel: string | null;
   consentUpdatedAt: string | null;
 }
+
 interface SmsMarketingConsent extends MarketingConsent {
   consentCollectedFrom: string | null;
 }
+
 export interface Customer {
   id: string | null;
   email: string | null;

@@ -5,6 +5,7 @@ import { updateTicketInputs } from "../../inputs";
 import { ticketSchema } from "../../outputSchemas";
 import type { TicketUpdateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateTicket = action({
   display: {
     label: "Update Ticket",
@@ -19,6 +20,7 @@ export const updateTicket = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: TicketUpdateVo = {
         title: params.title || undefined,
         description: params.description || undefined,
@@ -30,6 +32,7 @@ export const updateTicket = action({
         priority: params.priority || undefined,
         additionalAttributes: resolveAdditionalAttributes(params, context),
       };
+
       context.logger.info("Updating ticket in Arena", {
         ticketGuid: params.ticketGuid,
         hasTitle: !!params.title,
@@ -48,10 +51,12 @@ export const updateTicket = action({
           ? params.attributeDefinitions.length
           : 0,
       });
+
       const { data } = await client.put(
         `/tickets/${params.ticketGuid}`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Ticket");

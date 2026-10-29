@@ -5,6 +5,7 @@ import { getClient } from "../../client";
 import { listInvoiceInputs } from "../../inputs/invoice";
 import { listInvoiceExamplePayload } from "../../examplePayloads";
 import { RESOURCE_CONFIG } from "../../constants";
+
 export const listInvoice = action({
   display: {
     label: "List Invoices",
@@ -19,6 +20,7 @@ export const listInvoice = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       start,
       max,
@@ -31,17 +33,17 @@ export const listInvoice = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       RESOURCE_CONFIG.invoices.endpoint,
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listInvoiceExamplePayload.data,
   }),
   inputs: listInvoiceInputs,

@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { updateCommentExamplePayload } from "../../examplePayloads";
 import { updateCommentInputs } from "../../inputs";
 import type { UpdateCommentBody } from "../../types";
+
 export const updateComment = action({
   display: {
     label: "Update Comment",
@@ -21,7 +22,9 @@ export const updateComment = action({
       assignee: assigneeId,
       resolved,
     };
+
     const { data } = await client.put(`/comment/${commentId}`, body);
+
     return {
       data,
     };

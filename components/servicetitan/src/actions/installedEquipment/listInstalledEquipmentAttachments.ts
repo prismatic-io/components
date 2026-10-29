@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listInstalledEquipmentAttachmentsExamplePayload } from "../../examplePayloads";
 import { listInstalledEquipmentAttachmentsInputs } from "../../inputs";
+
 export const listInstalledEquipmentAttachments = action({
   display: {
     label: "List Installed Equipment Attachments",

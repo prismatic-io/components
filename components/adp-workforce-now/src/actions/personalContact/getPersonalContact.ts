@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPersonalContactExamplePayload } from "../../examplePayloads";
 import { getPersonalContactInputs } from "../../inputs";
 import { getPersonalContactOutputSchema } from "../../outputSchemas";
+
 export const getPersonalContact = action({
   display: {
     label: "Get Personal Contact",

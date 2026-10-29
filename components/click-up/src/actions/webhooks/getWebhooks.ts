@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getWebhooksExamplePayload } from "../../examplePayloads";
 import { getWebhooksInputs } from "../../inputs";
 import { getWebhooksOutputSchema } from "../../outputSchemas";
+
 export const getWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -19,7 +20,9 @@ export const getWebhooks = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/team/${teamId}/webhook`);
+
     return {
       data,
     };

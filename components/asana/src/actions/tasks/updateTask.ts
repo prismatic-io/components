@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { updateTaskExamplePayload } from "../../examplePayloads";
 import { updateTaskInputs } from "../../inputs";
 import { taskResponseSchema } from "../../outputSchemas";
+
 export const updateTask = action({
   display: {
     label: "Update Task",
@@ -14,6 +15,7 @@ export const updateTask = action({
       params.asanaConnection,
       context.debug.enabled,
     );
+
     const taskData = {
       data: {
         approval_status: params.taskStatus.approvalStatus,
@@ -37,6 +39,7 @@ export const updateTask = action({
         html_notes: params.htmlNotes,
       },
     };
+
     const { data } = await client.put(`/tasks/${params.taskId}`, taskData, {
       params: {
         opt_fields: params.optFields,

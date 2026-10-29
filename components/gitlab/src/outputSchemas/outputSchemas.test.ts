@@ -30,12 +30,12 @@ import {
   projectSchema,
   userSchema,
 } from "./index";
+
 const undocumented = (
-  schema: {
-    properties: Record<string, unknown>;
-  },
+  schema: { properties: Record<string, unknown> },
   example: Record<string, unknown>,
 ) => Object.keys(example).filter((key) => !(key in schema.properties));
+
 describe("output schemas cover their examples", () => {
   test.each([
     ["project", projectSchema, getProjectExamplePayload.data],
@@ -55,10 +55,12 @@ describe("output schemas cover their examples", () => {
   ])("%s", (_name, schema, example) => {
     expect(undocumented(schema, example)).toEqual([]);
   });
+
   test("merge request schema omits deprecated fields", () => {
     expect(mergeRequestSchema.properties).not.toHaveProperty("merge_status");
     expect(mergeRequestSchema.properties).not.toHaveProperty("merged_by");
   });
+
   test("current user and group detail extend the shared shapes", () => {
     expect(currentUserSchema.properties).toHaveProperty("email");
     expect(groupDetailSchema.properties).toHaveProperty("shared_with_groups");

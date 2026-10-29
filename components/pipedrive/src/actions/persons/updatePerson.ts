@@ -4,6 +4,7 @@ import { updatePersonInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { updatePersonExamplePayload } from "../../examplePayloads";
 import { singlePersonV2OutputSchema } from "../../outputSchemas";
+
 export const updatePerson = action({
   display: {
     label: "Update Person",

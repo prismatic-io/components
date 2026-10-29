@@ -12,8 +12,10 @@ import type {
   PollingCursor,
   PollingState,
 } from "../types";
+
 export const arenaEventsPath = (integrationGuid: string): string =>
   `${ARENA_OUTBOUND_INTEGRATIONS_PATH}/${integrationGuid}/events`;
+
 const assertValidDateString = (value: unknown, label: string): string => {
   if (typeof value !== "string" || Number.isNaN(Date.parse(value))) {
     throw new Error(
@@ -22,6 +24,7 @@ const assertValidDateString = (value: unknown, label: string): string => {
   }
   return value;
 };
+
 const assertValidOffset = (value: unknown): number => {
   if (typeof value !== "number" || !Number.isInteger(value) || value < 0) {
     throw new Error(
@@ -30,12 +33,14 @@ const assertValidOffset = (value: unknown): number => {
   }
   return value;
 };
+
 export interface ResolveCursorParams {
   incoming?: PollingCursor;
   state: PollingState;
   lookBackDate?: string;
   now: string;
 }
+
 export const resolveCursor = ({
   incoming,
   state,
@@ -54,6 +59,7 @@ export const resolveCursor = ({
       offset: assertValidOffset(resumed.offset),
     };
   }
+
   if (state.lastPolledAt) {
     return {
       windowStart: assertValidDateString(
@@ -64,6 +70,7 @@ export const resolveCursor = ({
       offset: 0,
     } satisfies PollingCursor;
   }
+
   if (lookBackDate) {
     return {
       windowStart: lookBackDate,
@@ -71,16 +78,16 @@ export const resolveCursor = ({
       offset: 0,
     } satisfies PollingCursor;
   }
+
   return {
     windowStart: now,
     windowEnd: now,
     offset: 0,
   } satisfies PollingCursor;
 };
+
 export const resolveCursorSafely = (
-  params: ResolveCursorParams & {
-    logger: Pick<ActionLogger, "warn">;
-  },
+  params: ResolveCursorParams & { logger: Pick<ActionLogger, "warn"> },
 ): PollingCursor => {
   const { incoming, state, lookBackDate, now, logger } = params;
   try {
@@ -115,17 +122,16 @@ export const resolveCursorSafely = (
     }
   }
 };
+
 export const windowIsEmpty = (cursor: PollingCursor): boolean =>
   Date.parse(cursor.windowStart) >= Date.parse(cursor.windowEnd);
+
 export const fetchArenaEventsPage = async (
   client: HttpClient,
   integrationGuid: string,
   cursor: PollingCursor,
   itemsReconciled?: string,
-): Promise<{
-  records: ArenaRecord[];
-  nextCursor: PollingCursor | null;
-}> => {
+): Promise<{ records: ArenaRecord[]; nextCursor: PollingCursor | null }> => {
   const { data } = await client.get<ArenaListResponse<ArenaRecord>>(
     arenaEventsPath(integrationGuid),
     {
@@ -138,13 +144,16 @@ export const fetchArenaEventsPage = async (
       },
     },
   );
+
   const records = data?.results ?? [];
   const nextCursor =
     records.length < ARENA_MAX_PAGE_SIZE
       ? null
       : { ...cursor, offset: cursor.offset + records.length };
+
   return { records, nextCursor };
 };
+
 export const resolvePollingRecordChanges = (
   data: ArenaChangesObject | undefined,
 ): ArenaRecordChange[] => {

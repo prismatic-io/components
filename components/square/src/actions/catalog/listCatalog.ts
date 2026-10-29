@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { listCatalogExamplePayload } from "../../examplePayloads";
 import { listCatalogInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listCatalog = action({
   display: {
     label: "List Catalog",
@@ -17,6 +18,7 @@ export const listCatalog = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const data = await fetchAllPages(
       client,
       "/v2/catalog/list",
@@ -30,6 +32,7 @@ export const listCatalog = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   inputs: listCatalogInputs,

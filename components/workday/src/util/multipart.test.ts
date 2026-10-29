@@ -1,5 +1,6 @@
 import { parseJsonDataPart } from "../testHelpers";
 import { createMultipartBody } from "./multipart";
+
 describe("createMultipartBody", () => {
   it("puts the request JSON in an application/json jsonData part", () => {
     const { body, headers } = createMultipartBody({
@@ -7,12 +8,14 @@ describe("createMultipartBody", () => {
       comment: undefined,
     });
     const text = body.toString();
+
     expect(headers["content-type"]).toMatch(/^multipart\/form-data; boundary=/);
     expect(parseJsonDataPart(text)).toEqual({
       days: [{ date: "2026-10-20" }],
     });
     expect(text).not.toContain('name="file"');
   });
+
   it("adds the binary file part with its name and content type", () => {
     const { body } = createMultipartBody(
       { fileName: "invoice.pdf" },
@@ -25,6 +28,7 @@ describe("createMultipartBody", () => {
       },
     );
     const text = body.toString();
+
     expect(text).toContain(
       'name="file"; filename="invoice.pdf"\r\nContent-Type: application/pdf',
     );

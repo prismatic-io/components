@@ -12,6 +12,7 @@ import {
   getJobCreationMs,
   resolvePollingRecordChanges,
 } from "../utils/polling";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Jobs",
@@ -29,12 +30,14 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+
     const lookBackIso = params.lookBackDate as string | undefined;
     const seedTime =
       lookBackIso && lookBackIso !== ""
         ? new Date(lookBackIso).toISOString()
         : now;
     const lastPolledAt = state?.lastPolledAt ?? seedTime;
+
     const client = createClient(params.connectionInput);
     const { jobs, truncated } = await fetchJobsSince(
       client,
@@ -42,6 +45,7 @@ export const pollChangesTrigger = pollingTrigger({
       new Date(lastPolledAt).getTime(),
       state?.drainUntil,
     );
+
     if (truncated) {
       const oldestMs = jobs.reduce<number | null>((min, job) => {
         const ms = getJobCreationMs(job);
@@ -60,11 +64,13 @@ export const pollChangesTrigger = pollingTrigger({
         lastPolledAt: state?.highWater ?? now,
       } as PollingState);
     }
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled BigQuery jobs: ${jobs.length} fetched, truncated=${truncated}`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created: jobs } } },
       polledNoChanges: jobs.length === 0,

@@ -1,12 +1,18 @@
 import type { PollResourceConfig } from "./types";
+
 export const PRODUCTION_URL = "https://api.servicetitan.io";
+
 export const INTEGRATION_URL = "https://api-integration.servicetitan.io";
+
 export const URLS: Record<string, string> = {
   production: PRODUCTION_URL,
   integration: INTEGRATION_URL,
 };
+
 export const MAX_BATCHED_RECORDS = 1000;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
   jobs: {
     label: "Jobs",

@@ -5,6 +5,7 @@ import {
   cleanStringInput,
 } from "../util";
 import { connection, fetchAll, reportUrl } from "./common";
+
 export const reportPrompts = input({
   label: "Prompts",
   comments:
@@ -16,6 +17,7 @@ export const reportPrompts = input({
   example: '{"Effective_as_of_Date": "2026-10-01"}',
   clean: cleanKeyValueListInput,
 });
+
 const reportFormat = input({
   label: "Format",
   comments: "The output format Workday returns the report in.",
@@ -29,6 +31,7 @@ const reportFormat = input({
   ],
   clean: util.types.toString,
 });
+
 const wqlQuery = input({
   label: "Query",
   comments:
@@ -39,6 +42,7 @@ const wqlQuery = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const wqlTenant = input({
   label: "Tenant",
   comments:
@@ -49,6 +53,7 @@ export const wqlTenant = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const wqlPagination = structuredObjectInput({
   label: "Pagination",
   comments: "Page-size and starting-row controls for the query results.",
@@ -76,12 +81,14 @@ const wqlPagination = structuredObjectInput({
     }),
   },
 });
+
 export const getRaasReportInputs = {
   connection,
   reportUrl,
   format: reportFormat,
   prompts: reportPrompts,
 };
+
 export const runWqlQueryInputs = {
   connection,
   query: wqlQuery,

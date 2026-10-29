@@ -4,6 +4,7 @@ import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhook as deleteWebhookFn } from "../../util";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",

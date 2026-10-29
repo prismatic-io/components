@@ -36,6 +36,7 @@ import type {
   WqlCursorOptions,
 } from "../types";
 import { parseReportUrl } from "./workdayUrls";
+
 const stableStringify = (value: unknown): string => {
   if (Array.isArray(value)) {
     return `[${value.map(stableStringify).join(",")}]`;
@@ -50,8 +51,10 @@ const stableStringify = (value: unknown): string => {
   }
   return JSON.stringify(value) ?? "null";
 };
+
 const toWqlDateTimeLiteral = (iso: string): string =>
   `'${iso.slice(0, ISO_DATE_LENGTH)} ${iso.slice(ISO_TIME_START, ISO_SECONDS_LENGTH)}Z'`;
+
 const fingerprintRecord = (
   record: WorkdayRecord,
   recordKeyField: string,
@@ -67,6 +70,7 @@ const fingerprintRecord = (
     .digest("hex")
     .slice(0, ISO_MINUTES_LENGTH);
 };
+
 const capSeenEntries = (
   entries: string[],
   noun: string,
@@ -79,6 +83,7 @@ const capSeenEntries = (
   }
   return entries.slice(-POLLING_SEEN_MAX);
 };
+
 export const getPollingWindow = (
   state: PollingState | undefined,
   lookBackDate: string,
@@ -98,6 +103,7 @@ export const getPollingWindow = (
   ).toISOString();
   return { since, isInitialSync: false, isBaseline: true };
 };
+
 export const getWqlWindow = (
   state: PollingState | undefined,
   lookBackDate: string,
@@ -113,6 +119,7 @@ export const getWqlWindow = (
         isBaseline: false,
       }
     : getPollingWindow(state, lookBackDate, now);
+
 export const getEventStepsWindow = (
   state: PollingState | undefined,
   lookBackDate: string,
@@ -127,6 +134,7 @@ export const getEventStepsWindow = (
   ).toISOString();
   return { since, isInitialSync: false, isBaseline: !state?.lastPolledAt };
 };
+
 export const formatRaasWatermark = (
   iso: string,
   format: WatermarkFormat,
@@ -134,6 +142,7 @@ export const formatRaasWatermark = (
   format === "date"
     ? iso.slice(0, ISO_DATE_LENGTH)
     : `${iso.slice(0, ISO_SECONDS_LENGTH)}Z`;
+
 export const applyWqlWatermark = (query: string, since: string): string => {
   if (!query.includes(WQL_LAST_POLLED_AT_PLACEHOLDER)) {
     throw new Error(
@@ -144,6 +153,7 @@ export const applyWqlWatermark = (query: string, since: string): string => {
     .split(WQL_LAST_POLLED_AT_PLACEHOLDER)
     .join(toWqlDateTimeLiteral(since));
 };
+
 export const buildRaasPollingUrl = (
   reportUrl: string,
   baseUrl: string,
@@ -159,6 +169,7 @@ export const buildRaasPollingUrl = (
   url.searchParams.set("format", "json");
   return url;
 };
+
 export const fetchRaasReportRows = async (
   client: HttpClient,
   url: URL,
@@ -174,6 +185,7 @@ export const fetchRaasReportRows = async (
   }
   return data.Report_Entry ?? [];
 };
+
 export const fetchEventStepsSince = async (
   client: HttpClient,
   filters: EventStepFilters,
@@ -200,6 +212,7 @@ export const fetchEventStepsSince = async (
     `More than ${EVENT_STEPS_MAX_PAGES * pageSize} event steps were created in one window. Narrow the trigger with Business Process or Step Type.`,
   );
 };
+
 export const selectChangedRecords = (
   records: WorkdayRecord[],
   recordKeyField: string,
@@ -223,6 +236,7 @@ export const selectChangedRecords = (
   }
   return { changed, seen: capSeenEntries([...seen], "rows", logger) };
 };
+
 const parseWqlDateValue = (value: unknown): number | undefined => {
   if (typeof value !== "string") return undefined;
   const match = WQL_DATE_VALUE_PATTERN.exec(value.trim());
@@ -233,6 +247,7 @@ const parseWqlDateValue = (value: unknown): number | undefined => {
   const parsed = Date.parse(`${date}T${time}${isoOffset}`);
   return Number.isNaN(parsed) ? undefined : parsed;
 };
+
 export const advanceWqlWatermark = (
   records: WorkdayRecord[],
   { dateField, recordKeyField, floor, overlapMs }: WqlCursorOptions,
@@ -270,6 +285,7 @@ export const advanceWqlWatermark = (
         : undefined,
   };
 };
+
 export const selectNewEventSteps = (
   steps: WorkdayEventStep[],
   window: PollingWindow,
@@ -294,18 +310,21 @@ export const selectNewEventSteps = (
     seen: capSeenEntries([...new Set(seen)], "event steps", logger),
   };
 };
+
 export const resolveRecordChanges = (
   data: RecordChangesObject | undefined,
 ): RecordChange[] =>
   (data?.changed ?? []).map(
     (record): RecordChange => ({ changeType: "changed", record }),
   );
+
 export const resolveEventStepChanges = (
   data: EventStepChangesObject | undefined,
 ): EventStepChange[] =>
   (data?.created ?? []).map(
     (record): EventStepChange => ({ changeType: "created", record }),
   );
+
 export const assertWqlWindowComplete = (
   response: WorkdayListResponse,
   isInitialSync: boolean,

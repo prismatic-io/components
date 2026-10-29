@@ -4,6 +4,7 @@ import { createTopicExamplePayload } from "../../examplePayloads";
 import { createTopicInputs } from "../../inputs";
 import { createTopicOutputSchema } from "../../outputSchemas";
 import type { Topic } from "../../types";
+
 export const createTopic = action({
   display: {
     label: "Create Topic",
@@ -21,9 +22,12 @@ export const createTopic = action({
         description: topicDescription,
       },
     };
-    const { data } = await client.post<{
-      topic: Topic;
-    }>("/community/topics", payload);
+
+    const { data } = await client.post<{ topic: Topic }>(
+      "/community/topics",
+      payload,
+    );
+
     return {
       data,
     };

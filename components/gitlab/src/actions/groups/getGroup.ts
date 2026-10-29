@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getGroupExamplePayload } from "../../examplePayloads";
 import { getGroupInputs } from "../../inputs";
 import { getGroupOutputSchema } from "../../outputSchemas";
+
 export const getGroup = action({
   display: {
     label: "Get Group",

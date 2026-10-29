@@ -2,10 +2,12 @@ import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/http";
 import { adobeIOConnection } from "./connections";
 import { API_BASE_URL } from "./constants";
+
 export const validateConnection = (connection: Connection) => {
   if (connection.key !== adobeIOConnection.key) {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
+
   if (!connection.token?.access_token) {
     throw new ConnectionError(
       connection,
@@ -13,6 +15,7 @@ export const validateConnection = (connection: Connection) => {
     );
   }
 };
+
 export const getClient = (connection: Connection, debug: boolean) => {
   validateConnection(connection);
   return createClient({

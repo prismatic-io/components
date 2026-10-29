@@ -10,6 +10,7 @@ import {
   recordNoInput,
   taxInfo,
 } from "./common";
+
 export const createContactInputs = {
   connection,
   contactNameInput: {
@@ -23,11 +24,13 @@ export const createContactInputs = {
   contactDetails,
   taxInfo,
 };
+
 export const getContactInputs = {
   connection,
   fieldsInput,
   recordNoInput: { ...recordNoInput, dataSource: "selectContact" },
 };
+
 export const updateContactInputs = {
   connection,
   contactNameInput: {

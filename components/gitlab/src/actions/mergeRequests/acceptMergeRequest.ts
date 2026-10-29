@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { acceptMergeRequestExamplePayload } from "../../examplePayloads";
 import { acceptMergeRequestInputs } from "../../inputs";
 import { acceptMergeRequestOutputSchema } from "../../outputSchemas";
+
 export const acceptMergeRequest = action({
   display: {
     label: "Accept Merge Request",
@@ -30,9 +31,8 @@ export const acceptMergeRequest = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => acceptMergeRequestExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    acceptMergeRequestExamplePayload,
   examplePayload: acceptMergeRequestExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

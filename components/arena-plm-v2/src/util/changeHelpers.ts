@@ -1,5 +1,6 @@
 import type { ImplementationTaskAssigneeVo } from "../types";
 import { toOptionalString } from "./cleanHelpers";
+
 export const resolveImplementationTaskAssignee = (
   userGuid: unknown,
   userGroupGuid: unknown,
@@ -8,9 +9,11 @@ export const resolveImplementationTaskAssignee = (
   if (user) {
     return { user: { guid: user } };
   }
+
   const userGroup = toOptionalString(userGroupGuid);
   if (userGroup) {
     return { userGroup: { guid: userGroup } };
   }
+
   return undefined;
 };

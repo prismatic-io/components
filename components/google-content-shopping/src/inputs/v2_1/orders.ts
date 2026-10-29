@@ -5,6 +5,7 @@ import {
   valueListInputClean,
 } from "../../util";
 import { connectionInput, fetchAll, merchantId, pagination } from "./common";
+
 const orderId = input({
   label: "Order ID",
   type: "string",
@@ -15,6 +16,7 @@ const orderId = input({
   placeholder: "Enter Order ID",
   required: true,
 });
+
 const returnId = input({
   label: "Return ID",
   type: "string",
@@ -25,6 +27,7 @@ const returnId = input({
   placeholder: "Enter Return ID",
   required: true,
 });
+
 const operationId = input({
   label: "Operation ID",
   type: "string",
@@ -35,6 +38,7 @@ const operationId = input({
   placeholder: "Enter Operation ID",
   required: false,
 });
+
 const fullChargeReturnShippingCost = input({
   label: "Full Charge Return Shipping Cost",
   type: "boolean",
@@ -43,6 +47,7 @@ const fullChargeReturnShippingCost = input({
     "When true, the customer will be charged for return shipping costs.",
   required: false,
 });
+
 const placedDateStart = input({
   label: "Placed Date Start",
   type: "string",
@@ -53,6 +58,7 @@ const placedDateStart = input({
   placeholder: "Enter Start Date (ISO 8601 Format)",
   required: false,
 });
+
 const placedDateEnd = input({
   label: "Placed Date End",
   type: "string",
@@ -63,6 +69,7 @@ const placedDateEnd = input({
   placeholder: "Enter End Date (ISO 8601 Format)",
   required: false,
 });
+
 const reasonText = input({
   label: "Reason Text",
   type: "string",
@@ -72,6 +79,7 @@ const reasonText = input({
   placeholder: "Enter Reason Text",
   required: false,
 });
+
 const createdStartDate = input({
   label: "Created Start Date",
   type: "string",
@@ -82,6 +90,7 @@ const createdStartDate = input({
   placeholder: "Enter Start Date (ISO 8601 Format)",
   required: false,
 });
+
 const createdEndDate = input({
   label: "Created End Date",
   type: "string",
@@ -92,6 +101,7 @@ const createdEndDate = input({
   placeholder: "Enter End Date (ISO 8601 Format)",
   required: false,
 });
+
 const acknowledged = input({
   label: "Acknowledged",
   type: "boolean",
@@ -100,6 +110,7 @@ const acknowledged = input({
     "When true, filters for orders that have been acknowledged. When false, filters for orders that have not been acknowledged.",
   required: false,
 });
+
 const returnMethodType = input({
   label: "Return Method Type",
   type: "string",
@@ -109,6 +120,7 @@ const returnMethodType = input({
   placeholder: "Enter Return Method Type",
   required: false,
 });
+
 const orderBy = input({
   label: "Order By",
   type: "string",
@@ -127,6 +139,7 @@ const orderBy = input({
   ],
   required: false,
 });
+
 const statuses = input({
   label: "Statuses",
   type: "string",
@@ -138,6 +151,7 @@ const statuses = input({
   placeholder: "Select order statuses",
   clean: valueListInputClean,
 });
+
 const reason = input({
   label: "Reason",
   type: "string",
@@ -192,6 +206,7 @@ const reason = input({
     },
   ],
 });
+
 const shipmentTypes = input({
   label: "Shipment Types",
   type: "string",
@@ -203,6 +218,7 @@ const shipmentTypes = input({
   placeholder: "Enter Shipment Types",
   clean: valueListInputClean,
 });
+
 const shipmentStatus = input({
   label: "Shipment Status",
   type: "string",
@@ -214,6 +230,7 @@ const shipmentStatus = input({
   placeholder: "Enter Shipment Statuses",
   clean: valueListInputClean,
 });
+
 const shipmentStates = input({
   label: "Shipment States",
   type: "string",
@@ -225,6 +242,7 @@ const shipmentStates = input({
   placeholder: "Enter Shipment States",
   clean: valueListInputClean,
 });
+
 const googleOrderIds = input({
   label: "Google Order IDs",
   type: "string",
@@ -236,6 +254,7 @@ const googleOrderIds = input({
   placeholder: "Enter Google Order IDs",
   clean: valueListInputClean,
 });
+
 const shipmentTrackingNumbers = input({
   label: "Shipping Tracking Numbers",
   type: "string",
@@ -247,6 +266,7 @@ const shipmentTrackingNumbers = input({
   placeholder: "Enter Tracking Numbers",
   clean: valueListInputClean,
 });
+
 const lineItems = input({
   label: "Line Items",
   type: "code",
@@ -261,6 +281,7 @@ const lineItems = input({
   ]),
   clean: jsonInputClean,
 });
+
 const returnItems = input({
   label: "Return Items",
   type: "code",
@@ -293,6 +314,7 @@ const returnItems = input({
   ]),
   clean: jsonInputClean,
 });
+
 const refundShippingFee = input({
   label: "Refund Shipping Fee",
   type: "code",
@@ -318,6 +340,7 @@ const refundShippingFee = input({
   ]),
   clean: jsonInputClean,
 });
+
 export const cancelOrderInputs = {
   connectionInput,
   merchantId,
@@ -326,11 +349,13 @@ export const cancelOrderInputs = {
   reason,
   reasonText,
 };
+
 export const getOrderInputs = {
   connectionInput,
   merchantId,
   orderId,
 };
+
 export const listOrdersInputs = {
   connectionInput,
   merchantId,
@@ -342,6 +367,7 @@ export const listOrdersInputs = {
   orderBy,
   acknowledged,
 };
+
 export const createOrderReturnInputs = {
   connectionInput,
   merchantId,
@@ -350,11 +376,13 @@ export const createOrderReturnInputs = {
   lineItems,
   returnMethodType,
 };
+
 export const getOrderReturnInputs = {
   connectionInput,
   merchantId,
   returnId,
 };
+
 export const listReturnsOrdersInputs = {
   connectionInput,
   merchantId,
@@ -370,6 +398,7 @@ export const listReturnsOrdersInputs = {
   googleOrderIds,
   shipmentTrackingNumbers,
 };
+
 export const processOrderReturnInputs = {
   connectionInput,
   merchantId,

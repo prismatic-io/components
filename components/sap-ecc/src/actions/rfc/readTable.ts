@@ -9,6 +9,7 @@ import {
   formatTableData,
   parseAndCheckFault,
 } from "../../util";
+
 export const readTable = action({
   display: {
     label: "Read Table",
@@ -31,14 +32,18 @@ export const readTable = action({
   ) => {
     const debug = context.debug.enabled;
     const client = createClient(connection, context, debug);
+
     let params = `<QUERY_TABLE>${tableName}</QUERY_TABLE>`;
     params += `<DELIMITER>${DEFAULT_DELIMITER}</DELIMITER>`;
+
     if (rowCount) {
       params += `<ROWCOUNT>${rowCount}</ROWCOUNT>`;
     }
+
     if (rowSkips) {
       params += `<ROWSKIPS>${rowSkips}</ROWSKIPS>`;
     }
+
     if (fields) {
       const fieldItems = fields
         .split(",")
@@ -46,16 +51,21 @@ export const readTable = action({
         .join("");
       params += `<FIELDS>${fieldItems}</FIELDS>`;
     }
+
     if (whereClause) {
       params += `<OPTIONS><item><TEXT>${whereClause}</TEXT></item></OPTIONS>`;
     } else {
       params += `<OPTIONS/>`;
     }
+
     params += `<DATA/>`;
+
     const soapBody = buildSoapEnvelope(RFC_FUNCTIONS.READ_TABLE, params);
+
     const { data } = await client.post(endpoint, soapBody, {
       headers: { SOAPAction: buildSoapAction(RFC_FUNCTIONS.READ_TABLE) },
     });
+
     const parsed = await parseAndCheckFault(data);
     const tableData = formatTableData(parsed, DEFAULT_DELIMITER);
     return { data: tableData };

@@ -1,4 +1,5 @@
 import { emptyResponseSchema } from "./common";
+
 const channelSchema = {
   type: "object" as const,
   properties: {
@@ -15,6 +16,9 @@ const channelSchema = {
   },
   required: [],
 };
+
 export const createDriveWebhookOutputSchema = channelSchema;
+
 export const createFileWebhookOutputSchema = channelSchema;
+
 export const deleteWebhookOutputSchema = emptyResponseSchema;

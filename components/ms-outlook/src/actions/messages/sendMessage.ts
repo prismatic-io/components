@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { sendMessageExamplePayload } from "../../examplePayloads";
 import { sendMessageInputs } from "../../inputs";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const sendMessage = action({
   display: {
     label: "Send Message",
@@ -29,6 +30,7 @@ export const sendMessage = action({
         ...params.dynamicAttachments,
       ] as Attachment[],
     };
+
     const url = computeEndpointBasedOnConnection(
       params.connection,
       "/me/sendMail",

@@ -11,6 +11,7 @@ export const departmentOutputSchema = {
   },
   required: [],
 };
+
 export const listDepartmentsOutputSchema = {
   type: "object" as const,
   properties: {

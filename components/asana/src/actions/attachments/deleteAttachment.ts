@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { deleteAttachmentExamplePayload } from "../../examplePayloads";
 import { deleteAttachmentInputs } from "../../inputs";
 import { emptyResponseOutputSchema } from "../../outputSchemas";
+
 export const deleteAttachment = action({
   display: {
     label: "Delete Attachment",

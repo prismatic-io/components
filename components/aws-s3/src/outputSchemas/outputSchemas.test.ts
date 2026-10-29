@@ -6,6 +6,7 @@ vi.mock("aws-utils", async () => {
     dynamicAccessAllInputs: {},
   };
 });
+
 import { getBucketLocation } from "../actions/buckets/getBucketLocation";
 import { generatePresignedForMultiparUploads } from "../actions/multipartUploads/generatePresignedForMultiparUploads";
 import { uploadPart } from "../actions/multipartUploads/uploadPart";
@@ -22,17 +23,20 @@ import {
   uploadPartExamplePayload,
   writeUploadStreamExamplePayload,
 } from "../examplePayloads";
+
 type Schema = {
   type?: string | string[];
   properties?: Record<string, Schema>;
   items?: Schema;
   required?: string[];
 };
+
 const typeOf = (value: unknown): string => {
   if (value === null) return "null";
   if (Array.isArray(value)) return "array";
   return typeof value;
 };
+
 const mismatches = (
   schema: Schema,
   value: unknown,
@@ -63,14 +67,10 @@ const mismatches = (
   }
   return [];
 };
+
 const schemaOf = (definition: { outputSchema?: unknown }): Schema | undefined =>
-  (
-    definition.outputSchema as
-      | {
-          schema?: Schema;
-        }
-      | undefined
-  )?.schema;
+  (definition.outputSchema as { schema?: Schema } | undefined)?.schema;
+
 describe("perform-synthesized output schemas", () => {
   it.each([
     [
@@ -94,17 +94,21 @@ describe("perform-synthesized output schemas", () => {
     ["uploadPart", uploadPart, uploadPartExamplePayload],
   ])("%s declares a schema its example payload satisfies", (_name, definition, payload) => {
     const schema = schemaOf(definition);
+
     expect(schema).toBeDefined();
     expect(mismatches(schema as Schema, payload.data)).toEqual([]);
   });
+
   it("uploadPart describes the part object the perform adds", () => {
     const part = schemaOf(uploadPart)?.properties?.part;
+
     expect(part).toEqual({
       type: "object",
       properties: { ETag: { type: "string" }, PartNumber: { type: "number" } },
       required: ["PartNumber"],
     });
   });
+
   it("the mismatch check rejects a payload of the wrong shape", () => {
     const schema: Schema = {
       type: "array",
@@ -114,6 +118,7 @@ describe("perform-synthesized output schemas", () => {
         required: ["partNumber"],
       },
     };
+
     expect(mismatches(schema, [{ url: 1 }])).toEqual([
       "data[0].partNumber: required but missing",
       "data[0].url: expected string, got number",

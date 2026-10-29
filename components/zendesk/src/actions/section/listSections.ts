@@ -5,6 +5,7 @@ import { listSectionsInputs } from "../../inputs";
 import { listSectionsOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Section } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listSections = action({
   display: {
     label: "List Sections",
@@ -20,6 +21,7 @@ export const listSections = action({
     const url = filters.categoryId
       ? `/help_center/${locale}/categories/${filters.categoryId}/sections`
       : `/help_center/${locale}/sections`;
+
     if (fetchAll) {
       const sections: Section[] = [];
       return {
@@ -34,28 +36,21 @@ export const listSections = action({
         },
       };
     }
+
     const params = {
       sort_by: filters.sortBy,
       sort_order: filters.sortOrder,
     };
+
     const { data } = await client.get<
-      | PaginatedResponse<{
-          sections: Section[];
-        }>
-      | {
-          sections: Section[];
-        }
+      PaginatedResponse<{ sections: Section[] }> | { sections: Section[] }
     >(url, {
       params,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> =>
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> =>
     fetchAll
       ? { data: { sections: listSectionsExamplePayload.data.sections } }
       : { data: listSectionsExamplePayload.data },

@@ -1,5 +1,6 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { DEFAULT_VERSION } from "../constants";
+
 export const oauth = oauth2Connection({
   key: "oauth",
   display: {
@@ -7,6 +8,7 @@ export const oauth = oauth2Connection({
     description: "Authenticate using OAuth 2.0 authorization code flow",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
+
   inputs: {
     authorizeUrl: {
       default: `https://www.facebook.com/v${DEFAULT_VERSION}.0/dialog/oauth`,

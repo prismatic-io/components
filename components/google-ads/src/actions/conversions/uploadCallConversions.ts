@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { uploadCallConversionsExamplePayload } from "../../examplePayloads";
 import { uploadCallConversionsInputs } from "../../inputs";
 import { uploadCallConversionsOutputSchema } from "../../outputSchemas";
+
 export const uploadCallConversions = action({
   display: {
     label: "Upload Call Conversions",
@@ -35,8 +36,7 @@ export const uploadCallConversions = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => uploadCallConversionsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    uploadCallConversionsExamplePayload,
   examplePayload: uploadCallConversionsExamplePayload,
 });

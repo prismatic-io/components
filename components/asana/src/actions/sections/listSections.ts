@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { listSectionsExamplePayload } from "../../examplePayloads";
 import { listSectionsInputs } from "../../inputs";
 import { listSectionsOutputSchema } from "../../outputSchemas";
+
 export const listSections = action({
   display: {
     label: "List Sections",

@@ -2,10 +2,12 @@ export interface PollingState {
   lastPolledAt?: string;
   knownIds?: string[];
 }
+
 export interface GongRecord {
   id: string;
   [key: string]: unknown;
 }
+
 export interface GongListResponse {
   records: {
     totalRecords: number;
@@ -15,10 +17,12 @@ export interface GongListResponse {
   };
   [key: string]: unknown;
 }
+
 export interface PollingChangesObject {
   created?: GongRecord[];
   updated?: GongRecord[];
 }
+
 export interface PollingRecordChange {
   changeType: "created" | "updated";
   record: GongRecord;

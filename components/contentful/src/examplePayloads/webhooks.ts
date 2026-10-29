@@ -1,7 +1,6 @@
 import type { WebhookProps } from "contentful-management";
-export const updateWebhookExamplePayload: {
-  data: WebhookProps;
-} = {
+
+export const updateWebhookExamplePayload: { data: WebhookProps } = {
   data: {
     sys: {
       type: "WebhookDefinition",
@@ -49,16 +48,21 @@ export const updateWebhookExamplePayload: {
     active: true,
   },
 };
+
 export const createWebhookExamplePayload = {
   data: updateWebhookExamplePayload.data,
 };
+
 export const getWebhookExamplePayload = {
   data: updateWebhookExamplePayload.data,
 };
+
 export const listWebhooksExamplePayload = {
   data: [updateWebhookExamplePayload.data],
 };
+
 export const deleteWebhookExamplePayload = { data: {} };
+
 export const deleteInstancedWebhooksExamplePayload = {
   data: { webhooksDeleted: 1 },
 };

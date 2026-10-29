@@ -9,12 +9,10 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { hubspotOAuth, hubspotOAuthTrigger } from "../connections";
 import type { GetSubscriptionPayload, WebhookSettings } from "../types";
 import { hubspotPaths } from "../constants";
+
 export const checkDeveloperApiKeyAndAppId = (
   hubspotConnection: Connection,
-): {
-  developerApiKey: string;
-  appId: string;
-} => {
+): { developerApiKey: string; appId: string } => {
   const developerApiKey = util.types.toString(
     hubspotConnection.fields.developerApiKey,
   );
@@ -26,6 +24,7 @@ export const checkDeveloperApiKeyAndAppId = (
   }
   return { developerApiKey, appId };
 };
+
 export const appWebhookSettingsExists = async (
   client: HttpClient,
   appId: string,
@@ -41,22 +40,9 @@ export const appWebhookSettingsExists = async (
     );
     return returnSettingsWhenExists ? data : true;
   } catch (error) {
-    if (
-      (
-        error as {
-          response: {
-            status: number;
-          };
-        }
-      ).response?.status
-    ) {
-      const status = (
-        error as {
-          response: {
-            status: number;
-          };
-        }
-      ).response.status;
+    if ((error as { response: { status: number } }).response?.status) {
+      const status = (error as { response: { status: number } }).response
+        .status;
       if (status === 404) {
         return false;
       }
@@ -65,6 +51,7 @@ export const appWebhookSettingsExists = async (
     throw error;
   }
 };
+
 export const appWebhookSubscriptionsExists = async (
   client: HttpClient,
   appId: string,
@@ -78,8 +65,10 @@ export const appWebhookSubscriptionsExists = async (
       params: { hapikey: developerApiKey },
     },
   );
+
   return allSubscriptions.length > 0;
 };
+
 export const deleteAllAppSubscriptions = async (
   client: HttpClient,
   appId: string,
@@ -94,6 +83,7 @@ export const deleteAllAppSubscriptions = async (
       params: queryParams,
     },
   );
+
   const deleteSubscriptionPromises = data.results.map(({ id }) =>
     client.delete(hubspotPaths.appWebhooks(appId, `/subscriptions/${id}`), {
       params: queryParams,
@@ -101,6 +91,7 @@ export const deleteAllAppSubscriptions = async (
   );
   await Promise.all(deleteSubscriptionPromises);
 };
+
 export const deleteAppSettings = async (
   client: HttpClient,
   appId: string,
@@ -113,19 +104,17 @@ export const deleteAppSettings = async (
     params: queryParams,
   });
 };
+
 export const buildSubscriptionPayloads = (
   eventTypes: string[],
   propertyChangeProperties: Record<string, unknown> = {},
-): {
-  active: boolean;
-  eventType: string;
-  propertyName?: string;
-}[] => {
+): { active: boolean; eventType: string; propertyName?: string }[] => {
   const payloads: {
     active: boolean;
     eventType: string;
     propertyName?: string;
   }[] = [];
+
   for (const eventType of eventTypes) {
     if (eventType.endsWith(".propertyChange")) {
       const propertyCsv = propertyChangeProperties[eventType] as
@@ -152,8 +141,10 @@ export const buildSubscriptionPayloads = (
       payloads.push({ active: true, eventType });
     }
   }
+
   return payloads;
 };
+
 export const createAppWebhookConfiguration = async (
   client: HttpClient,
   eventTypes: string[],
@@ -166,8 +157,11 @@ export const createAppWebhookConfiguration = async (
     eventTypes,
     propertyChangeProperties,
   );
+
   await deleteAllAppSubscriptions(client, appId, developerApiKey);
+
   await deleteAppSettings(client, appId, developerApiKey);
+
   await client.put<WebhookSettings>(
     hubspotPaths.appWebhooks(appId, "/settings"),
     {
@@ -183,6 +177,7 @@ export const createAppWebhookConfiguration = async (
       },
     },
   );
+
   await Promise.all(
     subscriptions.map((subscription) =>
       client.post(
@@ -197,6 +192,7 @@ export const createAppWebhookConfiguration = async (
     ),
   );
 };
+
 const validateWebhook = (
   context: ActionContext,
   payload,
@@ -207,7 +203,9 @@ const validateWebhook = (
     "x-hubspot-signature-v3": signature,
     "x-hubspot-request-timestamp": timestamp,
   } = headers;
+
   const requestBody = payload.rawBody.data.toString();
+
   if (!context.isSimulatedTestExecution) {
     const hash = crypto
       .createHmac("sha256", clientSecret)
@@ -219,16 +217,16 @@ const validateWebhook = (
       );
     }
   }
+
   return Promise.resolve({
     payload,
   });
 };
+
 export const webhookPerformFunction = async (
   context: ActionContext,
   payload,
-  inputs: {
-    hubspotConnection: Connection;
-  },
+  inputs: { hubspotConnection: Connection },
 ) => {
   if (inputs.hubspotConnection.key !== hubspotOAuth.key) {
     throw new ConnectionError(
@@ -239,12 +237,11 @@ export const webhookPerformFunction = async (
   const clientSecret = getClientSecret(inputs.hubspotConnection);
   return validateWebhook(context, payload, clientSecret);
 };
+
 export const triggerWebhookPerformFunction = async (
   context: ActionContext,
   payload,
-  inputs: {
-    hubspotConnection: Connection;
-  },
+  inputs: { hubspotConnection: Connection },
 ) => {
   if (inputs.hubspotConnection.key !== hubspotOAuthTrigger.key) {
     throw new ConnectionError(
@@ -255,6 +252,7 @@ export const triggerWebhookPerformFunction = async (
   const clientSecret = getClientSecret(inputs.hubspotConnection);
   return validateWebhook(context, payload, clientSecret);
 };
+
 export const getClientSecret = (connection: Connection): string => {
   return util.types.toString(connection.fields.clientSecret);
 };

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const recordType = input({
   label: "Record Type",
   type: "string",
@@ -9,6 +10,7 @@ export const recordType = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const recordId = input({
   label: "Record ID",
   type: "string",
@@ -19,6 +21,7 @@ export const recordId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const defaultRecordInputs = {
   recordType,
   recordId,

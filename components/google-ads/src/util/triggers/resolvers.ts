@@ -7,6 +7,7 @@ import type {
   ChangeHistoryBatchItem,
   ChangeHistoryChangesObject,
 } from "../../types";
+
 export const resolveCampaignChanges = (
   data: CampaignChangesObject | undefined,
 ): CampaignChangeBatchItem[] => {
@@ -23,6 +24,7 @@ export const resolveCampaignChanges = (
     }),
   );
 };
+
 export const resolveChangeHistoryItems = (
   data: ChangeHistoryChangesObject | undefined,
 ): ChangeHistoryBatchItem[] => {
@@ -40,6 +42,7 @@ export const resolveChangeHistoryItems = (
     }),
   );
 };
+
 export const resolveBudgetAlerts = (
   data: BudgetAlertChangesObject | undefined,
 ): BudgetAlertBatchItem[] => {

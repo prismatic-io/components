@@ -9,6 +9,7 @@ import type {
   RipplingRecordChange,
 } from "../types";
 import { fetchAllRecords, resolvePollingRecordChanges } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -24,31 +25,41 @@ export const pollChangesTrigger = pollingTrigger({
   },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
+
     const pollState = context.polling.getState() as unknown as PollingState;
     const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt: string =
       pollState?.lastPolledAt || params.lookBackDate || now;
+
     const resourceType = params.pollResourceType;
     const endpoint = `/${resourceType}`;
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polling Rippling ${resourceType} for changes from ${lastPolledAt} to ${now}`,
       );
     }
+
     const client = createClient(
       params.connection,
       API_VERSION.V2,
       context.debug.enabled,
     );
+
     const supportsDateFilter =
       POLL_RESOURCE_CONFIG[resourceType]?.supportsDateFilter ?? false;
+
     const filter = supportsDateFilter
       ? `updated_at gt '${lastPolledAt}'`
       : undefined;
+
     const allRecords = await fetchAllRecords(client, endpoint, filter);
+
     const lastPolledDate = new Date(lastPolledAt);
+
     let created: RipplingRecord[];
     let updated: RipplingRecord[];
+
     if (supportsDateFilter) {
       created = allRecords.filter(
         (record) => new Date(record.created_at) > lastPolledDate,
@@ -70,11 +81,15 @@ export const pollChangesTrigger = pollingTrigger({
           (!record.created_at || new Date(record.created_at) <= lastPolledDate),
       );
     }
+
     const filteredCreated = isBackfill || params.showNewRecords ? created : [];
     const filteredUpdated =
       isBackfill || params.showUpdatedRecords ? updated : [];
+
     context.polling.setState({ lastPolledAt: now });
+
     const totalChanges = filteredCreated.length + filteredUpdated.length;
+
     return {
       payload: {
         ...payload,

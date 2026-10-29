@@ -1,7 +1,9 @@
 import type { ClientAPI, Space, WebHooks } from "contentful-management";
 import type { EventsWebhookFlowState } from "../types";
+
 export const getEventsWebhookStateKey = (flowName: string): string =>
   `contentfulEventsWebhook:${flowName}`;
+
 export const findWebhooksByUrl = async (
   space: Space,
   webhookUrl: string,
@@ -9,6 +11,7 @@ export const findWebhooksByUrl = async (
   const webhooks = await space.getWebhooks();
   return webhooks.items.filter((item) => item.url === webhookUrl);
 };
+
 export const deleteWebhooksByUrl = async (
   space: Space,
   webhookUrl: string,
@@ -19,6 +22,7 @@ export const deleteWebhooksByUrl = async (
   }
   return webhooks.length;
 };
+
 const removeWebhooksFromPreviousSpace = async (
   client: ClientAPI,
   previousSpaceId: string,
@@ -39,9 +43,11 @@ const removeWebhooksFromPreviousSpace = async (
     return 0;
   }
 };
+
 const haveSameTopics = (current: string[], desired: string[]): boolean =>
   current.length === desired.length &&
   [...current].sort().join("\n") === [...desired].sort().join("\n");
+
 export const upsertEventsWebhook = async (
   client: ClientAPI,
   {
@@ -68,14 +74,17 @@ export const upsertEventsWebhook = async (
       log,
     );
   }
+
   const space = await client.getSpace(spaceId);
   const [existing, ...duplicates] = await findWebhooksByUrl(space, webhookUrl);
+
   for (const duplicate of duplicates) {
     await duplicate.delete();
   }
   if (duplicates.length > 0) {
     log(`Removed ${duplicates.length} duplicate webhook(s) for this flow.`);
   }
+
   if (!existing) {
     const created = await space.createWebhook({
       url: webhookUrl,
@@ -85,15 +94,18 @@ export const upsertEventsWebhook = async (
     log(`Created webhook ${created.sys.id}.`);
     return { webhookId: created.sys.id, spaceId };
   }
+
   if (haveSameTopics(existing.topics ?? [], topics)) {
     log(`Webhook ${existing.sys.id} already exists with the same topics.`);
     return { webhookId: existing.sys.id, spaceId };
   }
+
   existing.topics = topics;
   const updated = await existing.update();
   log(`Updated topics on webhook ${updated.sys.id}.`);
   return { webhookId: updated.sys.id, spaceId };
 };
+
 export const removeEventsWebhooks = async (
   client: ClientAPI,
   {

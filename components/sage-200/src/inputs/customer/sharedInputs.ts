@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanNumberInput, cleanStringInput } from "../../util";
+
 const shortName = input({
   label: "Short Name",
   type: "string",
@@ -9,6 +10,7 @@ const shortName = input({
   example: "John",
   clean: cleanStringInput,
 });
+
 const onHold = input({
   label: "On Hold",
   type: "boolean",
@@ -17,6 +19,7 @@ const onHold = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const statusReason = input({
   label: "Status Reason",
   type: "string",
@@ -26,6 +29,7 @@ const statusReason = input({
   example: "Suspended due to non-payment",
   clean: cleanStringInput,
 });
+
 const accountStatusType = input({
   label: "Account Status Type",
   type: "string",
@@ -36,6 +40,7 @@ const accountStatusType = input({
   example: "AccountStatusActive",
   clean: cleanStringInput,
 });
+
 const currencyId = input({
   label: "Currency ID",
   type: "string",
@@ -46,6 +51,7 @@ const currencyId = input({
   example: "2103",
   clean: cleanNumberInput,
 });
+
 const exchangeRateType = input({
   label: "Exchange Rate Type",
   type: "string",
@@ -56,6 +62,7 @@ const exchangeRateType = input({
   example: "ExchangeRateSingle",
   clean: cleanStringInput,
 });
+
 const telephoneCountryCode = input({
   label: "Telephone Country Code",
   type: "string",
@@ -65,6 +72,7 @@ const telephoneCountryCode = input({
   example: "+1",
   clean: cleanStringInput,
 });
+
 const telephoneAreaCode = input({
   label: "Telephone Area Code",
   type: "string",
@@ -74,6 +82,7 @@ const telephoneAreaCode = input({
   example: "806",
   clean: cleanStringInput,
 });
+
 const telephoneSubscriberNumber = input({
   label: "Telephone Subscriber Number",
   type: "string",
@@ -83,6 +92,7 @@ const telephoneSubscriberNumber = input({
   example: "123-4567",
   clean: cleanStringInput,
 });
+
 const faxCountryCode = input({
   label: "Fax Country Code",
   type: "string",
@@ -92,6 +102,7 @@ const faxCountryCode = input({
   example: "+1",
   clean: cleanStringInput,
 });
+
 const faxAreaCode = input({
   label: "Fax Area Code",
   type: "string",
@@ -101,6 +112,7 @@ const faxAreaCode = input({
   example: "806",
   clean: cleanStringInput,
 });
+
 const faxSubscriberNumber = input({
   label: "Fax Subscriber Number",
   type: "string",
@@ -110,6 +122,7 @@ const faxSubscriberNumber = input({
   example: "123-4567",
   clean: cleanStringInput,
 });
+
 const website = input({
   label: "Website",
   type: "string",
@@ -119,6 +132,7 @@ const website = input({
   example: "https://www.example.com",
   clean: cleanStringInput,
 });
+
 const additionalFields = input({
   label: "Additional Fields",
   type: "code",
@@ -129,6 +143,7 @@ const additionalFields = input({
   example: JSON.stringify({ credit_limit: 30.0 }, null, 2),
   clean: cleanCodeInput,
 });
+
 export default {
   shortName,
   onHold,

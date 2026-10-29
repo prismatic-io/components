@@ -5,6 +5,7 @@ import { updateChangeImplementationTaskNoteInputs } from "../../inputs";
 import { changeImplementationNoteSchema } from "../../outputSchemas";
 import type { ChangeImplementationTaskNoteUpdateVo } from "../../types";
 import { handleArenaError, toOptionalString } from "../../util";
+
 export const updateChangeImplementationTaskNote = action({
   display: {
     label: "Update Change Implementation Task Note",
@@ -27,6 +28,7 @@ export const updateChangeImplementationTaskNote = action({
             ? undefined
             : util.types.toBool(params.isPrivate),
       };
+
       const { data } = await client.put(
         `/changes/${util.types.toString(params.changeGuid)}/implementationtasks/${util.types.toString(params.implementationTaskGuid)}/notes/${util.types.toString(params.noteGuid)}`,
         requestData,

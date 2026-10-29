@@ -1,5 +1,6 @@
 import { connection } from "@prismatic-io/spectral";
 import { assumeRoleConnection } from "aws-utils";
+
 export const accessKeySecretPair = connection({
   key: "apiKeySecret",
   display: {
@@ -29,4 +30,5 @@ export const accessKeySecretPair = connection({
     },
   },
 });
+
 export default [accessKeySecretPair, assumeRoleConnection];

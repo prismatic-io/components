@@ -1,5 +1,6 @@
 import { getMicrosoftOAuth2AuthorizationCodeConnection } from "ms-utils";
 import { SCOPES_FOR_AUTHORIZATION_CODE_FLOW } from "../constants";
+
 export const templatedOauth = getMicrosoftOAuth2AuthorizationCodeConnection({
   key: "templatedOauth",
   defaultScopes: SCOPES_FOR_AUTHORIZATION_CODE_FLOW,

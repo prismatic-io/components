@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createPackageExamplePayload } from "../../examplePayloads";
 import { createPackageInputs } from "../../inputs";
 import type { JamfCreateResponse } from "../../types";
+
 export const createPackage = action({
   display: {
     label: "Create Package",

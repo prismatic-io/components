@@ -67,15 +67,21 @@ export const userSchema = {
   required: ["name"],
   additionalProperties: true,
 };
+
 export const createUserOutputSchema = userSchema;
+
 export const deleteUserOutputSchema = { type: "string" as const };
+
 export const listUsersOutputSchema = {
   type: "array" as const,
   items: userSchema,
 };
+
 export const searchUsersOutputSchema = {
   type: "array" as const,
   items: userSchema,
 };
+
 export const showUserOutputSchema = userSchema;
+
 export const updateUserOutputSchema = userSchema;

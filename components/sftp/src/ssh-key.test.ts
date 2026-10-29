@@ -5,6 +5,7 @@ import {
 import component from ".";
 import { privateKey } from "./connections";
 import fs from "node:fs";
+
 const harness = createHarness(component);
 const connectionWithPassphrase = createConnection(privateKey, {
   privateKey: fs
@@ -16,6 +17,7 @@ const connectionWithPassphrase = createConnection(privateKey, {
   port: "2222",
   timeout: "3000",
 });
+
 const connectionWithoutPassphrase = createConnection(privateKey, {
   privateKey: fs
     .readFileSync("./docker/keypair-without-passphrase.key")
@@ -25,6 +27,7 @@ const connectionWithoutPassphrase = createConnection(privateKey, {
   port: "2222",
   timeout: "3000",
 });
+
 describe("Connect to server with SSH key", () => {
   if (!process.env.DOCKER_ENABLED) {
     console.warn(

@@ -11,6 +11,7 @@ import {
   region,
 } from "../../inputs";
 import { getFunctionExamplePayload } from "../../examplePayloads";
+
 export const updateFunction = action({
   display: {
     label: "Update Function",

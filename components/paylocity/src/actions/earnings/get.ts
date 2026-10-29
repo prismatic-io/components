@@ -7,6 +7,7 @@ import {
   employeeId,
   startDate,
 } from "../../inputs";
+
 export const getEarningsByEarningCodeAndStartDate = action({
   display: {
     label: "Get Earnings by Earning Code and Start Date",
@@ -26,6 +27,7 @@ export const getEarningsByEarningCodeAndStartDate = action({
   ) => {
     validateV2Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data } = await client.get(
       `/companies/${companyId}/employees/${employeeId}/earnings/${earningCode}/${startDate}`,
     );

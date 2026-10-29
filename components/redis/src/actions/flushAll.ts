@@ -3,6 +3,7 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import closeConnection from "../closeConnection";
 import { flushAllExamplePayload } from "../examplePayloads";
+
 export const flushAll = action({
   display: {
     label: "Flush All",
@@ -15,7 +16,9 @@ export const flushAll = action({
       context.debug.enabled,
     );
     const data = await client.flushAll();
+
     await closeConnection(client);
+
     return {
       data,
     };

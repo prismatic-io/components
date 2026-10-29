@@ -10,6 +10,7 @@ import { archiveEntryExamplePayload } from "../../examplePayloads";
 import { archiveEntryInputs } from "../../inputs";
 import { archiveEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const archiveEntry = action({
   display: {
     label: "Archive Entry",
@@ -31,9 +32,8 @@ export const archiveEntry = action({
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => archiveEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    archiveEntryExamplePayload,
   inputs: archiveEntryInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

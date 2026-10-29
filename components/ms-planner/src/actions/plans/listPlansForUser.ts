@@ -7,6 +7,7 @@ import { listPlansForUserOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { computeEndpointBasedOnConnection, fetchAllPlanner } from "../../utils";
 import { listPlansForUserInputs } from "../../inputs";
+
 export const listPlansForUser = action({
   display: {
     label: "List Plans for User",
@@ -27,8 +28,7 @@ export const listPlansForUser = action({
     const data = await fetchAllPlanner<PlannerPlan & Etagged>(client, endpoint);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listPlansForUserExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listPlansForUserExamplePayload,
   examplePayload: listPlansForUserExamplePayload,
 });

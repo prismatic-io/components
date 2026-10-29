@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listManagedAppsExamplePayload } from "../../examplePayloads";
 import { listManagedAppsInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listManagedApps = action({
   display: {
     label: "List Managed Apps",
@@ -11,6 +12,7 @@ export const listManagedApps = action({
   },
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled, true);
+
     const params = {
       $filter: filters.$filter,
       $select: filters.$select,

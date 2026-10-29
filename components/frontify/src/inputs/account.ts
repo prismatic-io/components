@@ -1,7 +1,9 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { fetchAll, limit, page } from "./pagination";
 import { connection } from "./sharedInputs";
+
 export const getAccountIdInputs = { connection };
+
 export const listUserGroupsInputs = {
   connection,
   fetchAll: input({
@@ -40,6 +42,7 @@ export const listUserGroupsInputs = {
     },
   }),
 };
+
 export const listUsersInputs = {
   connection,
   fetchAll,

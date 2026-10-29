@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { createCandidateV3ExamplePayload } from "../../../examplePayloads/v3/candidates";
 import { createCandidateV3Inputs } from "../../../inputs/v3/candidates";
 import { generatePayload } from "../../../util";
+
 export const createCandidateV3 = action({
   display: {
     label: "Create Candidate",
@@ -28,6 +29,7 @@ export const createCandidateV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       first_name: firstName,
       last_name: lastName,
@@ -46,6 +48,7 @@ export const createCandidateV3 = action({
       custom_fields: customFields,
       application,
     });
+
     const { data } = await client.post("/candidates", body);
     return { data };
   },

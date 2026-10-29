@@ -1,5 +1,6 @@
 import type { content_v2_1 } from "googleapis";
 import type { FetchAllAccountsOptions } from "../types";
+
 export const fetchAllAccounts = async ({
   client,
   fetchAll,
@@ -7,10 +8,12 @@ export const fetchAllAccounts = async ({
 }: FetchAllAccountsOptions) => {
   let nextPageToken: string | null | undefined;
   let responseStructure: content_v2_1.Schema$AccountsListResponse = {};
+
   if (params && Object.keys(params).length > 0 && fetchAll) {
     delete params.pageToken;
     delete params.maxResults;
   }
+
   do {
     const { data } = await client.accounts.list(params);
     responseStructure = {
@@ -22,7 +25,9 @@ export const fetchAllAccounts = async ({
     };
     nextPageToken = data.nextPageToken;
   } while (nextPageToken && fetchAll);
+
   delete responseStructure.nextPageToken;
+
   return {
     data: responseStructure,
   };

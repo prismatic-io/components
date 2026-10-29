@@ -2,6 +2,7 @@ import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { upsertEntityExamplePayload } from "../../examplePayloads";
 import { upsertEntityInputs } from "../../inputs";
+
 export const upsertEntity = action({
   display: {
     label: "Upsert Entity",
@@ -13,6 +14,7 @@ export const upsertEntity = action({
     { entityType, entityId, dynamicValues, fieldValues, connection },
   ) => {
     const client = await createCrmClient(connection, context.debug.enabled);
+
     const payloadValues = { ...dynamicValues, ...fieldValues };
     const result = await client.upsert({
       key: entityId,
@@ -20,6 +22,7 @@ export const upsertEntity = action({
       data: payloadValues,
       returnRepresentation: true,
     });
+
     return { data: result };
   },
   inputs: upsertEntityInputs,

@@ -1,5 +1,6 @@
 import { DEFAULT_PAGE_SIZE, MAX_PAGES } from "../constants";
 import type { MagentoListResponse, PaginateOptions } from "../types";
+
 export const removeUndefinedValuesFromObject = (
   obj: Record<string, unknown>,
 ): Record<string, unknown> => {
@@ -11,24 +12,26 @@ export const removeUndefinedValuesFromObject = (
   });
   return newObj;
 };
+
 export const paginateResults = async ({
   client,
   endpoint,
   queryParams = {},
   fetchAll,
-}: PaginateOptions): Promise<{
-  data: unknown;
-}> => {
+}: PaginateOptions): Promise<{ data: unknown }> => {
   if (fetchAll) {
     const allItems: unknown[] = [];
     const limit =
       (queryParams["searchCriteria[pageSize]"] as string) || DEFAULT_PAGE_SIZE;
+
     const {
       "searchCriteria[pageSize]": _ps,
       "searchCriteria[currentPage]": _cp,
       ...filterParams
     } = queryParams;
+
     let page = 1;
+
     do {
       const params = {
         ...filterParams,
@@ -43,10 +46,13 @@ export const paginateResults = async ({
       if (items.length < Number(limit)) break;
       page++;
     } while (page <= MAX_PAGES);
+
     return { data: allItems };
   }
+
   const { data } = await client.get(endpoint, {
     params: Object.keys(queryParams).length > 0 ? queryParams : undefined,
   });
+
   return { data };
 };

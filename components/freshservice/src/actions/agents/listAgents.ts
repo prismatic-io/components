@@ -4,6 +4,7 @@ import { listAgentsExamplePayload as examplePayload } from "../../examplePayload
 import { listAgentsInputs as inputs } from "../../inputs";
 import { listAgentsOutputSchema } from "../../outputSchemas";
 import { getListData } from "../../util";
+
 export const listAgents = action({
   display: {
     label: "List Agents",
@@ -17,6 +18,7 @@ export const listAgents = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await getListData(client, `/agents`, "agents", {
       fetchAll,
       params: {
@@ -25,6 +27,7 @@ export const listAgents = action({
         page: pagination.page,
       },
     });
+
     return {
       data,
     };

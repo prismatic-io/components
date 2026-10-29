@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { uploadFilesExamplePayload as examplePayload } from "../../examplePayloads/files";
 import { postApiUploadInputs as inputs } from "../../inputs/files";
 import type { UploadFilesResponse } from "../../interfaces/files";
+
 export const uploadFiles = action({
   display: {
     label: "Upload Files",
@@ -14,11 +15,14 @@ export const uploadFiles = action({
       connection,
       debug: context.debug.enabled,
     });
+
     const formData = new FormData();
+
     formData.append("file", file.data, {
       filename: "test.pdf",
       contentType: file.contentType,
     });
+
     const { data } = await client.post<UploadFilesResponse>(
       "/upload",
       formData,
@@ -30,6 +34,7 @@ export const uploadFiles = action({
         },
       },
     );
+
     return {
       data,
     };

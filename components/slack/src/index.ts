@@ -41,6 +41,7 @@ import { openView, publishView, pushView, updateView } from "./actions/views";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+
 export default component({
   key: "slack",
   documentationUrl: "https://prismatic.io/docs/components/slack/",

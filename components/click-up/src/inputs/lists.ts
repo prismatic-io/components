@@ -12,6 +12,7 @@ import {
   getStatus,
   getTaskId,
 } from "./common";
+
 const assigneeInt = input({
   label: "Assignee",
   type: "string",
@@ -21,6 +22,7 @@ const assigneeInt = input({
   required: false,
   clean: cleanNumber,
 });
+
 const getListName = (required: boolean, comments: string) =>
   input({
     label: "Name",
@@ -30,6 +32,7 @@ const getListName = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 const getContent = <R extends boolean>(required: R, comments: string) =>
   input({
     label: "Content",
@@ -39,6 +42,7 @@ const getContent = <R extends boolean>(required: R, comments: string) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 const getUnsetStatus = (
   required: boolean,
   comments: string,
@@ -52,11 +56,13 @@ const getUnsetStatus = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
     clean: util.types.toBool,
   });
+
 export const addTaskToListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
   taskId: getTaskId(true, "The unique identifier for the task."),
 };
+
 export const createListInputs = {
   clickUpConnection: connectionInput,
   folderId: getFolderId(true, "The unique identifier for the Folder."),
@@ -76,24 +82,29 @@ export const createListInputs = {
   ),
   name: getListName(true, "Name of the new list"),
 };
+
 export const deleteListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
 };
+
 export const getListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
 };
+
 export const getListsInputs = {
   clickUpConnection: connectionInput,
   folderId: getFolderId(true, "The unique identifier for the Folder."),
   archived: getArchived(false, "When true, returns archived Lists.", false),
 };
+
 export const removeTaskFromListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
   taskId: getTaskId(true, "The unique identifier for the task."),
 };
+
 export const updateListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),

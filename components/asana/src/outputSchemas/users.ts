@@ -3,6 +3,7 @@ import {
   nextPageSchema,
   userCompactSchema,
 } from "./shared";
+
 export const userResponseSchema = {
   type: "object" as const,
   properties: {
@@ -46,6 +47,7 @@ export const userResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listUsersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -55,6 +57,7 @@ export const listUsersOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const findUserByNameOrEmailOutputSchema = {
   type: "object" as const,
   properties: {

@@ -5,6 +5,7 @@ import { paginateRecordsWithCursor } from "../../util";
 import { WebhookVersion } from "../../constants";
 import { getProductFieldsV2ExamplePayload } from "../../examplePayloads";
 import { getProductFieldsV2OutputSchema } from "../../outputSchemas";
+
 export const getProductFieldsV2 = action({
   display: {
     label: "Get Product Fields (V2)",
@@ -20,6 +21,7 @@ export const getProductFieldsV2 = action({
       context.debug.enabled,
       WebhookVersion.V2,
     );
+
     const data = await paginateRecordsWithCursor(
       client,
       "productFields",

@@ -4,6 +4,7 @@ import { getMondayClient } from "../../client";
 import { createBoardExamplePayload } from "../../examplePayloads";
 import { createBoardInputs } from "../../inputs";
 import { createBoardOutputSchema } from "../../outputSchemas";
+
 export const createBoard = action({
   display: {
     label: "Create Board",

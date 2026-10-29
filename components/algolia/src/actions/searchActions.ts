@@ -8,6 +8,7 @@ import {
   requestsInput,
   strategyInput,
 } from "../inputs";
+
 export const getIndex = action({
   display: {
     label: "Get Index",
@@ -19,6 +20,7 @@ export const getIndex = action({
       isGoingToRead: true,
       debug: context.debug.enabled,
     });
+
     try {
       const response = await client.get(
         `/1/indexes/${indexName}?${queryString}`,
@@ -38,6 +40,7 @@ export const getIndex = action({
     queryString: queryString,
   },
 });
+
 export const searchMultipleIndices = action({
   display: {
     label: "Search Multiple Indices",
@@ -53,12 +56,14 @@ export const searchMultipleIndices = action({
     const queries = requests.map(
       (request: { indexName: string; params: unknown }) => {
         const { indexName, params } = request;
+
         return {
           indexName,
           params,
         };
       },
     );
+
     try {
       const { data } = await client.post(`/1/indexes/*/queries`, {
         requests: queries,

@@ -1,4 +1,5 @@
 import { MY_DRIVE } from "../constants";
+
 export const getDriveQueryParams = (
   driveId: string,
 ):
@@ -28,6 +29,7 @@ export const getDriveQueryParams = (
     corpora: driveId ? "drive" : undefined,
   };
 };
+
 export const buildActivityFilter = (
   windowStart: string,
   triggerEvents: string[],
@@ -37,5 +39,6 @@ export const buildActivityFilter = (
     ? `${timeClause} AND detail.action_detail_case:(${triggerEvents.join(" ")})`
     : timeClause;
 };
+
 export const escapeDriveQueryValue = (value: string): string =>
   value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");

@@ -9,6 +9,7 @@ import {
   purchaseTaxType,
   where,
 } from "./common";
+
 export const accountCode = input({
   label: "Account Code",
   type: "string",
@@ -18,6 +19,7 @@ export const accountCode = input({
   example: "200",
   clean: util.types.toString,
 });
+
 export const accountName = input({
   label: "Account Name",
   type: "string",
@@ -27,6 +29,7 @@ export const accountName = input({
   example: "Example Account",
   clean: util.types.toString,
 });
+
 export const accountType = input({
   label: "Account Type",
   type: "string",
@@ -37,6 +40,7 @@ export const accountType = input({
   example: "BANK",
   clean: util.types.toString,
 });
+
 export const bankAccountNumber = input({
   label: "Bank Account Number",
   type: "string",
@@ -46,6 +50,7 @@ export const bankAccountNumber = input({
   example: "121-121-1234567",
   clean: cleanStringInput,
 });
+
 export const enablePaymentsToAccount = input({
   label: "Enable Payments To Account",
   type: "boolean",
@@ -53,6 +58,7 @@ export const enablePaymentsToAccount = input({
   comments: "When true, allows payments to be made to the account.",
   clean: util.types.toBool,
 });
+
 export const showInExpenseClaims = input({
   label: "Show In Expense Claims",
   type: "boolean",
@@ -61,10 +67,12 @@ export const showInExpenseClaims = input({
     "When true, the account appears in expense claims. Required for certain account types.",
   clean: util.types.toBool,
 });
+
 export const archiveAccountInputs = {
   xeroConnection: connectionInput,
   accountId,
 };
+
 export const createAccountInputs = {
   xeroConnection: connectionInput,
   accountCode,
@@ -74,19 +82,23 @@ export const createAccountInputs = {
   showInExpenseClaims,
   fieldValues,
 };
+
 export const deleteAccountInputs = {
   xeroConnection: connectionInput,
   accountId,
 };
+
 export const getAccountInputs = {
   xeroConnection: connectionInput,
   accountId,
 };
+
 export const listAccountsInputs = {
   xeroConnection: connectionInput,
   modifiedAfter,
   where,
 };
+
 export const updateAccountInputs = {
   xeroConnection: connectionInput,
   accountId,

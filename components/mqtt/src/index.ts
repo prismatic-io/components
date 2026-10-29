@@ -1,6 +1,7 @@
 import { component } from "@prismatic-io/spectral";
 import { publish } from "./actions";
 import connections from "./connections";
+
 export default component({
   key: "mqtt",
   documentationUrl: "https://prismatic.io/docs/components/mqtt/",

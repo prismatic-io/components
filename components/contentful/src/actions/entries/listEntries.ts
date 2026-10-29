@@ -10,6 +10,7 @@ import { listEntriesExamplePayload } from "../../examplePayloads";
 import { listEntriesInputs } from "../../inputs";
 import { listEntriesOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems, getEnvironment } from "../../util";
+
 export const listEntries = action({
   display: {
     label: "List Entries",
@@ -23,17 +24,18 @@ export const listEntries = action({
       spaceId,
       environmentId,
     );
+
     const allItems: EntryProps<KeyValueMap>[] = await getAllPaginatedItems<
       Entry,
       EntryProps<KeyValueMap>
     >(environment.getEntries.bind(environment));
+
     return {
       data: allItems as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listEntriesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listEntriesExamplePayload,
   inputs: listEntriesInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

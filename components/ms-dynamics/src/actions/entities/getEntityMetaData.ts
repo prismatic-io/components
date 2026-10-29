@@ -3,6 +3,7 @@ import { createCrmClient } from "../../client";
 import { getEntityMetaDataExamplePayload } from "../../examplePayloads";
 import { getEntityMetaDataInputs } from "../../inputs";
 import { getEntityMetaDataOutputSchema } from "../../outputSchemas";
+
 export const getEntityMetaData = action({
   display: {
     label: "Get Entity Metadata",

@@ -9,6 +9,7 @@ import {
   productCustomFieldsProductId,
   storeHash,
 } from "../../inputs";
+
 export const createCustomField = action({
   display: {
     label: "Create Custom Field",
@@ -30,10 +31,12 @@ export const createCustomField = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${productCustomFieldsProductId}/custom-fields`;
+
     const requestBody = {
       name: customFieldName,
       value: customFieldValue,
     };
+
     try {
       const response = await client.post(endpoint, requestBody);
       return {
@@ -45,6 +48,7 @@ export const createCustomField = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

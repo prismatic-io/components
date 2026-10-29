@@ -4,6 +4,7 @@ import { updatePostExamplePayload } from "../../examplePayloads";
 import { updatePostInputs } from "../../inputs";
 import { updatePostOutputSchema } from "../../outputSchemas";
 import type { Post } from "../../types";
+
 export const updatePost = action({
   display: {
     label: "Update Post",
@@ -37,9 +38,9 @@ export const updatePost = action({
         closed: moderationFlags.isPostClosed,
       },
     };
-    const { data } = await client.put<{
-      post: Post;
-    }>(url, payload);
+
+    const { data } = await client.put<{ post: Post }>(url, payload);
+
     return {
       data,
     };

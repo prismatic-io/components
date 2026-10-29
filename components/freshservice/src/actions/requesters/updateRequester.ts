@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { updateRequesterExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateRequesterInputs as inputs } from "../../inputs";
 import { requesterOutputSchema } from "../../outputSchemas";
+
 export const updateRequester = action({
   display: {
     label: "Update Requester",
@@ -26,6 +27,7 @@ export const updateRequester = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       first_name: firstName,
       primary_email: contactInfo.primaryEmail,
@@ -39,7 +41,9 @@ export const updateRequester = action({
       address: contactInfo.address,
       ...requestersAdditionalFields,
     };
+
     const { data } = await client.put(`/requesters/${requesterId}`, payload);
+
     return {
       data,
     };

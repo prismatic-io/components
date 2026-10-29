@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { topicName, message, connectionInput } from "./inputs";
 import { createClient } from "./client";
 import { publishExamplePayload } from "./examplePayloads";
+
 export const publish = action({
   display: {
     label: "Publish Message",
@@ -16,6 +17,7 @@ export const publish = action({
     );
     await client.publishAsync(topicName, message);
     await client.endAsync();
+
     return {
       data: "Message published successfully.",
     };

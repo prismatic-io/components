@@ -4,6 +4,7 @@ import { getLead } from "./getLead";
 import { getLeads } from "./getLeads";
 import { searchLeads } from "./searchLeads";
 import { updateLead } from "./updateLead";
+
 export default {
   getLeads,
   addLead,

@@ -3,6 +3,7 @@ import updateContactInputs from "../../inputs/contacts/updateContact";
 import { createKarbonClient } from "../../client";
 import { updateContactExamplePayload } from "../../examplePayloads";
 import { SUCCESS_MESSAGE } from "../../constants";
+
 export const updateContact = action({
   display: {
     label: "Update a Contact",
@@ -33,6 +34,7 @@ export const updateContact = action({
       Salutation: salutation,
       Suffix: suffix,
     });
+
     return { data: SUCCESS_MESSAGE };
   },
   examplePayload: updateContactExamplePayload,

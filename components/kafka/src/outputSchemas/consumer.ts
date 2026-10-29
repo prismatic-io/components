@@ -7,6 +7,7 @@ const consumerGroupMemberSchema = {
   },
   required: ["memberId", "clientId", "clientHost"],
 };
+
 const partitionLagSchema = {
   type: "object" as const,
   properties: {
@@ -17,6 +18,7 @@ const partitionLagSchema = {
   },
   required: ["partition", "committedOffset", "currentOffset", "lag"],
 };
+
 const topicLagSchema = {
   type: "object" as const,
   properties: {
@@ -26,6 +28,7 @@ const topicLagSchema = {
   },
   required: ["topic", "partitions", "totalLag"],
 };
+
 export const getConsumerGroupStatusOutputSchema = {
   type: "object" as const,
   properties: {

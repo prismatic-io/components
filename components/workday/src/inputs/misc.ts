@@ -3,7 +3,9 @@ import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/
 import { SERVICES } from "../constants";
 import { cleanStringInput } from "../util";
 import { connection, reportUrl } from "./common";
+
 const { debugRequest: _, ...destructuredInputs } = httpClientInputs;
+
 export const rawRequestInputs: {
   connection: typeof connection;
 } & Omit<typeof httpClientInputs, "debugRequest"> = {
@@ -15,6 +17,7 @@ export const rawRequestInputs: {
     example: `${SERVICES.accountsPayable}/supplierInvoiceRequests`,
   },
 };
+
 const verificationReportUrl = input({
   ...reportUrl,
   comments:
@@ -22,6 +25,7 @@ const verificationReportUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const verifyConnectionInputs = {
   connection,
   reportUrl: verificationReportUrl,

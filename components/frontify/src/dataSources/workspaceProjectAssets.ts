@@ -3,6 +3,7 @@ import type ListWorkspaceProjectAssetsResponse from "../actions/types/listWorksp
 import { listWorkspaceProjectAssetsQuery } from "../actions/workspaceProjects/listWorkspaceProjectAssets";
 import { createClient } from "../client";
 import { workspaceProjectAssetInputs as inputs } from "../inputs/dataSources";
+
 export const workspaceProjectAssetDataSource = dataSource({
   display: {
     label: "Select Workspace Project Asset",
@@ -19,6 +20,7 @@ export const workspaceProjectAssetDataSource = dataSource({
         label: asset.title,
       };
     });
+
     return {
       result,
     };

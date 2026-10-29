@@ -1,14 +1,17 @@
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+
 export interface PollingRecordChange {
   changeType: "created" | "updated";
   record: MondayItem;
 }
+
 export interface PollingChangesObject {
   created?: MondayItem[];
   updated?: MondayItem[];
 }
+
 export interface MondayItem extends Record<string, unknown> {
   id: string;
   name?: string;
@@ -16,6 +19,7 @@ export interface MondayItem extends Record<string, unknown> {
   updated_at?: string;
   state?: string;
 }
+
 export interface ItemsPageResponse {
   boards?: Array<{
     items_page?: {
@@ -24,6 +28,7 @@ export interface ItemsPageResponse {
     };
   }>;
 }
+
 export interface NextItemsPageResponse {
   next_items_page?: {
     cursor: string | null;

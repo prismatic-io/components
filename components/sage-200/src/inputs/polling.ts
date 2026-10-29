@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean, pollResourceModel } from "../util";
 import { company, connection, site } from "./general";
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -9,6 +10,7 @@ const pollResourceType = input({
   comments: "The Sage 200 resource type to poll for new or updated records.",
   clean: util.types.toString,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -19,6 +21,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -28,6 +31,7 @@ const showNewRecords = input({
     "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -37,6 +41,7 @@ const showUpdatedRecords = input({
     "When true, records updated after the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   connection,
   site,

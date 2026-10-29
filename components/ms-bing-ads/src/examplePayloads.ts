@@ -18,28 +18,29 @@ import type {
   SearchClientLinksResponse,
   SendUserInvitationResponse,
 } from "./types";
-export const getAccountsInfoExamplePayload: {
-  data: GetAccountsInfoResponse;
-} = {
-  data: {
-    AccountsInfo: {
-      AccountInfo: [
-        {
-          Id: 156089854,
-          Name: "Contoso Advertising",
-          Number: "F168K7MC",
-          AccountLifeCycleStatus: "Active",
-        },
-        {
-          Id: 156089912,
-          Name: "Fabrikam Marketing",
-          Number: "F107RHVU",
-          AccountLifeCycleStatus: "Active",
-        },
-      ],
+
+export const getAccountsInfoExamplePayload: { data: GetAccountsInfoResponse } =
+  {
+    data: {
+      AccountsInfo: {
+        AccountInfo: [
+          {
+            Id: 156089854,
+            Name: "Contoso Advertising",
+            Number: "F168K7MC",
+            AccountLifeCycleStatus: "Active",
+          },
+          {
+            Id: 156089912,
+            Name: "Fabrikam Marketing",
+            Number: "F107RHVU",
+            AccountLifeCycleStatus: "Active",
+          },
+        ],
+      },
     },
-  },
-};
+  };
+
 export const getCustomersInfoExamplePayload: {
   data: GetCustomersInfoResponse;
 } = {
@@ -58,6 +59,7 @@ export const getCustomersInfoExamplePayload: {
     },
   },
 };
+
 export const searchClientLinksExamplePayload: {
   data: SearchClientLinksResponse;
 } = {
@@ -110,9 +112,8 @@ export const searchClientLinksExamplePayload: {
     },
   },
 };
-export const addClientLinksExamplePayload: {
-  data: AddClientLinksResponse;
-} = {
+
+export const addClientLinksExamplePayload: { data: AddClientLinksResponse } = {
   data: {
     OperationErrors: {
       OperationError: [
@@ -136,32 +137,34 @@ export const addClientLinksExamplePayload: {
     },
   },
 };
-export const updateClientLinksExamplePayload: {
-  data: AddClientLinksResponse;
-} = {
-  data: {
-    OperationErrors: {
-      OperationError: [
-        {
-          Code: 0,
-          Details: "",
-          Message: "No errors occurred.",
-        },
-      ],
-    },
-    PartialErrors: {
-      ArrayOfOperationError: {
+
+export const updateClientLinksExamplePayload: { data: AddClientLinksResponse } =
+  {
+    data: {
+      OperationErrors: {
         OperationError: [
           {
-            Code: 515,
-            Details: "ClientEntityId 144015218 is invalid for this operation.",
-            Message: "The client entity ID is not valid.",
+            Code: 0,
+            Details: "",
+            Message: "No errors occurred.",
           },
         ],
       },
+      PartialErrors: {
+        ArrayOfOperationError: {
+          OperationError: [
+            {
+              Code: 515,
+              Details:
+                "ClientEntityId 144015218 is invalid for this operation.",
+              Message: "The client entity ID is not valid.",
+            },
+          ],
+        },
+      },
     },
-  },
-};
+  };
+
 export const addOfflineConversionGoalExamplePayload: {
   data: AddClientLinksResponse;
 } = {
@@ -189,6 +192,7 @@ export const addOfflineConversionGoalExamplePayload: {
     },
   },
 };
+
 export const applyOfflineConversionsExamplePayload: {
   data: AddClientLinksResponse;
 } = {
@@ -216,6 +220,7 @@ export const applyOfflineConversionsExamplePayload: {
     },
   },
 };
+
 export const sendUserInvitationExamplePayload: {
   data: SendUserInvitationResponse;
 } = {
@@ -223,9 +228,8 @@ export const sendUserInvitationExamplePayload: {
     UserInvitationId: 134015178,
   },
 };
-export const searchAccountsExamplePayload: {
-  data: SearchAccountsResponse;
-} = {
+
+export const searchAccountsExamplePayload: { data: SearchAccountsResponse } = {
   data: {
     Accounts: {
       AdvertiserAccount: [
@@ -282,9 +286,8 @@ export const searchAccountsExamplePayload: {
     },
   },
 };
-export const getCustomerExamplePayload: {
-  data: GetCustomerResponse;
-} = {
+
+export const getCustomerExamplePayload: { data: GetCustomerResponse } = {
   data: {
     Customer: {
       CustomerFinancialStatus: "ClearFinancialStatus",
@@ -320,6 +323,7 @@ export const getCustomerExamplePayload: {
     },
   },
 };
+
 export const getLinkedAccountsAndCustomersInfoExamplePayload: {
   data: GetLinkedAccountsAndCustomersInfoResponse;
 } = {
@@ -350,24 +354,23 @@ export const getLinkedAccountsAndCustomersInfoExamplePayload: {
     },
   },
 };
-export const selectCustomerIdExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectCustomerIdExamplePayload: { result: Element[] } = {
   result: [
     { key: "169592807", label: "Contoso Ltd (id: 169592807)" },
     { key: "169593041", label: "Fabrikam Inc (id: 169593041)" },
     { key: "169594112", label: "Northwind Traders (id: 169594112)" },
   ],
 };
-export const selectAccountIdExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectAccountIdExamplePayload: { result: Element[] } = {
   result: [
     { key: "156089854", label: "Contoso Advertising (id: 156089854)" },
     { key: "156089912", label: "Fabrikam Marketing (id: 156089912)" },
     { key: "156090045", label: "Northwind Campaigns (id: 156090045)" },
   ],
 };
+
 const exampleCampaigns: Campaign[] = [
   {
     Id: 542512145,
@@ -390,28 +393,26 @@ const exampleCampaigns: Campaign[] = [
     TimeZone: "PacificTimeUSCanadaTijuana",
   },
 ];
-export const addCampaignsExamplePayload: {
-  data: AddRestResponse;
-} = {
+
+export const addCampaignsExamplePayload: { data: AddRestResponse } = {
   data: {
     CampaignIds: [542512145, 542512146],
     PartialErrors: [],
   },
 };
-export const updateCampaignsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const updateCampaignsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const deleteCampaignsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const deleteCampaignsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
+
 export const getCampaignsByAccountIdExamplePayload: {
   data: QueryRestResponse;
 } = {
@@ -419,22 +420,21 @@ export const getCampaignsByAccountIdExamplePayload: {
     Campaigns: exampleCampaigns,
   },
 };
-export const getCampaignsByIdsExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getCampaignsByIdsExamplePayload: { data: QueryRestResponse } = {
   data: {
     Campaigns: exampleCampaigns,
     PartialErrors: [],
   },
 };
-export const selectCampaignIdExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectCampaignIdExamplePayload: { result: Element[] } = {
   result: [
     { key: "542512145", label: "Spring Sale (id: 542512145)" },
     { key: "542512146", label: "Holiday Shopping (id: 542512146)" },
   ],
 };
+
 const exampleAdGroups: AdGroup[] = [
   {
     Id: 9012345,
@@ -449,28 +449,26 @@ const exampleAdGroups: AdGroup[] = [
     CpcBid: { Amount: 0.45 },
   },
 ];
-export const addAdGroupsExamplePayload: {
-  data: AddRestResponse;
-} = {
+
+export const addAdGroupsExamplePayload: { data: AddRestResponse } = {
   data: {
     AdGroupIds: [9012345, 9012346],
     PartialErrors: [],
   },
 };
-export const updateAdGroupsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const updateAdGroupsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const deleteAdGroupsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const deleteAdGroupsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
+
 export const getAdGroupsByCampaignIdExamplePayload: {
   data: QueryRestResponse;
 } = {
@@ -478,22 +476,21 @@ export const getAdGroupsByCampaignIdExamplePayload: {
     AdGroups: exampleAdGroups,
   },
 };
-export const getAdGroupsByIdsExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getAdGroupsByIdsExamplePayload: { data: QueryRestResponse } = {
   data: {
     AdGroups: exampleAdGroups,
     PartialErrors: [],
   },
 };
-export const selectAdGroupIdExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectAdGroupIdExamplePayload: { result: Element[] } = {
   result: [
     { key: "9012345", label: "Footwear (id: 9012345)" },
     { key: "9012346", label: "Accessories (id: 9012346)" },
   ],
 };
+
 const exampleAds: Ad[] = [
   {
     Id: 7012345,
@@ -510,43 +507,39 @@ const exampleAds: Ad[] = [
     FinalUrls: ["https://www.contoso.com/sale"],
   },
 ];
-export const addAdsExamplePayload: {
-  data: AddRestResponse;
-} = {
+
+export const addAdsExamplePayload: { data: AddRestResponse } = {
   data: {
     AdIds: [7012345, 7012346],
     PartialErrors: [],
   },
 };
-export const updateAdsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const updateAdsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const deleteAdsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const deleteAdsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const getAdsByAdGroupIdExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getAdsByAdGroupIdExamplePayload: { data: QueryRestResponse } = {
   data: {
     Ads: exampleAds,
   },
 };
-export const getAdsByIdsExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getAdsByIdsExamplePayload: { data: QueryRestResponse } = {
   data: {
     Ads: exampleAds,
     PartialErrors: [],
   },
 };
+
 const exampleKeywords: Keyword[] = [
   {
     Id: 6012345,
@@ -563,43 +556,40 @@ const exampleKeywords: Keyword[] = [
     Bid: { Amount: 0.6 },
   },
 ];
-export const addKeywordsExamplePayload: {
-  data: AddRestResponse;
-} = {
+
+export const addKeywordsExamplePayload: { data: AddRestResponse } = {
   data: {
     KeywordIds: [6012345, 6012346],
     PartialErrors: [],
   },
 };
-export const updateKeywordsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const updateKeywordsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const deleteKeywordsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const deleteKeywordsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const getKeywordsByAdGroupIdExamplePayload: {
-  data: QueryRestResponse;
-} = {
-  data: {
-    Keywords: exampleKeywords,
-  },
-};
-export const getKeywordsByIdsExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getKeywordsByAdGroupIdExamplePayload: { data: QueryRestResponse } =
+  {
+    data: {
+      Keywords: exampleKeywords,
+    },
+  };
+
+export const getKeywordsByIdsExamplePayload: { data: QueryRestResponse } = {
   data: {
     Keywords: exampleKeywords,
     PartialErrors: [],
   },
 };
+
 const exampleBudgets: Budget[] = [
   {
     Id: 8901234,
@@ -616,36 +606,33 @@ const exampleBudgets: Budget[] = [
     AssociationCount: 1,
   },
 ];
-export const addBudgetsExamplePayload: {
-  data: AddRestResponse;
-} = {
+
+export const addBudgetsExamplePayload: { data: AddRestResponse } = {
   data: {
     BudgetIds: [8901234, 8901235],
     PartialErrors: [],
   },
 };
-export const updateBudgetsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const updateBudgetsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const deleteBudgetsExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const deleteBudgetsExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const getBudgetsByIdsExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getBudgetsByIdsExamplePayload: { data: QueryRestResponse } = {
   data: {
     Budgets: exampleBudgets,
     PartialErrors: [],
   },
 };
+
 const exampleAudiences: Audience[] = [
   {
     Id: 5012345,
@@ -662,31 +649,27 @@ const exampleAudiences: Audience[] = [
     MembershipDuration: 180,
   },
 ];
-export const addAudiencesExamplePayload: {
-  data: AddRestResponse;
-} = {
+
+export const addAudiencesExamplePayload: { data: AddRestResponse } = {
   data: {
     AudienceIds: [5012345, 5012346],
     PartialErrors: [],
   },
 };
-export const updateAudiencesExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const updateAudiencesExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const deleteAudiencesExamplePayload: {
-  data: MutateRestResponse;
-} = {
+
+export const deleteAudiencesExamplePayload: { data: MutateRestResponse } = {
   data: {
     PartialErrors: [],
   },
 };
-export const getAudiencesByIdsExamplePayload: {
-  data: QueryRestResponse;
-} = {
+
+export const getAudiencesByIdsExamplePayload: { data: QueryRestResponse } = {
   data: {
     Audiences: exampleAudiences,
     PartialErrors: [],

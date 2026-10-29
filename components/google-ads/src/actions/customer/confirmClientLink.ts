@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { confirmClientLinkExamplePayload } from "../../examplePayloads";
 import { confirmClientLinkInputs } from "../../inputs";
 import { confirmClientLinkOutputSchema } from "../../outputSchemas";
+
 export const confirmClientLink = action({
   display: {
     label: "Confirm Client Link",
@@ -23,6 +24,7 @@ export const confirmClientLink = action({
       debugEnabled: context.debug.enabled,
       logger: context.logger,
     });
+
     const linkResourceName = `customers/${customerId}/customerManagerLinks/${managerCustomerId}~${managerLinkId}`;
     const { data } = await client.post(
       `customers/${customerId}/customerManagerLinks:mutate`,
@@ -40,8 +42,7 @@ export const confirmClientLink = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => confirmClientLinkExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    confirmClientLinkExamplePayload,
   examplePayload: confirmClientLinkExamplePayload,
 });

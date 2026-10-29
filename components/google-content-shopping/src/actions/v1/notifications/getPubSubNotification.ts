@@ -4,6 +4,7 @@ import { getPubSubNotificationExamplePayload } from "../../../examplePayloads/v1
 import { getPubSubNotificationInputs } from "../../../inputs/v1/notifications";
 import { fetchAllPages } from "../../../util/pagination";
 import { accountResourceName } from "../../../util/resourceNames";
+
 export const getPubSubNotificationMerchant = action({
   display: {
     description:
@@ -18,6 +19,7 @@ export const getPubSubNotificationMerchant = action({
     const client = createClientMerchant(connectionInput, context.debug.enabled);
     const parent = accountResourceName(account);
     const path = `/notifications/v1/${parent}/notificationsubscriptions`;
+
     if (fetchAll) {
       const notificationSubscriptions = await fetchAllPages(async (token) => {
         const { data } = await client.get(path, {
@@ -28,14 +30,17 @@ export const getPubSubNotificationMerchant = action({
           nextPageToken: data.nextPageToken,
         };
       });
+
       return { data: { notificationSubscriptions } };
     }
+
     const { data } = await client.get(path, {
       params: {
         pageSize: pagination.pageSize,
         pageToken: pagination.pageToken,
       },
     });
+
     return { data };
   },
   examplePayload: getPubSubNotificationExamplePayload,

@@ -4,6 +4,7 @@ import { updateNotificationExamplePayload } from "../../examplePayloads/notifica
 import { notificationUpdateInputs } from "../../inputs";
 import type { WatchConfig } from "../../types";
 import { fillNotificationsBody } from "../../util/general";
+
 export const crmUpdateNotification = action({
   display: {
     label: "CRM - Update Notification",
@@ -28,9 +29,11 @@ export const crmUpdateNotification = action({
       ClientType.CRM,
       context.debug.enabled,
     );
+
     const watchConfig: WatchConfig = {
       channel_id: channelId,
     };
+
     fillNotificationsBody(
       {
         token,
@@ -41,9 +44,11 @@ export const crmUpdateNotification = action({
       },
       watchConfig,
     );
+
     const { data } = await crmClient.patch("/actions/watch", {
       watch: [watchConfig],
     });
+
     return {
       data,
     };

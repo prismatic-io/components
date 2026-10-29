@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCustomAccountingFieldResponse } from "../../examplePayloads/customAccountingFields";
 import { connection, customAccountingFieldId } from "../../inputs";
 import { getCustomAccountingFieldOutputSchema } from "../../outputSchemas";
+
 export const getCustomAccountingField = action({
   display: {
     label: "Get Custom Accounting Field",
@@ -19,6 +20,7 @@ export const getCustomAccountingField = action({
   performSafety: "safe",
   perform: async (context, { connection, customAccountingFieldId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(
       `/accounting/fields/${customAccountingFieldId}`,
     );

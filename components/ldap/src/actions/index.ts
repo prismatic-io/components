@@ -16,6 +16,7 @@ import { searchUsers } from "./searchUsers";
 import { setPasswordToUser } from "./setPasswordToUser";
 import { updateEntry } from "./updateEntry";
 import { updateUser } from "./updateUser";
+
 export default {
   bind,
   search,

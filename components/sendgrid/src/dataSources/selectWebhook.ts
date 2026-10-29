@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../client";
 import { selectWebhookExamplePayload } from "../examplePayloads";
 import { selectWebhookInputs } from "../inputs";
 import type { SendGridWebhook } from "../types";
+
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
@@ -12,19 +13,21 @@ export const selectWebhook = dataSource({
   dataSourceType: "picklist",
   perform: async (context, { connection }) => {
     const client = createAuthorizedClient(connection);
+
     try {
       const [_response, body] = await client.request({
         method: "GET",
         url: "/v3/user/webhooks/event/settings/all",
       });
-      const typedBody = body as {
-        webhooks?: SendGridWebhook[];
-      };
+
+      const typedBody = body as { webhooks?: SendGridWebhook[] };
       const webhooks = typedBody?.webhooks || [];
+
       const result = webhooks.map<Element>((webhook) => ({
         label: webhook.friendly_name || webhook.url || webhook.id,
         key: webhook.id,
       }));
+
       return { result };
     } catch (error) {
       context.logger.error(

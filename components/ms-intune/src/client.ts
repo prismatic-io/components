@@ -4,12 +4,14 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { getBaseUrl, validateConnection } from "./util";
+
 export const createClient = (
   connection: Connection,
   debug: boolean,
   useBeta = false,
 ): HttpClient => {
   validateConnection(connection);
+
   return createAxiosClient({
     baseUrl: getBaseUrl(useBeta),
     headers: {

@@ -3,7 +3,9 @@ import nock from "nock";
 import { createPostExamplePayload } from "../../examplePayloads";
 import { CANNY_HOST, captureBody, testConnection, V1 } from "../../testHelpers";
 import { createPost } from "./createPost";
+
 const PATH = `${V1}/posts/create`;
+
 const params = {
   connection: testConnection,
   boardIdRequired: "553c3ef8b8cdcd1501ba1234",
@@ -19,14 +21,18 @@ const params = {
     additionalFields: {},
   },
 };
+
 describe("createPost", () => {
   afterEach(() => nock.cleanAll());
+
   test("creates a post and flattens the additional fields", async () => {
     const { captured, matcher } = captureBody();
     nock(CANNY_HOST)
       .post(PATH, matcher)
       .reply(200, createPostExamplePayload.data);
+
     const { result } = await invoke(createPost, params);
+
     expect(captured.body).toStrictEqual({
       apiKey: "test-api-key",
       authorID: "553c3ef8b8cdcd1501ba9999",
@@ -40,8 +46,10 @@ describe("createPost", () => {
     });
     expect(result.data).toStrictEqual(createPostExamplePayload.data);
   });
+
   test("surfaces an API error", async () => {
     nock(CANNY_HOST).post(PATH).reply(422, { error: "invalid board" });
+
     await expect(invoke(createPost, params)).rejects.toThrow();
   });
 });

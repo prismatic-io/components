@@ -12,6 +12,7 @@ import {
   patchWithEtag,
 } from "../../utils";
 import { updateTaskDetailsInputs } from "../../inputs";
+
 export const updateTaskDetails = action({
   display: {
     label: "Update Task Details",
@@ -37,6 +38,7 @@ export const updateTaskDetails = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const checklistBody = buildChecklist(
       checklist?.addItems,
       [],
@@ -46,6 +48,7 @@ export const updateTaskDetails = action({
       references?.addReferences,
       references?.removeReferenceUrls,
     );
+
     const body = compact({
       description,
       previewType,
@@ -54,6 +57,7 @@ export const updateTaskDetails = action({
         ? referencesBody
         : undefined,
     });
+
     const data = await patchWithEtag<PlannerTaskDetails & Etagged>(
       client,
       PLANNER_ENDPOINTS.TASK_DETAILS(taskId),
@@ -65,9 +69,7 @@ export const updateTaskDetails = action({
   examplePerform: async (
     _context,
     { description, previewType },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateTaskDetailsExamplePayload.data,
       description:

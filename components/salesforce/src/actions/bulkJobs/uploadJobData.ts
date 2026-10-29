@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { uploadJobDataInputs } from "../../inputs";
 import { uploadJobDataExamplePayload } from "../../examplePayloads";
+
 export const uploadJobData = action({
   display: {
     label: "Upload Bulk Job Data",
@@ -15,6 +16,7 @@ export const uploadJobData = action({
       connection,
       context.debug.enabled,
     );
+
     const { data: fileData } = file;
     const { data } = await salesforceClient.put(
       `/jobs/ingest/${bulkJobId}/batches`,
@@ -27,8 +29,7 @@ export const uploadJobData = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => uploadJobDataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    uploadJobDataExamplePayload,
   examplePayload: uploadJobDataExamplePayload,
 });

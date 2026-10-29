@@ -9,6 +9,7 @@ import {
   getProductVariantsPage,
   storeHash,
 } from "../inputs";
+
 export const selectProductVariants = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -30,13 +31,16 @@ export const selectProductVariants = dataSource({
       false,
     );
     const endpoint = `/stores/${params.storeHash}/v3/catalog/products/${params.product_id}/variants`;
+
     const queryParamsObj = {
       page: params.page,
       limit: params.limit,
       include_fields: params.include_fields,
       exclude_fields: params.exclude_fields,
     };
+
     const { data } = await client.get(endpoint, { params: queryParamsObj });
+
     return {
       result: data.map(
         (variant: { id: unknown; sku: unknown; name: unknown }) => ({

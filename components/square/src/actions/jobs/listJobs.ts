@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { listJobsExamplePayload } from "../../examplePayloads";
 import { listJobsInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listJobs = action({
   display: {
     label: "List Jobs",
@@ -14,6 +15,7 @@ export const listJobs = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const data = await fetchAllPages(
       client,
       "/v2/team-members/jobs",

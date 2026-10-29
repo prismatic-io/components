@@ -19,6 +19,7 @@ import {
   resolvePollingRecordChanges,
   resolvePollWindow,
 } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -72,19 +73,23 @@ export const pollChangesTrigger = pollingTrigger({
       maxRecords,
     );
     const poll = planPoll(records, sinceDate, seenIds, maxRecords, maxBytes);
+
     context.polling.setState({
       ...poll.nextState,
       ...(isBackfill && !poll.complete ? { isBackfill: true } : {}),
     });
+
     const result = {
       created: isBackfill || showNewRecords ? poll.created : [],
       updated: isBackfill || showUpdatedRecords ? poll.updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${pollResourceType} in project ${project}: ${records.length} fetched, ${result.created.length} new, ${result.updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

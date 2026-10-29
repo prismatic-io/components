@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { batchUpsertCatalogObjectsExamplePayload } from "../../examplePayloads";
 import { batchUpsertCatalogObjectsInputs } from "../../inputs";
+
 export const batchUpsertCatalogObjects = action({
   display: {
     label: "Batch Upsert Catalog Objects",
@@ -13,11 +14,14 @@ export const batchUpsertCatalogObjects = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       idempotency_key: idempotencyKey,
       batches: batches,
     };
+
     const response = await client.post("/v2/catalog/batch-upsert", requestBody);
+
     return {
       data: response.data,
     };

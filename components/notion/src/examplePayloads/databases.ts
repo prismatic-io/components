@@ -58,6 +58,7 @@ export const retrieveDatabaseExamplePayload = {
     ],
   },
 };
+
 export const updatedCreateDatabaseExamplePayload = {
   data: {
     object: "database",
@@ -132,6 +133,7 @@ export const updatedCreateDatabaseExamplePayload = {
     ],
   },
 };
+
 export const updatedUpdateDatabaseExamplePayload = {
   data: {
     object: "database",

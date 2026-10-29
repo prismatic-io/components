@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { deleteInstancedWebhooksInputs } from "../../inputs";
 import { deleteInstancedWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInstance } from "../../util";
+
 export const deleteInstancedWebhooks = action({
   display: {
     label: "Delete Instanced Webhooks",
@@ -23,9 +24,7 @@ export const deleteInstancedWebhooks = action({
       ),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteInstancedWebhooksExamplePayload.data,
   }),
   inputs: deleteInstancedWebhooksInputs,

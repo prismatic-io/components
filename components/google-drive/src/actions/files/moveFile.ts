@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { moveFileInputs } from "../../inputs";
 import { moveFileExamplePayload } from "../../examplePayloads";
+
 export const moveFile = action({
   display: {
     label: "Move File",
@@ -21,12 +22,13 @@ export const moveFile = action({
       removeParents: previousParents,
       supportsAllDrives: true,
     });
+
     return { data };
   },
   inputs: moveFileInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => moveFileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    moveFileExamplePayload,
   examplePayload: moveFileExamplePayload,
 });
+
 export default moveFile;

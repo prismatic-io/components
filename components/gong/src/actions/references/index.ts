@@ -3,6 +3,7 @@ import { deletePhoneNumberAndAssociatedElements } from "./deletePhoneNumberAndAs
 import { getLogsDataByTypeAndTimeRange } from "./getLogsData";
 import { listReferencesToAnEmailAddress } from "./listReferencesToAnEmailAddress";
 import { listReferencesToAPhoneNumber } from "./listReferencesToAPhoneNumber";
+
 export default {
   getLogsDataByTypeAndTimeRange,
   listReferencesToAPhoneNumber,

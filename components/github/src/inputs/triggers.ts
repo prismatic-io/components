@@ -7,6 +7,7 @@ import {
   repo,
   webhookSecretInput,
 } from "./common";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -17,6 +18,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -26,6 +28,7 @@ const showNewRecords = input({
     "When true, issues created after the last poll are emitted on the `created` branch.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -35,6 +38,7 @@ const showUpdatedRecords = input({
     "When true, issues updated since the last poll but created earlier are emitted on the `updated` branch.",
   clean: util.types.toBool,
 });
+
 export const pollChangesTriggerInputs = {
   connection: connectionInput,
   owner,
@@ -43,7 +47,9 @@ export const pollChangesTriggerInputs = {
   showNewRecords,
   showUpdatedRecords,
 };
+
 export const webhookInputs = { webhookSecret: webhookSecretInput };
+
 export const eventWebhookInputs = {
   connection: connectionInput,
   owner,

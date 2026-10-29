@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteDataStoresAssetsExamplePayload } from "../../examplePayloads";
 import { connectionInput, dataSetIds } from "../../inputs";
+
 export const deleteDataStoresAssets = action({
   display: {
     label: "Delete Data Stores Assets",
@@ -13,6 +14,7 @@ export const deleteDataStoresAssets = action({
     const { data } = await client.delete(
       `/data-stores/${dataStoreIds}/data-assets/${dataAssetsIds}`,
     );
+
     return {
       data,
     };

@@ -1,5 +1,6 @@
 import { connection } from "@prismatic-io/spectral";
 import type { BasicAuthConnectionParams } from "../interfaces/ConnectionParams";
+
 export const getAtlassianBasicAuthConnection = ({
   key,
   display,

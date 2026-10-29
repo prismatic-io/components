@@ -7,6 +7,7 @@ import {
   paginationGroupedInputs,
   updateMask,
 } from "./common";
+
 const dataSource = input({
   label: "Data Source",
   type: "string",
@@ -17,6 +18,7 @@ const dataSource = input({
   placeholder: "Enter Data Source ID",
   required: true,
 });
+
 const offerId = input({
   label: "Offer ID",
   type: "string",
@@ -27,6 +29,7 @@ const offerId = input({
   placeholder: "Enter Offer ID",
   required: true,
 });
+
 const contentLanguage = input({
   label: "Content Language",
   type: "string",
@@ -36,6 +39,7 @@ const contentLanguage = input({
   placeholder: "Enter Language Code",
   required: true,
 });
+
 const feedLabel = input({
   label: "Feed Label",
   type: "string",
@@ -46,6 +50,7 @@ const feedLabel = input({
   placeholder: "Enter Feed Label",
   required: false,
 });
+
 const attributes = input({
   label: "Attributes",
   type: "code",
@@ -71,6 +76,7 @@ const attributes = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const customAttributes = input({
   label: "Custom Attributes",
   type: "code",
@@ -91,6 +97,7 @@ const customAttributes = input({
   ]),
   clean: jsonInputClean,
 });
+
 const productInputEntries = input({
   label: "Product Inputs",
   type: "code",
@@ -115,17 +122,20 @@ const productInputEntries = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const productIdentifierInputs = {
   contentLanguage,
   feedLabel: { ...feedLabel, clean: util.types.toString, required: true },
   offerId: { ...offerId, dataSource: "selectProductMerchant" },
 };
+
 export const batchProductInputs = {
   ...connectionOnlyInputs,
   account,
   dataSource,
   entries: productInputEntries,
 };
+
 export const createProductInputs = {
   ...connectionOnlyInputs,
   account,
@@ -135,22 +145,26 @@ export const createProductInputs = {
   attributes,
   customAttributes: { ...customAttributes, required: false },
 };
+
 export const deleteProductInputs = {
   ...connectionOnlyInputs,
   account,
   dataSource,
   ...productIdentifierInputs,
 };
+
 export const getProductInputs = {
   ...connectionOnlyInputs,
   account,
   ...productIdentifierInputs,
 };
+
 export const listProductsInputs = {
   ...connectionOnlyInputs,
   account,
   ...paginationGroupedInputs,
 };
+
 export const updateProductInputs = {
   ...connectionOnlyInputs,
   account,
@@ -165,6 +179,7 @@ export const updateProductInputs = {
     example: "productAttributes.title,productAttributes.price",
   },
 };
+
 export const selectProductMerchantInputs = {
   connection: connectionInput,
   account: { ...account, dataSource: undefined },

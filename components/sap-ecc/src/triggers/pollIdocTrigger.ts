@@ -14,12 +14,14 @@ import type {
   IdocRecordChange,
 } from "../types";
 import { fetchNewIdocs, handlePollingError, resolveIdocChanges } from "../util";
+
 export const pollIdocTrigger = pollingTrigger({
   display: {
     label: "New IDocs",
     description:
       "Checks for new IDocs in the SAP EDIDC table on a configured schedule, using the DOCNUM field as a cursor.",
   },
+
   inputs: pollIdocInputs,
   examplePayload: pollIdocExamplePayload,
   triggerResolverSupport: "valid",
@@ -28,6 +30,7 @@ export const pollIdocTrigger = pollingTrigger({
     resolveItems: (_context, { payload }): IdocRecordChange[] =>
       resolveIdocChanges(payload.body.data as IdocChangesObject),
   },
+
   perform: async (
     context,
     payload,
@@ -41,13 +44,17 @@ export const pollIdocTrigger = pollingTrigger({
             errorCount: 0,
             consecutiveErrors: 0,
           };
+
     const { lastDocnum } = pollState;
+
     try {
       const client = createClient(connection, context, context.debug.enabled);
+
       const requestedPageSize = rowCount || 50;
       const pageSize = context.batch?.enabled
         ? Math.min(requestedPageSize, MAX_BATCHED_PAGE_SIZE)
         : requestedPageSize;
+
       const records = await fetchNewIdocs(client, {
         endpoint: endpoint || ENDPOINTS.SOAP_RFC,
         lastDocnum,
@@ -55,15 +62,18 @@ export const pollIdocTrigger = pollingTrigger({
         messageType,
         direction,
       });
+
       const newLastDocnum = records.reduce(
         (max, r) => (r.idocNumber > max ? r.idocNumber : max),
         lastDocnum,
       );
+
       context.polling.setState({
         lastDocnum: newLastDocnum,
         errorCount: 0,
         consecutiveErrors: 0,
       });
+
       return {
         payload: {
           ...payload,

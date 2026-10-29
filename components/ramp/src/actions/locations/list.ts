@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { Location } from "../../interfaces/locations";
 import { listLocationsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listLocations = action({
   display: {
     label: "List Locations",
@@ -23,6 +24,7 @@ export const listLocations = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<Location>(
       client,
       "locations",
@@ -40,9 +42,7 @@ export const listLocations = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listLocationsResponse,
       page: fetchAll ? null : listLocationsResponse.page,

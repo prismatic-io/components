@@ -2,6 +2,7 @@ import { dataSource, input } from "@prismatic-io/spectral";
 import type { ListDataSetsQueryParams } from "../actions/types/ListDataSetsQueryParams";
 import { getDomoClient } from "../client";
 import { connection, limit, offset } from "../inputs";
+
 const selectDataSet = dataSource({
   display: {
     label: "Select DataSet",
@@ -23,15 +24,8 @@ const selectDataSet = dataSource({
           label: dataset.name,
           key: dataset.id.toString(),
         }))
-        .sort(
-          (
-            a: {
-              label: string;
-            },
-            b: {
-              label: string;
-            },
-          ) => (a.label < b.label ? -1 : 1),
+        .sort((a: { label: string }, b: { label: string }) =>
+          a.label < b.label ? -1 : 1,
         ),
     };
   },
@@ -54,4 +48,5 @@ const selectDataSet = dataSource({
     result: [{ label: "Leonhard Euler Birthday Bash", key: "1" }],
   },
 });
+
 export default { selectDataSet };

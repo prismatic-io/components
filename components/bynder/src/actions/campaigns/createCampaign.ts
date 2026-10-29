@@ -9,6 +9,7 @@ import {
   name,
   responsibleId,
 } from "../../inputs";
+
 export const createCampaign = action({
   display: {
     label: "Create Campaign",

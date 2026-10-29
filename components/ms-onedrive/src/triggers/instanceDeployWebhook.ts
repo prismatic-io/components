@@ -8,6 +8,7 @@ import { getOneDriveClient } from "../client";
 import { TriggerBranches } from "../enums";
 import { instanceDeployWebhookInputs } from "../inputs";
 import type { WebhookNotificationPayload } from "../types";
+
 export const instanceDeployWebhook = trigger({
   display: {
     label: "Drive Subscription",
@@ -25,6 +26,7 @@ export const instanceDeployWebhook = trigger({
   perform: async (context, payload, params) => {
     const rawValidationToken = payload.queryParameters?.validationToken;
     const validationToken = util.types.toString(rawValidationToken);
+
     const expectedClientState = params.clientState;
     if (expectedClientState) {
       const body = payload.body?.data as WebhookNotificationPayload | undefined;
@@ -38,6 +40,7 @@ export const instanceDeployWebhook = trigger({
         }
       }
     }
+
     if (validationToken) {
       return Promise.resolve({
         payload,
@@ -49,6 +52,7 @@ export const instanceDeployWebhook = trigger({
         branch: TriggerBranches.URLValidation,
       });
     }
+
     return Promise.resolve({
       payload,
       branch: TriggerBranches.Notification,
@@ -60,11 +64,14 @@ export const instanceDeployWebhook = trigger({
         params.oneDriveConnection,
         context.debug.enabled,
       );
+
       const expiration =
         params.expirationDateTime || calculateExpirationDateTime(3);
+
       context.logger.info(
         `Creating OneDrive subscription for resource: ${params.resource}`,
       );
+
       await createSubscriptionTrigger(
         client,
         {
@@ -81,7 +88,9 @@ export const instanceDeployWebhook = trigger({
         params.oneDriveConnection,
         context.debug.enabled,
       );
+
       context.logger.info("Deleting OneDrive subscription(s) for this flow");
+
       await deleteSubscriptionTrigger(client, context);
     },
   },

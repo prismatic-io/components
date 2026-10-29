@@ -6,6 +6,7 @@ import type { ProductSummary } from "../../types";
 import { fetchAllPages } from "../../util/pagination";
 import { toPicklist } from "../../util/picklist";
 import { accountResourceName } from "../../util/resourceNames";
+
 export const selectProductMerchant = dataSource({
   display: {
     label: "Select Product (Merchant v1)",
@@ -15,6 +16,7 @@ export const selectProductMerchant = dataSource({
   perform: async (_context, { connection, account }) => {
     const client = createClientMerchant(connection);
     const parent = accountResourceName(account);
+
     const products = await fetchAllPages<ProductSummary>(async (token) => {
       const { data } = await client.get(`/products/v1/${parent}/products`, {
         params: { pageToken: token },
@@ -24,6 +26,7 @@ export const selectProductMerchant = dataSource({
         nextPageToken: data.nextPageToken,
       };
     });
+
     return toPicklist(products, (product) => ({
       label: product.title || product.offerId || "Unknown",
       key: product.offerId || "",

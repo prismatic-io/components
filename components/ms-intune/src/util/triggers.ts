@@ -13,6 +13,7 @@ import {
 } from "../constants";
 import type { Subscription } from "../types";
 import { paginateResults } from "./pagination";
+
 export const triggerPerformFunction = async (
   _context: ActionContext<ConfigVarResultCollection>,
   payload: TriggerPayload,
@@ -29,11 +30,13 @@ export const triggerPerformFunction = async (
       },
       branch: TriggerBranches.URLValidation,
     });
+
   return Promise.resolve({
     payload,
     branch: TriggerBranches.Notification,
   });
 };
+
 export const subscribeToResource = async (
   client: HttpClient,
   endpoint: string,
@@ -49,10 +52,12 @@ export const subscribeToResource = async (
       ({ notificationUrl, changeType }) =>
         notificationUrl === endpoint && type === changeType,
     );
+
     if (existingSubscription)
       throw new Error(
         `Subscription of type ${type} already exists for this endpoint.`,
       );
+
     const payload = {
       changeType: type,
       notificationUrl: endpoint,
@@ -65,6 +70,7 @@ export const subscribeToResource = async (
   const createdSubscriptions = await Promise.all(promises);
   return createdSubscriptions.map(({ data }) => data);
 };
+
 export const addMinutesToDate = (
   currentDate: Date,
   minutesToAdd: number,
@@ -79,23 +85,29 @@ export const addMinutesToDate = (
       const milliseconds = `${match.slice(1, 4)}0000`;
       return `.${milliseconds}Z`;
     });
+
   return formattedDate;
 };
+
 export const removeSubscriptions = async (
   client: HttpClient,
   instanceWebhooks: Set<string>,
 ) => {
   const data = await paginateResults(client, ENDPOINTS.SUBSCRIPTIONS, true, {});
+
   const subscriptionsToRemove: string[] = (data.value as Subscription[])
     .filter(({ notificationUrl }) => instanceWebhooks.has(notificationUrl))
     .map(({ id }) => id);
+
   await Promise.all(
     subscriptionsToRemove.map((id) =>
       client.delete(`${ENDPOINTS.SUBSCRIPTIONS}/${id}`),
     ),
   );
+
   return { subscriptionsRemoved: subscriptionsToRemove };
 };
+
 export const getExpirationDate = (expirationDateTime: string | undefined) => {
   return expirationDateTime
     ? expirationDateTime

@@ -25,6 +25,7 @@ import type {
   PollWindow,
   WooCommerceRecord,
 } from "./types";
+
 export const validateConnection = (connection: Connection) => {
   if (![basic.key].includes(connection.key)) {
     throw new ConnectionError(
@@ -33,38 +34,49 @@ export const validateConnection = (connection: Connection) => {
     );
   }
 };
+
 export const getBaseUrl = (connection: Connection): string => {
   const domain = cleanDomain(util.types.toString(connection.fields.domain));
   return `https://${domain}/wp-json/wc/v3`;
 };
+
 export const cleanDomain = (domain: string): string => {
   if (domain.startsWith("https://")) {
     const { host } = new URL(domain);
     return host;
   }
+
   const { host } = new URL(`https://${domain}`);
   return host;
 };
+
 export const getAuthorization = (connection: Connection) => {
   if (connection.key === basic.key) {
     const token = Buffer.from(
-      `${util.types.toString(connection?.fields.username)}:${util.types.toString(connection?.fields.password)}`,
+      `${util.types.toString(
+        connection?.fields.username,
+      )}:${util.types.toString(connection?.fields.password)}`,
     ).toString("base64");
+
     return `Basic ${token}`;
   }
   return `Bearer ${util.types.toString(connection?.token?.access_token)}`;
 };
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanKeyValPairListInput = (value: unknown) => {
   const data = util.types.keyValPairListToObject(
     value as KeyValuePair<unknown>[],
   );
+
   if (Object.keys(data).length === 0) {
     return {};
   }
   return data;
 };
+
 export const paginateRecords = async (
   httpClient: HttpClient,
   url: string,
@@ -108,14 +120,20 @@ export const paginateRecords = async (
     headers,
   };
 };
+
 const SECOND_MS = 1000;
 const POLL_LABEL = "New Records";
+
 const toIso = (epochMs: number): string => new Date(epochMs).toISOString();
+
 const truncateToSecond = (iso: string): string =>
   toIso(Math.floor(new Date(iso).getTime() / SECOND_MS) * SECOND_MS);
+
 const resolveSafeHorizon = (now: string): string =>
   truncateToSecond(toIso(new Date(now).getTime() - WATERMARK_SKEW_MARGIN_MS));
+
 const toWooDate = (epochMs: number): string => toIso(epochMs).slice(0, 19);
+
 const fetchWooPage =
   (client: HttpClient, endpoint: string): FetchPollPage =>
   async ({ afterMs, beforeMs, exclude }: PollPageQuery) => {
@@ -133,6 +151,7 @@ const fetchWooPage =
     });
     return data;
   };
+
 const createdSecond = (record: WooCommerceRecord): number | null => {
   const gmt = record.date_created_gmt;
   if (typeof gmt !== "string") {
@@ -143,12 +162,15 @@ const createdSecond = (record: WooCommerceRecord): number | null => {
     ? null
     : Math.floor(at.getTime() / SECOND_MS) * SECOND_MS;
 };
+
 const sameCursor = (left: PollCursor, right: PollCursor): boolean =>
   JSON.stringify(left) === JSON.stringify(right);
+
 const noProgress = (cursor: PollCursor): Error =>
   new Error(
     `${POLL_LABEL} made no progress: a full page of ${POLL_PAGE_SIZE} records came back at ${cursor.watermark} and the cursor did not move, so every later request would return the same page. The cursor is left where it was.`,
   );
+
 const normalRound = async (
   fetchPage: FetchPollPage,
   cursor: PollCursor,
@@ -206,6 +228,7 @@ const normalRound = async (
     drained: false,
   };
 };
+
 const tieRound = async (
   fetchPage: FetchPollPage,
   cursor: PollCursor,
@@ -260,6 +283,7 @@ const tieRound = async (
     drained: true,
   };
 };
+
 const drainWatermark = async (
   fetchPage: FetchPollPage,
   start: PollCursor,
@@ -280,6 +304,7 @@ const drainWatermark = async (
   }
   return { records, cursor, drained: false };
 };
+
 const resolveStartCursor = (
   state: PollingState | null | undefined,
   incoming: PollCursor | undefined,
@@ -291,6 +316,7 @@ const resolveStartCursor = (
     watermark: truncateToSecond(state?.lastPolledAt || lookBackDate || now),
     boundaryIds: state?.lastPolledAt ? (state.boundaryIds ?? []) : [],
   };
+
 const nextPollingState = (
   state: PollingState | null | undefined,
   start: PollCursor,
@@ -310,6 +336,7 @@ const nextPollingState = (
     cursor: result.cursor,
   };
 };
+
 export const pollWatermark = async (
   client: HttpClient,
   endpoint: string,
@@ -320,10 +347,7 @@ export const pollWatermark = async (
     now: string;
     batching: boolean;
   },
-): Promise<{
-  result: DrainResult;
-  nextState: PollingState;
-}> => {
+): Promise<{ result: DrainResult; nextState: PollingState }> => {
   const start = resolveStartCursor(
     input.state,
     input.incoming,
@@ -338,6 +362,7 @@ export const pollWatermark = async (
   );
   return { result, nextState: nextPollingState(input.state, start, result) };
 };
+
 export const fetchCustomersSince = async (
   client: HttpClient,
   endpoint: string,
@@ -359,19 +384,24 @@ export const fetchCustomersSince = async (
   );
   return trimToWindow(data, window);
 };
+
 const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 const INITIAL_SYNC_SEED_MARGIN_MS = 24 * 60 * 60 * 1000;
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (raw === "") {
     return "";
   }
+
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
     throw new Error(
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = util.types.toNumber(yearStr);
   const month = util.types.toNumber(monthStr);
@@ -386,11 +416,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolvePollWindow = (
   state: PollingState | null | undefined,
   lookBackDate: string | undefined,
@@ -409,6 +442,7 @@ export const resolvePollWindow = (
   }
   return { after: now };
 };
+
 export const trimToWindow = (
   records: WooCommerceRecord[],
   window: PollWindow,
@@ -428,6 +462,7 @@ export const trimToWindow = (
     return Number.isNaN(createdAt) || createdAt >= notBefore;
   });
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

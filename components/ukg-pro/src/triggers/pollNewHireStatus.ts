@@ -13,6 +13,7 @@ import {
   getTenantIdentifier,
   resolveNewHireStatusChanges,
 } from "../util";
+
 export const pollNewHireStatus = pollingTrigger({
   display: {
     label: "New Hire Status",
@@ -30,31 +31,40 @@ export const pollNewHireStatus = pollingTrigger({
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as NewHireStatusPollingState;
     const lastStatusMap = pollState.lastStatusMap || {};
+
     if (context.debug.enabled) {
       context.logger.debug(`Polling state: ${JSON.stringify(pollState)}`);
     }
+
     const client = await createClient(connection, context.debug.enabled);
     const tenantIdentifier = getTenantIdentifier(connection);
+
     const inProgressHires = await fetchAllPages<InProgressNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/in-progress`,
     );
+
     const completedHires = await fetchAllPages<InProgressNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/completed`,
     );
+
     const allHires = [...inProgressHires, ...completedHires];
     const changes: NewHireStatusChange[] = [];
     const currentStatusMap: Record<string, NewHireStatusEntry> = {};
+
     for (const hire of allHires) {
       const hireId = hire.id;
       const currentStatus = hire.onboardingStatus;
       const currentProgress = 0;
+
       currentStatusMap[hireId] = {
         status: currentStatus,
         progress: currentProgress,
       };
+
       const previous = lastStatusMap[hireId];
+
       if (!previous) {
         changes.push({
           newHireId: hireId,
@@ -91,10 +101,12 @@ export const pollNewHireStatus = pollingTrigger({
         });
       }
     }
+
     context.polling.setState({
       lastStatusMap: currentStatusMap,
       lastPollTime: now,
     });
+
     return {
       payload: {
         ...payload,

@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import { connection, employeeId } from "../common";
 import { documentId, folderId, folderType } from "./common";
+
 export const deleteFileFromFolderInputs = {
   connection,
   employeeId: {

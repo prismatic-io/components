@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createDatasetInputs } from "../../inputs";
+
 export const createDataset = action({
   display: {
     description: "Creates a new empty dataset.",

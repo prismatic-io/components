@@ -3,9 +3,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { listDetectedAppsExamplePayload } from "../../examplePayloads";
 import { listDetectedApps } from "./listDetectedApps";
+
 const HOST = "https://graph.microsoft.com";
 const PATH = "/v1.0/deviceManagement/detectedApps";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -17,9 +19,11 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listDetectedAppsExamplePayload.data;
 const [firstApp] = listReply.value;
 const secondApp = { ...firstApp, id: "caf60db6-0db6-caf6-b60d-f6cab60df6cb" };
+
 const emptyPagination = {
   $top: undefined,
   $skip: undefined,
@@ -34,18 +38,23 @@ const emptyFilters = {
   $search: undefined,
   $format: undefined,
 };
+
 describe("listDetectedApps", () => {
   afterEach(() => nock.cleanAll());
+
   test("returns a single page of detected apps when Fetch All is false", async () => {
     nock(HOST).get(PATH).query({ $count: "false" }).reply(200, listReply);
+
     const { result } = await invoke(listDetectedApps, {
       connection,
       fetchAll: false,
       pagination: emptyPagination,
       filters: emptyFilters,
     });
+
     expect(result.data).toEqual(listReply);
   });
+
   test("follows @odata.nextLink and concatenates every page when Fetch All is true", async () => {
     nock(HOST)
       .get(PATH)
@@ -58,19 +67,23 @@ describe("listDetectedApps", () => {
       .get(PATH)
       .query({ $skiptoken: "page-2" })
       .reply(200, { value: [secondApp] });
+
     const { result } = await invoke(listDetectedApps, {
       connection,
       fetchAll: true,
       pagination: emptyPagination,
       filters: emptyFilters,
     });
+
     expect(result.data).toEqual({ value: [firstApp, secondApp] });
   });
+
   test("surfaces the failure when the API rejects the request", async () => {
     nock(HOST)
       .get(PATH)
       .query({ $count: "false" })
       .reply(403, { error: { code: "Authorization_RequestDenied" } });
+
     await expect(
       invoke(listDetectedApps, {
         connection,

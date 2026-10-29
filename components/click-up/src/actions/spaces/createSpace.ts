@@ -4,6 +4,7 @@ import { createSpaceExamplePayload } from "../../examplePayloads";
 import { createSpaceInputs } from "../../inputs";
 import { createSpaceOutputSchema } from "../../outputSchemas";
 import type { SpaceBody as Body } from "../../types";
+
 export const createSpace = action({
   display: {
     label: "Create Space",
@@ -76,7 +77,9 @@ export const createSpace = action({
         },
       },
     };
+
     const { data } = await client.post(`/team/${teamId}/space`, body);
+
     return {
       data,
     };

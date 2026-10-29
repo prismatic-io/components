@@ -4,6 +4,7 @@ import { getFileOrFolderMetadataExamplePayload } from "../../examplePayloads";
 import { getMetadataInputs, shared_folder_id } from "../../inputs";
 import { getMetadataOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const getMetadata = action({
   display: {
     label: "Get Metadata for File or Folder",

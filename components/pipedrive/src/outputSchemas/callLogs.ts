@@ -19,6 +19,7 @@ const callLogRecordSchema = {
     note: { type: "string" },
   },
 };
+
 export const addCallLogOutputSchema = {
   type: "object",
   properties: {
@@ -31,6 +32,7 @@ export const addCallLogOutputSchema = {
     },
   },
 };
+
 export const getUserCallLogsOutputSchema = {
   type: "object",
   properties: {
@@ -56,6 +58,7 @@ export const getUserCallLogsOutputSchema = {
     },
   },
 };
+
 export const deleteCallLogOutputSchema = {
   type: "object",
   properties: {
@@ -73,6 +76,7 @@ export const deleteCallLogOutputSchema = {
     },
   },
 };
+
 export const getCallLogOutputSchema = {
   type: "object",
   properties: {

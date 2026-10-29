@@ -11,35 +11,45 @@ import type {
   Webhook,
 } from "../types";
 import JSONBig from "json-bigint";
+
 export const toOptionalString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalNumber = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const toOptionalBoolean = (value: unknown) => {
   const str = util.types.toString(value);
   return str === TRUE ? true : str === FALSE ? false : undefined;
 };
+
 export const toOptionalEmailSetting = (value: unknown) => {
   const bool = toOptionalBoolean(value);
   if (bool === undefined) {
     return undefined;
   }
+
   return {
     enabled: bool,
   };
 };
+
 export const toOptionalObject = (value: unknown) => {
   if (!value) {
     return undefined;
   }
+
   return util.types.toObject(value);
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
+
   if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const [year, month, day] = str
     .split("-")
     .map((part) => util.types.toNumber(part));
@@ -51,11 +61,14 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
+
   if (parsed > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return str;
 };
+
 export const getT = async <T>(
   client: HttpClient,
   url: string,
@@ -67,11 +80,14 @@ export const getT = async <T>(
   } = await client.get<GoToWebinarResponse<T>>(url, {
     params,
   });
+
   if (!_embedded) {
     return [];
   }
+
   return _embedded[key];
 };
+
 export const filterAndMapByCallbackUrl = <T extends Webhook | UserSubscription>(
   callbackUrls: string[],
   collection: T[],
@@ -81,6 +97,7 @@ export const filterAndMapByCallbackUrl = <T extends Webhook | UserSubscription>(
     .filter((o) => callbackUrls.includes(o.callbackUrl))
     .map((o) => o[keyToMapBy]);
 };
+
 export const deleteByKeys = async (
   client: HttpClient,
   url: string,
@@ -88,21 +105,25 @@ export const deleteByKeys = async (
 ) => {
   await client.delete(url, { data: collectionKeys });
 };
+
 export const bigIntTransformerConfig = {
   transformResponse: [
     (data: unknown) => {
       if (typeof data === "string") {
         return JSONBig.parse(data);
       }
+
       return data;
     },
   ],
 };
+
 export const parseRegistrantKey = (registrantKey: number[]) => {
   return registrantKey.reduce((acc: string, element: number) => {
     return `${acc}${element}`;
   }, "");
 };
+
 export const deleteInstancedWebhooks = async (
   client: HttpClient,
   callbackUrls: string[],
@@ -113,12 +134,15 @@ export const deleteInstancedWebhooks = async (
   if (webhooks.length === NO_WEBHOOKS) {
     return;
   }
+
   const instanceWebhookKeys = filterAndMapByCallbackUrl<Webhook>(
     callbackUrls,
     webhooks,
     "webhookKey",
   );
+
   await deleteByKeys(client, "/webhooks", instanceWebhookKeys);
+
   const userSubscriptions = await getT<UserSubscription>(
     client,
     "/userSubscriptions",
@@ -132,19 +156,24 @@ export const deleteInstancedWebhooks = async (
   );
   await deleteByKeys(client, "/userSubscriptions", instanceUserSubscriptions);
 };
+
 export const getFromTime = (): string => {
   const now = new Date();
   const from = new Date(now);
   from.setMonth(from.getMonth() - 3);
   from.setHours(0, 0, 0, 0);
+
   return `${from.toISOString().slice(0, 19)}Z`;
 };
+
 export const getEndTime = (): string => {
   const now = new Date();
   const end = new Date(now);
   end.setHours(23, 59, 59, 999);
+
   return `${end.toISOString().slice(0, 19)}Z`;
 };
+
 export const fetchAllResults = async <T>(
   client: HttpClient,
   url: string,
@@ -165,14 +194,18 @@ export const fetchAllResults = async <T>(
         page: pageNumber,
       },
     });
+
     if (_embedded?.[key]) {
       results.push(..._embedded[key]);
     }
+
     totalPages = page.totalPages;
     pageNumber += 1;
   } while (pageNumber <= totalPages);
+
   return results;
 };
+
 export const fetchAllRegistrants = async (
   client: HttpClient,
   organizerKey: string,
@@ -180,6 +213,7 @@ export const fetchAllRegistrants = async (
 ): Promise<ParsedRegistrant[]> => {
   const url = `/organizers/${organizerKey}/webinars/${webinarKey}/registrants`;
   const all: ParsedRegistrant[] = [];
+
   for (let page = 0; page < MAX_POLL_PAGES; page += 1) {
     const { data } = await client.get<Registrant[]>(url, {
       params: { page, limit: MAX_PAGE_SIZE },
@@ -194,12 +228,12 @@ export const fetchAllRegistrants = async (
     );
     if (data.length < MAX_PAGE_SIZE) break;
   }
+
   return all;
 };
+
 export const filterRegistrantsRegisteredAfter = <
-  T extends {
-    registrationDate?: string;
-  },
+  T extends { registrationDate?: string },
 >(
   registrants: T[],
   lastPolledAt: string,
@@ -212,8 +246,10 @@ export const filterRegistrantsRegisteredAfter = <
     return !Number.isNaN(registeredMs) && registeredMs > lastPolledAtMs;
   });
 };
+
 export const lookBackDateToCursor = (lookBackDate: string): string =>
   new Date(Date.parse(`${lookBackDate}T00:00:00.000Z`) - 1).toISOString();
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

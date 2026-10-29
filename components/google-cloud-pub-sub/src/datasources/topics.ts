@@ -3,6 +3,7 @@ import type { pubsub_v1 } from "googleapis";
 import { createClient } from "../client";
 import { connectionInput, pageSize, pageToken, projectId } from "../inputs";
 import { paginateAll, sortByName } from "../util";
+
 export const topics = dataSource({
   display: {
     label: "Fetch Topics",

@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The SFTP connection to use.",
 });
+
 export const path = input({
   label: "Path",
   placeholder: "Enter path",
@@ -14,6 +16,7 @@ export const path = input({
   example: "/path/to/directory/",
   clean: util.types.toString,
 });
+
 export const recursive = input({
   label: "Include Subfolders",
   comments:
@@ -23,6 +26,7 @@ export const recursive = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const returnBuffer = input({
   label: "Return Buffer",
   type: "boolean",
@@ -32,6 +36,7 @@ export const returnBuffer = input({
     "When true, treats the file as a binary file with content type 'application/octet-stream', even if it is a text file. This is helpful if you are processing non-UTF-8 text files, as the runner assumes text files are UTF-8.",
   clean: util.types.toBool,
 });
+
 export const outputPath = input({
   label: "Path",
   placeholder: "Enter path",
@@ -41,12 +46,14 @@ export const outputPath = input({
   example: "/we/love/commas.csv",
   clean: util.types.toString,
 });
+
 export const outputPathAppend = input({
   ...outputPath,
   placeholder: "Enter path",
   comments: "The path on the SFTP server where data will be appended.",
   example: "/path/to/remote/file.txt",
 });
+
 export const data = input({
   label: "Data",
   placeholder: "Enter data",
@@ -58,11 +65,13 @@ export const data = input({
       ? util.types.toData(value).data
       : Buffer.from(typeof value === "string" ? value : JSON.stringify(value)),
 });
+
 export const dataAppend = input({
   ...data,
   placeholder: "Enter data",
   comments: "The text or data to append to the file.",
 });
+
 export const pattern = input({
   label: "Pattern",
   default: "*",
@@ -73,6 +82,7 @@ export const pattern = input({
   example: "*.txt",
   clean: util.types.toString,
 });
+
 export const includeSubdirectories = input({
   label: "Include Subdirectories",
   default: "false",
@@ -82,6 +92,7 @@ export const includeSubdirectories = input({
     "When true, recursively monitors files in all subdirectories. When false, only monitors files in the specified directory.",
   clean: util.types.toBool,
 });
+
 export const includeDirectories = input({
   label: "Include Directories",
   default: "false",

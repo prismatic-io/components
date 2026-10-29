@@ -1,22 +1,26 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanObject, cleanString } from "./util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const idInput = input({
   label: "ID",
   type: "string",
   clean: cleanString,
   comments: "Unique identifier for the entity given by Intercom",
 });
+
 export const externalIdInput = input({
   label: "External ID",
   type: "string",
   clean: cleanString,
   comments: "Unique identifier for the entity from external systems",
 });
+
 export const startingAfterInput = input({
   label: "Starting After Cursor",
   type: "string",
@@ -24,6 +28,7 @@ export const startingAfterInput = input({
   comments:
     "If you want to get the next page of data in the batch, you must make a new request with the starting_after parameter equal to the cursor pointer string. Use the starting_after parameter of the previous response.",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -33,6 +38,7 @@ export const page = input({
   placeholder: "1",
   clean: cleanString,
 });
+
 export const perPage = input({
   label: "Per Page",
   type: "string",
@@ -42,6 +48,7 @@ export const perPage = input({
   placeholder: "15",
   clean: cleanString,
 });
+
 export const order = input({
   label: "Order",
   type: "string",
@@ -60,6 +67,7 @@ export const order = input({
   default: "desc",
   clean: cleanString,
 });
+
 export const ticketAttributes = input({
   label: "Ticket Attributes",
   language: "json",
@@ -77,6 +85,7 @@ export const ticketAttributes = input({
   ),
   clean: cleanObject,
 });
+
 export const ticketTypeId = input({
   label: "Ticket Type ID",
   type: "string",
@@ -87,6 +96,7 @@ export const ticketTypeId = input({
   dataSource: "selectTicketType",
   clean: cleanString,
 });
+
 export const contactId = input({
   label: "Contact ID",
   type: "string",
@@ -97,6 +107,7 @@ export const contactId = input({
   dataSource: "selectContact",
   clean: cleanString,
 });
+
 export const companyId = input({
   label: "Company ID",
   type: "string",
@@ -108,6 +119,7 @@ export const companyId = input({
   dataSource: "selectCompany",
   clean: cleanString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -115,18 +127,23 @@ export const fetchAll = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const selectCompanyInputs = {
   connection: connectionInput,
 };
+
 export const selectContactInputs = {
   connection: connectionInput,
 };
+
 export const selectTagInputs = {
   connection: connectionInput,
 };
+
 export const selectTicketInputs = {
   connection: connectionInput,
 };
+
 export const selectTicketTypeInputs = {
   connection: connectionInput,
 };

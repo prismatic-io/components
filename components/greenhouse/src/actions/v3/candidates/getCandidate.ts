@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { getCandidateV3ExamplePayload } from "../../../examplePayloads/v3/candidates";
 import { getCandidateV3Inputs } from "../../../inputs/v3/candidates";
 import type { V3Candidate } from "../../../types";
+
 export const getCandidateV3 = action({
   display: {
     label: "Get Candidate",

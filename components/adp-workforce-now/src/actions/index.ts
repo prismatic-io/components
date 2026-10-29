@@ -4,6 +4,7 @@ import misc from "./misc";
 import paymentDistribution from "./paymentDistribution";
 import personalContact from "./personalContact";
 import workers from "./workers";
+
 export default {
   ...applicantOnboard,
   ...company,

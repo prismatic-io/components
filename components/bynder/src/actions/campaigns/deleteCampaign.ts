@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createWorkflowClient } from "../../client";
 import { connection, id } from "../../inputs";
+
 export const deleteCampaign = action({
   display: {
     label: "Delete Campaign",

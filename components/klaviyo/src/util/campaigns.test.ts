@@ -5,10 +5,12 @@ import {
   toSendStrategy,
   toTrackingOptions,
 } from "./campaigns";
+
 describe("toCampaignFields", () => {
   it("returns undefined when no fields are selected", () => {
     expect(toCampaignFields(undefined)).toBeUndefined();
   });
+
   it("passes current revision fields through unchanged", () => {
     expect(toCampaignFields(["name", "status", "send_strategy"])).toEqual([
       "name",
@@ -16,6 +18,7 @@ describe("toCampaignFields", () => {
       "send_strategy",
     ]);
   });
+
   it("adds send_strategy.method when a send strategy sub-field is selected", () => {
     expect(toCampaignFields(["name", "send_strategy.datetime"])).toEqual([
       "name",
@@ -23,6 +26,7 @@ describe("toCampaignFields", () => {
       "send_strategy.method",
     ]);
   });
+
   it("maps legacy send strategy fields to their current equivalents", () => {
     expect(
       toCampaignFields([
@@ -38,6 +42,7 @@ describe("toCampaignFields", () => {
       "send_strategy.method",
     ]);
   });
+
   it("drops duplicates produced by the mapping", () => {
     expect(
       toCampaignFields([
@@ -48,10 +53,12 @@ describe("toCampaignFields", () => {
     ).toEqual(["send_strategy.datetime", "send_strategy.method"]);
   });
 });
+
 describe("toSendStrategy", () => {
   it("returns undefined for a missing value", () => {
     expect(toSendStrategy(undefined)).toBeUndefined();
   });
+
   it("passes a current-shape strategy through unchanged", () => {
     const strategy = {
       method: "static",
@@ -60,6 +67,7 @@ describe("toSendStrategy", () => {
     };
     expect(toSendStrategy(strategy)).toEqual(strategy);
   });
+
   it("flattens a legacy local static strategy", () => {
     expect(
       toSendStrategy({
@@ -78,6 +86,7 @@ describe("toSendStrategy", () => {
       options: { isLocal: true, sendPastRecipientsImmediately: false },
     });
   });
+
   it("drops sendPastRecipientsImmediately from a non-local static strategy", () => {
     expect(
       toSendStrategy({
@@ -94,6 +103,7 @@ describe("toSendStrategy", () => {
       options: { isLocal: false },
     });
   });
+
   it("omits static options when the legacy block only carries a datetime", () => {
     expect(
       toSendStrategy({
@@ -105,6 +115,7 @@ describe("toSendStrategy", () => {
       }),
     ).toEqual({ method: "static", datetime: "2026-11-08T00:00:00+00:00" });
   });
+
   it("flattens a legacy throttled strategy", () => {
     expect(
       toSendStrategy({
@@ -121,6 +132,7 @@ describe("toSendStrategy", () => {
       throttlePercentage: 10,
     });
   });
+
   it("flattens a legacy smart send time strategy", () => {
     expect(
       toSendStrategy({
@@ -129,6 +141,7 @@ describe("toSendStrategy", () => {
       }),
     ).toEqual({ method: "smart_send_time", date: "2026-11-08" });
   });
+
   it("drops unused legacy blocks for an immediate strategy", () => {
     expect(
       toSendStrategy({
@@ -138,10 +151,12 @@ describe("toSendStrategy", () => {
     ).toEqual({ method: "immediate" });
   });
 });
+
 describe("toTrackingOptions", () => {
   it("returns undefined for a missing value", () => {
     expect(toTrackingOptions(undefined)).toBeUndefined();
   });
+
   it("passes current-shape tracking options through unchanged", () => {
     const tracking = {
       addTrackingParams: true,
@@ -152,6 +167,7 @@ describe("toTrackingOptions", () => {
     };
     expect(toTrackingOptions(tracking)).toEqual(tracking);
   });
+
   it("converts legacy UTM fields to static custom tracking params", () => {
     expect(
       toTrackingOptions({
@@ -169,17 +185,21 @@ describe("toTrackingOptions", () => {
       isTrackingOpens: false,
     });
   });
+
   it("converts isAddUtm alone and ignores a null utmParams", () => {
     expect(toTrackingOptions({ isAddUtm: false, utmParams: null })).toEqual({
       addTrackingParams: false,
     });
   });
 });
+
 describe("toCampaignMessages", () => {
   const content = { subject: "Buy our product!", fromEmail: "a@b.com" };
+
   it("returns undefined for a missing value", () => {
     expect(toCampaignMessages(undefined)).toBeUndefined();
   });
+
   it("passes current-shape messages through unchanged", () => {
     const messages = [
       {
@@ -189,6 +209,7 @@ describe("toCampaignMessages", () => {
     ];
     expect(toCampaignMessages(messages)).toEqual(messages);
   });
+
   it("nests legacy email attributes under definition and drops renderOptions", () => {
     expect(
       toCampaignMessages([
@@ -211,6 +232,7 @@ describe("toCampaignMessages", () => {
       },
     ]);
   });
+
   it("nests legacy sms attributes under definition and drops label", () => {
     expect(
       toCampaignMessages([
@@ -237,6 +259,7 @@ describe("toCampaignMessages", () => {
       },
     ]);
   });
+
   it("keeps sibling keys such as relationships", () => {
     const relationships = { image: { data: { type: "image", id: "1" } } };
     expect(

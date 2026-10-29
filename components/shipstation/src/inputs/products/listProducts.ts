@@ -8,6 +8,7 @@ import {
   tagId,
 } from "../common";
 import { productCategoryId, productName, productTypeId, sku } from "./common";
+
 export const listProductsInputs = {
   connectionInput,
   sku,

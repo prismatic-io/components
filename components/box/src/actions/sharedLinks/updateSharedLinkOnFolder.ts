@@ -5,6 +5,7 @@ import { updateSharedLinkOnFolderExamplePayload } from "../../examplePayloads";
 import { updateSharedLinkOnFolderInputs } from "../../inputs";
 import { updateSharedLinkOnFolderOutputSchema } from "../../outputSchemas";
 import { sharedLinkVanityUrl } from "../../util";
+
 export const updateSharedLinkOnFolder = action({
   display: {
     label: "Update Shared Link on Folder",
@@ -21,14 +22,17 @@ export const updateSharedLinkOnFolder = action({
       params.additionalFields.sharedLinkVanityName || null;
     let sharedLinkPermissions =
       params.additionalFields.sharedLinkPermissions || {};
+
     const client = createBoxHttpClient(
       params.boxConnection,
       context.debug.enabled,
     );
+
     sharedLinkPermissions = {
       ...sharedLinkPermissions,
       can_edit: false,
     };
+
     const { data } = await client.put(
       `/folders/${folderId}`,
       {
@@ -62,14 +66,13 @@ export const updateSharedLinkOnFolder = action({
         sharedLinkVanityName,
       },
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const permissions = {
       ...updateSharedLinkOnFolderExamplePayload.data.shared_link.permissions,
       ...(sharedLinkPermissions as Record<string, unknown>),
       can_edit: false,
     };
+
     return {
       data: {
         ...updateSharedLinkOnFolderExamplePayload.data,

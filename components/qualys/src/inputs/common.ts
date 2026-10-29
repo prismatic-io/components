@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Qualys connection to use.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -14,6 +16,7 @@ export const fetchAll = input({
   comments: "When true, automatically fetches all pages of results.",
   clean: util.types.toBool,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -24,6 +27,7 @@ export const pageSize = input({
   placeholder: "Enter page size",
   example: "100",
 });
+
 export const cursor = input({
   label: "Last ID",
   type: "string",

@@ -2,6 +2,7 @@ const { stsSendMock, stsConstructorMock } = vi.hoisted(() => ({
   stsSendMock: vi.fn(),
   stsConstructorMock: vi.fn(),
 }));
+
 vi.mock("aws-utils", async () => {
   const { input } = await import("@prismatic-io/spectral");
   return {
@@ -10,6 +11,7 @@ vi.mock("aws-utils", async () => {
     dynamicAccessAllInputs: {},
   };
 });
+
 vi.mock("../../client", () => ({
   createS3Client: vi.fn(async () => ({
     send: vi.fn(),
@@ -18,6 +20,7 @@ vi.mock("../../client", () => ({
     },
   })),
 }));
+
 vi.mock("@aws-sdk/client-sts", async (importOriginal) => {
   const original = await importOriginal<typeof import("@aws-sdk/client-sts")>();
   class STSClient {
@@ -28,6 +31,7 @@ vi.mock("@aws-sdk/client-sts", async (importOriginal) => {
   }
   return { ...original, STSClient };
 });
+
 import {
   GetCallerIdentityCommand,
   STSServiceException,
@@ -36,24 +40,30 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { accessKeySecretPair } from "../../connections";
 import { getCurrentAccountExamplePayload } from "../../examplePayloads";
 import { getCurrentAccount } from "./getCurrentAccount";
+
 const connection = createConnection(accessKeySecretPair, {
   accessKeyId: "fakeKey",
   secretAccessKey: "fakeSecret",
 });
+
 const baseInputs = {
   accessKey: connection,
   dynamicAccessKeyId: "",
   dynamicSecretAccessKey: "",
   dynamicSessionToken: "",
 };
+
 describe("getCurrentAccount", () => {
   beforeEach(() => {
     stsSendMock.mockReset();
     stsConstructorMock.mockReset();
   });
+
   test("builds an STS client from the S3 credentials and returns the caller identity", async () => {
     stsSendMock.mockResolvedValue(getCurrentAccountExamplePayload.data);
+
     const { result } = await invoke(getCurrentAccount, baseInputs);
+
     expect(stsConstructorMock).toHaveBeenCalledWith({
       credentials: { accessKeyId: "fakeKey", secretAccessKey: "fakeSecret" },
     });
@@ -62,6 +72,7 @@ describe("getCurrentAccount", () => {
     expect(command.input).toEqual({});
     expect(result).toEqual(getCurrentAccountExamplePayload);
   });
+
   test("propagates an SDK service error", async () => {
     stsSendMock.mockRejectedValue(
       new STSServiceException({
@@ -71,6 +82,7 @@ describe("getCurrentAccount", () => {
         message: "ExpiredToken error",
       }),
     );
+
     await expect(invoke(getCurrentAccount, baseInputs)).rejects.toMatchObject({
       name: "ExpiredToken",
       $metadata: { httpStatusCode: 403 },

@@ -4,6 +4,7 @@ import { connection } from "../../inputs/general";
 import { createWorksheetsTablesInputs } from "../../inputs/tables/create";
 import { getTableExamplePayload as createTablesExamplePayload } from "../../examplePayloads/tables";
 import { getDriveOrSiteBaseUrl } from "../../helpers";
+
 export const createTable = action({
   display: {
     label: "Create Table",
@@ -15,6 +16,7 @@ export const createTable = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     const { data } = await client.post(
       `${baseUrl}/worksheets/${worksheetId}/tables/add`,
       {
@@ -22,6 +24,7 @@ export const createTable = action({
         hasHeaders,
       },
     );
+
     return {
       data,
     };

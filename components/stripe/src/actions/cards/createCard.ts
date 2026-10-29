@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { createCardExamplePayload } from "../../examplePayloads/cards";
 import { createCardInputs } from "../../inputs";
 import { paymentMethodOutputSchema } from "../../outputSchemas";
+
 export const createCard = action({
   display: {
     label: "Create Card",
@@ -51,6 +52,7 @@ export const createCard = action({
       },
       metadata,
     });
+
     return {
       data: customerId
         ? await client.paymentMethods.attach(paymentMethod.id, {
@@ -70,12 +72,11 @@ export const createCard = action({
       contactInfo,
       metadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const card = createCardExamplePayload.data as Record<string, unknown>;
     const cardDetails = card.card as Record<string, unknown>;
     const billingDetails = card.billing_details as Record<string, unknown>;
+
     return {
       data: {
         ...card,
@@ -109,5 +110,6 @@ export const createCard = action({
     type: "actionOutput",
     schema: paymentMethodOutputSchema,
   }),
+
   examplePayload: createCardExamplePayload,
 });

@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { listDocumentsInputs } from "../../inputs";
 import { listDocumentsExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const listDocuments = action({
   display: {
     label: "List Documents",
@@ -20,6 +21,7 @@ export const listDocuments = action({
     },
   ) => {
     const resourceLink = `dbs/${databaseId}/colls/${collectionId}`;
+
     const client = createCosmosDbClient({
       connection,
       verb: HttpVerb.GET,
@@ -27,20 +29,25 @@ export const listDocuments = action({
       resourceLink,
       debug: context.debug.enabled,
     });
+
     const headers: Record<string, string> = {
       "x-ms-max-item-count": (!fetchAll ? (maxItemCount ?? -1) : -1).toString(),
     };
+
     if (continuationToken && !fetchAll) {
       headers["x-ms-continuation"] = continuationToken;
     }
+
     const { data: firstData, headers: firstHeaders } = await client.get(
       `/${resourceLink}/docs`,
       {
         headers,
       },
     );
+
     let allDocuments = firstData.Documents || [];
     const firstContinuationToken = firstHeaders["x-ms-continuation"];
+
     if (!fetchAll) {
       return {
         data: {
@@ -49,21 +56,25 @@ export const listDocuments = action({
         },
       };
     }
+
     let nextContinuationToken = firstContinuationToken;
     while (nextContinuationToken) {
       const pageHeaders: Record<string, string> = {
         "x-ms-max-item-count": "-1",
         "x-ms-continuation": nextContinuationToken,
       };
+
       const { data: nextData, headers: nextHeaders } = await client.get(
         `/${resourceLink}/docs`,
         {
           headers: pageHeaders,
         },
       );
+
       allDocuments = allDocuments.concat(nextData.Documents || []);
       nextContinuationToken = nextHeaders["x-ms-continuation"];
     }
+
     return {
       data: {
         ...firstData,

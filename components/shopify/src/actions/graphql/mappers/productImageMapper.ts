@@ -1,5 +1,6 @@
 import type { ProductImage } from "../../../types";
 import { getNumericId } from "../../../util";
+
 export const productImageMapper = (
   productImage: ProductImage,
   productId: number,

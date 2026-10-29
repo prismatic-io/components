@@ -22,6 +22,7 @@ const activityFieldRecordSchema = {
     mandatory_flag: { type: "boolean" },
   },
 };
+
 const activityFieldV2RecordSchema = {
   type: "object",
   properties: {
@@ -39,6 +40,7 @@ const activityFieldV2RecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 export const getActivityFieldsOutputSchema = {
   type: "object",
   properties: {
@@ -64,6 +66,7 @@ export const getActivityFieldsOutputSchema = {
     },
   },
 };
+
 export const getActivityFieldsV2OutputSchema = {
   type: "object",
   properties: {

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listManagedDevicesInputs } from "../../inputs/managedDevices";
 import { listCompanyManagedDevicesExamplePayload } from "../../examplePayloads/managedDevices";
 import { paginateWithPaginationToken } from "../../util";
+
 export const listCompanyManagedDevices = action({
   display: {
     label: "List Company Managed Devices",
@@ -14,6 +15,7 @@ export const listCompanyManagedDevices = action({
     { connection, queryParams, paginationToken, fetchAll },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await paginateWithPaginationToken(
       client,
       "/managed/devices/company",
@@ -23,6 +25,7 @@ export const listCompanyManagedDevices = action({
         paginationToken,
       },
     );
+
     return {
       data,
     };

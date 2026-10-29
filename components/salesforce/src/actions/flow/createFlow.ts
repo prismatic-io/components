@@ -9,6 +9,7 @@ import {
   processMetadataResult,
 } from "../../util";
 import { createFlowExamplePayload } from "../../examplePayloads";
+
 export const createFlow = action({
   display: {
     label: "Create Flow",
@@ -21,8 +22,10 @@ export const createFlow = action({
     { version, flowName, description, runInMode, flowMetadata, connection },
   ) => {
     const client = await createSalesforceClient(connection, version);
+
     const label = flowName;
     const fullName = generateApiName(flowName);
+
     const metadata: FlowMetadata = {
       fullName: fullName,
       label,
@@ -35,15 +38,17 @@ export const createFlow = action({
       ],
       ...(flowMetadata ? flowMetadata : {}),
     };
+
     if (!metadata.runInMode) {
       metadata.runInMode = "DefaultMode";
     }
+
     const result = await createFlowFunction(client, metadata);
+
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

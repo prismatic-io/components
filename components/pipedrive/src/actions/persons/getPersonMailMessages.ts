@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPersonMailMessagesInputs } from "../../inputs";
 import { getPersonMailMessagesExamplePayload } from "../../examplePayloads";
 import { getPersonMailMessagesOutputSchema } from "../../outputSchemas";
+
 export const getPersonMailMessages = action({
   display: {
     label: "Get Person Mail Messages",

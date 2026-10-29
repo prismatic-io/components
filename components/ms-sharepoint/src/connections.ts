@@ -9,7 +9,9 @@ import {
   getMicrosoftOAuth2ClientCredentialsConnection,
   ConnectionKeys,
 } from "ms-utils";
+
 import { DEFAULT_SCOPES } from "./constants";
+
 const source: ConnectionInput = {
   label: "Source",
   type: "string",
@@ -17,6 +19,7 @@ const source: ConnectionInput = {
   shown: false,
   default: "SharePoint",
 };
+
 export const templatedOauth = getMicrosoftOAuth2AuthorizationCodeConnection({
   key: ConnectionKeys.SharepointTemplatedOauth,
   defaultScopes: DEFAULT_SCOPES,
@@ -24,14 +27,17 @@ export const templatedOauth = getMicrosoftOAuth2AuthorizationCodeConnection({
     source,
   },
 });
+
 export const oauthClientCredentials =
   getMicrosoftOAuth2ClientCredentialsConnection({
     key: ConnectionKeys.OauthClientCredentials,
   });
+
 export const certificateCredentials =
   getMicrosoftCertificateCredentialsConnection({
     key: ConnectionKeys.CertificateCredentials,
   });
+
 export const oauth = oauth2Connection({
   key: ConnectionKeys.SharedOauth,
   display: {
@@ -98,6 +104,7 @@ export const oauth = oauth2Connection({
     source,
   },
 });
+
 export default [
   templatedOauth,
   oauthClientCredentials,

@@ -1,11 +1,14 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import pgPromise from "pg-promise";
 import { postgresConnection } from "./connections";
+
 const pgp = pgPromise();
+
 interface CreateDBParams {
   connection: Connection;
   castTimestampsToString?: boolean;
 }
+
 export const createDB = ({
   connection,
   castTimestampsToString = false,
@@ -16,11 +19,13 @@ export const createDB = ({
       `Unsupported authorization method ${connection.key}.`,
     );
   }
+
   if (castTimestampsToString) {
     for (const timestampTypeId of [1083, 1114, 1184, 1266]) {
       pgp.pg.types.setTypeParser(timestampTypeId, (val) => val);
     }
   }
+
   const db = pgp({
     host: util.types.toString(connection.fields.host),
     port: util.types.toNumber(connection.fields.port),
@@ -32,5 +37,6 @@ export const createDB = ({
       : false,
     connectionTimeoutMillis: util.types.toNumber(connection.fields.timeout),
   });
+
   return db;
 };

@@ -16,6 +16,7 @@ import {
   RETRYABLE_NETWORK_CODES,
   TLS_TRUST_CODES,
 } from "../constants";
+
 export const normalizeGitlabUrl = (value: unknown): string => {
   let raw = util.types.toString(value).trim() || DEFAULT_GITLAB_URL;
   if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)) {
@@ -30,6 +31,7 @@ export const normalizeGitlabUrl = (value: unknown): string => {
   const path = url.pathname.replace(/\/+$/, "").replace(/\/api\/v4$/i, "");
   return `${url.protocol}//${url.host}${path}`;
 };
+
 export const isRetryableError = (error: AxiosError): boolean => {
   const status = error.response?.status;
   const method = (error.config?.method ?? "get").toLowerCase();
@@ -44,6 +46,7 @@ export const isRetryableError = (error: AxiosError): boolean => {
   }
   return RETRYABLE_NETWORK_CODES.has(error.code ?? "");
 };
+
 export const retryDelay = (retryCount: number, error: AxiosError): number => {
   const header = error.response?.headers?.["retry-after"];
   const seconds =
@@ -55,7 +58,9 @@ export const retryDelay = (retryCount: number, error: AxiosError): number => {
   }
   return Math.min(2 ** retryCount * RETRY_BASE_DELAY_MS, MAX_RETRY_DELAY_MS);
 };
+
 const describedErrors = new WeakSet<AxiosError>();
+
 export const describeTransportError = (
   error: AxiosError,
   viaTunnel: boolean,
@@ -85,14 +90,14 @@ export const describeTransportError = (
   }
   return error;
 };
+
 const plainHeaders = (headers: unknown): Record<string, unknown> => {
   const value = headers as
-    | {
-        toJSON?: () => Record<string, unknown>;
-      }
+    | { toJSON?: () => Record<string, unknown> }
     | undefined;
   return value?.toJSON ? value.toJSON() : { ...(headers as object) };
 };
+
 const redactHeaders = (headers: unknown): Record<string, unknown> =>
   Object.fromEntries(
     Object.entries(plainHeaders(headers)).map(([name, value]) => [
@@ -100,6 +105,7 @@ const redactHeaders = (headers: unknown): Record<string, unknown> =>
       REDACTED_HEADERS.has(name.toLowerCase()) ? "[REDACTED]" : value,
     ]),
   );
+
 const isPlainObject = (value: unknown): value is Record<string, unknown> => {
   if (typeof value !== "object" || value === null) {
     return false;
@@ -107,6 +113,7 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> => {
   const prototype = Object.getPrototypeOf(value);
   return prototype === Object.prototype || prototype === null;
 };
+
 const redactSecrets = (
   value: unknown,
   keys: Set<string>,
@@ -132,12 +139,14 @@ const redactSecrets = (
   ancestors.delete(value);
   return copy;
 };
+
 const redactQueryString = (text: string, keys: Set<string>): string =>
   text.replace(
     /(^|[?&])([^=&#?]+)=([^&#]*)/g,
     (match, separator: string, name: string) =>
       keys.has(name.toLowerCase()) ? `${separator}${name}=[REDACTED]` : match,
   );
+
 const redactBody = (data: unknown): unknown => {
   if (typeof data !== "string") {
     return redactSecrets(data, REDACTED_BODY_KEYS);
@@ -147,8 +156,10 @@ const redactBody = (data: unknown): unknown => {
   }
   return redactQueryString(data, REDACTED_BODY_KEYS);
 };
+
 const redactUrl = (url: string | undefined): string | undefined =>
   url === undefined ? url : redactQueryString(url, REDACTED_QUERY_PARAMS);
+
 const loggableBody = (data: unknown): unknown => {
   if (data === undefined || data === null) {
     return data;
@@ -162,6 +173,7 @@ const loggableBody = (data: unknown): unknown => {
     ? `<data (${size} bytes)>`
     : data;
 };
+
 export const logRequest =
   (
     logger: ActionLogger,
@@ -184,6 +196,7 @@ export const logRequest =
     );
     return request;
   };
+
 export const logResponse = (
   logger: ActionLogger,
 ): ((response: AxiosResponse) => AxiosResponse) => {

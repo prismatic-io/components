@@ -6,6 +6,7 @@ import {
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { BASE_URLS, type Service } from "./constants";
 import type { Region } from "./types";
+
 export const getNewRelicClient = (
   connection: Connection,
   debug: boolean,
@@ -18,9 +19,11 @@ export const getNewRelicClient = (
       `Unsupported authorization method ${connection?.key}.`,
     );
   }
+
   const region = (util.types.toString(connection.fields.region) ||
     "US") as Region;
   const baseUrl = BASE_URLS[service][region];
+
   const newRelicClient = createClient({
     baseUrl,
     headers: {
@@ -31,5 +34,6 @@ export const getNewRelicClient = (
     timeout: util.types.toInt(timeout, 2000),
     debug,
   });
+
   return newRelicClient;
 };

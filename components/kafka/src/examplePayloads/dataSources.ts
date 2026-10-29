@@ -1,4 +1,5 @@
 import type { Element } from "@prismatic-io/spectral";
+
 export const selectTopicExamplePayload = {
   result: [
     { label: "order-events", key: "order-events" },

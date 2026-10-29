@@ -11,6 +11,7 @@ import {
   version,
 } from "./common";
 import { accountId, leadSource } from "./fields";
+
 const amount = input({
   label: "Amount",
   type: "string",
@@ -20,6 +21,7 @@ const amount = input({
   comments: "The monetary amount associated with the opportunity.",
   clean: cleanStringInput,
 });
+
 const stage = input({
   label: "Stage",
   type: "string",
@@ -42,6 +44,7 @@ const stage = input({
   comments: "The stage the sale is currently in.",
   clean: util.types.toString,
 });
+
 const closeDate = input({
   label: "Close Date",
   type: "string",
@@ -51,6 +54,7 @@ const closeDate = input({
   comments: "The date the sale is expected to close. Format: YYYY-MM-DD.",
   clean: util.types.toString,
 });
+
 const probability = input({
   label: "Probability",
   type: "string",
@@ -60,6 +64,7 @@ const probability = input({
   comments: "The probability of the success of the sale.",
   clean: toOptionalInt,
 });
+
 const nextStep = input({
   label: "Next Step",
   type: "string",
@@ -70,6 +75,7 @@ const nextStep = input({
   example: "Follow up with the client",
   clean: cleanStringInput,
 });
+
 const opportunityType = input({
   label: "Opportunity Type",
   type: "string",
@@ -94,6 +100,7 @@ const opportunityType = input({
     "The category of the opportunity, indicating whether it is for a new or existing customer.",
   clean: util.types.toString,
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -107,6 +114,7 @@ const additionalFields = structuredObjectInput({
     description,
   },
 });
+
 export const createOpportunityInputs = {
   stage,
   opportunityType,
@@ -119,6 +127,7 @@ export const createOpportunityInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const updateOpportunityInputs = {
   version,
   recordId: {
@@ -135,6 +144,7 @@ export const updateOpportunityInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const deleteOpportunityInputs = {
   version,
   recordId: {
@@ -143,4 +153,5 @@ export const deleteOpportunityInputs = {
   },
   connection: connectionInput,
 };
+
 export const listOpportunitiesInputs = { ...listInputs };

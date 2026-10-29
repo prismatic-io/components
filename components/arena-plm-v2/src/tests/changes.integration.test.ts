@@ -6,7 +6,9 @@ import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage } from "../util";
 import { resultData, resultGuid, resultList } from "./resultHelpers";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
@@ -14,13 +16,21 @@ const testConnection = createConnection(arenaUsernamePassword, {
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 let discoveredChangeGuid: string | null = null;
+
 let discoveredCategoryGuid: string | null = null;
+
 let createdChangeGuid: string | null = null;
+
 let createdImplTaskGuid: string | null = null;
+
 let createdImplTaskNoteGuid: string | null = null;
+
 let discoveredFileAssociationGuid: string | null = null;
+
 let discoveredChangeItemAssociationGuid: string | null = null;
+
 beforeAll(async () => {
   try {
     const result = await harness.action("listChanges", {
@@ -38,6 +48,7 @@ beforeAll(async () => {
   } catch (e) {
     console.warn("[beforeAll] Failed to list changes:", e);
   }
+
   try {
     const result = await harness.action("listCategories", {
       connection: testConnection,
@@ -54,6 +65,7 @@ beforeAll(async () => {
   } catch (e) {
     console.warn("[beforeAll] Failed to list change categories:", e);
   }
+
   if (discoveredCategoryGuid) {
     try {
       const result = await harness.action("createChange", {
@@ -73,6 +85,7 @@ beforeAll(async () => {
       "[beforeAll] Skipping change creation – no category GUID available.",
     );
   }
+
   if (createdChangeGuid) {
     try {
       const result = await harness.action("createChangeImplementationTask", {
@@ -85,6 +98,7 @@ beforeAll(async () => {
       console.warn("[beforeAll] Failed to create implementation task:", e);
     }
   }
+
   if (createdChangeGuid && createdImplTaskGuid) {
     try {
       const result = await harness.action(
@@ -101,6 +115,7 @@ beforeAll(async () => {
       console.warn("[beforeAll] Failed to create implementation task note:", e);
     }
   }
+
   if (discoveredChangeGuid) {
     try {
       const result = await harness.action("listChangeFileAssociations", {
@@ -115,6 +130,7 @@ beforeAll(async () => {
       console.warn("[beforeAll] Failed to discover file association GUID:", e);
     }
   }
+
   if (discoveredChangeGuid) {
     try {
       const result = await harness.action("listChangeItems", {
@@ -133,6 +149,7 @@ beforeAll(async () => {
     }
   }
 }, 120000);
+
 afterAll(async () => {
   if (createdChangeGuid) {
     try {
@@ -147,6 +164,7 @@ afterAll(async () => {
     createdChangeGuid = null;
   }
 }, 30000);
+
 describe("listChanges", () => {
   test("returns a results array with no filters", async () => {
     const result = await harness.action("listChanges", {
@@ -156,6 +174,7 @@ describe("listChanges", () => {
     expect(result!.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   }, 30000);
+
   test("accepts a limit parameter and returns at most that many results", async () => {
     const result = await harness.action("listChanges", {
       connection: testConnection,
@@ -166,6 +185,7 @@ describe("listChanges", () => {
     expect(Array.isArray(results)).toBe(true);
     expect(results.length).toBeLessThanOrEqual(3);
   }, 30000);
+
   test("accepts offset and limit together", async () => {
     const result = await harness.action("listChanges", {
       connection: testConnection,
@@ -175,6 +195,7 @@ describe("listChanges", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   }, 30000);
+
   test("accepts includeChildCategories=true without error", async () => {
     const result = await harness.action("listChanges", {
       connection: testConnection,
@@ -183,6 +204,7 @@ describe("listChanges", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   }, 30000);
+
   test("accepts lifecycleStatusType filter", async () => {
     try {
       const result = await harness.action("listChanges", {
@@ -206,6 +228,7 @@ describe("listChanges", () => {
     }
   }, 30000);
 });
+
 describe("getChangeByGuid", () => {
   test("retrieves a change by a discovered GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -219,6 +242,7 @@ describe("getChangeByGuid", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(discoveredChangeGuid);
   }, 30000);
+
   test("accepts includeEmptyAdditionalAttributes=true", async () => {
     if (!discoveredChangeGuid) {
       console.warn("No discovered change GUID; skipping test.");
@@ -231,6 +255,7 @@ describe("getChangeByGuid", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(discoveredChangeGuid);
   }, 30000);
+
   test("accepts includeEmptyAdditionalAttributes=false", async () => {
     if (!discoveredChangeGuid) {
       console.warn("No discovered change GUID; skipping test.");
@@ -243,6 +268,7 @@ describe("getChangeByGuid", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(discoveredChangeGuid);
   }, 30000);
+
   test("throws on an invalid GUID", async () => {
     await expect(
       harness.action("getChangeByGuid", {
@@ -252,6 +278,7 @@ describe("getChangeByGuid", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChange", () => {
   test("created test change has a non-empty GUID string", () => {
     if (!createdChangeGuid) {
@@ -263,6 +290,7 @@ describe("createChange", () => {
     expect(typeof createdChangeGuid).toBe("string");
     expect(createdChangeGuid.length).toBeGreaterThan(0);
   });
+
   test("throws when creating with an invalid categoryGuid", async () => {
     await expect(
       harness.action("createChange", {
@@ -273,6 +301,7 @@ describe("createChange", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("updateChange", () => {
   test("updates the description of the created test change", async () => {
     if (!createdChangeGuid) {
@@ -287,6 +316,7 @@ describe("updateChange", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(createdChangeGuid);
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("updateChange", {
@@ -297,6 +327,7 @@ describe("updateChange", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("deleteChange", () => {
   test("throws on an invalid change GUID", async () => {
     await expect(
@@ -307,6 +338,7 @@ describe("deleteChange", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeHistory", () => {
   test("returns change history for a valid change GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -320,6 +352,7 @@ describe("listChangeHistory", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeHistory", {
@@ -329,6 +362,7 @@ describe("listChangeHistory", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeAlerts", () => {
   test("returns alerts for a valid change GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -342,6 +376,7 @@ describe("listChangeAlerts", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeAlerts", {
@@ -351,6 +386,7 @@ describe("listChangeAlerts", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeMarkupFiles", () => {
   test("returns markup files list for a valid change GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -364,6 +400,7 @@ describe("listChangeMarkupFiles", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeMarkupFiles", {
@@ -373,9 +410,11 @@ describe("listChangeMarkupFiles", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChangeMarkupFile", () => {
   test.skip("requires an existing Arena file GUID – not executed in automated suite", () => {});
 });
+
 describe("deleteChangeMarkupFile", () => {
   test("throws when given an invalid change or association GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -391,6 +430,7 @@ describe("deleteChangeMarkupFile", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeImplementationFiles", () => {
   test("returns implementation files list for a valid change GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -404,6 +444,7 @@ describe("listChangeImplementationFiles", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeImplementationFiles", {
@@ -413,9 +454,11 @@ describe("listChangeImplementationFiles", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChangeImplementationFile", () => {
   test.skip("requires an existing Arena file GUID – not executed in automated suite", () => {});
 });
+
 describe("listChangeFileAssociations", () => {
   test("returns file associations for a valid change GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -431,6 +474,7 @@ describe("listChangeFileAssociations", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeFileAssociations", {
@@ -440,9 +484,11 @@ describe("listChangeFileAssociations", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChangeFileAssociation", () => {
   test.skip("requires an existing Arena file GUID – not executed in automated suite", () => {});
 });
+
 describe("getChangeFileAssociation", () => {
   test("retrieves a specific file association by GUID", async () => {
     if (!discoveredChangeGuid || !discoveredFileAssociationGuid) {
@@ -459,6 +505,7 @@ describe("getChangeFileAssociation", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(discoveredFileAssociationGuid);
   }, 30000);
+
   test("throws on an invalid file association GUID", async () => {
     if (!discoveredChangeGuid) {
       console.warn("No discovered change GUID; skipping test.");
@@ -473,6 +520,7 @@ describe("getChangeFileAssociation", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("deleteChangeFileAssociation", () => {
   test("throws on an invalid file association GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -488,6 +536,7 @@ describe("deleteChangeFileAssociation", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeItems", () => {
   test("returns items list for a valid change GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -502,6 +551,7 @@ describe("listChangeItems", () => {
     const data = resultData(result);
     expect(typeof data.count).toBe("number");
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeItems", {
@@ -511,6 +561,7 @@ describe("listChangeItems", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("addItemToChange", () => {
   test("throws when given an invalid item revision GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -526,6 +577,7 @@ describe("addItemToChange", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("getChangeItemAssociation", () => {
   test("retrieves a specific change-item association by GUID", async () => {
     if (!discoveredChangeGuid || !discoveredChangeItemAssociationGuid) {
@@ -542,6 +594,7 @@ describe("getChangeItemAssociation", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(discoveredChangeItemAssociationGuid);
   }, 30000);
+
   test("throws on an invalid association GUID", async () => {
     if (!discoveredChangeGuid) {
       console.warn("No discovered change GUID; skipping test.");
@@ -556,6 +609,7 @@ describe("getChangeItemAssociation", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("updateChangeItemAssociation", () => {
   test("throws on an invalid item association GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -572,6 +626,7 @@ describe("updateChangeItemAssociation", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("deleteChangeItemAssociation", () => {
   test("throws on an invalid item association GUID", async () => {
     if (!discoveredChangeGuid) {
@@ -587,6 +642,7 @@ describe("deleteChangeItemAssociation", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeImplementationTasks", () => {
   test("returns tasks list for the created test change", async () => {
     if (!createdChangeGuid) {
@@ -600,6 +656,7 @@ describe("listChangeImplementationTasks", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("listChangeImplementationTasks", {
@@ -609,6 +666,7 @@ describe("listChangeImplementationTasks", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChangeImplementationTask", () => {
   test("created implementation task has a non-empty GUID string", () => {
     if (!createdImplTaskGuid) {
@@ -620,6 +678,7 @@ describe("createChangeImplementationTask", () => {
     expect(typeof createdImplTaskGuid).toBe("string");
     expect(createdImplTaskGuid.length).toBeGreaterThan(0);
   });
+
   test("throws on an invalid change GUID", async () => {
     await expect(
       harness.action("createChangeImplementationTask", {
@@ -630,6 +689,7 @@ describe("createChangeImplementationTask", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("getChangeImplementationTask", () => {
   test("retrieves the created implementation task by GUID", async () => {
     if (!createdChangeGuid || !createdImplTaskGuid) {
@@ -646,6 +706,7 @@ describe("getChangeImplementationTask", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(createdImplTaskGuid);
   }, 30000);
+
   test("throws on an invalid implementation task GUID", async () => {
     if (!createdChangeGuid) {
       console.warn("No created change GUID; skipping test.");
@@ -660,6 +721,7 @@ describe("getChangeImplementationTask", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("updateChangeImplementationTask", () => {
   test("updates the task status to IN_PROGRESS", async () => {
     if (!createdChangeGuid || !createdImplTaskGuid) {
@@ -675,6 +737,7 @@ describe("updateChangeImplementationTask", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(createdImplTaskGuid);
   }, 30000);
+
   test("updates the task name", async () => {
     if (!createdChangeGuid || !createdImplTaskGuid) {
       console.warn("No created implementation task GUID; skipping test.");
@@ -689,6 +752,7 @@ describe("updateChangeImplementationTask", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(createdImplTaskGuid);
   }, 30000);
+
   test("throws on an invalid task GUID", async () => {
     if (!createdChangeGuid) {
       console.warn("No created change GUID; skipping test.");
@@ -704,6 +768,7 @@ describe("updateChangeImplementationTask", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeImplementationTaskNotes", () => {
   test("returns notes list for a valid implementation task", async () => {
     if (!createdChangeGuid || !createdImplTaskGuid) {
@@ -718,6 +783,7 @@ describe("listChangeImplementationTaskNotes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid task GUID", async () => {
     if (!createdChangeGuid) {
       console.warn("No created change GUID; skipping test.");
@@ -732,6 +798,7 @@ describe("listChangeImplementationTaskNotes", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChangeImplementationTaskNote", () => {
   test("created note has a non-empty GUID string", () => {
     if (!createdImplTaskNoteGuid) {
@@ -743,6 +810,7 @@ describe("createChangeImplementationTaskNote", () => {
     expect(typeof createdImplTaskNoteGuid).toBe("string");
     expect(createdImplTaskNoteGuid.length).toBeGreaterThan(0);
   });
+
   test("throws on an invalid task GUID", async () => {
     if (!createdChangeGuid) {
       console.warn("No created change GUID; skipping test.");
@@ -758,6 +826,7 @@ describe("createChangeImplementationTaskNote", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("updateChangeImplementationTaskNote", () => {
   test("updates the content of the created note", async () => {
     if (
@@ -778,6 +847,7 @@ describe("updateChangeImplementationTaskNote", () => {
     expect(result).toBeDefined();
     expect(resultData(result).guid).toBe(createdImplTaskNoteGuid);
   }, 30000);
+
   test("throws on an invalid note GUID", async () => {
     if (!createdChangeGuid || !createdImplTaskGuid) {
       console.warn("No created implementation task GUID; skipping test.");
@@ -794,6 +864,7 @@ describe("updateChangeImplementationTaskNote", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listChangeImplementationTaskFiles", () => {
   test("returns files list for a valid implementation task", async () => {
     if (!createdChangeGuid || !createdImplTaskGuid) {
@@ -808,6 +879,7 @@ describe("listChangeImplementationTaskFiles", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid task GUID", async () => {
     if (!createdChangeGuid) {
       console.warn("No created change GUID; skipping test.");
@@ -822,9 +894,11 @@ describe("listChangeImplementationTaskFiles", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("createChangeImplementationTaskFile", () => {
   test.skip("requires an existing Arena file GUID – not executed in automated suite", () => {});
 });
+
 describe("listChangesAdministrators", () => {
   test("returns administrators when objectType=changes", async () => {
     const result = await harness.action("listChangesAdministrators", {
@@ -834,6 +908,7 @@ describe("listChangesAdministrators", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("returns administrators when objectType=requests", async () => {
     const result = await harness.action("listChangesAdministrators", {
       connection: testConnection,
@@ -842,6 +917,7 @@ describe("listChangesAdministrators", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("defaults to changes when objectType is omitted", async () => {
     const result = await harness.action("listChangesAdministrators", {
       connection: testConnection,
@@ -850,6 +926,7 @@ describe("listChangesAdministrators", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("listChangeCategoryRoutings", () => {
   test("returns routings for a valid change category GUID", async () => {
     if (!discoveredCategoryGuid) {
@@ -863,6 +940,7 @@ describe("listChangeCategoryRoutings", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid category GUID", async () => {
     await expect(
       harness.action("listChangeCategoryRoutings", {
@@ -872,6 +950,7 @@ describe("listChangeCategoryRoutings", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("listNumberSequencePrefixes", () => {
   test("returns number sequence prefixes for changes", async () => {
     const result = await harness.action("listNumberSequencePrefixes", {
@@ -881,6 +960,7 @@ describe("listNumberSequencePrefixes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("returns number sequence prefixes for requests", async () => {
     const result = await harness.action("listNumberSequencePrefixes", {
       connection: testConnection,
@@ -889,6 +969,7 @@ describe("listNumberSequencePrefixes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("returns number sequence prefixes for qualityprocesses", async () => {
     const result = await harness.action("listNumberSequencePrefixes", {
       connection: testConnection,
@@ -897,6 +978,7 @@ describe("listNumberSequencePrefixes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("returns number sequence prefixes for tickets", async () => {
     const result = await harness.action("listNumberSequencePrefixes", {
       connection: testConnection,
@@ -906,6 +988,7 @@ describe("listNumberSequencePrefixes", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("listChangeCategoryItemAttributes", () => {
   test("returns item attributes for a valid change category GUID", async () => {
     if (!discoveredCategoryGuid) {
@@ -919,6 +1002,7 @@ describe("listChangeCategoryItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("accepts includePossibleValues=true", async () => {
     if (!discoveredCategoryGuid) {
       console.warn("No discovered category GUID; skipping test.");
@@ -932,6 +1016,7 @@ describe("listChangeCategoryItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("accepts creatableOnly=true filter", async () => {
     if (!discoveredCategoryGuid) {
       console.warn("No discovered category GUID; skipping test.");
@@ -945,6 +1030,7 @@ describe("listChangeCategoryItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on an invalid category GUID", async () => {
     await expect(
       harness.action("listChangeCategoryItemAttributes", {

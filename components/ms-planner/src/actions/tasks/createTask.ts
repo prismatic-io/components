@@ -15,6 +15,7 @@ import {
   patchWithEtag,
 } from "../../utils";
 import { createTaskInputs } from "../../inputs";
+
 export const createTask = action({
   display: {
     label: "Create Task",
@@ -43,6 +44,7 @@ export const createTask = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const assignments = buildAssignments(
       assignment?.assignTo,
       assignment?.unassign,
@@ -51,6 +53,7 @@ export const createTask = action({
       categories?.applyCategories,
       categories?.removeCategories,
     );
+
     const body = compact({
       planId,
       title,
@@ -64,18 +67,22 @@ export const createTask = action({
         ? appliedCategories
         : undefined,
     });
+
     const { data: task } = await client.post<PlannerTask & Etagged>(
       PLANNER_ENDPOINTS.TASKS,
       body,
     );
+
     if (!description) {
       return { data: { task, details: null } };
     }
+
     const details = await patchWithEtag<PlannerTaskDetails & Etagged>(
       client,
       PLANNER_ENDPOINTS.TASK_DETAILS(task.id as string),
       { description },
     );
+
     return { data: { task, details } };
   },
   examplePerform: async (
@@ -90,10 +97,9 @@ export const createTask = action({
       categories,
       description,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const exampleTask = createTaskExamplePayload.data.task;
+
     const appliedCategories: Record<string, unknown> = {
       ...exampleTask.appliedCategories,
     };
@@ -103,6 +109,7 @@ export const createTask = action({
     for (const category of categories?.removeCategories ?? []) {
       delete appliedCategories[category];
     }
+
     const task = {
       ...exampleTask,
       planId,
@@ -115,9 +122,11 @@ export const createTask = action({
       appliedCategories,
       hasDescription: Boolean(description),
     };
+
     if (!description) {
       return { data: { task, details: null } };
     }
+
     return {
       data: {
         task,

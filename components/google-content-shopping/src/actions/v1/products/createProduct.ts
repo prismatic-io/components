@@ -6,6 +6,7 @@ import {
   accountResourceName,
   dataSourceResourceName,
 } from "../../../util/resourceNames";
+
 export const createProductMerchant = action({
   display: {
     description:
@@ -38,6 +39,7 @@ export const createProductMerchant = action({
       },
       { params: { dataSource: dataSourceResourceName(account, dataSource) } },
     );
+
     return { data };
   },
   examplePayload: createProductExamplePayload,

@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { withFirestore } from "../client";
 import { selectCollectionExamplePayload } from "../examplePayloads";
 import { selectCollectionInputs } from "../inputs";
+
 export const selectCollection = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -19,6 +20,7 @@ export const selectCollection = dataSource({
         }),
       );
     });
+
     return {
       result,
     };

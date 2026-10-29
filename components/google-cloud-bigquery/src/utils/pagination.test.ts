@@ -1,14 +1,18 @@
 import { paginateResults } from "./pagination";
+
 const makeDataset = (id: string) => ({
   datasetReference: { datasetId: id, projectId: "my-project" },
 });
+
 const makeTable = (id: string) => ({
   tableReference: { tableId: id, datasetId: "ds1", projectId: "my-project" },
 });
+
 const makeJob = (id: string) => ({
   jobReference: { jobId: id, projectId: "my-project" },
   status: { state: "DONE" },
 });
+
 describe("paginateResults", () => {
   describe("fetchAll=false", () => {
     it("makes a single call, passes params through, and returns the full response", async () => {
@@ -17,33 +21,39 @@ describe("paginateResults", () => {
         nextPageToken: "token-abc",
       };
       const listFn = vi.fn().mockResolvedValue({ data: responseData });
+
       const params = {
         projectId: "my-project",
         maxResults: 10,
         pageToken: "user-token",
       };
       const result = await paginateResults(listFn, params, false, "datasets");
+
       expect(listFn).toHaveBeenCalledTimes(1);
       expect(listFn).toHaveBeenCalledWith(params);
       expect(result).toEqual({ data: responseData });
     });
   });
+
   describe("fetchAll=true", () => {
     it("returns items from a single page when no nextPageToken is present", async () => {
       const listFn = vi.fn().mockResolvedValue({
         data: { datasets: [makeDataset("ds1"), makeDataset("ds2")] },
       });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(1);
       expect(result).toEqual({
         data: { datasets: [makeDataset("ds1"), makeDataset("ds2")] },
       });
     });
+
     it("aggregates results across 2 pages using nextPageToken", async () => {
       const listFn = vi
         .fn()
@@ -53,17 +63,20 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds2")] },
         });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(2);
       expect(result).toEqual({
         data: { datasets: [makeDataset("ds1"), makeDataset("ds2")] },
       });
     });
+
     it("aggregates results across 3 pages when last page has empty array", async () => {
       const listFn = vi
         .fn()
@@ -76,28 +89,34 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: { datasets: [] },
         });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(3);
       expect(result).toEqual({
         data: { datasets: [makeDataset("ds1"), makeDataset("ds2")] },
       });
     });
+
     it("returns empty array when first page has no dataField key", async () => {
       const listFn = vi.fn().mockResolvedValue({ data: {} });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(1);
       expect(result).toEqual({ data: { datasets: [] } });
     });
+
     it("passes nextPageToken as pageToken param in subsequent requests", async () => {
       const listFn = vi
         .fn()
@@ -107,12 +126,14 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds2")] },
         });
+
       await paginateResults(
         listFn,
         { projectId: "my-project", maxResults: 5 },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenNthCalledWith(1, {
         projectId: "my-project",
         maxResults: 5,
@@ -123,6 +144,7 @@ describe("paginateResults", () => {
         pageToken: "token-abc",
       });
     });
+
     it("uses pageToken from response as fallback when nextPageToken is absent", async () => {
       const listFn = vi
         .fn()
@@ -132,12 +154,14 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds2")] },
         });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(2);
       expect(listFn).toHaveBeenNthCalledWith(2, {
         projectId: "my-project",
@@ -147,29 +171,36 @@ describe("paginateResults", () => {
         data: { datasets: [makeDataset("ds1"), makeDataset("ds2")] },
       });
     });
+
     it("returns empty array when response is missing the dataField key entirely", async () => {
       const listFn = vi.fn().mockResolvedValue({ data: { totalItems: 0 } });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "tables",
       );
+
       expect(result).toEqual({ data: { tables: [] } });
     });
+
     it("strips user-supplied pageToken when fetchAll=true", async () => {
       const listFn = vi.fn().mockResolvedValue({
         data: { datasets: [makeDataset("ds1")] },
       });
+
       await paginateResults(
         listFn,
         { projectId: "my-project", pageToken: "user-supplied-token" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(1);
       expect(listFn).toHaveBeenCalledWith({ projectId: "my-project" });
     });
+
     it.each([
       { dataField: "datasets", maker: makeDataset, id: "ds1" },
       { dataField: "tables", maker: makeTable, id: "tbl1" },
@@ -178,14 +209,17 @@ describe("paginateResults", () => {
       const listFn = vi.fn().mockResolvedValue({
         data: { [dataField]: [maker(id)] },
       });
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         dataField,
       );
+
       expect(result).toEqual({ data: { [dataField]: [maker(id)] } });
     });
+
     it("preserves other params like projectId and maxResults across pages", async () => {
       const listFn = vi
         .fn()
@@ -195,12 +229,14 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds2")] },
         });
+
       await paginateResults(
         listFn,
         { projectId: "my-project", maxResults: 50, filter: "labels.env:prod" },
         true,
         "datasets",
       );
+
       const expectedBase = {
         projectId: "my-project",
         maxResults: 50,
@@ -212,6 +248,7 @@ describe("paginateResults", () => {
         pageToken: "p2",
       });
     });
+
     it("stops after MAX_PAGES (100) calls to prevent infinite loops", async () => {
       const listFn = vi.fn().mockImplementation(() =>
         Promise.resolve({
@@ -221,12 +258,14 @@ describe("paginateResults", () => {
           },
         }),
       );
+
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
         true,
         "datasets",
       );
+
       expect(listFn).toHaveBeenCalledTimes(100);
       expect((result.data as Record<string, unknown>).datasets).toHaveLength(
         100,

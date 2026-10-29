@@ -5,6 +5,7 @@ import { pollChangesTriggerPerform } from "../helpers/pollChangesTriggerPerform"
 import { pollChangesTriggerInputs } from "../inputs";
 import type { GmailRecordChange } from "../util/polling";
 import { resolveGmailRecordChanges } from "../util/polling";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Emails",

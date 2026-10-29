@@ -3,6 +3,7 @@ import { createLocalServicesClient } from "../../client";
 import { detailedLeadReportsExamplePayload } from "../../examplePayloads";
 import { detailedLeadReportsInputs } from "../../inputs";
 import { detailedLeadReportsOutputSchema } from "../../outputSchemas";
+
 export const detailedLeadReports = action({
   display: {
     label: "Get Detailed Lead Reports",
@@ -32,7 +33,9 @@ export const detailedLeadReports = action({
     });
     const startDate = startDateInput ? new Date(startDateInput) : undefined;
     const endDate = endDateInput ? new Date(endDateInput) : undefined;
-    const query = `manager_customer_id:${managerCustomerIdInput}${customerIds && customerIds !== "" ? `;${customerIds}` : ""}`;
+    const query = `manager_customer_id:${managerCustomerIdInput}${
+      customerIds && customerIds !== "" ? `;${customerIds}` : ""
+    }`;
     const { data } = await client.get("/detailedLeadReports:search", {
       params: {
         query,
@@ -52,8 +55,7 @@ export const detailedLeadReports = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => detailedLeadReportsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    detailedLeadReportsExamplePayload,
   examplePayload: detailedLeadReportsExamplePayload,
 });

@@ -1,4 +1,5 @@
 import type { CreateApiPaginationResponse } from "../types";
+
 interface Address {
   id?: number;
   zip?: string;
@@ -27,20 +28,24 @@ interface Address {
   customer_id?: number;
   country_name?: string;
 }
+
 interface Price {
   amount: string;
   currency_code: string;
 }
+
 interface PriceSet {
   shop_money: Price;
   presentment_money: Price;
 }
+
 interface TaxLine {
   rate: number;
   price: string;
   title: string;
   price_set: PriceSet;
 }
+
 interface LineItem {
   id: number;
   unit_price?: string;
@@ -71,9 +76,11 @@ interface LineItem {
   deleted_datetime?: string;
   created_datetime?: string;
 }
+
 interface ProductOptions {
   size: number;
 }
+
 interface Order {
   id: number;
   total_tax: string;
@@ -82,6 +89,7 @@ interface Order {
   contact_email: string;
   billing_address: Address;
 }
+
 interface BaseCustomer {
   id: number;
   note: string;
@@ -95,11 +103,13 @@ interface BaseCustomer {
   created_datetime?: string;
   external_id?: string;
 }
+
 interface Integration {
   orders: Order[];
   customer: BaseCustomer;
   __integration_type__: string;
 }
+
 interface Store {
   id: number;
   type: string;
@@ -114,6 +124,7 @@ interface Store {
   deleted_datetime: string;
   uuid: string;
 }
+
 interface Shopper {
   id: number;
   first_name: string;
@@ -131,11 +142,13 @@ interface Shopper {
   last_name: string;
   created_datetime: string;
 }
+
 interface ExternalData {
   badge: string;
   points: number;
   __app_name__: string;
 }
+
 interface EcommerceOrder {
   external_status: string;
   total_amount: string;
@@ -161,22 +174,23 @@ interface EcommerceOrder {
   discount_amount: string;
   shipping_amount: string;
 }
+
 interface EcommerceData {
   store: Store;
   shopper: Shopper;
   orders: EcommerceOrder[];
   addresses: Address[];
 }
+
 export interface CreateCustomerResponse extends BaseCustomer {
   integrations: Record<string, Integration>;
   language: string;
   timezone: string;
   updated_datetime: string;
 }
+
 export interface GetCustomerResponse extends BaseCustomer {
-  channels: {
-    id: number;
-  }[];
+  channels: { id: number }[];
   integrations: Record<string, Integration>;
   language: string;
   timezone: string;
@@ -184,12 +198,14 @@ export interface GetCustomerResponse extends BaseCustomer {
   external_data: Record<string, ExternalData>;
   ecommerce_data: Record<string, EcommerceData>;
 }
+
 export interface UpdateCustomerResponse extends BaseCustomer {
   integrations: Record<string, Integration>;
   language: string;
   timezone: string;
   updated_datetime: string;
 }
+
 export type ListCustomersResponse = CreateApiPaginationResponse<{
   id: number;
   created_datetime: string | null;

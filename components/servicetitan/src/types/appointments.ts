@@ -5,6 +5,7 @@ type Status =
   | "Hold"
   | "Done"
   | "Canceled";
+
 export interface Appointment {
   id: number;
   jobId: number;
@@ -20,6 +21,7 @@ export interface Appointment {
   customerId: number;
   unused: boolean;
 }
+
 export interface AppointmentAssignment {
   id: number;
   technicianId: number;

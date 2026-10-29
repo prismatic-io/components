@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../auth";
 import { unshareFileExamplePayload } from "../../examplePayloads";
 import { shared_folder_id, unshareFileInputs } from "../../inputs";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const unshareFile = action({
   display: {
     label: "Unshare File",
@@ -31,9 +32,7 @@ export const unshareFile = action({
       handleDropboxError(err, [shared_folder_id]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: unshareFileExamplePayload,
   }),
   inputs: unshareFileInputs,

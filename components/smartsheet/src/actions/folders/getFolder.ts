@@ -4,6 +4,7 @@ import { getFolderExamplePayload } from "../../examplePayloads";
 import { getFolderInputs } from "../../inputs";
 import { mergeMetadataChildren } from "../../util/mergeChildren";
 import { paginateByToken } from "../../util/pagination";
+
 export const getFolder = action({
   display: {
     label: "Get Folder",
@@ -11,6 +12,7 @@ export const getFolder = action({
   },
   perform: async (context, { connection, folderId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const [metadataRes, children] = await Promise.all([
       client.get<Record<string, unknown>>(`/folders/${folderId}/metadata`, {
         params: { include: "source" },
@@ -20,6 +22,7 @@ export const getFolder = action({
         `/folders/${folderId}/children`,
       ),
     ]);
+
     const data = mergeMetadataChildren(metadataRes.data ?? {}, children);
     return { data };
   },

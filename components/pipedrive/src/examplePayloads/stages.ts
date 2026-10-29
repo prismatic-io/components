@@ -12,6 +12,7 @@ const stageRecord = {
   add_time: "2024-01-01 00:00:00",
   update_time: "2024-01-01 00:00:00",
 };
+
 export const getStagesExamplePayload = {
   data: {
     success: true,
@@ -51,12 +52,14 @@ export const getStagesExamplePayload = {
     },
   },
 };
+
 export const addStageExamplePayload = {
   data: {
     success: true,
     data: stageRecord,
   },
 };
+
 export const deleteStageExamplePayload = {
   data: {
     success: true,
@@ -65,18 +68,21 @@ export const deleteStageExamplePayload = {
     },
   },
 };
+
 export const getStageExamplePayload = {
   data: {
     success: true,
     data: stageRecord,
   },
 };
+
 export const updateStageExamplePayload = {
   data: {
     success: true,
     data: stageRecord,
   },
 };
+
 export const getStageDealsExamplePayload = {
   data: {
     success: true,

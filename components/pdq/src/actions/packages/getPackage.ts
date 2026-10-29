@@ -4,6 +4,7 @@ import { PACKAGES_ENDPOINT } from "../../constants";
 import { getPackageExamplePayload } from "../../examplePayloads/packages";
 import { getPackageInputs } from "../../inputs";
 import { getPackageOutputSchema } from "../../outputSchemas";
+
 export const getPackage = action({
   display: {
     label: "Get Package",
@@ -17,6 +18,7 @@ export const getPackage = action({
   performSafety: "safe",
   perform: async (context, { connection, packageId }) => {
     const client = createHttpClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`${PACKAGES_ENDPOINT}/${packageId}`);
     return {
       data,

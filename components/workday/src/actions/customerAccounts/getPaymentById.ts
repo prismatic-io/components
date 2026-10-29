@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getPaymentByIdExamplePayload } from "../../examplePayloads";
 import { getPaymentByIdInputs } from "../../inputs";
 import { getPaymentByIdOutputSchema } from "../../outputSchemas";
+
 export const getPaymentById = action({
   display: {
     label: "Get Payment by ID",

@@ -4,6 +4,7 @@ import { getPipelineInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { getPipelineExamplePayload } from "../../examplePayloads";
 import { getPipelineOutputSchema } from "../../outputSchemas";
+
 export const getPipeline = action({
   display: {
     label: "Get Pipeline",

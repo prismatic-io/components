@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean, toOptionalNumber } from "../util";
 import { connectionInput } from "./common";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -11,6 +12,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const retailerId = input({
   label: "Retailer ID",
   type: "string",
@@ -20,6 +22,7 @@ const retailerId = input({
     "Optional Fluent retailer ID to scope the polling query. When omitted, the connection's default tenant scope applies.",
   clean: toOptionalNumber,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -29,6 +32,7 @@ const showNewRecords = input({
     "When enabled, orders whose `createdOn` falls after the last poll will be emitted in the `created` array.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -38,6 +42,7 @@ const showUpdatedRecords = input({
     "When enabled, orders whose `updatedOn` falls after the last poll but were created earlier will be emitted in the `updated` array.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   lookBackDate,

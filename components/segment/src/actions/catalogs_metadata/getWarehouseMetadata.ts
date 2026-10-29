@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, region, warehouseMetadataId } from "../../inputs";
 import { getWarehouseMetadataExamplePayload } from "../../examplePayloads";
+
 export const getWarehouseMetadata = action({
   display: {
     label: "Get Warehouse Metadata",

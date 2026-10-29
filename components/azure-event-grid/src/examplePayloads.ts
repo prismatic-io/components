@@ -29,6 +29,7 @@ export const createOrUpdateEventSubscriptionExamplePayload = {
     type: "Microsoft.EventGrid/eventSubscriptions",
   },
 };
+
 export const getEventSubscriptionExamplePayload = {
   data: {
     properties: {
@@ -53,6 +54,7 @@ export const getEventSubscriptionExamplePayload = {
     type: "Microsoft.EventGrid/eventSubscriptions",
   },
 };
+
 export const listEventSubscriptionsExamplePayload = {
   data: {
     value: [getEventSubscriptionExamplePayload.data],

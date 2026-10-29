@@ -12,6 +12,7 @@ import {
 } from "../../inputs/companies";
 import { nameInput } from "../../inputs/contacts";
 import { companyIdInput } from "../../inputs/general";
+
 export const updateCompany = action({
   display: {
     label: "Update Company",

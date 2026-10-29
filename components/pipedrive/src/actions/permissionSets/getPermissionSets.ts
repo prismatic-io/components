@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPermissionSetsInputs } from "../../inputs";
 import { getPermissionSetsExamplePayload } from "../../examplePayloads";
 import { getPermissionSetsOutputSchema } from "../../outputSchemas";
+
 export const getPermissionSets = action({
   display: {
     label: "Get Permission Sets",

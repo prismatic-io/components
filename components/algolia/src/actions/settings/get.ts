@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAlgoliaClient } from "../../client";
 import { getSettingsExamplePayload } from "../../examplePayloads";
 import { connectionInput, indexName } from "../../inputs";
+
 export const getSettings = action({
   display: {
     label: "Get Settings",
@@ -14,6 +15,7 @@ export const getSettings = action({
       isGoingToRead: true,
       debug: context.debug.enabled,
     });
+
     try {
       const { data } = await client.get(`/1/indexes/${indexName}/settings`);
       return { data };

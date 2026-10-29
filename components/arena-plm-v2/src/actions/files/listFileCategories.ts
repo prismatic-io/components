@@ -4,6 +4,7 @@ import { listFileCategoriesExamplePayload } from "../../examplePayloads";
 import { listFileCategoriesInputs } from "../../inputs";
 import { listFileCategoriesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listFileCategories = action({
   display: {
     label: "List File Categories",
@@ -21,6 +22,7 @@ export const listFileCategories = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         path,
         includeDeleted,
@@ -28,15 +30,19 @@ export const listFileCategories = action({
         user,
         action,
       };
+
       context.logger.info("Fetching file categories from Arena", {
         queryParamNames: Object.keys(queryParams),
       });
+
       const { data } = await client.get("/settings/files/categories", {
         params: queryParams,
       });
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} file categories`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List File Categories");

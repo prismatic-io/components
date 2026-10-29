@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getTableRecordInputs } from "../../../inputs";
 import { getTable } from "../../../util";
+
 export const getTableRecord = action({
   display: {
     label: "Get Table Record",

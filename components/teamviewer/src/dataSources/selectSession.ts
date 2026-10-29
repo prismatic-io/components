@@ -1,11 +1,13 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs/general";
+
 interface Session {
   code: string;
   description?: string;
   state?: string;
 }
+
 export const selectSession = dataSource({
   display: {
     label: "Select Session",
@@ -16,6 +18,7 @@ export const selectSession = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const { data } = await client.get("/sessions");
     const result = ((data.sessions as Session[]) || []).map<Element>(
       ({ code, description }) => ({

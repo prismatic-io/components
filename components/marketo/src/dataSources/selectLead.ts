@@ -4,6 +4,7 @@ import type { Lead, PaginatedResponse } from "../interfaces";
 import { selectLeadInputs } from "../inputs";
 import { filterAndSort } from "../utils";
 import type { ElementWithLabel } from "../types";
+
 export const selectLead = dataSource({
   display: {
     label: "Select Lead",
@@ -16,10 +17,12 @@ export const selectLead = dataSource({
     const { data } = await client.get<PaginatedResponse<Lead>>(
       `/v1/leads/describe.json`,
     );
+
     const objects = data.result.map<ElementWithLabel>((lead) => ({
       key: util.types.toString(lead.id),
       label: lead.displayName,
     }));
+
     return { result: filterAndSort(objects, filterQuery) };
   },
 });

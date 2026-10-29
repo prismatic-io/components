@@ -3,6 +3,7 @@ import { createBasicAuthClient } from "../../client";
 import { listCompaniesExamplePayload } from "../../examplePayloads";
 import { listCompaniesInputs } from "../../inputs";
 import { fetchWithPagination } from "../../util";
+
 export const listCompanies = action({
   display: {
     label: "List Companies",
@@ -23,6 +24,7 @@ export const listCompanies = action({
     },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
+
     const { data } = await fetchWithPagination(
       client,
       "/configuration/v1/company-details",
@@ -36,6 +38,7 @@ export const listCompanies = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: listCompaniesExamplePayload,

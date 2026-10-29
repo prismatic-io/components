@@ -78,6 +78,7 @@ export const getWorkersExamplePayload = {
     total: 1,
   },
 };
+
 export const getWorkerByIdExamplePayload = {
   data: {
     primaryJob: {
@@ -153,6 +154,7 @@ export const getWorkerByIdExamplePayload = {
     descriptor: "Logan McNeil",
   },
 };
+
 export const postWorkerTimeBlockExamplePayload = {
   data: {
     customWorktag07: {
@@ -420,9 +422,12 @@ export const postWorkerTimeBlockExamplePayload = {
     descriptor: "Time Block",
   },
 };
+
 export const updateWorkerTimeBlockExamplePayload =
   postWorkerTimeBlockExamplePayload;
+
 export const deleteWorkerTimeBlockExamplePayload = { data: {} };
+
 export const getTimeClockEventsExamplePayload = {
   data: {
     data: [
@@ -653,6 +658,7 @@ export const getTimeClockEventsExamplePayload = {
     total: 1,
   },
 };
+
 export const getTimeClockEventsByIdExamplePayload = {
   data: {
     fund: {
@@ -878,6 +884,7 @@ export const getTimeClockEventsByIdExamplePayload = {
     descriptor: "Time Clock Event",
   },
 };
+
 export const updateTimeClockEventsByIdExamplePayload = {
   data: {
     fund: {
@@ -1103,4 +1110,5 @@ export const updateTimeClockEventsByIdExamplePayload = {
     descriptor: "Time Clock Event",
   },
 };
+
 export const deleteTimeClockEventsByIdExamplePayload = { data: {} };

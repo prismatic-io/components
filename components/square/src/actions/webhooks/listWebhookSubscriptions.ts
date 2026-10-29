@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { listWebhookSubscriptionsExamplePayload } from "../../examplePayloads";
 import { listWebhookSubscriptionsInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listWebhookSubscriptions = action({
   display: {
     label: "List Webhook Subscriptions",
@@ -22,6 +23,7 @@ export const listWebhookSubscriptions = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const data = await fetchAllPages(
       client,
       "/v2/webhooks/subscriptions",
@@ -36,6 +38,7 @@ export const listWebhookSubscriptions = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   inputs: listWebhookSubscriptionsInputs,

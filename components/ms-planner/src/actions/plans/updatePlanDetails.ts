@@ -7,6 +7,7 @@ import { updatePlanDetailsOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { compact, patchWithEtag } from "../../utils";
 import { updatePlanDetailsInputs } from "../../inputs";
+
 export const updatePlanDetails = action({
   display: {
     label: "Update Plan Details",
@@ -24,6 +25,7 @@ export const updatePlanDetails = action({
     { connection, planId, categoryDescriptions, sharing, etag },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const sharedWith: Record<string, boolean> = {};
     for (const userId of sharing?.shareWith ?? []) {
       sharedWith[userId] = true;
@@ -31,12 +33,14 @@ export const updatePlanDetails = action({
     for (const userId of sharing?.unshareWith ?? []) {
       sharedWith[userId] = false;
     }
+
     const body = compact({
       categoryDescriptions: Object.keys(categoryDescriptions ?? {}).length
         ? categoryDescriptions
         : undefined,
       sharedWith: Object.keys(sharedWith).length ? sharedWith : undefined,
     });
+
     const data = await patchWithEtag<PlannerPlanDetails & Etagged>(
       client,
       PLANNER_ENDPOINTS.PLAN_DETAILS(planId),
@@ -48,9 +52,7 @@ export const updatePlanDetails = action({
   examplePerform: async (
     _context,
     { categoryDescriptions, sharing },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const sharedWith: Record<string, unknown> = {
       ...updatePlanDetailsExamplePayload.data.sharedWith,
     };
@@ -60,6 +62,7 @@ export const updatePlanDetails = action({
     for (const userId of sharing?.unshareWith ?? []) {
       delete sharedWith[userId];
     }
+
     return {
       data: {
         ...updatePlanDetailsExamplePayload.data,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, count, offset, fetchAll } from "../../inputs";
 import { paginatedRequest } from "../../utils/pagination";
+
 export const listCampaigns = action({
   display: {
     label: "List Campaigns",
@@ -9,6 +10,7 @@ export const listCampaigns = action({
   },
   perform: async (context, params) => {
     const client = await createClient(params.connection, context.debug.enabled);
+
     return paginatedRequest({
       client,
       endpoint: "/campaigns",
@@ -20,4 +22,5 @@ export const listCampaigns = action({
   },
   inputs: { count, offset, fetchAll, connection: connectionInput },
 });
+
 export default listCampaigns;

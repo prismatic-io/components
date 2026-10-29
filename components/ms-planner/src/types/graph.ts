@@ -3,6 +3,7 @@ export interface GraphCollectionResponse<T> {
   "@odata.context"?: string;
   "@odata.nextLink"?: string;
 }
+
 export interface Etagged {
   "@odata.etag"?: string;
 }

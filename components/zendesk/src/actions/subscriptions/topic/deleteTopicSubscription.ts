@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../../auth";
 import { deleteTopicSubscriptionExamplePayload } from "../../../examplePayloads";
 import { deleteTopicSubscriptionInputs } from "../../../inputs";
 import { deleteTopicSubscriptionOutputSchema } from "../../../outputSchemas";
+
 export const deleteTopicSubscription = action({
   display: {
     label: "Delete Topic Subscription",
@@ -14,6 +15,7 @@ export const deleteTopicSubscription = action({
     const { data } = await client.delete(
       `/community/topics/${topicId}/subscriptions/${subscriptionId}`,
     );
+
     return {
       data,
     };

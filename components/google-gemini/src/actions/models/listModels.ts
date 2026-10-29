@@ -3,6 +3,7 @@ import { createGeminiClient } from "../../client";
 import { listModelsExamplePayload as examplePayload } from "../../examplePayloads/models";
 import { listModelsInputs } from "../../inputs/models";
 import { listModelsFN } from "../../util";
+
 export const listModels = action({
   display: {
     label: "List Models",
@@ -22,6 +23,7 @@ export const listModels = action({
       filter,
       ...extraParameters,
     });
+
     return { data };
   },
   examplePayload,

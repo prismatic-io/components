@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
 import { whoAmIPayload } from "../../examplePayloads";
 import { whoAmIInputs } from "../../inputs";
+
 export const whoAmI = action({
   display: {
     label: "Who Am I",
@@ -9,7 +10,9 @@ export const whoAmI = action({
   },
   perform: async (context, { connection }) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const { data } = await client.get("/whoami");
+
     return { data };
   },
   inputs: whoAmIInputs,

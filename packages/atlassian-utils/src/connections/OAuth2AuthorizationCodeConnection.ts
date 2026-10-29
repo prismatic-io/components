@@ -1,7 +1,9 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import type { OAuth2AuthorizationCodeConnectionParams } from "../interfaces/ConnectionParams";
+
 const DEFAULT_SCOPES =
   "read:jira-user read:jira-work write:jira-work manage:jira-project manage:jira-configuration manage:jira-webhook offline_access";
+
 export const getAtlassianOAuth2AuthorizationCodeConnection = ({
   key,
   display,

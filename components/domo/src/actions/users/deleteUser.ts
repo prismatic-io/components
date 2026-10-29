@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { deleteUserExamplePayload } from "../../examplePayloads";
 import { deleteUserInputs } from "../../inputs";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",
@@ -15,4 +16,5 @@ export const deleteUser = action({
   },
   inputs: deleteUserInputs,
 });
+
 export default { deleteUser };

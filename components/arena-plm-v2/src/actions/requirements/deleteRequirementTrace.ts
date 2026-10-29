@@ -4,6 +4,7 @@ import { deleteRequirementTraceExamplePayload } from "../../examplePayloads";
 import { deleteRequirementTraceInputs } from "../../inputs";
 import { deleteRequirementTraceOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteRequirementTrace = action({
   display: {
     label: "Delete Requirement Trace",

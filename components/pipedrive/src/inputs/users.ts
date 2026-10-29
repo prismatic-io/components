@@ -6,6 +6,7 @@ import {
   userIdInput,
 } from "./common";
 import { cleanNumber } from "../util";
+
 const term = input({
   label: "Term",
   type: "string",
@@ -15,6 +16,7 @@ const term = input({
   example: "john",
   placeholder: "Enter search term",
 });
+
 const searchByEmail = input({
   label: "Search By Email",
   type: "string",
@@ -29,35 +31,43 @@ const searchByEmail = input({
   example: "1",
   placeholder: "Select option",
 });
+
 export const getUsersInputs = {
   connection: connectionInput,
 };
+
 export const findUsersByNameInputs = {
   connection: connectionInput,
   term,
   searchByEmail,
 };
+
 export const getCurrentUserInputs = {
   connection: connectionInput,
 };
+
 export const getUserInputs = {
   connection: connectionInput,
   id: userIdInput,
 };
+
 export const getUserFollowersInputs = {
   connection: connectionInput,
   id: userIdInput,
   pagination: cursorPagination,
 };
+
 export const getUserPermissionsInputs = {
   connection: connectionInput,
   id: userIdInput,
 };
+
 export const getUserRoleAssignmentsInputs = {
   connection: connectionInput,
   id: userIdInput,
   pagination: offsetPagination,
 };
+
 export const getUserRoleSettingsInputs = {
   connection: connectionInput,
   id: userIdInput,

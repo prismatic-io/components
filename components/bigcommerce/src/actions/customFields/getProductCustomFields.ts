@@ -10,6 +10,7 @@ import {
   productCustomFieldsProductId,
   storeHash,
 } from "../../inputs";
+
 export const getProductCustomFields = action({
   display: {
     label: "Get Product Custom Fields",
@@ -31,12 +32,15 @@ export const getProductCustomFields = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${productCustomFieldsProductId}/custom-fields`;
+
     const queryParams = querystring.stringify({
       page: page as number,
       limit: limit as number,
     });
+
     try {
       const response = await client.get(`${endpoint}?${queryParams}`);
+
       return {
         data: response.data,
       };
@@ -46,6 +50,7 @@ export const getProductCustomFields = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

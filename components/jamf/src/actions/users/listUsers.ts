@@ -4,6 +4,7 @@ import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
 import type { JamfUser, RichPagedResponse } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listUsers = action({
   display: {
     label: "List Users",

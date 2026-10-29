@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../utils";
 import { connectionInput, fetchAll, owner, pagination, repo } from "./common";
+
 export const state = (object: string) =>
   input({
     label: "State",
@@ -15,6 +16,7 @@ export const state = (object: string) =>
     clean: cleanString,
     comments: `Indicates the state of the ${object} to return`,
   });
+
 export const assignee = input({
   label: "Assignee",
   type: "string",
@@ -23,6 +25,7 @@ export const assignee = input({
   comments:
     "The user that is assigned to the issue, use 'none' for issues with no assignee, or '*' for issues assigned to any user",
 });
+
 export const labels = input({
   label: "Labels",
   type: "string",
@@ -30,11 +33,9 @@ export const labels = input({
   clean: cleanString,
   comments: `A list of comma separated label names`,
 });
+
 export const sort = (
-  model: {
-    label: string;
-    value: string;
-  }[],
+  model: { label: string; value: string }[],
   defaultValue: string,
 ) =>
   input({
@@ -46,6 +47,7 @@ export const sort = (
     clean: cleanString,
     comments: `What to sort results by`,
   });
+
 export const direction = input({
   label: "Direction",
   type: "string",
@@ -58,6 +60,7 @@ export const direction = input({
   clean: cleanString,
   comments: "The direction to sort the results by",
 });
+
 export const since = input({
   label: "Since",
   type: "string",
@@ -68,6 +71,7 @@ export const since = input({
   example: "2024-01-15T10:30:00Z",
   placeholder: "Enter start datetime (ISO 8601)",
 });
+
 export const milestone = input({
   label: "Milestone",
   type: "string",
@@ -76,6 +80,7 @@ export const milestone = input({
   comments:
     'If an "integer" is passed, it should refer to a milestone by its "number" field',
 });
+
 export const creator = input({
   label: "Creator",
   type: "string",
@@ -83,6 +88,7 @@ export const creator = input({
   clean: cleanString,
   comments: "The user that created the issue",
 });
+
 export const mentioned = input({
   label: "Mentioned",
   type: "string",
@@ -90,6 +96,7 @@ export const mentioned = input({
   clean: cleanString,
   comments: "A user that is mentioned in the issue.",
 });
+
 export const issueNumber = input({
   label: "Issue Number",
   type: "string",
@@ -98,6 +105,7 @@ export const issueNumber = input({
   comments: "The number that identifies the issue",
   dataSource: "selectIssueForAuthenticatedUser",
 });
+
 const commentBody = input({
   label: "Body",
   type: "string",
@@ -105,6 +113,7 @@ const commentBody = input({
   clean: cleanString,
   comments: "The contents of the comment",
 });
+
 export const issuesCreateCommentInputs = {
   connection: connectionInput,
   owner,
@@ -112,6 +121,7 @@ export const issuesCreateCommentInputs = {
   issueNumber: { ...issueNumber, dataSource: undefined },
   body: commentBody,
 };
+
 export const issuesListCommentsInputs = {
   connection: connectionInput,
   owner,
@@ -120,6 +130,7 @@ export const issuesListCommentsInputs = {
   since,
   pagination,
 };
+
 export const issuesListForRepoInputs = {
   connection: connectionInput,
   owner,

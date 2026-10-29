@@ -5,11 +5,13 @@ export const getAdCreativeResponse = {
     id: "23849551358310668",
   },
 };
+
 export const updateAdCreativeResponse = {
   data: {
     success: true,
   },
 };
+
 export const listAdCreativesResponse = {
   data: {
     data: [
@@ -26,6 +28,7 @@ export const listAdCreativesResponse = {
     },
   },
 };
+
 export const addUrlTagsToCreativeResponse = {
   data: {
     id: "23849551358310668",

@@ -7,6 +7,7 @@ import {
   searchString,
   timeout,
 } from "./common";
+
 const parentProjectId = input({
   label: "Parent Project ID",
   type: "string",
@@ -16,6 +17,7 @@ const parentProjectId = input({
   placeholder: "Enter parent project ID",
   clean: toOptionalString,
 });
+
 const projectName = input({
   label: "Project Name",
   type: "string",
@@ -25,6 +27,7 @@ const projectName = input({
   placeholder: "Enter project name",
   clean: util.types.toString,
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -34,6 +37,7 @@ const description = input({
   placeholder: "Enter description",
   clean: toOptionalString,
 });
+
 const contentPermissions = input({
   label: "Content Permissions",
   type: "string",
@@ -51,6 +55,7 @@ const contentPermissions = input({
     },
   ],
 });
+
 const projectSearchField = input({
   label: "Search Field",
   type: "string",
@@ -68,11 +73,13 @@ const projectSearchField = input({
     { label: "Parent Project ID", value: "parentProjectId" },
   ],
 });
+
 export const listProjectsInputs = {
   timeout,
   pagination,
   tableauConnection: connectionInput,
 };
+
 export const searchProjectsInputs = {
   searchString,
   searchField: projectSearchField,
@@ -80,16 +87,19 @@ export const searchProjectsInputs = {
   tableauConnection: connectionInput,
   pagination,
 };
+
 export const getProjectInputs = {
   projectName,
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const deleteProjectsInputs = {
   projectId,
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const createProjectInputs = {
   parentProjectId,
   projectName,
@@ -98,6 +108,7 @@ export const createProjectInputs = {
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const updateProjectInputs = {
   projectId,
   parentProjectId,

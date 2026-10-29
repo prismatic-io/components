@@ -3,20 +3,24 @@ const sampleUser = {
   fullName: "Alex Chen",
   email: "alex.chen@example.com",
 };
+
 const sampleUser2 = {
   guid: "PQ9RS0TU1VW2XY3ZA4BC5DE6",
   fullName: "Morgan Patel",
   email: "morgan.patel@example.com",
 };
+
 const sampleStatus = {
   guid: "ST7UV8WX9YZ0AB1CD2EF3GH4",
   value: "In Review",
   code: "IN_REVIEW",
 };
+
 const sampleTemplateRef = {
   guid: "TM5PL6AT7EM8PL9AT0EM1PL2",
   name: "Product Requirement",
 };
+
 const sampleRequirementFull = {
   guid: "RQ1AB2CD3EF4GH5IJ6KL7MN8",
   number: "REQ-000128",
@@ -35,6 +39,7 @@ const sampleRequirementFull = {
     { guid: "AA1TR2IB3UT4EG5UI6DA7B08", value: "Security" },
   ],
 };
+
 const sampleRequirementFull2 = {
   guid: "RQ2NO3PQ4RS5TU6VW7XY8ZA9",
   number: "REQ-000129",
@@ -55,6 +60,7 @@ const sampleRequirementFull2 = {
   modificationDateTime: "2026-05-03T10:05:00Z",
   additionalAttributes: [],
 };
+
 const sampleChildRequirement = {
   guid: "RC9HI0LD1RE2QU3IR4EM5NT6",
   number: "REQ-000131",
@@ -71,6 +77,7 @@ const sampleChildRequirement = {
   modificationDateTime: "2026-05-06T16:40:00Z",
   additionalAttributes: [],
 };
+
 const sampleTraceToRequirement = {
   guid: "TR5AC6EL7IN8KG9UI0DL1MN2",
   level: 1,
@@ -83,6 +90,7 @@ const sampleTraceToRequirement = {
   objectType: "REQUIREMENT",
   requirement: sampleChildRequirement,
 };
+
 const sampleTraceToItem = {
   guid: "TR7AC8EL9IN0KG1UI2DL3MN4",
   level: 1,
@@ -105,6 +113,7 @@ const sampleTraceToItem = {
     },
   },
 };
+
 const sampleTemplate = {
   active: true,
   allowUserDefinedNumber: false,
@@ -128,12 +137,14 @@ const sampleTemplate = {
     },
   ],
 };
+
 const sampleRelationshipType = {
   guid: "RL3TY4PE5GU6ID7AB8CD9EF0",
   upstreamLabel: "Derived From",
   downstreamLabel: "Derives",
   description: "Indicates one requirement is derived from another.",
 };
+
 const sampleQualityAssoc = {
   guid: "QA1SS2OC3IA4TN5GU6ID7MN8",
   quality: {
@@ -145,6 +156,7 @@ const sampleQualityAssoc = {
     },
   },
 };
+
 const sampleTicketAssoc = {
   guid: "TA5SS6OC7IA8TN9GU0ID1MN2",
   ticket: {
@@ -152,6 +164,7 @@ const sampleTicketAssoc = {
     number: "TKT-000318",
   },
 };
+
 const sampleFileAssoc = {
   guid: "FA1SS2OC3IA4TN5GU6ID7MN8",
   file: {
@@ -170,6 +183,7 @@ const sampleFileAssoc = {
     private: false,
   },
 };
+
 const sampleTemplateAttribute = {
   guid: "TA3TR4IB5UT6EG7UI8DA9B00",
   active: true,
@@ -183,14 +197,18 @@ const sampleTemplateAttribute = {
   possibleValues: ["Authentication", "Authorization", "Auditing"],
   multiSelect: false,
 };
+
 export const createRequirementExamplePayload = { data: sampleRequirementFull };
+
 export const getRequirementExamplePayload = { data: sampleRequirementFull };
+
 export const listRequirementsExamplePayload = {
   data: {
     results: [sampleRequirementFull, sampleRequirementFull2],
     count: 2,
   },
 };
+
 export const updateRequirementExamplePayload = {
   data: {
     ...sampleRequirementFull,
@@ -199,12 +217,14 @@ export const updateRequirementExamplePayload = {
     modifier: sampleUser,
   },
 };
+
 export const deleteRequirementExamplePayload = {
   data: {
     success: true,
     message: "Requirement deleted successfully",
   },
 };
+
 export const changeRequirementStatusExamplePayload = {
   data: {
     guid: "SC1HA2NG3ES4TA5TU6SG7UI8",
@@ -218,7 +238,9 @@ export const changeRequirementStatusExamplePayload = {
     user: sampleUser,
   },
 };
+
 export const getRequirementTemplateExamplePayload = { data: sampleTemplate };
+
 export const listRequirementTemplatesExamplePayload = {
   data: {
     results: [
@@ -234,24 +256,28 @@ export const listRequirementTemplatesExamplePayload = {
     count: 2,
   },
 };
+
 export const listRequirementTemplateAttributesExamplePayload = {
   data: {
     results: [sampleTemplateAttribute],
     count: 1,
   },
 };
+
 export const addRequirementChildExamplePayload = {
   data: {
     guid: "CA1SS2OC3IA4TN5GU6ID7MN8",
     requirement: sampleChildRequirement,
   },
 };
+
 export const removeRequirementChildExamplePayload = {
   data: {
     success: true,
     message: "Requirement child removed successfully",
   },
 };
+
 export const listRequirementChildrenExamplePayload = {
   data: {
     results: [
@@ -263,6 +289,7 @@ export const listRequirementChildrenExamplePayload = {
     count: 1,
   },
 };
+
 export const getRequirementParentExamplePayload = {
   data: {
     guid: "PA7SS8OC9IA0TN1GU2ID3MN4",
@@ -274,30 +301,36 @@ export const getRequirementParentExamplePayload = {
     },
   },
 };
+
 export const addRequirementTraceExamplePayload = {
   data: sampleTraceToRequirement,
 };
+
 export const getRequirementTraceExamplePayload = {
   data: sampleTraceToRequirement,
 };
+
 export const listRequirementTracesExamplePayload = {
   data: {
     results: [sampleTraceToRequirement, sampleTraceToItem],
     count: 2,
   },
 };
+
 export const updateRequirementTraceExamplePayload = {
   data: {
     ...sampleTraceToRequirement,
     suspected: true,
   },
 };
+
 export const deleteRequirementTraceExamplePayload = {
   data: {
     success: true,
     message: "Requirement trace deleted successfully",
   },
 };
+
 export const listRequirementRelationshipTypesExamplePayload = {
   data: {
     results: [
@@ -312,56 +345,69 @@ export const listRequirementRelationshipTypesExamplePayload = {
     count: 2,
   },
 };
+
 export const listRequirementQualityExamplePayload = {
   data: {
     results: [sampleQualityAssoc],
     count: 1,
   },
 };
+
 export const getRequirementQualityAssociationExamplePayload = {
   data: sampleQualityAssoc,
 };
+
 export const addRequirementQualityExamplePayload = {
   data: sampleQualityAssoc,
 };
+
 export const removeRequirementQualityAssociationExamplePayload = {
   data: {
     success: true,
     message: "Requirement quality association removed successfully",
   },
 };
+
 export const addRequirementFileExamplePayload = { data: sampleFileAssoc };
+
 export const listRequirementFilesExamplePayload = {
   data: {
     results: [sampleFileAssoc],
     count: 1,
   },
 };
+
 export const getRequirementFileAssociationExamplePayload = {
   data: sampleFileAssoc,
 };
+
 export const removeRequirementFileAssociationExamplePayload = {
   data: {
     success: true,
     message: "Requirement file association removed successfully",
   },
 };
+
 export const addRequirementTicketExamplePayload = { data: sampleTicketAssoc };
+
 export const listRequirementTicketsExamplePayload = {
   data: {
     results: [sampleTicketAssoc],
     count: 1,
   },
 };
+
 export const getRequirementTicketAssociationExamplePayload = {
   data: sampleTicketAssoc,
 };
+
 export const removeRequirementTicketAssociationExamplePayload = {
   data: {
     success: true,
     message: "Requirement ticket association removed successfully",
   },
 };
+
 export const listRequirementHistoryExamplePayload = {
   data: {
     results: [

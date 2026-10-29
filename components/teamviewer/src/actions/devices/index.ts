@@ -4,6 +4,7 @@ import { deleteDevice } from "./delete";
 import { getDevice } from "./get";
 import { listDevices } from "./list";
 import { updateDevice } from "./update";
+
 export default {
   assignDevice,
   createDevice,

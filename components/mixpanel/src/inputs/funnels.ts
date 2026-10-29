@@ -11,6 +11,7 @@ import {
   where,
   limit,
 } from "./common";
+
 export const funnel_id = input({
   label: "Funnel ID",
   type: "string",
@@ -21,6 +22,7 @@ export const funnel_id = input({
   required: true,
   example: "7509",
 });
+
 export const length = input({
   label: "Length",
   type: "string",
@@ -31,6 +33,7 @@ export const length = input({
   required: true,
   example: "7",
 });
+
 export const length_unit = input({
   label: "Length Unit",
   type: "string",
@@ -59,6 +62,7 @@ export const length_unit = input({
   required: false,
   example: "day",
 });
+
 export const interval = input({
   label: "Interval",
   type: "string",
@@ -69,6 +73,7 @@ export const interval = input({
   required: false,
   example: "1",
 });
+
 export const unit = input({
   label: "Unit",
   type: "string",
@@ -93,6 +98,7 @@ export const unit = input({
   required: false,
   example: "week",
 });
+
 export const on = input({
   label: "On",
   type: "string",
@@ -103,6 +109,7 @@ export const on = input({
   required: false,
   example: "properties['account_id']",
 });
+
 export const segmentation = structuredObjectInput({
   label: "Segmentation",
   required: false,
@@ -110,6 +117,7 @@ export const segmentation = structuredObjectInput({
     "Property expression to segment on, an optional filter expression, and a result limit. Limit only applies when a segmentation expression is set.",
   inputs: { on, where, limit },
 });
+
 export const listSavedFunnelsInputs = {
   connection: connectionInput,
   useProjectToken,
@@ -117,6 +125,7 @@ export const listSavedFunnelsInputs = {
   project_id: { ...project_id, required: true, clean: util.types.toString },
   workspace_id,
 };
+
 export const queryFunnelSavedReportsInputs = {
   connection: connectionInput,
   useProjectToken,

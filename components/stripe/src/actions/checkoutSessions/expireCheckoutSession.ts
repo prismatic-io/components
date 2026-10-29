@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { expireCheckoutSessionInputs } from "../../inputs";
 import { checkoutSessionOutputSchema } from "../../outputSchemas";
 import { createCheckoutSessionExamplePayload as examplePayload } from "../../examplePayloads/checkoutSessions";
+
 export const expireCheckoutSession = action({
   display: {
     label: "Expire Checkout Session",
@@ -14,7 +15,9 @@ export const expireCheckoutSession = action({
       stripeConnection,
       timeout,
     });
+
     const session = await client.checkout.sessions.expire(sessionId);
+
     return {
       data: session,
     };
@@ -22,9 +25,7 @@ export const expireCheckoutSession = action({
   examplePerform: async (
     _context,
     { sessionId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...examplePayload.data,
       id: sessionId,
@@ -37,5 +38,6 @@ export const expireCheckoutSession = action({
     type: "actionOutput",
     schema: checkoutSessionOutputSchema,
   }),
+
   examplePayload,
 });

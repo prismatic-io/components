@@ -11,6 +11,7 @@ import type { AbstractProject } from "@intacct/intacct-sdk/dist/Functions/Projec
 import { updateProjectExamplePayload } from "../../examplePayloads";
 import { updateProjectInputs } from "../../inputs";
 import { updateProjectOutputSchema } from "../../outputSchemas";
+
 export const updateProject = action({
   display: {
     label: "Update Project",
@@ -45,14 +46,18 @@ export const updateProject = action({
       projectStatus: projectStatusInput,
       active: statusInput,
     } as unknown as AbstractProject);
+
     Object.assign(updateProject, additionalFields);
+
     if (context.debug.enabled) {
       context.logger.debug(JSON.stringify(updateProject, null, 2));
     }
     const result = await executeAction(connection, updateProject);
     const { _data: projectsArray, _status } =
       convertResultToGenericObject(result);
+
     checkSuccess(_status, "Failed to update project");
+
     return {
       data: getObjectFromArray(projectsArray),
     };

@@ -17,6 +17,7 @@ import {
   useDefaultReminder,
 } from "../inputs";
 import { parseReturn } from "../parseReturn";
+
 export const updateEvent = action({
   display: {
     label: "Update Event",
@@ -26,6 +27,7 @@ export const updateEvent = action({
     const reminderMethod = util.types.toString(params.remindMethod);
     const remindMinutes = util.types.toInt(params.remindMinutes);
     const reminderInfoNeeded = reminderMethod && remindMinutes;
+
     const { config, ...base } = await createClient({
       connection: params.connection,
     }).events.update({
@@ -60,6 +62,7 @@ export const updateEvent = action({
       },
       sendUpdates: params.sendUpdates || undefined,
     });
+
     return {
       data: { config: parseReturn(config), ...base },
     };

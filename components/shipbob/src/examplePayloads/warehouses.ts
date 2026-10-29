@@ -42,18 +42,23 @@ const receivingOrderData = {
     },
   ],
 };
+
 export const listWarehouseReceivingOrdersExamplePayload = {
   data: [receivingOrderData],
 };
+
 export const getWarehouseReceivingOrdersExamplePayload = {
   data: receivingOrderData,
 };
+
 export const createWarehouseReceivingOrderExamplePayload = {
   data: receivingOrderData,
 };
+
 export const cancelWarehouseReceivingOrderExamplePayload = {
   data: null,
 };
+
 export const getWarehouseReceivingOrderBoxLabelsExamplePayload = {
   data: null,
 };

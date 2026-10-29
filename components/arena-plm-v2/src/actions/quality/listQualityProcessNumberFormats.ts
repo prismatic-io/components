@@ -4,6 +4,7 @@ import { listQualityProcessNumberFormatsExamplePayload } from "../../examplePayl
 import { listQualityProcessNumberFormatsInputs } from "../../inputs";
 import { listQualityProcessNumberFormatsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessNumberFormats = action({
   display: {
     label: "List Quality Process Number Formats",
@@ -19,9 +20,11 @@ export const listQualityProcessNumberFormats = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         "/settings/qualityprocesses/numberformats",
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

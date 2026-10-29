@@ -14,6 +14,7 @@ import {
   sortBy,
   sortOrder,
 } from "./common";
+
 export const createSectionInputs = {
   zendeskConnection: connectionInput,
   locale,
@@ -25,16 +26,19 @@ export const createSectionInputs = {
     comments: "The position of the section.",
   },
 };
+
 export const deleteSectionInputs = {
   zendeskConnection: connectionInput,
   locale,
   sectionId,
 };
+
 export const getSectionInputs = {
   zendeskConnection: connectionInput,
   locale,
   sectionId,
 };
+
 export const listSectionsInputs = {
   zendeskConnection: connectionInput,
   locale,
@@ -69,6 +73,7 @@ export const listSectionsInputs = {
     },
   }),
 };
+
 export const updateSectionInputs = {
   zendeskConnection: connectionInput,
   locale,

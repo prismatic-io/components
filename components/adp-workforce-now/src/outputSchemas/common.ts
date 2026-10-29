@@ -6,6 +6,7 @@ export const codeTypeSchema = {
     longName: { type: "string" },
   },
 };
+
 export const statusTypeSchema = {
   type: "object" as const,
   properties: {
@@ -15,6 +16,7 @@ export const statusTypeSchema = {
     effectiveDate: { type: "string", format: "date" },
   },
 };
+
 export const statusReasonTypeSchema = {
   type: "object" as const,
   properties: {
@@ -23,6 +25,7 @@ export const statusReasonTypeSchema = {
     effectiveDate: { type: "string", format: "date" },
   },
 };
+
 export const idTypeSchema = {
   type: "object" as const,
   properties: {
@@ -30,6 +33,7 @@ export const idTypeSchema = {
     schemeCode: codeTypeSchema,
   },
 };
+
 export const idTypeV1Schema = {
   type: "object" as const,
   properties: {
@@ -38,6 +42,7 @@ export const idTypeV1Schema = {
     schemeAgencyName: { type: "string" },
   },
 };
+
 export const linkSchema = {
   type: "object" as const,
   properties: {
@@ -63,12 +68,15 @@ export const linkSchema = {
     },
   },
 };
+
 export const linksSchema = { type: "array", items: linkSchema };
+
 export const openObjectSchema = {
   type: "object" as const,
   additionalProperties: true,
 };
 export const openObjectArraySchema = { type: "array", items: openObjectSchema };
+
 export const personNameSchema = {
   type: "object" as const,
   properties: {
@@ -91,6 +99,7 @@ export const personNameSchema = {
   },
   additionalProperties: true,
 };
+
 export const addressSchema = {
   type: "object" as const,
   properties: {
@@ -107,6 +116,7 @@ export const addressSchema = {
   },
   additionalProperties: true,
 };
+
 export const communicationSchema = {
   type: "object" as const,
   properties: {
@@ -120,6 +130,7 @@ export const communicationSchema = {
     instantMessages: openObjectArraySchema,
   },
 };
+
 export const metaSchema = {
   type: "object" as const,
   properties: {
@@ -132,6 +143,7 @@ export const metaSchema = {
   },
   additionalProperties: true,
 };
+
 const messageSchema = {
   type: "object" as const,
   properties: {
@@ -143,6 +155,7 @@ const messageSchema = {
     messageTypeCode: codeTypeSchema,
   },
 };
+
 export const confirmMessageSchema = {
   type: "object" as const,
   properties: {
@@ -187,6 +200,7 @@ export const confirmMessageSchema = {
     },
   },
 };
+
 export const underscoreConfirmMessageSchema = {
   type: "object" as const,
   properties: {
@@ -201,6 +215,7 @@ export const underscoreConfirmMessageSchema = {
     links: linksSchema,
   },
 };
+
 const eventPartySchema = {
   type: "object" as const,
   properties: {
@@ -212,12 +227,14 @@ const eventPartySchema = {
   },
   additionalProperties: true,
 };
+
 export const eventTransformBaseProperties = {
   eventReasonCode: codeTypeSchema,
   eventStatusCode: codeTypeSchema,
   effectiveDateTime: { type: "string", format: "date-time" },
   notificationIndicator: { type: "boolean" },
 };
+
 export const eventItemBaseSchema = {
   type: "object" as const,
   properties: {
@@ -243,6 +260,7 @@ export const eventItemBaseSchema = {
     links: linksSchema,
   },
 };
+
 const queryCriterionSchema = {
   type: "object" as const,
   properties: {
@@ -260,10 +278,12 @@ const queryCriterionSchema = {
     logicalOperators: openObjectArraySchema,
   },
 };
+
 export const queryCriteriaSchema = {
   type: "array",
   items: queryCriterionSchema,
 };
+
 export const fieldMetaSchema = {
   type: "object" as const,
   properties: {
@@ -289,6 +309,7 @@ export const fieldMetaSchema = {
   },
   additionalProperties: true,
 };
+
 export const resourceMetaResponseSchema = {
   type: "object" as const,
   properties: {

@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { idempotencyKey, pagination, squareConnection } from "./common";
+
 const teamMember = input({
   label: "Team Member",
   type: "code",
@@ -30,6 +31,7 @@ const teamMember = input({
     return JSON.parse(util.types.toString(teamMemberInput));
   },
 });
+
 const searchQuery = input({
   label: "Search Query",
   type: "code",
@@ -55,6 +57,7 @@ const searchQuery = input({
     return JSON.parse(util.types.toString(searchQueryInput));
   },
 });
+
 const teamMemberId = input({
   label: "Team Member ID",
   type: "string",
@@ -65,20 +68,24 @@ const teamMemberId = input({
   dataSource: "selectTeamMember",
   clean: util.types.toString,
 });
+
 export const createTeamMemberInputs = {
   squareConnection,
   teamMember,
   idempotencyKey,
 };
+
 export const searchTeamMembersInputs = {
   squareConnection,
   searchQuery,
   pagination,
 };
+
 export const retrieveTeamMemberInputs = {
   squareConnection,
   teamMemberId,
 };
+
 export const updateTeamMemberInputs = {
   squareConnection,
   teamMemberId,

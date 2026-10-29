@@ -6,6 +6,7 @@ import {
   webhookTriggerMessageBody,
   webhookTriggerTitle,
 } from "./webhooks";
+
 export const createWebhookTriggerInputs = {
   connection: connectionInput,
   title: webhookTriggerTitle,
@@ -21,4 +22,5 @@ export const createWebhookTriggerInputs = {
     comments: "Allow a duplicate trigger with the same title to be created?",
   },
 };
+
 export const listTriggersInputs = { connection: connectionInput };

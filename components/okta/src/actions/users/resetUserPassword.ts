@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { resetUserPasswordExamplePayload } from "../../examplePayloads/users";
 import { resetUserPasswordInputs } from "../../inputs/users";
+
 export const resetUserPassword = action({
   display: {
     label: "Reset User Password",
@@ -17,6 +18,7 @@ export const resetUserPassword = action({
         revokeSessions,
       },
     );
+
     return { data };
   },
   examplePayload: resetUserPasswordExamplePayload,

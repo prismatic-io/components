@@ -1,7 +1,6 @@
 import type { content_v2_1 } from "googleapis";
-export const getOrderExamplePayload: {
-  data: unknown;
-} = {
+
+export const getOrderExamplePayload: { data: unknown } = {
   data: {
     kind: "content#order",
     id: "1234567890",
@@ -86,9 +85,8 @@ export const getOrderExamplePayload: {
     ],
   },
 };
-export const listOrdersExamplePayload: {
-  data: unknown;
-} = {
+
+export const listOrdersExamplePayload: { data: unknown } = {
   data: {
     kind: "content#ordersListResponse",
     resources: [
@@ -109,6 +107,7 @@ export const listOrdersExamplePayload: {
     nextPageToken: "CgwI6MSB3QYQ",
   },
 };
+
 export const cancelOrderExamplePayload: {
   data: content_v2_1.Schema$OrdersCancelResponse;
 } = {
@@ -117,9 +116,8 @@ export const cancelOrderExamplePayload: {
     executionStatus: "executed",
   },
 };
-export const getOrderReturnExamplePayload: {
-  data: unknown;
-} = {
+
+export const getOrderReturnExamplePayload: { data: unknown } = {
   data: {
     kind: "content#orderReturn",
     returnId: "return_123456789",
@@ -152,9 +150,8 @@ export const getOrderReturnExamplePayload: {
     ],
   },
 };
-export const listOrderReturnsExamplePayload: {
-  data: unknown;
-} = {
+
+export const listOrderReturnsExamplePayload: { data: unknown } = {
   data: {
     kind: "content#orderreturnsListResponse",
     resources: [
@@ -173,9 +170,10 @@ export const listOrderReturnsExamplePayload: {
     nextPageToken: "CgwI7MSB3QYQ",
   },
 };
-export const createOrderReturnExamplePayload: {
-  data: unknown;
-} = getOrderReturnExamplePayload;
+
+export const createOrderReturnExamplePayload: { data: unknown } =
+  getOrderReturnExamplePayload;
+
 export const processOrderReturnExamplePayload: {
   data: content_v2_1.Schema$OrderreturnsProcessResponse;
 } = {

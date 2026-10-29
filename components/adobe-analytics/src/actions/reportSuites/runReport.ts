@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { runReportExamplePayload } from "../../examplePayloads";
 import { runReportInputs } from "../../inputs";
+
 export const runReport = action({
   display: {
     label: "Run Report",

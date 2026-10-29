@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { dynamicsWebhookTrigger } from "./dynamicsWebhookTrigger";
+
 const createMockPayload = (overrides?: Record<string, unknown>) => ({
   headers: {
     "content-type": "application/json; charset=utf-8",
@@ -21,6 +22,7 @@ const createMockPayload = (overrides?: Record<string, unknown>) => ({
   rawBody: { data: "{}" },
   ...overrides,
 });
+
 const createMockContext = (overrides?: Record<string, unknown>) =>
   ({
     debug: { enabled: false },
@@ -28,10 +30,12 @@ const createMockContext = (overrides?: Record<string, unknown>) =>
     isSimulatedTestExecution: false,
     ...overrides,
   }) as any;
+
 describe("dynamicsWebhookTrigger", () => {
   test("event branch: valid JSON body parsed, fields set, branch 'Event', status 200", async () => {
     const payload = createMockPayload();
     const ctx = createMockContext();
+
     const result = await dynamicsWebhookTrigger.perform(
       ctx,
       payload as any,
@@ -39,6 +43,7 @@ describe("dynamicsWebhookTrigger", () => {
         webhookKey: undefined,
       } as any,
     );
+
     expect(result.branch).toBe("Event");
     expect(result.response.statusCode).toBe(200);
     const p = result.payload as unknown as Record<string, unknown>;
@@ -48,6 +53,7 @@ describe("dynamicsWebhookTrigger", () => {
     expect(p.requestId).toBe("req-123");
     expect(p.organization).toBe("my-org");
   });
+
   test("URL Validation early-return: x-ms-dynamics-request-name URL_VALIDATION header", async () => {
     const payload = createMockPayload({
       headers: {
@@ -56,6 +62,7 @@ describe("dynamicsWebhookTrigger", () => {
       },
     });
     const ctx = createMockContext();
+
     const result = await dynamicsWebhookTrigger.perform(
       ctx,
       payload as any,
@@ -63,12 +70,15 @@ describe("dynamicsWebhookTrigger", () => {
         webhookKey: undefined,
       } as any,
     );
+
     expect(result.branch).toBe("URL Validation / Heartbeat");
     expect(result.response.statusCode).toBe(200);
   });
+
   test("webhook key verification: missing code query param throws auth error", async () => {
     const payload = createMockPayload({ queryParameters: {} });
     const ctx = createMockContext();
+
     await expect(
       dynamicsWebhookTrigger.perform(
         ctx,
@@ -79,11 +89,13 @@ describe("dynamicsWebhookTrigger", () => {
       ),
     ).rejects.toThrow("Webhook authentication failed");
   });
+
   test("webhook key verification: wrong code query param throws auth error", async () => {
     const payload = createMockPayload({
       queryParameters: { code: "wrong-key" },
     });
     const ctx = createMockContext();
+
     await expect(
       dynamicsWebhookTrigger.perform(
         ctx,
@@ -94,11 +106,13 @@ describe("dynamicsWebhookTrigger", () => {
       ),
     ).rejects.toThrow("Webhook authentication failed");
   });
+
   test("webhook key verification: correct code query param proceeds", async () => {
     const payload = createMockPayload({
       queryParameters: { code: "secret-key-123" },
     });
     const ctx = createMockContext();
+
     const result = await dynamicsWebhookTrigger.perform(
       ctx,
       payload as any,
@@ -106,6 +120,7 @@ describe("dynamicsWebhookTrigger", () => {
         webhookKey: "secret-key-123",
       } as any,
     );
+
     expect(result.branch).toBe("Event");
     expect(result.response.statusCode).toBe(200);
   });

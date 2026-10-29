@@ -4,6 +4,7 @@ import { updateCategoryExamplePayload } from "../../examplePayloads";
 import { updateCategoryInputs } from "../../inputs";
 import { updateCategoryOutputSchema } from "../../outputSchemas";
 import type { Category } from "../../types";
+
 export const updateCategory = action({
   display: {
     label: "Update Category",
@@ -30,9 +31,12 @@ export const updateCategory = action({
         position: position,
       },
     };
-    const { data } = await client.put<{
-      category: Category;
-    }>(`/help_center/categories/${categoryId}`, payload);
+
+    const { data } = await client.put<{ category: Category }>(
+      `/help_center/categories/${categoryId}`,
+      payload,
+    );
+
     return {
       data,
     };

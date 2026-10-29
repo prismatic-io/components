@@ -11,6 +11,7 @@ export const accountSchema = {
   },
   required: [],
 };
+
 export const listAccountsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -19,6 +20,7 @@ export const listAccountsOutputSchema = {
   },
   required: ["accounts"],
 };
+
 export const propertySchema = {
   type: "object" as const,
   properties: {
@@ -84,6 +86,7 @@ export const propertySchema = {
   },
   required: [],
 };
+
 export const listPropertiesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -92,7 +95,9 @@ export const listPropertiesOutputSchema = {
   },
   required: ["properties"],
 };
+
 export const getPropertyOutputSchema = propertySchema;
+
 const dimensionValueSchema = {
   type: "object" as const,
   properties: { value: { type: "string" } },
@@ -121,6 +126,7 @@ const quotaStatusSchema = {
   },
   required: [],
 };
+
 export const runReportOutputSchema = {
   type: "object" as const,
   properties: {
@@ -230,6 +236,7 @@ export const runReportOutputSchema = {
   },
   required: [],
 };
+
 export const sendMeasurementProtocolEventsOutputSchema = {
   type: "object" as const,
   properties: {

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const rowId = input({
   label: "Row Index",
   comments: "The zero-based index of the row within the table.",
@@ -8,6 +9,7 @@ export const rowId = input({
   placeholder: "Enter row index",
   clean: util.types.toString,
 });
+
 export const values = input({
   label: "Values",
   comments: "A 2D array of values for the row cells.",

@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { createListExamplePayload } from "../../examplePayloads";
 import { createListInputs } from "../../inputs";
 import { createListOutputSchema } from "../../outputSchemas";
+
 export const createList = action({
   display: {
     label: "Create List",
@@ -24,9 +25,7 @@ export const createList = action({
     type: "actionOutput",
     schema: createListOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createListExamplePayload.data,
   }),
   examplePayload: createListExamplePayload,

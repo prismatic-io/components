@@ -1,5 +1,6 @@
 import { buildSchema, parse, validate } from "graphql";
 import { POLL_ORDERS_QUERY } from "./constants";
+
 const fluentOrdersSchema = buildSchema(`
   scalar DateTime
   input DateRange { from: DateTime to: DateTime }
@@ -11,9 +12,11 @@ const fluentOrdersSchema = buildSchema(`
     orders(updatedOn: DateRange, first: Int, after: String, retailerId: [Int!]): OrderConnection
   }
 `);
+
 describe("POLL_ORDERS_QUERY", () => {
   it("declares variables whose types match the documented arguments", () => {
     const errors = validate(fluentOrdersSchema, parse(POLL_ORDERS_QUERY));
+
     expect(errors.map((error) => error.message)).toEqual([]);
   });
 });

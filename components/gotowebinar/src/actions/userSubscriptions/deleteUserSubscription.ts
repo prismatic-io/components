@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createGotoWebinarClient } from "../../client";
 import { deleteUserSubscriptionInputs } from "../../inputs";
 import { GENERAL_DELETE_MESSAGE } from "../../constants";
+
 export const deleteUserSubscription = action({
   display: {
     label: "Delete User Subscriptions",
@@ -18,13 +19,16 @@ export const deleteUserSubscription = action({
       await client.delete("/userSubscriptions", { data: userSubscriptionKeys });
       return GENERAL_DELETE_MESSAGE;
     }
+
     const ids = [];
     for await (const userSubscriptionKey of userSubscriptionKeys) {
       const { data: userSubscription } = await client.get(
         `/userSubscriptions/${userSubscriptionKey}`,
       );
+
       ids.push(userSubscription.webhookKey);
     }
+
     await client.delete("/webhooks", { data: ids });
     return GENERAL_DELETE_MESSAGE;
   },

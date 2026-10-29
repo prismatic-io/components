@@ -4,6 +4,7 @@ import type {
   PushNotificationWebhookDeleteParams,
 } from "../types";
 import { generatePrefixedHash, getBase64FromUrl } from "../utils";
+
 export const pushNotificationWebhookDelete = async (
   { logger, webhookUrls, flow }: PushNotificationWebhookDeleteContext,
   {
@@ -14,6 +15,7 @@ export const pushNotificationWebhookDelete = async (
   }: PushNotificationWebhookDeleteParams,
 ) => {
   const pubSubClient = await createPubSubClient(connection);
+
   const integrationFlowName = flow.name;
   const encodedId = getBase64FromUrl(webhookUrls[integrationFlowName]);
   const prefixedTopicId = generatePrefixedHash(topicId, encodedId);
@@ -21,6 +23,7 @@ export const pushNotificationWebhookDelete = async (
     subscriptionId,
     encodedId,
   );
+
   const subscriptionName = `projects/${projectId}/subscriptions/${prefixedSubscriptionId}`;
   try {
     await pubSubClient.projects.subscriptions.delete({
@@ -41,6 +44,7 @@ export const pushNotificationWebhookDelete = async (
       logger.error(`Failed to delete subscription: ${error}`);
     }
   }
+
   const topicName = `projects/${projectId}/topics/${prefixedTopicId}`;
   try {
     await pubSubClient.projects.topics.delete({

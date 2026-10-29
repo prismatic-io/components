@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { getSoftwareUpdateStatusSummaryExamplePayload } from "../../examplePayloads";
 import { listSoftwareUpdateStatusSummaryInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listSoftwareUpdateStatusSummary = action({
   display: {
     label: "List Software Update Status Summary",
@@ -24,6 +25,7 @@ export const listSoftwareUpdateStatusSummary = action({
       fetchAll,
       params,
     );
+
     return {
       data,
     };

@@ -1,4 +1,5 @@
 import { enumTagSchema, nameSchema, withDropboxEnvelope } from "./shared";
+
 const teamMemberProfileSchema = {
   type: "object" as const,
   properties: {
@@ -54,6 +55,7 @@ const teamMemberProfileSchema = {
     "root_folder_id",
   ],
 };
+
 export const getTeamMembersOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: {
@@ -96,6 +98,7 @@ export const getTeamMembersOutputSchema = withDropboxEnvelope({
   },
   required: ["members_info"],
 });
+
 export const listTeamFolderOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: {

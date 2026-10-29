@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { getEnvironmentTemplateExamplePayload } from "../../examplePayloads";
 import { getEnvironmentTemplateInputs } from "../../inputs";
+
 export const getEnvironmentTemplate = action({
   display: {
     label: "Get Environment Template",

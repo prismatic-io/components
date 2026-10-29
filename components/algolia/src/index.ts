@@ -9,6 +9,7 @@ import settings from "./actions/settings";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+
 export default component({
   key: "algolia",
   documentationUrl: "https://prismatic.io/docs/components/algolia/",

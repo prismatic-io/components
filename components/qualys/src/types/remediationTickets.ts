@@ -3,12 +3,14 @@ interface ClassicTicketAssignee {
   EMAIL?: string;
   LOGIN?: string;
 }
+
 interface ClassicTicketDetection {
   IP?: string;
   DNSNAME?: string;
   NBHNAME?: string;
   SERVICE?: string;
 }
+
 interface ClassicTicketStats {
   FIRST_FOUND_DATETIME?: string;
   LAST_FOUND_DATETIME?: string;
@@ -17,19 +19,17 @@ interface ClassicTicketStats {
   TIMES_NOT_FOUND?: string;
   LAST_OPEN_DATETIME?: string;
 }
+
 interface ClassicTicketVulnInfo {
   TITLE?: string;
   TYPE?: string;
   QID?: string;
   SEVERITY?: string;
   STANDARD_SEVERITY?: string;
-  CVE_ID_LIST?: {
-    CVE_ID?: string | string[];
-  };
-  VENDOR_REF_LIST?: {
-    VENDOR_REF?: string | string[];
-  };
+  CVE_ID_LIST?: { CVE_ID?: string | string[] };
+  VENDOR_REF_LIST?: { VENDOR_REF?: string | string[] };
 }
+
 export interface ClassicTicket {
   NUMBER?: string;
   CREATION_DATETIME?: string;
@@ -42,6 +42,7 @@ export interface ClassicTicket {
   VULNINFO?: ClassicTicketVulnInfo;
   HISTORY_LIST?: Record<string, unknown>;
 }
+
 export interface TicketListResponse {
   REMEDIATION_TICKETS?: {
     TICKET_LIST?: {
@@ -49,12 +50,11 @@ export interface TicketListResponse {
     };
     TRUNCATION?: {
       _?: string;
-      $?: {
-        last: string;
-      };
+      $?: { last: string };
     };
   };
 }
+
 export interface NormalizedTicket {
   number?: string;
   creationDatetime?: string;

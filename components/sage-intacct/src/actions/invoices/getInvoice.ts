@@ -5,6 +5,7 @@ import { getInvoiceExamplePayload } from "../../examplePayloads";
 import { OBJECT_AR_INVOICE } from "../../constants";
 import { getInvoiceInputs } from "../../inputs";
 import { getInvoiceOutputSchema } from "../../outputSchemas";
+
 export const getInvoice = action({
   display: {
     label: "Get Invoice",

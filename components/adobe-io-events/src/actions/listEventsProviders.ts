@@ -3,6 +3,7 @@ import { getClient } from "../client";
 import { listEventsProvidersExamplePayload } from "../examplePayloads";
 import { requestErrorHandler } from "../helpers";
 import { connection, consumerOrgId } from "../inputs";
+
 export const listEventsProviders = action({
   display: {
     label: "List Events Providers",

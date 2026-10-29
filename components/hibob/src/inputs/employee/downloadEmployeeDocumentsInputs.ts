@@ -1,4 +1,5 @@
 import { connection, employeeId } from "../common";
+
 export const downloadEmployeeDocumentsInputs = {
   connection,
   employeeId: {

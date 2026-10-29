@@ -5,9 +5,11 @@ export const idOnlySchema = {
   },
   required: ["id"],
 };
+
 export const successStringSchema = {
   type: "string" as const,
 };
+
 export const boardSchema = {
   type: "object" as const,
   properties: {
@@ -29,6 +31,7 @@ export const boardSchema = {
     "url",
   ],
 };
+
 export const boardListItemSchema = {
   type: "object" as const,
   properties: {
@@ -37,11 +40,13 @@ export const boardListItemSchema = {
   },
   required: boardSchema.required,
 };
+
 export const nestedBoardSchema = {
   type: "object" as const,
   properties: boardSchema.properties,
   required: ["id"],
 };
+
 export const categoryBoardSchema = {
   type: "object" as const,
   properties: {
@@ -53,6 +58,7 @@ export const categoryBoardSchema = {
   },
   required: ["id"],
 };
+
 export const categorySchema = {
   type: "object" as const,
   properties: {
@@ -66,6 +72,7 @@ export const categorySchema = {
   },
   required: ["id", "board", "created", "name", "parentID", "postCount", "url"],
 };
+
 export const reducedCategorySchema = {
   type: "object" as const,
   properties: {
@@ -77,11 +84,13 @@ export const reducedCategorySchema = {
   },
   required: ["id"],
 };
+
 export const nullableReducedCategorySchema = {
   type: ["object", "null"],
   properties: reducedCategorySchema.properties,
   required: reducedCategorySchema.required,
 };
+
 export const tagSchema = {
   type: "object" as const,
   properties: {
@@ -94,6 +103,7 @@ export const tagSchema = {
   },
   required: ["id", "board", "created", "name", "postCount", "url"],
 };
+
 export const reducedTagSchema = {
   type: "object" as const,
   properties: {
@@ -104,6 +114,7 @@ export const reducedTagSchema = {
   },
   required: ["id"],
 };
+
 export const userSchema = {
   type: "object" as const,
   properties: {
@@ -135,16 +146,19 @@ export const userSchema = {
     "userID",
   ],
 };
+
 export const nestedUserSchema = {
   type: "object" as const,
   properties: userSchema.properties,
   required: ["id"],
 };
+
 export const nullableNestedUserSchema = {
   type: ["object", "null"],
   properties: userSchema.properties,
   required: ["id"],
 };
+
 export const companySchema = {
   type: "object" as const,
   properties: {
@@ -166,6 +180,7 @@ export const companySchema = {
     "name",
   ],
 };
+
 export const changeCommentSchema = {
   type: ["object", "null"],
   properties: {
@@ -173,6 +188,7 @@ export const changeCommentSchema = {
     value: { type: "string" },
   },
 };
+
 export const postSchema = {
   type: "object" as const,
   properties: {
@@ -280,6 +296,7 @@ export const postSchema = {
     "url",
   ],
 };
+
 export const reducedPostSchema = {
   type: "object" as const,
   properties: {
@@ -298,6 +315,7 @@ export const reducedPostSchema = {
   },
   required: ["id"],
 };
+
 export const commentSchema = {
   type: "object" as const,
   properties: {
@@ -333,6 +351,7 @@ export const commentSchema = {
     "value",
   ],
 };
+
 export const voteSchema = {
   type: "object" as const,
   properties: {
@@ -368,6 +387,7 @@ export const voteSchema = {
     "zendeskTicket",
   ],
 };
+
 export const statusChangeSchema = {
   type: "object" as const,
   properties: {
@@ -380,6 +400,7 @@ export const statusChangeSchema = {
   },
   required: ["id", "changeComment", "changer", "created", "post", "status"],
 };
+
 export const entrySchema = {
   type: "object" as const,
   properties: {

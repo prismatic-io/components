@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { getCommentsExamplePayload } from "../../examplePayloads";
 import { connectionInput, issueId } from "../../inputs";
+
 export const getComments = action({
   display: {
     label: "Get Comments",

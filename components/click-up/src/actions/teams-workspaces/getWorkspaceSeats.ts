@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getWorkspaceSeatsExamplePayload } from "../../examplePayloads";
 import { getWorkspaceSeatsInputs } from "../../inputs";
 import { getWorkspaceSeatsOutputSchema } from "../../outputSchemas";
+
 export const getWorkspaceSeats = action({
   display: {
     label: "Get Workspace Seats",
@@ -20,7 +21,9 @@ export const getWorkspaceSeats = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/team/${teamId}/seats`);
+
     return {
       data,
     };

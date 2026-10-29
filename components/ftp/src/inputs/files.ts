@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./common";
+
 const returnBuffer = input({
   label: "Return Buffer",
   type: "boolean",
@@ -9,6 +10,7 @@ const returnBuffer = input({
     "When true, treats the file as a binary file with content type 'application/octet-stream', even if it is a text file. This is helpful if you are processing non-UTF-8 text files, as the runner assumes text files are UTF-8.",
   clean: util.types.toBool,
 });
+
 const readFilePath = input({
   label: "Path",
   placeholder: "Enter file path",
@@ -18,6 +20,7 @@ const readFilePath = input({
   example: "/path/to/file.txt",
   clean: util.types.toString,
 });
+
 const deleteFilePath = input({
   label: "Path",
   placeholder: "Enter file path",
@@ -27,6 +30,7 @@ const deleteFilePath = input({
   example: "/path/to/file.txt",
   clean: util.types.toString,
 });
+
 const listDirectoryPath = input({
   label: "Path",
   placeholder: "Enter directory path",
@@ -36,6 +40,7 @@ const listDirectoryPath = input({
   example: "/path/to/directory",
   clean: util.types.toString,
 });
+
 const sourcePath = input({
   label: "Source Path",
   placeholder: "Enter source file path",
@@ -45,6 +50,7 @@ const sourcePath = input({
   example: "/my/starting/path.txt",
   clean: util.types.toString,
 });
+
 const destinationPath = input({
   label: "Destination Path",
   placeholder: "Enter destination file path",
@@ -54,6 +60,7 @@ const destinationPath = input({
   example: "/my/destination/path.txt",
   clean: util.types.toString,
 });
+
 const outputPath = input({
   label: "Path",
   placeholder: "Enter file path",
@@ -63,6 +70,7 @@ const outputPath = input({
   example: "/we/love/commas.csv",
   clean: util.types.toString,
 });
+
 const data = input({
   label: "Data",
   placeholder: "Enter data to write",
@@ -71,24 +79,29 @@ const data = input({
   comments: "The text or binary data to write to the file on the FTP server.",
   clean: (value) => util.types.toData(value).data,
 });
+
 export const readFileInputs = {
   connection,
   inputPath: readFilePath,
   returnBuffer,
 };
+
 export const deleteFileInputs = {
   connection,
   path: deleteFilePath,
 };
+
 export const listDirectoryInputs = {
   connection,
   path: listDirectoryPath,
 };
+
 export const moveFileInputs = {
   connection,
   sourcePath,
   destinationPath,
 };
+
 export const writeFileInputs = {
   connection,
   outputPath,

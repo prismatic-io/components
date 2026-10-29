@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createBookingByProviderExamplePayload } from "../../examplePayloads";
 import { createBookingByProviderInputs } from "../../inputs";
 import { createBookingByProviderOutputSchema } from "../../outputSchemas";
+
 export const createBookingByProvider = action({
   display: {
     label: "Create Booking by Provider",

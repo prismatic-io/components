@@ -4,6 +4,7 @@ import { deleteProductExamplePayload as examplePayload } from "../../../exampleP
 import { deleteProductInputs as inputs } from "../../../inputsGql";
 import { deleteProductGqlOutputSchema } from "../../../outputSchemas";
 import deleteProductQuery from "../queries/products/DeleteProduct.gql";
+
 export const deleteProductGql = action({
   display: {
     label: "Delete Product",
@@ -17,13 +18,14 @@ export const deleteProductGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      productDelete: Record<string, unknown>;
-    } = await client.request(deleteProductQuery, {
-      input: {
-        id: productId,
-      },
-    });
+
+    const data: { productDelete: Record<string, unknown> } =
+      await client.request(deleteProductQuery, {
+        input: {
+          id: productId,
+        },
+      });
+
     return {
       data: data.productDelete,
     };

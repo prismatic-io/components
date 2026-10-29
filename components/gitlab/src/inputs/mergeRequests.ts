@@ -17,6 +17,7 @@ import {
   title,
   updatedAfter,
 } from "./common";
+
 const mergeRequestState = input({
   label: "State",
   type: "string",
@@ -26,6 +27,7 @@ const mergeRequestState = input({
   model: MERGE_REQUEST_STATE_OPTIONS,
   clean: cleanString,
 });
+
 const sourceBranch = input({
   label: "Source Branch",
   placeholder: "Enter source branch",
@@ -36,6 +38,7 @@ const sourceBranch = input({
   dataSource: "selectBranch",
   clean: toRequiredString,
 });
+
 const targetBranch = input({
   label: "Target Branch",
   placeholder: "Enter target branch",
@@ -46,18 +49,21 @@ const targetBranch = input({
   dataSource: "selectBranch",
   clean: toRequiredString,
 });
+
 const filterSourceBranch = {
   ...sourceBranch,
   required: false,
   comments: "Return only merge requests from this source branch.",
   clean: cleanString,
 };
+
 const filterTargetBranch = {
   ...targetBranch,
   required: false,
   comments: "Return only merge requests into this target branch.",
   clean: cleanString,
 };
+
 const removeSourceBranch = input({
   label: "Remove Source Branch",
   type: "string",
@@ -67,6 +73,7 @@ const removeSourceBranch = input({
   model: BOOLEAN_OPTIONS,
   clean: toOptionalBoolean,
 });
+
 const squash = input({
   label: "Squash",
   type: "string",
@@ -76,6 +83,7 @@ const squash = input({
   model: BOOLEAN_OPTIONS,
   clean: toOptionalBoolean,
 });
+
 const mergeCommitMessage = input({
   label: "Merge Commit Message",
   placeholder: "Enter merge commit message",
@@ -85,6 +93,7 @@ const mergeCommitMessage = input({
   example: "Merge branch 'feature/ach-retry' into 'main'",
   clean: cleanString,
 });
+
 const sha = input({
   label: "SHA",
   placeholder: "Enter expected head SHA",
@@ -95,6 +104,7 @@ const sha = input({
   example: "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
   clean: cleanString,
 });
+
 export const listMergeRequestsInputs = {
   connection: connectionInput,
   project,
@@ -110,11 +120,13 @@ export const listMergeRequestsInputs = {
   search,
   updatedAfter,
 };
+
 export const getMergeRequestInputs = {
   connection: connectionInput,
   project,
   mergeRequestIid,
 };
+
 const createMergeRequestAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -122,6 +134,7 @@ const createMergeRequestAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Description, Remove Source Branch, and Squash.",
   inputs: { description: createDescription, removeSourceBranch, squash },
 });
+
 const updateMergeRequestAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -129,6 +142,7 @@ const updateMergeRequestAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Title, Description, and State Event.",
   inputs: { title: optionalTitle, description, stateEvent },
 });
+
 const mergeOptions = structuredObjectInput({
   label: "Merge Options",
   required: false,
@@ -141,6 +155,7 @@ const mergeOptions = structuredObjectInput({
     sha,
   },
 });
+
 export const createMergeRequestInputs = {
   connection: connectionInput,
   project,
@@ -154,6 +169,7 @@ export const createMergeRequestInputs = {
   },
   additionalFields: createMergeRequestAdditionalFields,
 };
+
 export const updateMergeRequestInputs = {
   connection: connectionInput,
   project,
@@ -166,6 +182,7 @@ export const updateMergeRequestInputs = {
   },
   additionalFields: updateMergeRequestAdditionalFields,
 };
+
 export const acceptMergeRequestInputs = {
   connection: connectionInput,
   project,

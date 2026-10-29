@@ -7,6 +7,7 @@ import {
   limit,
   offset,
 } from "../../inputs";
+
 export const getCompanyDocuments = action({
   display: {
     label: "Get Company Documents",
@@ -25,6 +26,7 @@ export const getCompanyDocuments = action({
   ) => {
     validateV1Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data } = await client.get(
       `/documents/v1/companies/${companyId}/companyDocuments`,
       {

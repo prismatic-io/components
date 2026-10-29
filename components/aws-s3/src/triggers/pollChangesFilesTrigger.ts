@@ -13,6 +13,7 @@ import {
   resolveFileListingWindow,
   resolvePolledFileChanges,
 } from "../utils";
+
 export const pollChangesFilesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Files",
@@ -52,6 +53,7 @@ export const pollChangesFilesTrigger = pollingTrigger({
       new Date().toISOString(),
     );
     const windowIsEmpty = window.windowStart >= window.windowEnd;
+
     const s3 = await createS3Client({
       awsConnection: accessKey,
       awsRegion,
@@ -61,6 +63,7 @@ export const pollChangesFilesTrigger = pollingTrigger({
       logger: context.logger,
       debug: context.debug.enabled,
     });
+
     const { keys, startAfter } = windowIsEmpty
       ? { keys: [], startAfter: undefined }
       : await listObjectsInWindow(s3, bucket, window, isBatching);
@@ -71,6 +74,7 @@ export const pollChangesFilesTrigger = pollingTrigger({
           startAfter,
         }
       : undefined;
+
     context.polling.setState(
       nextCursor
         ? {
@@ -81,11 +85,13 @@ export const pollChangesFilesTrigger = pollingTrigger({
             lastPolledAt: windowIsEmpty ? window.windowStart : window.windowEnd,
           },
     );
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Listed ${bucket} from ${window.startAfter ?? "the first key"}: ${keys.length} keys modified between ${window.windowStart} and ${window.windowEnd}; ${nextCursor ? "more pages remain" : "window exhausted"}`,
       );
     }
+
     return {
       payload: {
         ...payload,

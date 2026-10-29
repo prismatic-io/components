@@ -14,6 +14,7 @@ import {
   subscriptionName,
   topicName,
 } from "../inputs";
+
 export const listRules = action({
   display: {
     label: "List Rules",
@@ -36,6 +37,7 @@ export const listRules = action({
   ) => {
     const client = getAzureServiceBusClient(connection, context.debug.enabled);
     const endpoint = `/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/${namespaceName}/topics/${topicName}/subscriptions/${subscriptionName}/rules?api-version=2021-11-01`;
+
     try {
       return await paginateResults({
         client,
@@ -64,4 +66,5 @@ export const listRules = action({
     $top,
   },
 });
+
 export default { listRules };

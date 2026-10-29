@@ -1,4 +1,5 @@
 import type { V3Job } from "../../types/v3";
+
 const jobObject: V3Job = {
   id: 107761,
   name: "Senior Software Engineer - Backend",
@@ -22,9 +23,8 @@ const jobObject: V3Job = {
     },
   },
 };
-export const listJobsV3ExamplePayload: {
-  data: V3Job[];
-} = {
+
+export const listJobsV3ExamplePayload: { data: V3Job[] } = {
   data: [
     jobObject,
     {
@@ -46,11 +46,12 @@ export const listJobsV3ExamplePayload: {
     },
   ],
 };
-export const getJobV3ExamplePayload: {
-  data: Record<string, unknown> | null;
-} = {
-  data: jobObject as Record<string, unknown>,
-};
+
+export const getJobV3ExamplePayload: { data: Record<string, unknown> | null } =
+  {
+    data: jobObject as Record<string, unknown>,
+  };
+
 export const createJobV3ExamplePayload = {
   data: {
     id: 107763,
@@ -70,6 +71,7 @@ export const createJobV3ExamplePayload = {
     custom_fields: {},
   },
 };
+
 export const editJobV3ExamplePayload = {
   data: {
     ...jobObject,

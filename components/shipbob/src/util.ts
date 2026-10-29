@@ -18,20 +18,24 @@ import type {
   ShipbobOrderChanges,
 } from "./types/polling";
 import type { WebhookTopic } from "./types/WebhookTopic";
+
 export const jsonInputClean = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const valueListInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value as string[];
   }
   return undefined;
 };
+
 export const valueListStringInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value.join(",");
   }
   return undefined;
 };
+
 export const validateWebhook = (
   payloadHeaders: Record<string, string>,
 ): ValidatedWebhook => {
@@ -44,16 +48,20 @@ export const validateWebhook = (
     shipbobSubscriptionId !== "" &&
     shipbobTopic !== "";
   if (!hasShipbobHeaders) throw new Error("Not a ShipBob webhook");
+
   if (!WEBHOOK_TOPICS.has(shipbobTopic as WebhookTopic))
     throw new Error("Invalid ShipBob topic");
+
   return { shipbobSubscriptionId, shipbobTopic: shipbobTopic as WebhookTopic };
 };
+
 export const capitalizeWithoutUnderscores = (input: string): string => {
   return input
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
 export const webhookPerformFunction = async (
   _context: ActionContext,
   payload: TriggerPayload,
@@ -61,8 +69,10 @@ export const webhookPerformFunction = async (
   const { shipbobSubscriptionId, shipbobTopic } = validateWebhook(
     payload.headers,
   );
+
   const requestBody = util.types.toString(payload.rawBody.data);
   const jsonBody = JSON.parse(requestBody);
+
   return Promise.resolve({
     payload,
     response: {
@@ -77,11 +87,13 @@ export const webhookPerformFunction = async (
     },
   });
 };
+
 export const getTopicsInputModel = () =>
   Array.from(WEBHOOK_TOPICS).map((topic) => ({
     label: capitalizeWithoutUnderscores(topic),
     value: topic,
   }));
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -91,20 +103,25 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const hasRepeatedString = (arr: string[]): boolean => {
   const stringSet = new Set<string>();
+
   for (const str of arr) {
     if (stringSet.has(str)) {
       return true;
     }
     stringSet.add(str);
   }
+
   return false;
 };
+
 export const removeVersionFromUrl = (url: string): string => {
   const versionRegex = /\/\d+\.\d+/;
   return url.replace(versionRegex, "");
 };
+
 export const getAllPaginatedData = async <T>(
   client: HttpClient,
   url: string,
@@ -114,12 +131,14 @@ export const getAllPaginatedData = async <T>(
   const allData: T[] = [];
   let page = 1;
   let hasMore = true;
+
   do {
     const { headers, data } = await client.get(url, {
       params: { ...params, Page: page, Limit: 250 },
       ...(extraHeaders && { headers: extraHeaders as Record<string, string> }),
     });
     allData.push(...data);
+
     const lowerCaseHeaders = util.types.lowerCaseHeaders(
       headers as Record<string, string>,
     );
@@ -128,8 +147,10 @@ export const getAllPaginatedData = async <T>(
     hasMore = page < totalPages;
     page += 1;
   } while (hasMore);
+
   return allData;
 };
+
 export const getExistingWebhookIds = (
   webhookUrl: string,
   data: WebhookData[],
@@ -138,17 +159,17 @@ export const getExistingWebhookIds = (
     .filter(({ subscription_url }) => subscription_url === webhookUrl)
     .map(({ id }) => id);
 };
+
 export const toShipbobDate = (iso: string): string => iso.slice(0, 10);
+
 export const classifyOrdersByPollDate = (
   orders: ShipbobOrder[],
   lastPolledAt: string,
-): {
-  created: ShipbobOrder[];
-  updated: ShipbobOrder[];
-} => {
+): { created: ShipbobOrder[]; updated: ShipbobOrder[] } => {
   const lastPolledAtMs = new Date(lastPolledAt).getTime();
   const created: ShipbobOrder[] = [];
   const updated: ShipbobOrder[] = [];
+
   for (const order of orders) {
     const createdMs = order.created_date
       ? new Date(order.created_date).getTime()
@@ -159,8 +180,10 @@ export const classifyOrdersByPollDate = (
       updated.push(order);
     }
   }
+
   return { created, updated };
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -169,6 +192,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -177,6 +201,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -191,11 +216,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolvePollWindow = (
   state: PollingState | undefined,
   params: {
@@ -223,6 +251,7 @@ export const resolvePollWindow = (
     includeUpdated: true,
   };
 };
+
 export const resolveShipbobOrderChanges = (
   data: ShipbobOrderChanges | undefined,
 ): ShipbobOrderChange[] => {

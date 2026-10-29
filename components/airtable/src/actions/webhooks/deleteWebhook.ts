@@ -3,6 +3,7 @@ import { createAirtableClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { getBaseId } from "../../util";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -14,7 +15,9 @@ export const deleteWebhook = action({
       context.debug.enabled,
     );
     const baseId = getBaseId(params.airtableConnection, params.baseId);
+
     await client.delete(`/v0/bases/${baseId}/webhooks/${params.webhookId}`);
+
     return { data: {} };
   },
   inputs: deleteWebhookInputs,

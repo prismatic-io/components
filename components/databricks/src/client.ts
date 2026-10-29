@@ -1,12 +1,10 @@
 import { type Connection, util } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { personalAccessToken, workspaceServicePrincipal } from "./connections";
+
 export const getHostAndApiKey = (
   connection: Connection,
-): {
-  host: string;
-  apiKey: string;
-} => {
+): { host: string; apiKey: string } => {
   if (connection.key === personalAccessToken.key) {
     const hostField = util.types.toString(connection.fields.host);
     const url = new URL(
@@ -26,6 +24,7 @@ export const getHostAndApiKey = (
   }
   throw new Error(`Unknown connection type received: ${connection.key}`);
 };
+
 export const createDataBricksClient = (
   connection: Connection,
   apiVersion: "1.2" | "2.0",

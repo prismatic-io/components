@@ -4,6 +4,7 @@ import { connection } from "../../inputs/general";
 import { deleteWorksheetsInputs } from "../../inputs/worksheets/delete";
 import { DELETE_CONTENT_RESPONSE } from "../../examplePayloads/general";
 import { getDriveOrSiteBaseUrl } from "../../helpers";
+
 export const deleteWorksheet = action({
   display: {
     label: "Delete Worksheet",
@@ -15,7 +16,9 @@ export const deleteWorksheet = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     await client.delete(`${baseUrl}/worksheets/${worksheetId}`);
+
     return {
       data: DELETE_CONTENT_RESPONSE,
     };

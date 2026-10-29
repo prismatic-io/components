@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { bucketEventTriggerConfigurationExamplePayload } from "../../examplePayloads";
 import { bucketEventTriggerConfigurationInputs } from "../../inputs";
 import { processTopicConfiguration } from "../../utils";
+
 export const bucketEventTriggerConfiguration = action({
   display: {
     label: "Add Bucket SNS Event Notification",
@@ -32,11 +33,13 @@ export const bucketEventTriggerConfiguration = action({
       dynamicSecretAccessKey,
       dynamicSessionToken,
     });
+
     const topicConfiguration: TopicConfiguration = {
       Id: eventNotificationName,
       TopicArn: snsTopicArn,
       Events: eventsList as Event[],
     };
+
     return {
       data: await processTopicConfiguration(
         s3Client,

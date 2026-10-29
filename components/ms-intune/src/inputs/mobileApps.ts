@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll, odataParams } from "./common";
+
 export const mobileAppId = input({
   label: "Mobile App ID",
   comments: "Unique identifier for the mobile app (UUID format).",
@@ -10,6 +11,7 @@ export const mobileAppId = input({
   clean: util.types.toString,
   dataSource: "selectMobileApp",
 });
+
 export const groupId = input({
   label: "Group ID",
   comments:
@@ -21,6 +23,7 @@ export const groupId = input({
   clean: util.types.toString,
   dataSource: "selectGroup",
 });
+
 export const intent = input({
   label: "Intent",
   comments:
@@ -39,6 +42,7 @@ export const intent = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const target = input({
   label: "Target",
   type: "string",
@@ -49,6 +53,7 @@ export const target = input({
   placeholder: "Enter target type",
   clean: util.types.toString,
 });
+
 export const settings = input({
   label: "Settings",
   type: "string",
@@ -59,10 +64,12 @@ export const settings = input({
   placeholder: "Enter settings type",
   clean: util.types.toString,
 });
+
 export const getMobileAppInputs = {
   connection,
   mobileAppId,
 };
+
 export const assignMobileAppInputs = {
   connection,
   mobileAppId: {
@@ -74,6 +81,7 @@ export const assignMobileAppInputs = {
   target,
   settings,
 };
+
 const listPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -84,6 +92,7 @@ const listPagination = structuredObjectInput({
     $skipToken: odataParams.$skipToken,
   },
 });
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -98,6 +107,7 @@ const listFilters = structuredObjectInput({
     $format: odataParams.$format,
   },
 });
+
 export const listMobileAppsInputs = {
   connection,
   fetchAll,

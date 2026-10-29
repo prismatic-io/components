@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { getVersionExamplePayload } from "../../examplePayloads";
 import { connectionInput, versionId } from "../../inputs";
+
 export const getVersion = action({
   display: {
     label: "Get Version",

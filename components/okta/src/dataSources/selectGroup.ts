@@ -4,6 +4,7 @@ import { selectGroupExamplePayload } from "../examplePayloads/dataSources";
 import { connection } from "../inputs/general";
 import type { Group } from "../interfaces/group";
 import { paginateRecordsWithLink } from "../util/util";
+
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",
@@ -20,10 +21,12 @@ export const selectGroup = dataSource({
       true,
       {},
     );
+
     const result = data.map<Element>((group) => ({
       label: group.profile.name,
       key: group.id.toString(),
     }));
+
     return {
       result,
     };

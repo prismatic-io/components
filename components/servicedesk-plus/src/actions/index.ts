@@ -8,6 +8,7 @@ import productTypes from "./productTypes";
 import rawRequest from "./rawRequest";
 import requests from "./requests";
 import requestTasks from "./requestTasks";
+
 export default {
   ...assets,
   ...configurationItems,

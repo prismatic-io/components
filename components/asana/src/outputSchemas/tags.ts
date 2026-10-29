@@ -4,6 +4,7 @@ import {
   userCompactSchema,
   workspaceCompactSchema,
 } from "./shared";
+
 export const tagResponseSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +28,7 @@ export const tagResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listTagsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -36,6 +38,7 @@ export const listTagsOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const findTagByNameOutputSchema = {
   type: "object" as const,
   properties: {

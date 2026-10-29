@@ -5,12 +5,14 @@ import {
   project,
   projects,
 } from "./common";
+
 export const listProjectWebhooksInputs = {
   connection: connectionInput,
   project,
   fetchAll,
   pagination,
 };
+
 export const deleteInstancedWebhooksInputs = {
   connection: connectionInput,
   projects: {

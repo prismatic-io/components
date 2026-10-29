@@ -3,6 +3,7 @@ import listFulfillmentServicesQuery from "../actions/graphql/queries/fulfillment
 import { getShopifyGraphQlClient } from "../client";
 import { selectFulfillmentServicesInputs } from "../inputs";
 import type { FulfillmentServiceRecord } from "../types";
+
 export const listFulfillmentServices = dataSource({
   display: {
     label: "Select Fulfillment Service",
@@ -16,11 +17,11 @@ export const listFulfillmentServices = dataSource({
       false,
       context.logger,
     );
+
     const data: {
-      shop: {
-        fulfillmentServices: FulfillmentServiceRecord[];
-      };
+      shop: { fulfillmentServices: FulfillmentServiceRecord[] };
     } = await client.request(listFulfillmentServicesQuery);
+
     const result = (data.shop.fulfillmentServices || []).map((service) => ({
       label: service.serviceName || service.id,
       key: util.types.toString(service.id),

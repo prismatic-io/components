@@ -23,6 +23,7 @@ import {
   normalizeGitlabUrl,
   retryDelay,
 } from "./utils";
+
 export const getAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
@@ -48,6 +49,7 @@ export const getAuthHeaders = (
     `Unsupported connection type: ${connection.key}.`,
   );
 };
+
 const buildTlsAgent = (
   connection: Connection,
   hostname: string,
@@ -61,6 +63,7 @@ const buildTlsAgent = (
       tls.checkServerIdentity(hostname, cert),
   });
 };
+
 export const resolveRequestTarget = (
   connection: Connection,
 ): GitlabRequestTarget => {
@@ -98,6 +101,7 @@ export const resolveRequestTarget = (
     viaTunnel: true,
   };
 };
+
 export const createGitlabClient = (
   connection: Connection,
   logger: ActionLogger | false = false,

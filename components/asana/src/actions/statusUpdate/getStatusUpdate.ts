@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { getStatusUpdateExamplePayload } from "../../examplePayloads";
 import { getStatusUpdateInputs } from "../../inputs";
 import { statusUpdateResponseSchema } from "../../outputSchemas";
+
 export const getStatusUpdate = action({
   display: {
     label: "Get Status Update",

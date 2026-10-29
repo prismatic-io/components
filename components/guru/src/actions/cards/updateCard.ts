@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
 import { updateCardPayload } from "../../examplePayloads";
 import { updateCardInputs } from "../../inputs";
+
 export const updateCard = action({
   display: {
     label: "Update Card",
@@ -19,13 +20,16 @@ export const updateCard = action({
     },
   ) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const requestBody = {
       preferredPhrase: cardTitle,
       content: cardContent,
       shareStatus: shareStatus,
       ...additionalProperties,
     };
+
     const { data } = await client.put(`/cards/${cardId}`, requestBody);
+
     return { data };
   },
   inputs: updateCardInputs,

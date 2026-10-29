@@ -9,6 +9,7 @@ import {
   name,
 } from "../../inputs";
 import { createConfigurationItemPayload } from "../../util";
+
 export const createConfigurationItem = action({
   display: {
     label: "Create Configuration Item",

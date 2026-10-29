@@ -61,6 +61,7 @@ const paginationExtraPayloadData = {
     "alt-svc": 'h3=":443"; ma=86400',
   },
 };
+
 const genericHeaders = {
   headers: {
     date: "Wed, 27 Mar 2024 00:52:16 GMT",
@@ -104,6 +105,7 @@ const genericHeaders = {
     "alt-svc": 'h3=":443"; ma=86400',
   },
 };
+
 export const orderExamplePayload = {
   order: {
     orders: [
@@ -1137,6 +1139,7 @@ export const orderExamplePayload = {
     ],
   },
 };
+
 export const customerExamplePayload = {
   customer: {
     id: 207119551,
@@ -1215,6 +1218,7 @@ export const customerExamplePayload = {
     },
   },
 };
+
 const getProductExamplePayload = {
   product: {
     id: 632910392,
@@ -1310,18 +1314,21 @@ const getProductExamplePayload = {
     },
   },
 };
+
 export const restListProductsExamplePayload = {
   data: {
     products: [getProductExamplePayload.product],
   },
   ...paginationExtraPayloadData,
 };
+
 const countProductsExamplePayload = {
   data: {
     count: 5,
   },
   ...genericHeaders,
 };
+
 export const restListWebhooksExamplePayload = [
   {
     id: 4759306,
@@ -1336,6 +1343,7 @@ export const restListWebhooksExamplePayload = [
     private_metafield_namespaces: [],
   },
 ];
+
 export const createWebhookExamplePayload = {
   webhook: {
     id: 8099884584,
@@ -1350,6 +1358,7 @@ export const createWebhookExamplePayload = {
     private_metafield_namespaces: [],
   },
 };
+
 export const createCustomerPayload = { data: customerExamplePayload };
 export const countProductsPayload = { data: countProductsExamplePayload };
 export const listProductsPayload = { data: restListProductsExamplePayload };

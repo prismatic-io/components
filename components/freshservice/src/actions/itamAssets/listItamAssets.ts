@@ -4,6 +4,7 @@ import { listItamAssetsExamplePayload as examplePayload } from "../../examplePay
 import { listItamAssetsInputs as inputs } from "../../inputs";
 import { itamAssetsListOutputSchema } from "../../outputSchemas";
 import { getItamListData } from "../../util";
+
 export const listItamAssets = action({
   display: {
     label: "List Assets (ITAM)",
@@ -17,6 +18,7 @@ export const listItamAssets = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data, meta } = await getItamListData(client, "assets", "assets", {
       fetchAll,
       params: {
@@ -25,6 +27,7 @@ export const listItamAssets = action({
         page: pagination.page,
       },
     });
+
     return { data: { meta, ...data } };
   },
   outputSchema: outputSchema({

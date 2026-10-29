@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getBillResponse } from "../../examplePayloads/bills";
 import { billId, connection } from "../../inputs";
 import { getBillOutputSchema } from "../../outputSchemas";
+
 export const getBill = action({
   display: {
     label: "Get Bill",
@@ -19,6 +20,7 @@ export const getBill = action({
   performSafety: "safe",
   perform: async (context, { connection, billId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/bills/${billId}`);
     return {
       data,

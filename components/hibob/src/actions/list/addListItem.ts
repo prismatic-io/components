@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { addListItemExamplePayload } from "../../examplePayloads";
 import { addListItemInputs } from "../../inputs";
+
 export const addListItem = action({
   display: {
     label: "Add List Item",
@@ -9,10 +10,12 @@ export const addListItem = action({
   },
   perform: async (context, { connection, listName, itemName, parentId }) => {
     const client = getClient(connection, context.debug.enabled);
+
     const itemData = {
       name: itemName,
       parentId,
     };
+
     const { data } = await client.post(
       `/company/named-lists/${listName}`,
       itemData,

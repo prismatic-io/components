@@ -5,6 +5,7 @@ import { getFileDownloadUrlExamplePayload } from "../../examplePayloads";
 import { getFileDownloadUrlInputs } from "../../inputs";
 import { getFileDownloadUrlOutputSchema } from "../../outputSchemas";
 import { getPathEntries } from "../../util";
+
 export const getFileDownloadUrl = action({
   display: {
     label: "Get File Download URL",
@@ -15,19 +16,20 @@ export const getFileDownloadUrl = action({
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
     const { id, type, name } = pathEntries.slice(-1)[0];
+
     if (type !== FILE_TYPE) {
       throw Error(`'${name}' is not a file`);
     }
+
     const url = await client.downloads.getDownloadFileUrl(
       util.types.toString(id),
     );
+
     return {
       data: url,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: getFileDownloadUrlExamplePayload.data,
   }),
   inputs: getFileDownloadUrlInputs,

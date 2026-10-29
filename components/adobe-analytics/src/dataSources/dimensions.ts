@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectReportSuiteDimensionInputs } from "../inputs";
 import type { ReportSuiteDimension } from "../types";
+
 const selectReportSuiteDimension = dataSource({
   display: {
     label: "Select Report Suite Dimension",
@@ -25,4 +26,5 @@ const selectReportSuiteDimension = dataSource({
     };
   },
 });
+
 export default { selectReportSuiteDimension };

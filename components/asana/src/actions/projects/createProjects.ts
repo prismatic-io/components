@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { createProjectsExamplePayload } from "../../examplePayloads";
 import { createProjectsInputs } from "../../inputs";
 import { projectResponseSchema } from "../../outputSchemas";
+
 export const createProjects = action({
   display: {
     label: "Create Project",
@@ -31,9 +32,11 @@ export const createProjects = action({
         privacy_setting: params.projectSettings.privacySetting,
       },
     };
+
     const endpoint = params.workspaceId
       ? `workspaces/${params.workspaceId}/projects`
       : "/projects";
+
     const { data } = await client.post(endpoint, projectData, {
       params: {
         opt_fields: params.optFields,

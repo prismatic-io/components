@@ -4,6 +4,7 @@ import { hubspotPaths, STANDARD_OBJECT_TYPES } from "../constants";
 import { selectObjectTypeExamplePayload } from "../examplePayloads";
 import { selectObjectTypeInputs } from "../inputs";
 import type { CustomObjectSchema } from "../types";
+
 export const selectObjectType = dataSource({
   display: {
     label: "Select Object Type",
@@ -16,7 +17,9 @@ export const selectObjectType = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
+
     const { data } = await client.get(hubspotPaths.schemas());
+
     const customObjects = ((data.results || []) as CustomObjectSchema[])
       .filter((item) => item.objectTypeId)
       .map<Element>((item) => ({
@@ -24,12 +27,14 @@ export const selectObjectType = dataSource({
         key: (item.objectTypeId ?? "").toString(),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
     const standardObjects = STANDARD_OBJECT_TYPES.map<Element>(
       ({ label, key }) => ({
         label,
         key,
       }),
     );
+
     return { result: [...standardObjects, ...customObjects] };
   },
   examplePayload: selectObjectTypeExamplePayload,

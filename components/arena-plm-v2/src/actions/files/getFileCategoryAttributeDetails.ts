@@ -4,6 +4,7 @@ import { getFileCategoryAttributeDetailsExamplePayload } from "../../examplePayl
 import { getFileCategoryAttributeDetailsInputs } from "../../inputs";
 import { categoryAttributeDefinitionSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getFileCategoryAttributeDetails = action({
   display: {
     label: "Get File Category Attribute Details",
@@ -22,15 +23,19 @@ export const getFileCategoryAttributeDetails = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Fetching category attribute details from Arena", {
         objectType,
         categoryGuid,
         attributeDefinitionGuid,
       });
+
       const { data } = await client.get(
         `/settings/${objectType}/categories/${categoryGuid}/attributes/${attributeDefinitionGuid}`,
       );
+
       context.logger.info("Successfully retrieved category attribute details");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

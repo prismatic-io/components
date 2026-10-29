@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { getEventHistoryInputs } from "../inputs";
 import { listAllHistory } from "../utils";
 import { getEventHistoryExamplePayload } from "../examplePayloads";
+
 const getEventHistory = action({
   display: {
     label: "Get Event History",
@@ -12,6 +13,7 @@ const getEventHistory = action({
   inputs: getEventHistoryInputs,
   perform: async (context, params) => {
     const client = await createClient(params.connection);
+
     const data = await listAllHistory(
       client,
       {
@@ -26,4 +28,5 @@ const getEventHistory = action({
   },
   examplePayload: getEventHistoryExamplePayload,
 });
+
 export default getEventHistory;

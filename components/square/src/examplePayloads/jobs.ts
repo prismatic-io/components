@@ -20,6 +20,7 @@ export const listJobsExamplePayload = {
     ],
   },
 };
+
 export const createJobExamplePayload = {
   data: {
     job: {
@@ -32,6 +33,7 @@ export const createJobExamplePayload = {
     },
   },
 };
+
 export const retrieveJobExamplePayload = {
   data: {
     job: {
@@ -44,6 +46,7 @@ export const retrieveJobExamplePayload = {
     },
   },
 };
+
 export const updateJobExamplePayload = {
   data: {
     job: {

@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getShopifyHostname } from "../../client";
 import { rawRequestInputs as inputs } from "../../inputs";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request (Deprecated)",
@@ -28,9 +29,11 @@ export const rawRequest = action({
         ),
       },
     );
+
     if (returnHeaders) {
       return { data: { data, headers } };
     }
+
     return { data };
   },
 });

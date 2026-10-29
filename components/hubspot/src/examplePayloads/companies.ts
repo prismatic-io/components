@@ -1,4 +1,5 @@
 import { BASE_URL } from "../constants";
+
 export const listCompaniesExamplePayload = {
   data: {
     results: [
@@ -28,6 +29,7 @@ export const listCompaniesExamplePayload = {
     },
   },
 };
+
 export const getCompanyExamplePayload = {
   data: {
     id: "98765432101",
@@ -47,7 +49,9 @@ export const getCompanyExamplePayload = {
     archived: false,
   },
 };
+
 export const deleteCompanyExamplePayload = { data: "" };
+
 export const createCompanyExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:06:42.321Z",
@@ -90,6 +94,7 @@ export const createCompanyExamplePayload = {
     updatedAt: "2024-01-15T00:06:42.321Z",
   },
 };
+
 export const updateCompanyExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:06:42.336Z",

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean, pollResourceModel } from "../util";
 import { connection } from "./common";
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -11,6 +12,7 @@ const pollResourceType = input({
     "Select the PDQ resource to poll for newly added records. Choose Devices or Groups. Required.",
   clean: util.types.toString,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -21,4 +23,5 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = { connection, pollResourceType, lookBackDate };

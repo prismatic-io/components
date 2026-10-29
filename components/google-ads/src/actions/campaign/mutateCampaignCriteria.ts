@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { mutateCampaignCriteriaExamplePayload } from "../../examplePayloads";
 import { mutateCampaignCriteriaInputs } from "../../inputs";
 import { mutateCampaignCriteriaOutputSchema } from "../../outputSchemas";
+
 export const mutateCampaignCriteria = action({
   display: {
     label: "Mutate Campaign Criteria",
@@ -42,8 +43,7 @@ export const mutateCampaignCriteria = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => mutateCampaignCriteriaExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    mutateCampaignCriteriaExamplePayload,
   examplePayload: mutateCampaignCriteriaExamplePayload,
 });

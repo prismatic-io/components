@@ -4,6 +4,7 @@ import {
   nextPageSchema,
   userCompactSchema,
 } from "./shared";
+
 export const customFieldResponseSchema = {
   type: "object" as const,
   properties: {
@@ -147,6 +148,7 @@ export const customFieldResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listCustomFieldsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -156,6 +158,7 @@ export const listCustomFieldsOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const customFieldSettingResponseSchema = {
   type: "object" as const,
   properties: {

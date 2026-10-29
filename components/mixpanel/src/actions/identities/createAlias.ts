@@ -4,6 +4,7 @@ import { createAliasInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { createAliasExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
+
 export const createAlias = action({
   display: {
     label: "Create Alias",
@@ -49,8 +50,7 @@ export const createAlias = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createAliasExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createAliasExamplePayload,
   examplePayload: createAliasExamplePayload,
 });

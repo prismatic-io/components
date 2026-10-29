@@ -3,6 +3,7 @@ import { getClient, sendAsync } from "../../client";
 import { BING_API, SOAP_ACTION } from "../../constants";
 import { addOfflineConversionGoalExamplePayload } from "../../examplePayloads";
 import { addOfflineConversionsGoalInputs } from "../../inputs/conversions";
+
 export const addOfflineConversionsGoal = action({
   display: {
     label: "Add Offline Conversions Goal",
@@ -34,6 +35,7 @@ export const addOfflineConversionsGoal = action({
         CustomerAccountId: accountIdInput,
       },
     });
+
     const goalFields = Object.fromEntries(
       Object.entries({
         ConversionWindowInMinutes: conversionWindowInMinutes,
@@ -47,12 +49,14 @@ export const addOfflineConversionsGoal = action({
         IsExternallyAttributed: isExternallyAttributed,
       }).filter(([, v]) => v !== undefined && v !== ""),
     );
+
     const conversionGoal = {
       ConversionGoals: {
         "ConversionGoal xmlns:i='http://www.w3.org/2001/XMLSchema-instance' i:type='OfflineConversionGoal'":
           goalFields,
       },
     };
+
     const response = await sendAsync({
       debug,
       args: conversionGoal,
@@ -60,6 +64,7 @@ export const addOfflineConversionsGoal = action({
       soapAction: SOAP_ACTION.AddConversionGoals,
       targetNamespace: BING_API.CAMPAIGN_MANAGEMENT_API.TN,
     });
+
     return {
       data: response,
     };

@@ -4,6 +4,7 @@ import { getProductFollowersInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getProductFollowersExamplePayload } from "../../examplePayloads";
 import { getProductFollowersOutputSchema } from "../../outputSchemas";
+
 export const getProductFollowers = action({
   display: {
     label: "Get Product Followers",

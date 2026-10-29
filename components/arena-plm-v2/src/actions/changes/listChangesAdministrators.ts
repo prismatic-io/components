@@ -4,6 +4,7 @@ import { listChangesAdministratorsExamplePayload } from "../../examplePayloads";
 import { listChangesAdministratorsInputs } from "../../inputs";
 import { userCompactListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listChangesAdministrators = action({
   display: {
     label: "List Change Administrators",
@@ -20,11 +21,15 @@ export const listChangesAdministrators = action({
     try {
       const client = await createArenaClient(context, connection);
       const type = objectType || "changes";
+
       context.logger.info(`Fetching ${type} administrators from Arena`);
+
       const { data } = await client.get(`/settings/${type}/administrators`);
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} ${type} administrators`,
       );
+
       return { data };
     } catch (error) {
       context.logger.error("Error fetching administrators", {

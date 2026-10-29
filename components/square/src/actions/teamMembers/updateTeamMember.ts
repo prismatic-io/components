@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { updateTeamMemberExamplePayload } from "../../examplePayloads";
 import { updateTeamMemberInputs } from "../../inputs";
+
 export const updateTeamMember = action({
   display: {
     label: "Update Team Member",
@@ -13,10 +14,12 @@ export const updateTeamMember = action({
         "`given_name` and `family_name` are required for a team member.",
       );
     }
+
     const client = await createAuthorizedClient(
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       team_member: {
         reference_id: teamMember.reference_id,
@@ -33,11 +36,13 @@ export const updateTeamMember = action({
           : undefined,
       },
     };
+
     const response = await client.request({
       url: `/v2/team-members/${teamMemberId}`,
       method: "PUT",
       data: requestBody,
     });
+
     return {
       data: response.data,
     };

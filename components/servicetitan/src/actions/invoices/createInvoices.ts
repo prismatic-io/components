@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createInvoicesExamplePayload } from "../../examplePayloads";
 import { createInvoicesInputs } from "../../inputs";
 import { createInvoicesOutputSchema } from "../../outputSchemas";
+
 export const createInvoices = action({
   display: {
     label: "Create Invoices",

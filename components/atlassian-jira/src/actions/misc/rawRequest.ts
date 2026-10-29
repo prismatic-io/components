@@ -5,7 +5,9 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { getPayload } from "../../connections/auth";
 import { connectionInput } from "../../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -25,6 +27,7 @@ export const rawRequest = action({
     const config = await getPayload(connection);
     const { auth, host } = config;
     const baseUrl = `https://${host}`;
+
     const { data } = await sendRawRequest(
       baseUrl,
       {

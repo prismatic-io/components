@@ -4,6 +4,7 @@ import { deleteSupplierExamplePayload } from "../../examplePayloads";
 import { deleteSupplierInputs } from "../../inputs";
 import { deleteSupplierOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteSupplier = action({
   display: {
     label: "Delete Supplier",
@@ -19,11 +20,15 @@ export const deleteSupplier = action({
   perform: async (context, { connection, supplierGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting supplier", {
         supplierGuid,
       });
+
       await client.delete(`/suppliers/${supplierGuid}`);
+
       context.logger.info(`Successfully deleted supplier: ${supplierGuid}`);
+
       return {
         data: {
           success: true,

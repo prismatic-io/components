@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { sendMessageExamplePayload } from "../../examplePayloads";
 import { postMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const postMessage = action({
   display: {
     label: "Post Message",
@@ -31,14 +32,13 @@ export const postMessage = action({
       text: message,
       thread_ts: messageId || undefined,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { channelName, message, username, messageId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...sendMessageExamplePayload,
       channel: channelName,

@@ -16,10 +16,12 @@ import { getPersonalContact } from "./getPersonalContact";
 import { getPersonalContactMeta } from "./getPersonalContactMeta";
 import { listPersonalContacts } from "./listPersonalContacts";
 import { updatePersonalContact } from "./updatePersonalContact";
+
 const BASE = "https://api.adp.com";
 const TOKEN = "test-token";
 const AOID = "G3R47DSRZK5TRCFJ";
 const CONTACT_ID = "169750562647_284";
+
 const connection = createConnection(adpOauth2, {
   endpoint: API_ENDPOINT,
   tokenEndpoint: TOKEN_ENDPOINT,
@@ -28,6 +30,7 @@ const connection = createConnection(adpOauth2, {
   sslCert: "-----BEGIN CERTIFICATE-----\nCERT\n-----END CERTIFICATE-----",
   sslKey: "-----BEGIN PRIVATE KEY-----\nKEY\n-----END PRIVATE KEY-----",
 });
+
 const context = () => ({
   executionState: {
     [`ADP - ${connection.configVarKey}`]: {
@@ -36,12 +39,16 @@ const context = () => ({
     },
   },
 });
+
 const api = () =>
   nock(BASE, { reqheaders: { authorization: `Bearer ${TOKEN}` } });
+
 const personalContact = { personName: { givenName: "Test" } };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
+
 describe("addPersonalContact", () => {
   test("happy path posts the add event and returns the response", async () => {
     api()
@@ -63,6 +70,7 @@ describe("addPersonalContact", () => {
     );
     expect(result).toEqual(addPersonalContactExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .post("/events/hr/v1/worker.personal-contact.add")
@@ -76,6 +84,7 @@ describe("addPersonalContact", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("deletePersonalContact", () => {
   test("happy path posts the remove event and returns the response", async () => {
     api()
@@ -99,6 +108,7 @@ describe("deletePersonalContact", () => {
     );
     expect(result).toEqual(deletePersonalContactExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .post("/events/hr/v1/worker.personal-contact.remove")
@@ -112,6 +122,7 @@ describe("deletePersonalContact", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("getPersonalContact", () => {
   test("happy path returns the contact", async () => {
     api()
@@ -130,6 +141,7 @@ describe("getPersonalContact", () => {
     );
     expect(result).toEqual(getPersonalContactExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/hr/v2/associates/${AOID}/personal-contacts/${CONTACT_ID}`)
@@ -144,6 +156,7 @@ describe("getPersonalContact", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("getPersonalContactMeta", () => {
   test("happy path returns the metadata", async () => {
     api()
@@ -157,6 +170,7 @@ describe("getPersonalContactMeta", () => {
     );
     expect(result).toEqual(getPersonalContactMetaExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/hr/v2/associates/${AOID}/personal-contacts/meta`)
@@ -171,6 +185,7 @@ describe("getPersonalContactMeta", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("listPersonalContacts", () => {
   test("happy path returns the contacts", async () => {
     api()
@@ -184,6 +199,7 @@ describe("listPersonalContacts", () => {
     );
     expect(result).toEqual(listPersonalContactsExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/hr/v2/associates/${AOID}/personal-contacts`)
@@ -198,6 +214,7 @@ describe("listPersonalContacts", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("updatePersonalContact", () => {
   test("happy path posts the change event and returns the response", async () => {
     api()
@@ -227,6 +244,7 @@ describe("updatePersonalContact", () => {
     );
     expect(result).toEqual(updatePersonalContactExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .post("/events/hr/v1/worker.personal-contact.change")

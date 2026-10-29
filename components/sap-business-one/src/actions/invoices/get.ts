@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, $select } from "../../inputs/general";
 import { invoiceDocumentEntry } from "../../inputs/invoices/general";
+
 export const getInvoice = action({
   display: {
     label: "Get Invoice",
@@ -19,6 +20,7 @@ export const getInvoice = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/Invoices(${invoiceDocumentEntry})`, {
       params: {
         $select,

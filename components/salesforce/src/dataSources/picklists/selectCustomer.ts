@@ -3,6 +3,7 @@ import { createSalesforceClient } from "../../client";
 import { selectCustomerInputs } from "../../inputs";
 import { filterAndSort, getRecordsForDatasource } from "../../util";
 import type { ElementWithLabel } from "../../types";
+
 export const selectCustomer = dataSource({
   display: {
     label: "Select Customer",

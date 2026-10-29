@@ -4,6 +4,7 @@ import { updateInventoryItemsExamplePayload as examplePayload } from "../../../e
 import { updateInventoryItemsInputs as inputs } from "../../../inputsGql";
 import { updateInventoryItemsGqlOutputSchema } from "../../../outputSchemas";
 import updateInventoryItemQuery from "../queries/inventoryItems/UpdateInventoryItems.gql";
+
 export const updateInventoryItemsGql = action({
   display: {
     label: "Update Inventory Item",
@@ -20,6 +21,7 @@ export const updateInventoryItemsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = await client.request(updateInventoryItemQuery, {
       id: itemId,
       input: {
@@ -28,6 +30,7 @@ export const updateInventoryItemsGql = action({
         sku,
       },
     });
+
     return {
       data,
     };

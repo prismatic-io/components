@@ -8,8 +8,10 @@ import {
   str,
   userSchema,
 } from "./shared";
+
 export { userSchema };
 export const userListSchema = list(userSchema);
+
 export const currentUserSchema = obj({
   ...userSchema.properties,
   email: str,
@@ -45,5 +47,7 @@ export const currentUserSchema = obj({
   commit_email: nullableStr,
   preferred_language: nullableStr,
 });
+
 export const getCurrentUserOutputSchema = currentUserSchema;
+
 export const listUsersOutputSchema = userListSchema;

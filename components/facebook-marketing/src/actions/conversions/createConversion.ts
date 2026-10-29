@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createConversionResponse } from "../../examplePayloads";
 import { createConversionInputs } from "../../inputs";
 import { validateConversionsConnection } from "../../util";
+
 export const createConversion = action({
   display: {
     label: "Create Conversion",
@@ -26,6 +27,7 @@ export const createConversion = action({
   ) => {
     validateConversionsConnection(connection);
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await client.post(`/${pixelId}/events`, {
       data: [
         {
@@ -39,6 +41,7 @@ export const createConversion = action({
         },
       ],
     });
+
     return {
       data,
     };

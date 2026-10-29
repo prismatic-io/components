@@ -8,6 +8,7 @@ import {
   objectKey,
   tagging,
 } from "./common";
+
 const uploadIdInput = input({
   label: "Upload Stream ID",
   type: "string",
@@ -17,9 +18,11 @@ const uploadIdInput = input({
     "The ID of the upload stream to write to. Generate this with the 'Create Stream' action.",
   clean: util.types.toString,
 });
+
 export const closeUploadStreamInputs = {
   uploadId: uploadIdInput,
 };
+
 export const createUploadStreamInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -29,6 +32,7 @@ export const createUploadStreamInputs = {
   acl,
   awsRegion,
 };
+
 export const writeUploadStreamInputs = {
   uploadId: uploadIdInput,
   fileContents,

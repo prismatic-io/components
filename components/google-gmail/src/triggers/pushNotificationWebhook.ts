@@ -1,6 +1,8 @@
 import { type TriggerPayload, trigger } from "@prismatic-io/spectral";
+
 import type { GmailNotificationBody } from "../interfaces";
 import { pushNotificationWebhookExamplePayload } from "../examplePayloads";
+
 export const pushNotificationWebhook = trigger({
   display: {
     label: "Manual Push Notifications",

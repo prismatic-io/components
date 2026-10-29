@@ -55,21 +55,26 @@ const orderData = {
     },
   ],
 };
+
 export const getOrderExamplePayload = {
   data: orderData,
 };
+
 export const listOrdersExamplePayload = {
   data: [orderData],
 };
+
 export const createOrderExamplePayload = {
   data: orderData,
 };
+
 export const pollOrdersExamplePayload = {
   data: {
     created: [orderData],
     updated: [],
   },
 };
+
 export const cancelOrderExamplePayload = {
   data: {
     order_id: 11587429,

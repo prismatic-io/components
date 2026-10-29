@@ -5,6 +5,7 @@ import { createBomSubstituteInputs } from "../../inputs";
 import { bomSubstituteSchema } from "../../outputSchemas";
 import type { BomSubstituteCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createBomSubstitute = action({
   display: {
     label: "Create BOM Substitute",
@@ -23,12 +24,14 @@ export const createBomSubstitute = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const substitutePayload: BomSubstituteCreateVo = {
         item: { guid: bomItemGuid },
         quantity,
         notes,
         rank,
       };
+
       context.logger.info(
         `Creating substitute for BOM line ${bomLineGuid} in item ${itemGuid}`,
         {
@@ -40,13 +43,16 @@ export const createBomSubstitute = action({
           rank,
         },
       );
+
       const { data } = await client.post(
         `/items/${itemGuid}/bom/${bomLineGuid}/substitutes`,
         substitutePayload,
       );
+
       context.logger.info("Successfully created BOM substitute", {
         substituteGuid: data?.guid,
       });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create BOM Substitute");

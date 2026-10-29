@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { updateObjectCategoryExamplePayload } from "../../../examplePayloads";
 import { updateObjectCategoryInputs } from "../../../inputs";
+
 export const updateObjectCategory = action({
   display: {
     label: "Update Object Category (V2)",

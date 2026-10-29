@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listOnboardingCandidateInfoExamplePayload } from "../../examplePayloads";
 import { listOnboardingCandidateInfoInputs } from "../../inputs";
 import { paginateData } from "../../util";
+
 export const listOnboardingCandidateInfo = action({
   display: {
     label: "List Onboarding Candidate Info",

@@ -14,6 +14,7 @@ export const createContactOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const deleteContactOutputSchema = {
   type: "object" as const,
   properties: {
@@ -25,6 +26,7 @@ export const deleteContactOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const getContactOutputSchema = {
   type: ["object", "null"],
   properties: {
@@ -35,6 +37,7 @@ export const getContactOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const getContactSchemaOutputSchema = {
   type: "object" as const,
   properties: {
@@ -93,6 +96,7 @@ export const getContactSchemaOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const searchContactsByEmailOutputSchema = {
   type: "object" as const,
   properties: {

@@ -14,12 +14,14 @@ import type {
   HostRiskData,
 } from "../types";
 import { ensureArray, parseXml } from "./xml";
+
 const deriveTruRiskBand = (score: number): DerivedRiskData["truRiskBand"] => {
   if (score >= TRURISK_SEVERE_THRESHOLD) return "Severe";
   if (score >= TRURISK_HIGH_THRESHOLD) return "High";
   if (score >= TRURISK_MEDIUM_THRESHOLD) return "Medium";
   return "Low";
 };
+
 export const fetchClassicHostRiskData = async ({
   client,
   pageSize,
@@ -31,6 +33,7 @@ export const fetchClassicHostRiskData = async ({
   const allHosts: HostRiskData[] = [];
   let idMin: string | undefined;
   let hasMore = true;
+
   while (hasMore) {
     const params: Record<string, string> = {
       action: "list",
@@ -39,24 +42,33 @@ export const fetchClassicHostRiskData = async ({
       show_trurisk_factors: "1",
       host_metadata: "all",
     };
+
     if (idMin) params.id_min = idMin;
+
     const response = await client.get<string>("/api/5.0/fo/asset/host/", {
       params,
     });
+
     const parsed = await parseXml<ClassicHostResponse>(response.data);
+
     const hosts = ensureArray(
       parsed.HOST_LIST_OUTPUT?.RESPONSE?.HOST_LIST?.HOST,
     );
+
     allHosts.push(...hosts.map(deriveRiskData));
+
     const truncation = parsed.HOST_LIST_OUTPUT?.RESPONSE?.TRUNCATION?.$?.last;
+
     if (!fetchAll || !truncation) {
       hasMore = false;
     } else {
       idMin = truncation;
     }
   }
+
   return allHosts;
 };
+
 export const deriveRiskData = (host: ClassicHost): HostRiskData => {
   const truRiskScore = util.types.toInt(host.TRURISK_SCORE);
   const vulnCountElements = ensureArray(host.TRURISK_SCORE_FACTORS?.VULN_COUNT);
@@ -69,6 +81,7 @@ export const deriveRiskData = (host: ClassicHost): HostRiskData => {
   const s3 = countBySeverity("3");
   const s4 = countBySeverity("4");
   const s5 = countBySeverity("5");
+
   let daysSinceLastActivity: number | null = null;
   if (host.LAST_ACTIVITY) {
     const lastActivity = new Date(host.LAST_ACTIVITY);
@@ -78,11 +91,13 @@ export const deriveRiskData = (host: ClassicHost): HostRiskData => {
       );
     }
   }
+
   const derived: DerivedRiskData = {
     truRiskBand: deriveTruRiskBand(truRiskScore),
     totalVulnerabilityCount: s1 + s2 + s3 + s4 + s5,
     daysSinceLastActivity,
   };
+
   return {
     id: host.ID || "",
     ip: host.IP || "",

@@ -13,6 +13,7 @@ import {
   offsetPagination,
   postId,
 } from "./common";
+
 const authorIdRequired = input({
   label: "Author ID",
   type: "string",
@@ -23,6 +24,7 @@ const authorIdRequired = input({
   placeholder: "Enter author ID",
   example: "553c3ef8b8cdcd1501ba9999",
 });
+
 const title = input({
   label: "Title",
   type: "string",
@@ -33,6 +35,7 @@ const title = input({
   placeholder: "Enter post title",
   example: "Add dark mode support",
 });
+
 const titleOptional = input({
   label: "Title",
   type: "string",
@@ -43,6 +46,7 @@ const titleOptional = input({
   placeholder: "Enter post title",
   example: "Add dark mode support",
 });
+
 const details = input({
   label: "Details",
   type: "text",
@@ -52,6 +56,7 @@ const details = input({
   placeholder: "Enter post details",
   example: "It would be great to have a dark mode option for the dashboard.",
 });
+
 const detailsOptional = input({
   label: "Details",
   type: "text",
@@ -61,6 +66,7 @@ const detailsOptional = input({
   placeholder: "Enter post details",
   example: "Updated description for the feature request.",
 });
+
 const search = input({
   label: "Search",
   type: "string",
@@ -70,6 +76,7 @@ const search = input({
   placeholder: "Enter search term",
   example: "dark mode",
 });
+
 const sort = input({
   label: "Sort",
   type: "string",
@@ -87,6 +94,7 @@ const sort = input({
   placeholder: "Enter sort order",
   example: "newest",
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -96,6 +104,7 @@ const status = input({
   placeholder: "Enter status filter",
   example: "open,planned",
 });
+
 const statusRequired = input({
   label: "Status",
   type: "string",
@@ -106,6 +115,7 @@ const statusRequired = input({
   placeholder: "Enter status",
   example: "planned",
 });
+
 const changerId = input({
   label: "Changer ID",
   type: "string",
@@ -116,6 +126,7 @@ const changerId = input({
   placeholder: "Enter admin user ID",
   example: "553c3ef8b8cdcd1501ba9999",
 });
+
 const shouldNotifyVoters = input({
   label: "Notify Voters",
   type: "boolean",
@@ -123,6 +134,7 @@ const shouldNotifyVoters = input({
   comments: "When true, notifies voters of the status change.",
   clean: util.types.toBool,
 });
+
 const postCommentValue = input({
   label: "Comment",
   type: "text",
@@ -132,6 +144,7 @@ const postCommentValue = input({
   placeholder: "Enter comment",
   example: "We've moved this to our roadmap.",
 });
+
 const categoryId = input({
   label: "Category ID",
   type: "string",
@@ -142,6 +155,7 @@ const categoryId = input({
   placeholder: "Enter category ID",
   example: "553c3ef8b8cdcd1501baabcd",
 });
+
 const eta = input({
   label: "ETA",
   type: "string",
@@ -151,6 +165,7 @@ const eta = input({
   placeholder: "Enter ETA",
   example: "06/2025",
 });
+
 const etaPublic = input({
   label: "ETA Public",
   type: "boolean",
@@ -158,6 +173,7 @@ const etaPublic = input({
   comments: "When true, the ETA is visible to all users.",
   clean: util.types.toBool,
 });
+
 const tagIDs = input({
   label: "Tag IDs",
   type: "code",
@@ -168,12 +184,14 @@ const tagIDs = input({
   placeholder: "Enter tag IDs",
   example: JSON.stringify(["553c3ef8b8cdcd1501ba4444"], null, 2),
 });
+
 const listControls = structuredObjectInput({
   label: "List Controls",
   required: false,
   comments: "Search, sort, and status filter controls.",
   inputs: { search, sort, status },
 });
+
 const createPostAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -181,6 +199,7 @@ const createPostAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Custom Fields, ETA, ETA Public, Image URLs, and Additional Fields.",
   inputs: { customFields, eta, etaPublic, imageURLs, additionalFields },
 });
+
 const updatePostAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -188,6 +207,7 @@ const updatePostAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Custom Fields, ETA, Image URLs, and Additional Fields.",
   inputs: { customFields, eta, imageURLs, additionalFields },
 });
+
 export const listPostsInputs = {
   connection,
   boardId,
@@ -198,7 +218,9 @@ export const listPostsInputs = {
   pagination: offsetPagination,
   listControls,
 };
+
 export const retrievePostInputs = { connection, postId };
+
 export const createPostInputs = {
   connection,
   boardIdRequired,
@@ -208,6 +230,7 @@ export const createPostInputs = {
   categoryId,
   additionalFields: createPostAdditionalFields,
 };
+
 export const updatePostInputs = {
   connection,
   postId,
@@ -215,7 +238,9 @@ export const updatePostInputs = {
   detailsOptional,
   additionalFields: updatePostAdditionalFields,
 };
+
 export const deletePostInputs = { connection, postId };
+
 export const changePostStatusInputs = {
   connection,
   postId,
@@ -225,6 +250,7 @@ export const changePostStatusInputs = {
   postCommentValue,
   additionalFields,
 };
+
 export const selectPostInputs = {
   connection,
   boardId: { ...boardId, dataSource: undefined },

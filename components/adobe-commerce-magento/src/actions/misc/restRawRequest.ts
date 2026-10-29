@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getConfig, resolveRequestUrl, toRawRequestParams } from "../../client";
 import { restRawRequestInputs } from "../../inputs";
+
 export const restRawRequest = action({
   display: {
     label: "Raw Request (REST)",

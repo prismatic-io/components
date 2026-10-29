@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { connectionInput, fileName, fileSystem } from "../../inputs";
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
+
 export const downloadReport = action({
   display: {
     description:
@@ -21,6 +22,7 @@ export const downloadReport = action({
       fileSystem,
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

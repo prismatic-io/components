@@ -5,6 +5,7 @@ import { getFileByGuidInputs } from "../../inputs";
 import { fileDetailSchema } from "../../outputSchemas";
 import type { FileDetailVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const getFileByGuid = action({
   display: {
     label: "Get File by GUID",
@@ -19,11 +20,15 @@ export const getFileByGuid = action({
   perform: async (context, { connection, fileGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Retrieving file from Arena", {
         fileGuid,
       });
+
       const response = await client.get(`/files/${fileGuid}`);
+
       const fileDetail: FileDetailVo = response.data;
+
       context.logger.info("File retrieved successfully", {
         fileGuid,
         fileName: fileDetail.name,
@@ -37,6 +42,7 @@ export const getFileByGuid = action({
         checkedOut: fileDetail.checkedOut,
         locked: fileDetail.locked,
       });
+
       return { data: fileDetail };
     } catch (error) {
       handleArenaError(error, context.logger, `Get File by GUID (${fileGuid})`);

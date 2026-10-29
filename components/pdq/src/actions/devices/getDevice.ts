@@ -4,6 +4,7 @@ import { DEVICES_ENDPOINT } from "../../constants";
 import { getDeviceExamplePayload } from "../../examplePayloads/devices";
 import { getDeviceInputs } from "../../inputs";
 import { getDeviceOutputSchema } from "../../outputSchemas";
+
 export const getDevice = action({
   display: {
     label: "Get Device",
@@ -17,6 +18,7 @@ export const getDevice = action({
   performSafety: "safe",
   perform: async (context, { connection, deviceId }) => {
     const client = createHttpClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`${DEVICES_ENDPOINT}/${deviceId}`);
     return {
       data,

@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listTeamsV2ExamplePayload } from "../../../examplePayloads";
 import { listTeamsInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listTeams = action({
   display: {
     label: "List Teams (V2)",

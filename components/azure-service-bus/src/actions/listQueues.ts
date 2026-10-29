@@ -12,6 +12,7 @@ import {
   resourceGroupName,
   subscriptionId,
 } from "../inputs";
+
 export const listQueues = action({
   display: {
     label: "List Queues",
@@ -32,6 +33,7 @@ export const listQueues = action({
   ) => {
     const client = getAzureServiceBusClient(connection, context.debug.enabled);
     const endpoint = `/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/${namespaceName}/queues?api-version=2021-11-01`;
+
     try {
       return await paginateResults({
         client,
@@ -58,4 +60,5 @@ export const listQueues = action({
     $top,
   },
 });
+
 export default { listQueues };

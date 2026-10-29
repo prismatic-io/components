@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteFileInputs } from "../../inputs";
 import { deleteFileExamplePayload } from "../../examplePayloads";
 import { deleteFileOutputSchema } from "../../outputSchemas";
+
 export const deleteFile = action({
   display: {
     label: "Delete File",

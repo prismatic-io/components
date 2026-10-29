@@ -9,6 +9,7 @@ const pipelineRecord = {
   update_time: "2024-01-01 00:00:00",
   selected: true,
 };
+
 export const getPipelinesExamplePayload = {
   data: {
     success: true,
@@ -31,12 +32,14 @@ export const getPipelinesExamplePayload = {
     },
   },
 };
+
 export const addPipelineExamplePayload = {
   data: {
     success: true,
     data: pipelineRecord,
   },
 };
+
 export const deletePipelineExamplePayload = {
   data: {
     success: true,
@@ -45,18 +48,21 @@ export const deletePipelineExamplePayload = {
     },
   },
 };
+
 export const getPipelineExamplePayload = {
   data: {
     success: true,
     data: pipelineRecord,
   },
 };
+
 export const updatePipelineExamplePayload = {
   data: {
     success: true,
     data: pipelineRecord,
   },
 };
+
 export const getPipelineConversionStatisticsExamplePayload = {
   data: {
     success: true,
@@ -78,6 +84,7 @@ export const getPipelineConversionStatisticsExamplePayload = {
     },
   },
 };
+
 export const getPipelineDealsExamplePayload = {
   data: {
     success: true,
@@ -112,6 +119,7 @@ export const getPipelineDealsExamplePayload = {
     },
   },
 };
+
 export const getPipelineMovementStatisticsExamplePayload = {
   data: {
     success: true,

@@ -5,6 +5,7 @@ import { listOutboundEventIntegrationsInputs } from "../../inputs";
 import { listOutboundEventIntegrationsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listOutboundEventIntegrations = action({
   display: {
     label: "List Outbound Event Integrations",
@@ -22,22 +23,27 @@ export const listOutboundEventIntegrations = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const params = {
         name,
         enable,
         offset: pagination?.offset,
         limit: pagination?.limit,
       };
+
       const endpoint = "/outboundevents";
+
       const integrations = await fetchArenaList(
         client,
         endpoint,
         params,
         fetchAll,
       );
+
       context.logger.info("Retrieved outbound event integrations", {
         count: integrations.count || 0,
       });
+
       return { data: integrations };
     } catch (error) {
       handleArenaError(

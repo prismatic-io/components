@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createStripeClient } from "../client";
 import { selectBalanceTransactionInputs } from "../inputs";
+
 export const selectBalanceTransaction = dataSource({
   display: {
     label: "Select Balance Transaction",
@@ -9,11 +10,14 @@ export const selectBalanceTransaction = dataSource({
   },
   dataSourceType: "picklist",
   inputs: selectBalanceTransactionInputs,
+
   perform: async (_context, { stripeConnection }) => {
     const client = createStripeClient({
       stripeConnection,
     });
+
     const { data } = await client.balanceTransactions.list({ limit: 100 });
+
     return {
       result: data
         .map<Element>((txn) => ({

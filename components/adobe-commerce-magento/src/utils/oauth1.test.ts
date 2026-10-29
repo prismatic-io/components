@@ -5,17 +5,20 @@ import {
   normalizeRequestUrl,
   percentEncode,
 } from "./oauth1";
+
 const credentials = {
   consumerKey: "consumer-key",
   consumerSecret: "consumer-secret",
   accessToken: "access-token",
   accessTokenSecret: "access-token-secret",
 };
+
 describe("percentEncode", () => {
   test("leaves the RFC 3986 unreserved characters untouched", () => {
     const unreserved = "abcXYZ0129-._~";
     expect(percentEncode(unreserved)).toBe(unreserved);
   });
+
   test.each([
     ["!", "%21"],
     ["*", "%2A"],
@@ -25,9 +28,11 @@ describe("percentEncode", () => {
   ])("encodes %s, which encodeURIComponent does not", (input, expected) => {
     expect(percentEncode(input)).toBe(expected);
   });
+
   test("encodes a space as %20 rather than a plus sign", () => {
     expect(percentEncode("r b")).toBe("r%20b");
   });
+
   test.each([
     ["a reserved delimiter", "a=b&c", "a%3Db%26c"],
     [
@@ -41,6 +46,7 @@ describe("percentEncode", () => {
     expect(percentEncode(input)).toBe(expected);
   });
 });
+
 describe("normalizeRequestUrl", () => {
   test.each([
     [
@@ -58,22 +64,26 @@ describe("normalizeRequestUrl", () => {
       "https://store.example.com/rest/V1/orders",
     );
   });
+
   test("drops the default http port", () => {
     expect(
       normalizeRequestUrl("http://store.example.com:80/rest/V1/orders"),
     ).toBe("http://store.example.com/rest/V1/orders");
   });
+
   test("preserves a non-default port", () => {
     expect(
       normalizeRequestUrl("https://store.example.com:8443/rest/V1/orders"),
     ).toBe("https://store.example.com:8443/rest/V1/orders");
   });
+
   test("preserves the case of the path", () => {
     expect(
       normalizeRequestUrl("https://store.example.com/rest/V1/Orders"),
     ).toBe("https://store.example.com/rest/V1/Orders");
   });
 });
+
 describe("buildSignatureBaseString", () => {
   test("reproduces the RFC 5849 worked example", () => {
     const baseString = buildSignatureBaseString(
@@ -93,10 +103,12 @@ describe("buildSignatureBaseString", () => {
         ["a3", "2 q"],
       ],
     );
+
     expect(baseString).toBe(
       "POST&http%3A%2F%2Fexample.com%2Frequest&a2%3Dr%2520b%26a3%3D2%2520q%26a3%3Da%26b5%3D%253D%25253D%26c%2540%3D%26c2%3D%26oauth_consumer_key%3D9djdj82h48djs9d2%26oauth_nonce%3D7d8f3e4a%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D137131201%26oauth_token%3Dkkk9d7dh3k39sjv7",
     );
   });
+
   test("uppercases the HTTP method", () => {
     expect(
       buildSignatureBaseString(
@@ -106,6 +118,7 @@ describe("buildSignatureBaseString", () => {
       ),
     ).toBe("GET&https%3A%2F%2Fstore.example.com%2Frest%2FV1%2Forders&");
   });
+
   test("sorts parameters by name", () => {
     const baseString = buildSignatureBaseString(
       "GET",
@@ -116,8 +129,10 @@ describe("buildSignatureBaseString", () => {
         ["m", "3"],
       ],
     );
+
     expect(baseString.split("&")[2]).toBe(percentEncode("a=2&m=3&z=1"));
   });
+
   test("breaks a tie on the name by comparing the encoded value", () => {
     const baseString = buildSignatureBaseString(
       "GET",
@@ -128,8 +143,10 @@ describe("buildSignatureBaseString", () => {
         ["a", "1"],
       ],
     );
+
     expect(baseString.split("&")[2]).toBe(percentEncode("a=1&a=A&a=b"));
   });
+
   test("orders names by byte value rather than by locale collation", () => {
     const baseString = buildSignatureBaseString(
       "GET",
@@ -139,10 +156,12 @@ describe("buildSignatureBaseString", () => {
         ["searchCriteria[pageSize]", "1"],
       ],
     );
+
     expect(baseString.split("&")[2]).toBe(
       percentEncode("searchCriteria%5BpageSize%5D=1&searchCriteria_x=2"),
     );
   });
+
   test("orders an uppercase name before its lowercase form", () => {
     const baseString = buildSignatureBaseString(
       "GET",
@@ -152,19 +171,23 @@ describe("buildSignatureBaseString", () => {
         ["A", "2"],
       ],
     );
+
     expect(baseString.split("&")[2]).toBe(percentEncode("A=2&a=1"));
   });
+
   test("excludes the query string of the request URL from the normalized URL", () => {
     const baseString = buildSignatureBaseString(
       "GET",
       "https://store.example.com/rest/V1/orders?searchCriteria[pageSize]=10",
       [["searchCriteria[pageSize]", "10"]],
     );
+
     expect(baseString.split("&")[1]).toBe(
       percentEncode("https://store.example.com/rest/V1/orders"),
     );
   });
 });
+
 describe("buildAuthorizationHeader", () => {
   const request = {
     method: "GET",
@@ -174,9 +197,11 @@ describe("buildAuthorizationHeader", () => {
     nonce: "fixed-nonce",
     timestamp: "1700000000",
   };
+
   test("starts with the OAuth scheme", () => {
     expect(buildAuthorizationHeader(request)).toMatch(/^OAuth /);
   });
+
   test.each([
     ["oauth_consumer_key", credentials.consumerKey],
     ["oauth_token", credentials.accessToken],
@@ -189,16 +214,19 @@ describe("buildAuthorizationHeader", () => {
       `${name}="${percentEncode(value)}"`,
     );
   });
+
   test("carries a signature", () => {
     expect(buildAuthorizationHeader(request)).toMatch(
       /oauth_signature="[^"]+"/,
     );
   });
+
   test("signs with HMAC-SHA256 keyed by the two secrets joined with an ampersand", () => {
     const header = buildAuthorizationHeader(request);
     const signature = decodeURIComponent(
       /oauth_signature="([^"]+)"/.exec(header)?.[1] as string,
     );
+
     const baseString = buildSignatureBaseString(request.method, request.url, [
       ["oauth_consumer_key", credentials.consumerKey],
       ["oauth_nonce", request.nonce],
@@ -207,32 +235,42 @@ describe("buildAuthorizationHeader", () => {
       ["oauth_token", credentials.accessToken],
       ["oauth_version", "1.0"],
     ]);
-    const key = `${percentEncode(credentials.consumerSecret)}&${percentEncode(credentials.accessTokenSecret)}`;
+    const key = `${percentEncode(credentials.consumerSecret)}&${percentEncode(
+      credentials.accessTokenSecret,
+    )}`;
     const expected = crypto
       .createHmac("sha256", key)
       .update(baseString)
       .digest("base64");
+
     expect(signature).toBe(expected);
   });
+
   test("never includes the consumer secret or the token secret", () => {
     const header = buildAuthorizationHeader(request);
+
     expect(header).not.toContain(credentials.consumerSecret);
     expect(header).not.toContain(credentials.accessTokenSecret);
   });
+
   test("includes the request parameters in the signed material", () => {
     const withParams = buildAuthorizationHeader({
       ...request,
       params: [["searchCriteria[pageSize]", "10"]],
     });
+
     expect(withParams).not.toBe(buildAuthorizationHeader(request));
   });
+
   test("percent-encodes the header values", () => {
     const header = buildAuthorizationHeader({
       ...request,
       credentials: { ...credentials, consumerKey: "key with spaces" },
     });
+
     expect(header).toContain('oauth_consumer_key="key%20with%20spaces"');
   });
+
   test("generates a distinct nonce and timestamp when none are supplied", () => {
     const first = buildAuthorizationHeader({
       ...request,
@@ -244,6 +282,7 @@ describe("buildAuthorizationHeader", () => {
       nonce: undefined,
       timestamp: undefined,
     });
+
     expect(first).not.toBe(second);
   });
 });

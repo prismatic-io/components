@@ -15,6 +15,7 @@ import {
   taxRateId,
   updated_or_created_since,
 } from "../inputs";
+
 export const listLedgerAccounts = action({
   display: {
     label: "List Ledger Accounts",
@@ -22,6 +23,7 @@ export const listLedgerAccounts = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get("/ledger_accounts", {
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
@@ -30,12 +32,14 @@ export const listLedgerAccounts = action({
           util.types.toString(params.updated_or_created_since) || undefined,
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, itemsPerPage, page, updated_or_created_since },
 });
+
 export const listLedgerAccountTypes = action({
   display: {
     label: "List Ledger Account Types",
@@ -43,18 +47,21 @@ export const listLedgerAccountTypes = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get("/ledger_account_types", {
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
         page: util.types.toInt(params.page) || undefined,
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, itemsPerPage, page },
 });
+
 export const getLedgerAccount = action({
   display: {
     label: "Get Ledger Account",
@@ -62,15 +69,18 @@ export const getLedgerAccount = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get(
       `/ledger_accounts/${params.ledgerAccountId}`,
     );
+
     return {
       data,
     };
   },
   inputs: { connection, ledgerAccountId },
 });
+
 export const createLedgerAccount = action({
   display: {
     label: "Create Ledger Account",
@@ -78,6 +88,7 @@ export const createLedgerAccount = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.post("/ledger_accounts", {
       ledger_account: {
         ledger_account_type_id: util.types.toString(params.ledgerAccountTypeId),
@@ -88,6 +99,7 @@ export const createLedgerAccount = action({
         tax_rate_id: util.types.toString(params.taxRateId) || undefined,
       },
     });
+
     return {
       data,
     };
@@ -102,6 +114,7 @@ export const createLedgerAccount = action({
     taxRateId: { ...taxRateId, required: false },
   },
 });
+
 export const updateLedgerAccount = action({
   display: {
     label: "Update Ledger Account",
@@ -110,6 +123,7 @@ export const updateLedgerAccount = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.put(`/ledger_accounts/${params.accountId}`, {
       ledger_account: {
         ledger_account_type_id:
@@ -123,6 +137,7 @@ export const updateLedgerAccount = action({
         gifi_code: util.types.toNumber(params.gifiCode) || undefined,
       },
     });
+
     return {
       data,
     };

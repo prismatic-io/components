@@ -4,6 +4,7 @@ import { deleteBomSubstituteExamplePayload } from "../../examplePayloads";
 import { deleteBomSubstituteInputs } from "../../inputs";
 import { deleteBomSubstituteOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteBomSubstitute = action({
   display: {
     label: "Delete BOM Substitute",
@@ -21,6 +22,7 @@ export const deleteBomSubstitute = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Deleting substitute ${substituteGuid} from BOM line ${bomLineGuid} in item ${itemGuid}`,
         {
@@ -29,10 +31,13 @@ export const deleteBomSubstitute = action({
           substituteGuid,
         },
       );
+
       await client.delete(
         `/items/${itemGuid}/bom/${bomLineGuid}/substitutes/${substituteGuid}`,
       );
+
       context.logger.info("Successfully deleted BOM substitute");
+
       return {
         data: { success: true, message: "BOM substitute deleted successfully" },
       };

@@ -12,15 +12,13 @@ import type {
   MagentoRecordChange,
 } from "../types";
 import { toMagentoDateTime } from "./dates";
+
 export const fetchMagentoRecordsSince = async (
   connection: Connection,
   resourceType: string,
   lastPolledAt: string,
   debug: boolean,
-): Promise<{
-  records: MagentoRecord[];
-  truncated: boolean;
-}> => {
+): Promise<{ records: MagentoRecord[]; truncated: boolean }> => {
   const config = POLL_RESOURCE_CONFIG[resourceType as PollResourceType];
   if (!config) {
     throw new Error(`Unsupported resource type: ${resourceType}`);
@@ -28,6 +26,7 @@ export const fetchMagentoRecordsSince = async (
   const client = await getClient(connection, debug);
   const magentoDateTime = toMagentoDateTime(lastPolledAt);
   const records: MagentoRecord[] = [];
+
   for (let page = 1; page <= MAX_POLL_PAGES; page++) {
     const params = {
       "searchCriteria[filterGroups][0][filters][0][field]": "updated_at",
@@ -47,6 +46,7 @@ export const fetchMagentoRecordsSince = async (
   }
   return { records, truncated: true };
 };
+
 export const resolvePollingRecordChanges = (
   data: MagentoChangesObject | undefined,
 ): MagentoRecordChange[] => {

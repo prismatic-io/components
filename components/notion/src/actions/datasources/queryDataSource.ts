@@ -5,6 +5,7 @@ import { createClient } from "../../client";
 import { HttpMethod, MAX_PAGE_SIZE } from "../../constants";
 import { getPaginatedData } from "../../utils";
 import { queryDataSourceExamplePayload } from "../../examplePayloads";
+
 export const queryDataSource = action({
   display: {
     label: "Query Data Source",
@@ -31,6 +32,7 @@ export const queryDataSource = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const requestBody = {
       filter,
       sorts,
@@ -38,9 +40,11 @@ export const queryDataSource = action({
       page_size: pagination.pageSize ? pagination.pageSize : MAX_PAGE_SIZE,
       result_type: resultType,
     };
+
     const params = {
       filter_properties: filterProperties,
     };
+
     const { data } = await getPaginatedData(
       client,
       HttpMethod.POST,
@@ -51,8 +55,7 @@ export const queryDataSource = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => queryDataSourceExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    queryDataSourceExamplePayload,
   examplePayload: queryDataSourceExamplePayload,
 });

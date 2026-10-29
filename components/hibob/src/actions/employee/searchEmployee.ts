@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { searchEmployeeExamplePayload } from "../../examplePayloads";
 import { searchEmployeeInputs } from "../../inputs";
+
 export const searchEmployee = action({
   display: {
     label: "Search Employee",
@@ -12,6 +13,7 @@ export const searchEmployee = action({
     { connection, fields, filters, showInactive, humanReadable },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/people/search`, {
       showInactive,
       fields,

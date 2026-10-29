@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getServiceAccountInputs } from "../../inputs";
+
 export const getServiceAccount = action({
   display: {
     description:

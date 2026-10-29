@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUserExamplePayload } from "../../examplePayloads/users";
 import { getUserInputs } from "../../inputs/users";
 import type { User } from "../../interfaces/user";
+
 export const getUser = action({
   display: {
     label: "Get User",
@@ -12,6 +13,7 @@ export const getUser = action({
   perform: async (context, { connection, id }) => {
     const client = await createClient(connection, context.debug.enabled);
     const { data } = await client.get<User>(`/users/${encodeURIComponent(id)}`);
+
     return { data };
   },
   examplePayload: getUserExamplePayload,

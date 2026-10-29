@@ -3,6 +3,7 @@ import { listAssetsExamplePayload } from "../../examplePayloads";
 import { listAssetsInputs } from "../../inputs";
 import { listAssetsOutputSchema } from "../../outputSchemas";
 import { fetchGatewayAssets } from "../../util";
+
 export const listAssets = action({
   display: {
     label: "List Assets",
@@ -34,6 +35,7 @@ export const listAssets = action({
     if (excludeFields.length > 0)
       extraParams.excludeFields = excludeFields.join(",");
     if (lastModified) extraParams.assetLastUpdated = lastModified;
+
     const { assets, lastResponse } = await fetchGatewayAssets({
       connection,
       debug: context.debug.enabled,
@@ -41,6 +43,7 @@ export const listAssets = action({
       fetchAll,
       extraParams,
     });
+
     return {
       data: {
         ...lastResponse,

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { mapModel } from "../../util";
 import { BUSINESS_PARTNER_TYPES } from "../../constants";
+
 export const cardCode = input({
   label: "Card Code",
   type: "string",
@@ -11,6 +12,7 @@ export const cardCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const cardName = input({
   label: "Card Name",
   type: "string",
@@ -20,6 +22,7 @@ export const cardName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const cardType = input({
   label: "Card Type",
   type: "string",

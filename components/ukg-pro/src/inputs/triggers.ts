@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { cleanString, lookBackDateClean } from "../util";
 import { connectionInput } from "./common";
 import { companyId } from "./employee";
+
 export const webhookSecret = input({
   label: "Webhook Secret",
   type: "password",
@@ -11,6 +12,7 @@ export const webhookSecret = input({
   placeholder: "Enter webhook secret",
   clean: cleanString,
 });
+
 export const verifySignature = input({
   label: "Verify Webhook Signature",
   type: "boolean",
@@ -20,6 +22,7 @@ export const verifySignature = input({
     "When true, validates the HMAC-SHA256 webhook signature using the webhook secret. Requires Webhook Secret to be configured.",
   clean: util.types.toBool,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -30,6 +33,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollEmployeeChangesInputs = {
   connection: connectionInput,
   lookBackDate,
@@ -40,9 +44,11 @@ export const pollEmployeeChangesInputs = {
       "Optional company ID to filter changes. Leave empty for all companies.",
   },
 };
+
 export const pollNewHireStatusInputs = {
   connection: connectionInput,
 };
+
 export const webhookEmployeeLifecycleInputs = {
   connection: connectionInput,
   webhookSecret,

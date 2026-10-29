@@ -26,6 +26,7 @@ import {
   taxInfo,
   paymentTermInput,
 } from "./common";
+
 const customerNameInput = input({
   label: "Customer Name",
   type: "string",
@@ -35,6 +36,7 @@ const customerNameInput = input({
   placeholder: "Enter customer name",
   clean: util.types.toString,
 });
+
 const oneTimeCustomerInput = input({
   label: "One Time",
   comments:
@@ -58,6 +60,7 @@ const oneTimeCustomerInput = input({
     },
   ],
 });
+
 const customerTypeIdInput = input({
   label: "Customer Type ID",
   type: "string",
@@ -67,6 +70,7 @@ const customerTypeIdInput = input({
   placeholder: "Enter customer type ID",
   clean: util.types.toString,
 });
+
 const salesRepEmployeeIdInput = input({
   label: "Sales Rep Employee ID",
   type: "string",
@@ -76,6 +80,7 @@ const salesRepEmployeeIdInput = input({
   placeholder: "Enter employee ID",
   clean: util.types.toString,
 });
+
 const parentCustomerIdInput = input({
   label: "Parent Customer ID",
   type: "string",
@@ -85,6 +90,7 @@ const parentCustomerIdInput = input({
   placeholder: "Enter parent customer ID",
   clean: util.types.toString,
 });
+
 const territoryIdInput = input({
   label: "Territory ID",
   type: "string",
@@ -94,6 +100,7 @@ const territoryIdInput = input({
   placeholder: "Enter territory ID",
   clean: util.types.toString,
 });
+
 const offsetArGlAccountNoInput = input({
   label: "Offset AR GL Account No",
   type: "string",
@@ -103,6 +110,7 @@ const offsetArGlAccountNoInput = input({
   placeholder: "Enter GL account number",
   clean: util.types.toString,
 });
+
 const defaultRevenueGlAccountNoInput = input({
   label: "Default Revenue GL Account No",
   type: "string",
@@ -112,6 +120,7 @@ const defaultRevenueGlAccountNoInput = input({
   placeholder: "Enter GL account number",
   clean: util.types.toString,
 });
+
 const shippingMethodInput = input({
   label: "Shipping Method",
   type: "string",
@@ -121,6 +130,7 @@ const shippingMethodInput = input({
   placeholder: "Enter shipping method",
   clean: util.types.toString,
 });
+
 const resaleNumberInput = input({
   label: "Resale Number",
   type: "string",
@@ -130,6 +140,7 @@ const resaleNumberInput = input({
   placeholder: "Enter resale number",
   clean: util.types.toString,
 });
+
 const deliveryMethodInput = input({
   label: "Delivery Method",
   type: "string",
@@ -138,6 +149,7 @@ const deliveryMethodInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const defaultInvoiceMessageInput = input({
   label: "Default Invoice Message",
   type: "string",
@@ -145,6 +157,7 @@ const defaultInvoiceMessageInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionArInvoiceTemplateNameInput = input({
   label: "AR Invoice Template Name",
   type: "string",
@@ -152,6 +165,7 @@ const printOptionArInvoiceTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionOeQuoteTemplateNameInput = input({
   label: "OE Quote Template Name",
   type: "string",
@@ -159,6 +173,7 @@ const printOptionOeQuoteTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionOeOrderTemplateNameInput = input({
   label: "OE Order Template Name",
   type: "string",
@@ -166,6 +181,7 @@ const printOptionOeOrderTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionOeListTemplateNameInput = input({
   label: "OE List Template Name",
   type: "string",
@@ -173,6 +189,7 @@ const printOptionOeListTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionOeInvoiceTemplateNameInput = input({
   label: "OE Invoice Template Name",
   type: "string",
@@ -180,6 +197,7 @@ const printOptionOeInvoiceTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionOeAdjustmentTemplateNameInput = input({
   label: "OE Adjustment Template Name",
   type: "string",
@@ -187,6 +205,7 @@ const printOptionOeAdjustmentTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const printOptionOeOtherTemplateNameInput = input({
   label: "OE Other Template Name",
   type: "string",
@@ -194,6 +213,7 @@ const printOptionOeOtherTemplateNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const printOptions = structuredObjectInput({
   label: "Print Options",
   required: false,
@@ -209,6 +229,7 @@ export const printOptions = structuredObjectInput({
     printOptionOeOtherTemplateNameInput,
   },
 });
+
 export const customerContactRoles = structuredObjectInput({
   label: "Contact Roles",
   required: false,
@@ -219,6 +240,7 @@ export const customerContactRoles = structuredObjectInput({
     shipToContactNameInput,
   },
 });
+
 export const customerGlAccounts = structuredObjectInput({
   label: "GL Accounts",
   required: false,
@@ -230,6 +252,7 @@ export const customerGlAccounts = structuredObjectInput({
     defaultRevenueGlAccountNoInput,
   },
 });
+
 export const billingPreferences = structuredObjectInput({
   label: "Billing and Delivery Preferences",
   required: false,
@@ -242,6 +265,7 @@ export const billingPreferences = structuredObjectInput({
     shippingMethodInput,
   },
 });
+
 export const createCustomerInputs = {
   connection,
   customerIdInput,
@@ -273,11 +297,13 @@ export const createCustomerInputs = {
   restrictedDepartmentsInput,
   customFieldsInput,
 };
+
 export const getCustomerInputs = {
   connection,
   fieldsInput,
   recordNoInput: { ...recordNoInput, dataSource: "selectCustomer" },
 };
+
 export const updateCustomerInputs = {
   connection,
   customerIdInput: {

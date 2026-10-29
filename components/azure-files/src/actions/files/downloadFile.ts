@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { downloadFileInputs } from "../../inputs";
 import { downloadFileExamplePayload } from "../../examplePayloads";
+
 export const downloadFile = action({
   display: {
     label: "Download File",

@@ -4,6 +4,7 @@ import { listTicketFilesExamplePayload } from "../../examplePayloads";
 import { listTicketFilesInputs } from "../../inputs";
 import { listTicketFilesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listTicketFiles = action({
   display: {
     label: "List Ticket Files",
@@ -19,7 +20,9 @@ export const listTicketFiles = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(`/tickets/${params.ticketGuid}/files`);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Ticket Files");

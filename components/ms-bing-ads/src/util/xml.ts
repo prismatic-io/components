@@ -1,5 +1,7 @@
 import type { Arg, Args } from "../types";
+
 const isArgs = (arg: Arg) => typeof arg === "object";
+
 export const objectToXML = (args: Args): string =>
   Object.entries(args).reduce((acc, [key, value]) => {
     return (

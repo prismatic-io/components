@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const ukgProBasicAuth = connection({
   key: "ukgProBasicAuth",
   display: {
@@ -46,4 +47,5 @@ export const ukgProBasicAuth = connection({
     },
   },
 });
+
 export default [ukgProBasicAuth];

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { getStreamExamplePayload } from "../../examplePayloads";
 import { getStreamInputs } from "../../inputs";
+
 export const getStream = action({
   display: {
     label: "Get Stream",
@@ -21,4 +22,5 @@ export const getStream = action({
   },
   inputs: getStreamInputs,
 });
+
 export default { getStream };

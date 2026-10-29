@@ -5,6 +5,7 @@ import { deleteEnvironmentExamplePayload } from "../../examplePayloads";
 import { deleteEnvironmentInputs } from "../../inputs";
 import { deleteEnvironmentOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const deleteEnvironment = action({
   display: {
     label: "Delete Environment",
@@ -23,9 +24,8 @@ export const deleteEnvironment = action({
       data: {},
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteEnvironmentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteEnvironmentExamplePayload,
   inputs: deleteEnvironmentInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

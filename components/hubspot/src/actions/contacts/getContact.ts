@@ -5,6 +5,7 @@ import { getHubspotClient } from "../../client";
 import { getContactInputs } from "../../inputs";
 import { getProps } from "../../util";
 import { CONTACT_PROPS, hubspotPaths } from "../../constants";
+
 export const getContact = action({
   display: {
     label: "Get Contact",
@@ -19,6 +20,7 @@ export const getContact = action({
       contactId: id,
       additionalProperties,
       timeout,
+
       hubspotConnection,
       associationsList,
       archived,
@@ -28,20 +30,24 @@ export const getContact = action({
       throw new Error("You must supply an Id or an email to get a record.");
     }
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       CONTACT_PROPS,
       additionalProperties || [],
     );
+
     const params = {
       ...parameterizedProperties,
       associations: associationsList,
       archived: archived,
     };
+
     if (id) {
       const { data } = await client.get(
         hubspotPaths.objects("contacts", `/${id}`),
@@ -49,6 +55,7 @@ export const getContact = action({
           params,
         },
       );
+
       return { data };
     }
     const searchBody = {
@@ -73,6 +80,7 @@ export const getContact = action({
         },
       },
     );
+
     return { data };
   },
   inputs: getContactInputs,

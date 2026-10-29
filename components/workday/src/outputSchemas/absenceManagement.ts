@@ -3,6 +3,7 @@ import {
   idDescriptorReferenceSchema,
   instanceReferenceSchema,
 } from "./shared";
+
 export const timeOffDetailsViewSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +33,7 @@ export const timeOffDetailsViewSchema = {
     },
   },
 };
+
 export const getTimeOffBalanceByIdOutputSchema = {
   type: "object" as const,
   properties: {
@@ -70,6 +72,7 @@ export const getTimeOffBalanceByIdOutputSchema = {
     },
   },
 };
+
 export const getTimeOffDetailsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -86,6 +89,7 @@ export const getTimeOffDetailsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postTimeOffRequestOutputSchema = {
   type: "object" as const,
   properties: {

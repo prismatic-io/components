@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getTableByIdExamplePayload } from "../../examplePayloads";
 import { getTableByIdInputs } from "../../inputs";
 import { getTableByIdOutputSchema } from "../../outputSchemas";
+
 export const getTableById = action({
   display: {
     label: "Get Table by ID",

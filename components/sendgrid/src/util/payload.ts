@@ -1,6 +1,7 @@
 import type { EmailJSON } from "@sendgrid/helpers/classes/email-address";
 import type { MailData } from "@sendgrid/helpers/classes/mail";
 import type { MailDataRequired } from "@sendgrid/mail";
+
 export const createPayload = ({
   to,
   cc,
@@ -15,26 +16,28 @@ export const createPayload = ({
   trackingSettings,
   templateId,
 }: MailData): MailDataRequired => {
-  const contents: {
-    text?: string;
-    html?: string;
-  } = {};
+  const contents: { text?: string; html?: string } = {};
   if (text) contents.text = text;
   if (html) contents.html = html;
+
   const toPayload =
     to && typeof to === "string"
       ? to.split(",").map((recipient: string) => recipient.trim())
       : undefined;
+
   const ccPayload =
     cc && typeof cc === "string"
       ? cc.split(",").map((recipient: string) => recipient.trim())
       : undefined;
+
   const bccPayload =
     bcc && typeof bcc === "string"
       ? bcc.split(",").map((recipient: string) => recipient.trim())
       : undefined;
+
   const fromPayload = from as EmailJSON;
   const replyToPayload = replyTo as EmailJSON;
+
   const payload: MailDataRequired = {
     to: toPayload,
     cc: ccPayload,
@@ -54,5 +57,6 @@ export const createPayload = ({
     templateId: templateId || undefined,
     ...contents,
   };
+
   return payload;
 };

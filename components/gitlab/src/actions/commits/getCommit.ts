@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getCommitExamplePayload } from "../../examplePayloads";
 import { getCommitInputs } from "../../inputs";
 import { getCommitOutputSchema } from "../../outputSchemas";
+
 export const getCommit = action({
   display: {
     label: "Get Commit",

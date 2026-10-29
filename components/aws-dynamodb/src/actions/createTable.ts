@@ -18,6 +18,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { createTableExamplePayload } from "../examplePayloads";
 import { toOptionalString } from "aws-utils";
+
 export const createTable = action({
   display: {
     label: "Create Table",

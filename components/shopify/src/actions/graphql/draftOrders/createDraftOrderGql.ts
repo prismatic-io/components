@@ -4,6 +4,7 @@ import { createDraftOrderExamplePayload as examplePayload } from "../../../examp
 import { createDraftOrderInputs as inputs } from "../../../inputsGql";
 import { createDraftOrderGqlOutputSchema } from "../../../outputSchemas";
 import createDraftOrderQuery from "../queries/draftOrders/CreateDraftOrder.gql";
+
 export const createDraftOrderGql = action({
   display: {
     label: "Create Draft Order",
@@ -29,19 +30,20 @@ export const createDraftOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      draftOrderCreate: Record<string, unknown>;
-    } = await client.request(createDraftOrderQuery, {
-      input: {
-        customerId: customerIdGql,
-        lineItems,
-        useCustomerDefaultAddress: useCustomerAddress,
-        note,
-        taxExempt,
-        tags,
-        ...additionalFields,
-      },
-    });
+
+    const data: { draftOrderCreate: Record<string, unknown> } =
+      await client.request(createDraftOrderQuery, {
+        input: {
+          customerId: customerIdGql,
+          lineItems,
+          useCustomerDefaultAddress: useCustomerAddress,
+          note,
+          taxExempt,
+          tags,
+          ...additionalFields,
+        },
+      });
+
     return {
       data: data.draftOrderCreate,
     };

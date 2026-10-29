@@ -4,6 +4,7 @@ import { listItemsInputs } from "../../inputs";
 import type { XeroResponse } from "../../interfaces/XeroResponse";
 import type { Item } from "../../interfaces/Item";
 import { listItemsExamplePayload } from "../../examplePayloads";
+
 export const listItems = action({
   display: {
     label: "List Items",
@@ -25,6 +26,7 @@ export const listItems = action({
     return { data };
   },
   inputs: listItemsInputs,
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   examplePayload: listItemsExamplePayload as any,
 });

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_UPDATE_RESPONSE } from "../../constants";
 import { updateBusinessPartnersInputs } from "../../inputs/businessPartners/update";
+
 export const updateBusinessPartner = action({
   display: {
     label: "Update Business Partner",
@@ -21,6 +22,7 @@ export const updateBusinessPartner = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(`/BusinessPartners('${CardCode}')`, {
       CardName,
       CardType,

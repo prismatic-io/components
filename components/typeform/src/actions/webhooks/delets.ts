@@ -4,6 +4,7 @@ import { connection, formId, tag } from "../../inputs";
 import { DELETED_RESOURCE } from "../../constants";
 import { genericDeleteResponse } from "../../examplePayloads/general";
 import { deleteWebhookFunction } from "../../util";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -16,6 +17,7 @@ export const deleteWebhook = action({
   },
   perform: async (context, { connection, formId, tag }) => {
     const client = createClient(connection, context.debug.enabled);
+
     await deleteWebhookFunction({
       client,
       formId,

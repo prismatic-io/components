@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import type { ShareItem } from "@azure/storage-file-share";
 import { createAuthorizedClient } from "../client";
 import { selectShareInputs } from "../inputs/dataSources";
+
 export const selectShare = dataSource({
   dataSourceType: "picklist",
   display: {

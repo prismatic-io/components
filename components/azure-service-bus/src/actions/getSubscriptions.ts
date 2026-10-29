@@ -10,6 +10,7 @@ import {
   subscriptionName,
   topicName,
 } from "../inputs";
+
 export const getSubscriptions = action({
   display: {
     label: "Get Subscriptions",
@@ -48,4 +49,5 @@ export const getSubscriptions = action({
     subscriptionName,
   },
 });
+
 export default { getSubscriptions };

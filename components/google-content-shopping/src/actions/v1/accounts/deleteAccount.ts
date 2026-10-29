@@ -3,6 +3,7 @@ import { createClientMerchant } from "../../../client";
 import { deleteAccountExamplePayload } from "../../../examplePayloads/v1";
 import { deleteAccountInputs } from "../../../inputs/v1/accounts";
 import { accountResourceName } from "../../../util/resourceNames";
+
 export const deleteAccountMerchant = action({
   display: {
     description: "Deletes a Merchant Center account.",
@@ -14,6 +15,7 @@ export const deleteAccountMerchant = action({
     const { data } = await client.delete(
       `/accounts/v1/${accountResourceName(account)}`,
     );
+
     return { data };
   },
   examplePayload: deleteAccountExamplePayload,

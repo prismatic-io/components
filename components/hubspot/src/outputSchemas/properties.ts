@@ -95,6 +95,7 @@ export const propertySchema = {
     "type",
   ],
 };
+
 export const listPropertiesOutputSchema = {
   type: "object" as const,
   properties: {

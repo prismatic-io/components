@@ -4,6 +4,7 @@ import { deleteInstancedWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstancedWebhooksInputs } from "../../inputs";
 import { deleteInstancedWebhooksOutputSchema } from "../../outputSchemas";
 import { removeHooks } from "../../utils";
+
 export const deleteInstancedWebhooks = action({
   display: {
     label: "Delete Instanced Webhooks",
@@ -25,9 +26,8 @@ export const deleteInstancedWebhooks = action({
     );
     return { data: { deleted } };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteInstancedWebhooksExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteInstancedWebhooksExamplePayload,
   examplePayload: deleteInstancedWebhooksExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

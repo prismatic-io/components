@@ -4,6 +4,7 @@ import { selectUserExamplePayload } from "../examplePayloads/dataSources";
 import { connection } from "../inputs/general";
 import type { User } from "../interfaces/user";
 import { paginateRecordsWithLink } from "../util/util";
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -20,10 +21,12 @@ export const selectUser = dataSource({
       true,
       {},
     );
+
     const result = data.map<Element>((user) => ({
       label: `${user.profile.firstName} ${user.profile.lastName} (${user.profile.email})`,
       key: user.id.toString(),
     }));
+
     return {
       result,
     };

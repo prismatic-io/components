@@ -5,6 +5,7 @@ import { updateFileContentExamplePayload } from "../../examplePayloads";
 import { updateFileContentInputs } from "../../inputs";
 import { updateFileContentOutputSchema } from "../../outputSchemas";
 import { appendFilePart, handleArenaError } from "../../util";
+
 export const updateFileContent = action({
   display: {
     label: "Update File Content",
@@ -20,9 +21,13 @@ export const updateFileContent = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       context.logger.info(`Updating file content for file ${params.fileGuid}`);
+
       const formData = new FormData();
+
       appendFilePart(formData, "content", params.fileContent, "updated_file");
+
       const { data } = await client.post(
         `/files/${params.fileGuid}/content`,
         formData,
@@ -32,9 +37,11 @@ export const updateFileContent = action({
           },
         },
       );
+
       context.logger.info(
         `Successfully updated file content for ${params.fileGuid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update File Content");

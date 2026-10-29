@@ -1,12 +1,15 @@
 import type { CustomTaskIdsQueryParams } from "./common";
+
 export interface Assignees {
   add?: number[];
   rem?: number[];
 }
+
 export interface CustomFieldValue {
   id: string;
   value: string;
 }
+
 export interface CreateTaskBody {
   name: string;
   description?: string;
@@ -26,11 +29,15 @@ export interface CreateTaskBody {
   custom_fields?: CustomFieldValue[];
   markdown_description?: string;
 }
+
 export type CreateTaskQueryParams = CustomTaskIdsQueryParams;
+
 export type DeleteTaskQueryParams = CustomTaskIdsQueryParams;
+
 export interface GetTaskQueryParams extends CustomTaskIdsQueryParams {
   include_subtasks?: boolean;
 }
+
 export interface ListTasksQueryParams {
   archived?: boolean;
   page?: number;
@@ -51,6 +58,7 @@ export interface ListTasksQueryParams {
   date_done_lt?: string;
   custom_fields?: unknown[];
 }
+
 export interface UpdateTaskBody {
   due_date_time: boolean;
   start_date_time: boolean;
@@ -66,4 +74,5 @@ export interface UpdateTaskBody {
   start_date?: number;
   markdown_description?: string;
 }
+
 export type UpdateTaskQueryParams = CustomTaskIdsQueryParams;

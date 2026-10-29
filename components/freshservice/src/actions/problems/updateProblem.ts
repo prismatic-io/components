@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { updateProblemExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateProblemInputs as inputs } from "../../inputs";
 import { problemOutputSchema } from "../../outputSchemas";
+
 export const updateProblem = action({
   display: {
     label: "Update Problem",
@@ -22,6 +23,7 @@ export const updateProblem = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       subject: additionalFields.subject,
       email: additionalFields.email,
@@ -35,7 +37,9 @@ export const updateProblem = action({
       item_category: categorization.itemCategory,
       ...problemsAdditionalFields,
     };
+
     const { data } = await client.put(`/problems/${problemId}`, payload);
+
     return {
       data,
     };

@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, templateId, documentIds } from "../inputs";
+
 export const deleteTemplateDocument = action({
   display: {
     label: "Delete Template Document",

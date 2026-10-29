@@ -7,17 +7,21 @@ export interface BatchError {
   Message?: string;
   Type?: string;
 }
+
 export interface AddRestResponse {
   PartialErrors?: BatchError[];
   [key: string]: unknown;
 }
+
 export interface MutateRestResponse {
   PartialErrors?: BatchError[];
 }
+
 export interface QueryRestResponse {
   PartialErrors?: BatchError[];
   [key: string]: unknown;
 }
+
 export interface Campaign {
   Id?: number;
   Name?: string;
@@ -29,18 +33,21 @@ export interface Campaign {
   TimeZone?: string;
   [key: string]: unknown;
 }
+
 export interface AdGroup {
   Id?: number;
   Name?: string;
   Status?: string;
   [key: string]: unknown;
 }
+
 export interface Ad {
   Id?: number;
   Type?: string;
   Status?: string;
   [key: string]: unknown;
 }
+
 export interface Keyword {
   Id?: number;
   Text?: string;
@@ -48,6 +55,7 @@ export interface Keyword {
   Status?: string;
   [key: string]: unknown;
 }
+
 export interface Budget {
   Id?: number;
   Name?: string;
@@ -55,6 +63,7 @@ export interface Budget {
   BudgetType?: string;
   [key: string]: unknown;
 }
+
 export interface Audience {
   Id?: number;
   Name?: string;

@@ -5,6 +5,7 @@ import { listFolderWithPaginationExamplePayload } from "../../examplePayloads";
 import { listFolderWithPaginationInputs } from "../../inputs";
 import { listFolderWithPaginationOutputSchema } from "../../outputSchemas";
 import { getFolderEntries, getPathEntries } from "../../util";
+
 export const listFolderWithPagination = action({
   display: {
     label: "List Folder",
@@ -19,10 +20,13 @@ export const listFolderWithPagination = action({
       client,
       util.types.toString(params.path),
     );
+
     const { id, type, name } = pathEntries.slice(-1)[0];
+
     if (type !== FOLDER_TYPE) {
       throw Error(`'${name}' is not a folder`);
     }
+
     if (params.fetchAll) {
       const allEntries = await getFolderEntries({
         client,
@@ -32,6 +36,7 @@ export const listFolderWithPagination = action({
         offset: 0,
         fields: params.fields ? util.types.toString(params.fields) : undefined,
       });
+
       return {
         data: {
           entries: allEntries,
@@ -39,6 +44,7 @@ export const listFolderWithPagination = action({
         },
       };
     }
+
     const result = await client.folders.getFolderItems(
       util.types.toString(id),
       {
@@ -53,6 +59,7 @@ export const listFolderWithPagination = action({
         },
       },
     );
+
     return {
       data: {
         entries: (result.entries ?? []).map((entry) => entry.rawData),
@@ -63,16 +70,13 @@ export const listFolderWithPagination = action({
       },
     };
   },
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const { entries } = listFolderWithPaginationExamplePayload.data;
+
     if (params.fetchAll) {
       return { data: { entries, pagination: MAX_PAGE_SIZE } };
     }
+
     return {
       data: {
         entries,

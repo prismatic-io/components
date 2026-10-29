@@ -10,6 +10,7 @@ import type {
   SupplierFullVo,
 } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createSupplier = action({
   display: {
     label: "Create Supplier",
@@ -40,9 +41,11 @@ export const createSupplier = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const supplierPayload: SupplierCreateRequestVo = {
         name,
       };
+
       if (supplierId) {
         supplierPayload.supplierId = supplierId;
       }
@@ -68,10 +71,12 @@ export const createSupplier = action({
       ) {
         supplierPayload.phoneNumbers = phoneNumbers as PhoneNumberVo[];
       }
+
       supplierPayload.additionalAttributes = resolveAdditionalAttributes(
         { additionalAttributes, attributeDefinitions },
         context,
       );
+
       context.logger.info("Creating supplier", {
         name,
         supplierId,
@@ -87,13 +92,16 @@ export const createSupplier = action({
           attributeDefinitions.length > 0
         ),
       });
+
       const { data } = await client.post<SupplierFullVo>(
         "/suppliers",
         supplierPayload,
       );
+
       context.logger.info(
         `Successfully created supplier: ${data.name} (${data.guid})`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Supplier");

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { officesV1DataSourceExamplePayload } from "../../examplePayloads/v1/dataSources";
 import { connectionInput, version } from "../../inputs";
 import type { OfficeDataSources } from "../../types";
+
 export const offices = dataSource({
   display: {
     label: "Fetch Offices (Harvest v1/v2)",

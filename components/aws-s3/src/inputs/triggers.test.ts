@@ -12,10 +12,12 @@ vi.mock("aws-utils", async () => {
     },
   };
 });
+
 import {
   pollChangesFilesTriggerInputs,
   pollNewBucketsTriggerInputs,
 } from "./triggers";
+
 describe("input order (connection first, awsRegion last)", () => {
   test("pollChangesFilesTriggerInputs", () => {
     expect(Object.keys(pollChangesFilesTriggerInputs)).toEqual([
@@ -28,6 +30,7 @@ describe("input order (connection first, awsRegion last)", () => {
       "awsRegion",
     ]);
   });
+
   test("pollNewBucketsTriggerInputs", () => {
     expect(Object.keys(pollNewBucketsTriggerInputs)).toEqual([
       "accessKey",

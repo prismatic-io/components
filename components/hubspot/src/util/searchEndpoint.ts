@@ -3,10 +3,12 @@ import {
   hubspotPaths,
   SEARCH_ENDPOINT_PATTERN,
 } from "../constants";
+
 export const searchEndpointObjectType = (
   endpoint: string,
 ): string | undefined =>
   endpoint.match(SEARCH_ENDPOINT_PATTERN)?.[1].toLowerCase();
+
 export const toCurrentSearchEndpoint = (endpoint: string): string => {
   const objectType = searchEndpointObjectType(endpoint);
   if (!objectType) {

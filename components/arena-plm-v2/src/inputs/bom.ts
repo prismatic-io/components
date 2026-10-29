@@ -9,6 +9,7 @@ import {
   itemGuidInput,
   setNullInput,
 } from "./common";
+
 const bomItemGuidInput = input({
   label: "BOM Item GUID",
   type: "string",
@@ -18,6 +19,7 @@ const bomItemGuidInput = input({
   example: "BM1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const bomRefDesInput = input({
   label: "Reference Designator",
   type: "string",
@@ -27,6 +29,7 @@ const bomRefDesInput = input({
   example: "R1, R2, R3",
   clean: toOptionalString,
 });
+
 const bomQuantityInput = input({
   label: "Quantity",
   type: "string",
@@ -37,6 +40,7 @@ const bomQuantityInput = input({
   default: "1",
   clean: toOptionalNumber,
 });
+
 const bomNotesInput = input({
   label: "Notes",
   type: "text",
@@ -46,6 +50,7 @@ const bomNotesInput = input({
   example: "Use high-precision resistors",
   clean: toOptionalString,
 });
+
 const bomLineGuidInput = input({
   label: "BOM Line GUID",
   type: "string",
@@ -55,6 +60,7 @@ const bomLineGuidInput = input({
   example: "BM4XIKY75ZITAA28ZABJKCAT",
   clean: util.types.toString,
 });
+
 const substituteGuidInput = input({
   label: "Substitute GUID",
   type: "string",
@@ -64,6 +70,7 @@ const substituteGuidInput = input({
   example: "BMSJ6Z57GF3S43WZZ58HQ59S",
   clean: util.types.toString,
 });
+
 const substituteRankInput = input({
   label: "Substitute Rank",
   type: "string",
@@ -74,6 +81,7 @@ const substituteRankInput = input({
   example: "1",
   clean: toOptionalNumber,
 });
+
 const includeBomSubstitutesInput = input({
   label: "Include BOM Substitutes",
   type: "boolean",
@@ -83,6 +91,7 @@ const includeBomSubstitutesInput = input({
     "When true, substitute components are included in the BOM line response.",
   clean: util.types.toBool,
 });
+
 const includeAdditionalAttributesInput = input({
   label: "Include Additional Attributes",
   type: "boolean",
@@ -91,6 +100,7 @@ const includeAdditionalAttributesInput = input({
   comments: "When true, additional attributes are included in the response.",
   clean: util.types.toBool,
 });
+
 const automaticallyGenerateLineNumbersInput = input({
   label: "Automatically Generate Line Numbers",
   type: "boolean",
@@ -99,6 +109,7 @@ const automaticallyGenerateLineNumbersInput = input({
     "When true, line numbers are automatically generated for BOM lines.",
   clean: util.types.toBool,
 });
+
 const checkReferenceDesignatorsInput = input({
   label: "Check Reference Designators",
   type: "boolean",
@@ -106,6 +117,7 @@ const checkReferenceDesignatorsInput = input({
   comments: "When true, reference designators are checked in the BOM.",
   clean: util.types.toBool,
 });
+
 export const createBomLineInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -117,6 +129,7 @@ export const createBomLineInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const createBomSubstituteInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -126,22 +139,26 @@ export const createBomSubstituteInputs = {
   notes: bomNotesInput,
   rank: substituteRankInput,
 };
+
 export const deleteBomLineInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   bomLineGuid: bomLineGuidInput,
 };
+
 export const deleteBomSubstituteInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   bomLineGuid: bomLineGuidInput,
   substituteGuid: substituteGuidInput,
 };
+
 export const listBomInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   includeAdditionalAttributes: includeAdditionalAttributesInput,
 };
+
 export const getBomLineInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -149,21 +166,25 @@ export const getBomLineInputs = {
   includeEmptyAdditionalAttributes: includeEmptyAdditionalAttributesInput,
   includeBomSubstitutes: includeBomSubstitutesInput,
 };
+
 export const getBomSettingsInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
 };
+
 export const getBomSubstituteInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   bomLineGuid: bomLineGuidInput,
   substituteGuid: substituteGuidInput,
 };
+
 export const listBomSubstitutesInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   bomLineGuid: bomLineGuidInput,
 };
+
 export const updateBomLineInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -176,12 +197,14 @@ export const updateBomLineInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const updateBomSettingsInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   automaticallyGenerateLineNumbers: automaticallyGenerateLineNumbersInput,
   checkReferenceDesignators: checkReferenceDesignatorsInput,
 };
+
 export const updateBomSubstituteInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,

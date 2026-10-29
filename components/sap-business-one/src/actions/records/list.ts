@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { fetchAllData } from "../../util";
 import { recordType } from "../../inputs/records/general";
 import { defaultPaginationInputs, connection } from "../../inputs/general";
+
 export const listRecords = action({
   display: {
     label: "List Records",
@@ -32,6 +33,7 @@ export const listRecords = action({
       context,
       context.debug.enabled,
     );
+
     const data = await fetchAllData(
       client,
       recordType,

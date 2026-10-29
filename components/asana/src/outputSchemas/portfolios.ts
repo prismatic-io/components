@@ -7,6 +7,7 @@ import {
   userCompactSchema,
   workspaceCompactSchema,
 } from "./shared";
+
 export const portfolioResponseSchema = {
   type: "object" as const,
   properties: {
@@ -107,6 +108,7 @@ export const portfolioResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listPortfoliosOutputSchema = {
   type: "object" as const,
   properties: {
@@ -116,6 +118,7 @@ export const listPortfoliosOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listPortfolioItemsOutputSchema = {
   type: "object" as const,
   properties: {

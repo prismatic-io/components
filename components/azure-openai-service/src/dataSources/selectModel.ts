@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput } from "../inputs";
+
 export const selectModel = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -11,6 +12,7 @@ export const selectModel = dataSource({
   perform: async (_context, { connection }) => {
     const client = createClient(connection);
     const models = await client.models.list();
+
     return {
       result: models.data
         .sort((a, b) => a.id.localeCompare(b.id))

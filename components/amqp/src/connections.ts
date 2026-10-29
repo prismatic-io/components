@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const amqpConnection = connection({
   key: "amqp",
   display: {
@@ -71,4 +72,5 @@ export const amqpConnection = connection({
     },
   },
 });
+
 export default [amqpConnection];

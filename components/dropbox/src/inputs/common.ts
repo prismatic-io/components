@@ -1,12 +1,14 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { ALL_LEVELS_AUTHENTICATION_INPUT_MODEL } from "../constants";
 import { cleanString, toOptionalString } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   comments: "The Dropbox connection to use.",
   type: "connection",
   required: true,
 });
+
 export const userType = input({
   label: "Team User Type",
   comments:
@@ -25,6 +27,7 @@ export const teamMemberId = input({
   clean: (value) => (value !== "" ? util.types.toString(value) : undefined),
   example: "dbmid:abcd1234",
 });
+
 export const limit = input({
   label: "Limit",
   placeholder: "Enter the maximum number of results per request",
@@ -38,6 +41,7 @@ export const limit = input({
     return num || undefined;
   },
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -47,6 +51,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const cursor = input({
   label: "Cursor",
   placeholder: "Enter the pagination cursor from a previous request",
@@ -57,12 +62,14 @@ export const cursor = input({
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
   clean: toOptionalString,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { cursor, limit },
 });
+
 export const path = input({
   label: "Path",
   placeholder: "Enter the file path",
@@ -74,6 +81,7 @@ export const path = input({
   clean: util.types.toString,
   dataSource: "listFolders",
 });
+
 export const directoryPath = input({
   label: "Directory Path",
   placeholder: "Enter the directory path",

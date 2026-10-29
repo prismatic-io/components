@@ -2,6 +2,7 @@ export const downloadFileExamplePayload = {
   data: Buffer.from("example"),
   contentType: "application/octet-stream",
 };
+
 export const uploadFileExamplePayload = {
   data: {
     total_count: 1,
@@ -21,6 +22,7 @@ export const uploadFileExamplePayload = {
     ],
   },
 };
+
 export const getFileDownloadUrlExamplePayload = {
   data: "https://dl.boxcloud.com/d/1/b1!abc123-example-download-url/download",
 };

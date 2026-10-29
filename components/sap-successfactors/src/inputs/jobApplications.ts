@@ -4,6 +4,7 @@ import { toOptionalString } from "../util";
 import { candidateId } from "./candidates";
 import { $select, additionalInputs, connection } from "./common";
 import { jobReqId } from "./jobRequisitions";
+
 export const jobApplicationId = input({
   label: "Job Application ID",
   type: "string",
@@ -14,6 +15,7 @@ export const jobApplicationId = input({
   clean: util.types.toString,
   dataSource: "selectJobApplication",
 });
+
 export const createJobApplicationInputs = {
   connection,
   candidateId: {
@@ -31,6 +33,7 @@ export const createJobApplicationInputs = {
     example: JSON.stringify(createJobApplicationInfoExample, null, 2),
   },
 };
+
 export const updateJobApplicationInputs = {
   connection,
   jobApplicationId,
@@ -53,6 +56,7 @@ export const updateJobApplicationInputs = {
     example: JSON.stringify(createJobApplicationInfoExample, null, 2),
   },
 };
+
 export const getJobApplicationInputs = {
   connection,
   jobApplicationId,

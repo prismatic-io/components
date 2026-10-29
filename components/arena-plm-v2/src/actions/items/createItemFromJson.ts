@@ -9,6 +9,7 @@ import type {
   ItemFullVo,
 } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createItemFromJson = action({
   display: {
     label: "Create Item from JSON",
@@ -45,7 +46,9 @@ export const createItemFromJson = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       let itemPayload: ItemCreateVo = {};
+
       if (itemJson) {
         if (typeof itemJson === "object") {
           itemPayload = { ...itemJson };
@@ -58,6 +61,7 @@ export const createItemFromJson = action({
             );
           }
         }
+
         context.logger.info("Starting with JSON payload", {
           hasName: !!itemPayload.name,
           hasDescription: !!itemPayload.description,
@@ -67,6 +71,7 @@ export const createItemFromJson = action({
             itemPayload.additionalAttributes?.length || 0,
         });
       }
+
       itemPayload = {
         ...itemPayload,
         name: name || itemPayload.name,
@@ -108,10 +113,12 @@ export const createItemFromJson = action({
         category: categoryGuid ? { guid: categoryGuid } : itemPayload.category,
         owner: ownerFullName ? { fullName: ownerFullName } : itemPayload.owner,
       };
+
       if (numberFormatGuid) {
         const numberFormatObj: CreateNumberFormatVo = {
           guid: numberFormatGuid,
         };
+
         if (numberFormatFields && Array.isArray(numberFormatFields)) {
           const validFields = numberFormatFields
             .filter((field) => {
@@ -131,12 +138,15 @@ export const createItemFromJson = action({
               guid: field.key.trim(),
               value: String(field.value),
             }));
+
           if (validFields.length > 0) {
             numberFormatObj.fields = validFields;
           }
         }
+
         itemPayload.numberFormat = numberFormatObj;
       }
+
       context.logger.info("Creating item in Arena with merged payload", {
         itemName: itemPayload.name,
         hasCategory: !!itemPayload.category,
@@ -146,13 +156,16 @@ export const createItemFromJson = action({
         additionalAttributeCount: itemPayload.additionalAttributes?.length || 0,
         providedJsonInput: !!itemJson,
       });
+
       const { data } = await client.post("/items", itemPayload);
       const createdItem: ItemFullVo = data;
+
       context.logger.info("Item created successfully", {
         itemGuid: createdItem.guid,
         itemNumber: createdItem.number,
         itemName: createdItem.name,
       });
+
       return { data: createdItem };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Item from JSON");

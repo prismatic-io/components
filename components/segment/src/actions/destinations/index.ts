@@ -4,6 +4,7 @@ import { getDestination } from "./get";
 import { listDestinations } from "./list";
 import destinationSubscriptions from "./subscriptions";
 import { updateDestination } from "./update";
+
 export default {
   createDestination,
   getDestination,

@@ -20,6 +20,7 @@ export const describeLeadExamplePayload = {
     ],
   },
 };
+
 export const getSearchableLeadFieldsExamplePayload = {
   data: {
     requestId: "14d51#17e955b44f0",
@@ -41,6 +42,7 @@ export const getSearchableLeadFieldsExamplePayload = {
     ],
   },
 };
+
 export const getLeadByIdExamplePayload = {
   data: {
     requestId: "10226#14d3049e51b",
@@ -57,6 +59,7 @@ export const getLeadByIdExamplePayload = {
     ],
   },
 };
+
 export const getLeadsByFilterExamplePayload = {
   data: {
     requestId: "12951#15699db5c97",
@@ -81,6 +84,7 @@ export const getLeadsByFilterExamplePayload = {
     success: true,
   },
 };
+
 export const syncLeadsExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",
@@ -101,6 +105,7 @@ export const syncLeadsExamplePayload = {
     ],
   },
 };
+
 export const deleteLeadsExamplePayload = {
   data: {
     requestId: "3608#16664333670",

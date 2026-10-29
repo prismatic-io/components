@@ -17,11 +17,13 @@ export const createExpenseExamplePayload = {
     },
   ],
 };
+
 export const createReportExamplePayload = {
   responseCode: 200,
   reportName: "Name of the report",
   reportID: "R006AseGxMka",
 };
+
 export const getPolicyExamplePayload = {
   responseCode: 200,
   policyInfo: {
@@ -171,6 +173,7 @@ export const getPolicyExamplePayload = {
     },
   },
 };
+
 export const listPolicyExamplePayload = {
   policyList: [
     {
@@ -200,11 +203,13 @@ export const listPolicyExamplePayload = {
   ],
   responseCode: 200,
 };
+
 export const createPolicyExamplePayload = {
   responseCode: 200,
   policyID: "0123456789ABCDEF",
   policyName: "My New Policy",
 };
+
 export const updateEmployeeExamplePayload = {
   responseCode: 200,
   "dry-run": false,
@@ -233,6 +238,7 @@ export const updateEmployeeExamplePayload = {
     },
   ],
 };
+
 export const updateReportStatusExamplePayload = {
   responseCode: 200,
   reportIDs: ["R006AseGxMka", "R00bCluvcO4T"],

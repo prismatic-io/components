@@ -51,6 +51,7 @@ const activityRecord = {
   assigned_to_user_id: 18487521,
   note: "Remember to prepare pricing sheet",
 };
+
 export const getActivitiesExamplePayload = {
   data: {
     success: true,
@@ -61,6 +62,7 @@ export const getActivitiesExamplePayload = {
     },
   },
 };
+
 export const deleteActivityExamplePayload = {
   data: {
     success: true,
@@ -69,6 +71,7 @@ export const deleteActivityExamplePayload = {
     },
   },
 };
+
 export const getActivityExamplePayload = {
   data: {
     success: true,

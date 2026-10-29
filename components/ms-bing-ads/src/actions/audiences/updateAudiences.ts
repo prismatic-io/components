@@ -3,6 +3,7 @@ import { updateAudiencesExamplePayload } from "../../examplePayloads";
 import { updateAudiencesInputs } from "../../inputs/audiences";
 import { getRestClient } from "../../restClient";
 import type { MutateRestResponse } from "../../types";
+
 export const updateAudiences = action({
   display: {
     label: "Update Audiences",
@@ -13,9 +14,11 @@ export const updateAudiences = action({
     { connection, accountId, customerId, audiences },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.put<MutateRestResponse>("/Audiences", {
       Audiences: audiences,
     });
+
     return { data };
   },
   inputs: updateAudiencesInputs,

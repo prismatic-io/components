@@ -3,6 +3,7 @@ import { getShopConfigExamplePayload } from "../../examplePayloads";
 import { getShopConfigInputs as inputs } from "../../inputs";
 import { getShopConfigOutputSchema } from "../../outputSchemas";
 import { getShopConfigGql } from "../graphql/shops/getShopConfigGql";
+
 export const getShopConfig = action({
   display: {
     label: "Get Shop Configuration",

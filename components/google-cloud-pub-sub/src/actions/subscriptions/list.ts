@@ -3,6 +3,7 @@ import type { pubsub_v1 } from "googleapis";
 import { createClient } from "../../client";
 import { listSubscriptionsInputs } from "../../inputs";
 import { paginateAll } from "../../util";
+
 export const listSubscriptions = action({
   display: {
     label: "List Subscriptions",

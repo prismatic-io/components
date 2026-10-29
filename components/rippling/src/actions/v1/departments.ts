@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { getDepartmentsExamplePayload } from "../../examplePayloads";
 import { getDepartmentsInputs } from "../../inputs";
 import { paginateV1Results } from "../../utils/pagination";
+
 const getDepartments = action({
   display: {
     label: "Get Departments (V1)",
@@ -23,6 +24,7 @@ const getDepartments = action({
     });
   },
 });
+
 export default {
   getDepartments,
 };

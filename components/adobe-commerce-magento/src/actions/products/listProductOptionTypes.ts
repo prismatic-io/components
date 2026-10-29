@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listProductOptionTypesExamplePayload } from "../../examplePayloads";
 import { listProductOptionTypesInputs } from "../../inputs";
+
 export const listProductOptionTypes = action({
   display: {
     label: "List Product Option Types",

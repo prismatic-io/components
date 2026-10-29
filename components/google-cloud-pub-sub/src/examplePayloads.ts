@@ -22,8 +22,11 @@ export const getTopicExamplePayload = {
     alreadyExisted: false,
   },
 };
+
 export const createTopicExamplePayload = getTopicExamplePayload;
+
 export const updateTopicExamplePayload = getTopicExamplePayload;
+
 export const listTopicsExamplePayload = {
   data: {
     topics: [
@@ -53,9 +56,11 @@ export const listTopicsExamplePayload = {
     nextPageToken: "CAESGwoKcHJvamVjdHMvMRIMc3Vic2NyaXB0aW9ucw",
   },
 };
+
 export const deleteTopicExamplePayload = {
   data: {},
 };
+
 export const getSubscriptionExamplePayload = {
   data: {
     name: "projects/my-gcp-project-123456/subscriptions/order-processor",
@@ -100,8 +105,11 @@ export const getSubscriptionExamplePayload = {
     state: "ACTIVE",
   },
 };
+
 export const createSubscriptionExamplePayload = getSubscriptionExamplePayload;
+
 export const updateSubscriptionExamplePayload = getSubscriptionExamplePayload;
+
 export const listSubscriptionsExamplePayload = {
   data: {
     subscriptions: [
@@ -135,9 +143,11 @@ export const listSubscriptionsExamplePayload = {
     nextPageToken: "CAESGwoKcHJvamVjdHMvMRIMc3Vic2NyaXB0aW9ucw",
   },
 };
+
 export const deleteSubscriptionExamplePayload = {
   data: {},
 };
+
 export const pullMessagesExamplePayload = {
   data: {
     receivedMessages: [
@@ -174,6 +184,7 @@ export const pullMessagesExamplePayload = {
     ],
   },
 };
+
 export const getPolicyExamplePayload = {
   data: {
     version: 3,
@@ -205,10 +216,13 @@ export const getPolicyExamplePayload = {
     etag: "BwYFgrUAAAA=",
   },
 };
+
 export const setPolicyExamplePayload = getPolicyExamplePayload;
+
 export const updatePushConfigExamplePayload = {
   data: {},
 };
+
 export const rawRequestExamplePayload = {
   data: {
     name: "projects/my-gcp-project-123456/topics/order-events",
@@ -217,6 +231,7 @@ export const rawRequestExamplePayload = {
     },
   },
 };
+
 export const createWebhookSubscriptionExamplePayload = {
   data: {
     name: "projects/my-gcp-project-123456/subscriptions/webhook-subscriber",

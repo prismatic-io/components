@@ -7202,6 +7202,7 @@ export const paymentIntentOutputSchema = {
     "status",
   ],
 };
+
 export const listPaymentIntentsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -7212,6 +7213,7 @@ export const listPaymentIntentsOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const searchPaymentIntentsOutputSchema = {
   type: "object" as const,
   properties: {

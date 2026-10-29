@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { paginateResults } from "../util";
 import { connectionInput, surveyId } from "../inputs";
 import type { SurveyResponse } from "../types";
+
 export const selectResponse = dataSource({
   display: {
     label: "Select Response",
@@ -18,17 +19,20 @@ export const selectResponse = dataSource({
   },
   perform: async (_context, { connection, surveyId }) => {
     const client = createClient(connection, false);
+
     const response = await paginateResults<SurveyResponse>(
       client,
       `/surveys/${surveyId}/responses`,
       true,
     );
+
     const result = response.data
       .map<Element>((item) => ({
         label: `${item.id} (${item.response_status}${item.date_created ? ` - ${item.date_created}` : ""})`,
         key: item.id.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

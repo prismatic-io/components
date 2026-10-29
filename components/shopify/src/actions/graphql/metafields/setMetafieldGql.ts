@@ -5,6 +5,7 @@ import { setMetafieldInputs as inputs } from "../../../inputsGql";
 import { setMetafieldGqlOutputSchema } from "../../../outputSchemas";
 import type { Metafield, UserError } from "../../../types";
 import setMetafieldQuery from "../queries/metafields/SetMetafield.gql";
+
 export const setMetafieldGql = action({
   display: {
     label: "Set Metafield",
@@ -22,12 +23,9 @@ export const setMetafieldGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
-      metafieldsSet: {
-        metafields: Metafield[];
-      } & {
-        userErrors: UserError[];
-      };
+      metafieldsSet: { metafields: Metafield[] } & { userErrors: UserError[] };
     } = await client.request(setMetafieldQuery, {
       metafields: [
         {

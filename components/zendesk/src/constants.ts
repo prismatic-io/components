@@ -9,6 +9,7 @@ export const ticketStatuses = [
 ] as const;
 export const ticketTypes = ["incident", "problem", "question", "task"] as const;
 export const userRoles = ["admin", "agent", "end-user"] as const;
+
 export const webhookEvents = [
   "conditional_ticket_events",
   "zen:event-type:organization.created",
@@ -82,6 +83,7 @@ export const webhookEvents = [
   "zen:event-type:user.tags_changed",
   "zen:event-type:user.time_zone_changed",
 ];
+
 export const zendeskLocales = [
   "de",
   "en-us",
@@ -93,6 +95,7 @@ export const zendeskLocales = [
   "pt-br",
   "zh-cn",
 ];
+
 export const articleSortByOptions = [
   { label: "Created At", value: "created_at" },
   { label: "Updated At", value: "updated_at" },
@@ -100,7 +103,9 @@ export const articleSortByOptions = [
   { label: "Edited At", value: "edited_at" },
   { label: "Position", value: "position" },
 ];
+
 export const EXAMPLE_TIMESTAMP = "1735689600";
+
 export const postFilterByOptions = [
   {
     label: "Planned",
@@ -123,6 +128,7 @@ export const postFilterByOptions = [
     value: "none",
   },
 ];
+
 export const postSortByOptions = [
   {
     label: "Created At",
@@ -153,15 +159,23 @@ export const postSortByOptions = [
     value: "comments",
   },
 ];
+
 export const SUCCESS_MESSAGE = "Success executing action";
+
 export const DATA_SOURCE_PAGE_SIZE = 30;
+
 export const TRIGGER_BATCH_SIZE = 50;
+
 export const INCREMENTAL_START_TIME_OFFSET_SECONDS = 60;
+
 export const INCREMENTAL_PAGE_SIZE = 1000;
 export const BATCHED_INCREMENTAL_PAGE_SIZE = 100;
+
 export const MAX_PAGES_PER_POLL = 10;
 export const BATCHED_MAX_PAGES_PER_POLL = 1;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const defaultWebhookTriggerMessageBody = {
   current_user: {
     details: "{{current_user.details}}",
@@ -232,6 +246,7 @@ export const defaultWebhookTriggerMessageBody = {
     via: "{{ticket.via}}",
   },
 };
+
 export const defaultWebhookTriggerConditions = {
   all: [],
   any: [

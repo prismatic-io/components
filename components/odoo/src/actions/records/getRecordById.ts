@@ -4,6 +4,7 @@ import { getRecordByIdExamplePayload } from "../../examplePayloads";
 import { getRecordByIdInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
 import { json2Path } from "../../util";
+
 export const getRecordById = action({
   display: {
     label: "Get Record By ID",

@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanBodyFields, cleanKeyValueList, cleanString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The SAP Business One connection to use.",
 });
+
 export const $select = input({
   label: "Select",
   type: "string",
@@ -16,6 +18,7 @@ export const $select = input({
   required: false,
   clean: cleanString,
 });
+
 export const $filter = input({
   label: "Filter",
   type: "string",
@@ -26,6 +29,7 @@ export const $filter = input({
   required: false,
   clean: cleanString,
 });
+
 export const $orderby = input({
   label: "Order By",
   type: "string",
@@ -36,6 +40,7 @@ export const $orderby = input({
   required: false,
   clean: cleanString,
 });
+
 export const $top = input({
   label: "Top",
   type: "string",
@@ -45,6 +50,7 @@ export const $top = input({
   required: false,
   clean: (value: unknown) => util.types.toNumber(value, 20),
 });
+
 export const $skip = input({
   label: "Skip",
   type: "string",
@@ -55,6 +61,7 @@ export const $skip = input({
   required: false,
   clean: (value: unknown) => util.types.toNumber(value, 0),
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -63,6 +70,7 @@ export const fetchAll = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const customQueryParams = input({
   label: "Custom Query Params",
   type: "string",
@@ -74,6 +82,7 @@ export const customQueryParams = input({
   placeholder: "Enter custom parameters",
   clean: cleanKeyValueList,
 });
+
 export const defaultPaginationInputs = {
   fetchAll,
   $top,
@@ -83,6 +92,7 @@ export const defaultPaginationInputs = {
   $orderby,
   customQueryParams,
 };
+
 export const bodyFields = input({
   label: "Body Fields",
   type: "code",
@@ -92,6 +102,7 @@ export const bodyFields = input({
   required: false,
   clean: cleanBodyFields,
 });
+
 export const keyField = input({
   label: "Key Field",
   type: "string",
@@ -101,6 +112,7 @@ export const keyField = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const labelField = input({
   label: "Label Field",
   type: "string",

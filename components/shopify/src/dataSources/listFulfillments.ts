@@ -4,6 +4,7 @@ import { getShopifyGraphQlClient } from "../client";
 import { selectFulfillmentsInputs } from "../inputs";
 import type { DataSourceRecord } from "../types";
 import { getNumericId } from "../util";
+
 export const listFulfillments = dataSource({
   display: {
     label: "Select Fulfillment",
@@ -16,14 +17,11 @@ export const listFulfillments = dataSource({
       false,
       context.logger,
     );
-    const data: {
-      order: {
-        fulfillments: DataSourceRecord[];
-      };
-    } = await client.request(listFulfillmentsQuery, {
-      orderId: `gid://shopify/Order/${orderId}`,
-      first: 10000,
-    });
+    const data: { order: { fulfillments: DataSourceRecord[] } } =
+      await client.request(listFulfillmentsQuery, {
+        orderId: `gid://shopify/Order/${orderId}`,
+        first: 10000,
+      });
     const result = data.order.fulfillments.map((fulfillment) => {
       const numericId = getNumericId(fulfillment.id);
       return {
@@ -31,6 +29,7 @@ export const listFulfillments = dataSource({
         key: util.types.toString(numericId),
       };
     });
+
     return { result };
   },
   inputs: selectFulfillmentsInputs,

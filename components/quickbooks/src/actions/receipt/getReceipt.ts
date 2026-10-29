@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { connectionInput, receiptId } from "../../inputs";
+
 export const getReceipt = action({
   display: {
     label: "Get Sales Receipt",
@@ -12,6 +13,7 @@ export const getReceipt = action({
       params.quickbooksConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/salesreceipt/${params.receiptId}`);
     return { data };
   },

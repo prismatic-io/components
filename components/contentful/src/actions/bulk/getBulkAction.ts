@@ -5,6 +5,7 @@ import { getBulkActionExamplePayload } from "../../examplePayloads";
 import { getBulkActionInputs } from "../../inputs";
 import { getBulkActionOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const getBulkAction = action({
   display: {
     label: "Get Bulk Action",

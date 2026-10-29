@@ -5,6 +5,7 @@ import { MAX_LIMIT } from "../constants";
 import { selectVariantsInputs } from "../inputs";
 import type { DataSourceRecord } from "../types";
 import { fetchData, getNumericId } from "../util";
+
 export const listVariants = dataSource({
   display: {
     label: "Select Variant",
@@ -22,10 +23,9 @@ export const listVariants = dataSource({
     const numericProductId = productId.startsWith("gid://")
       ? getNumericId(productId)
       : productId;
+
     const { productVariants } = (await fetchData<
-      DataSourceRecord & {
-        displayName?: string;
-      }
+      DataSourceRecord & { displayName?: string }
     >(
       client,
       ["productVariants"],
@@ -38,10 +38,9 @@ export const listVariants = dataSource({
       },
     )) as unknown as Record<
       "productVariants",
-      (DataSourceRecord & {
-        displayName?: string;
-      })[]
+      (DataSourceRecord & { displayName?: string })[]
     >;
+
     const result = productVariants
       .map<Element>((variant) => {
         const numericId = getNumericId(variant.id);
@@ -51,6 +50,7 @@ export const listVariants = dataSource({
         };
       })
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

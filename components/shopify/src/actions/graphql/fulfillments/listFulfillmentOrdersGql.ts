@@ -9,6 +9,7 @@ import { fetchData } from "../../../util";
 import { fulfillmentOrderMapper } from "../mappers/fulfillmentOrderMapper";
 import { paginationMapper } from "../mappers/paginationMapper";
 import listFulfillmentOrdersQuery from "../queries/fulfillments/ListFulfillmentOrders.gql";
+
 export const listFulfillmentOrdersGql = action({
   display: {
     label: "List Fulfillment Orders",
@@ -43,6 +44,7 @@ export const listFulfillmentOrdersGql = action({
     )) as Record<"fulfillmentOrders", FulfillmentOrder[]> & {
       pageInfo: PageInfo;
     };
+
     return {
       data: {
         data: {

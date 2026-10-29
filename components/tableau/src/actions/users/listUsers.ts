@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -21,6 +22,7 @@ export const listUsers = action({
           util.types.toNumber(params.pagination?.pageNumber) || undefined,
       },
     });
+
     return {
       data: response.data,
     };

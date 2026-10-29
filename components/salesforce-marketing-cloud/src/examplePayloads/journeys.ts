@@ -1,4 +1,5 @@
 import type { PaginatedResponse } from "../types";
+
 export const getJourneyExamplePayload = {
   data: {
     id: "69dd5e94-d963-4508-861b-8f818d6da93a",
@@ -162,9 +163,8 @@ export const getJourneyExamplePayload = {
     campaigns: [],
   },
 };
-export const listJourneysExamplePayload: {
-  data: PaginatedResponse;
-} = {
+
+export const listJourneysExamplePayload: { data: PaginatedResponse } = {
   data: {
     count: 1,
     page: 1,
@@ -217,16 +217,21 @@ export const listJourneysExamplePayload: {
     ],
   },
 };
+
 export const createJourneyExamplePayload = getJourneyExamplePayload;
+
 export const updateJourneyExamplePayload = getJourneyExamplePayload;
+
 export const fireEntryEventExamplePayload = {
   data: {
     eventInstanceId: "d4e5f6a7-b8c9-0123-defa-345678901234",
   },
 };
+
 export const deleteJourneyExamplePayload = {
   data: null,
 };
+
 export const exitContactFromJourneyExamplePayload = {
   data: {
     errors: [],

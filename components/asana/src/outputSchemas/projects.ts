@@ -7,6 +7,7 @@ import {
   userCompactSchema,
   workspaceCompactSchema,
 } from "./shared";
+
 export const projectResponseSchema = {
   type: "object" as const,
   properties: {
@@ -142,6 +143,7 @@ export const projectResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listProjectsOutputSchema = {
   type: "object" as const,
   properties: {

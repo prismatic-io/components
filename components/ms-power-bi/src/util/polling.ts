@@ -1,6 +1,8 @@
 import { util } from "@prismatic-io/spectral";
 import type { PowerBIChangesObject, PowerBIRecordChange } from "../types";
+
 const LOOK_BACK_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
@@ -24,6 +26,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return str;
 };
+
 export const resolvePollingRecordChanges = (
   data: PowerBIChangesObject | undefined,
 ): PowerBIRecordChange[] => {

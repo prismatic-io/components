@@ -9,6 +9,7 @@ import {
   settings,
 } from "../../inputs";
 import { createWarehouseExamplePayload } from "../../examplePayloads";
+
 export const createWarehouse = action({
   display: {
     label: "Create Warehouse",

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { completePaymentExamplePayload } from "../../examplePayloads";
 import { completePaymentInputs } from "../../inputs";
+
 export const completePayment = action({
   display: {
     label: "Complete Payment",
@@ -12,9 +13,11 @@ export const completePayment = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.post(`/v2/payments/${paymentId}/complete`, {
       version_token: versionToken,
     });
+
     return {
       data: response.data,
     };

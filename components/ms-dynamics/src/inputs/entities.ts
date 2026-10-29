@@ -15,12 +15,14 @@ import {
   nextPageId,
   recordTypeFilter,
 } from "./common";
+
 const dynamicValuesInput = input({
   label: "Dynamic Values",
   type: "data",
   required: false,
   clean: toDynamicValues,
 });
+
 const fieldValues = input({
   label: "Field Value",
   placeholder: "Enter field value",
@@ -32,6 +34,7 @@ const fieldValues = input({
   clean: (rawValue) =>
     util.types.keyValPairListToObject(rawValue as KeyValuePair<unknown>[]),
 });
+
 const recordsPerPage = input({
   label: "Records Per Page",
   placeholder: "Enter records per page",
@@ -42,6 +45,7 @@ const recordsPerPage = input({
   example: "100",
   clean: util.types.toNumber,
 });
+
 const orderByFieldNames = input({
   label: "Order By Field Name",
   placeholder: "Enter order-by field name",
@@ -52,6 +56,7 @@ const orderByFieldNames = input({
     "The OData $orderby fields. Suffix with 'desc' for descending order, e.g., 'createdon desc'.",
   clean: toFilteredStringList,
 });
+
 const lookupField = input({
   label: "Use Logical Name for Lookup",
   required: false,
@@ -62,6 +67,7 @@ const lookupField = input({
   example: "true",
   clean: util.types.toBool,
 });
+
 export const includeCustom = input({
   label: "Include Custom Entities",
   type: "boolean",
@@ -70,6 +76,7 @@ export const includeCustom = input({
   comments: "When true, includes custom entities in the result.",
   clean: util.types.toBool,
 });
+
 export const includeOnlyTopLevel = input({
   label: "Top Level Only",
   type: "boolean",
@@ -79,6 +86,7 @@ export const includeOnlyTopLevel = input({
     "When true, includes only top-level entities and excludes child entities.",
   clean: util.types.toBool,
 });
+
 export const includeDetails = input({
   label: "Include Entity Details",
   type: "boolean",
@@ -88,6 +96,7 @@ export const includeDetails = input({
     "When true, includes additional metadata such as description, ownership type, and validity flags.",
   clean: util.types.toBool,
 });
+
 const batchActionsInput = input({
   label: "Batch Actions",
   comments:
@@ -99,6 +108,7 @@ const batchActionsInput = input({
   example: JSON.stringify(batchActionsExample),
   default: JSON.stringify(batchActionsDefault, null, 2),
 });
+
 interface CreateAction {
   collection: string;
   action: "create";
@@ -118,6 +128,7 @@ interface DeleteAction {
   key: string;
 }
 type BatchedActions = (CreateAction | UpdateAction | DeleteAction)[];
+
 function parseBatchedActions(actions: unknown): BatchedActions {
   const parsedActions = util.types.toObject(actions);
   if (!Array.isArray(parsedActions)) {
@@ -133,7 +144,9 @@ function parseBatchedActions(actions: unknown): BatchedActions {
     }
     if (!["create", "update", "delete"].includes(action.action)) {
       throw new Error(
-        `This action is missing an action type, or the action type doesn't match "create", "update", or "delete": ${JSON.stringify(action)}`,
+        `This action is missing an action type, or the action type doesn't match "create", "update", or "delete": ${JSON.stringify(
+          action,
+        )}`,
       );
     }
     if (["update", "delete"].includes(action.action) && !action.key) {
@@ -149,6 +162,7 @@ function parseBatchedActions(actions: unknown): BatchedActions {
   }
   return util.types.toObject(actions) as BatchedActions;
 }
+
 export const getEntitiesMetaDataInputs = {
   connection: connectionInput,
   defaultSelectedRecordTypes,
@@ -156,11 +170,13 @@ export const getEntitiesMetaDataInputs = {
   includeAllCustomRecordTypes,
   includeOnlyTopLevelRecordTypes,
 };
+
 export const getEntityMetaDataInputs = {
   connection: connectionInput,
   entityType,
   lookupField,
 };
+
 export const queryEntitiesInputs = {
   connection: connectionInput,
   entityType,
@@ -172,6 +188,7 @@ export const queryEntitiesInputs = {
   recordsPerPage,
   nextPageId,
 };
+
 export const getEntityInputs = {
   entityType,
   entityId,
@@ -179,12 +196,14 @@ export const getEntityInputs = {
   expandPropertyNames,
   connection: connectionInput,
 };
+
 export const createEntityInputs = {
   entityType,
   dynamicValues: dynamicValuesInput,
   fieldValues,
   connection: connectionInput,
 };
+
 export const updateEntityInputs = {
   entityType,
   entityId,
@@ -192,11 +211,13 @@ export const updateEntityInputs = {
   dynamicValues: dynamicValuesInput,
   connection: connectionInput,
 };
+
 export const deleteEntityInputs = {
   entityType,
   entityId,
   connection: connectionInput,
 };
+
 export const upsertEntityInputs = {
   entityType,
   entityId,
@@ -204,10 +225,12 @@ export const upsertEntityInputs = {
   dynamicValues: dynamicValuesInput,
   connection: connectionInput,
 };
+
 export const batchEntityActionsInputs = {
   connection: connectionInput,
   actions: batchActionsInput,
 };
+
 export const listEntitiesActionInputs = {
   connection: connectionInput,
   includeCustom,

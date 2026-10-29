@@ -5,6 +5,7 @@ import type {
   PollingChangesObject,
   PollingRecordChange,
 } from "./interfaces";
+
 export const cleanArrayListFileInput = (input: unknown): DataPayload[] => {
   if (Array.isArray(input)) {
     return input.map((file) => {
@@ -13,6 +14,7 @@ export const cleanArrayListFileInput = (input: unknown): DataPayload[] => {
   }
   throw new Error("Input must have at least one file");
 };
+
 export const cleanStringArrayInput = (input: unknown): string[] | undefined => {
   if (Array.isArray(input)) {
     return input.map((file) => {
@@ -21,24 +23,30 @@ export const cleanStringArrayInput = (input: unknown): string[] | undefined => {
   }
   return undefined;
 };
+
 export const cleanStringInput = (input: unknown) => {
   return input ? util.types.toString(input) : undefined;
 };
+
 export const cleanBooleanInput = (input: unknown) => {
   return input ? util.types.toBool(input) : undefined;
 };
+
 export const cleanNumberInput = (input: unknown) => {
   return input ? util.types.toNumber(input) : undefined;
 };
+
 export const cleanCodeInput = (input: unknown) => {
   return input ? util.types.toObject(input) : undefined;
 };
+
 export const cleanKeyValueListInput = (value: unknown) =>
   value
     ? util.types.keyValPairListToObject(
         value as Parameters<typeof util.types.keyValPairListToObject>[0],
       )
     : undefined;
+
 export const addPropertyToPayload = (payload: Record<string, unknown>) => {
   const obj: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(payload)) {
@@ -48,6 +56,7 @@ export const addPropertyToPayload = (payload: Record<string, unknown>) => {
   }
   return obj;
 };
+
 export const addNotificationsToObject = (
   payload: Record<string, unknown>,
   destination: string | undefined,
@@ -60,6 +69,7 @@ export const addNotificationsToObject = (
     };
   }
 };
+
 export async function fetchAllRecords<T>(
   client: HttpClient,
   url: string,
@@ -90,12 +100,15 @@ export async function fetchAllRecords<T>(
       offset += limit;
     }
   } while (hasMore);
+
   return {
     data: records,
     total: records.length,
   };
 }
+
 export const toYotiDate = (iso: string): string => iso.slice(0, 10);
+
 export const filterEnvelopesCreatedAfter = (
   envelopes: Envelope[],
   lastPolledAt: string,
@@ -108,6 +121,7 @@ export const filterEnvelopesCreatedAfter = (
     return !Number.isNaN(createdMs) && createdMs > lastPolledAtMs;
   });
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {
@@ -118,12 +132,15 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (!raw) return "";
+
   if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const [year, month, day] = raw.split("-").map(Number);
   const parsed = new Date(year, month - 1, day);
   if (
@@ -133,10 +150,12 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error("Look-back Date is not a valid calendar date.");
   }
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   if (parsed > today) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return raw;
 };

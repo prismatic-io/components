@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 export const getStagesStreamInputs = {
   connection,
   position: input({
@@ -22,6 +23,7 @@ export const getStagesStreamInputs = {
     clean: util.types.toString,
   }),
 };
+
 const pipelineId = input({
   label: "Pipeline ID",
   comments: "The unique identifier of the pipeline that contains this stage.",
@@ -32,6 +34,7 @@ const pipelineId = input({
   clean: util.types.toString,
   dataSource: "selectPipeline",
 });
+
 const sortBy = input({
   label: "Sort By",
   comments:
@@ -42,6 +45,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of stage IDs to be returned in a request.",
@@ -51,6 +55,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const name = input({
   label: "Name",
   placeholder: "Enter name",
@@ -61,6 +66,7 @@ const name = input({
   required: false,
   clean: util.types.toString,
 });
+
 const active = input({
   label: "Active",
   comments:
@@ -75,6 +81,7 @@ const active = input({
   ],
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -85,6 +92,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -95,12 +103,14 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, perPage },
 });
+
 export const listStagesInputs = {
   connection,
   fetchAll,

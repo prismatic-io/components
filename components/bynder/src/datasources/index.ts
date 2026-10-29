@@ -7,6 +7,7 @@ import { selectMetaproperty } from "./selectMetaproperty";
 import { selectOrder } from "./selectOrder";
 import { selectSecurityProfile } from "./selectSecurityProfile";
 import { selectUser } from "./selectUser";
+
 export default {
   selectAsset,
   selectBrand,

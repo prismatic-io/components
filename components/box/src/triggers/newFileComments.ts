@@ -10,6 +10,7 @@ import {
   normalizeDatesBetweenEntries,
   resolveCommentChanges,
 } from "../util";
+
 export const newFileComments = pollingTrigger({
   display: {
     label: "New File Comments",
@@ -28,23 +29,26 @@ export const newFileComments = pollingTrigger({
     const now = new Date().toISOString();
     const client = createAuthorizedClient({ boxConnection: connection });
     const lastPolledAt = getLastPolledAt(context, lookBackDate || now);
+
     context.logger.debug(
       `Polling for comments from: ${lastPolledAt} to ${now}`,
     );
+
     const allComments = await getAllFileComments(
       client,
       util.types.toString(fileId),
     );
+
     context.logger.info(`Polled ${allComments.length} comments`);
+
     context.logger.info("Normalizing comment dates...");
     const normalizedComments = normalizeDatesBetweenEntries(
-      allComments as {
-        created_at?: string;
-        modified_at?: string;
-      }[],
+      allComments as { created_at?: string; modified_at?: string }[],
     );
+
     context.logger.info("Computing new comments...");
     const newComments = computeNewEntries(normalizedComments, lastPolledAt);
+
     context.logger.info("Setting polling state...");
     context.polling.setState({ lastPolledAt: now });
     return {

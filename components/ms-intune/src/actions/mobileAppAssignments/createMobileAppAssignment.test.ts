@@ -3,10 +3,12 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { getMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { createMobileAppAssignment } from "./createMobileAppAssignment";
+
 const HOST = "https://graph.microsoft.com";
 const MOBILE_APP_ID = "0177548a-548a-0177-8a54-77018a547701";
 const PATH = `/v1.0/deviceAppManagement/mobileApps/${MOBILE_APP_ID}/assignments`;
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -18,9 +20,12 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const assignmentReply = getMobileAppAssignmentExamplePayload.data;
+
 describe("createMobileAppAssignment", () => {
   afterEach(() => nock.cleanAll());
+
   test("wraps the target and settings type names in @odata.type envelopes", async () => {
     const scope = nock(HOST)
       .post(PATH, {
@@ -35,6 +40,7 @@ describe("createMobileAppAssignment", () => {
         },
       })
       .reply(201, assignmentReply);
+
     const { result } = await invoke(createMobileAppAssignment, {
       connection,
       mobileAppId: MOBILE_APP_ID,
@@ -42,13 +48,16 @@ describe("createMobileAppAssignment", () => {
       target: "microsoft.graph.allLicensedUsersAssignmentTarget",
       settings: "microsoft.graph.windowsUniversalAppXAppAssignmentSettings",
     });
+
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(assignmentReply);
   });
+
   test("surfaces the failure when the API rejects the assignment", async () => {
     nock(HOST)
       .post(PATH)
       .reply(400, { error: { code: "BadRequest" } });
+
     await expect(
       invoke(createMobileAppAssignment, {
         connection,

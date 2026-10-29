@@ -8,6 +8,7 @@ import {
   version,
 } from "../../inputs";
 import { generatePayload } from "../util";
+
 export const getProduct = action({
   display: {
     label: "Get Single Product",

@@ -1,4 +1,5 @@
 import { connection } from "./common";
+
 export const selectCategoryInputs = { connection };
 export const selectComputerInputs = { connection };
 export const selectDepartmentInputs = { connection };

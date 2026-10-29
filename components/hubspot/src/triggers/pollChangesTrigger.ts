@@ -7,6 +7,7 @@ import {
   pollChangesBatchConfig,
   pollChangesResolver,
 } from "./pollChanges";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",

@@ -4,12 +4,15 @@ import {
 } from "@prismatic-io/spectral/dist/testing";
 import component from "../..";
 import { jiraOAuthConnection as oauth } from "../../connections";
+
 const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   ? describe
   : describe.skip;
+
 describeIntegrationTest("webhooks", () => {
   const harness = createHarness(component);
   const connection = createConnection(oauth, {});
+
   it.skip("should create a webhook", async () => {
     const result = await harness.action("createWebhook", {
       jiraConnection: connection,
@@ -23,6 +26,7 @@ describeIntegrationTest("webhooks", () => {
     });
     expect(result).toBeDefined();
   });
+
   it.skip("should delete a webhook", async () => {
     const result = await harness.action("deleteWebhook", {
       jiraConnection: connection,
@@ -30,6 +34,7 @@ describeIntegrationTest("webhooks", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("should refresh a webhook", async () => {
     const result = await harness.action("refreshWebhook", {
       jiraConnection: connection,
@@ -37,6 +42,7 @@ describeIntegrationTest("webhooks", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("should list webhooks", async () => {
     const result = await harness.action("listWebhooks", {
       jiraConnection: connection,

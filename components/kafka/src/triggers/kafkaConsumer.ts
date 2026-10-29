@@ -5,6 +5,7 @@ import { kafkaConsumerExamplePayload } from "../examplePayloads";
 import { kafkaConsumerInputs } from "../inputs";
 import type { DeserializedValue, KafkaMessage } from "../types/consumer";
 import { createSchemaRegistryClient, deserializeBuffer } from "../utils";
+
 export const kafkaConsumer = trigger({
   display: {
     label: "Kafka Consumer",
@@ -24,6 +25,7 @@ export const kafkaConsumer = trigger({
     } = params;
     const { fromBeginning, autoCommit, deserializeKeys } =
       consumerOptions ?? {};
+
     const kafka = createClient(
       {
         clientId,
@@ -32,18 +34,22 @@ export const kafkaConsumer = trigger({
       },
       context.debug.enabled,
     );
+
     const avroEnabled = util.types.toBool(connection.fields.avroEnabled);
     const registry =
       avroEnabled && connection.fields.schemaRegistryUrl
         ? createSchemaRegistryClient(connection)
         : undefined;
+
     const consumer = kafka.consumer({
       groupId: consumerGroupId,
       sessionTimeout,
       heartbeatInterval,
     });
+
     try {
       await consumer.connect();
+
       const topicsToSubscribe = topics;
       await Promise.all(
         topicsToSubscribe.map((topic) =>
@@ -53,22 +59,28 @@ export const kafkaConsumer = trigger({
           }),
         ),
       );
+
       const messages: KafkaMessage[] = [];
+
       let messageCount = 0;
+
       const consumePromise = new Promise<void>((resolve, reject) => {
         let settled = false;
+
         const resolveOnce = () => {
           if (!settled) {
             settled = true;
             resolve();
           }
         };
+
         const rejectOnce = (error: unknown) => {
           if (!settled) {
             settled = true;
             reject(error);
           }
         };
+
         consumer
           .run({
             autoCommit,
@@ -77,8 +89,10 @@ export const kafkaConsumer = trigger({
                 resolveOnce();
                 return;
               }
+
               let key: DeserializedValue | null = null;
               let value: DeserializedValue | null = null;
+
               if (registry && message.value) {
                 value = await deserializeBuffer(
                   registry,
@@ -88,6 +102,7 @@ export const kafkaConsumer = trigger({
               } else if (message.value) {
                 value = util.types.toString(message.value);
               }
+
               if (registry && deserializeKeys && message.key) {
                 key = await deserializeBuffer(
                   registry,
@@ -97,6 +112,7 @@ export const kafkaConsumer = trigger({
               } else if (message.key) {
                 key = util.types.toString(message.key);
               }
+
               messages.push({
                 topic,
                 partition,
@@ -106,18 +122,23 @@ export const kafkaConsumer = trigger({
                 timestamp: message.timestamp,
                 headers: message.headers,
               });
+
               messageCount++;
+
               if (messageCount >= maxMessages) {
                 resolveOnce();
               }
             },
           })
           .catch(rejectOnce);
+
         setTimeout(() => resolveOnce(), CONSUME_TIMEOUT_MS);
       });
+
       await consumePromise;
       await consumer.stop();
       await consumer.disconnect();
+
       return {
         payload: {
           ...payload,

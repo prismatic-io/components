@@ -3,6 +3,7 @@ import {
   LIST_FULFILLMENT_ORDERS_DATASOURCE_REFERENCE,
   LIST_FULFILLMENTS_DATASOURCE_REFERENCE,
 } from "../../constants";
+
 export const fulfillmentId = input({
   label: "Fulfillment ID",
   type: "string",
@@ -13,6 +14,7 @@ export const fulfillmentId = input({
   clean: util.types.toString,
   dataSource: LIST_FULFILLMENTS_DATASOURCE_REFERENCE,
 });
+
 export const fulfillmentOrderId = input({
   label: "Fulfillment Order ID",
   type: "string",

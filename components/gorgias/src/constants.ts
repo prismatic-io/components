@@ -1,5 +1,7 @@
 export const LIMIT_MIN = 10;
+
 export const LIMIT_MAX = 100;
+
 export const TIMEZONE_MODEL = [
   { value: "Africa/Abidjan", label: "Africa/Abidjan" },
   { value: "Africa/Accra", label: "Africa/Accra" },
@@ -627,6 +629,7 @@ export const TIMEZONE_MODEL = [
   { value: "WET", label: "WET" },
   { value: "Zulu", label: "Zulu" },
 ];
+
 export const CHANNEL_MODEL = [
   { value: "aircall", label: "Aircall" },
   { value: "api", label: "API" },
@@ -650,6 +653,7 @@ export const CHANNEL_MODEL = [
   { value: "whatsapp", label: "WhatsApp" },
   { value: "yotpo-review", label: "Yotpo Review" },
 ];
+
 export const VIA_MODEL = [
   { value: "aircall", label: "Aircall" },
   { value: "api", label: "API" },
@@ -684,6 +688,7 @@ export const VIA_MODEL = [
   { value: "yotpo-review", label: "Yotpo Review" },
   { value: "zendesk", label: "Zendesk" },
 ];
+
 export const TYPE_MODEL = [
   { value: "account-created", label: "Account Created" },
   { value: "account-deactivated", label: "Account Deactivated" },
@@ -754,10 +759,12 @@ export const TYPE_MODEL = [
   { value: "widget-deleted", label: "widget Deleted" },
   { value: "widget-updated", label: "widget Updated" },
 ];
+
 export const BOOLEAN_MODEL = [
   { value: "true", label: "True" },
   { value: "false", label: "False" },
 ];
+
 export const LANGUAGE_MODEL = [
   { value: "aa", label: "Afar" },
   { value: "ab", label: "Abkhazian" },
@@ -945,6 +952,7 @@ export const LANGUAGE_MODEL = [
   { value: "za", label: "Zhuang" },
   { value: "zu", label: "Zulu" },
 ];
+
 export const ATTACHMENTS_EXAMPLE = [
   {
     url: "string",
@@ -955,6 +963,7 @@ export const ATTACHMENTS_EXAMPLE = [
     extra: "string",
   },
 ];
+
 export const SOURCE_EXAMPLE = [
   {
     type: "string",
@@ -982,25 +991,25 @@ export const SOURCE_EXAMPLE = [
     },
   },
 ];
+
 export const SENDER_EXAMPLE = {
   id: "number",
   email: "string",
 };
+
 export const RECEIVER_EXAMPLE = {
   id: "number",
   email: "string",
 };
+
 export enum MESSAGES {
   SUCCESS = "Success",
   ERROR = "Error",
 }
-export const RESOURCE_CONFIG: Record<
-  string,
-  {
-    endpoint: string;
-  }
-> = {
+
+export const RESOURCE_CONFIG: Record<string, { endpoint: string }> = {
   tickets: { endpoint: "/tickets" },
   customers: { endpoint: "/customers" },
 };
+
 export const DEFAULT_BATCH_SIZE = 50;

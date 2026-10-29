@@ -10,6 +10,7 @@ import type {
   SupplierUpdateRequestVo,
 } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateSupplier = action({
   display: {
     label: "Update Supplier",
@@ -41,10 +42,13 @@ export const updateSupplier = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const supplierPayload: SupplierUpdateRequestVo = {};
+
       if (name) {
         supplierPayload.name = name;
       }
+
       if (supplierId) {
         supplierPayload.supplierId = supplierId;
       }
@@ -70,10 +74,12 @@ export const updateSupplier = action({
       ) {
         supplierPayload.phoneNumbers = phoneNumbers as PhoneNumberVo[];
       }
+
       supplierPayload.additionalAttributes = resolveAdditionalAttributes(
         { additionalAttributes, attributeDefinitions },
         context,
       );
+
       context.logger.info("Updating supplier", {
         supplierGuid,
         name,
@@ -85,13 +91,16 @@ export const updateSupplier = action({
           attributeDefinitions.length > 0
         ),
       });
+
       const { data } = await client.put<SupplierFullVo>(
         `/suppliers/${supplierGuid}`,
         supplierPayload,
       );
+
       context.logger.info(
         `Successfully updated supplier: ${data.name} (${data.guid})`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Supplier");

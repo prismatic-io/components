@@ -1,4 +1,5 @@
 import type { Address, CustomField, ExternalData } from "./common";
+
 export interface Customer {
   id: number;
   active: boolean;
@@ -16,10 +17,12 @@ export interface Customer {
   mergedToId: number | null;
   externalData: ExternalData[];
 }
+
 interface PhoneSettings {
   phoneNumber: string;
   doNotText: boolean;
 }
+
 export interface ContactCustomer {
   id: number;
   type: string;

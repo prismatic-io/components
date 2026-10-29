@@ -68,20 +68,25 @@ const folderObject = {
   ],
   permission_level: "create",
 };
+
 export const getFolderExamplePayload = {
   data: folderObject,
 };
+
 export const listFoldersExamplePayload = {
   data: {
     folders: [folderObject],
   },
 };
+
 export const createFolderExamplePayload = {
   data: folderObject,
 };
+
 export const updateFolderExamplePayload = {
   data: folderObject,
 };
+
 export const deleteFolderExamplePayload = {
   data: {},
 };

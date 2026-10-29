@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listAccessibleCustomersExamplePayload } from "../../examplePayloads";
 import { listAccessibleCustomersInputs } from "../../inputs";
 import { listAccessibleCustomersOutputSchema } from "../../outputSchemas";
+
 export const listAccessibleCustomers = action({
   display: {
     label: "List Accessible Customers",

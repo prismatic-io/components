@@ -4,6 +4,7 @@ import candidates from "./candidates";
 import jobs from "./jobs";
 import misc from "./misc";
 import users from "./users";
+
 export default {
   ...users,
   ...candidates,

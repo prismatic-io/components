@@ -1,6 +1,7 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { Messages } from "./constants";
 import type { ExamplePayload } from "./types";
+
 export const listAssetsExamplePayload: ExamplePayload = {
   data: {
     responseMessage: "Valid API Access",
@@ -48,6 +49,7 @@ export const listAssetsExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const getAssetExamplePayload: ExamplePayload = {
   data: {
     responseMessage: "Valid API Access",
@@ -78,6 +80,7 @@ export const getAssetExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const syncAssetExamplePayload: ExamplePayload = {
   data: {
     message:
@@ -86,6 +89,7 @@ export const syncAssetExamplePayload: ExamplePayload = {
     assetsError: {},
   },
 };
+
 export const listAssetRiskDataExamplePayload: ExamplePayload = {
   data: [
     {
@@ -110,6 +114,7 @@ export const listAssetRiskDataExamplePayload: ExamplePayload = {
     },
   ],
 };
+
 export const listTagsExamplePayload: ExamplePayload = {
   data: {
     ServiceResponse: {
@@ -135,6 +140,7 @@ export const listTagsExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const createTagExamplePayload: ExamplePayload = {
   data: {
     ServiceResponse: {
@@ -158,6 +164,7 @@ export const createTagExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const updateTagExamplePayload: ExamplePayload = {
   data: {
     ServiceResponse: {
@@ -171,6 +178,7 @@ export const updateTagExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const updateAssetTagsExamplePayload: ExamplePayload = {
   data: {
     ServiceResponse: {
@@ -184,6 +192,7 @@ export const updateAssetTagsExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const launchScanExamplePayload: ExamplePayload = {
   data: {
     scanRef: "scan/1718450400.12345",
@@ -191,6 +200,7 @@ export const launchScanExamplePayload: ExamplePayload = {
     message: Messages.SCAN_LAUNCHED,
   },
 };
+
 export const listScansExamplePayload: ExamplePayload = {
   data: [
     {
@@ -217,6 +227,7 @@ export const listScansExamplePayload: ExamplePayload = {
     },
   ],
 };
+
 export const listRemediationTicketsExamplePayload: ExamplePayload = {
   data: {
     tickets: [
@@ -245,6 +256,7 @@ export const listRemediationTicketsExamplePayload: ExamplePayload = {
     truncated: false,
   },
 };
+
 export const getRemediationTicketInfoExamplePayload: ExamplePayload = {
   data: {
     REMEDIATION_TICKETS: {
@@ -267,6 +279,7 @@ export const getRemediationTicketInfoExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const editRemediationTicketsExamplePayload: ExamplePayload = {
   data: {
     message: Messages.TICKETS_UPDATED,
@@ -282,6 +295,7 @@ export const editRemediationTicketsExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const deleteRemediationTicketsExamplePayload: ExamplePayload = {
   data: {
     message: Messages.TICKETS_DRY_RUN,
@@ -300,6 +314,7 @@ export const deleteRemediationTicketsExamplePayload: ExamplePayload = {
     },
   },
 };
+
 export const rawRequestExamplePayload: ExamplePayload = {
   data: {
     statusCode: 200,
@@ -308,24 +323,28 @@ export const rawRequestExamplePayload: ExamplePayload = {
     body: {},
   },
 };
+
 export const selectTagExamplePayload = {
   result: [
     { key: "12345", label: "LS:Environment=Production" },
     { key: "67890", label: "Cloud Agent" },
   ],
 };
+
 export const selectAssetGroupExamplePayload = {
   result: [
     { key: "100", label: "All Assets" },
     { key: "200", label: "Web Servers" },
   ],
 };
+
 export const selectScannerApplianceExamplePayload = {
   result: [
     { key: "5001", label: "Scanner-01 (Online)" },
     { key: "5002", label: "Scanner-02 (Offline)" },
   ],
 };
+
 const changedAssetsVerifiedAsset = {
   assetId: 1225180001,
   assetUUID: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
@@ -476,9 +495,8 @@ const changedAssetsVerifiedAsset = {
     coresPerSocket: 2,
   },
 };
-export const changedAssetsExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const changedAssetsExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

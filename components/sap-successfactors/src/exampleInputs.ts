@@ -45,6 +45,7 @@ export const createCandidateInfoExample = {
   userId: ["string", "null"],
   workCountry: ["string", "null"],
 };
+
 export const createJobApplicationInfoExample = {
   __metadata: {
     uri: "https://api68sales.successfactors.com/odata/v2/JobApplication(388L)",

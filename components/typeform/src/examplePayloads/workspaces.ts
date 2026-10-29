@@ -15,9 +15,11 @@ export const getWorkspaceResponse = {
   ],
   shared: false,
 };
+
 export const listWorkspacesResponse = {
   items: [getWorkspaceResponse],
 };
+
 export const listAccountWorkspacesResponse = {
   items: [
     {

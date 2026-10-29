@@ -8,6 +8,7 @@ import {
   fetchAllSearchFolders,
   handleDropboxError,
 } from "../../util";
+
 export const searchFolders = action({
   display: {
     label: "Search Folders",
@@ -21,6 +22,7 @@ export const searchFolders = action({
       params.userType,
       params.teamMemberId,
     );
+
     try {
       const data = await fetchAllSearchFolders(dbx, {
         query: params.query,
@@ -34,9 +36,7 @@ export const searchFolders = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: searchFoldersExamplePayload,
   }),
   inputs: searchFoldersInputs,

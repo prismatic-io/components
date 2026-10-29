@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { searchCatalogObjectsExamplePayload } from "../../examplePayloads";
 import { searchCatalogObjectsInputs } from "../../inputs";
+
 export const searchCatalogObjects = action({
   display: {
     label: "Search Catalog Objects",
@@ -24,6 +25,7 @@ export const searchCatalogObjects = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       cursor: pagination.cursor,
       object_types: objectTypes,
@@ -33,7 +35,9 @@ export const searchCatalogObjects = action({
       query: catalogQuery,
       limit: pagination.limit,
     };
+
     const response = await client.post("/v2/catalog/search", requestBody);
+
     return {
       data: response.data,
     };

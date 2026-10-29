@@ -4,6 +4,7 @@ import { searchPersonsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { searchPersonsExamplePayload } from "../../examplePayloads";
 import { searchPersonsOutputSchema } from "../../outputSchemas";
+
 export const searchPersons = action({
   display: {
     label: "Search Persons",

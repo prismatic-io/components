@@ -18,6 +18,7 @@ import {
   getTeamId,
   startDate,
 } from "./common";
+
 const tagsCode = input({
   label: "Tags",
   type: "code",
@@ -41,6 +42,7 @@ const tagsCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 const endDate = input({
   label: "End Date",
   type: "string",
@@ -50,6 +52,7 @@ const endDate = input({
   required: false,
   clean: cleanString,
 });
+
 const includeTaskTags = input({
   label: "Include Task Tags",
   type: "boolean",
@@ -59,6 +62,7 @@ const includeTaskTags = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const includeLocationNames = input({
   label: "Include Location Names",
   type: "boolean",
@@ -68,6 +72,7 @@ const includeLocationNames = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const getCustomTeamId = <R extends boolean>(required: R) =>
   input({
     label: "Custom Team ID",
@@ -77,6 +82,7 @@ const getCustomTeamId = <R extends boolean>(required: R) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 const getTagNamesArray = (required: boolean, comments: string) =>
   input({
     label: "Tag Name",
@@ -87,6 +93,7 @@ const getTagNamesArray = (required: boolean, comments: string) =>
     comments,
     clean: cleanStringArray,
   });
+
 const timerId = input({
   label: "Timer ID",
   type: "string",
@@ -96,6 +103,7 @@ const timerId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const getStart = (required: boolean, comments: string) =>
   input({
     label: "Start",
@@ -105,6 +113,7 @@ const getStart = (required: boolean, comments: string) =>
     required,
     clean: cleanNumber,
   });
+
 const getEnd = (required: boolean, comments: string) =>
   input({
     label: "End",
@@ -114,6 +123,7 @@ const getEnd = (required: boolean, comments: string) =>
     required,
     clean: cleanNumber,
   });
+
 const getBillable = (
   required: boolean,
   comments: string,
@@ -127,6 +137,7 @@ const getBillable = (
     default: `${defaultValue}`,
     clean: util.types.toBool,
   });
+
 const getDuration = (required: boolean, comments: string) =>
   input({
     label: "Duration",
@@ -136,6 +147,7 @@ const getDuration = (required: boolean, comments: string) =>
     required,
     clean: cleanNumber,
   });
+
 const assigneeTimeEntry = input({
   label: "Assignee",
   type: "string",
@@ -146,6 +158,7 @@ const assigneeTimeEntry = input({
   required: true,
   clean: cleanNumber,
 });
+
 const tagAction = input({
   label: "Tag Action",
   type: "string",
@@ -155,6 +168,7 @@ const tagAction = input({
   required: true,
   clean: cleanTagAction,
 });
+
 export const createTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -178,11 +192,13 @@ export const createTimeEntryInputs = {
   taskId: getTaskId(true, "Associate a time entry with a task by ID"),
   tagsCode,
 };
+
 export const deleteTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
   timerId,
 };
+
 export const getSingularTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -190,6 +206,7 @@ export const getSingularTimeEntryInputs = {
   includeTaskTags,
   includeLocationNames,
 };
+
 export const getTimeEntriesWithinDateRangeInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -208,6 +225,7 @@ export const getTimeEntriesWithinDateRangeInputs = {
   customTaskIds: getCustomTaskIds(false),
   customTeamId: getCustomTeamId(false),
 };
+
 export const startTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -222,10 +240,12 @@ export const startTimeEntryInputs = {
   customTaskIds: getCustomTaskIds(false),
   customTeamId: getCustomTeamId(false),
 };
+
 export const stopTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
 };
+
 export const updateTimeEntryInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),

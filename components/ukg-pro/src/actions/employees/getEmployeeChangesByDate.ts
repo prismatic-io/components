@@ -4,6 +4,7 @@ import { getEmployeeChangesByDateExamplePayload } from "../../examplePayloads";
 import { getEmployeeChangesByDateInputs } from "../../inputs";
 import type { EmployeeChange } from "../../types";
 import { fetchWithPagination } from "../../util";
+
 export const getEmployeeChangesByDate = action({
   display: {
     label: "Get Employee Changes by Date",
@@ -16,6 +17,7 @@ export const getEmployeeChangesByDate = action({
     { connection, startDate, endDate, fetchAll, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
+
     const { data } = await fetchWithPagination<EmployeeChange>(
       client,
       "/personnel/v1/employee-changes",
@@ -27,6 +29,7 @@ export const getEmployeeChangesByDate = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: getEmployeeChangesByDateExamplePayload,

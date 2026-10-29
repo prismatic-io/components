@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+
 import {
   connection,
   customQueryParams,
@@ -8,6 +9,7 @@ import {
   pagination,
   sort,
 } from "./common";
+
 const urlType = input({
   label: "URL Type",
   type: "string",
@@ -18,7 +20,9 @@ const urlType = input({
   placeholder: "Enter a URL type",
   clean: util.types.toString,
 });
+
 const { debugRequest: _, ...rawRequestHttpInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   connection,
   urlType,
@@ -31,6 +35,7 @@ export const rawRequestInputs = {
     example: "/jobs",
   },
 };
+
 export const listBusinessUnitsInputs = {
   connection,
   fetchAll,
@@ -39,6 +44,7 @@ export const listBusinessUnitsInputs = {
   sort,
   customQueryParams,
 };
+
 export const listUserRolesInputs = {
   connection,
   fetchAll,

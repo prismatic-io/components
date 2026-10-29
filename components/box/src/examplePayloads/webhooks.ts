@@ -12,6 +12,7 @@ export const listWebhooksExamplePayload = {
     limit: 2,
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     id: "1234",
@@ -29,7 +30,9 @@ export const createWebhookExamplePayload = {
   },
   crossFlowState: { primarySignatureKey: "3T2eTfOvJbAIRoBpXsXPmq0gn8CmF5Q7" },
 };
+
 export const deleteWebhookExamplePayload = { data: null };
+
 export const deleteInstanceWebhooksExamplePayload = {
   data: {},
 };

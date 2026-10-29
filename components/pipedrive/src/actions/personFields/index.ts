@@ -4,6 +4,7 @@ import { getPersonField } from "./getPersonField";
 import { getPersonFieldV2 } from "./getPersonFieldV2";
 import { getPersonFields } from "./getPersonFields";
 import { getPersonFieldsV2 } from "./getPersonFieldsV2";
+
 export default {
   getPersonFields,
   getPersonFieldsV2,

@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { build } from "esbuild";
 import { promises as fs } from "node:fs";
+
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async (): Promise<void> => {
   await build({

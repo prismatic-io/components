@@ -3,6 +3,7 @@ import { inviteUserToOrganizationOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { inviteUserToOrganizationInputs } from "../../inputs";
 import { inviteUserToOrganizationExamplePayload } from "../../examplePayloads";
+
 export const inviteUserToOrganization = action({
   display: {
     label: "Invite User to Organization",
@@ -11,12 +12,11 @@ export const inviteUserToOrganization = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, uuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/organizations/${uuid}/invitations`);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: inviteUserToOrganizationExamplePayload.data,
   }),
   inputs: inviteUserToOrganizationInputs,

@@ -10,6 +10,7 @@ export interface Response {
   token: string;
   variables: Variable[];
 }
+
 export interface Answer {
   field: Field;
   text?: string;
@@ -21,20 +22,25 @@ export interface Answer {
   date?: string;
   choice?: Choice;
 }
+
 export interface Choice {
   label: string;
 }
+
 export interface Choices {
   labels: string[];
 }
+
 export interface Field {
   id: string;
   ref: string;
   type: string;
 }
+
 export interface Calculated {
   score: number;
 }
+
 export interface Metadata {
   browser: string;
   network_id: string;
@@ -42,6 +48,7 @@ export interface Metadata {
   referer: string;
   user_agent: string;
 }
+
 export interface Variable {
   key: string;
   number?: number;

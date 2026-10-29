@@ -8,6 +8,7 @@ import {
   minorVersion,
   note,
 } from "../../inputs";
+
 export const createNoteAttachment = action({
   display: {
     label: "Create Note Attachment",
@@ -28,7 +29,9 @@ export const createNoteAttachment = action({
     const body: Record<string, unknown> = {
       Note: note,
     };
+
     const attachableRef: Array<object> = [];
+
     if (entityRefType || entityRefValue) {
       attachableRef.push({
         IncludeOnSend: includeOnSend,
@@ -37,6 +40,7 @@ export const createNoteAttachment = action({
           ...(entityRefValue && { value: entityRefValue }),
         },
       });
+
       body.AttachableRef = attachableRef;
     }
     const { data } = await client.post("/attachable", body, {

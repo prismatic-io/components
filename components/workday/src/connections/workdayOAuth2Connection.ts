@@ -1,4 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
+
 export const workdayOAuth2Connection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "workdayOAuth2Connection",

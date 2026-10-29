@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getOrganizationPropertyExamplePayload } from "../../examplePayloads";
 import { getOrganizationPropertyInputs } from "../../inputs";
+
 export const getOrganizationProperty = action({
   display: {
     label: "Get Organization Property",
@@ -11,7 +12,9 @@ export const getOrganizationProperty = action({
   perform: async (context, { connection, organizationId, propertyKey }) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await client.get(
-      `/organization/${organizationId}/property/${encodeURIComponent(propertyKey)}`,
+      `/organization/${organizationId}/property/${encodeURIComponent(
+        propertyKey,
+      )}`,
     );
     return { data };
   },

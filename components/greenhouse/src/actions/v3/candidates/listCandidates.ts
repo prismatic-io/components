@@ -4,6 +4,7 @@ import { listCandidatesV3ExamplePayload } from "../../../examplePayloads/v3/cand
 import { listCandidatesV3Inputs } from "../../../inputs/v3/candidates";
 import type { V3Candidate } from "../../../types";
 import { generatePayload, paginateV3 } from "../../../util";
+
 export const listCandidatesV3 = action({
   display: {
     label: "List Candidates",
@@ -24,6 +25,7 @@ export const listCandidatesV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const filterParams = generatePayload({
       ids: candidateIds,
       email,
@@ -34,6 +36,7 @@ export const listCandidatesV3 = action({
       "updated_at[gte]": dateRangeFilters.updatedAtGte,
       "updated_at[lte]": dateRangeFilters.updatedAtLte,
     });
+
     const data = await paginateV3<V3Candidate>(
       client,
       "/candidates",

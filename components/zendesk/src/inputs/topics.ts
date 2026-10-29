@@ -10,24 +10,29 @@ import {
   topicName,
   userSegmentId,
 } from "./common";
+
 export const createTopicInputs = {
   zendeskConnection: connectionInput,
   topicName,
   topicDescription,
 };
+
 export const deleteTopicInputs = {
   zendeskConnection: connectionInput,
   topicId,
 };
+
 export const getTopicInputs = {
   zendeskConnection: connectionInput,
   topicId,
 };
+
 export const listTopicsInputs = {
   zendeskConnection: connectionInput,
   fetchAll,
   pagination,
 };
+
 export const updateTopicInputs = {
   zendeskConnection: connectionInput,
   topicId,

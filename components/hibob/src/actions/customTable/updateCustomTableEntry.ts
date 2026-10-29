@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { updateCustomTableEntryExamplePayload } from "../../examplePayloads";
 import { updateCustomTableEntryInputs } from "../../inputs";
+
 export const updateCustomTableEntry = action({
   display: {
     label: "Update Custom Table Entry",
@@ -12,6 +13,7 @@ export const updateCustomTableEntry = action({
     { connection, employeeId, customTableId, entryId, entryData },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     await client.put(
       `/people/custom-tables/${employeeId}/${customTableId}/${entryId}`,
       entryData,

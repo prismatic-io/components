@@ -7,6 +7,7 @@ import {
   v1Environment,
   v2Environment,
 } from "./connections";
+
 export const validateConnection = (connection: Connection) => {
   if (
     !connection.fields.clientId &&
@@ -21,12 +22,14 @@ export const validateConnection = (connection: Connection) => {
     );
   }
 };
+
 export const getHeaders = async (connection: Connection) => {
   let access_token = "";
   if (connection.key === paylocityOAuth.key) {
     access_token = util.types.toString(connection.token.access_token);
   } else if (connection.key === paylocityOAuthV1.key) {
     const { scopes, clientId, clientSecret, tokenUrl } = connection.fields;
+
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
     params.append("scope", util.types.toString(scopes));
@@ -40,6 +43,7 @@ export const getHeaders = async (connection: Connection) => {
     });
     try {
       const { data } = await client.post("", params);
+
       access_token = util.types.toString(data.access_token);
     } catch {
       throw new ConnectionError(
@@ -64,6 +68,7 @@ export const getHeaders = async (connection: Connection) => {
     "Content-Type": "application/json",
   };
 };
+
 export const createClient = async (connection: Connection, debug: boolean) => {
   validateConnection(connection);
   const headers = await getHeaders(connection);
@@ -72,6 +77,7 @@ export const createClient = async (connection: Connection, debug: boolean) => {
     connection.key === paylocityOAuth.key
       ? v2Environment[`${environment}`].value
       : v1Environment[`${environment}`].value;
+
   const client = createHttpClient({
     baseUrl: util.types.toString(baseUrl),
     headers,
@@ -79,6 +85,7 @@ export const createClient = async (connection: Connection, debug: boolean) => {
   });
   return client;
 };
+
 export const validateV1Connection = (connection: Connection) => {
   if (connection.key !== paylocityOAuthV1.key) {
     throw new ConnectionError(
@@ -87,6 +94,7 @@ export const validateV1Connection = (connection: Connection) => {
     );
   }
 };
+
 export const validateV2Connection = (connection: Connection) => {
   if (connection.key !== paylocityOAuth.key) {
     throw new ConnectionError(

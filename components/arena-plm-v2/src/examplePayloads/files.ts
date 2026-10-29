@@ -5,6 +5,7 @@ import type {
   FileDetailVo,
   FileFullVoResultRep,
 } from "../types";
+
 const sampleFileDetail: FileDetailVo = {
   guid: "F1LE23DEF456GHI789JKL012",
   name: "assembly-drawing.pdf",
@@ -29,8 +30,10 @@ const sampleFileDetail: FileDetailVo = {
   locked: false,
   private: false,
 };
+
 const sampleBase64Content =
   "JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PC9UeXBlL0NhdGFsb2c+PgplbmRvYmoK";
+
 export const changeFileCheckoutStatusExamplePayload = {
   data: {
     ...sampleFileDetail,
@@ -40,6 +43,7 @@ export const changeFileCheckoutStatusExamplePayload = {
     lastModifiedDateTime: "2026-03-18T14:05:00Z",
   },
 };
+
 export const createFileCorrectionExamplePayload = {
   data: {
     ...sampleFileDetail,
@@ -47,6 +51,7 @@ export const createFileCorrectionExamplePayload = {
     lastModifiedDateTime: "2026-03-19T10:22:00Z",
   },
 };
+
 export const createFileEditionExamplePayload = {
   data: {
     ...sampleFileDetail,
@@ -56,6 +61,7 @@ export const createFileEditionExamplePayload = {
     lastModifiedDateTime: "2026-03-20T08:00:00Z",
   },
 };
+
 export const createFileMarkupExamplePayload = {
   data: {
     guid: "MRK123DEF456GHI789JKL012",
@@ -68,11 +74,11 @@ export const createFileMarkupExamplePayload = {
     },
   },
 };
-export const createFileWithContentExamplePayload: {
-  data: FileDetailVo;
-} = {
+
+export const createFileWithContentExamplePayload: { data: FileDetailVo } = {
   data: sampleFileDetail,
 };
+
 export const deleteFileExamplePayload = {
   data: {
     success: true,
@@ -82,6 +88,7 @@ export const deleteFileExamplePayload = {
     statusCode: 204,
   },
 };
+
 export const downloadFileContentExamplePayload = {
   data: {
     content: sampleBase64Content,
@@ -90,6 +97,7 @@ export const downloadFileContentExamplePayload = {
     size: 284516,
   },
 };
+
 export const listFileAttributesExamplePayload: {
   data: AttributeDefinitionFullRepResultRep;
 } = {
@@ -125,11 +133,11 @@ export const listFileAttributesExamplePayload: {
     count: 2,
   },
 };
-export const getFileByGuidExamplePayload: {
-  data: FileDetailVo;
-} = {
+
+export const getFileByGuidExamplePayload: { data: FileDetailVo } = {
   data: sampleFileDetail,
 };
+
 export const listFileCategoriesExamplePayload = {
   data: {
     results: [
@@ -149,6 +157,7 @@ export const listFileCategoriesExamplePayload = {
     count: 2,
   },
 };
+
 export const getFileCategoryAttributeDetailsExamplePayload: {
   data: CategoryAttributeDefinitionVo;
 } = {
@@ -166,6 +175,7 @@ export const getFileCategoryAttributeDetailsExamplePayload: {
     multiSelect: false,
   },
 };
+
 export const listFileCategoryAttributesExamplePayload: {
   data: CategoryAttributeDefinitionResultRep;
 } = {
@@ -187,6 +197,7 @@ export const listFileCategoryAttributesExamplePayload: {
     count: 1,
   },
 };
+
 export const getFileCategoryDetailsExamplePayload = {
   data: {
     guid: "CAT123DEF456GHI789JKL012",
@@ -196,10 +207,12 @@ export const getFileCategoryDetailsExamplePayload = {
     description: "Category for engineering and assembly drawings.",
   },
 };
+
 export const getFileContentExamplePayload = {
   data: Buffer.from(sampleBase64Content, "base64"),
   contentType: "application/pdf",
 };
+
 export const listFileCorrectionsExamplePayload = {
   data: {
     results: [
@@ -219,6 +232,7 @@ export const listFileCorrectionsExamplePayload = {
     count: 1,
   },
 };
+
 export const listFileEditionsExamplePayload = {
   data: {
     results: [
@@ -238,6 +252,7 @@ export const listFileEditionsExamplePayload = {
     count: 2,
   },
 };
+
 export const listFileMarkupsExamplePayload = {
   data: {
     results: [
@@ -255,9 +270,8 @@ export const listFileMarkupsExamplePayload = {
     count: 1,
   },
 };
-export const listFilesExamplePayload: {
-  data: FileFullVoResultRep;
-} = {
+
+export const listFilesExamplePayload: { data: FileFullVoResultRep } = {
   data: {
     results: [
       {
@@ -290,6 +304,7 @@ export const listFilesExamplePayload: {
     count: 2,
   },
 };
+
 export const getFileWatermarkContentExamplePayload = {
   data: {
     content: sampleBase64Content,
@@ -298,6 +313,7 @@ export const getFileWatermarkContentExamplePayload = {
     size: 291045,
   },
 };
+
 export const updateFileContentExamplePayload = {
   data: {
     ...sampleFileDetail,

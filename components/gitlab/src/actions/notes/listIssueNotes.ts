@@ -4,6 +4,7 @@ import { listIssueNotesExamplePayload } from "../../examplePayloads";
 import { listIssueNotesInputs } from "../../inputs";
 import { listIssueNotesOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listIssueNotes = action({
   display: {
     label: "List Issue Notes",
@@ -26,9 +27,8 @@ export const listIssueNotes = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listIssueNotesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listIssueNotesExamplePayload,
   examplePayload: listIssueNotesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

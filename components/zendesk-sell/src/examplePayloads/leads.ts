@@ -34,6 +34,7 @@ const leadData = {
   created_at: "2025-01-05T13:22:10Z",
   updated_at: "2025-01-09T09:45:33Z",
 };
+
 export const createLeadExamplePayload = {
   data: {
     data: leadData,
@@ -42,6 +43,7 @@ export const createLeadExamplePayload = {
     },
   },
 };
+
 export const getLeadExamplePayload = {
   data: {
     data: leadData,
@@ -50,6 +52,7 @@ export const getLeadExamplePayload = {
     },
   },
 };
+
 export const updateLeadExamplePayload = {
   data: {
     data: leadData,
@@ -58,6 +61,7 @@ export const updateLeadExamplePayload = {
     },
   },
 };
+
 export const upsertLeadExamplePayload = {
   data: {
     data: leadData,
@@ -66,6 +70,7 @@ export const upsertLeadExamplePayload = {
     },
   },
 };
+
 export const listLeadsExamplePayload = {
   data: {
     items: [
@@ -87,9 +92,11 @@ export const listLeadsExamplePayload = {
     },
   },
 };
+
 export const deleteLeadExamplePayload = {
   data: null,
 };
+
 export const getLeadsStreamExamplePayload = {
   data: {
     items: [

@@ -1,4 +1,5 @@
 import { tagSchema } from "./shared";
+
 export const listTagsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -8,5 +9,7 @@ export const listTagsOutputSchema = {
   required: ["tags", "hasMore"],
   additionalProperties: true,
 };
+
 export const retrieveTagOutputSchema = tagSchema;
+
 export const createTagOutputSchema = tagSchema;

@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { appendMessageExamplePayload } from "../examplePayloads";
 import { appendMessageInputs } from "../inputs/actions";
+
 export const appendMessage = action({
   display: {
     label: "Append Message",

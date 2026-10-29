@@ -17,6 +17,7 @@ import type {
   PollingRecordChange,
   PollSiteChangesSeparatedChanges,
 } from "../interfaces";
+
 export const folderPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Folder Items",
@@ -41,11 +42,14 @@ export const folderPollingTrigger = pollingTrigger({
   ) => {
     const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
+
     const stateKey = `${driveId}:${folderId}`;
     const pathKey = `${stateKey}:path`;
     const state = polling.getState() as PollingState;
     const rootDelta = `/drives/${driveId}/root/delta`;
+
     let folderPath = state[pathKey] as string | undefined;
+
     if (context.batch?.enabled === true) {
       const { page, next, cursorState } = await fetchDeltaRound(
         client,
@@ -59,6 +63,7 @@ export const folderPollingTrigger = pollingTrigger({
         ...cursorState,
         ...(folderPath ? { [pathKey]: folderPath } : {}),
       });
+
       return {
         payload: {
           ...payload,
@@ -72,14 +77,18 @@ export const folderPollingTrigger = pollingTrigger({
         },
       };
     }
+
     let allChanges: PollSiteChangesSeparatedChanges = {};
+
     const endpoint = resolveDeltaUrl(state, stateKey, rootDelta);
     const data = (await paginateResults(client, endpoint, {
       returnFullData: true,
       useTop: false,
       excludeParents: true,
     })) as unknown as DriveDeltaResponse;
+
     const newPollingState: PollingState = {};
+
     if (data.value.length > 0) {
       folderPath = folderPathFrom(data.value, folderId, folderPath);
       allChanges = separateDriveChanges(
@@ -87,14 +96,18 @@ export const folderPollingTrigger = pollingTrigger({
         folderMatcher(folderId, includeSubfolders, folderPath),
       );
     }
+
     if (folderPath) {
       newPollingState[pathKey] = folderPath;
     }
     newPollingState[stateKey] = data["@odata.deltaLink"];
+
     polling.setState(newPollingState);
+
     if (debug.enabled) {
       logger.debug("Polling state:", newPollingState);
     }
+
     return Promise.resolve({
       payload: { ...payload, body: { data: allChanges } },
     });

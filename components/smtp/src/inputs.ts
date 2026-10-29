@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanArrayCodeInput } from "./util";
+
 export const multipleAttachments = input({
   label: "Multiple Attachments",
   type: "code",

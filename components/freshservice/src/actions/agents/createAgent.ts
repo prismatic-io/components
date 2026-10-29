@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { createAgentExamplePayload as examplePayload } from "../../examplePayloads";
 import { createAgentInputs as inputs } from "../../inputs";
 import { agentOutputSchema } from "../../outputSchemas";
+
 export const createAgent = action({
   display: {
     label: "Create Agent",
@@ -28,6 +29,7 @@ export const createAgent = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       first_name: firstName,
       email,
@@ -43,7 +45,9 @@ export const createAgent = action({
         canSeeAllTicketsFromAssociatedDepartments,
       ...agentsAdditionalFields,
     };
+
     const { data } = await client.post(`/agents`, payload);
+
     return {
       data,
     };

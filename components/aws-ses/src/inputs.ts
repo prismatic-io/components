@@ -1,5 +1,6 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
 import { cleanStringList } from "./util";
+
 export const identityType = input({
   label: "Identity Type",
   type: "string",
@@ -18,6 +19,7 @@ export const identityType = input({
   default: "EmailAddress",
   clean: util.types.toString,
 });
+
 export const to = input({
   label: "To Address",
   example: "example@example.com",
@@ -28,6 +30,7 @@ export const to = input({
     "The destination for this email. The recipients to place on the To: line of the message.",
   clean: cleanStringList,
 });
+
 export const cc = input({
   label: "Cc Address",
   example: "example@example.com",
@@ -38,6 +41,7 @@ export const cc = input({
     "The destination for this email. The recipients to place on the CC: line of the message.",
   clean: cleanStringList,
 });
+
 export const bcc = input({
   label: "Bcc Address",
   example: "example@example.com",
@@ -48,6 +52,7 @@ export const bcc = input({
     "The destination for this email. The recipients to place on the BCC: line of the message.",
   clean: cleanStringList,
 });
+
 export const html = input({
   label: "Html",
   example: "<p>Hello World!</p>",
@@ -57,6 +62,7 @@ export const html = input({
     "The content of the message, in HTML format. Use this for email clients that can process HTML. You can include clickable links, formatted text, and much more in an HTML message.",
   clean: util.types.toString,
 });
+
 export const subject = input({
   label: "Subject",
   example: "My Email Subject",
@@ -66,6 +72,7 @@ export const subject = input({
     "The subject of the message: A short summary of the content, which will appear in the recipient's inbox.",
   clean: util.types.toString,
 });
+
 export const text = input({
   label: "Text",
   type: "string",
@@ -75,6 +82,7 @@ export const text = input({
     "The content of the message, in text format. Use this for text-based email clients, or clients on high-latency networks (such as mobile devices).",
   clean: util.types.toString,
 });
+
 export const sender = input({
   label: "Sender Email",
   type: "string",
@@ -84,6 +92,7 @@ export const sender = input({
     "The email address that is sending the email. This email address must be either individually verified with Amazon SES, or from a domain that has been verified with Amazon SES.",
   clean: util.types.toString,
 });
+
 export const replyTo = input({
   label: "Reply To",
   type: "string",
@@ -94,6 +103,7 @@ export const replyTo = input({
     "The reply-to email address(es) for the message. If the recipient replies to the message, each reply-to address will receive the reply. This email address must be either individually verified with Amazon SES, or from a domain that has been verified with Amazon SES.",
   clean: cleanStringList,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -103,6 +113,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const nextToken = input({
   label: "Next Token",
   type: "string",
@@ -112,11 +123,13 @@ export const nextToken = input({
   example: `lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E`,
   clean: util.types.toString,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const attachments = input({
   label: "Attachments",
   type: "string",

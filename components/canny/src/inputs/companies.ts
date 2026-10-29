@@ -7,6 +7,7 @@ import {
   customFields,
   fetchAll,
 } from "./common";
+
 const companyIdRequired = input({
   label: "Company ID",
   type: "string",
@@ -17,6 +18,7 @@ const companyIdRequired = input({
   placeholder: "Enter company ID",
   example: "553c3ef8b8cdcd1501ba1111",
 });
+
 const companyName = input({
   label: "Name",
   type: "string",
@@ -26,6 +28,7 @@ const companyName = input({
   placeholder: "Enter company name",
   example: "Acme Corp",
 });
+
 const monthlySpend = input({
   label: "Monthly Spend",
   type: "string",
@@ -35,6 +38,7 @@ const monthlySpend = input({
   placeholder: "Enter monthly spend",
   example: "5000",
 });
+
 const companySearch = input({
   label: "Search",
   type: "string",
@@ -44,6 +48,7 @@ const companySearch = input({
   placeholder: "Enter search term",
   example: "Acme",
 });
+
 const segment = input({
   label: "Segment",
   type: "string",
@@ -54,6 +59,7 @@ const segment = input({
   placeholder: "Enter segment",
   example: "enterprise",
 });
+
 export const listCompaniesInputs = {
   connection,
   companySearch,
@@ -61,6 +67,7 @@ export const listCompaniesInputs = {
   fetchAll,
   pagination: cursorPagination,
 };
+
 const updateCompanyAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -68,11 +75,14 @@ const updateCompanyAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Monthly Spend, Custom Fields, and Additional Fields.",
   inputs: { monthlySpend, customFields, additionalFields },
 });
+
 export const updateCompanyInputs = {
   connection,
   companyIdRequired,
   companyName,
   additionalFields: updateCompanyAdditionalFields,
 };
+
 export const deleteCompanyInputs = { connection, companyIdRequired };
+
 export const selectCompanyInputs = { connection };

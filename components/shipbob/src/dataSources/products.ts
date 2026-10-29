@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, version } from "../inputs";
+
 interface Product {
   id: number;
   reference_id: string;
@@ -11,6 +12,7 @@ interface Product {
   upc: string;
   unit_price: number;
 }
+
 export const products = dataSource({
   display: {
     label: "Fetch Products",

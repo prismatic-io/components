@@ -104,6 +104,7 @@ const getApplicantOnboardMetadataResponse = {
     },
   },
 };
+
 const getWorkerResponse = {
   associateOID: "G3R47DSRZK5TRCFJ",
   workerID: {
@@ -392,11 +393,13 @@ const getWorkerResponse = {
     },
   ],
 };
+
 const listWorkersResponse = {
   workers: [getWorkerResponse],
   meta: { totalNumber: 1 },
   confirmMessage: null,
 };
+
 const listWorkersMetadataResponse = {
   meta: {
     queryCriteria: [
@@ -426,6 +429,7 @@ const listWorkersMetadataResponse = {
     },
   },
 };
+
 const getWorkerDemographicsResponse = {
   associateOID: "G39XMN203A2XB23T",
   workerID: {
@@ -672,6 +676,7 @@ const getWorkerDemographicsResponse = {
       },
     ],
   },
+
   workAssignments: [
     {
       itemID: "88029255N",
@@ -809,11 +814,13 @@ const getWorkerDemographicsResponse = {
     ],
   },
 };
+
 const listWorkerDemoGraphicsResponse = {
   workers: [getWorkerDemographicsResponse],
   meta: { totalNumber: 1 },
   confirmMessage: null,
 };
+
 const geteTimeCardsResponse = {
   teamTimeCards: [
     {
@@ -1280,6 +1287,7 @@ const geteTimeCardsResponse = {
     resourceMessages: [],
   },
 };
+
 const createPunchResponse = {
   events: [
     {
@@ -1336,6 +1344,7 @@ const createPunchResponse = {
     ],
   },
 };
+
 const getClockingTransactionsResponse = {
   events: [
     {
@@ -1390,6 +1399,7 @@ const getClockingTransactionsResponse = {
     ],
   },
 };
+
 const modifiedEntryResponse = {
   meta: {
     resourceSetID: "654dd678b6c64d3fb3e815fd715832f8",
@@ -1455,6 +1465,7 @@ const modifiedEntryResponse = {
     ],
   },
 };
+
 const getPaymentDistributionMetaResponse = {
   meta: {
     "/data/eventContext": {
@@ -1669,6 +1680,7 @@ const getPaymentDistributionMetaResponse = {
     "/eventNameCode/codeValue": "worker.payDistribution.change",
   },
 };
+
 const getWorkerPaymentDistributionResponse = {
   payDistributions: [
     {
@@ -1736,6 +1748,7 @@ const getWorkerPaymentDistributionResponse = {
     },
   ],
 };
+
 const getPersonalContactsResponse = {
   itemID: "169750562647_284",
   personName: {
@@ -1830,6 +1843,7 @@ const getPersonalContactsResponse = {
     shortName: "Primary",
   },
 };
+
 const listPersonalContactsResponse = {
   personalContacts: [
     getPersonalContactsResponse,
@@ -1925,6 +1939,7 @@ const listPersonalContactsResponse = {
     },
   ],
 };
+
 const getPersonalContactMetaResponse = {
   meta: {
     "/personalContacts/relationshipTypeCode/codeValue": {
@@ -2188,6 +2203,7 @@ const getPersonalContactMetaResponse = {
     },
   },
 };
+
 const deletePersonaContactResponse = {
   events: [
     {
@@ -2208,6 +2224,7 @@ const deletePersonaContactResponse = {
     },
   ],
 };
+
 const addPersonalContactResponse = {
   events: [
     {
@@ -2321,6 +2338,7 @@ const addPersonalContactResponse = {
     },
   ],
 };
+
 const createCustomFieldResponse = {
   events: [
     {
@@ -2367,6 +2385,7 @@ const createCustomFieldResponse = {
     },
   ],
 };
+
 const getCustomFieldMetaResponse = {
   events: [
     {
@@ -2408,6 +2427,7 @@ const getCustomFieldMetaResponse = {
     },
   ],
 };
+
 const listCompanyCodesResponse = {
   codeListTitle: "Company Code",
   listItems: [
@@ -2418,6 +2438,7 @@ const listCompanyCodesResponse = {
     },
   ],
 };
+
 const postApplicantOnboardProcessResponse = {
   alternateIDs: {
     applicantID: "APL-100245",
@@ -2432,6 +2453,7 @@ const postApplicantOnboardProcessResponse = {
     resourceMessages: [],
   },
 };
+
 const updateWorkerPayDistributionResponse = {
   events: [
     {
@@ -2516,67 +2538,91 @@ const updateWorkerPayDistributionResponse = {
     processMessages: [],
   },
 };
+
 export const getPersonalContactExamplePayload = {
   data: { personalContacts: [getPersonalContactsResponse] },
 };
+
 export const updatePersonalContactExamplePayload = {
   data: addPersonalContactResponse,
 };
+
 export const getPersonalContactMetaExamplePayload = {
   data: getPersonalContactMetaResponse,
 };
+
 export const listPersonalContactsExamplePayload = {
   data: listPersonalContactsResponse,
 };
+
 export const deletePersonalContactExamplePayload = {
   data: deletePersonaContactResponse,
 };
+
 export const addPersonalContactExamplePayload = {
   data: addPersonalContactResponse,
 };
+
 export const getApplicantOnboardMetadataExamplePayload = {
   data: getApplicantOnboardMetadataResponse,
 };
+
 export const postApplicantOnboardProcessExamplePayload = {
   data: postApplicantOnboardProcessResponse,
 };
+
 export const getPaymentDistributionsExamplePayload = {
   data: getWorkerPaymentDistributionResponse,
 };
+
 export const getWorkerPaymentDistributionsMetaExamplePayload = {
   data: getPaymentDistributionMetaResponse,
 };
+
 export const updateWorkerPayDistributionExamplePayload = {
   data: updateWorkerPayDistributionResponse,
 };
+
 export const createCustomFieldExamplePayload = {
   data: createCustomFieldResponse,
 };
+
 export const getCustomFieldMetaExamplePayload = {
   data: getCustomFieldMetaResponse,
 };
+
 export const getClockingTransactionExamplePayload = {
   data: getClockingTransactionsResponse,
 };
+
 export const modifyTimeEntriesExamplePayload = { data: modifiedEntryResponse };
+
 export const getWorkersMetadataExamplePayload = {
   data: listWorkersMetadataResponse,
 };
+
 export const listWorkersExamplePayload = { data: listWorkersResponse };
+
 export const getTimeCardsExamplePayload = { data: geteTimeCardsResponse };
+
 export const getWorkerExamplePayload = {
   data: { workers: [getWorkerResponse] },
 };
+
 export const createScanPunchExamplePayload = { data: createPunchResponse };
+
 export const getWorkerDemographicsExamplePayload = {
   data: { workers: [getWorkerDemographicsResponse] },
 };
+
 export const listWorkersDemographicsExamplePayload = {
   data: listWorkerDemoGraphicsResponse as unknown,
 };
+
 export const listCompanyCodesExamplePayload = {
   data: listCompanyCodesResponse,
 };
+
 export const selectWorkerExamplePayload = {
   result: [
     {
@@ -2589,6 +2635,7 @@ export const selectWorkerExamplePayload = {
     },
   ],
 };
+
 export const selectPersonalContactExamplePayload = {
   result: [
     {

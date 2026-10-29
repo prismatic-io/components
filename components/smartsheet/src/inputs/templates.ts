@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, includeAll, pagination } from "./common";
+
 const workspaceIdForTemplates = input({
   label: "Workspace ID",
   type: "string",
@@ -14,10 +15,12 @@ const workspaceIdForTemplates = input({
   example: "843750385",
   placeholder: "Enter workspace ID",
 });
+
 export const templatesListInputs = {
   connection: connectionInput,
   workspaceIdForTemplates,
 };
+
 export const templatesListPublicInputs = {
   connection: connectionInput,
   includeAll,

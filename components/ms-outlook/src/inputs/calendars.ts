@@ -9,6 +9,7 @@ import {
   startInput,
   startTimezoneInput,
 } from "./common";
+
 export const calendarIdInput = input({
   label: "Calendar ID",
   type: "string",
@@ -19,6 +20,7 @@ export const calendarIdInput = input({
   dataSource: "selectCalendar",
   clean: util.types.toString,
 });
+
 export const calendarNameInput = input({
   label: "Name",
   type: "string",
@@ -28,6 +30,7 @@ export const calendarNameInput = input({
   placeholder: "Enter calendar name",
   clean: util.types.toString,
 });
+
 export const calendarColorInput = input({
   label: "Color",
   type: "string",
@@ -39,6 +42,7 @@ export const calendarColorInput = input({
     "The color of the calendar. See the `color` property in the [Microsoft Graph calendar resource documentation](https://learn.microsoft.com/en-us/graph/api/resources/calendar?view=graph-rest-1.0#properties) for the supported values.",
   clean: util.types.toString,
 });
+
 const availabilityViewIntervalInput = input({
   label: "Availability View Interval",
   type: "string",
@@ -50,6 +54,7 @@ const availabilityViewIntervalInput = input({
     "The duration of each time slot used to check availability, in minutes.",
   clean: util.types.toNumber,
 });
+
 const schedulesInput = input({
   label: "Schedules",
   type: "string",
@@ -66,26 +71,31 @@ const schedulesInput = input({
     return rawValue.map((v) => util.types.toString(v));
   },
 });
+
 export const listCalendarsInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const createCalendarInputs = {
   connection: connectionInput,
   name: calendarNameInput,
   color: calendarColorInput,
 };
+
 export const updateCalendarInputs = {
   connection: connectionInput,
   id: calendarIdInput,
   name: { ...calendarNameInput, required: false },
   color: calendarColorInput,
 };
+
 export const deleteCalendarInputs = {
   connection: connectionInput,
   id: calendarIdInput,
 };
+
 export const getScheduleInputs = {
   connection: connectionInput,
   schedules: schedulesInput,
@@ -95,6 +105,7 @@ export const getScheduleInputs = {
   endTimezone: endTimezoneInput,
   availabilityViewInterval: availabilityViewIntervalInput,
 };
+
 export const getCalendarEventInputs = {
   connection: connectionInput,
   eventId: eventIdInput,

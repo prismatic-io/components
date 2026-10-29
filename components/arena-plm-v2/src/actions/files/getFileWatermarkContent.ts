@@ -4,6 +4,7 @@ import { getFileWatermarkContentExamplePayload } from "../../examplePayloads";
 import { getFileWatermarkContentInputs } from "../../inputs";
 import { getFileWatermarkContentOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getFileWatermarkContent = action({
   display: {
     label: "Get File Watermark Content",
@@ -24,8 +25,10 @@ export const getFileWatermarkContent = action({
           responseType: "arraybuffer",
         },
       );
+
       const buffer = Buffer.from(data);
       const base64Content = buffer.toString("base64");
+
       return {
         data: {
           content: base64Content,

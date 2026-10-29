@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { validateConnection } from "./connection";
+
 export const getAccessToken = (connection: Connection): string => {
   validateConnection(connection);
   const accessToken = connection.token?.access_token;
@@ -11,6 +12,7 @@ export const getAccessToken = (connection: Connection): string => {
   }
   return util.types.toString(accessToken);
 };
+
 export const getAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => ({

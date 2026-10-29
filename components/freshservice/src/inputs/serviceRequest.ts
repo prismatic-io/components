@@ -1,12 +1,15 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { additionalFields, connection } from "./common";
+
 const serviceRequestDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#service_request) for more information.";
+
 const serviceRequestAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${serviceRequestDocumentationComments}`,
 });
+
 const displayId = input({
   label: "Service Item Display ID",
   comments: "The unique identifier for the service catalog item to request.",
@@ -16,6 +19,7 @@ const displayId = input({
   placeholder: "Enter display ID",
   clean: util.types.toString,
 });
+
 const quantity = input({
   label: "Quantity",
   comments: "The number of items to include in the service request.",
@@ -25,6 +29,7 @@ const quantity = input({
   placeholder: "Enter quantity",
   clean: util.types.toNumber,
 });
+
 const requestedFor = input({
   label: "Requested For",
   comments:
@@ -35,6 +40,7 @@ const requestedFor = input({
   placeholder: "Enter email of the requester",
   clean: cleanStringInput,
 });
+
 const email = input({
   label: "Email",
   comments:
@@ -45,6 +51,7 @@ const email = input({
   placeholder: "Enter requester email",
   clean: cleanStringInput,
 });
+
 export const createServiceRequestInputs = {
   connection,
   displayId,

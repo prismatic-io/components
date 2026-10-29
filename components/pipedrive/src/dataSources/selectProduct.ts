@@ -4,10 +4,12 @@ import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { WebhookVersion } from "../constants";
 import { selectProductExamplePayload } from "../examplePayloads";
+
 interface Product {
   id: number;
   name: string;
 }
+
 export const selectProduct = dataSource({
   display: {
     label: "Select Product",
@@ -24,10 +26,12 @@ export const selectProduct = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "name").map<Element>((product) => ({
       key: product.id.toString(),
       label: product.name,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

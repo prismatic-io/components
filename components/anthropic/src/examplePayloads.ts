@@ -1,8 +1,7 @@
 import type { Element } from "@prismatic-io/spectral";
 import type { ChatResponse, Model, PaginatedResponse } from "./types";
-export const chatExamplePayload: {
-  data: ChatResponse;
-} = {
+
+export const chatExamplePayload: { data: ChatResponse } = {
   data: {
     content: [
       {
@@ -22,11 +21,13 @@ export const chatExamplePayload: {
     },
   },
 };
+
 export const countTokensExamplePayload = {
   data: {
     input_tokens: 100,
   },
 };
+
 export const getModelExamplePayload = {
   data: {
     created_at: "2025-02-19T00:00:00Z",
@@ -35,9 +36,8 @@ export const getModelExamplePayload = {
     type: "model",
   },
 };
-export const listModelsExamplePayload: {
-  data: PaginatedResponse<Model>;
-} = {
+
+export const listModelsExamplePayload: { data: PaginatedResponse<Model> } = {
   data: {
     data: [
       {
@@ -52,9 +52,8 @@ export const listModelsExamplePayload: {
     last_id: "claude-haiku-4-5-20251001",
   },
 };
-export const selectModelExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectModelExamplePayload: { result: Element[] } = {
   result: [
     {
       key: "claude-sonnet-4-6",
@@ -62,6 +61,7 @@ export const selectModelExamplePayload: {
     },
   ],
 };
+
 export const rawRequestExamplePayload = {
   data: {
     data: [

@@ -4,6 +4,7 @@ import type {
   GenericPaginationData,
 } from "../types";
 import { PAGINATION_LIMIT } from "../constants";
+
 const fetchData = async <T>(
   client: HttpClient,
   path: string,
@@ -12,6 +13,7 @@ const fetchData = async <T>(
   const { data } = await client.get<T>(path, { params });
   return data;
 };
+
 export const paginateRecordsWithLimit = async <T>(
   client: HttpClient,
   path: string,
@@ -64,6 +66,7 @@ export const paginateRecordsWithLimit = async <T>(
     },
   };
 };
+
 export const paginateRecordsWithCursor = async <T>(
   client: HttpClient,
   path: string,
@@ -106,6 +109,7 @@ export const paginateRecordsWithCursor = async <T>(
     },
   };
 };
+
 export const sortRecords = <T>(array: T[], key: keyof T) => {
   return array.sort((a, b) => {
     if (a[key] === b[key]) {

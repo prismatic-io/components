@@ -9,6 +9,7 @@ import {
   topicNameOrFullFormat,
   webhookUrl,
 } from "../../inputs";
+
 export const createSubscription = action({
   display: {
     description: "Creates a subscription to a given topic.",
@@ -74,6 +75,7 @@ export const createSubscription = action({
     };
   },
 });
+
 export const createWebhookSubscription = action({
   display: {
     label: "Create Webhook Subscription",

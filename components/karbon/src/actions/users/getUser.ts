@@ -3,6 +3,7 @@ import getUserInputs from "../../inputs/users/getUser";
 import { createKarbonClient } from "../../client";
 import { cleanOdata } from "../../utils";
 import { getUserExamplePayload } from "../../examplePayloads";
+
 export const getUser = action({
   display: {
     label: "Get User",

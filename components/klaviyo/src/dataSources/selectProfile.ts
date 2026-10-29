@@ -4,6 +4,7 @@ import { selectProfileExamplePayload } from "../examplePayloads";
 import { fetchProfile } from "../util";
 import { getApi } from "../api";
 import { KlaviyoApi } from "../constants";
+
 export const selectProfile = dataSource({
   display: {
     label: "Select Profile",
@@ -13,6 +14,7 @@ export const selectProfile = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const profilesApi = getApi(connection, KlaviyoApi.Profiles);
+
     const data = await fetchProfile(
       profilesApi,
       ["email"],
@@ -24,6 +26,7 @@ export const selectProfile = dataSource({
       key: util.types.toString(response.id),
       label: util.types.toString(response.attributes.email),
     }));
+
     return { result: objects };
   },
   examplePayload: selectProfileExamplePayload,

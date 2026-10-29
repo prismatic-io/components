@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { assignTechniciansExamplePayload } from "../../examplePayloads";
 import { assignTechniciansInputs } from "../../inputs";
 import { assignTechniciansOutputSchema } from "../../outputSchemas";
+
 export const assignTechnicians = action({
   display: {
     label: "Assign Technicians to Appointment",

@@ -10,6 +10,7 @@ import {
   teamMemberId,
   userType,
 } from "./common";
+
 export const fileName = input({
   label: "File Name",
   placeholder: "Enter the file name",
@@ -19,6 +20,7 @@ export const fileName = input({
   example: "fileName.txt",
   clean: cleanString,
 });
+
 export const fromPath = input({
   label: "From Path",
   placeholder: "Enter the source path",
@@ -30,6 +32,7 @@ export const fromPath = input({
   clean: util.types.toString,
   dataSource: "listFolders",
 });
+
 export const toPath = input({
   label: "To Path",
   placeholder: "Enter the destination path",
@@ -41,6 +44,7 @@ export const toPath = input({
   clean: util.types.toString,
   dataSource: "listFolders",
 });
+
 export const fileContents = input({
   label: "File Contents",
   placeholder: "Output data from previous step",
@@ -51,6 +55,7 @@ export const fileContents = input({
   example: "My File Contents",
   clean: util.types.toData,
 });
+
 export const filePaths = input({
   label: "File Path",
   placeholder: "Enter the source file path",
@@ -62,6 +67,7 @@ export const filePaths = input({
   required: false,
   clean: cleanPathArray,
 });
+
 export const urlToSave = input({
   label: "URL to Save",
   placeholder: "Enter the URL to save",
@@ -71,6 +77,7 @@ export const urlToSave = input({
   example: "https://example.com/file.txt",
   clean: util.types.toString,
 });
+
 export const waitUntilComplete = input({
   label: "Wait Until Complete",
   type: "boolean",
@@ -80,6 +87,7 @@ export const waitUntilComplete = input({
     "When true, polls the save job until it finishes and returns the final job status instead of the initial job ID.",
   clean: util.types.toBool,
 });
+
 export const asyncJobId = input({
   label: "Async Job ID",
   placeholder: "Enter the async job ID",
@@ -90,6 +98,7 @@ export const asyncJobId = input({
   example: "nMvNReawvD4AAAAAAAAAAQ",
   clean: util.types.toString,
 });
+
 export const recursive = input({
   label: "Recursive",
   comments: "If true, the response will contain contents of all subfolders.",
@@ -98,6 +107,7 @@ export const recursive = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const includeDeleted = input({
   label: "Include Deleted?",
   comments:
@@ -107,6 +117,7 @@ export const includeDeleted = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const dynamicPaths = input({
   label: "Dynamic Paths",
   type: "data",
@@ -116,6 +127,7 @@ export const dynamicPaths = input({
   example: `["/path/to/file", "/path/to/another/file"]`,
   clean: cleanPathArray,
 });
+
 export const fileId = input({
   label: "File ID",
   placeholder: "Enter the file ID",
@@ -125,6 +137,7 @@ export const fileId = input({
   example: "id:3kmLmQFnf1AAAAAAAAAAAw",
   clean: util.types.toString,
 });
+
 export const include_media_info = input({
   label: "Include Media Info",
   type: "boolean",
@@ -133,6 +146,7 @@ export const include_media_info = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const include_deleted = input({
   label: "Include Deleted",
   type: "boolean",
@@ -142,6 +156,7 @@ export const include_deleted = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const include_has_explicit_shared_members = input({
   label: "Include Has Explicit Shared Members",
   type: "boolean",
@@ -151,6 +166,7 @@ export const include_has_explicit_shared_members = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const resultOptions = structuredObjectInput({
   label: "Result Options",
   required: false,
@@ -162,6 +178,7 @@ export const resultOptions = structuredObjectInput({
     include_has_explicit_shared_members,
   },
 });
+
 export const include_property_groups = input({
   label: "Include Property Groups",
   type: "string",
@@ -175,6 +192,7 @@ export const include_property_groups = input({
   ],
   default: "",
 });
+
 export const download_as_zip = input({
   label: "Download as Zip",
   type: "boolean",
@@ -184,6 +202,7 @@ export const download_as_zip = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const entryFilter = input({
   label: "Entry Filter",
   type: "string",
@@ -198,20 +217,24 @@ export const entryFilter = input({
   ],
   clean: util.types.toString,
 });
+
 export const copyObjectInputs = {
   dropboxConnection: connectionInput,
   fromPath,
   toPath,
 };
+
 export const deleteObjectInputs = {
   dropboxConnection: connectionInput,
   path,
 };
+
 export const downloadFileInputs = {
   dropboxConnection: connectionInput,
   path,
   download_as_zip,
 };
+
 export const exportFileInputs = {
   dropboxConnection: connectionInput,
   path: {
@@ -223,10 +246,12 @@ export const exportFileInputs = {
   userType,
   teamMemberId,
 };
+
 export const getDownloadStatusInputs = {
   dropboxConnection: connectionInput,
   asyncJobId,
 };
+
 export const getFileLockInputs = {
   dropboxConnection: connectionInput,
   teamMemberId: {
@@ -236,6 +261,7 @@ export const getFileLockInputs = {
   filePaths,
   dynamicPaths,
 };
+
 export const getMetadataInputs = {
   dropboxConnection: connectionInput,
   path: {
@@ -249,6 +275,7 @@ export const getMetadataInputs = {
   userType,
   teamMemberId,
 };
+
 export const lockFileInputs = {
   dropboxConnection: connectionInput,
   teamMemberId: {
@@ -258,11 +285,13 @@ export const lockFileInputs = {
   filePaths,
   dynamicPaths,
 };
+
 export const moveObjectInputs = {
   dropboxConnection: connectionInput,
   fromPath,
   toPath,
 };
+
 export const saveFromUrlInputs = {
   dropboxConnection: connectionInput,
   toPath: {
@@ -274,6 +303,7 @@ export const saveFromUrlInputs = {
   urlToSave,
   waitUntilComplete,
 };
+
 export const searchFilesInputs = {
   dropboxConnection: connectionInput,
   query: {
@@ -290,6 +320,7 @@ export const searchFilesInputs = {
   userType,
   teamMemberId,
 };
+
 export const unlockFileInputs = {
   dropboxConnection: connectionInput,
   userType,
@@ -297,6 +328,7 @@ export const unlockFileInputs = {
   filePaths,
   dynamicPaths,
 };
+
 export const uploadFileInputs = {
   dropboxConnection: connectionInput,
   path,

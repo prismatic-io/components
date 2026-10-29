@@ -1,4 +1,5 @@
 import { driveSchema, fileSchema } from "./common";
+
 const changeSchema = {
   type: "object" as const,
   properties: {
@@ -13,6 +14,7 @@ const changeSchema = {
   },
   required: [],
 };
+
 export const listChangesOutputSchema = {
   type: "object" as const,
   properties: {

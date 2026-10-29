@@ -13,6 +13,7 @@ import {
 } from "@aws-sdk/client-sns";
 import type { KeyValuePair } from "@prismatic-io/spectral";
 import { publishMessageExamplePayload } from "../examplePayloads";
+
 const getAttributeType = (input: unknown): MessageAttributeValue => {
   if (typeof input === "string") {
     if (util.types.isNumber(input)) {
@@ -21,6 +22,7 @@ const getAttributeType = (input: unknown): MessageAttributeValue => {
         StringValue: input,
       };
     }
+
     if (util.types.isJSON(input)) {
       try {
         const array = JSON.parse(input);
@@ -32,6 +34,7 @@ const getAttributeType = (input: unknown): MessageAttributeValue => {
         }
       } catch (_error) {}
     }
+
     return {
       DataType: "String",
       StringValue: input,
@@ -43,11 +46,13 @@ const getAttributeType = (input: unknown): MessageAttributeValue => {
       BinaryValue: input,
     };
   }
+
   return {
     DataType: "String",
     StringValue: JSON.stringify(input),
   };
 };
+
 const attributeReducer = (kvpList: KeyValuePair<unknown>[] = []) => {
   return kvpList.reduce(
     (result: Record<string, MessageAttributeValue>, { key, value }) => {
@@ -57,6 +62,7 @@ const attributeReducer = (kvpList: KeyValuePair<unknown>[] = []) => {
     {} as Record<string, MessageAttributeValue>,
   );
 };
+
 export const publishMessage = action({
   display: {
     label: "Publish Message",
@@ -79,6 +85,7 @@ export const publishMessage = action({
     };
     const command = new PublishCommand(publishParams);
     const response = await sns.send(command);
+
     return {
       data: response,
     };
@@ -92,4 +99,5 @@ export const publishMessage = action({
   },
   examplePayload: publishMessageExamplePayload,
 });
+
 export default publishMessage;

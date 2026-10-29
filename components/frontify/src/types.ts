@@ -2,6 +2,7 @@ export interface CollectionItem {
   id: string;
   name: string;
 }
+
 export interface LibraryCollectionsResponse {
   library: {
     collections: {
@@ -9,10 +10,12 @@ export interface LibraryCollectionsResponse {
     };
   };
 }
+
 export interface FolderItem {
   id: string;
   name: string;
 }
+
 export interface LibraryFoldersResponse {
   library: {
     browse: {
@@ -22,10 +25,12 @@ export interface LibraryFoldersResponse {
     };
   };
 }
+
 export interface RelatedAssetItem {
   id: string;
   title: string;
 }
+
 export interface RelatedAssetsResponse {
   asset: {
     relatedAssets: {
@@ -33,15 +38,18 @@ export interface RelatedAssetsResponse {
     };
   };
 }
+
 export interface WebhookItem {
   id: string;
   name: string;
 }
+
 export interface WebhooksResponse {
   webhooks: {
     items: WebhookItem[];
   };
 }
+
 export interface WorkspaceProjectFoldersResponse {
   workspaceProject: {
     browse: {
@@ -51,6 +59,7 @@ export interface WorkspaceProjectFoldersResponse {
     };
   };
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }

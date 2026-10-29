@@ -4,6 +4,7 @@ import { completeDraftOrderExamplePayload as examplePayload } from "../../../exa
 import { completeDraftOrderInputs as inputs } from "../../../inputsGql";
 import { completeDraftOrderGqlOutputSchema } from "../../../outputSchemas";
 import completeDraftOrderQuery from "../queries/draftOrders/CompleteDraftOrder.gql";
+
 export const completeDraftOrderGql = action({
   display: {
     label: "Complete Draft Order",
@@ -17,11 +18,12 @@ export const completeDraftOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      draftOrderComplete: Record<string, unknown>;
-    } = await client.request(completeDraftOrderQuery, {
-      id: draftOrderId,
-    });
+
+    const data: { draftOrderComplete: Record<string, unknown> } =
+      await client.request(completeDraftOrderQuery, {
+        id: draftOrderId,
+      });
+
     return {
       data: data.draftOrderComplete,
     };

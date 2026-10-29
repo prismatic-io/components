@@ -6,6 +6,7 @@ export const connection = input({
   required: true,
   comments: "The Bill.com connection to use.",
 });
+
 export const filters = input({
   label: "Filters",
   type: "code",
@@ -20,6 +21,7 @@ export const filters = input({
   ),
   clean: (value: unknown) => cleanArrayCodeInput(value, "Filters"),
 });
+
 export const sort = input({
   label: "Sort",
   type: "code",
@@ -30,6 +32,7 @@ export const sort = input({
   example: JSON.stringify([{ field: "field1", asc: true }], null, 2),
   clean: (value: unknown) => cleanArrayCodeInput(value, "Sort"),
 });
+
 export const start = input({
   label: "Start",
   type: "string",
@@ -40,6 +43,7 @@ export const start = input({
   default: "0",
   clean: util.types.toNumber,
 });
+
 export const max = input({
   label: "Max",
   type: "string",
@@ -50,6 +54,7 @@ export const max = input({
   default: "999",
   clean: util.types.toNumber,
 });
+
 export const nested = input({
   label: "Nested",
   type: "boolean",
@@ -58,6 +63,7 @@ export const nested = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const additionalFields = input({
   label: "Additional Fields",
   type: "code",
@@ -69,6 +75,7 @@ export const additionalFields = input({
   example: JSON.stringify({ customField: "value" }, null, 2),
   clean: (value: unknown) => cleanCodeInput(value, "Additional Fields"),
 });
+
 export const customerId = input({
   label: "Customer ID",
   type: "string",
@@ -79,6 +86,7 @@ export const customerId = input({
   clean: util.types.toString,
   dataSource: "selectCustomer",
 });
+
 export const vendorId = input({
   label: "Vendor ID",
   type: "string",
@@ -89,6 +97,7 @@ export const vendorId = input({
   clean: util.types.toString,
   dataSource: "selectVendor",
 });
+
 export const accountNumber = input({
   label: "Account Number",
   type: "string",
@@ -98,6 +107,7 @@ export const accountNumber = input({
   comments: "The bank account number.",
   clean: util.types.toString,
 });
+
 export const routingNumber = input({
   label: "Routing Number",
   type: "string",
@@ -107,6 +117,7 @@ export const routingNumber = input({
   comments: "The bank routing number.",
   clean: util.types.toString,
 });
+
 export const mfaId = input({
   label: "MFA ID",
   type: "string",

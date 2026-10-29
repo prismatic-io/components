@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { listIssueTransitionsExamplePayload } from "../../examplePayloads";
 import { connectionInput, issueId } from "../../inputs";
+
 export const listIssueTransitions = action({
   display: {
     label: "List Issue Transitions",
@@ -13,6 +14,7 @@ export const listIssueTransitions = action({
       context.debug.enabled,
     );
     const { data } = await client.get(`/issue/${params.issueId}/transitions`);
+
     return { data };
   },
   inputs: {

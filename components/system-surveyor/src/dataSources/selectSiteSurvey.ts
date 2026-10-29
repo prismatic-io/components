@@ -1,9 +1,11 @@
 import { dataSource } from "@prismatic-io/spectral";
+
 import { createSsvClient } from "../client";
 import { selectSiteSurveyExamplePayload } from "../examplePayloads/dataSources";
 import { selectSiteSurveyInputs } from "../inputs";
 import type { SurveyListResponse } from "../types";
 import { fetchPaginatedResults, sortByLabel } from "../util";
+
 export const selectSiteSurvey = dataSource({
   display: {
     label: "Select Site Survey",
@@ -17,12 +19,14 @@ export const selectSiteSurvey = dataSource({
       `/v3/site/${params.siteId}/surveys`,
       { fetchAll: true, dataKey: "surveys" },
     )) as SurveyListResponse;
+
     const result = sortByLabel(
       data.surveys.map((survey) => ({
         label: survey.title,
         key: survey.id,
       })),
     );
+
     return { result };
   },
   dataSourceType: "picklist",

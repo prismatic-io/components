@@ -4,6 +4,7 @@ import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
 import type { SmartsheetWebhook } from "../../types";
 import { paginateByPage } from "../../util/pagination";
+
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -16,10 +17,12 @@ export const deleteInstanceWebhooks = action({
       client,
       "/webhooks",
     );
+
     const instanceWebhookUrls = Object.values(context.webhookUrls);
     const smartsheetWebhooks = allWebhooks.filter((webhook) =>
       instanceWebhookUrls.includes(webhook.callbackUrl),
     );
+
     for (const webhook of smartsheetWebhooks) {
       context.logger.info(`Deleting webhook ${webhook.id}...`);
       await client.delete(`/webhooks/${webhook.id}`);

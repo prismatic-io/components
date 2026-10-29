@@ -17,11 +17,13 @@ const memberObject = {
     viewed_top_tier_user: null,
   },
 };
+
 export const getListMembersExamplePayload = {
   data: {
     members: [memberObject],
   },
 };
+
 export const getTaskMembersExamplePayload = {
   data: {
     members: [memberObject],

@@ -50,6 +50,7 @@ export const listChangesExamplePayload = {
     ],
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites",
@@ -68,6 +69,7 @@ export const rawRequestExamplePayload = {
     ],
   },
 };
+
 export const listSharedDocumentsExamplePayload = {
   data: {
     "@odata.context":
@@ -139,6 +141,7 @@ export const listSharedDocumentsExamplePayload = {
     ],
   },
 };
+
 export const listSiteListsExamplePayload = {
   data: {
     "@odata.context":
@@ -176,6 +179,7 @@ export const listSiteListsExamplePayload = {
     ],
   },
 };
+
 export const getSiteListExamplePayload = {
   data: {
     "@odata.context":
@@ -218,6 +222,7 @@ export const getSiteListExamplePayload = {
     ],
   },
 };
+
 export const listItemsInSiteListExamplePayload = {
   data: {
     "@odata.context":
@@ -258,6 +263,7 @@ export const listItemsInSiteListExamplePayload = {
     ],
   },
 };
+
 export const getItemFromSiteListExamplePayload = {
   data: {
     "@odata.context":
@@ -279,6 +285,7 @@ export const getItemFromSiteListExamplePayload = {
     },
   },
 };
+
 export const createItemInSiteListExamplePayload = {
   data: {
     "@odata.context":

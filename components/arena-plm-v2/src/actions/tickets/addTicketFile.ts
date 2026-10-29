@@ -5,6 +5,7 @@ import { addTicketFileInputs } from "../../inputs";
 import { fileAssociationSchema } from "../../outputSchemas";
 import type { FileAssociationCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const addTicketFile = action({
   display: {
     label: "Add Ticket File",
@@ -19,13 +20,16 @@ export const addTicketFile = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: FileAssociationCreateVo = {
         file: { guid: params.fileGuid },
       };
+
       const { data } = await client.post(
         `/tickets/${params.ticketGuid}/files`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Add Ticket File");

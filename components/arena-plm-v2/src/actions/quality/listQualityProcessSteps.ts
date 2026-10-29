@@ -4,6 +4,7 @@ import { listQualityProcessStepsExamplePayload } from "../../examplePayloads";
 import { listQualityProcessStepsInputs } from "../../inputs";
 import { listQualityProcessStepsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessSteps = action({
   display: {
     label: "List Quality Process Steps",
@@ -19,9 +20,11 @@ export const listQualityProcessSteps = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/qualityprocesses/${params.qualityProcessGuid}/steps`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Quality Process Steps");

@@ -5,6 +5,7 @@ import { updateAssetTagsExamplePayload } from "../../examplePayloads";
 import { updateAssetTagsInputs } from "../../inputs";
 import { updateAssetTagsOutputSchema } from "../../outputSchemas";
 import { parseXml } from "../../util";
+
 export const updateAssetTags = action({
   display: {
     label: "Update Asset Tags",
@@ -22,19 +23,23 @@ export const updateAssetTags = action({
     { connection, assetId, tagsToAdd, tagsToRemove },
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
+
     const tagElements: string[] = [];
+
     if (tagsToAdd.length > 0) {
       const addTags = tagsToAdd
         .map((id) => `<TagSimple><id>${id}</id></TagSimple>`)
         .join("");
       tagElements.push(`<add>${addTags}</add>`);
     }
+
     if (tagsToRemove.length > 0) {
       const removeTags = tagsToRemove
         .map((id) => `<TagSimple><id>${id}</id></TagSimple>`)
         .join("");
       tagElements.push(`<remove>${removeTags}</remove>`);
     }
+
     const requestBody = `<?xml version="1.0" encoding="UTF-8"?>
 <ServiceRequest>
   <data>
@@ -45,14 +50,17 @@ export const updateAssetTags = action({
     </Asset>
   </data>
 </ServiceRequest>`;
+
     const response = await client.post<string>(
       `/qps/rest/2.0/update/am/asset/${assetId}`,
       requestBody,
       { headers: TEXT_XML_HEADERS },
     );
+
     const parsed = await parseXml<Record<string, unknown>>(
       response.data as string,
     );
+
     return { data: parsed };
   },
   examplePerform: async () => updateAssetTagsExamplePayload,

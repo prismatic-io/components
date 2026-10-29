@@ -4,6 +4,7 @@ import { deleteAllWebhooksExamplePayload } from "../../examplePayloads";
 import { connectionInput, version } from "../../inputs";
 import type { WebhookData } from "../../interfaces/WebhookData";
 import { getAllPaginatedData } from "../../util";
+
 export const deleteAllWebhooks = action({
   display: {
     label: "Delete All Instanced Webhooks",
@@ -15,7 +16,9 @@ export const deleteAllWebhooks = action({
       version,
       context.debug.enabled,
     );
+
     const data = await getAllPaginatedData<WebhookData>(client, "/webhook");
+
     if (data.length === 0) {
       return {
         data: {
@@ -23,12 +26,15 @@ export const deleteAllWebhooks = action({
         },
       };
     }
+
     const instanceWebhooks = Object.values(context.webhookUrls);
+
     const subscriptionsToRemove = data
       .filter(({ subscription_url }) =>
         instanceWebhooks.includes(subscription_url),
       )
       .map(({ id }) => id);
+
     if (subscriptionsToRemove.length === 0) {
       return {
         data: {
@@ -36,9 +42,11 @@ export const deleteAllWebhooks = action({
         },
       };
     }
+
     await Promise.all(
       subscriptionsToRemove.map((id) => client.delete(`/webhook/${id}`)),
     );
+
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
   inputs: {

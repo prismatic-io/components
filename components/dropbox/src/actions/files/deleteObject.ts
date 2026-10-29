@@ -9,6 +9,7 @@ import {
   pathBasename,
   validatePath,
 } from "../../util";
+
 export const deleteObject = action({
   display: {
     label: "Delete Object",
@@ -36,12 +37,7 @@ export const deleteObject = action({
       handleDropboxError(err, [path]);
     }
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...deleteObjectExamplePayload,
       result: {

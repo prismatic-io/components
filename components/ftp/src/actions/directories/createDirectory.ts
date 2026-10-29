@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createDirectoryExamplePayload } from "../../examplePayloads";
 import { createDirectoryInputs } from "../../inputs";
+
 export const createDirectory = action({
   display: {
     label: "Create Directory",
@@ -24,4 +25,5 @@ export const createDirectory = action({
   inputs: createDirectoryInputs,
   examplePayload: createDirectoryExamplePayload,
 });
+
 export default createDirectory;

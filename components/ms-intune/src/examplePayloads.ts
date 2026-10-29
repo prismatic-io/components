@@ -6,6 +6,7 @@ export const selectManagedDeviceExamplePayload = {
     },
   ],
 };
+
 export const selectManagedAppExamplePayload = {
   result: [
     {
@@ -14,11 +15,15 @@ export const selectManagedAppExamplePayload = {
     },
   ],
 };
+
 export const selectMobileAppExamplePayload = selectManagedAppExamplePayload;
+
 export const selectGroupExamplePayload = selectMobileAppExamplePayload;
+
 export const selectMobileAppAssignmentExamplePayload = {
   result: [{ label: "required", key: "591620b7-20b7-5916-b720-1659b7201659" }],
 };
+
 export const listManagedDevicesExamplePayload = {
   data: {
     value: [
@@ -143,6 +148,7 @@ export const listManagedDevicesExamplePayload = {
     ],
   },
 };
+
 export const getManagedDeviceExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.managedDevice",
@@ -259,6 +265,7 @@ export const getManagedDeviceExamplePayload = {
     enrollmentProfileName: "Enrollment Profile Name value",
   },
 };
+
 export const createManagedDeviceExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.managedDevice",
@@ -375,6 +382,7 @@ export const createManagedDeviceExamplePayload = {
     enrollmentProfileName: "Enrollment Profile Name value",
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users",
@@ -408,6 +416,7 @@ export const listUsersExamplePayload = {
     ],
   },
 };
+
 export const getUserExamplePayload = {
   data: {
     businessPhones: ["+1 425 555 0109"],
@@ -423,6 +432,7 @@ export const getUserExamplePayload = {
     id: "87d349ed-44d7-43e1-9a83-5f2406dee5bd",
   },
 };
+
 export const createUserExamplePayload = {
   data: {
     "@odata.context":
@@ -440,6 +450,7 @@ export const createUserExamplePayload = {
     userPrincipalName: "AdeleV@contoso.com",
   },
 };
+
 export const selectDetectedAppExamplePayload = {
   result: [
     {
@@ -448,6 +459,7 @@ export const selectDetectedAppExamplePayload = {
     },
   ],
 };
+
 export const listDetectedAppsExamplePayload = {
   data: {
     value: [
@@ -464,6 +476,7 @@ export const listDetectedAppsExamplePayload = {
     ],
   },
 };
+
 export const getDetectedAppExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.detectedApp",
@@ -476,6 +489,7 @@ export const getDetectedAppExamplePayload = {
     platform: "windows",
   },
 };
+
 export const createDetectedAppExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.detectedApp",
@@ -488,7 +502,9 @@ export const createDetectedAppExamplePayload = {
     platform: "windows",
   },
 };
+
 export const updateDetectedAppExamplePayload = createDetectedAppExamplePayload;
+
 export const listManagedAppsExamplePayload = {
   data: {
     value: [
@@ -518,6 +534,7 @@ export const listManagedAppsExamplePayload = {
     ],
   },
 };
+
 export const getManagedAppExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.mobileApp",
@@ -541,6 +558,7 @@ export const getManagedAppExamplePayload = {
     publishingState: "processing",
   },
 };
+
 export const createManagedAppExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.officeSuiteApp",
@@ -600,7 +618,9 @@ export const createManagedAppExamplePayload = {
     officeConfigurationXml: "b2ZmaWNlQ29uZmlndXJhdGlvblhtbA==",
   },
 };
+
 export const updateManagedAppExamplePayload = createManagedAppExamplePayload;
+
 export const listDomainsExamplePayload = {
   data: {
     value: [
@@ -617,6 +637,7 @@ export const listDomainsExamplePayload = {
     ],
   },
 };
+
 export const assignManagedAppToGroupExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.mobileAppAssignment",
@@ -628,6 +649,7 @@ export const assignManagedAppToGroupExamplePayload = {
     settings: null,
   },
 };
+
 export const listMobileAppAssignmentsExamplePayload = {
   data: {
     value: [
@@ -647,6 +669,7 @@ export const listMobileAppAssignmentsExamplePayload = {
     ],
   },
 };
+
 export const getMobileAppAssignmentExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.mobileAppAssignment",
@@ -662,6 +685,7 @@ export const getMobileAppAssignmentExamplePayload = {
     },
   },
 };
+
 export const listMobileAppsExamplePayload = {
   data: {
     value: [
@@ -689,6 +713,7 @@ export const listMobileAppsExamplePayload = {
     ],
   },
 };
+
 export const getMobileAppExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.mobileApp",
@@ -712,6 +737,7 @@ export const getMobileAppExamplePayload = {
     publishingState: "processing",
   },
 };
+
 export const listGroupsExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#groups",
@@ -784,6 +810,7 @@ export const listGroupsExamplePayload = {
     ],
   },
 };
+
 export const getGroupExamplePayload = {
   data: {
     "@odata.context":
@@ -825,6 +852,7 @@ export const getGroupExamplePayload = {
     onPremisesProvisioningErrors: [],
   },
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     "@odata.context":
@@ -851,6 +879,7 @@ export const listSubscriptionsExamplePayload = {
     ],
   },
 };
+
 export const getSubscriptionExamplePayload = {
   data: [
     {
@@ -873,12 +902,14 @@ export const getSubscriptionExamplePayload = {
     },
   ],
 };
+
 export const deletedSubscriptionsExamplePayload = {
   data: [
     "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
     "0fc0d6db-0073-42e5-a186-853da75fb308",
   ],
 };
+
 export const wipeDeviceExamplePayload = {
   data: {
     keepEnrollmentData: true,
@@ -887,6 +918,7 @@ export const wipeDeviceExamplePayload = {
     persistEsimDataPlan: true,
   },
 };
+
 export const getDeviceCompliancePolicyExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.deviceCompliancePolicy",
@@ -903,6 +935,7 @@ export const listDeviceCompliancePoliciesExamplePayload = {
     value: [getDeviceCompliancePolicyExamplePayload.data],
   },
 };
+
 export const assignDeviceCompliancePolicyExamplePayload = {
   data: {
     value: [
@@ -918,6 +951,7 @@ export const assignDeviceCompliancePolicyExamplePayload = {
     ],
   },
 };
+
 export const getDeviceConfigurationExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.deviceConfiguration",
@@ -929,11 +963,13 @@ export const getDeviceConfigurationExamplePayload = {
     version: 7,
   },
 };
+
 export const listDeviceConfigurationsExamplePayload = {
   data: {
     value: [getDeviceConfigurationExamplePayload.data],
   },
 };
+
 export const listDirectoryAuditExamplePayload = {
   data: {
     "@odata.context":
@@ -989,6 +1025,7 @@ export const listDirectoryAuditExamplePayload = {
     ],
   },
 };
+
 export const getDirectoryAuditExamplePayload = {
   data: {
     "@odata.context":
@@ -1044,6 +1081,7 @@ export const getDirectoryAuditExamplePayload = {
     ],
   },
 };
+
 export const getDeviceCompliancePolicySettingStateSummaryExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.deviceCompliancePolicySettingStateSummary",
@@ -1060,11 +1098,13 @@ export const getDeviceCompliancePolicySettingStateSummaryExamplePayload = {
     conflictDeviceCount: 3,
   },
 };
+
 export const listDeviceCompliancePolicySettingStateSummariesExamplePayload = {
   data: {
     value: [getDeviceCompliancePolicySettingStateSummaryExamplePayload.data],
   },
 };
+
 export const updateSoftwareUpdateStatusSummaryExamplePayload = {
   data: {
     "@odata.type": "#microsoft.graph.softwareUpdateStatusSummary",
@@ -1086,9 +1126,11 @@ export const updateSoftwareUpdateStatusSummaryExamplePayload = {
     notApplicableUserCount: 6,
   },
 };
+
 export const getSoftwareUpdateStatusSummaryExamplePayload = {
   data: updateDetectedAppExamplePayload,
 };
+
 export const reprocessLicenseAssignmentExamplePayload = {
   data: {
     accountEnabled: true,
@@ -1111,6 +1153,7 @@ export const reprocessLicenseAssignmentExamplePayload = {
     companyName: "companyName-value",
   },
 };
+
 export const listMembersExamplePayload = {
   data: {
     "@odata.context":
@@ -1123,58 +1166,75 @@ export const listMembersExamplePayload = {
     ],
   },
 };
+
 export const retireDeviceExamplePayload = {
   data: "Action successfully completed.",
 };
+
 export const deleteManagedDeviceExamplePayload = {
   data: {},
 };
+
 export const updateManagedDeviceExamplePayload = {
   data: {},
 };
+
 export const removeAllDevicesFromUserExamplePayload = {
   data: {},
 };
+
 export const deleteUserExamplePayload = {
   data: {},
 };
+
 export const updateUserExamplePayload = {
   data: {},
 };
+
 export const deleteGroupExamplePayload = {
   data: "Action successfully completed.",
 };
+
 export const updateGroupExamplePayload = {
   data: "Action successfully completed.",
 };
+
 export const deleteSubscriptionExamplePayload = {
   data: "Action successfully completed.",
 };
+
 export const deleteManagedAppExamplePayload = {
   data: {},
 };
+
 export const deleteDetectedAppExamplePayload = {
   data: {},
 };
+
 export const assignMobileAppExamplePayload = {
   data: "Action successfully completed.",
 };
+
 export const deleteMobileAppAssignmentExamplePayload = {
   data: "Action successfully completed.",
 };
+
 export const addMemberToGroupExamplePayload = {
   data: {
     message: "Sucessfully added member(s) to group.",
   },
 };
+
 export const addMembersToGroupExamplePayload = {
   data: {
     message: "Sucessfully added member(s) to group.",
   },
 };
+
 export const deleteMemberFromGroupExamplePayload = {
   data: "Successfully deleted member from group.",
 };
+
 export const selectDeviceCompliancePolicyExamplePayload = {
   result: [
     {
@@ -1183,6 +1243,7 @@ export const selectDeviceCompliancePolicyExamplePayload = {
     },
   ],
 };
+
 export const selectDeviceConfigurationExamplePayload = {
   result: [
     {
@@ -1191,14 +1252,17 @@ export const selectDeviceConfigurationExamplePayload = {
     },
   ],
 };
+
 export const selectUserExamplePayload = {
   result: [
     { label: "Conf Room Adams", key: "6ea91a8d-e32e-41a1-b7bd-d2d185eed0e0" },
   ],
 };
+
 export const selectDirectoryAuditExamplePayload = {
   result: [{ label: "Add member to group", key: "audit-id-123" }],
 };
+
 export const selectSubscriptionExamplePayload = {
   result: [
     {
@@ -1207,6 +1271,7 @@ export const selectSubscriptionExamplePayload = {
     },
   ],
 };
+
 export const selectDeviceCompliancePolicySettingStateSummaryExamplePayload = {
   result: [
     {
@@ -1215,6 +1280,7 @@ export const selectDeviceCompliancePolicySettingStateSummaryExamplePayload = {
     },
   ],
 };
+
 export const selectMemberExamplePayload = {
   result: [
     {

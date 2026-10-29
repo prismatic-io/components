@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { moveTicketExamplePayload as examplePayload } from "../../examplePayloads";
 import { moveTicketInputs as inputs } from "../../inputs";
 import { ticketOutputSchema } from "../../outputSchemas";
+
 export const moveTicket = action({
   display: {
     label: "Move Ticket",
@@ -16,15 +17,18 @@ export const moveTicket = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       workspace_id: workspaceId,
       group_id: groupId,
       responder_id: responderId,
     };
+
     const { data } = await client.put(
       `/tickets/${ticketId}/move_workspace`,
       payload,
     );
+
     return {
       data,
     };

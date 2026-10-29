@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getBookingByProviderExamplePayload } from "../../examplePayloads";
 import { getBookingByProviderInputs } from "../../inputs";
 import { getBookingByProviderOutputSchema } from "../../outputSchemas";
+
 export const getBookingByProvider = action({
   display: {
     label: "Get Booking by Provider",

@@ -82,6 +82,7 @@ export const retrieveDataSourceExamplePayload = {
     in_trash: false,
   },
 };
+
 export const queryDataSourceExamplePayload = {
   data: {
     object: "list",
@@ -128,6 +129,7 @@ export const queryDataSourceExamplePayload = {
     type: "page_or_database",
   },
 };
+
 export const listDataSourcesExamplePayload = {
   data: {
     object: "list",
@@ -177,6 +179,7 @@ export const listDataSourcesExamplePayload = {
     type: "data_source",
   },
 };
+
 export const createDataSourceExamplePayload = {
   data: {
     object: "data_source",
@@ -228,6 +231,7 @@ export const createDataSourceExamplePayload = {
     in_trash: false,
   },
 };
+
 export const updateDataSourceExamplePayload = {
   data: {
     object: "data_source",
@@ -312,6 +316,7 @@ export const updateDataSourceExamplePayload = {
     in_trash: false,
   },
 };
+
 export const selectDataSourceExamplePayload = {
   result: [
     {
@@ -324,6 +329,7 @@ export const selectDataSourceExamplePayload = {
     },
   ],
 };
+
 export const selectPageExamplePayload = {
   result: [
     {
@@ -336,6 +342,7 @@ export const selectPageExamplePayload = {
     },
   ],
 };
+
 export const selectDatabaseExamplePayload = {
   result: [
     {
@@ -348,6 +355,7 @@ export const selectDatabaseExamplePayload = {
     },
   ],
 };
+
 export const selectUserExamplePayload = {
   result: [
     {

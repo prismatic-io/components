@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection, fetchAll, pagination } from "./common";
+
 const dataExtensionKey = input({
   label: "Data Extension Key",
   type: "string",
@@ -10,6 +11,7 @@ const dataExtensionKey = input({
   placeholder: "Enter data extension key",
   clean: util.types.toString,
 });
+
 const dataExtensionId = input({
   label: "Data Extension ID",
   type: "string",
@@ -20,6 +22,7 @@ const dataExtensionId = input({
   dataSource: "selectDataExtension",
   clean: util.types.toString,
 });
+
 const searchString = input({
   label: "Search String",
   type: "string",
@@ -29,6 +32,7 @@ const searchString = input({
   placeholder: "Enter search string",
   clean: util.types.toString,
 });
+
 const rowData = input({
   label: "Row Data",
   type: "code",
@@ -48,6 +52,7 @@ const rowData = input({
   ),
   clean: util.types.toObject,
 });
+
 const primaryKeys = input({
   label: "Primary Keys",
   type: "code",
@@ -64,6 +69,7 @@ const primaryKeys = input({
   ),
   clean: util.types.toObject,
 });
+
 const batchRows = input({
   label: "Batch Rows",
   type: "code",
@@ -89,6 +95,7 @@ const batchRows = input({
   ),
   clean: util.types.toObject,
 });
+
 const dataExtensionName = input({
   label: "Data Extension Name",
   type: "string",
@@ -98,6 +105,7 @@ const dataExtensionName = input({
   placeholder: "Enter data extension name",
   clean: util.types.toString,
 });
+
 const dataExtensionFields = input({
   label: "Fields",
   type: "code",
@@ -131,6 +139,7 @@ const dataExtensionFields = input({
   ),
   clean: util.types.toObject,
 });
+
 const isSendable = input({
   label: "Is Sendable",
   type: "boolean",
@@ -140,21 +149,25 @@ const isSendable = input({
     "Whether this data extension can be used as a sendable data source for email sends.",
   clean: util.types.toBool,
 });
+
 export const upsertRowInputs = {
   connection,
   dataExtensionKey,
   primaryKeys,
   rowData,
 };
+
 export const asyncUpsertRowsInputs = {
   connection,
   dataExtensionKey,
   batchRows,
 };
+
 export const getDataExtensionFieldsInputs = {
   connection,
   dataExtensionId,
 };
+
 export const createDataExtensionInputs = {
   connection,
   dataExtensionName,
@@ -166,6 +179,7 @@ export const createDataExtensionInputs = {
   dataExtensionFields,
   isSendable,
 };
+
 export const listDataExtensionsInputs = {
   connection,
   searchString,

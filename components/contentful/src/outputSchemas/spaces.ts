@@ -1,4 +1,5 @@
 import { emptyResultSchema, linkSchema } from "./shared";
+
 const spaceSchema = {
   type: "object" as const,
   properties: {
@@ -18,11 +19,16 @@ const spaceSchema = {
     },
   },
 };
+
 export const listSpacesOutputSchema = {
   type: "array" as const,
   items: spaceSchema,
 };
+
 export const getSpaceOutputSchema = spaceSchema;
+
 export const createSpaceOutputSchema = spaceSchema;
+
 export const updateSpaceOutputSchema = spaceSchema;
+
 export const deleteSpaceOutputSchema = emptyResultSchema;

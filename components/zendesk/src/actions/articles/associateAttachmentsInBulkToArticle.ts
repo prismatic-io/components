@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { associateAttachmentsInBulkToArticleExamplePayload } from "../../examplePayloads";
 import { associateAttachmentsInBulkToArticleInputs } from "../../inputs";
 import { associateAttachmentsInBulkToArticleOutputSchema } from "../../outputSchemas";
+
 export const associateAttachmentsInBulkToArticle = action({
   display: {
     label: "Associate Attachments to Article",
@@ -21,6 +22,7 @@ export const associateAttachmentsInBulkToArticle = action({
         attachment_ids: attachmentIds,
       },
     );
+
     return {
       data,
     };

@@ -7,6 +7,7 @@ import {
   connectionInput,
   spaceType,
 } from "../../inputs";
+
 export const createSpace = action({
   display: {
     label: "Create Space",
@@ -20,6 +21,7 @@ export const createSpace = action({
       name: name || undefined,
       type: spaceType || undefined,
     });
+
     return {
       data,
     };

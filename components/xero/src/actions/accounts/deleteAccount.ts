@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { deleteAccountInputs } from "../../inputs";
 import { deleteAccountExamplePayload } from "../../examplePayloads";
+
 export const deleteAccount = action({
   display: {
     label: "Delete Account",

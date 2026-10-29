@@ -4,6 +4,7 @@ import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+
 export default component({
   key: "aws-s3",
   documentationUrl: "https://prismatic.io/docs/components/aws-s3/",

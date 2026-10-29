@@ -3,6 +3,7 @@ import { createApiClient } from "../../client";
 import { patchEntryExamplePayload } from "../../examplePayloads";
 import { patchEntryInputs } from "../../inputs";
 import { patchEntryOutputSchema } from "../../outputSchemas";
+
 export const patchEntry = action({
   display: {
     label: "Patch Entry",
@@ -32,11 +33,11 @@ export const patchEntry = action({
         },
       },
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => patchEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    patchEntryExamplePayload,
   inputs: patchEntryInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

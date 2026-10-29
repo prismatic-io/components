@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { updateAccountInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const updateAccount = action({
   display: {
     label: "Update Account",
@@ -27,6 +28,7 @@ export const updateAccount = action({
     },
   ) => {
     const salesforceClient = await createSalesforceClient(connection, version);
+
     const object = {
       Id: recordId,
       name: name,
@@ -50,16 +52,18 @@ export const updateAccount = action({
       ...dynamicValues,
       ...fieldValues,
     };
+
     if (context.debug.enabled) context.logger.debug("Payload", object);
+
     const command = salesforceClient.sobject("Account").update(object);
     const response = await executeSFAction(context, command);
+
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   inputs: updateAccountInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { lookBackDateClean, toOptionalString } from "../util";
 import { connection, serviceDeskId } from "./common";
+
 const createLookBackDate = (item: string) =>
   input({
     label: "Look-back Date",
@@ -11,6 +12,7 @@ const createLookBackDate = (item: string) =>
     example: "2026-01-01",
     clean: lookBackDateClean,
   });
+
 export const onNewRequestInputs = {
   connection,
   lookBackDate: createLookBackDate("service request"),
@@ -22,6 +24,7 @@ export const onNewRequestInputs = {
     clean: toOptionalString,
   },
 };
+
 const opsAlertAdditionalQuery = input({
   label: "Additional Query",
   type: "string",
@@ -32,6 +35,7 @@ const opsAlertAdditionalQuery = input({
   example: "status: open AND priority: P1",
   clean: toOptionalString,
 });
+
 export const onNewOpsAlertInputs = {
   connection,
   lookBackDate: createLookBackDate("alert"),

@@ -4,6 +4,7 @@ import { getOrganizationDealsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getOrganizationDealsExamplePayload } from "../../examplePayloads";
 import { getOrganizationDealsOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationDeals = action({
   display: {
     label: "Get Organization Deals",

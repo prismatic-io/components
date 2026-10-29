@@ -4,6 +4,7 @@ import { listCustomersExamplePayload as examplePayload } from "../../examplePayl
 import { listCustomersInputs as inputs } from "../../inputs/customers";
 import type { ListCustomersResponse } from "../../interfaces/customers";
 import { fetchAllWithPagination } from "../../utils/fetchAllWithPagination";
+
 export const listCustomers = action({
   display: {
     label: "List Customers",
@@ -25,6 +26,7 @@ export const listCustomers = action({
       : await client.get<ListCustomersResponse>("/customers", {
           params: configVars,
         });
+
     return {
       data,
     };

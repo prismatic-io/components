@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { addCommentExamplePayload } from "../../examplePayloads";
 import { addCommentInputs } from "../../inputs";
+
 export const addComment = action({
   display: {
     label: "Add Comment",

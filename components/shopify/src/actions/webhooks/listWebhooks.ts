@@ -7,6 +7,7 @@ import {
 import { listWebhooksInputs } from "../../inputs";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
 import { listWebhooksGql } from "../graphql/webhooks/listWebhooksGql";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -29,6 +30,7 @@ export const listWebhooks = action({
       },
       callbackUrl: undefined,
     });
+
     return { data };
   },
   examplePerform: async () => ({

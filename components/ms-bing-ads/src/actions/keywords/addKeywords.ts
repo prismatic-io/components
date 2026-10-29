@@ -3,6 +3,7 @@ import { addKeywordsExamplePayload } from "../../examplePayloads";
 import { addKeywordsInputs } from "../../inputs/keywords";
 import { getRestClient } from "../../restClient";
 import type { AddRestResponse } from "../../types";
+
 export const addKeywords = action({
   display: {
     label: "Add Keywords",
@@ -13,10 +14,12 @@ export const addKeywords = action({
     { connection, accountId, customerId, adGroupId, keywords },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<AddRestResponse>("/Keywords", {
       AdGroupId: adGroupId,
       Keywords: keywords,
     });
+
     return { data };
   },
   inputs: addKeywordsInputs,

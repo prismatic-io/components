@@ -1,4 +1,5 @@
 import { versionSchema } from "./common";
+
 export const contentPropertySchema = {
   type: "object" as const,
   properties: {
@@ -9,6 +10,7 @@ export const contentPropertySchema = {
   },
   required: ["id", "key", "version"],
 };
+
 export const listContentPropertiesOutputSchema = {
   type: "object" as const,
   properties: {

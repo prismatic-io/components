@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const createARAdvanceExamplePayload = {
   data: {
     response: {
@@ -36,6 +37,7 @@ export const createARAdvanceExamplePayload = {
     },
   },
 };
+
 export const createBillExamplePayload = {
   data: {
     response: {
@@ -85,6 +87,7 @@ export const createBillExamplePayload = {
     },
   },
 };
+
 export const createContactExamplePayload = {
   data: {
     _status: "success",
@@ -95,6 +98,7 @@ export const createContactExamplePayload = {
     _data: [{ RECORDNO: "19713", CONTACTNAME: "John Doe" }],
   },
 };
+
 export const createCustomerExamplePayload = {
   data: {
     _status: "success",
@@ -105,6 +109,7 @@ export const createCustomerExamplePayload = {
     _data: [{ RECORDNO: "12499", CUSTOMERID: "C-01564" }],
   },
 };
+
 export const createInvoiceExamplePayload = {
   data: {
     response: {
@@ -142,12 +147,14 @@ export const createInvoiceExamplePayload = {
     },
   },
 };
+
 export const createProjectExamplePayload = {
   data: {
     RECORDNO: "90320",
     PROJECTID: "21-3457",
   },
 };
+
 export const createVendorExamplePayload = {
   data: {
     _status: "success",
@@ -158,6 +165,7 @@ export const createVendorExamplePayload = {
     _data: [{ RECORDNO: "1234", VENDORID: "V-12345" }],
   },
 };
+
 export const deleteObjectExamplePayload = {
   data: {
     response: {
@@ -194,6 +202,7 @@ export const deleteObjectExamplePayload = {
     },
   },
 };
+
 export const getARAdjustmentLineExamplePayload = {
   data: {
     _status: "success",
@@ -258,6 +267,7 @@ export const getARAdjustmentLineExamplePayload = {
     ],
   },
 };
+
 export const getARAdjustmentExamplePayload = {
   data: {
     _status: "success",
@@ -347,6 +357,7 @@ export const getARAdjustmentExamplePayload = {
     ],
   },
 };
+
 export const getARAdvanceExamplePayload = {
   data: {
     _status: "success",
@@ -432,6 +443,7 @@ export const getARAdvanceExamplePayload = {
     ],
   },
 };
+
 export const getApPaymentExamplePayload = {
   data: {
     _status: "success",
@@ -442,6 +454,7 @@ export const getApPaymentExamplePayload = {
     _data: [],
   },
 };
+
 export const getArPaymentExamplePayload = {
   data: {
     _status: "success",
@@ -452,6 +465,7 @@ export const getArPaymentExamplePayload = {
     _data: [],
   },
 };
+
 export const getBillExamplePayload = {
   data: {
     _status: "success",
@@ -661,6 +675,7 @@ export const getBillExamplePayload = {
     ],
   },
 };
+
 export const getContactExamplePayload = {
   data: {
     _status: "success",
@@ -726,6 +741,7 @@ export const getContactExamplePayload = {
     ],
   },
 };
+
 export const getCustomerExamplePayload = {
   data: {
     _status: "success",
@@ -961,6 +977,7 @@ export const getCustomerExamplePayload = {
     ],
   },
 };
+
 export const getInvoiceExamplePayload = {
   data: {
     _status: "success",
@@ -1069,6 +1086,7 @@ export const getInvoiceExamplePayload = {
     ],
   },
 };
+
 export const getProjectExamplePayload = {
   data: {
     RECORDNO: "2",
@@ -1175,6 +1193,7 @@ export const getProjectExamplePayload = {
     MEGAENTITYNAME: "",
   },
 };
+
 export const getVendorExamplePayload = {
   data: {
     _status: "success",
@@ -1465,12 +1484,14 @@ export const getVendorExamplePayload = {
     ],
   },
 };
+
 export const queryAndListExamplePayload = {
   data: [
     { RECORDNO: "1234", CUSTOMERNAME: "Test Client" },
     { RECORDNO: "1235", CUSTOMERNAME: "Another Test Client" },
   ],
 };
+
 export const rawRequestExamplePayload = {
   data: {
     response: {
@@ -1540,6 +1561,7 @@ export const rawRequestExamplePayload = {
     },
   },
 };
+
 export const updateARAdjustmentExamplePayload = {
   data: {
     response: {
@@ -1577,6 +1599,7 @@ export const updateARAdjustmentExamplePayload = {
     },
   },
 };
+
 export const updateARAdvanceExamplePayload = {
   data: {
     response: {
@@ -1614,6 +1637,7 @@ export const updateARAdvanceExamplePayload = {
     },
   },
 };
+
 export const updateContactExamplePayload = {
   data: {
     _controlId: "64b091d8-4bd6-4f2e-b175-d90d4e3a1234",
@@ -1625,6 +1649,7 @@ export const updateContactExamplePayload = {
     taxable: false,
   },
 };
+
 export const updateCustomerExamplePayload = {
   data: {
     _controlId: "49861154-842a-4d25-ab12-2af79dfc1234",
@@ -1637,6 +1662,7 @@ export const updateCustomerExamplePayload = {
     excludedFromContactList: false,
   },
 };
+
 export const updateInvoiceExamplePayload = {
   data: {
     response: {
@@ -1674,12 +1700,14 @@ export const updateInvoiceExamplePayload = {
     },
   },
 };
+
 export const updateProjectExamplePayload = {
   data: {
     RECORDNO: "90320",
     PROJECTID: "21-3457",
   },
 };
+
 export const updateVendorExamplePayload = {
   data: {
     _status: "success",
@@ -1690,36 +1718,42 @@ export const updateVendorExamplePayload = {
     _data: [{ RECORDNO: "1234", VENDORID: "V-01234" }],
   },
 };
+
 export const selectContactExamplePayload = {
   result: [
     { label: "John Doe", key: "1001" },
     { label: "Jane Smith", key: "1002" },
   ],
 };
+
 export const selectCustomerExamplePayload = {
   result: [
     { label: "Acme Corp", key: "1001" },
     { label: "Global Tech", key: "1002" },
   ],
 };
+
 export const selectInvoiceExamplePayload = {
   result: [
     { label: "INV-0001", key: "4001" },
     { label: "INV-0002", key: "4002" },
   ],
 };
+
 export const selectProjectExamplePayload = {
   result: [
     { label: "Website Redesign", key: "5001" },
     { label: "ERP Migration", key: "5002" },
   ],
 };
+
 export const selectVendorExamplePayload = {
   result: [
     { label: "Acme Supplies", key: "2001" },
     { label: "Office Depot", key: "2002" },
   ],
 };
+
 export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {

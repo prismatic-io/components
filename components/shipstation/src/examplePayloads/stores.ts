@@ -26,7 +26,9 @@ export const getStoreExamplePayload = {
     ],
   },
 };
+
 export const updateStoreExamplePayload = getStoreExamplePayload;
+
 export const listStoresExamplePayload = {
   data: [
     {
@@ -69,6 +71,7 @@ export const listStoresExamplePayload = {
     },
   ],
 };
+
 export const deactivateStoreExamplePayload = {
   data: {
     success: "true",

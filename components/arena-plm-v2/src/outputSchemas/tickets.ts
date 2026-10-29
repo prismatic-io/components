@@ -4,6 +4,7 @@ export const deleteTicketOutputSchema = {
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const ticketFileSchema = {
   type: "object" as const,
   properties: {
@@ -78,6 +79,7 @@ export const ticketFileSchema = {
     latestEditionAssociation: { type: "boolean" },
   },
 };
+
 export const listTicketFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -85,6 +87,7 @@ export const listTicketFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const ticketItemSchema = {
   type: "object" as const,
   properties: {
@@ -101,6 +104,7 @@ export const ticketItemSchema = {
     },
   },
 };
+
 export const listTicketItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -108,6 +112,7 @@ export const listTicketItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const ticketSchema = {
   type: "object" as const,
   properties: {
@@ -181,6 +186,7 @@ export const ticketSchema = {
     },
   },
 };
+
 export const listTicketsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -188,6 +194,7 @@ export const listTicketsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listTicketTemplatesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -195,26 +202,31 @@ export const listTicketTemplatesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const removeTicketChangeOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeTicketFileOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeTicketItemOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeTicketQualityProcessOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeTicketReferenceOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },

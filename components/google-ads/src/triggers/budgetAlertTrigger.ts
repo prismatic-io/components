@@ -12,6 +12,7 @@ import type {
   BudgetAlertChangesObject,
   CampaignQueryRow,
 } from "../types";
+
 import {
   buildBudgetAlertQuery,
   buildTriggerPayload,
@@ -24,19 +25,23 @@ import {
   resolveBudgetAlerts,
   searchGoogleAds,
 } from "../util";
+
 const budgetAlertPerform = async (
   context: PollingContext,
   payload: TriggerPayload,
   params: ActionInputParameters<typeof budgetAlertTriggerInputs>,
 ) => {
   const { client, timezone } = await createTriggerClient(context, params);
+
   const pollState = getPollingState(context, {
     lastSyncDate: getPreviousDate(timezone),
     errorCount: 0,
     consecutiveErrors: 0,
   });
+
   const newSyncDate = getCurrentDate(timezone);
   const threshold = params.alertThreshold ?? DEFAULT_ALERT_THRESHOLD;
+
   try {
     const data = await searchGoogleAds<CampaignQueryRow>(client, {
       customerId: params.customerId,
@@ -47,15 +52,19 @@ const budgetAlertPerform = async (
       },
       fetchAll: true,
     });
+
     const results = data.results ?? [];
+
     const budgetAlerts = results
       .map((campaign) => calculateBudgetStatus(campaign, threshold))
       .filter((status) => status.shouldAlert);
+
     context.polling.setState({
       lastSyncDate: newSyncDate,
       errorCount: 0,
       consecutiveErrors: 0,
     });
+
     return Promise.resolve({
       payload: buildTriggerPayload(payload, {
         alerts: budgetAlerts,
@@ -68,6 +77,7 @@ const budgetAlertPerform = async (
     handlePollingError(e as Error, pollState, context, "Google Ads budget");
   }
 };
+
 export const budgetAlertTrigger = pollingTrigger({
   display: {
     label: "Campaign Budget Alerts",
@@ -84,4 +94,5 @@ export const budgetAlertTrigger = pollingTrigger({
   perform: budgetAlertPerform,
   examplePayload: budgetAlertTriggerExamplePayload,
 });
+
 export default budgetAlertTrigger;

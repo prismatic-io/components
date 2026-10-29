@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getAsposeClient } from "../../client";
 import { loadWebDocumentExamplePayload } from "../../examplePayloads";
 import { connection, loadingDocumentUrl } from "../../inputs";
+
 export const loadWebDocument = action({
   display: {
     label: "Load Web Document",
@@ -14,9 +15,11 @@ export const loadWebDocument = action({
   },
   perform: async (context, { connection, loadingDocumentUrl }) => {
     const client = await getAsposeClient(connection, context.debug.enabled);
+
     const { data } = await client.put(`/words/loadWebDocument`, {
       LoadingDocumentUrl: loadingDocumentUrl,
     });
+
     return { data };
   },
   examplePayload: loadWebDocumentExamplePayload,

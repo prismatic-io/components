@@ -1,4 +1,5 @@
 import { input } from "@prismatic-io/spectral";
+
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -21,6 +22,7 @@ import {
   sort,
   tagTypeIds,
 } from "./common";
+
 const location = input({
   label: "Location",
   type: "code",
@@ -71,6 +73,7 @@ const location = input({
   comments: "Locations for the customer",
   clean: cleanCodeInput,
 });
+
 const doNotMail = input({
   label: "Do Not Mail",
   type: "string",
@@ -80,6 +83,7 @@ const doNotMail = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 const doNotService = input({
   label: "Do Not Service",
   type: "string",
@@ -89,6 +93,7 @@ const doNotService = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 export const createCustomerInputs = {
   connection,
   name,
@@ -106,10 +111,12 @@ export const createCustomerInputs = {
   tagTypeIds,
   externalData,
 };
+
 export const getCustomerInputs = {
   connection,
   customerId,
 };
+
 export const listCustomersInputs = {
   connection,
   fetchAll,
@@ -118,6 +125,7 @@ export const listCustomersInputs = {
   includeTotal,
   customQueryParams,
 };
+
 export const updateCustomerInputs = {
   connection,
   customerId,

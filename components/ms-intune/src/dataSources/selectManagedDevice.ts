@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { ENDPOINTS } from "../constants";
 import { selectManagedDeviceExamplePayload } from "../examplePayloads";
 import { selectManagedDeviceInputs } from "../inputs";
+
 export const selectManagedDevice = dataSource({
   display: {
     label: "Select Managed Device",
@@ -14,6 +15,7 @@ export const selectManagedDevice = dataSource({
     const {
       data: { value },
     } = await client.get(ENDPOINTS.MANAGED_DEVICES);
+
     return value.map((managedDevice: { id: string; deviceName: string }) => {
       return {
         label: managedDevice.deviceName,

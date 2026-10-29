@@ -7,7 +7,9 @@ import { ClientType, getBaseUrl, requestHeaders } from "../client";
 import { booksRawRequestExamplePayload } from "../examplePayloads/books";
 import { crmRawRequestExamplePayload } from "../examplePayloads/crm";
 import { connectionInput } from "../inputs";
+
 const { debugRequest: _, ...restHttpClientInputs } = httpClientInputs;
+
 const crmRawRequest = action({
   display: {
     label: "CRM - Raw Request",
@@ -33,6 +35,7 @@ const crmRawRequest = action({
   },
   examplePayload: crmRawRequestExamplePayload,
 });
+
 const booksRawRequest = action({
   display: {
     label: "Books - Raw Request",
@@ -58,4 +61,5 @@ const booksRawRequest = action({
   },
   examplePayload: booksRawRequestExamplePayload,
 });
+
 export default { crmRawRequest, booksRawRequest };

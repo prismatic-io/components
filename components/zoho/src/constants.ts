@@ -7,7 +7,9 @@ export const DEFAULT_POLLING_SORT_FIELD = "Modified_Time";
 export const DEFAULT_POLLING_SORT_ORDER = "desc";
 export const DEFAULT_PER_PAGE = 200;
 export const DEFAULT_PAGE_NUMBER = 1;
+
 export const NOTIFICATION_EVENTS_EXAMPLE = ["Leads.create", "Deals.edit"];
+
 export const NOTIFICATION_CONDITION_EXAMPLE = [
   {
     type: "field_selection",
@@ -45,6 +47,7 @@ export const NOTIFICATION_CONDITION_EXAMPLE = [
     },
   },
 ];
+
 export const TRIGGER_BATCH_SIZE = 50;
 export const POLL_UNBATCHED_MAX_PAGES = 5;
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

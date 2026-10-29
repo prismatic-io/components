@@ -6,6 +6,7 @@ import {
   fetchAll,
   offsetPagination,
 } from "./common";
+
 const entryTitle = input({
   label: "Title",
   type: "string",
@@ -15,6 +16,7 @@ const entryTitle = input({
   placeholder: "Enter entry title",
   example: "New Dashboard Features",
 });
+
 const entryDetails = input({
   label: "Details",
   type: "text",
@@ -24,6 +26,7 @@ const entryDetails = input({
   placeholder: "Enter entry details",
   example: "We've added several new features to the dashboard...",
 });
+
 const entryType = input({
   label: "Type",
   type: "string",
@@ -38,6 +41,7 @@ const entryType = input({
   placeholder: "Enter entry type",
   example: "new",
 });
+
 const notify = input({
   label: "Notify",
   type: "boolean",
@@ -45,6 +49,7 @@ const notify = input({
   comments: "When true, sends an email notification for the changelog entry.",
   clean: util.types.toBool,
 });
+
 const published = input({
   label: "Published",
   type: "boolean",
@@ -52,6 +57,7 @@ const published = input({
   comments: "When true, publishes the changelog entry immediately.",
   clean: util.types.toBool,
 });
+
 const entrySort = input({
   label: "Sort",
   type: "string",
@@ -67,6 +73,7 @@ const entrySort = input({
   placeholder: "Enter sort order",
   example: "nonPublishedFirst",
 });
+
 export const listEntriesInputs = {
   connection,
   entryType,
@@ -74,6 +81,7 @@ export const listEntriesInputs = {
   fetchAll,
   pagination: offsetPagination,
 };
+
 const createEntryAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -81,6 +89,7 @@ const createEntryAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Notify, Published, and Additional Fields.",
   inputs: { notify, published, additionalFields },
 });
+
 export const createEntryInputs = {
   connection,
   entryTitle,

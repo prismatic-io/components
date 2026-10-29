@@ -18,6 +18,7 @@ import {
   uniqueRetailPrice,
   uniqueSalePrice,
 } from "../../inputs";
+
 export const createProduct = action({
   display: {
     label: "Create Product",
@@ -48,6 +49,7 @@ export const createProduct = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products`;
+
     const productData = {
       name: uniqueProductName,
       type: uniqueProductType,
@@ -62,6 +64,7 @@ export const createProduct = action({
       retail_price: uniqueRetailPrice,
       sale_price: uniqueSalePrice,
     };
+
     try {
       const response = await client.post(endpoint, productData);
       return {
@@ -73,6 +76,7 @@ export const createProduct = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

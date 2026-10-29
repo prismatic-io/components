@@ -4,6 +4,7 @@ import { rawHttpClient } from "../../auth";
 import { getPostOutputSchema } from "../../outputSchemas";
 import type { Post } from "../../types";
 import { getPostExamplePayload } from "../../examplePayloads";
+
 export const getPost = action({
   display: {
     label: "Get Post",
@@ -12,9 +13,10 @@ export const getPost = action({
   performSafety: "safe",
   perform: async (context, { postId, zendeskConnection }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
-    const { data } = await client.get<{
-      post: Post;
-    }>(`/community/posts/${postId}`);
+    const { data } = await client.get<{ post: Post }>(
+      `/community/posts/${postId}`,
+    );
+
     return {
       data,
     };

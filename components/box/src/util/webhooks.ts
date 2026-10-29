@@ -15,27 +15,30 @@ import type {
   StoreState,
   WebhookTriggerType,
 } from "../types";
+
 export const getAllWebhookEntries = async <T extends BoxRawEntry = BoxRawEntry>(
   client: BoxClient,
-): Promise<{
-  entries: T[];
-}> => {
+): Promise<{ entries: T[] }> => {
   let initial = true;
   let allEntries: T[] = [];
   let marker: string | undefined;
+
   while (initial || marker) {
     const response = await client.webhooks.getWebhooks({
       limit: MAX_PAGE_SIZE,
       marker,
     });
+
     initial = false;
     allEntries = allEntries.concat(
       (response.entries ?? []).map((entry) => entry.rawData as T),
     );
     marker = response.nextMarker;
   }
+
   return { entries: allEntries };
 };
+
 export const getInstanceWebhookIds = async (
   client: BoxClient,
   entries: BoxRawEntry[],
@@ -46,13 +49,13 @@ export const getInstanceWebhookIds = async (
       client.webhooks.getWebhookById(util.types.toString(entry.id)),
     ),
   );
-  const webhookDetails: {
-    id: string;
-    address: string;
-  }[] = detailed.map((webhook) => ({
-    id: util.types.toString(webhook.id),
-    address: util.types.toString(webhook.address),
-  }));
+  const webhookDetails: { id: string; address: string }[] = detailed.map(
+    (webhook) => ({
+      id: util.types.toString(webhook.id),
+      address: util.types.toString(webhook.address),
+    }),
+  );
+
   const instanceWebhookUrls = new Set(Object.values(webhookUrls));
   return new Set(
     webhookDetails
@@ -60,12 +63,14 @@ export const getInstanceWebhookIds = async (
       .map(({ id }) => id),
   );
 };
+
 export const assertTargetType = (targetType: string): BoxTargetType => {
   if (![FILE_TYPE, FOLDER_TYPE].includes(targetType)) {
     throw new Error(`Invalid target type specified: ${targetType}`);
   }
   return targetType as BoxTargetType;
 };
+
 export const createWebhookFN = async (
   client: BoxClient,
   targetId: string,
@@ -81,6 +86,7 @@ export const createWebhookFN = async (
   webhookId: string | undefined;
 }> => {
   const validTargetType = assertTargetType(targetType);
+
   const { id: webhookId } = await client.webhooks.createWebhook({
     target: {
       id: targetId,
@@ -89,7 +95,9 @@ export const createWebhookFN = async (
     address,
     triggers: triggerTypes as CreateWebhookBody["triggers"],
   });
+
   logger.info("New webhook created, storing state...");
+
   return {
     crossFlowState: {
       [storeKey]: {
@@ -104,25 +112,27 @@ export const createWebhookFN = async (
     webhookId,
   };
 };
+
 export const resolveStoreState = (
   crossFlowState: Record<string, unknown>,
   storeKey: string,
   legacyStoreKey: string,
-): {
-  state: StoreState | undefined;
-  adoptedFromLegacyKey: boolean;
-} => {
+): { state: StoreState | undefined; adoptedFromLegacyKey: boolean } => {
   const state = crossFlowState[storeKey] as StoreState | undefined;
   if (state?.existingWebhookId) {
     return { state, adoptedFromLegacyKey: false };
   }
+
   const legacyState = crossFlowState[legacyStoreKey] as StoreState | undefined;
   if (legacyState?.existingWebhookId) {
     return { state: legacyState, adoptedFromLegacyKey: true };
   }
+
   return { state, adoptedFromLegacyKey: false };
 };
+
 const MAX_MESSAGE_AGE_SECONDS = 10 * 60;
+
 const computeBoxSignature = (
   body: string,
   timestamp: string,
@@ -133,6 +143,7 @@ const computeBoxSignature = (
   hmac.update(timestamp);
   return hmac.digest("base64");
 };
+
 const signatureMatches = (
   body: string,
   timestamp: string,
@@ -149,6 +160,7 @@ const signatureMatches = (
   const actual = Buffer.from(received, "base64");
   return expected.length === actual.length && timingSafeEqual(expected, actual);
 };
+
 export const validateBoxWebhookSignature = ({
   body,
   headers,
@@ -166,10 +178,12 @@ export const validateBoxWebhookSignature = ({
   if (headers["box-signature-algorithm"] !== "HmacSHA256") {
     return false;
   }
+
   const timestamp = headers["box-delivery-timestamp"];
   if (!timestamp) {
     return false;
   }
+
   const deliveredAt = Date.parse(timestamp);
   if (Number.isNaN(deliveredAt)) {
     return false;
@@ -177,6 +191,7 @@ export const validateBoxWebhookSignature = ({
   if ((Date.now() - deliveredAt) / 1000 > MAX_MESSAGE_AGE_SECONDS) {
     return false;
   }
+
   return (
     signatureMatches(
       body,

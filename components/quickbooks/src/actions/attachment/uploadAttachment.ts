@@ -12,6 +12,7 @@ import {
   minorVersion,
   note,
 } from "../../inputs";
+
 export const uploadAttachment = action({
   display: {
     label: "Upload Attachment",
@@ -37,7 +38,9 @@ export const uploadAttachment = action({
       ContentType: fileType,
       ...(note && { Note: note }),
     };
+
     const attachableRef: Array<object> = [];
+
     if (entityRefType || entityRefValue) {
       attachableRef.push({
         IncludeOnSend: includeOnSend,
@@ -46,17 +49,21 @@ export const uploadAttachment = action({
           ...(entityRefValue && { value: entityRefValue }),
         },
       });
+
       metadata.AttachableRef = attachableRef;
     }
     const fileData = file.data;
     const form = new FormData();
+
     form.append("file_metadata_01", JSON.stringify(metadata), {
       contentType: "application/json",
     });
+
     form.append("file_content_01", fileData, {
       filename: fileName,
       contentType: fileType,
     });
+
     const { data } = await client.post("/upload", form, {
       headers: {
         ...form.getHeaders(),

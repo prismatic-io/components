@@ -4,6 +4,7 @@ import { listPipelinesInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { listPipelinesExamplePayload } from "../../examplePayloads";
 import { listPipelinesOutputSchema } from "../../outputSchemas";
+
 export const listPipelines = action({
   display: {
     label: "List Pipelines",

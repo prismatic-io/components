@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { atomFeedModel, lookBackDateClean, restResourceModel } from "../util";
 import { connection } from "./common";
+
 const feedName = input({
   label: "Feed Name",
   type: "string",
@@ -12,6 +13,7 @@ const feedName = input({
   example: "NewHire",
   clean: util.types.toString,
 });
+
 const changesPageSize = input({
   label: "Page Size",
   type: "string",
@@ -23,6 +25,7 @@ const changesPageSize = input({
   example: "100",
   clean: util.types.toNumber,
 });
+
 const resourceType = input({
   label: "Resource Type",
   type: "string",
@@ -34,6 +37,7 @@ const resourceType = input({
   example: "Workers",
   clean: util.types.toString,
 });
+
 const recordsPageSize = input({
   label: "Page Size",
   type: "string",
@@ -45,6 +49,7 @@ const recordsPageSize = input({
   example: "100",
   clean: util.types.toNumber,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -55,12 +60,14 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = {
   connection,
   feedName,
   pageSize: changesPageSize,
   lookBackDate,
 };
+
 export const pollRecordsInputs = {
   connection,
   resourceType,

@@ -3,6 +3,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { googleStorageClient } from "../client";
 import { rawRequestExamplePayload } from "../examplePayloads";
 import { connectionInput, rawRequestInputs } from "../inputs";
+
 const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -21,6 +22,7 @@ const rawRequest = action({
   perform: async (context, { connection, ...httpClientInputs }) => {
     const accessToken =
       await googleStorageClient(connection).authClient.getAccessToken();
+
     const { data } = await sendRawRequest(
       "https://storage.googleapis.com",
       {
@@ -31,8 +33,10 @@ const rawRequest = action({
         Authorization: `Bearer ${accessToken}`,
       },
     );
+
     return { data };
   },
   examplePayload: rawRequestExamplePayload,
 });
+
 export default rawRequest;

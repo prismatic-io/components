@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./generalInputs";
+
 const modelId = input({
   label: "Model ID",
   type: "string",
@@ -10,6 +11,7 @@ const modelId = input({
   dataSource: "selectModel",
   clean: util.types.toString,
 });
+
 export const getModelInputs = {
   connection,
   modelId,

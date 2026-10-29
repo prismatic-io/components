@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createTaskExamplePayload } from "../../examplePayloads";
 import { createTaskInputs } from "../../inputs";
 import type { TaskObject } from "../types/TaskObject";
+
 export const createTask = action({
   display: {
     label: "Create Task",
@@ -38,4 +39,5 @@ export const createTask = action({
   },
   inputs: createTaskInputs,
 });
+
 export default { createTask };

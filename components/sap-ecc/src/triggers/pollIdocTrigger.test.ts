@@ -3,11 +3,13 @@ import { fetchNewIdocs, resolveIdocChanges } from "../util";
 import { DEFAULT_DOCNUM, MAX_BATCHED_PAGE_SIZE } from "../constants";
 import type { IdocRecord } from "../types";
 import { pollIdocTrigger } from "./pollIdocTrigger";
+
 vi.mock("../client", () => ({ createClient: vi.fn(() => ({})) }));
 vi.mock("../util", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../util")>()),
   fetchNewIdocs: vi.fn(),
 }));
+
 const idoc = (idocNumber: string): IdocRecord => ({
   idocNumber,
   status: "53",
@@ -17,6 +19,7 @@ const idoc = (idocNumber: string): IdocRecord => ({
   createdTime: "104530",
   direction: "2",
 });
+
 const runPerform = async (batching: boolean, rowCount?: number) => {
   const state: Record<string, unknown> = {};
   const context = {
@@ -39,6 +42,7 @@ const runPerform = async (batching: boolean, rowCount?: number) => {
   );
   return { result, context };
 };
+
 describe("pollIdocTrigger batching", () => {
   test("is opt-in batchable with a default batch size", () => {
     expect(pollIdocTrigger.triggerResolverSupport).toBe("valid");
@@ -47,6 +51,7 @@ describe("pollIdocTrigger batching", () => {
       Function,
     );
   });
+
   test("resolveIdocChanges tags every IDoc as created", () => {
     expect(
       resolveIdocChanges({
@@ -59,6 +64,7 @@ describe("pollIdocTrigger batching", () => {
       { changeType: "created", record: idoc("0000000000000026") },
     ]);
   });
+
   test("resolveIdocChanges returns [] for empty or undefined changes", () => {
     expect(
       resolveIdocChanges({ records: [], recordCount: 0, lastDocnum: "0" }),
@@ -66,6 +72,7 @@ describe("pollIdocTrigger batching", () => {
     expect(resolveIdocChanges(undefined)).toEqual([]);
     expect(resolveIdocChanges({} as never)).toEqual([]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", async () => {
     vi.mocked(fetchNewIdocs).mockResolvedValue([idoc("0000000000000025")]);
     const { result } = await runPerform(false);
@@ -76,17 +83,22 @@ describe("pollIdocTrigger batching", () => {
       }),
     ).toEqual([{ changeType: "created", record: idoc("0000000000000025") }]);
   });
+
   test("perform clamps the page size only when batching is enabled", async () => {
     vi.mocked(fetchNewIdocs).mockResolvedValue([]);
+
     await runPerform(true, 50000);
     expect(vi.mocked(fetchNewIdocs).mock.lastCall?.[1].pageSize).toBe(
       MAX_BATCHED_PAGE_SIZE,
     );
+
     await runPerform(false, 50000);
     expect(vi.mocked(fetchNewIdocs).mock.lastCall?.[1].pageSize).toBe(50000);
+
     await runPerform(true, undefined);
     expect(vi.mocked(fetchNewIdocs).mock.lastCall?.[1].pageSize).toBe(50);
   });
+
   test("perform advances the cursor and reports no changes on an empty page", async () => {
     vi.mocked(fetchNewIdocs).mockResolvedValue([
       idoc("0000000000000025"),
@@ -94,32 +106,25 @@ describe("pollIdocTrigger batching", () => {
     ]);
     const first = await runPerform(false);
     expect(
-      (
-        first.result as
-          | {
-              polledNoChanges?: boolean;
-            }
-          | undefined
-      )?.polledNoChanges,
+      (first.result as { polledNoChanges?: boolean } | undefined)
+        ?.polledNoChanges,
     ).toBe(false);
     expect(first.context.polling.setState).toHaveBeenCalledWith(
       expect.objectContaining({ lastDocnum: "0000000000000026" }),
     );
+
     vi.mocked(fetchNewIdocs).mockResolvedValue([]);
     const second = await runPerform(false);
     expect(
-      (
-        second.result as
-          | {
-              polledNoChanges?: boolean;
-            }
-          | undefined
-      )?.polledNoChanges,
+      (second.result as { polledNoChanges?: boolean } | undefined)
+        ?.polledNoChanges,
     ).toBe(true);
   });
 });
+
 type PerformParams = Parameters<typeof pollIdocTrigger.perform>[2];
 type PerformContext = Parameters<typeof pollIdocTrigger.perform>[0];
+
 const runWithState = async (
   state: Record<string, unknown>,
   startingDocnum?: string,
@@ -145,6 +150,7 @@ const runWithState = async (
   );
   return { promise, context };
 };
+
 describe("pollIdocTrigger cursor (dedup)", () => {
   test("passes the persisted lastDocnum back to the query", async () => {
     vi.mocked(fetchNewIdocs).mockResolvedValue([]);
@@ -158,6 +164,7 @@ describe("pollIdocTrigger cursor (dedup)", () => {
       "0000000000000099",
     );
   });
+
   test("with no state seeds from startingDocnum when given", async () => {
     vi.mocked(fetchNewIdocs).mockResolvedValue([]);
     const { promise } = await runWithState({}, "0000000000000010");
@@ -166,6 +173,7 @@ describe("pollIdocTrigger cursor (dedup)", () => {
       "0000000000000010",
     );
   });
+
   test("with no state and no startingDocnum seeds from DEFAULT_DOCNUM", async () => {
     vi.mocked(fetchNewIdocs).mockResolvedValue([]);
     const { promise } = await runWithState({});
@@ -175,6 +183,7 @@ describe("pollIdocTrigger cursor (dedup)", () => {
     );
   });
 });
+
 describe("fetchNewIdocs request", () => {
   test("sends DOCNUM GT '<cursor>' in the request body", async () => {
     const actual = await vi.importActual<typeof import("../util")>("../util");
@@ -192,6 +201,7 @@ describe("fetchNewIdocs request", () => {
     expect(body).toContain("DOCNUM GT '0000000000000042'");
   });
 });
+
 describe("pollIdocTrigger error path", () => {
   test("increments counters, rethrows, and does not log below 3 consecutive failures", async () => {
     vi.mocked(fetchNewIdocs).mockRejectedValue(new Error("boom"));
@@ -210,6 +220,7 @@ describe("pollIdocTrigger error path", () => {
     );
     expect(context.logger.error).not.toHaveBeenCalled();
   });
+
   test("logs an error at the third consecutive failure", async () => {
     vi.mocked(fetchNewIdocs).mockRejectedValue(new Error("boom"));
     const { promise, context } = await runWithState({

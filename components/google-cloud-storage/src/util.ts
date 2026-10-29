@@ -8,6 +8,7 @@ import {
 } from "./connections";
 import { PART_UPLOAD_ARRAY_ERROR } from "./constants";
 import type { Part } from "./interfaces";
+
 export const getStorageOptions = (
   connection: Connection,
   isHttp = false,
@@ -24,6 +25,7 @@ export const getStorageOptions = (
     oauth2Client.setCredentials({
       access_token: token,
     });
+
     return {
       authClient: oauth2Client,
     };
@@ -33,6 +35,7 @@ export const getStorageOptions = (
     const privateKey = util.types
       .toString(connection.fields.privateKey)
       .replace(/\\n/g, "\n");
+
     const googleAuth = new GoogleAuth({
       credentials: {
         client_email: clientEmail,
@@ -40,6 +43,7 @@ export const getStorageOptions = (
       },
       scopes: ["https://www.googleapis.com/auth/devstorage.read_write"],
     });
+
     if (isHttp) {
       return {
         authClient: googleAuth,
@@ -54,6 +58,7 @@ export const getStorageOptions = (
   }
   throw new ConnectionError(connection, "Unknown Connection type provided.");
 };
+
 export const validateConnection = (connection: Connection) => {
   if (
     ![googleOAuthConnection.key, googlePrivateKeyConnection.key].includes(
@@ -63,9 +68,11 @@ export const validateConnection = (connection: Connection) => {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
 };
+
 export const getProjectId = (connection: Connection): string => {
   return util.types.toString(connection.fields.projectId);
 };
+
 export const convertXMLToJSON = (xml: string) => {
   return util.types.toObject(
     xml2json(xml, {
@@ -74,14 +81,17 @@ export const convertXMLToJSON = (xml: string) => {
     }),
   );
 };
+
 export const convertJSObjectToXML = (jsObjec: Record<string, unknown>) => {
   return js2xml(jsObjec, {
     compact: true,
     spaces: 2,
   });
 };
+
 export const toOptionalNumber = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanUploads = (value: unknown): Part[] => {
   const uploads = util.types.toObject(value);
   if (Array.isArray(uploads)) {
@@ -100,61 +110,55 @@ export const cleanUploads = (value: unknown): Part[] => {
   }
   throw new Error(PART_UPLOAD_ARRAY_ERROR);
 };
+
 export const toOptionalString = (value: unknown) => {
   return value ? util.types.toString(value) : undefined;
 };
+
 export const paginateGCSResults = async <T>(
   fetchFunction: (params: {
     maxResults?: number;
     pageToken?: string;
-  }) => Promise<
-    [
-      T[],
-      {
-        pageToken?: string;
-      },
-      unknown,
-    ]
-  >,
+  }) => Promise<[T[], { pageToken?: string }, unknown]>,
   fetchAll: boolean,
   params: {
     maxResults?: number;
     pageToken?: string;
   },
-): Promise<{
-  items: T[];
-  nextPageToken?: string;
-}> => {
+): Promise<{ items: T[]; nextPageToken?: string }> => {
   const [firstPageItems, firstPageQuery] = await fetchFunction(params);
+
   if (!fetchAll) {
     return {
       items: firstPageItems,
       nextPageToken: firstPageQuery?.pageToken,
     };
   }
+
   let allItems: T[] = firstPageItems;
   let nextPageToken = firstPageQuery?.pageToken;
+
   while (nextPageToken) {
     const [nextPageItems, nextPageQuery] = await fetchFunction({
       ...params,
       pageToken: nextPageToken,
     });
+
     if (nextPageItems.length === 0) break;
+
     allItems = allItems.concat(nextPageItems);
     nextPageToken = nextPageQuery?.pageToken;
   }
+
   return {
     items: allItems,
     nextPageToken: undefined,
   };
 };
+
 export const sortAlphabetically = (
-  a: {
-    name: string;
-  },
-  b: {
-    name: string;
-  },
+  a: { name: string },
+  b: { name: string },
 ) => {
   return a.name < b.name ? -1 : 1;
 };

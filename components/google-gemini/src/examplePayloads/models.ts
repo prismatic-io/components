@@ -1,4 +1,5 @@
 import type { Model } from "@google/genai";
+
 export const getModelInfoExamplePayload = {
   data: {
     name: "models/gemini-2.5-flash",
@@ -16,6 +17,7 @@ export const getModelInfoExamplePayload = {
     ],
   } as Model,
 };
+
 export const listModelsExamplePayload = {
   data: [getModelInfoExamplePayload.data],
 };

@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll, limit, name, offset } from "./common";
 import { userId } from "./users";
+
 export const groupId = input({
   label: "Group ID",
   comments: "The unique identifier for the group.",
@@ -11,6 +12,7 @@ export const groupId = input({
   dataSource: "groups",
   clean: util.types.toString,
 });
+
 export const updateGroupBody = input({
   label: "Update Group Body",
   type: "code",
@@ -27,11 +29,13 @@ export const updateGroupBody = input({
   ),
   clean: util.types.toString,
 });
+
 export const addUserToGroupInputs = {
   connection,
   groupId,
   userId,
 };
+
 export const createGroupInputs = {
   connection,
   name: input({
@@ -40,6 +44,7 @@ export const createGroupInputs = {
     comments: "The name of the group.",
   }),
 };
+
 export const deleteGroupInputs = {
   connection,
   groupId: input({
@@ -48,10 +53,12 @@ export const deleteGroupInputs = {
     comments: "The ID of the group to delete.",
   }),
 };
+
 export const getGroupInputs = {
   connection,
   groupId,
 };
+
 export const listGroupsInputs = {
   connection,
   fetchAll,
@@ -75,6 +82,7 @@ export const listGroupsInputs = {
     },
   }),
 };
+
 export const listUsersInGroupInputs = {
   connection,
   groupId,
@@ -99,11 +107,13 @@ export const listUsersInGroupInputs = {
     },
   }),
 };
+
 export const removeUserFromGroupInputs = {
   connection,
   groupId,
   userId,
 };
+
 export const updateGroupInputs = {
   connection,
   groupId,

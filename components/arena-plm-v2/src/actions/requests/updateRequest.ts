@@ -5,6 +5,7 @@ import { updateRequestInputs } from "../../inputs";
 import { requestShortSchema } from "../../outputSchemas";
 import type { RequestUpdateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateRequest = action({
   display: {
     label: "Update Request",
@@ -19,6 +20,7 @@ export const updateRequest = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: RequestUpdateVo = {
         title: params.title,
         problem: params.problem,
@@ -33,14 +35,18 @@ export const updateRequest = action({
         supplierVisibility: params.supplierVisibility,
         additionalAttributes: resolveAdditionalAttributes(params, context),
       };
+
       context.logger.info(`Updating request with GUID: ${params.requestGuid}`);
+
       const { data } = await client.put(
         `/requests/${params.requestGuid}`,
         requestPayload,
       );
+
       context.logger.info(
         `Successfully updated request: ${params.requestGuid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update Request");

@@ -4,6 +4,7 @@ import { addTicketChangeExamplePayload } from "../../examplePayloads";
 import { addTicketChangeInputs } from "../../inputs";
 import { requestChangeSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const addTicketChange = action({
   display: {
     label: "Add Ticket Change",
@@ -18,13 +19,16 @@ export const addTicketChange = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload = {
         change: { guid: params.changeGuid },
       };
+
       const { data } = await client.post(
         `/tickets/${params.ticketGuid}/changes`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Add Ticket Change");

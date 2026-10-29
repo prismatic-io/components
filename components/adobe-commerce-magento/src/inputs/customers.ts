@@ -12,6 +12,7 @@ import {
   searchCriteriaSortField,
   searchCriteriaValue,
 } from "./common";
+
 export const customer = input({
   label: "Customer",
   type: "code",
@@ -23,6 +24,7 @@ export const customer = input({
   default: JSON.stringify(customerJson, null, 2),
   clean: util.types.toObject,
 });
+
 export const password = input({
   label: "Password",
   type: "string",
@@ -32,6 +34,7 @@ export const password = input({
   placeholder: "Enter a password",
   clean: cleanString,
 });
+
 export const redirectUrl = input({
   label: "Redirect URL",
   type: "string",
@@ -42,6 +45,7 @@ export const redirectUrl = input({
   example: "https://www.example.com/customer/account/confirm",
   clean: cleanString,
 });
+
 export const customerId = input({
   label: "Customer ID",
   type: "string",
@@ -53,6 +57,7 @@ export const customerId = input({
   dataSource: "selectCustomer",
   clean: util.types.toString,
 });
+
 export const passwordHash = input({
   label: "Password Hash",
   type: "string",
@@ -62,20 +67,24 @@ export const passwordHash = input({
   placeholder: "Enter a password hash",
   clean: cleanString,
 });
+
 export const createCustomerInputs = {
   connection: connectionInput,
   customer,
   password,
   redirectUrl,
 };
+
 export const deleteCustomerInputs = {
   connection: connectionInput,
   customerId,
 };
+
 export const getCustomerInputs = {
   connection: connectionInput,
   customerId,
 };
+
 export const searchCustomersInputs = {
   connection: connectionInput,
   fetchAll,
@@ -87,6 +96,7 @@ export const searchCustomersInputs = {
   searchCriteriaSortDirection,
   searchCriteriaSortField,
 };
+
 export const updateCustomerInputs = {
   connection: connectionInput,
   customerId,

@@ -3,6 +3,7 @@ import { searchExamplePayload } from "../../examplePayloads";
 import { searchInputs } from "../../inputs";
 import { searchResponseSchema } from "../../outputSchemas";
 import { searchPerform } from "../../util";
+
 export const search = action({
   display: {
     label: "Search Records",

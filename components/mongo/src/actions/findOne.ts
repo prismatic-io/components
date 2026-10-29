@@ -11,7 +11,9 @@ import {
   getComparisonQueryFilter,
 } from "../util";
 import { findOneExamplePayload } from "../examplePayloads";
+
 import type { ErrorWithMessage } from "../types";
+
 const findOne = action({
   display: {
     label: "Find One",
@@ -32,6 +34,7 @@ const findOne = action({
       debug: context.debug.enabled,
       logger: context.logger,
     });
+
     try {
       if (convertValuesToNumbers) detectAndConvertValuesToNumbers(queryFilter);
       const document = await client.findOne(
@@ -42,6 +45,7 @@ const findOne = action({
       if (!document) {
         throw new Error("Document not found");
       }
+
       return {
         data: { ...document, id: document._id.toString() },
       };
@@ -61,4 +65,5 @@ const findOne = action({
   },
   examplePayload: findOneExamplePayload,
 });
+
 export default findOne;

@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createSalesforceClient } from "../../client";
 import { previewRecordTypeFieldValuesInputs } from "../../inputs";
+
 export const previewRecordTypeFieldValues = dataSource({
   display: {
     label: "Preview Record Type Field Values",
@@ -13,7 +14,9 @@ export const previewRecordTypeFieldValues = dataSource({
     { version, connection, dynamicRecordType, dynamicFieldName, valueCount },
   ) => {
     const sfClient = await createSalesforceClient(connection, version);
+
     const record = dynamicRecordType;
+
     let values = [];
     try {
       const queryString = `
@@ -28,6 +31,7 @@ export const previewRecordTypeFieldValues = dataSource({
     } catch (_error) {
       values = ["No preview available for selected field"];
     }
+
     return {
       result: values,
     };

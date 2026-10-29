@@ -5,6 +5,7 @@ import { countLocationsInputs as inputs } from "../../../inputsGql";
 import { countLocationsGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";
 import countLocationsQuery from "../queries/locations/CountLocations.gql";
+
 export const countLocationsGql = action({
   display: {
     label: "Count Locations",
@@ -18,9 +19,10 @@ export const countLocationsGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      locationsCount: Count;
-    } = await client.request(countLocationsQuery);
+
+    const data: { locationsCount: Count } =
+      await client.request(countLocationsQuery);
+
     return {
       data: data.locationsCount,
     };

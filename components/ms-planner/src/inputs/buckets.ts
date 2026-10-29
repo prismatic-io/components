@@ -6,6 +6,7 @@ import {
   groupIdInput,
   planIdInput,
 } from "./common";
+
 const bucketNameInput = input({
   label: "Name",
   type: "string",
@@ -16,12 +17,14 @@ const bucketNameInput = input({
     "The name of the bucket, shown as a column heading on the plan's board.",
   clean: util.types.toString,
 });
+
 export const createBucketInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
   name: bucketNameInput,
 };
+
 export const deleteBucketInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -29,17 +32,20 @@ export const deleteBucketInputs = {
   bucketId: bucketIdInput,
   etag: etagInput,
 };
+
 export const getBucketInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
   bucketId: bucketIdInput,
 };
+
 export const listBucketsInPlanInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
 };
+
 export const updateBucketInputs = {
   connection: connectionInput,
   groupId: groupIdInput,

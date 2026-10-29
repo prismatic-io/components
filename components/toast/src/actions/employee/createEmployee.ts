@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createToastClient } from "../../client";
 import { createEmployeeExamplePayload as examplePayload } from "../../examplePayloads";
 import { createEmployeeInputs as inputs } from "../../inputs/employee";
+
 export const createEmployee = action({
   display: {
     label: "Create Employee",
@@ -28,6 +29,7 @@ export const createEmployee = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+
     const payload = {
       entityType: "RestaurantUser",
       email,
@@ -41,6 +43,7 @@ export const createEmployee = action({
       ...additionalFields,
     };
     const { data } = await client.post(`/labor/v1/employees`, payload);
+
     return {
       data,
     };

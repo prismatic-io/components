@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const warehouseCode = input({
   label: "Warehouse Code",
   type: "string",
@@ -8,6 +9,7 @@ export const warehouseCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const warehouseName = input({
   label: "Warehouse Name",
   type: "string",
@@ -17,6 +19,7 @@ export const warehouseName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const warehouseLocationId = input({
   label: "Warehouse Location ID",
   type: "string",

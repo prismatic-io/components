@@ -9,6 +9,7 @@ import {
   pathBasename,
   validatePath,
 } from "../../util";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -33,12 +34,7 @@ export const uploadFile = action({
       handleDropboxError(err, [path]);
     }
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...uploadFileExamplePayload,
       result: {

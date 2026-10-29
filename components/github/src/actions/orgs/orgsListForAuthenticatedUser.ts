@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { orgsListForAuthenticatedUserExamplePayload } from "../../examplePayloads";
 import { orgsListForAuthenticatedUserInputs } from "../../inputs";
 import { orgsListForAuthenticatedUserOutputSchema } from "../../outputSchemas";
+
 export const orgsListForAuthenticatedUser = action({
   display: {
     label: "List Authenticated User Organizations",

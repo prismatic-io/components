@@ -3,6 +3,7 @@ import { retrieveDatabaseOutputSchema } from "../../outputSchemas";
 import { retrieveDatabaseInputs } from "../../inputs";
 import { createClient } from "../../client";
 import { retrieveDatabaseExamplePayload } from "../../examplePayloads";
+
 export const retrieveDatabase = action({
   display: {
     label: "Retrieve Database",

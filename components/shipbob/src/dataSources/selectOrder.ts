@@ -1,11 +1,13 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, version } from "../inputs";
+
 interface Order {
   id: number;
   order_number: string;
   reference_id: string;
 }
+
 export const selectOrder = dataSource({
   display: {
     label: "Select Order",

@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { listDatabasesInputs } from "../../inputs";
 import { listDatabasesExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const listDatabases = action({
   display: {
     label: "List Databases",

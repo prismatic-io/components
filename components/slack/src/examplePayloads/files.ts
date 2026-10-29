@@ -38,6 +38,7 @@ const fileRecord = {
   ims: [],
   comments_count: 0,
 };
+
 export const listFilesExamplePayload = {
   ok: true,
   files: [fileRecord, fileRecord],
@@ -48,6 +49,7 @@ export const listFilesExamplePayload = {
     pages: 1,
   },
 };
+
 export const uploadFileExamplePayload = {
   ok: true,
   file: {

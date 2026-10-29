@@ -1,6 +1,8 @@
 import { DEFAULT_COUNT, MAX_PAGES } from "../constants";
 import type { PaginateOptions, SegmentListResponse } from "../types";
+
 export type { PaginateOptions } from "../types";
+
 export const paginateResults = async ({
   client,
   endpoint,
@@ -13,6 +15,7 @@ export const paginateResults = async ({
     const allResults: Record<string, unknown[]> = {};
     let nextCursor: string | undefined;
     let pages = 0;
+
     do {
       const { data } = await client.get<SegmentListResponse>(endpoint, {
         params: {
@@ -23,17 +26,21 @@ export const paginateResults = async ({
           },
         },
       });
+
       for (const [key, value] of Object.entries(data)) {
         if (key !== "pagination" && Array.isArray(value)) {
           if (!allResults[key]) allResults[key] = [];
           allResults[key].push(...value);
         }
       }
+
       nextCursor = data.pagination?.next || undefined;
       pages++;
     } while (nextCursor && pages < MAX_PAGES);
+
     return { data: allResults };
   }
+
   const { data } = await client.get(endpoint, {
     params: {
       ...params,
@@ -43,5 +50,6 @@ export const paginateResults = async ({
       },
     },
   });
+
   return { data };
 };

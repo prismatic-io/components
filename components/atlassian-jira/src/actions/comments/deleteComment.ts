@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { deleteCommentExamplePayload } from "../../examplePayloads";
 import { commentId, connectionInput, issueId } from "../../inputs";
+
 export const deleteComment = action({
   display: {
     label: "Delete Comment",

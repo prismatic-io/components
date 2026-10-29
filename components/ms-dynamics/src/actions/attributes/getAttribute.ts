@@ -2,6 +2,7 @@ import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { getAttributeExamplePayload } from "../../examplePayloads";
 import { getAttributeInputs } from "../../inputs";
+
 export const getAttribute = action({
   display: {
     label: "Get Attribute",
@@ -14,12 +15,14 @@ export const getAttribute = action({
       params.connection,
       context.debug.enabled,
     );
+
     const result = await client.retrieveAttribute({
       entityKey: params.entityId,
       attributeKey: params.attributeType,
       select: params.fieldNames,
       expand: params.expandPropertyNames,
     });
+
     return { data: result };
   },
   performSafety: PerformSafety.SAFE,

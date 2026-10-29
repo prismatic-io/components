@@ -9,6 +9,7 @@ export const listSavedFunnelsOutputSchema = {
     required: ["funnel_id", "name"],
   },
 };
+
 export const queryFunnelSavedReportsOutputSchema = {
   type: "object" as const,
   properties: {

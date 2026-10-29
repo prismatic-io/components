@@ -1,4 +1,5 @@
 import { paginationAttributes } from "./general";
+
 const createCategoryRaw = {
   category: {
     description: "This category contains a collection of Super Hero tricks",
@@ -7,8 +8,11 @@ const createCategoryRaw = {
     name: "Super Hero Tricks",
   },
 };
+
 const getCategoryRaw = createCategoryRaw;
+
 const updateCategoryRaw = createCategoryRaw;
+
 const listCategoriesRaw = {
   ...paginationAttributes,
   categories: [
@@ -26,8 +30,13 @@ const listCategoriesRaw = {
     },
   ],
 };
+
 export const createCategoryExamplePayload = { data: createCategoryRaw };
+
 export const deleteCategoryExamplePayload = { data: "" };
+
 export const getCategoryExamplePayload = { data: getCategoryRaw };
+
 export const listCategoriesExamplePayload = { data: listCategoriesRaw };
+
 export const updateCategoryExamplePayload = { data: updateCategoryRaw };

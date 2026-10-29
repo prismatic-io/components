@@ -4,6 +4,7 @@ import { deleteQualityProcessExamplePayload } from "../../examplePayloads";
 import { deleteQualityProcessInputs } from "../../inputs";
 import { deleteQualityProcessOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteQualityProcess = action({
   display: {
     label: "Delete Quality Process",
@@ -19,7 +20,9 @@ export const deleteQualityProcess = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       await client.delete(`/qualityprocesses/${params.qualityProcessGuid}`);
+
       return {
         data: {
           success: true,

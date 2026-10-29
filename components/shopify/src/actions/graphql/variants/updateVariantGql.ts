@@ -4,6 +4,7 @@ import { updateVariantExamplePayload as examplePayload } from "../../../exampleP
 import { updateVariantInputs as inputs } from "../../../inputsGql";
 import { updateVariantGqlOutputSchema } from "../../../outputSchemas";
 import updateVariantQuery from "../queries/variants/UpdateVariant.gql";
+
 export const updateVariantGql = action({
   display: {
     label: "Update Variant",
@@ -17,6 +18,7 @@ export const updateVariantGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
       productVariantsBulkUpdate: Record<string, unknown>;
     } = await client.request(updateVariantQuery, {

@@ -14,6 +14,7 @@ import {
   resolveSurveyResponseChanges,
   toSurveyMonkeyDate,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -36,6 +37,7 @@ export const pollChangesTrigger = pollingTrigger({
     const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt =
       pollState?.lastPolledAt ?? (params.lookBackDate || now);
+
     const client = createClient(params.connection, context.debug.enabled);
     const response = await paginateResults<SurveyResponseDetails>(
       client,
@@ -48,9 +50,11 @@ export const pollChangesTrigger = pollingTrigger({
       },
     );
     const records = response.data ?? [];
+
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: SurveyResponseDetails[] = [];
     const updated: SurveyResponseDetails[] = [];
+
     for (const record of records) {
       const createdValue = record.date_created;
       const createdAtDate =
@@ -65,12 +69,15 @@ export const pollChangesTrigger = pollingTrigger({
       else if (!isNew && (isBackfill || params.showUpdatedRecords !== false))
         updated.push(record);
     }
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled SurveyMonkey survey ${params.surveyId}: ${records.length} fetched, ${created.length} created, ${updated.length} updated`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

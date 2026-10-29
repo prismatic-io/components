@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createTableInputs } from "../../inputs";
+
 export const createTable = action({
   display: {
     description: "Creates a new, empty table in the dataset.",

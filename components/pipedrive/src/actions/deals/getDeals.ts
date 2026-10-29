@@ -6,6 +6,7 @@ import type { Deal } from "../../types/deals";
 import { getDealsExamplePayload } from "../../examplePayloads";
 import { WebhookVersion } from "../../constants";
 import { getDealsOutputSchema } from "../../outputSchemas";
+
 export const getDeals = action({
   display: {
     label: "Get Deals",
@@ -30,6 +31,7 @@ export const getDeals = action({
       context.debug.enabled,
       WebhookVersion.V2,
     );
+
     const data = await paginateRecordsWithCursor<Deal>(
       client,
       "deals",

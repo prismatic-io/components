@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { shipmentMethodId } from "../../inputs/customers/createCustomerInputs";
 import { connectionInput } from "../../inputs/general";
 import type { ShipmentMethod } from "../../interfaces";
+
 export const getShipmentMethod = action({
   display: {
     label: "Get Shipment Method",
@@ -17,9 +18,11 @@ export const getShipmentMethod = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get<ShipmentMethod>(
       `/companies(${companyId})/shipmentMethods(${shipmentMethodId})`,
     );
+
     return { data };
   },
   inputs: {

@@ -4,6 +4,7 @@ import { deleteWebhooksInputs } from "../../inputs";
 import { deleteWebhooksOutputSchema } from "../../outputSchemas";
 import { deleteWebhookFn, listWebhookEventsFn } from "../../util";
 import { deleteWebhooksExamplePayload } from "../../examplePayloads/webhooks";
+
 export const deleteWebhooks = action({
   display: {
     label: "Delete All Instance Webhooks",
@@ -30,9 +31,7 @@ export const deleteWebhooks = action({
       data: deletedWebhooks,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteWebhooksExamplePayload.data,
   }),
   inputs: deleteWebhooksInputs,
@@ -40,5 +39,6 @@ export const deleteWebhooks = action({
     type: "actionOutput",
     schema: deleteWebhooksOutputSchema,
   }),
+
   examplePayload: deleteWebhooksExamplePayload,
 });

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPersonProductsInputs } from "../../inputs";
 import { getPersonProductsExamplePayload } from "../../examplePayloads";
 import { getPersonProductsOutputSchema } from "../../outputSchemas";
+
 export const getPersonProducts = action({
   display: {
     label: "Get Person Products",

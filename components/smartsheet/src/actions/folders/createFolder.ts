@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createFolderExamplePayload } from "../../examplePayloads";
 import { createFolderInputs } from "../../inputs";
+
 export const createFolder = action({
   display: {
     label: "Create Folder",

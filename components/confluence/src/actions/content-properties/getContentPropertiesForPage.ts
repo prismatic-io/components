@@ -3,6 +3,7 @@ import { contentPropertySchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { getContentPropertiesForPageInputs } from "../../inputs";
 import { getContentPropertyExamplePayload as getContentPropertyForPageExamplePayload } from "../../examplePayloads";
+
 export const getContentPropertiesForPage = action({
   display: {
     label: "Get Content Property for Page",

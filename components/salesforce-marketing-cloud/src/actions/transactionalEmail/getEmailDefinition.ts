@@ -4,6 +4,7 @@ import { EMAIL_DEFINITIONS_PATH } from "../../constants";
 import { getEmailDefinitionExamplePayload } from "../../examplePayloads";
 import { getEmailDefinitionInputs } from "../../inputs";
 import { emailDefinitionOutputSchema } from "../../outputSchemas";
+
 export const getEmailDefinition = action({
   examplePayload: getEmailDefinitionExamplePayload,
   display: {
@@ -21,6 +22,7 @@ export const getEmailDefinition = action({
     const { data } = await client.get(
       `${EMAIL_DEFINITIONS_PATH}/${encodeURIComponent(emailDefinitionKey)}`,
     );
+
     return { data };
   },
 });

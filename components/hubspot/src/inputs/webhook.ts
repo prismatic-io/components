@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { EVENT_TYPES, EVENT_TYPES_PROPERTY_CHANGE } from "../constants";
 import { toOptionalString, valueListInputClean } from "../util";
 import { connectionInput, timeout } from "./common";
+
 const eventType = input({
   type: "string",
   label: "Event Type",
@@ -12,6 +13,7 @@ const eventType = input({
   required: true,
   clean: util.types.toString,
 });
+
 const propertyWebhookName = input({
   type: "string",
   label: "Property Name",
@@ -22,6 +24,7 @@ const propertyWebhookName = input({
   example: "email",
   clean: toOptionalString,
 });
+
 const active = input({
   type: "boolean",
   label: "Active",
@@ -31,6 +34,7 @@ const active = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const subscriptionId = input({
   label: "Subscription ID",
   type: "string",
@@ -41,6 +45,7 @@ const subscriptionId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const overwriteWebhookSettings = input({
   label: "Overwrite Webhook Settings",
   type: "boolean",
@@ -50,6 +55,7 @@ export const overwriteWebhookSettings = input({
     "When true, overwrites existing webhook settings. HubSpot only permits one Target URL per App ID.",
   clean: util.types.toBool,
 });
+
 export const eventTypes = input({
   type: "string",
   collection: "valuelist",
@@ -60,10 +66,12 @@ export const eventTypes = input({
   required: true,
   clean: valueListInputClean,
 });
+
 export const listWebhooksInputs = {
   hubspotConnection: connectionInput,
   timeout,
 };
+
 export const createWebhookInputs = {
   hubspotConnection: connectionInput,
   eventType,
@@ -71,11 +79,13 @@ export const createWebhookInputs = {
   active,
   timeout,
 };
+
 export const deleteWebhookInputs = {
   hubspotConnection: connectionInput,
   subscriptionId,
   timeout,
 };
+
 export const deleteAllWebhooksInputs = {
   hubspotConnection: connectionInput,
   timeout,

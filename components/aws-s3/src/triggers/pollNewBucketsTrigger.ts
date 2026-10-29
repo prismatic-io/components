@@ -9,6 +9,7 @@ import {
   readLastPolledAt,
   resolvePolledBucketChanges,
 } from "../utils";
+
 export const pollNewBucketsTrigger = pollingTrigger({
   display: {
     label: "New Buckets",
@@ -38,6 +39,7 @@ export const pollNewBucketsTrigger = pollingTrigger({
   ) => {
     const now = new Date().toISOString();
     const { since, inclusive } = readLastPolledAt(context, now, lookBackDate);
+
     const s3 = await createS3Client({
       awsConnection: accessKey,
       awsRegion,
@@ -47,8 +49,11 @@ export const pollNewBucketsTrigger = pollingTrigger({
       logger: context.logger,
       debug: context.debug.enabled,
     });
+
     const changes = await listBucketsCreatedSince(s3, since, inclusive);
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: { ...payload, body: { data: changes } },
       polledNoChanges: changes.length === 0,

@@ -8,6 +8,7 @@ import { createClient } from "../client";
 import { webhookLifecycleTriggerExamplePayload } from "../examplePayloads";
 import { createWebhookSubscriptionInputs } from "../inputs";
 import { createWebhookPerformFN } from "../util";
+
 export const webhookLifecycle = trigger({
   display: {
     label: "Calendar Event Webhook",
@@ -38,12 +39,14 @@ export const webhookLifecycle = trigger({
         },
         context,
       );
+
       if (subscription?.id) {
         context.logger.info(
           `Storing subscription ID ${subscription.id} for scheduled renewals`,
         );
         context.crossFlowState[flowKey] = subscription.id;
       }
+
       context.logger.info(
         `Created webhook subscription for flow ${context.flow.name} (${context.flow.id})`,
       );

@@ -5,6 +5,7 @@ import { createLocationInputs } from "../../inputs";
 import { locationOutputSchema } from "../../outputSchemas";
 import type { Location } from "../../types";
 import { toChildArray } from "../../util";
+
 export const createLocation = action({
   display: {
     label: "Create Location",

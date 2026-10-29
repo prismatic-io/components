@@ -9,20 +9,26 @@ import {
   testConnection,
 } from "../testHelpers";
 import { selectCustomerBankAccount } from "./selectCustomerBankAccount";
+
 const ENDPOINT = BANK_ACCOUNT_LIST_ENDPOINTS.customerBankAccount;
+
 describe("selectCustomerBankAccount", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("maps the list into { key, label } elements (id -> key, nameOnAccount -> label)", async () => {
     mockLogin();
     const scope = nock(SANDBOX_BASE)
       .post(ENDPOINT)
       .reply(200, envelope(listCustomerBankAccountExamplePayload.data));
+
     const { result } = await invokeDataSource(selectCustomerBankAccount, {
       connection: testConnection,
     });
+
     expect(scope.isDone()).toBe(true);
+
     const records = listCustomerBankAccountExamplePayload.data as {
       id: string;
       nameOnAccount: string;
@@ -35,12 +41,15 @@ describe("selectCustomerBankAccount", () => {
       expect(element).toHaveProperty("label");
     }
   });
+
   test("returns an empty array when the list is empty", async () => {
     mockLogin();
     nock(SANDBOX_BASE).post(ENDPOINT).reply(200, envelope([]));
+
     const { result } = await invokeDataSource(selectCustomerBankAccount, {
       connection: testConnection,
     });
+
     expect(result).toEqual([]);
   });
 });

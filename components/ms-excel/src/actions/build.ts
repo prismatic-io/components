@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { build as buildXlsx } from "node-xlsx";
 import { sheetData, fileName, createOptions } from "../inputs/general";
 import { buildExampleResponse } from "../examplePayloads/general";
+
 export const build = action({
   display: {
     label: "Build Spreadsheet",
@@ -15,6 +16,7 @@ export const build = action({
         createOptions,
       ),
     );
+
     return {
       data,
     };

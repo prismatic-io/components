@@ -2,12 +2,15 @@ export enum BingAdsBaseUrl {
   Production = "api.bingads.microsoft.com",
   Sandbox = "api.sandbox.bingads.microsoft.com",
 }
+
 export const SOAP_NAMESPACE = "tns";
+
 export const PAGE_SIZE = {
   accounts: 1000,
   customers: 1000,
   clientLinks: 100,
 } as const;
+
 export const SOAP_ACTION = {
   GetAccountsInfo: "GetAccountsInfo",
   GetCustomersInfo: "GetCustomersInfo",
@@ -21,9 +24,11 @@ export const SOAP_ACTION = {
   ApplyOfflineConversions: "ApplyOfflineConversions",
   SendUserInvitation: "SendUserInvitation",
 } as const;
+
 export enum MsAdsRestService {
   CampaignManagement = "CampaignManagement",
 }
+
 export enum WEB_SERVICE {
   AD_INSIGHT_API = "AD_INSIGHT_API",
   BULK_API = "BULK_API",
@@ -32,6 +37,7 @@ export enum WEB_SERVICE {
   CUSTOMER_MANAGEMENT_API = "CUSTOMER_MANAGEMENT_API",
   REPORTING_API = "REPORTING_API",
 }
+
 export const BING_API = {
   [WEB_SERVICE.AD_INSIGHT_API]: {
     WSDL: "https://adinsight.api.bingads.microsoft.com/Api/Advertiser/AdInsight/v13/AdInsightService.svc?wsdl",
@@ -58,12 +64,10 @@ export const BING_API = {
     TN: "https://bingads.microsoft.com/Reporting/v13",
   },
 };
+
 export const REST_BASE_URLS: Record<
   MsAdsRestService,
-  {
-    production: string;
-    sandbox: string;
-  }
+  { production: string; sandbox: string }
 > = {
   [MsAdsRestService.CampaignManagement]: {
     production:
@@ -72,6 +76,7 @@ export const REST_BASE_URLS: Record<
       "https://campaign.api.sandbox.bingads.microsoft.com/CampaignManagement/v13",
   },
 };
+
 export const CONVERSION_GOALS_CATEGORIES = [
   "AddToCart",
   "BeginCheckout",
@@ -87,9 +92,13 @@ export const CONVERSION_GOALS_CATEGORIES = [
   "SubmitLeadForm",
   "Subscribe",
 ];
+
 export const COUNT_TYPE = ["All", "Unique"];
+
 export const CONVERSION_SCOPE = ["Account", "Customer"];
+
 export const CONVERSION_STATUS = ["Active", "Paused", "Deleted"];
+
 export const ACCOUNT_LIFE_CYCLE_STATUS_MODEL = [
   { label: "Active", value: "Active" },
   { label: "Draft", value: "Draft" },
@@ -98,6 +107,7 @@ export const ACCOUNT_LIFE_CYCLE_STATUS_MODEL = [
   { label: "Pending", value: "Pending" },
   { label: "Suspended", value: "Suspended" },
 ];
+
 export const ORDERING_MODEL = [
   { label: "Id", value: "Id" },
   { label: "Name", value: "Name" },

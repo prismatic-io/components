@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { issuesListCommentsExamplePayload } from "../../examplePayloads";
 import { issuesListCommentsInputs } from "../../inputs";
 import { issuesListCommentsOutputSchema } from "../../outputSchemas";
+
 export const issuesListComments = action({
   display: {
     label: "List Issue Comments",

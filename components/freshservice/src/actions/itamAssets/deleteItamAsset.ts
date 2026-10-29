@@ -5,6 +5,7 @@ import { deleteItamAssetExamplePayload as examplePayload } from "../../examplePa
 import { deleteItamAssetInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
 import { itamPath } from "../../util";
+
 export const deleteItamAsset = action({
   display: {
     label: "Delete Asset (ITAM)",
@@ -15,7 +16,9 @@ export const deleteItamAsset = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(itamPath("assets", { op: "delete", id: assetId }));
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

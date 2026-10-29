@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { describeObjectInputs } from "../../inputs";
 import { executeSFAction } from "../../util";
 import { describeObjectExamplePayload } from "../../examplePayloads";
+
 export const describeObject = action({
   display: {
     label: "Describe Object",
@@ -13,8 +14,10 @@ export const describeObject = action({
   performSafety: "safe",
   perform: async (context, { version, recordType, connection }) => {
     const client = await createSalesforceClient(connection, version);
+
     const command = client.describeSObject(recordType);
     const response = await executeSFAction(context, command);
+
     return { data: response };
   },
   outputSchema: outputSchema({

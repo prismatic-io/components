@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getRoutineInputs } from "../../inputs";
+
 export const getRoutine = action({
   display: {
     description: "Gets the specified routine resource by routine ID.",

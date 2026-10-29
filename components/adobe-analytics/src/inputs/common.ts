@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connectionInput = input({
   label: "Connection",
   required: true,
   type: "connection",
   comments: "The Adobe Analytics connection to use.",
 });
+
 export const globalCompanyIdInput = input({
   label: "Global Company ID",
   type: "string",
@@ -14,6 +16,7 @@ export const globalCompanyIdInput = input({
   example: "exampl123",
   clean: util.types.toString,
 });
+
 export const reportSuiteIdInput = input({
   label: "Report Suite ID",
   type: "string",

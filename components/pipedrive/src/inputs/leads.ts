@@ -7,6 +7,7 @@ import {
   sortInput,
 } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const titleRequired = input({
   label: "Title",
   type: "string",
@@ -16,6 +17,7 @@ const titleRequired = input({
   example: "Enterprise software inquiry",
   placeholder: "Enter lead title",
 });
+
 const titleOptional = input({
   label: "Title",
   type: "string",
@@ -25,6 +27,7 @@ const titleOptional = input({
   example: "Enterprise software inquiry",
   placeholder: "Enter lead title",
 });
+
 const ownerId = input({
   label: "Owner ID",
   type: "string",
@@ -34,6 +37,7 @@ const ownerId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const labelIds = input({
   label: "Label IDs",
   type: "string",
@@ -44,6 +48,7 @@ const labelIds = input({
   example: "3cde3b05-035c-ae14-dcfc-172bd8000d08",
   placeholder: "Enter Label IDs (comma-separated)",
 });
+
 const personId = input({
   label: "Person ID",
   type: "string",
@@ -53,6 +58,7 @@ const personId = input({
   example: "123",
   placeholder: "Enter Person ID",
 });
+
 const organizationId = input({
   label: "Organization ID",
   type: "string",
@@ -62,6 +68,7 @@ const organizationId = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const value = input({
   label: "Value",
   type: "string",
@@ -71,6 +78,7 @@ const value = input({
   example: "5000",
   placeholder: "Enter lead value",
 });
+
 const expectedCloseDate = input({
   label: "Expected Close Date",
   type: "string",
@@ -81,6 +89,7 @@ const expectedCloseDate = input({
   example: "2024-12-31",
   placeholder: "Enter date (YYYY-MM-DD)",
 });
+
 const visibleTo = input({
   label: "Visible To",
   type: "string",
@@ -95,6 +104,7 @@ const visibleTo = input({
   comments:
     "Controls which users can see this record. 1 = owner only, 3 = owner's group, 5 = owner's group and sub-groups, 7 = entire company.",
 });
+
 const wasSeen = input({
   label: "Was Seen",
   type: "boolean",
@@ -103,6 +113,7 @@ const wasSeen = input({
   comments:
     "A flag indicating whether the lead was seen by someone in the Pipedrive UI",
 });
+
 const isArchived = input({
   label: "Is Archived",
   type: "boolean",
@@ -110,6 +121,7 @@ const isArchived = input({
   clean: util.types.toBool,
   comments: "A flag indicating whether the lead is archived or not",
 });
+
 const addLeadAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments: "Optional lead attributes.",
@@ -120,6 +132,7 @@ const addLeadAdditionalFields = structuredObjectInput({
     wasSeen,
   },
 });
+
 const updateLeadAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments: "Optional lead attributes.",
@@ -132,6 +145,7 @@ const updateLeadAdditionalFields = structuredObjectInput({
     isArchived,
   },
 });
+
 const archivedStatus = input({
   label: "Archived Status",
   type: "string",
@@ -143,6 +157,7 @@ const archivedStatus = input({
   clean: cleanString,
   comments: "Filtering based on the archived status of a lead",
 });
+
 const getLeadsOwnerId = input({
   label: "Owner ID",
   type: "string",
@@ -151,6 +166,7 @@ const getLeadsOwnerId = input({
   comments: "If supplied, only leads matching the given user will be returned.",
   placeholder: "Enter User ID",
 });
+
 const getLeadsFilterId = input({
   label: "Filter ID",
   type: "string",
@@ -159,6 +175,7 @@ const getLeadsFilterId = input({
   comments: "The unique identifier of the filter to apply to narrow results.",
   placeholder: "Enter Filter ID",
 });
+
 const searchTerm = input({
   label: "Term",
   type: "string",
@@ -168,6 +185,7 @@ const searchTerm = input({
   example: "Enterprise software",
   placeholder: "Enter search term",
 });
+
 const searchFields = input({
   label: "Fields",
   type: "string",
@@ -179,6 +197,7 @@ const searchFields = input({
   clean: cleanString,
   comments: "The lead properties to search in.",
 });
+
 const exactMatch = input({
   label: "Exact Match",
   type: "boolean",
@@ -186,6 +205,7 @@ const exactMatch = input({
   comments:
     "When enabled, only full exact matches against the given term are returned",
 });
+
 const searchPersonId = input({
   label: "Person ID",
   type: "string",
@@ -194,6 +214,7 @@ const searchPersonId = input({
   example: "123",
   placeholder: "Enter Person ID",
 });
+
 const searchOrganizationId = input({
   label: "Organization ID",
   type: "string",
@@ -202,6 +223,7 @@ const searchOrganizationId = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const includeFields = input({
   label: "Include Fields",
   type: "string",
@@ -210,6 +232,7 @@ const includeFields = input({
   comments:
     "Supports including optional fields in the results which are not provided by default",
 });
+
 export const addLeadInputs = {
   connection: connectionInput,
   title: titleRequired,
@@ -219,6 +242,7 @@ export const addLeadInputs = {
   organizationId,
   additionalFields: addLeadAdditionalFields,
 };
+
 export const updateLeadInputs = {
   connection: connectionInput,
   id: leadIdInput,
@@ -229,6 +253,7 @@ export const updateLeadInputs = {
   organizationId,
   additionalFields: updateLeadAdditionalFields,
 };
+
 export const getLeadsInputs = {
   connection: connectionInput,
   pagination: offsetPagination,
@@ -237,6 +262,7 @@ export const getLeadsInputs = {
   filterId: getLeadsFilterId,
   sort: sortInput,
 };
+
 export const searchLeadsInputs = {
   connection: connectionInput,
   term: searchTerm,
@@ -247,10 +273,12 @@ export const searchLeadsInputs = {
   includeFields,
   pagination: cursorPagination,
 };
+
 export const getLeadInputs = {
   connection: connectionInput,
   id: leadIdInput,
 };
+
 export const deleteLeadInputs = {
   connection: connectionInput,
   id: leadIdInput,

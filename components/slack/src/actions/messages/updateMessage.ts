@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { updateMessageExamplePayload } from "../../examplePayloads";
 import { updateMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const updateMessage = action({
   display: {
     label: "Update Message",
@@ -23,14 +24,13 @@ export const updateMessage = action({
       ts: messageId,
       text: message || undefined,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { channelId, messageId, message },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateMessageExamplePayload,
       channel: channelId,

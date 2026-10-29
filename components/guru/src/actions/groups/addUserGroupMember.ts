@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
 import { addUserGroupMemberPayload } from "../../examplePayloads";
 import { addUserGroupMemberInputs } from "../../inputs";
+
 export const addUserGroupMember = action({
   display: {
     label: "Add User Group Member",
@@ -12,6 +13,7 @@ export const addUserGroupMember = action({
     { connection, lastName, firstName, email, groupId },
   ) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const requestBody = [
       {
         user: {
@@ -21,10 +23,12 @@ export const addUserGroupMember = action({
         },
       },
     ];
+
     const { data } = await client.post(
       `/groups/${groupId}/members`,
       requestBody,
     );
+
     return { data };
   },
   inputs: addUserGroupMemberInputs,

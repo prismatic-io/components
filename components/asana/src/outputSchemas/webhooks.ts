@@ -1,4 +1,5 @@
 import { webhookFilterSchema } from "./shared";
+
 export const webhookResponseSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +50,7 @@ export const webhookResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listWebhooksOutputSchema = {
   type: "array" as const,
   items: {

@@ -5,6 +5,7 @@ import {
   toOptionalString,
 } from "../util";
 import { connectionInput } from "./common";
+
 const rawRequestEndpointInput = input({
   label: "Endpoint",
   type: "string",
@@ -14,6 +15,7 @@ const rawRequestEndpointInput = input({
   example: "/items",
   clean: util.types.toString,
 });
+
 const rawRequestHttpMethodInput = input({
   label: "HTTP Method",
   type: "string",
@@ -29,6 +31,7 @@ const rawRequestHttpMethodInput = input({
   ],
   clean: util.types.toString,
 });
+
 const rawRequestJsonPayloadInput = input({
   label: "JSON Payload",
   type: "data",
@@ -36,6 +39,7 @@ const rawRequestJsonPayloadInput = input({
   comments: "JSON payload for POST/PUT/PATCH requests.",
   clean: toOptionalObject,
 });
+
 const rawRequestFormDataInput = input({
   label: "Form Data",
   type: "string",
@@ -45,6 +49,7 @@ const rawRequestFormDataInput = input({
   comments: "Form data payload for requests (key-value pairs).",
   clean: toKeyValueListArray,
 });
+
 const rawRequestFileDataInput = input({
   label: "File Data",
   type: "data",
@@ -52,6 +57,7 @@ const rawRequestFileDataInput = input({
   comments: "File data for file upload requests (Buffer or file content).",
   clean: util.types.toData,
 });
+
 const rawRequestQueryParametersInput = input({
   label: "Query Parameters",
   type: "string",
@@ -61,6 +67,7 @@ const rawRequestQueryParametersInput = input({
   comments: "Query parameters as key-value pairs.",
   clean: toKeyValueListArray,
 });
+
 const rawRequestHeadersInput = input({
   label: "Additional Headers",
   type: "string",
@@ -71,6 +78,7 @@ const rawRequestHeadersInput = input({
     "Additional HTTP headers as key-value pairs (authentication headers are handled automatically).",
   clean: toKeyValueListArray,
 });
+
 const rawRequestResponseTypeInput = input({
   label: "Response Type",
   type: "string",
@@ -85,6 +93,7 @@ const rawRequestResponseTypeInput = input({
   ],
   clean: toOptionalString,
 });
+
 export const rawRequestInputs = {
   connection: connectionInput,
   endpoint: rawRequestEndpointInput,

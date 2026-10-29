@@ -1,9 +1,11 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanVariablesInput } from "../utils/cleanVariablesInput";
 import { connection } from "./sharedInputs";
+
 export const getCurrentUserInputs = {
   connection,
 };
+
 export const rawRequestInputs = {
   connection,
   query: input({

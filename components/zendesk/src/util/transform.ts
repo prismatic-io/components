@@ -3,6 +3,7 @@ import {
   type InputFieldDefinition,
   input,
 } from "@prismatic-io/spectral";
+
 export const convertBooleanInputIntoUpdateInput = (
   definition: InputFieldDefinition,
 ) =>
@@ -19,11 +20,14 @@ export const convertBooleanInputIntoUpdateInput = (
       if (value === "true") {
         return true;
       }
+
       if (value === "false") {
         return false;
       }
+
       return undefined;
     },
   });
+
 export const byElementLabel = (a: Element, b: Element) =>
   (a.label ?? "") < (b.label ?? "") ? -1 : 1;

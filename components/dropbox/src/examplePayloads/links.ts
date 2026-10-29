@@ -1,4 +1,5 @@
 import type { DropboxResponse, files, sharing } from "dropbox";
+
 export const createSharedLinkExamplePayload: DropboxResponse<
   | sharing.FileLinkMetadataReference
   | sharing.FolderLinkMetadataReference
@@ -86,7 +87,9 @@ export const createSharedLinkExamplePayload: DropboxResponse<
     url: "https://www.dropbox.com/s/2sn712vy1ovegw8/Prime_Numbers.txt?dl=0",
   },
 };
+
 export const getSharedLinkFileExamplePayload = createSharedLinkExamplePayload;
+
 export const getTemporaryLinkExamplePayload: DropboxResponse<files.GetTemporaryLinkResult> =
   {
     status: 200,
@@ -108,6 +111,7 @@ export const getTemporaryLinkExamplePayload: DropboxResponse<files.GetTemporaryL
       link: "https://uc925b3fcc7a2208235a92b0e7e8.dl.dropboxusercontent.com/cd/0/get/COQEC7ffJgExogeJr8ngG5GH_4jW-iN6PC1heBZVwhZPs-3Wis_TJVR5GDHQnrLSuZRn8EhZVxFFxU9vOcpwZ2tbpIC59w1dQkaZ9Vs0q-8YPfD0hfLTOWy7iMpx5ymz6J9k6nnzHyr08sICt-RcM5jMk2ET8lwSQoQCeW6_TG6lWA/file",
     },
   };
+
 export const getTemporaryUploadLinkExamplePayload: DropboxResponse<files.GetTemporaryUploadLinkResult> =
   {
     status: 200,
@@ -116,6 +120,7 @@ export const getTemporaryUploadLinkExamplePayload: DropboxResponse<files.GetTemp
       link: "https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND",
     },
   };
+
 export const listSharedLinksExamplePayload: DropboxResponse<sharing.ListSharedLinksResult> =
   {
     status: 200,

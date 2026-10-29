@@ -28,13 +28,17 @@ export const getFileExamplePayload = {
     eventBasedHold: false,
   },
 };
+
 export const saveFileSimpleExamplePayload = {
   data: "File saved successfully!",
 };
+
 export const saveFileWithMetadataExamplePayload = getFileExamplePayload;
+
 export const deleteFileExamplePayload = {
   data: null,
 };
+
 export const copyFileExamplePayload = {
   data: {
     kind: "storage#object",
@@ -65,14 +69,18 @@ export const copyFileExamplePayload = {
     eventBasedHold: false,
   },
 };
+
 export const moveFileExamplePayload = copyFileExamplePayload;
+
 export const downloadFileExamplePayload = {
   data: "base64EncodedFileContent==",
   contentType: "application/pdf",
 };
+
 export const generatePresignedUrlExamplePayload = {
   data: "https://storage.googleapis.com/my-gcs-bucket/documents/upload-file.pdf?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=service-account%40project-123456.iam.gserviceaccount.com%2F20240116%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240116T100000Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=content-type%3Bhost&X-Goog-Signature=abcdef123456",
 };
+
 export const listFilesExamplePayload = {
   data: {
     files: [
@@ -89,6 +97,7 @@ export const listFilesExamplePayload = {
     },
   },
 };
+
 export const getBucketExamplePayload = {
   data: [
     {
@@ -130,10 +139,13 @@ export const getBucketExamplePayload = {
     },
   ],
 };
+
 export const createBucketExamplePayload = getBucketExamplePayload;
+
 export const deleteBucketExamplePayload = {
   data: null,
 };
+
 export const listBucketsExamplePayload = {
   data: [
     {
@@ -180,6 +192,7 @@ export const listBucketsExamplePayload = {
     },
   ],
 };
+
 export const createMultipartUploadExamplePayload = {
   data: {
     InitiateMultipartUploadResult: {
@@ -196,12 +209,14 @@ export const createMultipartUploadExamplePayload = {
     },
   },
 };
+
 export const uploadPartExamplePayload = {
   data: {
     PartNumber: 1,
     ETag: "5fbd6b4faa5393f343d276457f3f7d9f",
   },
 };
+
 export const completeMultipartUploadExamplePayload = {
   data: {
     CompleteMultipartUploadResult: {
@@ -221,6 +236,7 @@ export const completeMultipartUploadExamplePayload = {
     },
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     kind: "storage#object",
@@ -236,6 +252,7 @@ export const rawRequestExamplePayload = {
     updated: "2024-01-15T10:00:00.000Z",
   },
 };
+
 export const selectFileExamplePayload = {
   result: [
     "documents/report-2024.pdf",
@@ -243,6 +260,7 @@ export const selectFileExamplePayload = {
     "data/export-2024-01.csv",
   ],
 };
+
 export const selectBucketExamplePayload = {
   result: ["my-gcs-bucket", "project-backups", "user-uploads"],
 };

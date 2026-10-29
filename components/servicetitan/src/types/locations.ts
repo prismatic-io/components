@@ -1,4 +1,5 @@
 import type { Address, CustomField, ExternalData } from "./common";
+
 export interface Location {
   id: number;
   customerId: number;

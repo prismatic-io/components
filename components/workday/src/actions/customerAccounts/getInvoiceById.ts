@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getInvoiceByIdExamplePayload } from "../../examplePayloads";
 import { getInvoiceByIdInputs } from "../../inputs";
 import { getInvoiceByIdOutputSchema } from "../../outputSchemas";
+
 export const getInvoiceById = action({
   display: {
     label: "Get Invoice by ID",

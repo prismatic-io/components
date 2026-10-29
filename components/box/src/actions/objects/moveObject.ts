@@ -5,6 +5,7 @@ import { moveObjectExamplePayload } from "../../examplePayloads";
 import { moveObjectInputs } from "../../inputs";
 import { moveObjectOutputSchema } from "../../outputSchemas";
 import { getPathEntries, pathLeafName } from "../../util";
+
 export const moveObject = action({
   display: {
     label: "Move Object",
@@ -21,6 +22,7 @@ export const moveObject = action({
       client,
       util.types.toString(toPath),
     );
+
     const {
       id: sourceId,
       type: sourceType,
@@ -31,9 +33,11 @@ export const moveObject = action({
       type: destType,
       name: destName,
     } = toPathEntries.slice(-1)[0];
+
     if (destType !== FOLDER_TYPE) {
       throw Error(`'${destName} is not a folder`);
     }
+
     let data: unknown;
     if (sourceType === FOLDER_TYPE) {
       const result = await client.folders.updateFolderById(
@@ -50,6 +54,7 @@ export const moveObject = action({
     } else {
       throw Error(`'${sourceName}' is neither a file nor a folder`);
     }
+
     return {
       data,
     };
@@ -57,10 +62,9 @@ export const moveObject = action({
   examplePerform: async (
     _context,
     { fromPath, toPath },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const name = pathLeafName(fromPath);
+
     return {
       data: {
         ...moveObjectExamplePayload.data,

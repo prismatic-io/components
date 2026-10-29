@@ -1,5 +1,7 @@
 import { connectionInput, project } from "./common";
+
 const datasourceProject = { ...project, dataSource: undefined };
+
 export const selectProjectInputs = { connection: connectionInput };
 export const selectGroupInputs = { connection: connectionInput };
 export const selectBranchInputs = {

@@ -4,6 +4,7 @@ import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import type { SmartsheetWebhook } from "../../types";
 import { paginateByPage } from "../../util/pagination";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -21,6 +22,7 @@ export const listWebhooks = action({
       : allWebhooks.filter((webhook) =>
           instanceWebhookUrls.includes(webhook.callbackUrl),
         );
+
     return { data };
   },
   inputs: listWebhooksInputs,

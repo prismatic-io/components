@@ -3,6 +3,7 @@ import type {
   GenerateImagesResponse,
   GenerateVideosOperation,
 } from "@google/genai";
+
 export const generateTextExamplePayload = {
   data: {
     candidates: [
@@ -39,6 +40,7 @@ export const generateTextExamplePayload = {
     },
   } as GenerateContentResponse,
 };
+
 export const generateImageExamplePayload = {
   data: {
     images: [
@@ -55,6 +57,7 @@ export const generateImageExamplePayload = {
     },
   } as GenerateImagesResponse,
 };
+
 export const generateVideoExamplePayload = {
   data: {
     done: false,

@@ -8,6 +8,7 @@ import {
   version,
 } from "../../../inputs";
 import { generatePayload } from "../../util";
+
 export const getInventoryItem = action({
   display: {
     label: "Get Inventory Item",

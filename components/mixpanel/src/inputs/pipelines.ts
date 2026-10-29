@@ -11,7 +11,9 @@ import {
   where,
   useProjectToken,
 } from "./common";
+
 const { debugRequest: _, ...rawRequestHttpInputs } = httpClientInputs;
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -22,6 +24,7 @@ export const name = input({
   dataSource: "pipelines",
   example: "events-daily-export",
 });
+
 export const summary = input({
   label: "Summary",
   type: "boolean",
@@ -32,6 +35,7 @@ export const summary = input({
   example: "false",
   default: "false",
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -43,6 +47,7 @@ export const status = input({
   clean: valueListInputClean,
   example: "pending, running, retried",
 });
+
 const trial = input({
   label: "Trial",
   type: "string",
@@ -67,6 +72,7 @@ const trial = input({
   required: false,
   default: "",
 });
+
 export const frequency = input({
   label: "Frequency",
   type: "string",
@@ -91,6 +97,7 @@ export const frequency = input({
   required: false,
   default: "daily",
 });
+
 const eventArray = input({
   label: "Events",
   type: "string",
@@ -102,6 +109,7 @@ const eventArray = input({
   clean: valueListInputClean,
   example: "Signed Up, Purchase, Page View",
 });
+
 const gcs_bucket = input({
   label: "GCS Bucket",
   type: "string",
@@ -112,6 +120,7 @@ const gcs_bucket = input({
   required: true,
   example: "my-mixpanel-exports",
 });
+
 const gcs_prefix = input({
   label: "GCS Prefix",
   type: "string",
@@ -122,6 +131,7 @@ const gcs_prefix = input({
   required: false,
   example: "mixpanel/events",
 });
+
 const gcs_region = input({
   label: "GCS Region",
   placeholder: "Select GCS region",
@@ -138,6 +148,7 @@ const gcs_region = input({
   }),
   clean: util.types.toString,
 });
+
 export const createGenericPipelineInputs = {
   connection: connectionInput,
   dataAndDomain,
@@ -149,6 +160,7 @@ export const createGenericPipelineInputs = {
       "The endpoint to send the request to. Defaults to /nessie/pipeline/create.",
   },
 };
+
 export const createGCSPipelineInputs = {
   connection: connectionInput,
   dataAndDomain,
@@ -181,6 +193,7 @@ export const createGCSPipelineInputs = {
       "A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions here.",
   },
 };
+
 export const editGenericPipelineInputs = {
   connection: connectionInput,
   dataAndDomain,
@@ -193,6 +206,7 @@ export const editGenericPipelineInputs = {
       "The endpoint to send the request to. Defaults to /nessie/pipeline/edit.",
   },
 };
+
 export const editGCSPipelineInputs = {
   connection: connectionInput,
   dataAndDomain,
@@ -209,11 +223,13 @@ export const editGCSPipelineInputs = {
       "A selector expression used to filter by events data, such as event properties. Please note that after this update, the sync of older dates to the data warehouse (if enabled) will only contain events matching the new where clause.",
   },
 };
+
 export const listPipelinesInputs = {
   connection: connectionInput,
   dataAndDomain,
   project_id: { ...project_id, required: true, clean: util.types.toString },
 };
+
 export const getPipelineInputs = {
   connection: connectionInput,
   dataAndDomain,
@@ -222,6 +238,7 @@ export const getPipelineInputs = {
   summary,
   status,
 };
+
 export const deletePipelineInputs = {
   connection: connectionInput,
   useProjectToken: { ...useProjectToken, default: "true" },

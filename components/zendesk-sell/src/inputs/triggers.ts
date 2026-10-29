@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { pollResourceModel } from "../constants";
 import { lookBackDateClean } from "../util";
 import { connection } from "./common";
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -10,6 +11,7 @@ export const pollResourceType = input({
   comments: "The type of resource to poll for changes.",
   clean: util.types.toString,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -20,6 +22,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -29,6 +32,7 @@ export const showNewRecords = input({
     "When true, newly created records will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -38,6 +42,7 @@ export const showUpdatedRecords = input({
     "When true, records that were updated after the last poll will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const pollChangesTriggerInputs = {
   connection,
   pollResourceType,

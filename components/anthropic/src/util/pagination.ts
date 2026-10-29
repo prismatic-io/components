@@ -1,28 +1,31 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { MAX_LIMIT } from "../constants";
 import type { PaginatedResponse, PaginationParams } from "../types";
+
 export const getPaginatedResponse = async <T>(
   client: HttpClient,
   path: string,
   fetchAll: boolean,
   params: Record<string, unknown>,
-): Promise<{
-  data: PaginatedResponse<T>;
-}> => {
+): Promise<{ data: PaginatedResponse<T> }> => {
   const finalParams: PaginationParams = fetchAll
     ? { limit: MAX_LIMIT }
     : { ...params };
   const response = await client.get<PaginatedResponse<T>>(path, {
     params: finalParams,
   });
+
   if (!fetchAll) {
     return response;
   }
+
   const firstId = response.data.first_id;
+
   const data: T[] = response.data.data;
   let hasMore = response.data.has_more;
   let lastId = response.data.last_id;
   finalParams.after_id = lastId ?? undefined;
+
   while (hasMore) {
     const newResponse = await client.get<PaginatedResponse<T>>(path, {
       params: finalParams,
@@ -32,6 +35,7 @@ export const getPaginatedResponse = async <T>(
     lastId = newResponse.data.last_id;
     finalParams.after_id = lastId ?? undefined;
   }
+
   return {
     data: {
       data,

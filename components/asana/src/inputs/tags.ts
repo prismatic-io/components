@@ -12,6 +12,7 @@ import {
   taskId,
   workspaceId,
 } from "./common";
+
 const tagName = input({
   label: "Tag Name",
   type: "string",
@@ -22,6 +23,7 @@ const tagName = input({
     "Note: if multiple tags share a name, only one tag will be returned.",
   clean: util.types.toString,
 });
+
 export const createTagInputs = {
   asanaConnection: connectionInput,
   color,
@@ -31,6 +33,7 @@ export const createTagInputs = {
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
   workspaceId,
 };
+
 export const updateTagInputs = {
   asanaConnection: connectionInput,
   color,
@@ -39,28 +42,33 @@ export const updateTagInputs = {
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
   tagId,
 };
+
 export const getTagInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
   tagId,
 };
+
 export const deleteTagInputs = {
   asanaConnection: connectionInput,
   pagination,
   tagId,
 };
+
 export const listTagsInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
   pagination,
   workspaceId,
 };
+
 export const listTagsInTaskInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
   pagination,
   taskId,
 };
+
 export const findTagByNameInputs = {
   asanaConnection: connectionInput,
   tagName,

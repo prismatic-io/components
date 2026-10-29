@@ -3,9 +3,12 @@ import nock from "nock";
 import { arenaApiKey } from "../../connections";
 import { createTestContext } from "../../tests/testContext";
 import { rawRequest } from "./rawRequest";
+
 const ARENA_HOST = "https://arena.example.com";
 const API = "/v1";
+
 type RawRequestParams = Parameters<typeof rawRequest.perform>[1];
+
 const params = (
   overrides: Partial<RawRequestParams> = {},
 ): RawRequestParams => ({
@@ -25,21 +28,26 @@ const params = (
   responseType: "json",
   ...overrides,
 });
+
 describe("rawRequest header forwarding", () => {
   afterEach(() => {
     nock.cleanAll();
   });
+
   afterAll(() => {
     nock.restore();
   });
+
   it("sends the builder's additional headers, and the credential, to Arena", async () => {
     let received: Record<string, string | string[] | undefined> = {};
+
     nock(ARENA_HOST)
       .get(`${API}/items`)
       .reply(function () {
         received = this.req.headers;
         return [200, { status: "ok" }];
       });
+
     await invoke(
       rawRequest,
       params({
@@ -50,6 +58,7 @@ describe("rawRequest header forwarding", () => {
       }),
       createTestContext(),
     );
+
     expect(received["x-correlation-id"]).toBe("corr-123");
     expect(received["accept-language"]).toBe("en-US");
     expect(received.arena_session_id).toBe("fake-api-key");

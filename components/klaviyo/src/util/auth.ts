@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "../connections";
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys: string[] = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -9,11 +10,10 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getAuthorizationHeader = (
   connection: Connection,
-): {
-  Authorization: string;
-} => {
+): { Authorization: string } => {
   let authorization = "";
   switch (connection.key) {
     case "klaviyoApiKeyConnection":

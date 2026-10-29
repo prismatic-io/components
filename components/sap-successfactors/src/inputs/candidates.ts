@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { createCandidateInfoExample } from "../exampleInputs";
 import { toOptionalString } from "../util";
 import { $select, additionalInputs, connection } from "./common";
+
 export const candidateId = input({
   label: "Candidate ID",
   type: "string",
@@ -12,6 +13,7 @@ export const candidateId = input({
   clean: util.types.toString,
   dataSource: "selectCandidate",
 });
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -21,6 +23,7 @@ const firstName = input({
   example: "John",
   clean: util.types.toString,
 });
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -30,6 +33,7 @@ const lastName = input({
   example: "Doe",
   clean: util.types.toString,
 });
+
 const primaryEmail = input({
   label: "Primary Email",
   type: "string",
@@ -39,6 +43,7 @@ const primaryEmail = input({
   example: "john.doe@example.com",
   clean: util.types.toString,
 });
+
 const country = input({
   label: "Country",
   type: "string",
@@ -48,11 +53,13 @@ const country = input({
   example: "United States",
   clean: util.types.toString,
 });
+
 export const getCandidateInputs = {
   connection,
   candidateId,
   $select,
 };
+
 export const createCandidateInputs = {
   connection,
   firstName,
@@ -64,6 +71,7 @@ export const createCandidateInputs = {
     example: JSON.stringify(createCandidateInfoExample, null, 2),
   },
 };
+
 export const updateCandidateInputs = {
   connection,
   candidateId,

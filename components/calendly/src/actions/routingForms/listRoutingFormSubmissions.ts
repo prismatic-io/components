@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listRoutingFormSubmissionsInputs } from "../../inputs";
 import { listRoutingFormSubmissionsExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
+
 export const listRoutingFormSubmissions = action({
   display: {
     label: "List Routing Form Submissions",
@@ -17,11 +18,10 @@ export const listRoutingFormSubmissions = action({
       form,
       sort: sort,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listRoutingFormSubmissionsExamplePayload.data,
   }),
   inputs: listRoutingFormSubmissionsInputs,

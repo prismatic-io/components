@@ -15,6 +15,7 @@ import type {
   TopicLag,
 } from "../../types/consumer";
 import { withAdmin } from "../../utils";
+
 export const getConsumerGroupStatus = action({
   display: {
     label: "Get Consumer Group Status",
@@ -33,18 +34,24 @@ export const getConsumerGroupStatus = action({
       },
       context.debug.enabled,
     );
+
     const groupId = consumerGroupId;
+
     const { group, topicsWithLag } = await withAdmin(kafka, async (admin) => {
       const groups = await admin.describeGroups([groupId]);
       const group = groups.groups[0];
+
       let topicsToProcess: string[];
+
       if (topicsToCheck && topicsToCheck.length > 0) {
         topicsToProcess = topicsToCheck;
       } else {
         const allTopics = await admin.listTopics();
         topicsToProcess = allTopics.filter((topic) => !topic.startsWith("_"));
       }
+
       const topicsWithLag: TopicLag[] = [];
+
       const allOffsets = await Promise.all(
         topicsToProcess.map(async (topic) => ({
           topic,
@@ -58,11 +65,14 @@ export const getConsumerGroupStatus = action({
             )[0]?.partitions ?? [],
         })),
       );
+
       for (const topicOffsetInfo of allOffsets) {
         try {
           const { topic, partitions: offsetPartitions } = topicOffsetInfo;
+
           if (offsetPartitions && offsetPartitions.length > 0) {
             const topicOffsets = await admin.fetchTopicOffsets(topic);
+
             const partitionsWithLag: PartitionLag[] = offsetPartitions.map(
               (offsetInfo) => {
                 const currentOffset =
@@ -72,6 +82,7 @@ export const getConsumerGroupStatus = action({
                 const lag =
                   util.types.toBigInt(currentOffset) -
                   util.types.toBigInt(committedOffset);
+
                 return {
                   partition: offsetInfo.partition,
                   committedOffset,
@@ -80,10 +91,12 @@ export const getConsumerGroupStatus = action({
                 };
               },
             );
+
             const totalLag = partitionsWithLag.reduce(
               (sum, p) => sum + util.types.toBigInt(p.lag),
               util.types.toBigInt(0),
             );
+
             topicsWithLag.push({
               topic,
               partitions: partitionsWithLag,
@@ -92,8 +105,10 @@ export const getConsumerGroupStatus = action({
           }
         } catch (_e) {}
       }
+
       return { group, topicsWithLag };
     });
+
     const result: ConsumerGroupStatus = {
       groupId,
       state: group.state,
@@ -114,6 +129,7 @@ export const getConsumerGroupStatus = action({
         ),
       ),
     };
+
     return {
       data: result,
     };

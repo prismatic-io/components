@@ -5,6 +5,7 @@ import { getTimeOffDetailsExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { getTimeOffDetailsInputs } from "../../inputs";
 import { getTimeOffDetailsOutputSchema } from "../../outputSchemas";
+
 export const getTimeOffDetails = action({
   display: {
     label: "Get Time Off Details",

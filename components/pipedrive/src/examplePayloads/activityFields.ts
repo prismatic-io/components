@@ -19,6 +19,7 @@ const activityFieldRecord = {
   sortable_flag: true,
   mandatory_flag: true,
 };
+
 const activityFieldV2Record = {
   id: 1,
   key: "due_date",
@@ -33,6 +34,7 @@ const activityFieldV2Record = {
   add_time: "2024-01-01T00:00:00Z",
   update_time: "2024-01-01T00:00:00Z",
 };
+
 export const getActivityFieldsExamplePayload = {
   data: {
     success: true,
@@ -46,6 +48,7 @@ export const getActivityFieldsExamplePayload = {
     },
   },
 };
+
 export const getActivityFieldsV2ExamplePayload = {
   data: {
     data: [activityFieldV2Record],

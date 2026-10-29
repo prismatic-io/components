@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../../client";
 import { deleteApplicationV3ExamplePayload } from "../../../examplePayloads/v3/applications";
 import { deleteApplicationV3Inputs } from "../../../inputs/v3/applications";
+
 export const deleteApplicationV3 = action({
   display: {
     label: "Delete Application",

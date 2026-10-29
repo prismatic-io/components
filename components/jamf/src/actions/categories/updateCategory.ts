@@ -4,6 +4,7 @@ import { updateCategoryExamplePayload } from "../../examplePayloads";
 import { updateCategoryInputs } from "../../inputs";
 import type { Category } from "../../types";
 import { mergeDefined } from "../../util";
+
 export const updateCategory = action({
   display: {
     label: "Update Category",

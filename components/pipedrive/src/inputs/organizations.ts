@@ -11,6 +11,7 @@ import {
   sortInput,
 } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const orgName = input({
   label: "Name",
   type: "string",
@@ -20,6 +21,7 @@ const orgName = input({
   example: "Acme Corporation",
   placeholder: "Enter organization name",
 });
+
 const ownerId = input({
   label: "Owner ID",
   type: "string",
@@ -30,6 +32,7 @@ const ownerId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const visibleTo = input({
   label: "Visible To",
   type: "string",
@@ -44,6 +47,7 @@ const visibleTo = input({
   comments:
     "Controls which users can see this record. 1 = owner only, 3 = owner's group, 5 = owner's group and sub-groups, 7 = entire company.",
 });
+
 const addTime = input({
   label: "Add Time",
   type: "string",
@@ -53,6 +57,7 @@ const addTime = input({
   example: "2024-01-15T10:30:00Z",
   placeholder: "Enter date & time (ISO 8601 format)",
 });
+
 const searchTerm = input({
   label: "Term",
   type: "string",
@@ -62,6 +67,7 @@ const searchTerm = input({
   example: "Acme Corporation",
   placeholder: "Enter search term",
 });
+
 const searchFields = input({
   label: "Fields",
   type: "string",
@@ -72,6 +78,7 @@ const searchFields = input({
   example: "address,custom_fields,notes,name",
   placeholder: "Enter fields (comma-separated)",
 });
+
 const exactMatch = input({
   label: "Exact Match",
   type: "boolean",
@@ -79,6 +86,7 @@ const exactMatch = input({
   comments:
     "When true, only full exact matches against the given term are returned",
 });
+
 const mergeWithId = input({
   label: "Merge With ID",
   type: "string",
@@ -89,6 +97,7 @@ const mergeWithId = input({
   example: "456",
   placeholder: "Enter Organization ID to merge with",
 });
+
 const followerUserId = input({
   label: "User ID",
   type: "string",
@@ -98,6 +107,7 @@ const followerUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const followerId = input({
   label: "Follower ID",
   type: "string",
@@ -107,12 +117,14 @@ const followerId = input({
   example: "123",
   placeholder: "Enter Follower ID",
 });
+
 const done = input({
   label: "Done",
   type: "boolean",
   comments: "When true, returns only completed activities",
   clean: util.types.toBool,
 });
+
 const dealStatus = input({
   label: "Status",
   type: "string",
@@ -125,6 +137,7 @@ const dealStatus = input({
   clean: cleanString,
   comments: "Only fetch deals with a specific status",
 });
+
 const includeDeletedFiles = input({
   label: "Include Deleted Files",
   type: "string",
@@ -135,6 +148,7 @@ const includeDeletedFiles = input({
   clean: cleanNumber,
   comments: "When enabled, the list of files will also include deleted files",
 });
+
 const allChanges = input({
   label: "All Changes",
   type: "string",
@@ -143,6 +157,7 @@ const allChanges = input({
   example: "1",
   placeholder: "Enter value",
 });
+
 const items = input({
   label: "Items",
   type: "string",
@@ -151,6 +166,7 @@ const items = input({
   example: "deal,activity",
   placeholder: "Enter item types (comma-separated)",
 });
+
 export const addOrganizationInputs = {
   connection: connectionInput,
   name: orgName,
@@ -158,6 +174,7 @@ export const addOrganizationInputs = {
   visibleTo,
   addTime,
 };
+
 export const updateOrganizationInputs = {
   connection: connectionInput,
   id: organizationIdInput,
@@ -165,6 +182,7 @@ export const updateOrganizationInputs = {
   ownerId,
   visibleTo,
 };
+
 export const searchOrganizationInputs = {
   connection: connectionInput,
   term: searchTerm,
@@ -172,27 +190,32 @@ export const searchOrganizationInputs = {
   exactMatch,
   pagination: cursorPagination,
 };
+
 export const mergeOrganizationsInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   mergeWithId,
 };
+
 export const addOrganizationFollowerInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   userId: followerUserId,
 };
+
 export const deleteOrganizationFollowerInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   followerId,
 };
+
 export const getOrganizationActivitiesInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   pagination: cursorPagination,
   done,
 };
+
 export const getOrganizationDealsInputs = {
   connection: connectionInput,
   id: organizationIdInput,
@@ -201,6 +224,7 @@ export const getOrganizationDealsInputs = {
   sortBy,
   sortDirection,
 };
+
 export const getOrganizationFilesInputs = {
   connection: connectionInput,
   id: organizationIdInput,
@@ -208,6 +232,7 @@ export const getOrganizationFilesInputs = {
   includeDeletedFiles,
   sort: sortInput,
 };
+
 export const getOrganizationUpdatesInputs = {
   connection: connectionInput,
   id: organizationIdInput,
@@ -215,6 +240,7 @@ export const getOrganizationUpdatesInputs = {
   allChanges,
   items,
 };
+
 export const getOrganizationsInputs = {
   fetchAll,
   pagination: cursorPagination,
@@ -223,29 +249,35 @@ export const getOrganizationsInputs = {
   filterId,
   connection: connectionInput,
 };
+
 export const getOrganizationInputs = {
   connection: connectionInput,
   id: organizationIdInput,
 };
+
 export const deleteOrganizationInputs = {
   connection: connectionInput,
   id: organizationIdInput,
 };
+
 export const getOrganizationFollowersInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   pagination: cursorPagination,
 };
+
 export const getOrganizationMailMessagesInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   pagination: offsetPagination,
 };
+
 export const getOrganizationPersonsInputs = {
   connection: connectionInput,
   id: organizationIdInput,
   pagination: cursorPagination,
 };
+
 export const getOrganizationUsersInputs = {
   connection: connectionInput,
   id: organizationIdInput,

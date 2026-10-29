@@ -8,21 +8,26 @@ export const selectColumnResponse = [
     label: "Column 2",
   },
 ];
+
 export const selectWorksheetResponse = [
   {
     key: "1",
     label: "Sheet1",
   },
 ];
+
 export const selectColumnsResponse = [
   { object: { key: "id", label: "id" } },
   { object: { key: "equipmentId", label: "equipmentId" } },
 ];
+
 export const getColumnResponse = ["Column 1", "Column 2"];
+
 export const getRowResponse = [
   { "Column 1": "a", "Column 2": "b" },
   { "Column 1": "c", "Column 2": "d" },
 ];
+
 export const listSheetsResponse = [
   {
     spreadsheetId: "1K__zH9e2bd",
@@ -30,6 +35,7 @@ export const listSheetsResponse = [
     worksheetId: "od6",
   },
 ];
+
 export const spreadsheetChangeEventsPayload = {
   branch: "Push Notifications",
   payload: {

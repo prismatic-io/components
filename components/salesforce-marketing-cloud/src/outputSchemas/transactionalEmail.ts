@@ -17,6 +17,7 @@ export const emailDefinitionOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listEmailDefinitionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -41,6 +42,7 @@ export const listEmailDefinitionsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const deleteEmailDefinitionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +52,7 @@ export const deleteEmailDefinitionOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const sendEmailOutputSchema = {
   type: "object" as const,
   properties: {
@@ -59,6 +62,7 @@ export const sendEmailOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const getEmailSendStatusOutputSchema = {
   type: "object" as const,
   properties: {

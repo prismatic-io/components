@@ -4,6 +4,7 @@ import { getEventItemExamplePayload } from "../../examplePayloads";
 import { getEventItemInputs } from "../../inputs";
 import { eventItemSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getEventItem = action({
   display: {
     label: "Get Event Item",
@@ -22,9 +23,11 @@ export const getEventItem = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const { data } = await client.get(
         `/outboundintegrations/${integrationGuid}/events/${eventGuid}/items/${eventItemGuid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Get Event Item");

@@ -14,6 +14,7 @@ import type {
   QlikRecord,
   QlikRecordChange,
 } from "./types";
+
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {
     if (value !== null && value.trim() !== "") {
@@ -22,18 +23,21 @@ export const jsonInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 export const valueListInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value as string[];
   }
   return undefined;
 };
+
 export const valueListInputToString = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value.toString();
   }
   return undefined;
 };
+
 const buildFormData = (formData: FormData, obj: unknown, parentKey = "") => {
   if (Array.isArray(obj)) {
     obj.forEach((element) => {
@@ -52,6 +56,7 @@ const buildFormData = (formData: FormData, obj: unknown, parentKey = "") => {
     if (obj == null) {
       return;
     }
+
     const value =
       typeof obj === "number" || typeof obj === "boolean"
         ? obj.toString()
@@ -59,23 +64,29 @@ const buildFormData = (formData: FormData, obj: unknown, parentKey = "") => {
     formData.append(parentKey, value);
   }
 };
+
 export const objectToFormData = (obj: Record<string, unknown>) => {
   const formData = new FormData();
+
   buildFormData(formData, obj);
+
   return formData;
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value]) => ({
     label: value.charAt(0).toUpperCase() + value.slice(1),
     value,
   }),
 );
+
 const extractNextPath = (href: string | undefined): string | undefined => {
   if (!href) return undefined;
   const marker = "/api/v1";
   const idx = href.indexOf(marker);
   return idx >= 0 ? href.slice(idx + marker.length) : href;
 };
+
 export const fetchAllSince = async (
   client: QlikClient,
   resourceKey: string,
@@ -85,7 +96,9 @@ export const fetchAllSince = async (
   if (!config) {
     throw new Error(`Unsupported resource type: ${resourceKey}`);
   }
+
   const all: QlikRecord[] = [];
+
   if (config.paginationStyle === QLIK_PAGINATION_OFFSET_PARAM) {
     let page = 0;
     while (true) {
@@ -99,6 +112,7 @@ export const fetchAllSince = async (
     }
     return all;
   }
+
   let nextPath: string | undefined = config.endpoint;
   let params: Record<string, unknown> | undefined = { limit: POLL_PAGE_SIZE };
   while (nextPath) {
@@ -110,17 +124,16 @@ export const fetchAllSince = async (
   }
   return all;
 };
+
 export const filterByTimestamp = (
   records: QlikRecord[],
   config: QlikPollResourceConfig,
   lastPolledAt: string,
-): {
-  created: QlikRecord[];
-  updated: QlikRecord[];
-} => {
+): { created: QlikRecord[]; updated: QlikRecord[] } => {
   const created: QlikRecord[] = [];
   const updated: QlikRecord[] = [];
   const lastPolledAtDate = new Date(lastPolledAt);
+
   for (const record of records) {
     const createdAt = record[config.createdField];
     const updatedAt = record[config.updatedField];
@@ -139,8 +152,10 @@ export const filterByTimestamp = (
       updated.push(record);
     }
   }
+
   return { created, updated };
 };
+
 export const resolvePollingRecordChanges = (
   data: QlikChangesObject | undefined,
 ): QlikRecordChange[] => {
@@ -154,12 +169,15 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
+
   if (!LOOK_BACK_DATE_PATTERN.test(str)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const parts = str.split("-");
   const year = util.types.toNumber(parts[0]);
   const month = util.types.toNumber(parts[1]);
@@ -172,8 +190,10 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
+
   if (parsed > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return str;
 };

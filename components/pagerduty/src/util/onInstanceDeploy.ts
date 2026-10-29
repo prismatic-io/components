@@ -1,6 +1,7 @@
 import type { ActionContext, Connection } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { ENDPOINTS } from "../constants";
+
 export const onInstanceDeploy = async (
   context: ActionContext,
   {
@@ -19,6 +20,7 @@ export const onInstanceDeploy = async (
 ) => {
   const client = createClient(connection);
   const webhookUrl = context.webhookUrls[context.flow.name];
+
   const payload = {
     webhook_subscription: {
       delivery_method: {
@@ -34,6 +36,7 @@ export const onInstanceDeploy = async (
       },
     },
   };
+
   await client.post(ENDPOINTS.WEBHOOK_SUBSCRIPTIONS, payload);
   return;
 };

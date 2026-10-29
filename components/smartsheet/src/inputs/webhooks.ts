@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, sheetId, validateId, webhookId } from "./common";
+
 const callbackUrl = input({
   label: "Callback URL",
   type: "string",
@@ -10,6 +11,7 @@ const callbackUrl = input({
   example: "https://hooks.example.com/trigger/abc123",
   placeholder: "Enter callback URL",
 });
+
 const webhookName = input({
   label: "Webhook Name",
   type: "string",
@@ -18,6 +20,7 @@ const webhookName = input({
   comments: "A descriptive label to identify the webhook in the dashboard.",
   placeholder: "Enter webhook name",
 });
+
 const subscopeColumnIds = input({
   label: "Subscope Column IDs",
   type: "string",
@@ -37,6 +40,7 @@ const subscopeColumnIds = input({
     "When provided, the webhook only fires when these specific columns are modified. Leave empty to trigger on any change to the sheet. Use the List Columns action to find column IDs for a sheet.",
   placeholder: "Enter column ID",
 });
+
 const allowDuplicates = input({
   label: "Allow Duplicates",
   type: "boolean",
@@ -46,6 +50,7 @@ const allowDuplicates = input({
     "When true, allows the creation of duplicate webhooks. By default the action checks if a webhook with this callback and sheet ID already exists and skips creation if one is found.",
   clean: util.types.toBool,
 });
+
 const showAll = input({
   label: "Show All",
   type: "boolean",
@@ -55,6 +60,7 @@ const showAll = input({
     "When true, returns all webhooks for the account (including those for other apps and instances). When false, returns only webhooks whose callback URLs match a flow in the current instance.",
   clean: util.types.toBool,
 });
+
 export const createWebhookInputs = {
   connection: connectionInput,
   callbackUrl,
@@ -63,17 +69,21 @@ export const createWebhookInputs = {
   subscopeColumnIds,
   allowDuplicates,
 };
+
 export const deleteInstanceWebhooksInputs = {
   connection: connectionInput,
 };
+
 export const deleteWebhookInputs = {
   connection: connectionInput,
   webhookId,
 };
+
 export const getWebhookInputs = {
   connection: connectionInput,
   webhookId,
 };
+
 export const listWebhooksInputs = {
   connection: connectionInput,
   showAll,

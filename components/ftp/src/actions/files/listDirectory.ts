@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listDirectoryExamplePayload } from "../../examplePayloads";
 import { listDirectoryInputs } from "../../inputs";
+
 export const listDirectory = action({
   display: {
     label: "List Directory",
@@ -26,4 +27,5 @@ export const listDirectory = action({
   inputs: listDirectoryInputs,
   examplePayload: listDirectoryExamplePayload,
 });
+
 export default listDirectory;

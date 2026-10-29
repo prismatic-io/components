@@ -4,6 +4,7 @@ import { CONTACTS_ESTABLISH_PATH } from "../../constants";
 import { getContactExamplePayload } from "../../examplePayloads";
 import { getContactInputs } from "../../inputs";
 import { getContactOutputSchema } from "../../outputSchemas";
+
 export const getContact = action({
   examplePayload: getContactExamplePayload,
   display: {
@@ -27,9 +28,7 @@ export const getContact = action({
   examplePerform: async (
     _context,
     { contactKey },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: { ...getContactExamplePayload.data, contactKey },
   }),
 });

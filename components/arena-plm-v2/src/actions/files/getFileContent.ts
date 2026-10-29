@@ -3,6 +3,7 @@ import { createArenaClient } from "../../client";
 import { getFileContentExamplePayload } from "../../examplePayloads";
 import { getFileContentInputs } from "../../inputs";
 import { handleArenaError } from "../../util";
+
 export const getFileContent = action({
   display: {
     label: "Get File Content",
@@ -14,18 +15,23 @@ export const getFileContent = action({
   perform: async (context, { connection, fileGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Downloading file content from Arena", {
         fileGuid,
       });
+
       const { data, headers } = await client.get(`/files/${fileGuid}/content`, {
         responseType: "arraybuffer",
       });
+
       context.logger.info("File content downloaded successfully", {
         fileGuid,
         contentType: headers["content-type"],
         contentLength: headers["content-length"],
       });
+
       const buffer = Buffer.from(data);
+
       return {
         data: buffer,
         contentType: String(

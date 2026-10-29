@@ -9,6 +9,7 @@ import {
   storageClass,
   userProject,
 } from "../inputs";
+
 const validateStorageClass = (
   storageClass: string,
 ): Record<string, boolean> => {
@@ -26,6 +27,7 @@ const validateStorageClass = (
   }
   throw new Error(`Unable to find storageClass matching ${storageClass}`);
 };
+
 export const createBucket = action({
   display: {
     label: "Create Bucket",
@@ -41,6 +43,7 @@ export const createBucket = action({
   },
   perform: async (_context, params) => {
     const storage = googleStorageClient(params.connection);
+
     const [bucket] = await storage.createBucket(
       util.types.toString(params.bucketName),
       {
@@ -51,6 +54,7 @@ export const createBucket = action({
           undefined),
       },
     );
+
     return {
       data: JSON.parse(JSON.stringify(bucket)),
     };

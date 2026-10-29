@@ -3,15 +3,18 @@ import { createClient } from "../client";
 import { selectFolderInputs } from "../inputs";
 import { CHILD_TYPE } from "../util/mergeChildren";
 import { paginateByToken } from "../util/pagination";
+
 interface WorkspaceRef {
   id: unknown;
   name: string;
 }
+
 interface ChildItem {
   id: unknown;
   name: string;
   type: string;
 }
+
 export const selectFolder = dataSource({
   display: {
     label: "Select Folder",
@@ -21,11 +24,14 @@ export const selectFolder = dataSource({
   inputs: selectFolderInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const [workspaces, homeRes] = await Promise.all([
       paginateByToken<WorkspaceRef>(client, "/workspaces"),
       client.get("/home", { params: { include: "folders" } }),
     ]);
+
     const folders: Element[] = [];
+
     for (const workspace of workspaces) {
       const children = await paginateByToken<ChildItem>(
         client,
@@ -40,6 +46,7 @@ export const selectFolder = dataSource({
         }
       }
     }
+
     const home = homeRes.data?.data ?? homeRes.data;
     if (home?.folders) {
       for (const folder of home.folders) {
@@ -49,6 +56,7 @@ export const selectFolder = dataSource({
         });
       }
     }
+
     return { result: folders };
   },
 });

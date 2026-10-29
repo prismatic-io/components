@@ -3,6 +3,7 @@ import { createHttpClient } from "../../client";
 import { getCompanyInfoPayload as examplePayload } from "../../examplePayloads";
 import { connectionInput } from "../../inputs";
 import { getRealmId } from "../../util";
+
 export const getCompanyInfo = action({
   display: {
     label: "Get Company Info",
@@ -14,11 +15,13 @@ export const getCompanyInfo = action({
       context.debug.enabled,
     );
     const realmId = getRealmId(params.quickbooksConnection);
+
     const {
       data: { CompanyInfo },
     } = await client.get(`/companyinfo/${realmId}`);
     return { data: CompanyInfo };
   },
   inputs: { quickbooksConnection: connectionInput },
+
   examplePayload,
 });

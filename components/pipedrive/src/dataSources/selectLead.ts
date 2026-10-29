@@ -3,10 +3,12 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { paginateRecordsWithLimit, sortRecords } from "../util";
 import { selectLeadExamplePayload } from "../examplePayloads";
+
 interface Lead {
   id: string;
   title: string;
 }
+
 export const selectLead = dataSource({
   display: {
     label: "Select Lead",
@@ -23,10 +25,12 @@ export const selectLead = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "title").map<Element>((lead) => ({
       key: lead.id.toString(),
       label: lead.title,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

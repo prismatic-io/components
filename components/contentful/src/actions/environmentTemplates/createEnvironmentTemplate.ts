@@ -41,8 +41,9 @@ export const createEnvironmentTemplate = action({
     };
   },
   inputs: createEnvironmentTemplateInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createEnvironmentTemplateExamplePayload,
+
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createEnvironmentTemplateExamplePayload,
+
   examplePayload: createEnvironmentTemplateExamplePayload,
 });

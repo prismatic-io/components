@@ -12,6 +12,7 @@ import {
   fetchAll,
 } from "../inputs";
 import { paginateResults } from "../utils";
+
 const listCatalogApps = action({
   display: {
     label: "List Catalog Apps",
@@ -31,6 +32,7 @@ const listCatalogApps = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(
       client,
       "/appCatalogs/teamsApps",
@@ -44,6 +46,7 @@ const listCatalogApps = action({
     return { data };
   },
 });
+
 const listInstalledApps = action({
   display: {
     label: "List Installed Apps",
@@ -73,6 +76,7 @@ const listInstalledApps = action({
     return { data };
   },
 });
+
 const addInstalledApp = action({
   display: {
     label: "Install App",
@@ -90,6 +94,7 @@ const addInstalledApp = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       `/teams/${params.teamId}/installedApps`,
       {
@@ -99,6 +104,7 @@ const addInstalledApp = action({
     return { data };
   },
 });
+
 const upgradeInstalledApp = action({
   display: {
     label: "Upgrade Installed App",
@@ -123,6 +129,7 @@ const upgradeInstalledApp = action({
     return { data };
   },
 });
+
 const removeInstalledApp = action({
   display: {
     label: "Remove Installed App",
@@ -146,6 +153,7 @@ const removeInstalledApp = action({
     return { data };
   },
 });
+
 export default {
   listCatalogApps,
   listInstalledApps,

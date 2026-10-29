@@ -1,4 +1,5 @@
 import { deleteResponseSchema, pageSchema } from "./shared";
+
 const vendorSchema = {
   type: "object" as const,
   properties: {
@@ -70,7 +71,9 @@ const vendorSchema = {
     "updated_at",
   ],
 };
+
 export const getVendorOutputSchema = vendorSchema;
+
 export const listVendorsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -82,5 +85,7 @@ export const listVendorsOutputSchema = {
   },
   required: ["data", "page"],
 };
+
 export const updateVendorOutputSchema = vendorSchema;
+
 export const deleteVendorOutputSchema = deleteResponseSchema;

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { invoiceDocumentEntry } from "../../inputs/invoices/general";
+
 export const closeInvoice = action({
   display: {
     label: "Close Invoice",
@@ -17,6 +18,7 @@ export const closeInvoice = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       `/Invoices(${invoiceDocumentEntry})/Close`,
     );

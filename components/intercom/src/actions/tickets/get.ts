@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getTicketResponse } from "../../examplePayloads";
 import { connectionInput, idInput } from "../../inputs";
+
 export const getTicket = action({
   display: {
     label: "Retrieve a ticket",

@@ -11,6 +11,7 @@ export const gradeOutputSchema = {
   },
   required: [],
 };
+
 export const listGradesOutputSchema = {
   type: "object" as const,
   properties: {

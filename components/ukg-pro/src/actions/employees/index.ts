@@ -8,6 +8,7 @@ import { getEmployeeEmploymentDetails } from "./getEmployeeEmploymentDetails";
 import { getEmployeeJobHistory } from "./getEmployeeJobHistory";
 import { getEmployeeEmploymentDetailsByEmployeeIdAndCompanyId } from "./getEmploymentDetailsByEmployeeIdandCompanyId";
 import { getPersonDetailsByCompany } from "./getPersonDetailsByCompany";
+
 export default {
   getAllEmploymentDetailsByCompany,
   getAllPersonDetails,

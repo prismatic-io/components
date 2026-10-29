@@ -2,6 +2,7 @@ import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { HttpMethod, MAX_PAGE_SIZE } from "../constants";
 import type { HttpResponse, NotionPage, PollingRound } from "../types";
+
 export const getPaginatedData = async (
   client: HttpClient,
   method: HttpMethod,
@@ -17,16 +18,22 @@ export const getPaginatedData = async (
     params,
   };
   let response = await client(config);
+
   if (!fetchAll) {
     return response;
   }
+
   const allResults: unknown[] = [...(response.data?.results ?? [])];
+
   let nextCursor = response.data?.next_cursor;
+
   while (nextCursor) {
     const nextPageConfig = params
       ? { ...config, params: { ...params, start_cursor: nextCursor } }
       : { ...config, data: { ...(data ?? {}), start_cursor: nextCursor } };
+
     const nextPageResponse = await client(nextPageConfig);
+
     allResults.push(...(nextPageResponse.data?.results ?? []));
     nextCursor = nextPageResponse.data?.next_cursor;
     response = {
@@ -37,8 +44,10 @@ export const getPaginatedData = async (
       },
     };
   }
+
   return response;
 };
+
 export const fetchSearchResultsRound = async (
   client: HttpClient,
   objectType: "page" | "data_source",
@@ -49,6 +58,7 @@ export const fetchSearchResultsRound = async (
   const sinceMs = new Date(since).getTime();
   const records: NotionPage[] = [];
   let cursor = startCursor;
+
   for (let page = 0; page < maxPages; page++) {
     const { data } = await client({
       method: HttpMethod.POST,
@@ -66,6 +76,7 @@ export const fetchSearchResultsRound = async (
         ...(cursor ? { start_cursor: cursor } : {}),
       },
     });
+
     for (const record of (data?.results ?? []) as NotionPage[]) {
       const editedMs = new Date(record.last_edited_time).getTime();
       if (!Number.isNaN(editedMs) && editedMs < sinceMs) {
@@ -73,13 +84,16 @@ export const fetchSearchResultsRound = async (
       }
       records.push(record);
     }
+
     if (!data?.has_more || !data?.next_cursor) {
       return { records, nextCursor: null };
     }
     cursor = util.types.toString(data.next_cursor);
   }
+
   return { records, nextCursor: cursor ?? null };
 };
+
 export const fetchDataSourceItemsRound = async (
   client: HttpClient,
   dataSourceId: string,
@@ -89,6 +103,7 @@ export const fetchDataSourceItemsRound = async (
 ): Promise<PollingRound> => {
   const records: NotionPage[] = [];
   let cursor = startCursor;
+
   for (let page = 0; page < maxPages; page++) {
     const { data } = await client({
       method: HttpMethod.POST,
@@ -105,11 +120,14 @@ export const fetchDataSourceItemsRound = async (
         ...(cursor ? { start_cursor: cursor } : {}),
       },
     });
+
     records.push(...((data?.results ?? []) as NotionPage[]));
+
     if (!data?.has_more || !data?.next_cursor) {
       return { records, nextCursor: null };
     }
     cursor = util.types.toString(data.next_cursor);
   }
+
   return { records, nextCursor: cursor ?? null };
 };

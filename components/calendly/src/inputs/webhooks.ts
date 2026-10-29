@@ -7,6 +7,7 @@ import {
   scope,
   signingKey,
 } from "./common";
+
 const url = input({
   label: "URL",
   type: "string",
@@ -15,6 +16,7 @@ const url = input({
   placeholder: "Enter webhook URL",
   clean: util.types.toString,
 });
+
 const event = input({
   label: "Event",
   type: "string",
@@ -29,6 +31,7 @@ const event = input({
   ].join(", "),
   clean: (value) => value as string[],
 });
+
 const webhookUuid = input({
   label: "Webhook UUID",
   type: "string",
@@ -37,6 +40,7 @@ const webhookUuid = input({
   placeholder: "Enter webhook UUID",
   clean: util.types.toString,
 });
+
 export const createWebhookSubscriptionInputs = {
   connection,
   organization: {
@@ -57,6 +61,7 @@ export const createWebhookSubscriptionInputs = {
   scope,
   signingKey,
 };
+
 export const deleteInstancedWebhooksInputs = {
   connection,
   organization: {
@@ -75,14 +80,17 @@ export const deleteInstancedWebhooksInputs = {
     comments: "User to delete webhooks from. Required if scope is set to user.",
   },
 };
+
 export const deleteWebhookSubscriptionInputs = {
   connection,
   webhookUuid,
 };
+
 export const getWebhookSubscriptionInputs = {
   connection,
   webhookUuid,
 };
+
 export const listWebhookSubscriptionInputs = {
   connection,
   organization: {

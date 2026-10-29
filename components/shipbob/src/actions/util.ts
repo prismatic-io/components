@@ -1,5 +1,6 @@
 const validateDataType = (value: unknown) => {
   const type = typeof value;
+
   switch (type) {
     case "string":
       if (value === "" || value === null) {
@@ -27,12 +28,15 @@ const validateDataType = (value: unknown) => {
       return false;
   }
 };
+
 export const generatePayload = (data: unknown) => {
   const params = {};
+
   for (const [key, value] of Object.entries(data)) {
     if (validateDataType(value)) {
       params[key] = value;
     }
   }
+
   return params;
 };

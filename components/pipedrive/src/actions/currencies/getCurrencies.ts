@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCurrenciesInputs } from "../../inputs";
 import { getCurrenciesExamplePayload } from "../../examplePayloads";
 import { getCurrenciesOutputSchema } from "../../outputSchemas";
+
 export const getCurrencies = action({
   display: {
     label: "Get Currencies",

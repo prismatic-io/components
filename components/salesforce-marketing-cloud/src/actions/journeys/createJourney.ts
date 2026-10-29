@@ -4,6 +4,7 @@ import { JOURNEYS_PATH } from "../../constants";
 import { createJourneyExamplePayload } from "../../examplePayloads";
 import { createJourneyInputs } from "../../inputs";
 import { createJourneyOutputSchema } from "../../outputSchemas";
+
 export const createJourney = action({
   examplePayload: createJourneyExamplePayload,
   display: {
@@ -28,6 +29,7 @@ export const createJourney = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       key: journeyKey,
       name: journeyName,
@@ -35,15 +37,15 @@ export const createJourney = action({
       workflowApiVersion,
       ...journeyExtraBody,
     };
+
     const { data } = await client.post(JOURNEYS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { journeyKey, journeyName, journeyDescription, workflowApiVersion },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createJourneyExamplePayload.data,
       key: journeyKey,

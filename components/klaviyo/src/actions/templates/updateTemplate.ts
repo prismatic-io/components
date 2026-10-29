@@ -5,6 +5,7 @@ import { type TemplateUpdateHtmlOrDndQuery, TemplateEnum } from "klaviyo-api";
 import { updateTemplateInputs as inputs } from "../../inputs";
 import { updateTemplateExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const updateTemplate = action({
   display: {
     label: "Update Template",
@@ -27,6 +28,7 @@ export const updateTemplate = action({
         debug,
       });
     }
+
     const template: TemplateUpdateHtmlOrDndQuery = {
       data: {
         type: TemplateEnum.Template,

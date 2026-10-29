@@ -7,7 +7,9 @@ import { getToken } from "../../client";
 import { BASE_URL } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { connection } from "../../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -31,4 +33,5 @@ export const rawRequest = action({
     return { data };
   },
 });
+
 export default { rawRequest };

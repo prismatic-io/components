@@ -4,6 +4,7 @@ import { getVariantExamplePayload as examplePayload } from "../../../examplePayl
 import { getVariantInputs as inputs } from "../../../inputsGql";
 import { getVariantGqlOutputSchema } from "../../../outputSchemas";
 import getVariantQuery from "../queries/variants/GetVariant.gql";
+
 export const getVariantGql = action({
   display: {
     label: "Get Variant",
@@ -20,6 +21,7 @@ export const getVariantGql = action({
     const data = await client.request(getVariantQuery, {
       id: variantId,
     });
+
     return {
       data,
     };

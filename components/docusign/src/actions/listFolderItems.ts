@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { paginateResults } from "../helpers/pagination";
 import { connection, fetchAll, folderId, includeItems } from "../inputs";
+
 export const listFolderItems = action({
   display: {
     label: "List Folder Items",

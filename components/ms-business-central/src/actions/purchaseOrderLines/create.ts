@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { createPurchaseOrderLineExamplePayload as examplePayload } from "../../examplePayloads";
 import { createPurchaseOrderLineInputs as inputs } from "../../inputs/purchaseOrderLines/createPurchaseOrderLineInputs";
 import type { PurchaseOrderLine } from "../../interfaces";
+
 export const createPurchaseOrderLine = action({
   display: {
     label: "Create Purchase Order Line",
@@ -41,10 +42,12 @@ export const createPurchaseOrderLine = action({
       quantity,
       directUnitCost,
     };
+
     const { data } = await client.post<PurchaseOrderLine>(
       `/companies(${companyId})/purchaseOrderLines`,
       payload,
     );
+
     return { data };
   },
   inputs,

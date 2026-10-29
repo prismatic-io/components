@@ -4,6 +4,7 @@ import { selectEventExamplePayload as examplePayload } from "../examplePayloads/
 import { selectEventInputs as inputs } from "../inputs/events";
 import type { ListEventsResponse } from "../interfaces/events";
 import { fetchAllWithPagination } from "../utils/fetchAllWithPagination";
+
 export const selectEvent = dataSource({
   display: {
     label: "Select Event",
@@ -15,15 +16,18 @@ export const selectEvent = dataSource({
       connection,
       debug: false,
     });
+
     const { data } = await fetchAllWithPagination<ListEventsResponse>({
       client,
       configVars,
       endpoint: "/events",
     });
+
     const result = data.data.map<Element>((event) => ({
       label: event.type,
       key: util.types.toString(event.id),
     }));
+
     return {
       result,
     };

@@ -5,6 +5,7 @@ import { getFileLockExamplePayload } from "../../examplePayloads";
 import { getFileLockInputs } from "../../inputs";
 import { getFileLockOutputSchema } from "../../outputSchemas";
 import { checkDebug, getEntries, handleDropboxError } from "../../util";
+
 export const getFileLock = action({
   display: {
     label: "Get File Lock",
@@ -32,7 +33,9 @@ export const getFileLock = action({
       teamMemberId ? "user" : undefined,
       teamMemberId,
     );
+
     const entries = getEntries(filePaths, dynamicPaths);
+
     try {
       const args = {
         entries,

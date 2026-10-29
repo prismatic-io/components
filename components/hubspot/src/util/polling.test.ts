@@ -23,7 +23,9 @@ import {
   resolveLastModifiedProperty,
   windowFloor,
 } from "./polling";
+
 const NOW = "2026-08-11T12:00:00.000Z";
+
 describe("resolveCursor", () => {
   test("seeds from lookBackDate when state is empty", () => {
     expect(
@@ -40,6 +42,7 @@ describe("resolveCursor", () => {
       isBackfill: true,
     });
   });
+
   test("seeds from now when state is empty and lookBackDate is blank", () => {
     expect(
       resolveCursor({
@@ -55,6 +58,7 @@ describe("resolveCursor", () => {
       isBackfill: false,
     });
   });
+
   test("resumes incrementally from lastPolledAt", () => {
     expect(
       resolveCursor({
@@ -70,6 +74,7 @@ describe("resolveCursor", () => {
       isBackfill: false,
     });
   });
+
   test("resumes a persisted cursor verbatim, ignoring lastPolledAt and lookBackDate", () => {
     const cursor: PollingCursor = {
       watermark: "2026-05-05T00:00:00.000Z",
@@ -86,6 +91,7 @@ describe("resolveCursor", () => {
       }),
     ).toEqual(cursor);
   });
+
   test("resumes an id-walk cursor intact", () => {
     const cursor: PollingCursor = {
       watermark: "2026-08-01T00:00:00.000Z",
@@ -106,6 +112,7 @@ describe("resolveCursor", () => {
       }),
     ).toEqual(cursor);
   });
+
   test("rejects a corrupted idWalk (non-date denseTimestamp)", () => {
     const cursor = {
       watermark: "2026-08-01T00:00:00.000Z",
@@ -123,6 +130,7 @@ describe("resolveCursor", () => {
       }),
     ).toThrow(/Invalid polling cursor\.idWalk\.denseTimestamp/);
   });
+
   test("prefers the platform-supplied cursor over the persisted one", () => {
     const incoming: PollingCursor = {
       watermark: "2026-06-06T00:00:00.000Z",
@@ -145,6 +153,7 @@ describe("resolveCursor", () => {
       }),
     ).toEqual(incoming);
   });
+
   test.each([
     ["watermark", { watermark: null }],
     ["windowStart", { windowStart: 1750000000000 }],
@@ -166,6 +175,7 @@ describe("resolveCursor", () => {
       }),
     ).toThrow(/Invalid polling cursor\./);
   });
+
   test("rejects a corrupted lastPolledAt", () => {
     expect(() =>
       resolveCursor({
@@ -177,9 +187,11 @@ describe("resolveCursor", () => {
     ).toThrow(/Invalid polling state\.lastPolledAt/);
   });
 });
+
 describe("resolveCursorSafely", () => {
   const logger = { warn: vi.fn() };
   beforeEach(() => logger.warn.mockClear());
+
   test("propagates a throw attributable to the incoming cursor", () => {
     expect(() =>
       resolveCursorSafely({
@@ -192,6 +204,7 @@ describe("resolveCursorSafely", () => {
     ).toThrow(/Invalid polling cursor\.watermark/);
     expect(logger.warn).not.toHaveBeenCalled();
   });
+
   test("discards a corrupted persisted cursor and falls back to lastPolledAt", () => {
     const result = resolveCursorSafely({
       incoming: undefined,
@@ -211,6 +224,7 @@ describe("resolveCursorSafely", () => {
     });
     expect(logger.warn).toHaveBeenCalledTimes(1);
   });
+
   test("discards both corrupted cursor and corrupted lastPolledAt, starting fresh", () => {
     const result = resolveCursorSafely({
       incoming: undefined,
@@ -231,17 +245,20 @@ describe("resolveCursorSafely", () => {
     expect(logger.warn).toHaveBeenCalledTimes(2);
   });
 });
+
 const record = (updatedAt: string, id = updatedAt): PollingTriggerObject => ({
   id,
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt,
 });
+
 const CURSOR: PollingCursor = {
   watermark: "2026-08-01T00:00:00.000Z",
   windowStart: "2026-01-01T00:00:00.000Z",
   windowEnd: "2026-08-11T12:00:00.000Z",
   isBackfill: false,
 };
+
 describe("advanceCursor", () => {
   test("emits an exhausted window whole and stops", () => {
     const records = [
@@ -253,18 +270,21 @@ describe("advanceCursor", () => {
       nextCursor: null,
     });
   });
+
   test("stops on an empty window", () => {
     expect(advanceCursor({ records: [], hasMore: false }, CURSOR)).toEqual({
       emit: [],
       nextCursor: null,
     });
   });
+
   test("stops even when hasMore is true but no records came back", () => {
     expect(advanceCursor({ records: [], hasMore: true }, CURSOR)).toEqual({
       emit: [],
       nextCursor: null,
     });
   });
+
   test("trims the trailing partial millisecond and advances to it", () => {
     const records = [
       record("2026-08-02T00:00:00.000Z", "a"),
@@ -280,6 +300,7 @@ describe("advanceCursor", () => {
       isBackfill: CURSOR.isBackfill,
     });
   });
+
   test("carries windowStart, windowEnd, and isBackfill through unchanged", () => {
     const records = [
       record("2026-08-02T00:00:00.000Z"),
@@ -291,6 +312,7 @@ describe("advanceCursor", () => {
     );
     expect(nextCursor).toBeNull();
   });
+
   test("trims and advances by createdAt during a backfill, ignoring updatedAt order", () => {
     const records: PollingTriggerObject[] = [
       {
@@ -321,6 +343,7 @@ describe("advanceCursor", () => {
       isBackfill: true,
     });
   });
+
   test("enters an id-walk when an entire full window shares one millisecond", () => {
     const records = [
       record("2026-08-03T00:00:00.000Z", "a"),
@@ -333,11 +356,13 @@ describe("advanceCursor", () => {
       idWatermark: "",
     });
   });
+
   describe("id-walk", () => {
     const idWalkCursor = {
       ...CURSOR,
       idWalk: { denseTimestamp: "2026-08-03T00:00:00.000Z", idWatermark: "" },
     };
+
     test("emits the page and advances idWatermark to the last id while more remain", () => {
       const records = [
         record("2026-08-03T00:00:00.000Z", "100"),
@@ -350,6 +375,7 @@ describe("advanceCursor", () => {
         idWatermark: "200",
       });
     });
+
     test("exits to the normal walk one ms later when the dense ms is exhausted", () => {
       const records = [record("2026-08-03T00:00:00.000Z", "300")];
       const result = advanceCursor({ records, hasMore: false }, idWalkCursor);
@@ -357,6 +383,7 @@ describe("advanceCursor", () => {
       expect(result.nextCursor?.idWalk).toBeUndefined();
       expect(result.nextCursor?.watermark).toBe("2026-08-03T00:00:00.001Z");
     });
+
     test("exits when a round returns no records", () => {
       const result = advanceCursor(
         { records: [], hasMore: true },
@@ -367,6 +394,7 @@ describe("advanceCursor", () => {
       expect(result.nextCursor?.watermark).toBe("2026-08-03T00:00:00.001Z");
     });
   });
+
   test("throws when the boundary does not advance past the watermark", () => {
     const records = [
       record("2026-07-01T00:00:00.000Z", "a"),
@@ -376,6 +404,7 @@ describe("advanceCursor", () => {
       /at or before the current position/,
     );
   });
+
   test("throws when the trailing boundary is not a parseable date", () => {
     const records = [
       record("2026-08-02T00:00:00.000Z", "a"),
@@ -386,6 +415,7 @@ describe("advanceCursor", () => {
     );
   });
 });
+
 describe("resolveLastModifiedProperty", () => {
   test.each([
     ["/crm/v3/objects/companies/search", "hs_lastmodifieddate"],
@@ -394,11 +424,13 @@ describe("resolveLastModifiedProperty", () => {
   ])("resolves %s to %s", (endpoint, expected) => {
     expect(resolveLastModifiedProperty(endpoint, false)).toBe(expected);
   });
+
   test("uses hs_lastmodifieddate for custom objects regardless of endpoint", () => {
     expect(resolveLastModifiedProperty(undefined, true)).toBe(
       "hs_lastmodifieddate",
     );
   });
+
   test("throws a named error for an unknown endpoint", () => {
     expect(() =>
       resolveLastModifiedProperty("/crm/v3/objects/nope/search", false),
@@ -406,11 +438,13 @@ describe("resolveLastModifiedProperty", () => {
       /No last-modified property is known for the search endpoint \/crm\/v3\/objects\/nope\/search/,
     );
   });
+
   test("throws when no endpoint is supplied and custom objects are not selected", () => {
     expect(() => resolveLastModifiedProperty(undefined, false)).toThrow(
       /\(none provided\)/,
     );
   });
+
   test.each([
     ["/crm/objects/2026-09/contacts/search", "lastmodifieddate"],
     ["/crm/objects/2026-09/companies/search", "hs_lastmodifieddate"],
@@ -419,12 +453,14 @@ describe("resolveLastModifiedProperty", () => {
   ])("resolves the dated or mixed-case stored value %s to %s", (endpoint, expected) => {
     expect(resolveLastModifiedProperty(endpoint, false)).toBe(expected);
   });
+
   test("throws a named error for a junk stored value", () => {
     expect(() => resolveLastModifiedProperty("not-an-endpoint", false)).toThrow(
       /No last-modified property is known for the search endpoint not-an-endpoint/,
     );
   });
 });
+
 describe("resolveCreatedProperty", () => {
   test.each([
     ["/crm/v3/objects/contacts/search", "createdate"],
@@ -434,28 +470,33 @@ describe("resolveCreatedProperty", () => {
   ])("resolves %s to %s", (endpoint, expected) => {
     expect(resolveCreatedProperty(endpoint, false)).toBe(expected);
   });
+
   test("throws a named error for a junk stored value", () => {
     expect(() => resolveCreatedProperty("junk", false)).toThrow(
       /No creation-date property is known for the search endpoint junk/,
     );
   });
 });
+
 describe("resolveEndpoint", () => {
   test("translates a stored legacy value to the dated path", () => {
     expect(
       resolveEndpoint("/crm/v3/objects/contacts/search", undefined, false),
     ).toBe("/crm/objects/2026-09/contacts/search");
   });
+
   test("keeps a stored dated value on the current version", () => {
     expect(
       resolveEndpoint("/crm/objects/2026-09/deals/search", undefined, false),
     ).toBe("/crm/objects/2026-09/deals/search");
   });
+
   test("translates a mixed-case stored value", () => {
     expect(
       resolveEndpoint("/CRM/V3/Objects/contacts/Search", undefined, false),
     ).toBe("/crm/objects/2026-09/contacts/search");
   });
+
   test("substitutes the object type for the custom-objects placeholder", () => {
     expect(
       resolveEndpoint(
@@ -465,27 +506,32 @@ describe("resolveEndpoint", () => {
       ),
     ).toBe("/crm/objects/2026-09/p123_equipment/search");
   });
+
   test("substitutes the object type when custom objects are selected", () => {
     expect(resolveEndpoint(undefined, "Equipment", true)).toBe(
       "/crm/objects/2026-09/Equipment/search",
     );
   });
+
   test("requires an object type for the placeholder", () => {
     expect(() =>
       resolveEndpoint("/crm/v3/objects/{objectType}/search", undefined, false),
     ).toThrow("Object Type input is required");
   });
+
   test("requires a search endpoint", () => {
     expect(() => resolveEndpoint(undefined, undefined, false)).toThrow(
       "Search Endpoint input is required",
     );
   });
+
   test("throws on a junk stored value", () => {
     expect(() => resolveEndpoint("/nope", undefined, false)).toThrow(
       /Unrecognized search endpoint/,
     );
   });
 });
+
 describe("buildPollingFilterGroups", () => {
   const cursorBounds = [
     {
@@ -499,11 +545,13 @@ describe("buildPollingFilterGroups", () => {
       value: CURSOR.windowEnd,
     },
   ];
+
   test("produces a single bounds-only group when the user set no filters", () => {
     expect(
       buildPollingFilterGroups(undefined, "hs_lastmodifieddate", CURSOR),
     ).toEqual([{ filters: cursorBounds }]);
   });
+
   test("promotes a bare filters array into one group and ANDs the bounds in", () => {
     const userFilter = {
       propertyName: "dealstage",
@@ -518,6 +566,7 @@ describe("buildPollingFilterGroups", () => {
       ),
     ).toEqual([{ filters: [userFilter, ...cursorBounds] }]);
   });
+
   test("distributes the bounds into every user group, preserving OR-of-ANDs", () => {
     const a = { propertyName: "dealstage", operator: "EQ", value: "closedwon" };
     const b = {
@@ -536,6 +585,7 @@ describe("buildPollingFilterGroups", () => {
       { filters: [b, ...cursorBounds] },
     ]);
   });
+
   test("never emits a createdate filter", () => {
     const groups = buildPollingFilterGroups(
       undefined,
@@ -548,6 +598,7 @@ describe("buildPollingFilterGroups", () => {
     expect(names).not.toContain("createdate");
     expect(names).not.toContain("hs_createdate");
   });
+
   test("treats an empty filterGroups array as no filters and produces a bounds-only group", () => {
     expect(
       buildPollingFilterGroups(
@@ -557,17 +608,20 @@ describe("buildPollingFilterGroups", () => {
       ),
     ).toEqual([{ filters: cursorBounds }]);
   });
+
   test("treats an empty filters array as no filters and produces a bounds-only group", () => {
     expect(
       buildPollingFilterGroups({ filters: [] }, "hs_lastmodifieddate", CURSOR),
     ).toEqual([{ filters: cursorBounds }]);
   });
+
   test("rejects more than five filter groups", () => {
     const filterGroups = Array.from({ length: 6 }, () => ({ filters: [] }));
     expect(() =>
       buildPollingFilterGroups({ filterGroups }, "hs_lastmodifieddate", CURSOR),
     ).toThrow(/defines 6 filter groups, but HubSpot allows at most 5/);
   });
+
   test("rejects a group that exceeds six filters once the bounds are added", () => {
     const filters = Array.from({ length: 5 }, (_, i) => ({
       propertyName: `p${i}`,
@@ -582,6 +636,7 @@ describe("buildPollingFilterGroups", () => {
       ),
     ).toThrow(/would carry 7 filters .* at most 6 per group/);
   });
+
   test("rejects exceeding eighteen filters in total", () => {
     const filterGroups = Array.from({ length: 5 }, (_, g) => ({
       filters: [
@@ -594,6 +649,7 @@ describe("buildPollingFilterGroups", () => {
     ).toThrow(/would produce 20 filters .* at most 18 in total/);
   });
 });
+
 describe("buildPollingSearchBody", () => {
   test("pins an ascending sort on the last-modified property, discarding user sorts", () => {
     const body = buildPollingSearchBody(
@@ -606,6 +662,7 @@ describe("buildPollingSearchBody", () => {
       { propertyName: "hs_lastmodifieddate", direction: "ASCENDING" },
     ]);
   });
+
   test("preserves unrelated search properties such as the requested property list", () => {
     const body = buildPollingSearchBody(
       { properties: ["dealname", "amount"], filters: [] },
@@ -615,6 +672,7 @@ describe("buildPollingSearchBody", () => {
     );
     expect(body.properties).toEqual(["dealname", "amount"]);
   });
+
   test("drops the raw filters key so it cannot reach HubSpot alongside filterGroups", () => {
     const body = buildPollingSearchBody(
       { filters: [{ propertyName: "dealstage", operator: "EQ", value: "x" }] },
@@ -625,6 +683,7 @@ describe("buildPollingSearchBody", () => {
     expect(body).not.toHaveProperty("filters");
     expect(body.filterGroups).toHaveLength(1);
   });
+
   test("includes after only when supplied", () => {
     expect(
       buildPollingSearchBody(undefined, "hs_lastmodifieddate", CURSOR, 200),
@@ -639,6 +698,7 @@ describe("buildPollingSearchBody", () => {
       ).after,
     ).toBe("400");
   });
+
   test("in an id-walk, pins the exact millisecond and sorts by hs_object_id", () => {
     const cursor = {
       ...CURSOR,
@@ -670,6 +730,7 @@ describe("buildPollingSearchBody", () => {
       { propertyName: "hs_object_id", operator: "GT", value: "500" },
     ]);
   });
+
   test("omits the hs_object_id filter on the first id-walk page (empty watermark)", () => {
     const cursor = {
       ...CURSOR,
@@ -695,11 +756,13 @@ describe("buildPollingSearchBody", () => {
     ]);
   });
 });
+
 describe("windowFloor / cycleFloor", () => {
   test("each subtracts one millisecond from its own anchor", () => {
     expect(windowFloor(CURSOR).toISOString()).toBe("2026-07-31T23:59:59.999Z");
     expect(cycleFloor(CURSOR).toISOString()).toBe("2025-12-31T23:59:59.999Z");
   });
+
   test("the two anchors are equal on a freshly seeded cursor", () => {
     const seeded: PollingCursor = {
       watermark: "2026-01-01T00:00:00.000Z",
@@ -710,6 +773,7 @@ describe("windowFloor / cycleFloor", () => {
     expect(windowFloor(seeded).getTime()).toBe(cycleFloor(seeded).getTime());
   });
 });
+
 describe("getPollingChanges", () => {
   const rec = (
     id: string,
@@ -720,6 +784,7 @@ describe("getPollingChanges", () => {
     createdAt,
     updatedAt,
   });
+
   test("emits a record sitting exactly on the watermark", () => {
     const records = [
       rec("a", "2026-08-01T00:00:00.000Z", "2026-08-01T00:00:00.000Z"),
@@ -733,6 +798,7 @@ describe("getPollingChanges", () => {
     );
     expect(changes).toBeGreaterThan(0);
   });
+
   test("classifies a record created inside the cycle as created", () => {
     const records = [
       rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
@@ -747,6 +813,7 @@ describe("getPollingChanges", () => {
     expect(changesObject.createdRecords?.map((r) => r.id)).toEqual(["a"]);
     expect(changesObject.updatedRecords).toEqual([]);
   });
+
   test("classifies a record created before the cycle but modified inside it as updated", () => {
     const records = [
       rec("a", "2025-06-01T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
@@ -761,6 +828,7 @@ describe("getPollingChanges", () => {
     expect(changesObject.createdRecords).toEqual([]);
     expect(changesObject.updatedRecords?.map((r) => r.id)).toEqual(["a"]);
   });
+
   test("still reports created on a later window, where the two anchors differ", () => {
     const laterWindow: PollingCursor = {
       watermark: "2026-08-05T00:00:00.000Z",
@@ -771,6 +839,7 @@ describe("getPollingChanges", () => {
     const records = [
       rec("a", "2026-02-01T00:00:00.000Z", "2026-08-06T00:00:00.000Z"),
     ];
+
     const { changesObject } = getPollingChanges(
       true,
       false,
@@ -781,6 +850,7 @@ describe("getPollingChanges", () => {
     expect(changesObject.createdRecords?.map((r) => r.id)).toEqual(["a"]);
     expect(changesObject.updatedRecords).toEqual([]);
   });
+
   test.each([
     [true, true],
     [true, false],
@@ -799,6 +869,7 @@ describe("getPollingChanges", () => {
       "updatedRecords",
     ]);
   });
+
   test("counts a created-and-since-modified record as two changes", () => {
     const records = [
       rec("a", "2026-08-02T00:00:00.000Z", "2026-08-03T00:00:00.000Z"),
@@ -814,6 +885,7 @@ describe("getPollingChanges", () => {
     expect(changesObject.createdRecords).toHaveLength(1);
     expect(changesObject.updatedRecords).toHaveLength(1);
   });
+
   test("snapshot reports a created-and-since-modified record once, as created", () => {
     const records = [
       rec("a", "2026-08-02T00:00:00.000Z", "2026-08-03T00:00:00.000Z"),
@@ -830,6 +902,7 @@ describe("getPollingChanges", () => {
     expect(changesObject.createdRecords?.map((r) => r.id)).toEqual(["a"]);
     expect(changesObject.updatedRecords).toEqual([]);
   });
+
   test("snapshot reports every record as created, ignoring the toggles", () => {
     const records = [
       rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z"),
@@ -848,6 +921,7 @@ describe("getPollingChanges", () => {
     expect(changesObject.updatedRecords).toEqual([]);
   });
 });
+
 const page = (count: number, after?: string, startMs = 0, total = count) => ({
   data: {
     total,
@@ -859,7 +933,9 @@ const page = (count: number, after?: string, startMs = 0, total = count) => ({
     ...(after ? { paging: { next: { after } } } : {}),
   },
 });
+
 const fakeLogger = () => ({ warn: vi.fn() });
+
 const windowParams = {
   endpoint: "/crm/objects/2026-09/deals/search",
   searchProperties: undefined,
@@ -867,6 +943,7 @@ const windowParams = {
   cursor: CURSOR,
   windowLimit: MAX_SEARCH_RESULTS,
 };
+
 describe("fetchPollingWindow", () => {
   test("stops with hasMore false when HubSpot returns no next page", async () => {
     const client = { post: vi.fn().mockResolvedValue(page(3)) };
@@ -879,6 +956,7 @@ describe("fetchPollingWindow", () => {
     expect(result.records).toHaveLength(3);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
+
   test("follows the after cursor across pages", async () => {
     const client = {
       post: vi
@@ -895,6 +973,7 @@ describe("fetchPollingWindow", () => {
     expect(result.hasMore).toBe(false);
     expect(client.post.mock.calls[1][1].after).toBe("200");
   });
+
   test("stops at the result cap with hasMore true", async () => {
     const client = {
       post: vi
@@ -914,6 +993,7 @@ describe("fetchPollingWindow", () => {
       MAX_SEARCH_RESULTS / MAX_SEARCH_LIMIT,
     );
   });
+
   test("honors a smaller windowLimit, leaving the rest for a later round", async () => {
     const client = {
       post: vi
@@ -933,6 +1013,7 @@ describe("fetchPollingWindow", () => {
       BATCHED_WINDOW_LIMIT / MAX_SEARCH_LIMIT,
     );
   });
+
   test("never requests more than the remaining budget", async () => {
     const client = {
       post: vi
@@ -946,6 +1027,7 @@ describe("fetchPollingWindow", () => {
       expect(call[1].limit).toBeLessThanOrEqual(MAX_SEARCH_LIMIT);
     }
   });
+
   test("retries a 429 honoring Retry-After, then succeeds", async () => {
     const rateLimited = {
       response: { status: 429, headers: { "retry-after": "0" } },
@@ -966,6 +1048,7 @@ describe("fetchPollingWindow", () => {
     expect(client.post).toHaveBeenCalledTimes(2);
     expect(logger.warn).toHaveBeenCalledTimes(1);
   });
+
   test("gives up after the retry budget and rethrows the 429", async () => {
     const rateLimited = {
       response: { status: 429, headers: { "retry-after": "0" } },
@@ -976,6 +1059,7 @@ describe("fetchPollingWindow", () => {
     ).rejects.toBe(rateLimited);
     expect(client.post).toHaveBeenCalledTimes(RATE_LIMIT_MAX_ATTEMPTS);
   });
+
   test("treats a page that adds no records as exhaustion, even with a next-page token", async () => {
     const client = {
       post: vi.fn().mockResolvedValue({
@@ -991,6 +1075,7 @@ describe("fetchPollingWindow", () => {
     expect(result.records).toEqual([]);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
+
   test("reports hasMore true from total when the last page omits paging.next", async () => {
     const client = {
       post: vi.fn().mockResolvedValue(page(3, undefined, 0, 100)),
@@ -1004,6 +1089,7 @@ describe("fetchPollingWindow", () => {
     expect(result.records).toHaveLength(3);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
+
   test("reports hasMore false when total equals the records returned and there is no next page", async () => {
     const client = {
       post: vi.fn().mockResolvedValue(page(3, undefined, 0, 3)),
@@ -1017,6 +1103,7 @@ describe("fetchPollingWindow", () => {
     expect(result.records).toHaveLength(3);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
+
   test("zero progress still wins over a large total", async () => {
     const client = {
       post: vi.fn().mockResolvedValue(page(0, undefined, 0, 999)),
@@ -1030,6 +1117,7 @@ describe("fetchPollingWindow", () => {
     expect(result.records).toEqual([]);
     expect(client.post).toHaveBeenCalledTimes(1);
   });
+
   test("translates an unknown-property 400 into a self-diagnosing error", async () => {
     const client = {
       post: vi.fn().mockRejectedValue({
@@ -1045,6 +1133,7 @@ describe("fetchPollingWindow", () => {
       /property "hs_lastmodifieddate" is not searchable on \/crm\/objects\/2026-09\/deals\/search/,
     );
   });
+
   test("rethrows an unrelated 400 unchanged", async () => {
     const other = { response: { status: 400, data: { message: "bad limit" } } };
     const client = { post: vi.fn().mockRejectedValue(other) };

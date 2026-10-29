@@ -7,14 +7,17 @@ import {
   teamId,
   workspaceId,
 } from "./common";
+
 export const selectAttachmentInputs = {
   connection: connectionInput,
   taskId: { ...taskId, dataSource: undefined },
 };
+
 export const selectCustomFieldInputs = {
   connection: connectionInput,
   workspaceId: { ...workspaceId, dataSource: undefined },
 };
+
 export const selectPortfolioInputs = {
   connection: connectionInput,
   workspaceId: {
@@ -24,6 +27,7 @@ export const selectPortfolioInputs = {
     clean: toOptionalString,
   },
 };
+
 export const selectProjectInputs = {
   connection: connectionInput,
   workspace: {
@@ -39,14 +43,17 @@ export const selectProjectInputs = {
     dataSource: undefined,
   },
 };
+
 export const selectSectionInputs = {
   connection: connectionInput,
   projectId: { ...projectId, dataSource: undefined },
 };
+
 export const selectTagInputs = {
   connection: connectionInput,
   workspaceId: { ...workspaceId, dataSource: undefined },
 };
+
 export const selectTaskInputs = {
   connection: connectionInput,
   project: {
@@ -67,10 +74,12 @@ export const selectTaskInputs = {
     comments: `${assigneeId.comments} Assignee ID must be provided with a Workspace ID.`,
   },
 };
+
 export const selectTeamInputs = {
   connection: connectionInput,
   workspaceId: { ...workspaceId, dataSource: undefined },
 };
+
 export const selectUserInputs = {
   connection: connectionInput,
   workspaceId: {
@@ -80,6 +89,7 @@ export const selectUserInputs = {
     clean: toOptionalString,
   },
 };
+
 export const selectWorkspaceInputs = {
   connection: connectionInput,
 };

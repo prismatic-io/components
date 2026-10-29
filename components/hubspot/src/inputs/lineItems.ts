@@ -18,6 +18,7 @@ import {
   updatePrice,
   updateProductId,
 } from "./products";
+
 const lineItemId = input({
   label: "Line Item ID",
   type: "string",
@@ -28,6 +29,7 @@ const lineItemId = input({
   example: "78349093",
   clean: util.types.toString,
 });
+
 const lineItemName = input({
   label: "Name",
   type: "string",
@@ -38,6 +40,7 @@ const lineItemName = input({
   example: "My Line Item",
   clean: util.types.toString,
 });
+
 const updateLineItemName = input({
   label: "Name",
   type: "string",
@@ -47,6 +50,7 @@ const updateLineItemName = input({
   example: "My line Item",
   clean: toOptionalString,
 });
+
 const quantity = input({
   label: "Quantity",
   type: "string",
@@ -56,6 +60,7 @@ const quantity = input({
   example: "80",
   clean: toOptionalString,
 });
+
 const recurringBillingFrequency = input({
   label: "Recurring Billing Monthly Rate",
   type: "string",
@@ -90,6 +95,7 @@ const recurringBillingFrequency = input({
   ],
   clean: toOptionalString,
 });
+
 export const listLineItemsInputs = {
   hubspotConnection: connectionInput,
   archived,
@@ -99,6 +105,7 @@ export const listLineItemsInputs = {
   associationsList,
   timeout,
 };
+
 export const createLineItemInputs = {
   lineItemName,
   productId,
@@ -111,6 +118,7 @@ export const createLineItemInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const updateLineItemInputs = {
   lineItemId,
   updateLineItemName,
@@ -124,11 +132,13 @@ export const updateLineItemInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const deleteLineItemInputs = {
   lineItemId,
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const getLineItemInputs = {
   lineItemId: { ...lineItemId, required: false, clean: toOptionalString },
   lineItemName: { ...lineItemName, required: false, clean: toOptionalString },

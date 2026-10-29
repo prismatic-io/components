@@ -11,6 +11,7 @@ import type {
   ToastRecordChange,
   ToastTimeEntryRecord,
 } from "./interfaces";
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -20,11 +21,14 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 const throwCodeInputError = (inputLabel: string) => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanArrayCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     let object: unknown;
@@ -40,6 +44,7 @@ export const cleanArrayCodeInput = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+
 export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     try {
@@ -50,6 +55,7 @@ export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+
 export const cleanCodeInputEmptyObject = (
   value: unknown,
   inputLabel: string,
@@ -63,12 +69,14 @@ export const cleanCodeInputEmptyObject = (
   }
   return {};
 };
+
 export const cleanValueListInput = (value: unknown): string[] | undefined => {
   if (Array.isArray(value)) {
     return value.length > 0 ? value : undefined;
   }
   return undefined;
 };
+
 export const getToastToken = async (
   connection: Connection,
   debug: boolean,
@@ -93,16 +101,21 @@ export const getToastToken = async (
   );
   return `Bearer ${data.token?.accessToken}`;
 };
+
 export const getSignature = (
   secret: string,
   body: string,
   timestamp: string,
 ): string => {
   const signatureData = body + timestamp;
+
   const hmac = createHmac("sha256", Buffer.from(secret, "utf-8"));
+
   const hash = hmac.update(signatureData, "utf-8").digest("base64");
+
   return hash;
 };
+
 export const serializeRepeatedParam = (
   arrayParam: string[],
   param: string,
@@ -110,6 +123,7 @@ export const serializeRepeatedParam = (
   arrayParam
     .map((element) => `${param}=${encodeURIComponent(element)}`)
     .join("&");
+
 export const fetchTimeEntriesModified = async (
   client: HttpClient,
   modifiedStartDate: string,
@@ -120,6 +134,7 @@ export const fetchTimeEntriesModified = async (
   });
   return Array.isArray(data) ? (data as ToastTimeEntryRecord[]) : [];
 };
+
 export const resolvePollingRecordChanges = (
   data: ToastChangesObject | undefined,
 ): ToastRecordChange[] => {
@@ -133,6 +148,7 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -141,6 +157,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -149,6 +166,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -163,6 +181,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }

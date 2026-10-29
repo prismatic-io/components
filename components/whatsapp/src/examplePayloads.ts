@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const sendMessageExamplePayload = {
   data: {
     messaging_product: "whatsapp",
@@ -16,21 +17,25 @@ export const sendMessageExamplePayload = {
     ],
   },
 };
+
 export const requestVerificationCodeExamplePayload = {
   data: {
     success: true,
   },
 };
+
 export const registerPhoneNumberExamplePayload = {
   data: {
     success: true,
   },
 };
+
 export const uploadMediaExamplePayload = {
   data: {
     id: "1376223850496189",
   },
 };
+
 export const getMediaExamplePayload = {
   data: {
     messaging_product: "whatsapp",
@@ -41,14 +46,17 @@ export const getMediaExamplePayload = {
     id: "1376223850496189",
   },
 };
+
 export const deleteMediaExamplePayload = {
   data: {
     success: true,
   },
 };
+
 export const getMediafromURLExamplePayload = {
   data: "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAABAAEDASIA",
 };
+
 export const webhookExamplePayload: {
   payload: TriggerPayload;
   branch: string;

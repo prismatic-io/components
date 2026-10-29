@@ -18,11 +18,13 @@ import type {
   PollingCursor,
   PollingState,
 } from "../types";
+
 export const validateConnection = (connection: Connection): void => {
   if (connection.key !== squareConnection.key) {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
 };
+
 export const getBaseUrl = (connection: Connection): string => {
   const { tokenUrl } = connection.fields;
   const validatedTokenUrl = util.types.toString(tokenUrl);
@@ -30,9 +32,11 @@ export const getBaseUrl = (connection: Connection): string => {
   const baseUrl = `${protocol}//${hostname}`;
   return baseUrl;
 };
+
 export const getAuthToken = (connection: Connection) => {
   return connection?.token?.access_token;
 };
+
 export const getAuthHeaders = (connection: Connection, version?: string) => {
   const token = getAuthToken(connection);
   const apiVersion =
@@ -40,12 +44,14 @@ export const getAuthHeaders = (connection: Connection, version?: string) => {
     (connection.fields.apiVersion
       ? util.types.toString(connection.fields.apiVersion)
       : SQUARE_API_VERSION);
+
   return {
     Authorization: `Bearer ${token}`,
     "Square-Version": apiVersion,
     "Content-Type": "application/json",
   };
 };
+
 export const fetchAllPages = async (
   client: HttpClient,
   endpoint: string,
@@ -65,6 +71,7 @@ export const fetchAllPages = async (
   let lastResponse: Record<string, unknown> = {};
   const method = options?.method || "GET";
   const additionalParams = options?.additionalParams || {};
+
   do {
     const { data } =
       method === "POST"
@@ -78,32 +85,34 @@ export const fetchAllPages = async (
               cursor,
             },
           });
+
     const items = data[dataKey] || [];
     allItems = allItems.concat(items);
     cursor = data.cursor;
     lastResponse = data;
   } while (fetchAll && cursor);
+
   return {
     ...lastResponse,
     [dataKey]: allItems,
   };
 };
+
 export const toOptionalString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+
 export const sortByLabel = (
-  a: {
-    label: string;
-  },
-  b: {
-    label: string;
-  },
+  a: { label: string },
+  b: { label: string },
 ): number => {
   if (a.label < b.label) return -1;
   if (a.label > b.label) return 1;
   return 0;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -112,6 +121,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -120,6 +130,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -134,30 +145,32 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 const toMillis = (value: string | undefined): number | undefined => {
   if (!value) return undefined;
   const millis = Date.parse(value);
   return Number.isNaN(millis) ? undefined : millis;
 };
+
 export const windowStartFor = (watermark: string): string =>
   new Date(
     Math.floor(Date.parse(watermark) / 1000) * 1000 - 1000,
   ).toISOString();
+
 export const fetchPaymentsWindow = async (
   client: HttpClient,
   beginTime: string,
   startCursor: string | undefined,
   pageSize: number,
   maxPages: number,
-): Promise<{
-  payments: Payment[];
-  afterCursor: string | undefined;
-}> => {
+): Promise<{ payments: Payment[]; afterCursor: string | undefined }> => {
   const payments: Payment[] = [];
   let cursor = startCursor;
   for (let page = 0; page < maxPages; page++) {
@@ -176,6 +189,7 @@ export const fetchPaymentsWindow = async (
   }
   return { payments, afterCursor: cursor };
 };
+
 export const selectUndelivered = (
   payments: Payment[],
   watermark: string,
@@ -194,6 +208,7 @@ export const selectUndelivered = (
     );
   });
 };
+
 export const advanceBoundary = (
   boundary: PollingBoundary,
   payments: Payment[],
@@ -212,13 +227,11 @@ export const advanceBoundary = (
   }
   return { watermark: new Date(watermarkMs).toISOString(), ids: [...ids] };
 };
+
 export const partitionPaymentsByCreation = (
   payments: Payment[],
   watermark: string,
-): {
-  created: Payment[];
-  updated: Payment[];
-} => {
+): { created: Payment[]; updated: Payment[] } => {
   const watermarkMs = Date.parse(watermark);
   const created: Payment[] = [];
   const updated: Payment[] = [];
@@ -232,6 +245,7 @@ export const partitionPaymentsByCreation = (
   }
   return { created, updated };
 };
+
 export interface PollingCycleResult {
   created: Payment[];
   updated: Payment[];
@@ -240,6 +254,7 @@ export interface PollingCycleResult {
   backfill: boolean;
   read: number;
 }
+
 export const pollPaymentsCycle = async (args: {
   client: HttpClient;
   state: PollingState;
@@ -256,6 +271,7 @@ export const pollPaymentsCycle = async (args: {
     ids: state.boundaryIds ?? [],
   };
   const windowStart = resume?.windowStart ?? windowStartFor(committedAt);
+
   const { payments, afterCursor } = await fetchPaymentsWindow(
     client,
     windowStart,
@@ -263,11 +279,13 @@ export const pollPaymentsCycle = async (args: {
     batching ? BATCHED_PAYMENTS_PAGE_SIZE : PAYMENTS_PAGE_SIZE,
     batching ? BATCHED_MAX_PAGES_PER_POLL : MAX_PAGES_PER_POLL,
   );
+
   const fresh = selectUndelivered(payments, committedAt, committed.ids);
   const { created, updated } = partitionPaymentsByCreation(fresh, committedAt);
   const pending = advanceBoundary(resume?.pending ?? committed, payments);
   const backfill =
     state.backfillActive === true || (!state.lastPolledAt && hasLookBackDate);
+
   const next: PollingCursor | null = afterCursor
     ? { afterCursor, windowStart, pending }
     : null;
@@ -279,6 +297,7 @@ export const pollPaymentsCycle = async (args: {
         ...(backfill ? { backfillActive: true } : {}),
       }
     : { lastPolledAt: pending.watermark, boundaryIds: pending.ids };
+
   return {
     created,
     updated,
@@ -288,6 +307,7 @@ export const pollPaymentsCycle = async (args: {
     read: payments.length,
   };
 };
+
 export const resolvePaymentChanges = (
   data: PaymentChangesObject | undefined,
 ): PaymentChange[] => {

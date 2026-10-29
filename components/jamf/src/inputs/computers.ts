@@ -9,6 +9,7 @@ import {
   resourceId,
   sort,
 } from "./common";
+
 const section = input({
   label: "Section",
   type: "string",
@@ -44,6 +45,7 @@ const section = input({
   placeholder: "Enter section",
   example: "GENERAL",
 });
+
 const computerUpdateBody = input({
   label: "Update Data",
   language: "json",
@@ -65,6 +67,7 @@ const computerUpdateBody = input({
         managed: true,
         siteId: "1",
       },
+
       userAndLocation: {
         username: "Madison Anderson",
         realname: "13-inch MacBook",
@@ -98,12 +101,14 @@ const computerUpdateBody = input({
     2,
   ),
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const listComputersInputs = {
   connection,
   fetchAll,
@@ -118,6 +123,7 @@ const computerResourceId = {
   comments: "The unique identifier of the computer.",
   dataSource: "selectComputer",
 };
+
 export const getComputerInputs = {
   connection,
   resourceId: computerResourceId,

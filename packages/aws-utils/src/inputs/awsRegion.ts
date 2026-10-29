@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const awsRegion = input({
   label: "AWS Region",
   placeholder: "AWS Region",

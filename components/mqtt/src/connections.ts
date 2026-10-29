@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const mqttConnection = connection({
   key: "mqtt",
   display: {
@@ -59,4 +60,5 @@ export const mqttConnection = connection({
     },
   },
 });
+
 export default [mqttConnection];

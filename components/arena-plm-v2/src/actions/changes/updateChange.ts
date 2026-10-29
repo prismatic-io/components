@@ -5,6 +5,7 @@ import { updateChangeInputs } from "../../inputs";
 import { changeFullSchema } from "../../outputSchemas";
 import type { ChangeUpdateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateChange = action({
   display: {
     label: "Update Change",
@@ -39,6 +40,7 @@ export const updateChange = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const requestPayload: ChangeUpdateVo = {
         title: title || undefined,
         description: description || undefined,
@@ -51,10 +53,12 @@ export const updateChange = action({
         supplierVisibility,
         category: categoryGuid ? { guid: categoryGuid } : undefined,
       };
+
       requestPayload.additionalAttributes = resolveAdditionalAttributes(
         { additionalAttributeJson, additionalAttributes, attributeDefinitions },
         context,
       );
+
       context.logger.info("Updating change in Arena", {
         changeGuid: changeGuid,
         hasTitle: !!title,
@@ -71,15 +75,18 @@ export const updateChange = action({
             ? attributeDefinitions.length
             : 0,
       });
+
       const { data } = await client.put(
         `/changes/${changeGuid}`,
         requestPayload,
       );
+
       context.logger.info("Change updated successfully", {
         changeGuid: data.guid,
         changeNumber: data.number,
         changeTitle: data.title,
       });
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Change");

@@ -4,18 +4,22 @@ import { afterEach, beforeAll, expect, test } from "vitest";
 import { templatedOauth } from "../../connections";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequest } from "./rawRequest";
+
 const BASE = "https://graph.microsoft.com";
 const connection = createConnection(
   templatedOauth,
   {},
   { access_token: "test-token" },
 );
+
 beforeAll(() => {
   nock.disableNetConnect();
 });
+
 afterEach(() => {
   nock.cleanAll();
 });
+
 test("forwards the method, path and headers and returns the response untouched", async () => {
   const sent: {
     path?: string;
@@ -24,6 +28,7 @@ test("forwards the method, path and headers and returns the response untouched",
     auth?: string;
     ifMatch?: string;
   } = {};
+
   nock(BASE)
     .get("/v1.0/planner/plans")
     .query({ $top: "5" })
@@ -35,6 +40,7 @@ test("forwards the method, path and headers and returns the response untouched",
       sent.ifMatch = this.req.headers["if-match"] as string;
       return [200, rawRequestExamplePayload.data];
     });
+
   const { result } = await invoke(rawRequest, {
     connection,
     url: "/planner/plans",
@@ -55,6 +61,7 @@ test("forwards the method, path and headers and returns the response untouched",
     maxRetries: 0,
     useExponentialBackoff: false,
   });
+
   expect(sent.path).toBe("/v1.0/planner/plans?$top=5");
   expect(sent.accept).toBe("application/json");
   expect(sent.contentType).toBe("text/plain");

@@ -11,6 +11,7 @@ import {
   searchCriteriaSortField,
   searchCriteriaValue,
 } from "./common";
+
 export const entity = input({
   label: "Order",
   type: "code",
@@ -22,6 +23,7 @@ export const entity = input({
   default: JSON.stringify(entityJson, null, 2),
   clean: util.types.toObject,
 });
+
 export const orderId = input({
   label: "Order ID",
   type: "string",
@@ -33,18 +35,22 @@ export const orderId = input({
   dataSource: "selectOrder",
   clean: util.types.toString,
 });
+
 export const cancelOrderInputs = {
   connection: connectionInput,
   orderId,
 };
+
 export const createOrderInputs = {
   connection: connectionInput,
   entity,
 };
+
 export const getOrderInputs = {
   connection: connectionInput,
   orderId,
 };
+
 export const listOrderItemsInputs = {
   connection: connectionInput,
   fetchAll,
@@ -56,6 +62,7 @@ export const listOrderItemsInputs = {
   searchCriteriaSortDirection,
   searchCriteriaSortField,
 };
+
 export const listOrdersInputs = {
   connection: connectionInput,
   fetchAll,

@@ -41,7 +41,9 @@ export const listInvoicesExamplePayload = {
     cursor: "MTY1Njk2OTU5NjEzMjAwMDAwMA==",
   },
 };
+
 export const searchInvoicesExamplePayload = listInvoicesExamplePayload;
+
 export const getInvoiceExamplePayload = {
   data: {
     invoice: {
@@ -90,6 +92,7 @@ export const getInvoiceExamplePayload = {
     },
   },
 };
+
 export const updateInvoiceExamplePayload = {
   data: {
     invoice: {
@@ -128,6 +131,7 @@ export const updateInvoiceExamplePayload = {
     },
   },
 };
+
 export const publishInvoiceExamplePayload = {
   data: {
     invoice: {
@@ -159,6 +163,7 @@ export const publishInvoiceExamplePayload = {
     },
   },
 };
+
 export const cancelInvoiceExamplePayload = {
   data: {
     invoice: {
@@ -171,6 +176,7 @@ export const cancelInvoiceExamplePayload = {
     },
   },
 };
+
 export const deleteInvoiceExamplePayload = {
   data: {},
 };

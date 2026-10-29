@@ -4,6 +4,7 @@ import { createCategoryExamplePayload } from "../../examplePayloads";
 import { createCategoryInputs } from "../../inputs";
 import { createCategoryOutputSchema } from "../../outputSchemas";
 import type { Category } from "../../types";
+
 export const createCategory = action({
   display: {
     label: "Create Category",
@@ -23,9 +24,12 @@ export const createCategory = action({
         description: categoryDescription,
       },
     };
-    const { data } = await client.post<{
-      category: Category;
-    }>(`/help_center/${locale}/categories`, payload);
+
+    const { data } = await client.post<{ category: Category }>(
+      `/help_center/${locale}/categories`,
+      payload,
+    );
+
     return { data };
   },
   examplePerform: async (

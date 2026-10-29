@@ -4,6 +4,7 @@ import { getTemplate } from "./get";
 import { getTemplates } from "./list";
 import { renderTemplate } from "./render";
 import { updateTemplate } from "./update";
+
 export default {
   getTemplates,
   getTemplate,

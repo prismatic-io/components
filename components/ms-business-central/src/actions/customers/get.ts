@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { customerId } from "../../inputs/customers/getCustomerInputs";
 import { connectionInput } from "../../inputs/general";
 import type { Customer } from "../../interfaces";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",
@@ -20,6 +21,7 @@ export const getCustomer = action({
     const { data } = await client.get<Customer>(
       `/companies(${companyId})/customers(${customerId})`,
     );
+
     return { data };
   },
   inputs: {

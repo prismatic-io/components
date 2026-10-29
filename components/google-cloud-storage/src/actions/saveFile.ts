@@ -11,6 +11,7 @@ import {
   fileMetadata,
   fileName,
 } from "../inputs";
+
 export const saveFile = action({
   display: {
     label: "Save File",
@@ -30,6 +31,7 @@ export const saveFile = action({
     const storage = googleStorageClient(connection);
     const { data } = util.types.toData(fileContents);
     await storage.bucket(bucketName).file(fileName).save(data);
+
     if (fileMetadata) {
       const [metadata] = await storage
         .bucket(bucketName)

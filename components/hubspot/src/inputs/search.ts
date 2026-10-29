@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { MAX_SEARCH_LIMIT, SEARCH_ENDPOINTS } from "../constants";
 import { toOptionalInt, toOptionalObject, toOptionalString } from "../util";
 import { connectionInput, fetchAll, objectType, timeout } from "./common";
+
 export const propertyName = input({
   label: "Property Name",
   type: "string",
@@ -12,6 +13,7 @@ export const propertyName = input({
     "The property to search on. Ensure the spelling and capitalization match the property exactly.",
   clean: util.types.toString,
 });
+
 export const operator = input({
   label: "Operator",
   type: "string",
@@ -34,6 +36,7 @@ export const operator = input({
   ],
   clean: util.types.toString,
 });
+
 export const searchEndpoint = input({
   label: "Search Endpoint",
   type: "string",
@@ -43,6 +46,7 @@ export const searchEndpoint = input({
     "The endpoint to search for objects or engagements. For Custom objects don't forget to fill the Object Type input.",
   clean: util.types.toString,
 });
+
 export const searchProperties = input({
   label: "Search Properties",
   type: "code",
@@ -64,6 +68,7 @@ export const searchProperties = input({
   ),
   clean: toOptionalObject,
 });
+
 const searchLimit = input({
   label: "Search Limit",
   type: "string",
@@ -74,6 +79,7 @@ const searchLimit = input({
   comments: `The number of records to return. The maximum value is ${MAX_SEARCH_LIMIT}.`,
   clean: toOptionalInt,
 });
+
 export const searchInputs = {
   hubspotConnection: connectionInput,
   searchEndpoint,

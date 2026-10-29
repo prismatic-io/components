@@ -11,6 +11,7 @@ const routingFormQuestionSchema = {
     },
   },
 };
+
 const routingFormResource = {
   type: "object",
   properties: {
@@ -27,6 +28,7 @@ const routingFormResource = {
   },
   required: ["uri", "organization", "status", "created_at", "updated_at"],
 };
+
 export const getRoutingFormOutputSchema = {
   type: "object",
   properties: {
@@ -34,10 +36,12 @@ export const getRoutingFormOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listRoutingFormsOutputSchema = {
   type: "array",
   items: routingFormResource,
 };
+
 const trackingSchema = {
   type: ["object", "null"],
   properties: {
@@ -49,6 +53,7 @@ const trackingSchema = {
     salesforce_uuid: { type: ["string", "null"] },
   },
 };
+
 const routingFormSubmissionResource = {
   type: "object",
   properties: {
@@ -80,6 +85,7 @@ const routingFormSubmissionResource = {
   },
   required: ["uri", "routing_form", "created_at", "updated_at"],
 };
+
 export const getRoutingFormSubmissionOutputSchema = {
   type: "object",
   properties: {
@@ -87,6 +93,7 @@ export const getRoutingFormSubmissionOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listRoutingFormSubmissionsOutputSchema = {
   type: "array",
   items: routingFormSubmissionResource,

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
 import { boardId, connectionInput, fetchAll, pagination } from "./common";
+
 const boardName = input({
   label: "Board Name",
   type: "string",
@@ -10,6 +11,7 @@ const boardName = input({
   example: "Project Tracker",
   clean: util.types.toString,
 });
+
 const boardKind = input({
   label: "Board Kind",
   type: "string",
@@ -25,6 +27,7 @@ const boardKind = input({
   placeholder: "Select board kind",
   clean: util.types.toString,
 });
+
 const folderId = input({
   label: "Folder ID",
   type: "string",
@@ -35,6 +38,7 @@ const folderId = input({
   example: "9876543",
   clean: toOptionalNumber,
 });
+
 const templateId = input({
   label: "Template ID",
   type: "string",
@@ -45,6 +49,7 @@ const templateId = input({
   example: "1122334",
   clean: toOptionalNumber,
 });
+
 const workspaceId = input({
   label: "Workspace ID",
   type: "string",
@@ -55,15 +60,18 @@ const workspaceId = input({
   example: "5566778",
   clean: toOptionalNumber,
 });
+
 export const listBoardsInputs = {
   connection: connectionInput,
   fetchAll,
   pagination,
 };
+
 export const getBoardInputs = {
   connection: connectionInput,
   boardId,
 };
+
 export const createBoardInputs = {
   connection: connectionInput,
   boardName,
@@ -72,6 +80,7 @@ export const createBoardInputs = {
   workspaceId,
   templateId,
 };
+
 export const archiveBoardInputs = {
   connection: connectionInput,
   boardId,

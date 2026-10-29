@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Google Content Shopping connection to use.",
 });
+
 export const version = input({
   label: "API Version",
   type: "string",
@@ -17,6 +19,7 @@ export const version = input({
   placeholder: "Enter API version",
   required: false,
 });
+
 export const merchantId = input({
   label: "Merchant ID",
   type: "string",
@@ -27,6 +30,7 @@ export const merchantId = input({
   placeholder: "Enter Merchant ID",
   required: true,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -37,6 +41,7 @@ export const pageToken = input({
   placeholder: "Enter Page Token",
   required: false,
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -47,6 +52,7 @@ export const maxResults = input({
   placeholder: "Enter Max Results",
   required: false,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -56,12 +62,14 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Controls for paging through large result sets.",
   inputs: { maxResults, pageToken },
 });
+
 export const kind = input({
   label: "Kind",
   type: "string",
@@ -72,6 +80,7 @@ export const kind = input({
   placeholder: "Enter Kind",
   required: true,
 });
+
 export const updateMask = input({
   label: "Update Mask",
   type: "string",
@@ -82,6 +91,7 @@ export const updateMask = input({
   placeholder: "Enter Field Names (Comma-Separated)",
   required: false,
 });
+
 export const pickupMethod = input({
   label: "Pickup Method",
   type: "string",
@@ -108,6 +118,7 @@ export const pickupMethod = input({
   ],
   required: false,
 });
+
 export const pickupSla = input({
   label: "Pickup SLA",
   type: "string",

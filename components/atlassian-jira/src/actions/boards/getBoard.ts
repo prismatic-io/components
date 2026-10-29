@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../connections/auth";
 import { getBoardExamplePayload } from "../../examplePayloads";
 import { boardId, connectionInput } from "../../inputs";
+
 export const getBoard = action({
   display: {
     label: "Get Board",

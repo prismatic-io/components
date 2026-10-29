@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createProjectsExamplePayload } from "../../examplePayloads";
 import { connectionInput, projects } from "../../inputs";
+
 export const createProjects = action({
   display: {
     label: "Create Projects",

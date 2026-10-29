@@ -7,18 +7,21 @@ import {
   odataQueryParams,
   userId,
 } from "./common";
+
 export const listUsersInputs = {
   connection,
   getAllPaginatedResults,
   odataQueryParams,
   eventualConsistencyLevelHeader,
 };
+
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   getOptionalBooleanModel,
   toOptionalString,
 } from "../util";
+
 const accountEnabled = input({
   label: "Account Enabled",
   type: "boolean",
@@ -27,6 +30,7 @@ const accountEnabled = input({
   comments: "When true, the account is enabled.",
   clean: util.types.toBool,
 });
+
 const displayName = input({
   label: "Display Name",
   type: "string",
@@ -36,6 +40,7 @@ const displayName = input({
   example: "Adele Vance",
   clean: util.types.toString,
 });
+
 const forceChangePasswordNextSignIn = input({
   label: "Force Change Password Next Sign In",
   type: "boolean",
@@ -45,6 +50,7 @@ const forceChangePasswordNextSignIn = input({
     "When true, the user is required to change their password on the next sign-in.",
   clean: util.types.toBool,
 });
+
 const password = input({
   label: "Password",
   type: "password",
@@ -55,6 +61,7 @@ const password = input({
   placeholder: "Enter password",
   clean: util.types.toString,
 });
+
 const userPrincipalName = input({
   label: "User Principal Name",
   type: "string",
@@ -65,6 +72,7 @@ const userPrincipalName = input({
   placeholder: "Enter user principal name (e.g., user@domain.com)",
   clean: util.types.toString,
 });
+
 const domain = input({
   label: "Domain",
   type: "string",
@@ -75,6 +83,7 @@ const domain = input({
   placeholder: "Enter domain",
   clean: util.types.toString,
 });
+
 export const createUserInputs = {
   connection,
   accountEnabled,
@@ -88,6 +97,7 @@ export const createUserInputs = {
     comments: `${additionalProperties.comments} See [Create User API](https://learn.microsoft.com/en-us/graph/api/user-post-users).`,
   }),
 };
+
 export const deleteUserInputs = {
   connection,
   userId: input({
@@ -96,6 +106,7 @@ export const deleteUserInputs = {
       "Unique Identifier for the user to delete. This can be the user's id or userPrincipalName.",
   }),
 };
+
 export const getUserInputs = {
   connection,
   userId: input({
@@ -105,6 +116,7 @@ export const getUserInputs = {
   }),
   $select: odataParams.$select,
 };
+
 const givenName = input({
   label: "First Name",
   type: "string",
@@ -114,6 +126,7 @@ const givenName = input({
   example: "John",
   clean: toOptionalString,
 });
+
 const surname = input({
   label: "Last Name",
   type: "string",
@@ -123,6 +136,7 @@ const surname = input({
   example: "Doe",
   clean: toOptionalString,
 });
+
 const jobTitle = input({
   label: "Job Title",
   type: "string",
@@ -132,6 +146,7 @@ const jobTitle = input({
   example: "Software Engineer",
   clean: toOptionalString,
 });
+
 const accountEnabledOptional = input({
   label: accountEnabled.label,
   comments: accountEnabled.comments,
@@ -140,6 +155,7 @@ const accountEnabledOptional = input({
   model: getOptionalBooleanModel(),
   clean: cleanBooleanInput,
 });
+
 const userFields = structuredObjectInput({
   label: "User Fields",
   required: false,
@@ -164,6 +180,7 @@ const userFields = structuredObjectInput({
     jobTitle,
   },
 });
+
 export const updateUserInputs = {
   connection,
   userId: input({

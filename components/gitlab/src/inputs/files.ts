@@ -7,6 +7,7 @@ import {
   toRequiredVerbatimString,
 } from "../utils";
 import { connectionInput, project, ref } from "./common";
+
 const commitBranch = input({
   label: "Branch",
   placeholder: "Enter branch name",
@@ -17,6 +18,7 @@ const commitBranch = input({
   dataSource: "selectBranch",
   clean: toRequiredString,
 });
+
 const filePath = input({
   label: "File Path",
   placeholder: "Enter file path",
@@ -27,6 +29,7 @@ const filePath = input({
   example: "config/settings.json",
   clean: toFilePathSegment,
 });
+
 const content = input({
   label: "Content",
   placeholder: "Enter file content",
@@ -37,6 +40,7 @@ const content = input({
   example: '{ "retryLimit": 3, "backoffMs": 500 }',
   clean: toRequiredVerbatimString,
 });
+
 const commitMessage = input({
   label: "Commit Message",
   placeholder: "Enter commit message",
@@ -46,6 +50,7 @@ const commitMessage = input({
   example: "Update retry settings",
   clean: toRequiredString,
 });
+
 const encoding = input({
   label: "Encoding",
   type: "string",
@@ -55,6 +60,7 @@ const encoding = input({
   model: FILE_ENCODING_OPTIONS,
   clean: cleanString,
 });
+
 export const getFileInputs = {
   connection: connectionInput,
   project,
@@ -64,6 +70,7 @@ export const getFileInputs = {
     comments: "The branch name, tag, or commit SHA to read the file from.",
   },
 };
+
 export const createFileInputs = {
   connection: connectionInput,
   project,
@@ -73,4 +80,5 @@ export const createFileInputs = {
   commitMessage,
   encoding,
 };
+
 export const updateFileInputs = createFileInputs;

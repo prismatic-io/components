@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -12,9 +13,11 @@ export const listUsers = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const params = {
       showInactive,
     };
+
     const { data } = await client.get("/users", { params });
     return { data };
   },

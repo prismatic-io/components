@@ -3,6 +3,7 @@ import { listCustomersExamplePayload } from "../../examplePayloads";
 import { listCustomersInputs } from "../../inputs";
 import { listCustomersOutputSchema } from "../../outputSchemas";
 import { listCustomersGql } from "../graphql/customers/listCustomersGql";
+
 export const listCustomers = action({
   display: {
     label: "List Customers",

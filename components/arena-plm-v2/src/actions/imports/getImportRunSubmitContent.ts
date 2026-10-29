@@ -4,6 +4,7 @@ import { getImportRunSubmitContentExamplePayload } from "../../examplePayloads";
 import { getImportRunSubmitContentInputs } from "../../inputs";
 import { getImportRunSubmitContentOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getImportRunSubmitContent = action({
   display: {
     label: "Get Import Run Submit Content",
@@ -18,13 +19,17 @@ export const getImportRunSubmitContent = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       context.logger.info(
         `Fetching submit content for import run ${params.importRunGuid}`,
       );
+
       const { data } = await client.get(
         `/imports/${params.importGuid}/runs/${params.importRunGuid}/submitContent`,
       );
+
       context.logger.info("Successfully retrieved import run submit content");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Get Import Run Submit Content");

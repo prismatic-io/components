@@ -7,36 +7,34 @@ import type {
 } from "mongodb4";
 import type { ConnectionProps } from "./interfaces/ConnectionProps";
 import { clientConnect } from "./util";
+
 export const createClient = async ({
   connection,
   debug,
   logger,
-}: ConnectionProps & {
-  debug: boolean;
-  logger: ActionLogger;
-}): Promise<{
+}: ConnectionProps & { debug: boolean; logger: ActionLogger }): Promise<{
   dbConnection: MongoClient;
   client: Collection<Document> | Collectionv4<Documentv4>;
 }> => {
   const client = await clientConnect(connection, debug, logger);
   const db = client.db(util.types.toString(connection.fields.database));
+
   return {
     dbConnection: client as MongoClient,
     client: db.collection(util.types.toString(connection.fields.collection)),
   };
 };
+
 export const getDbClient = async ({
   connection,
   debug,
   logger,
-}: ConnectionProps & {
-  debug: boolean;
-  logger: ActionLogger;
-}): Promise<{
+}: ConnectionProps & { debug: boolean; logger: ActionLogger }): Promise<{
   client: Db | Dbv4;
   connection: MongoClient;
 }> => {
   const client = await clientConnect(connection, debug, logger);
+
   return {
     client: client.db(util.types.toString(connection.fields.database)),
     connection: client as MongoClient,

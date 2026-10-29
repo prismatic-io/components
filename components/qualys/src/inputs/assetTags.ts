@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { asStringArray } from "../util";
 import { assetId } from "./assets";
 import { connection } from "./common";
+
 const tagsToAdd = input({
   label: "Tags to Add",
   type: "string",
@@ -12,6 +13,7 @@ const tagsToAdd = input({
   clean: asStringArray,
   dataSource: "selectTag",
 });
+
 const tagsToRemove = input({
   label: "Tags to Remove",
   type: "string",
@@ -22,6 +24,7 @@ const tagsToRemove = input({
   clean: asStringArray,
   dataSource: "selectTag",
 });
+
 export const updateAssetTagsInputs = {
   connection,
   assetId,

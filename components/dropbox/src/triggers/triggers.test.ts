@@ -3,6 +3,7 @@ import type { files } from "dropbox";
 import type { ListChangesResult } from "../types";
 import { resolvePollingRecordChanges } from "../util";
 import triggers from "./index";
+
 const fileEntry: files.FileMetadataReference = {
   ".tag": "file",
   name: "example_added_file.png",
@@ -14,6 +15,7 @@ const fileEntry: files.FileMetadataReference = {
   rev: "01627702307738900000002a67d8f21",
   size: 331590,
 };
+
 const folderEntry: files.FolderMetadataReference = {
   ".tag": "folder",
   name: "TestSubfolder",
@@ -21,12 +23,14 @@ const folderEntry: files.FolderMetadataReference = {
   path_display: "/TestSubfolder",
   id: "id:someExampleFolderId",
 };
+
 const deletedEntry: files.DeletedMetadataReference = {
   ".tag": "deleted",
   name: "example_deleted_file.png",
   path_lower: "/testsubfolder/example_deleted_file.png",
   path_display: "/TestSubfolder/example_deleted_file.png",
 };
+
 describe("pollChangesTrigger batching", () => {
   test("New and Updated Files is opt-in batchable with a default batch size", () => {
     expect(triggers.pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -38,6 +42,7 @@ describe("pollChangesTrigger batching", () => {
       triggers.pollChangesTrigger.triggerResolver?.resolveItems,
     ).toBeInstanceOf(Function);
   });
+
   test("resolvePollingRecordChanges tags every entry with its change type", () => {
     expect(
       resolvePollingRecordChanges({
@@ -51,6 +56,7 @@ describe("pollChangesTrigger batching", () => {
       { changeType: "deleted", record: deletedEntry },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
     expect(
       resolvePollingRecordChanges({
@@ -61,6 +67,7 @@ describe("pollChangesTrigger batching", () => {
     ).toEqual([]);
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const payload = {
       ...defaultTriggerPayload(),
@@ -72,6 +79,7 @@ describe("pollChangesTrigger batching", () => {
         },
       },
     };
+
     expect(
       triggers.pollChangesTrigger.triggerResolver?.resolveItems?.({} as never, {
         payload,
@@ -82,6 +90,7 @@ describe("pollChangesTrigger batching", () => {
     ]);
   });
 });
+
 describe("resolvePollingRecordChanges guard", () => {
   test("throws on an unknown entry tag", () => {
     expect(() =>

@@ -1,4 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
+
 export const quickbooksConnection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",
@@ -72,4 +73,5 @@ export const quickbooksConnection = oauth2Connection({
     },
   },
 });
+
 export default [quickbooksConnection];

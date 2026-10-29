@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listChannelsExamplePayload } from "../../examplePayloads";
 import { connectionInput, version } from "../../inputs";
+
 export const listChannels = action({
   display: {
     label: "List Channels",

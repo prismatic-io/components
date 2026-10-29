@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createS3Client } from "../../client";
 import { deleteBucketExamplePayload } from "../../examplePayloads";
 import { deleteBucketInputs } from "../../inputs";
+
 export const deleteBucket = action({
   display: {
     label: "Delete Bucket",
@@ -30,9 +31,11 @@ export const deleteBucket = action({
       logger: context.logger,
       debug: context.debug.enabled,
     });
+
     const command = new DeleteBucketCommand({
       Bucket: bucket,
     });
+
     const response = await s3.send(command);
     return {
       data: response,

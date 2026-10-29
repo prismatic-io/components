@@ -8,6 +8,7 @@ import {
   resourceType,
   syncToken,
 } from "../../inputs";
+
 export const updateResource = action({
   display: {
     label: "Update Resource",
@@ -32,6 +33,7 @@ export const updateResource = action({
     const data = { ...existingData, ...resourceAttributes };
     data.SyncToken = syncToken;
     data.Id = resourceId;
+
     const response = await client.post(
       `/${resourceType.toLowerCase()}/`,
       resourceAttributes,
@@ -41,6 +43,7 @@ export const updateResource = action({
         },
       },
     );
+
     return {
       data: response.data,
     };

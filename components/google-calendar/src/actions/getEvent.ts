@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { calendarId, connectionInput, eventId } from "../inputs";
 import { parseReturn } from "../parseReturn";
+
 export const getEvent = action({
   display: {
     label: "Get Event",

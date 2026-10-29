@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connectionInput } from "../inputs";
 import type { MailchimpStore } from "../types";
 import { paginatedRequest } from "../utils/pagination";
+
 export const selectStore = dataSource({
   display: {
     label: "Select Store",
@@ -19,13 +20,16 @@ export const selectStore = dataSource({
       dataKey: "stores",
       fetchAll: true,
     });
+
     const stores = data.stores as MailchimpStore[];
     const result = stores.map<Element>((store) => ({
       label: store.name,
       key: store.id,
     }));
+
     return { result };
   },
   dataSourceType: "picklist",
 });
+
 export default selectStore;

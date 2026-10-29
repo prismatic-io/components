@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getUserExamplePayload } from "../../examplePayloads";
 import { getUserInputs } from "../../inputs";
 import { getUserOutputSchema } from "../../outputSchemas";
+
 export const getUser = action({
   display: {
     label: "Get User",
@@ -19,6 +20,7 @@ export const getUser = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/team/${teamId}/user/${userId}`);
     return { data };
   },

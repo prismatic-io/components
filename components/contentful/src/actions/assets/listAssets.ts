@@ -5,6 +5,7 @@ import { listAssetsExamplePayload } from "../../examplePayloads";
 import { listAssetsInputs } from "../../inputs";
 import { listAssetsOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems, getEnvironment } from "../../util";
+
 export const listAssets = action({
   display: {
     label: "List Assets",
@@ -18,17 +19,18 @@ export const listAssets = action({
       spaceId,
       environmentId,
     );
+
     const allItems: AssetProps[] = await getAllPaginatedItems<
       Asset,
       AssetProps
     >(environment.getAssets.bind(environment));
+
     return {
       data: allItems as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listAssetsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listAssetsExamplePayload,
   inputs: listAssetsInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

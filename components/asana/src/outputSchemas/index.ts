@@ -43,7 +43,10 @@ export {
   listUsersOutputSchema,
   userResponseSchema,
 } from "./users";
-export { listWebhooksOutputSchema, webhookResponseSchema } from "./webhooks";
+export {
+  listWebhooksOutputSchema,
+  webhookResponseSchema,
+} from "./webhooks";
 export {
   findWorkspaceByNameOutputSchema,
   listWorkspacesOutputSchema,

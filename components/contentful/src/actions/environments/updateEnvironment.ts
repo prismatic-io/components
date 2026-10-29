@@ -5,6 +5,7 @@ import { updateEnvironmentExamplePayload } from "../../examplePayloads";
 import { updateEnvironmentInputs } from "../../inputs";
 import { updateEnvironmentOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const updateEnvironment = action({
   display: {
     label: "Update Environment",
@@ -18,15 +19,16 @@ export const updateEnvironment = action({
       spaceId,
       environmentId,
     );
+
     environment.name = name;
     const data: EnvironmentProps = (await environment.update()).toPlainObject();
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateEnvironmentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateEnvironmentExamplePayload,
   inputs: updateEnvironmentInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

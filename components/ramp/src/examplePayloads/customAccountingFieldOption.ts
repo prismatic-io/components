@@ -8,6 +8,7 @@ export const getCustomAccountingFieldOptionResponse = {
   updated_at: "2020-08-28T14:40:12+00:00",
   value: "Office/Admin:Phone & Internet",
 };
+
 export const lisCustomAccountingFieldOptionsResponse = {
   data: [
     {

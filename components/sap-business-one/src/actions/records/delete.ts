@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { defaultRecordInputs } from "../../inputs/records/general";
 import { DEFAULT_DELETE_RESPONSE } from "../../constants";
+
 export const deleteRecord = action({
   display: {
     label: "Delete Record",
@@ -18,6 +19,7 @@ export const deleteRecord = action({
       context,
       context.debug.enabled,
     );
+
     await client.delete(`/${recordType}(${recordId})`);
     return {
       data: DEFAULT_DELETE_RESPONSE,

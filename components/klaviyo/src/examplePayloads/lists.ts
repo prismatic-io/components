@@ -5,9 +5,8 @@ import type {
   PatchListPartialUpdateResponse,
   PostListCreateResponse,
 } from "klaviyo-api";
-export const createListExamplePayload: {
-  data: PostListCreateResponse;
-} = {
+
+export const createListExamplePayload: { data: PostListCreateResponse } = {
   data: {
     data: {
       type: "list",
@@ -50,11 +49,11 @@ export const createListExamplePayload: {
     },
   },
 };
-export const deleteListExamplePayload: {
-  data: string;
-} = {
+
+export const deleteListExamplePayload: { data: string } = {
   data: "List deleted successfully.",
 };
+
 export const getListExamplePayload: {
   data: GetListRetrieveResponseCompoundDocument;
 } = {
@@ -107,6 +106,7 @@ export const getListExamplePayload: {
     ],
   },
 };
+
 export const listListProfilesExamplePayload: {
   data: GetListMemberResponseCollection;
 } = {
@@ -220,6 +220,7 @@ export const listListProfilesExamplePayload: {
     },
   },
 };
+
 export const listListsExamplePayload: {
   data: GetListListResponseCollectionCompoundDocument;
 } = {
@@ -278,6 +279,7 @@ export const listListsExamplePayload: {
     ],
   },
 };
+
 export const updateListExamplePayload: {
   data: PatchListPartialUpdateResponse;
 } = {
@@ -323,6 +325,7 @@ export const updateListExamplePayload: {
     },
   },
 };
+
 export const selectListExamplePayload = {
   result: [{ label: "Example List", key: "RE83th" }],
 };

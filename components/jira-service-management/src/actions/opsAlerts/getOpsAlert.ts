@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createOpsManagementClient } from "../../client";
 import { getOpsAlertExamplePayload } from "../../examplePayloads";
 import { getOpsAlertInputs } from "../../inputs";
+
 export const getOpsAlert = action({
   display: {
     label: "Get Ops Alert",

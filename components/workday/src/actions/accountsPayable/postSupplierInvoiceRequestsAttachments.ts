@@ -5,6 +5,7 @@ import { postSupplierInvoiceRequestsAttachmentsExamplePayload } from "../../exam
 import { postSupplierInvoiceRequestsAttachmentsInputs } from "../../inputs";
 import { createMultipartBody, getIdObject } from "../../util";
 import { postSupplierInvoiceRequestsAttachmentsOutputSchema } from "../../outputSchemas";
+
 export const postSupplierInvoiceRequestsAttachments = action({
   display: {
     label: "Create Supplier Invoice Request Attachment",

@@ -20,6 +20,7 @@ type ChangeResourceType =
   | "FEED_ITEM"
   | "UNKNOWN"
   | "UNSPECIFIED";
+
 type ClientType =
   | "UNKNOWN"
   | "UNSPECIFIED"
@@ -28,7 +29,9 @@ type ClientType =
   | "GOOGLE_ADS_MOBILE_APP"
   | "AUTOMATED_BIDDING_SYSTEM"
   | "EXTERNAL_API";
+
 type ResourceChangeOperation = "CREATE" | "UPDATE" | "REMOVE";
+
 interface NetworkSettings {
   targetGoogleSearch?: boolean;
   targetSearchNetwork?: boolean;
@@ -37,21 +40,26 @@ interface NetworkSettings {
   targetYoutube?: boolean;
   targetGoogleTvNetwork?: boolean;
 }
+
 interface TargetRestriction {
   targetingDimension: string;
   bidOnly: boolean;
 }
+
 interface TargetingSetting {
   targetRestrictions?: TargetRestriction[];
 }
+
 interface GeoTargetTypeSetting {
   positiveGeoTargetType: string;
   negativeGeoTargetType: string;
 }
+
 interface AssetAutomationSetting {
   assetAutomationType: string;
   assetAutomationStatus: string;
 }
+
 export interface CampaignResource {
   resourceName: string;
   status?: string;
@@ -67,6 +75,7 @@ export interface CampaignResource {
   assetAutomationSettings?: AssetAutomationSetting[];
   containsEuPoliticalAdvertising?: string;
 }
+
 interface CampaignBudgetResource {
   resourceName?: string;
   amountMicros?: string;
@@ -74,10 +83,12 @@ interface CampaignBudgetResource {
   period?: string;
   name?: string;
 }
+
 interface ChangeEventResourceWrapper {
   campaign?: CampaignResource;
   campaignBudget?: CampaignBudgetResource;
 }
+
 interface ChangeEvent {
   resourceName: string;
   changeDateTime: string;
@@ -89,9 +100,11 @@ interface ChangeEvent {
   resourceChangeOperation: ResourceChangeOperation;
   userEmail?: string;
 }
+
 export interface ChangeEventResponse {
   changeEvent: ChangeEvent;
 }
+
 export interface CampaignChangeEventRow {
   changeEvent: ChangeEvent;
   campaign?: {

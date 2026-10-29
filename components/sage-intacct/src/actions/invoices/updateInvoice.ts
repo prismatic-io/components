@@ -8,6 +8,7 @@ import {
 import { updateInvoiceExamplePayload } from "../../examplePayloads";
 import { updateInvoiceInputs } from "../../inputs";
 import { updateInvoiceOutputSchema } from "../../outputSchemas";
+
 export const updateInvoice = action({
   display: {
     label: "Update Invoice",
@@ -35,6 +36,7 @@ export const updateInvoice = action({
     },
   ) => {
     const NO_CHARACTERS = 0;
+
     const action = `
     <update_invoice key="${keyId}">
     ${getXmlTagOrEmptyString("customerid", customerIdInput)}
@@ -97,7 +99,9 @@ export const updateInvoice = action({
       action,
       context.debug.enabled,
     );
+
     handleSageError(responseFromSage);
+
     return {
       data: responseFromSage,
     };

@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listEventInviteesInputs } from "../../inputs";
 import { listEventInviteesExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
+
 export const listEventInvitees = action({
   display: {
     label: "List Event Invitees",
@@ -17,11 +18,10 @@ export const listEventInvitees = action({
       sort,
       status,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listEventInviteesExamplePayload.data,
   }),
   inputs: listEventInviteesInputs,

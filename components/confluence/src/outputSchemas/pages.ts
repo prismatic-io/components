@@ -1,4 +1,5 @@
 import { bodyRepresentationSchema, versionSchema } from "./common";
+
 export const pageSingleSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +50,7 @@ export const pageSingleSchema = {
   },
   required: ["id", "status", "title", "spaceId", "authorId", "createdAt"],
 };
+
 export const pageBulkSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +100,7 @@ export const pageBulkSchema = {
   },
   required: ["id", "status", "title", "spaceId", "authorId", "createdAt"],
 };
+
 export const listPagesOutputSchema = {
   type: "object" as const,
   properties: {

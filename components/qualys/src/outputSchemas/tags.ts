@@ -30,6 +30,7 @@ export const listTagsOutputSchema = {
     },
   },
 };
+
 const qpsSingleTagResponseSchema = {
   type: "object" as const,
   properties: {
@@ -64,7 +65,9 @@ const qpsSingleTagResponseSchema = {
     },
   },
 };
+
 export const createTagOutputSchema = qpsSingleTagResponseSchema;
+
 export const updateTagOutputSchema = {
   type: "object" as const,
   properties: {

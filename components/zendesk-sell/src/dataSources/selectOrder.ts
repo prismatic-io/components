@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getZendeskClient } from "../client";
 import { selectOrderInputs } from "../inputs/dataSources";
+
 export const selectOrder = dataSource({
   display: {
     label: "Select Order",
@@ -12,6 +13,7 @@ export const selectOrder = dataSource({
     const { data } = await client.get("/orders", {
       headers: { Accept: "application/json" },
     });
+
     return {
       result: data.items
         .map((order: any) => {

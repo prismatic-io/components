@@ -5,6 +5,7 @@ import { listPaymentsInputs } from "../../inputs";
 import { listPaymentsOutputSchema } from "../../outputSchemas";
 import type { Payment } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listPayments = action({
   display: {
     label: "List Payments",

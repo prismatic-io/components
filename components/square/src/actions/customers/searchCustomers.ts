@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { searchCustomersExamplePayload } from "../../examplePayloads";
 import { searchCustomersInputs } from "../../inputs";
+
 export const searchCustomers = action({
   display: {
     label: "Search Customers",
@@ -12,16 +13,20 @@ export const searchCustomers = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const limit =
       pagination.limit !== undefined
         ? util.types.toInt(pagination.limit)
         : undefined;
+
     const requestBody = {
       cursor: pagination.cursor,
       limit,
       query,
     };
+
     const response = await client.post("/v2/customers/search", requestBody);
+
     return {
       data: response.data,
     };

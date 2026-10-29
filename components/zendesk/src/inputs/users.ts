@@ -17,6 +17,7 @@ import {
   userRole,
   userTimeZone,
 } from "./common";
+
 export const createUserInputs = {
   userName,
   userEmail,
@@ -36,13 +37,16 @@ export const createUserInputs = {
   organizationId,
   zendeskConnection: connectionInput,
 };
+
 export const deleteUserInputs = {
   userId,
   zendeskConnection: connectionInput,
 };
+
 export const listUsersInputs = {
   zendeskConnection: connectionInput,
 };
+
 export const searchUsersInputs = {
   externalId: {
     ...userExternalIdInput,
@@ -52,10 +56,12 @@ export const searchUsersInputs = {
   query: userQueryInput,
   zendeskConnection: connectionInput,
 };
+
 export const showUserInputs = {
   userId,
   zendeskConnection: connectionInput,
 };
+
 export const updateUserInputs = {
   userId: { ...userId, required: true },
   accountSettings: structuredObjectInput({

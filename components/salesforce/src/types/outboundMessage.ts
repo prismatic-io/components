@@ -10,6 +10,7 @@ export interface WorkflowOutboundMessageMetadata {
   description: string | null;
   endpointUrl: string;
 }
+
 export interface WorkflowOutboundMessage {
   attributes: {
     type: string;
@@ -29,6 +30,7 @@ export interface WorkflowOutboundMessage {
   Metadata: WorkflowOutboundMessageMetadata;
   FullName: string;
 }
+
 export interface SalesforceOutboundEnvelope {
   "soapenv:Envelope": {
     "@_xmlns:soapenv": string;

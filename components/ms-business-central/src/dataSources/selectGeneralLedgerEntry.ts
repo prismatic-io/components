@@ -4,6 +4,7 @@ import { companyId } from "../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../inputs/general";
 import type { GeneralLedgerEntry, MultipleItemsResponse } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const selectGeneralLedgerEntry = dataSource({
   display: {
     label: "Select General Ledger Entry",
@@ -19,6 +20,7 @@ export const selectGeneralLedgerEntry = dataSource({
     const { data } = await client.get<
       MultipleItemsResponse<GeneralLedgerEntry[]>
     >(`/companies(${companyId})/generalLedgerEntries`);
+
     return {
       result: toSortedPicklist(data.value, (entry) => ({
         key: entry.id,

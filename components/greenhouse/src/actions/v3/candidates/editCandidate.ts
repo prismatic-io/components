@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { editCandidateV3ExamplePayload } from "../../../examplePayloads/v3/candidates";
 import { editCandidateV3Inputs } from "../../../inputs/v3/candidates";
 import { generatePayload } from "../../../util";
+
 export const editCandidateV3 = action({
   display: {
     label: "Edit Candidate",
@@ -27,6 +28,7 @@ export const editCandidateV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       first_name: nameInformation.firstNameOptional,
       last_name: nameInformation.lastNameOptional,
@@ -45,6 +47,7 @@ export const editCandidateV3 = action({
       linked_user_ids: linkedUserIds,
       custom_fields: customFields,
     });
+
     const { data } = await client.patch(`/candidates/${candidateId}`, body);
     return { data };
   },

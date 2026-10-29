@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createCustomObjectExamplePayload } from "../../examplePayloads";
 import { createCustomObjectInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createCustomObject = action({
   display: {
     label: "Create Custom Object",
@@ -48,6 +49,7 @@ export const createCustomObject = action({
       ...fieldValues,
       ...dynamicValues,
     });
+
     return {
       data,
     };

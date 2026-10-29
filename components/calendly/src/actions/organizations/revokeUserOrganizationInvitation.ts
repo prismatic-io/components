@@ -3,6 +3,7 @@ import { revokeUserOrganizationInvitationOutputSchema } from "../../outputSchema
 import { getCalendlyClient } from "../../client";
 import { revokeUserOrganizationInvitationInputs } from "../../inputs";
 import { revokeUserOrganizationInvitationExamplePayload } from "../../examplePayloads";
+
 export const revokeUserOrganizationInvitation = action({
   display: {
     label: "Revoke User's Organization Invitation",
@@ -11,14 +12,13 @@ export const revokeUserOrganizationInvitation = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, uuid, orgUuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(
       `/organizations/${orgUuid}/invitations/${uuid}`,
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: revokeUserOrganizationInvitationExamplePayload.data,
   }),
   inputs: revokeUserOrganizationInvitationInputs,

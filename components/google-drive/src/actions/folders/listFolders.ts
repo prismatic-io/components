@@ -6,6 +6,7 @@ import { listFoldersOutputSchema } from "../../outputSchemas";
 import { escapeDriveQueryValue, getDriveQueryParams } from "../../util";
 import { fetchFiles } from "../../util/pagination";
 import { listFoldersExamplePayload } from "../../examplePayloads";
+
 export const listFolders = action({
   display: {
     label: "List Folders",
@@ -14,6 +15,7 @@ export const listFolders = action({
   performSafety: "notAllowed",
   perform: async (_context, params) => {
     const drive = createClient(params.connection);
+
     const data = await fetchFiles({
       drive,
       initialParams: {
@@ -27,6 +29,7 @@ export const listFolders = action({
       },
       fetchAll: params.fetchAll,
     });
+
     return {
       data,
     };
@@ -36,9 +39,9 @@ export const listFolders = action({
     type: "actionOutput",
     schema: listFoldersOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listFoldersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listFoldersExamplePayload,
   examplePayload: listFoldersExamplePayload,
 });
+
 export default listFolders;

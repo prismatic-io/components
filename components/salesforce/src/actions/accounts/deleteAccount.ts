@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { deleteAccountInputs } from "../../inputs";
 import { executeSFAction } from "../../util";
 import { deleteAccountExamplePayload } from "../../examplePayloads";
+
 export const deleteAccount = action({
   display: {
     label: "Delete Account",
@@ -14,13 +15,13 @@ export const deleteAccount = action({
     const salesforceClient = await createSalesforceClient(connection, version);
     const command = salesforceClient.sobject("Account").delete(recordId);
     const response = await executeSFAction(context, command);
+
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteAccountExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteAccountExamplePayload,
   inputs: deleteAccountInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

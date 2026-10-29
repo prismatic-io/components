@@ -4,6 +4,7 @@ import { createFluentClient } from "../../client";
 import { createProductExamplePayload } from "../../examplePayloads";
 import { createProductInputs } from "../../inputs";
 import { createProductOutputSchema } from "../../outputSchemas";
+
 export const createProduct = action({
   display: {
     label: "Create Product",
@@ -21,6 +22,7 @@ export const createProduct = action({
       context.debug.enabled,
       context.logger,
     );
+
     const query = gql`
       mutation createProduct(
         $productCatalogueRef: String!
@@ -50,6 +52,7 @@ export const createProduct = action({
         }
       }
     `;
+
     const variables = {
       productCatalogueRef: params.productCatalogueRef,
       productRef: params.productRef,
@@ -60,11 +63,12 @@ export const createProduct = action({
       priceCurrency: params.priceCurrency,
       priceValue: params.priceValue,
     };
+
     const data = await client.request(query, variables);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createProductExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createProductExamplePayload,
   examplePayload: createProductExamplePayload,
 });

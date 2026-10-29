@@ -51,6 +51,7 @@ export const createAutomationOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const getAutomationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -100,6 +101,7 @@ export const getAutomationOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listAutomationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -148,6 +150,7 @@ export const listAutomationsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const executeAutomationActivitiesOutputSchema = {
   type: "string" as const,
 };

@@ -3,6 +3,7 @@ import { driveOrSiteId, workbookId, worksheetId } from "../general";
 import { TABLE_STYLES } from "../../constants";
 import { tableId } from "./general";
 import { cleanString, mapModelArray } from "../../helpers";
+
 const name = input({
   label: "Name",
   comments: "The display name of the table within the worksheet.",
@@ -12,6 +13,7 @@ const name = input({
   placeholder: "Enter table name",
   clean: cleanString,
 });
+
 const showHeaders = input({
   label: "Show Headers",
   comments: "When true, the header row of the table is visible.",
@@ -19,6 +21,7 @@ const showHeaders = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const showTotals = input({
   label: "Show Totals",
   comments: "When true, the totals row of the table is visible.",
@@ -26,6 +29,7 @@ const showTotals = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const style = input({
   label: "Style",
   comments:
@@ -35,6 +39,7 @@ const style = input({
   model: mapModelArray(TABLE_STYLES),
   clean: cleanString,
 });
+
 export const updateWorksheetsTablesInputs = {
   driveOrSiteId,
   workbookId: {

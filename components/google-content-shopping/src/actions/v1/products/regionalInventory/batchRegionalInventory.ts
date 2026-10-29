@@ -4,6 +4,7 @@ import { batchRegionalInventoryExamplePayload } from "../../../../examplePayload
 import { batchRegionalInventoryInputs } from "../../../../inputs/v1/inventory";
 import { runBulk } from "../../../../util/bulk";
 import { productResourceName } from "../../../../util/resourceNames";
+
 export const batchRegionalInventoryMerchant = action({
   display: {
     description:
@@ -22,6 +23,7 @@ export const batchRegionalInventoryMerchant = action({
       feedLabel,
       offerId,
     );
+
     const results = await runBulk(
       entries as Record<string, unknown>[],
       async (entry) => {
@@ -33,6 +35,7 @@ export const batchRegionalInventoryMerchant = action({
         return data;
       },
     );
+
     return { data: { results } };
   },
   examplePayload: batchRegionalInventoryExamplePayload,

@@ -14,6 +14,7 @@ import {
   keyId,
   recordNoInput,
 } from "./common";
+
 const arAdjustmentLineItemsInput = input({
   label: "AR Adjustment Line Items",
   type: "code",
@@ -37,6 +38,7 @@ const arAdjustmentLineItemsInput = input({
   </lineitem>`,
   clean: cleanFunctionForXml,
 });
+
 const adjustmentNoInput = input({
   label: "Adjustment Number",
   type: "string",
@@ -44,6 +46,7 @@ const adjustmentNoInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const actionInput = input({
   label: "Action",
   type: "string",
@@ -61,6 +64,7 @@ const actionInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const updateARAdjustmentInputs = {
   connection,
   keyId: { ...keyId, comments: "AR Adjustment RECORDNO of bill to update." },
@@ -117,11 +121,13 @@ export const updateARAdjustmentInputs = {
     `,
   },
 };
+
 export const getARAdjustmentInputs = {
   connection,
   fieldsInput,
   recordNoInput,
 };
+
 export const getARAdjustmentLineInputs = {
   connection,
   fieldsInput,

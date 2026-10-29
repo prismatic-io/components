@@ -3,6 +3,7 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import closeConnection from "../closeConnection";
 import { pingExamplePayload } from "../examplePayloads";
+
 export const ping = action({
   display: {
     label: "Ping",
@@ -14,7 +15,9 @@ export const ping = action({
       context.debug.enabled,
     );
     const data = await client.ping();
+
     await closeConnection(client);
+
     return {
       data,
     };
@@ -24,4 +27,5 @@ export const ping = action({
     data: pingExamplePayload,
   },
 });
+
 export default ping;

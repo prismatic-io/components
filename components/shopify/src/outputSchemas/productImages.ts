@@ -1,4 +1,5 @@
 import { countSchema, userErrorsArraySchema } from "./shared";
+
 const restProductImageSchema = {
   type: "object" as const,
   properties: {
@@ -14,6 +15,7 @@ const restProductImageSchema = {
     src: { type: ["string", "null"] },
   },
 };
+
 export const listProductImagesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -25,7 +27,9 @@ export const listProductImagesOutputSchema = {
     },
   },
 };
+
 export const countProductImagesGqlOutputSchema = countSchema;
+
 export const createProductImageGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -44,6 +48,7 @@ export const createProductImageGqlOutputSchema = {
     mediaUserErrors: userErrorsArraySchema,
   },
 };
+
 export const deleteProductImageGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -58,6 +63,7 @@ export const deleteProductImageGqlOutputSchema = {
     mediaUserErrors: userErrorsArraySchema,
   },
 };
+
 export const getProductImageGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -90,4 +96,5 @@ export const getProductImageGqlOutputSchema = {
     },
   },
 };
+
 export const listProductImagesGqlOutputSchema = listProductImagesOutputSchema;

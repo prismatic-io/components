@@ -10,6 +10,7 @@ export const selectJobRequisitionExamplePayload = {
     },
   ],
 };
+
 export const selectCandidateExamplePayload = {
   result: [
     {
@@ -22,6 +23,7 @@ export const selectCandidateExamplePayload = {
     },
   ],
 };
+
 export const selectJobApplicationExamplePayload = {
   result: [
     {

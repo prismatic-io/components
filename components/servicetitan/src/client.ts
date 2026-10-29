@@ -7,6 +7,7 @@ import {
   getURLFromConnection,
   validateConnection,
 } from "./util";
+
 export const createClient = (
   connection: Connection,
   urlType: string,

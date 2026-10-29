@@ -5,6 +5,7 @@ import { updateBomLineInputs } from "../../inputs";
 import { itemBomSchema } from "../../outputSchemas";
 import type { ItemBomUpdateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateBomLine = action({
   display: {
     label: "Update BOM Line",
@@ -34,11 +35,13 @@ export const updateBomLine = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const bomUpdatePayload: ItemBomUpdateVo = {
         refDes,
         quantity,
         notes,
       };
+
       bomUpdatePayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: additionalAttributeJson,
@@ -47,7 +50,9 @@ export const updateBomLine = action({
         },
         context,
       );
+
       const queryParams = { ...(setNull && { setnull: setNull }) };
+
       context.logger.info(
         `Updating BOM line ${bomLineGuid} for item ${itemGuid}`,
         {
@@ -60,6 +65,7 @@ export const updateBomLine = action({
           attributeCount: bomUpdatePayload.additionalAttributes?.length || 0,
         },
       );
+
       const { data } = await client.put(
         `/items/${itemGuid}/bom/${bomLineGuid}`,
         bomUpdatePayload,
@@ -67,7 +73,9 @@ export const updateBomLine = action({
           params: queryParams,
         },
       );
+
       context.logger.info("Successfully updated BOM line");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update BOM Line");

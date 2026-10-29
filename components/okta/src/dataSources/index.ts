@@ -5,6 +5,7 @@ import { selectRealm } from "./selectRealm";
 import { selectUser } from "./selectUser";
 import { selectUserFactor } from "./selectUserFactor";
 import { selectUserType } from "./selectUserType";
+
 export default {
   selectApplication,
   selectEventHook,

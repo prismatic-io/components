@@ -30,7 +30,9 @@ import { selectPerson } from "./selectPerson";
 import { selectSupplierInvoiceRequest } from "./selectSupplierInvoiceRequest";
 import { selectTable } from "./selectTable";
 import { selectWorker } from "./selectWorker";
+
 type AnyDataSource = Parameters<typeof invokeDataSource>[0];
+
 interface DataSourceCase {
   name: string;
   dataSource: unknown;
@@ -38,15 +40,11 @@ interface DataSourceCase {
   listRecord: Record<string, unknown>;
   keyField: string;
   labelField: string;
-  expected: {
-    result: {
-      key: string;
-      label: string;
-    }[];
-  };
+  expected: { result: { key: string; label: string }[] };
   extraParams?: Record<string, unknown>;
   query?: Record<string, string>;
 }
+
 const cases: DataSourceCase[] = [
   {
     name: "selectDataChange",
@@ -135,18 +133,21 @@ const cases: DataSourceCase[] = [
     expected: selectWorkerExamplePayload,
   },
 ];
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
   expect(nock.isDone()).toBe(true);
   nock.cleanAll();
 });
+
 describe.each(cases)("$name", (testCase) => {
   const run = () =>
     invokeDataSource(testCase.dataSource as AnyDataSource, {
       connection: oauthTestConnection(),
       ...testCase.extraParams,
     });
+
   it("returns {key,label} options sorted by label", async () => {
     const laterRecord = {
       ...testCase.listRecord,
@@ -157,17 +158,20 @@ describe.each(cases)("$name", (testCase) => {
       .get(testCase.path)
       .query(testCase.query ?? {})
       .reply(200, { data: [laterRecord, testCase.listRecord], total: 2 });
+
     const { result } = await run();
     expect(result).toEqual([
       testCase.expected.result[0],
       { key: "~later", label: "~later" },
     ]);
   });
+
   it("returns an empty list when Workday has no records", async () => {
     nock(TEST_HOST)
       .get(testCase.path)
       .query(testCase.query ?? {})
       .reply(200, { data: [] });
+
     const { result } = await run();
     expect(result).toEqual([]);
   });

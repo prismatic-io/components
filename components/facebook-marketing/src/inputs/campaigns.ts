@@ -8,6 +8,7 @@ import {
 } from "../util/clean";
 import { adLabels, status } from "./ads";
 import { adAccountId, myConnectionField, pagination, version } from "./common";
+
 const campaignName = input({
   label: "Campaign Name",
   type: "string",
@@ -16,6 +17,7 @@ const campaignName = input({
   placeholder: "My Campaign",
   clean: util.types.toString,
 });
+
 const objective = input({
   label: "Objective",
   type: "string",
@@ -47,6 +49,7 @@ const objective = input({
   ],
   clean: util.types.toString,
 });
+
 const bid_strategy = input({
   label: "Bid Strategy",
   type: "string",
@@ -61,6 +64,7 @@ const bid_strategy = input({
   ],
   clean: cleanString,
 });
+
 const campaign_optimization_type = input({
   label: "Campaign Optimization Type",
   type: "string",
@@ -72,6 +76,7 @@ const campaign_optimization_type = input({
   ],
   clean: cleanString,
 });
+
 const buying_type = input({
   label: "Buying Type",
   type: "string",
@@ -84,6 +89,7 @@ const buying_type = input({
   ],
   clean: cleanString,
 });
+
 const daily_budget = input({
   label: "Daily Budget",
   type: "string",
@@ -93,6 +99,7 @@ const daily_budget = input({
   placeholder: "1000",
   clean: cleanString,
 });
+
 const is_skadnetwork_attribution = input({
   label: "Is Skadnetwork Attribution",
   type: "boolean",
@@ -101,6 +108,7 @@ const is_skadnetwork_attribution = input({
     "To create an iOS 14 campaign, enable SKAdNetwork attribution for this campaign.",
   clean: util.types.toBool,
 });
+
 const is_using_l3_schedule = input({
   label: "Is Using L3 Schedule",
   type: "boolean",
@@ -108,6 +116,7 @@ const is_using_l3_schedule = input({
   comments: "Is Using L3 Schedule.",
   clean: util.types.toBool,
 });
+
 const iterative_split_test_configs = input({
   label: "Iterative Split Test Configs",
   type: "code",
@@ -117,6 +126,7 @@ const iterative_split_test_configs = input({
     "Array of Iterative Split Test Configs created under this campaign.",
   clean: (value) => cleanArrayCodeInput(value, "Iterative Split Test Configs"),
 });
+
 const lifetime_budget = input({
   label: "Lifetime Budget",
   type: "string",
@@ -126,6 +136,7 @@ const lifetime_budget = input({
   placeholder: "5000",
   clean: cleanString,
 });
+
 const promoted_object = input({
   label: "Promoted Object",
   type: "code",
@@ -135,6 +146,7 @@ const promoted_object = input({
     "The object this campaign is promoting across all its ads. It's required for SKAdNetwork or Aggregated Event Measurement campaign creation. Only product_catalog_id is used at the ad set level.",
   clean: (value) => cleanCodeInput(value, "Promoted Object"),
 });
+
 const special_ad_categories = input({
   label: "Special Ad Categories",
   type: "string",
@@ -158,6 +170,7 @@ const special_ad_categories = input({
   ],
   clean: valueListInputClean,
 });
+
 const special_ad_category_country = input({
   label: "Special Ad Category Country",
   type: "string",
@@ -167,6 +180,7 @@ const special_ad_category_country = input({
   comments: "Special Ad Category Country.",
   clean: valueListInputClean,
 });
+
 const spend_cap = input({
   label: "Spend Cap",
   type: "string",
@@ -176,6 +190,7 @@ const spend_cap = input({
   placeholder: "10000",
   clean: cleanString,
 });
+
 const start_time = input({
   label: "Start Time",
   type: "string",
@@ -184,6 +199,7 @@ const start_time = input({
   placeholder: "2022-10-10T00:00:00Z",
   clean: cleanString,
 });
+
 const stop_time = input({
   label: "Stop Time",
   type: "string",
@@ -192,6 +208,7 @@ const stop_time = input({
   placeholder: "2022-12-31T23:59:59Z",
   clean: cleanString,
 });
+
 const topline_id = input({
   label: "Topline Id",
   type: "string",
@@ -200,6 +217,7 @@ const topline_id = input({
   placeholder: "123456789",
   clean: cleanString,
 });
+
 const source_campaign_id = input({
   label: "Source Campaign Id",
   type: "string",
@@ -210,6 +228,7 @@ const source_campaign_id = input({
   clean: cleanString,
   dataSource: "selectCampaignInAccount",
 });
+
 const createCampaignAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -231,6 +250,7 @@ const createCampaignAdditionalFields = structuredObjectInput({
     stop_time,
   },
 });
+
 export const createCampaignInputs = {
   connection: myConnectionField,
   adAccountId,
@@ -249,6 +269,7 @@ export const createCampaignInputs = {
   topline_id,
   version,
 };
+
 export const listCampaignsInAccountInputs = {
   connection: myConnectionField,
   adAccountId,

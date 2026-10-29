@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { connection, data, outputPath } from "../../inputs";
 import { getSftpClient } from "../../client";
 import { writeFileExamplePayload } from "../../examplePayloads";
+
 const writeFile = action({
   display: {
     label: "Write File",
@@ -19,4 +20,5 @@ const writeFile = action({
   inputs: { connection, outputPath, data },
   examplePayload: writeFileExamplePayload,
 });
+
 export default writeFile;

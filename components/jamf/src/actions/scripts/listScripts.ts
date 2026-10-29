@@ -4,6 +4,7 @@ import { listScriptsExamplePayload } from "../../examplePayloads";
 import { listScriptsInputs } from "../../inputs";
 import type { Script } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listScripts = action({
   display: {
     label: "List Scripts",

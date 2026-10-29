@@ -4,6 +4,7 @@ import { BING_API, SOAP_ACTION } from "../../constants";
 import { sendUserInvitationExamplePayload } from "../../examplePayloads";
 import { sendUserInvitationInputs } from "../../inputs/users";
 import type { SendUserInvitationResponse } from "../../types";
+
 export const sendUserInvitation = action({
   display: {
     label: "Send User Invitation",
@@ -27,6 +28,7 @@ export const sendUserInvitation = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<SendUserInvitationResponse>({
       debug,
       args: {
@@ -52,6 +54,7 @@ export const sendUserInvitation = action({
       soapAction: SOAP_ACTION.SendUserInvitation,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data: response,
     };

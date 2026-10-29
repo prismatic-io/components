@@ -9,6 +9,7 @@ export const requireAnyUpdate = <T extends Record<string, unknown>>(
   }
   return body;
 };
+
 export const requireRelativePath = (url: string): string => {
   const trimmed = url.trim();
   if (/^[a-z][a-z0-9+.-]*:/i.test(trimmed) || /^[/\\]{2}/.test(trimmed)) {

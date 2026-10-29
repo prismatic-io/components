@@ -1,4 +1,5 @@
 import { getMicrosoftOAuth2ClientCredentialsConnection } from "ms-utils";
+
 export const oauthClientCredentials =
   getMicrosoftOAuth2ClientCredentialsConnection({
     key: "oauthClientCredentials",

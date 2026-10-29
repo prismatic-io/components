@@ -4,6 +4,7 @@ import { getInstalledEquipment } from "./getInstalledEquipment";
 import { listInstalledEquipment } from "./listInstalledEquipment";
 import { listInstalledEquipmentAttachments } from "./listInstalledEquipmentAttachments";
 import { updateInstalledEquipment } from "./updateInstalledEquipment";
+
 export default {
   createInstalledEquipment,
   createInstalledEquipmentAttachment,

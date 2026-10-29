@@ -3,6 +3,7 @@ import { createGotoWebinarClient } from "../../client";
 import { CREATE_USER_SUBSCRIPTION_EXAMPLE_PAYLOAD } from "../../examplePayloads";
 import { createUserSubscriptionInputs } from "../../inputs";
 import type { UserSubscription } from "../../types";
+
 export const createUserSubscription = action({
   display: {
     label: "Create User Subscription",
@@ -24,17 +25,14 @@ export const createUserSubscription = action({
         product: "g2w",
       },
     ];
+
     const {
       data: {
         _embedded: { webhooks },
       },
-    }: {
-      data: {
-        _embedded: {
-          webhooks: UserSubscription[];
-        };
-      };
-    } = await client.post(url, payload);
+    }: { data: { _embedded: { webhooks: UserSubscription[] } } } =
+      await client.post(url, payload);
+
     const { webhookKey } = webhooks[0];
     const { data } = await client.post("/userSubscriptions", [
       {
@@ -43,6 +41,7 @@ export const createUserSubscription = action({
         userSubscriptionState: "ACTIVE",
       },
     ]);
+
     return {
       data,
     };

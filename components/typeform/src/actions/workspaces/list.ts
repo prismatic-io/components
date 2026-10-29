@@ -4,6 +4,7 @@ import { commonListInputs, connection } from "../../inputs";
 import { fetchAllData } from "../../util";
 import type { Workspace } from "../../interfaces/workspace";
 import { listWorkspacesResponse } from "../../examplePayloads/workspaces";
+
 export const listWorkspaces = action({
   display: {
     label: "List Workspaces",
@@ -15,6 +16,7 @@ export const listWorkspaces = action({
   },
   perform: async (context, { connection, pagination, fetchAll }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await fetchAllData<Workspace>(
       client,
       "/workspaces",

@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { createProductExamplePayload } from "../../examplePayloads/products";
 import { createProductInputs } from "../../inputs";
 import { productOutputSchema } from "../../outputSchemas";
+
 export const createProduct = action({
   display: {
     label: "Create Product",
@@ -30,6 +31,7 @@ export const createProduct = action({
       stripeConnection,
       timeout,
     });
+
     return {
       data: await client.products.create({
         name: productName,
@@ -58,10 +60,9 @@ export const createProduct = action({
       productImages,
       metadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const product = createProductExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...product,
@@ -81,5 +82,6 @@ export const createProduct = action({
     type: "actionOutput",
     schema: productOutputSchema,
   }),
+
   examplePayload: createProductExamplePayload,
 });

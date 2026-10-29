@@ -5,6 +5,7 @@ const permissionSetRecord = {
   type: "admin",
   assignment_count: 2,
 };
+
 export const getPermissionSetsExamplePayload = {
   data: {
     success: true,
@@ -27,6 +28,7 @@ export const getPermissionSetsExamplePayload = {
     ],
   },
 };
+
 export const getPermissionSetExamplePayload = {
   data: {
     success: true,
@@ -65,6 +67,7 @@ export const getPermissionSetExamplePayload = {
     },
   },
 };
+
 export const getPermissionSetAssignmentsExamplePayload = {
   data: {
     success: true,

@@ -5,6 +5,7 @@ import { getTimeEntriesWithinDateRangeInputs } from "../../inputs";
 import { getTimeEntriesWithinDateRangeOutputSchema } from "../../outputSchemas";
 import type { TimeEntriesDateRangeQueryParams } from "../../types";
 import { addToObjectIfContent, booleanToString } from "../../util";
+
 export const getTimeEntriesWithinDateRange = action({
   display: {
     label: "Get Time Entries Within Date Range",
@@ -52,9 +53,11 @@ export const getTimeEntriesWithinDateRange = action({
       custom_task_ids: booleanToString(customTaskIds),
       team_id: customTeamId,
     });
+
     const { data } = await client.get(`/team/${teamId}/time_entries`, {
       params: queryParams,
     });
+
     return {
       data,
     };

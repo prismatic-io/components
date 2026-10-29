@@ -10,20 +10,24 @@ export const changeRequestStatusOutputSchema = {
     status: { type: "string" },
   },
 };
+
 export const deleteRequestMarkupFileOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteRequestOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const evaluatorGroupCompactSchema = {
   type: "object" as const,
   properties: { guid: { type: "string" }, name: { type: "string" } },
 };
+
 export const requestIssueResponseSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +53,7 @@ export const requestIssueResponseSchema = {
     responseDateTime: { type: "string" },
   },
 };
+
 export const listEvaluationIssueResponsesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -56,6 +61,7 @@ export const listEvaluationIssueResponsesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requestIssueSchema = {
   type: "object" as const,
   properties: {
@@ -85,6 +91,7 @@ export const requestIssueSchema = {
     numberResponses: { type: "integer", format: "int32" },
   },
 };
+
 export const listRequestEvaluationIssuesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -92,6 +99,7 @@ export const listRequestEvaluationIssuesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listRequestEvaluatorGroupsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -99,6 +107,7 @@ export const listRequestEvaluatorGroupsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requestItemSchema = {
   type: "object" as const,
   properties: {
@@ -119,6 +128,7 @@ export const requestItemSchema = {
     },
   },
 };
+
 export const listRequestItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -126,6 +136,7 @@ export const listRequestItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requestMarkupSchema = {
   type: "object" as const,
   properties: {
@@ -178,6 +189,7 @@ export const requestMarkupSchema = {
     reserved: { type: "boolean" },
   },
 };
+
 export const listRequestMarkupFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -185,6 +197,7 @@ export const listRequestMarkupFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listRequestNumberSequencesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -192,6 +205,7 @@ export const listRequestNumberSequencesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requestShortSchema = {
   type: "object" as const,
   properties: {
@@ -276,6 +290,7 @@ export const requestShortSchema = {
     guid: { type: "string" },
   },
 };
+
 export const listRequestsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -283,6 +298,7 @@ export const listRequestsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const removeFileFromRequestOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },

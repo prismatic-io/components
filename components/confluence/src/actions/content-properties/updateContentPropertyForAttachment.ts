@@ -3,6 +3,7 @@ import { contentPropertySchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { updateContentPropertyForAttachmentInputs } from "../../inputs";
 import { getContentPropertyExamplePayload as updateContentPropertyForAttachmentExamplePayload } from "../../examplePayloads";
+
 export const updateContentPropertyForAttachment = action({
   display: {
     label: "Update Content Property for Attachment",
@@ -33,9 +34,7 @@ export const updateContentPropertyForAttachment = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: updateContentPropertyForAttachmentExamplePayload,
   }),
   examplePayload: {

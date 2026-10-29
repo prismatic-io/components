@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getMessageTemplateByIdExamplePayload } from "../../examplePayloads";
 import { getMessageTemplateByIdInputs } from "../../inputs";
 import { getMessageTemplateByIdOutputSchema } from "../../outputSchemas";
+
 export const getMessageTemplateById = action({
   display: {
     label: "Get Message Template by ID",

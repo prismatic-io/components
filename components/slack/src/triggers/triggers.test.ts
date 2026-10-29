@@ -2,6 +2,7 @@ import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
 import type { SlackMessage } from "../types";
 import { resolvePollingRecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 test("New and Updated Messages is opt-in batchable with a default batch size", () => {
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
@@ -9,6 +10,7 @@ test("New and Updated Messages is opt-in batchable with a default batch size", (
     Function,
   );
 });
+
 test("resolvePollingRecordChanges tags every record with how it changed", () => {
   const created: SlackMessage = {
     ts: "1716397800.000200",
@@ -29,10 +31,12 @@ test("resolvePollingRecordChanges tags every record with how it changed", () => 
     { changeType: "updated", record: updated },
   ]);
 });
+
 test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
   expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual([]);
   expect(resolvePollingRecordChanges(undefined)).toEqual([]);
 });
+
 test("resolveItems flattens the payload shape perform actually returns", () => {
   const created: SlackMessage = {
     ts: "1716397800.000200",

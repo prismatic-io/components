@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { PayloadData } from "./interfaces/PayloadData";
+
 export const getCustomerExamplePayload: PayloadData = {
   data: {
     entity: "Customer",
@@ -69,8 +70,10 @@ export const bulkCreateCustomersExamplePayload: PayloadData = {
     ],
   },
 };
+
 export const bulkUpdateCustomersExamplePayload =
   bulkCreateCustomersExamplePayload;
+
 export const createVendorExamplePayload: PayloadData = {
   data: {
     entity: "Vendor",
@@ -174,12 +177,17 @@ export const createVendorExamplePayload: PayloadData = {
     required: [],
   },
 };
+
 export const updateVendorExamplePayload = createVendorExamplePayload;
+
 export const getVendorExamplePayload = createVendorExamplePayload;
+
 export const deleteVendorExamplePayload = createVendorExamplePayload;
+
 export const listVendorsExamplePayload = {
   data: [createVendorExamplePayload.data],
 };
+
 export const bulkCreateVendorExamplePayload: PayloadData = {
   data: {
     bulk: [
@@ -191,7 +199,9 @@ export const bulkCreateVendorExamplePayload: PayloadData = {
     ],
   },
 };
+
 export const bulkUpdateVendorsExamplePayload = bulkCreateVendorExamplePayload;
+
 export const getVendorBankAccountExamplePayload: PayloadData = {
   data: {
     entity: "VendorBankAccount",
@@ -223,9 +233,11 @@ export const getVendorBankAccountExamplePayload: PayloadData = {
     regulatory7: null,
   },
 };
+
 export const listVendorBankAccountsExamplePayload = {
   data: [getVendorBankAccountExamplePayload.data],
 };
+
 export const createBillExamplePayload: PayloadData = {
   data: {
     entity: "Bill",
@@ -309,12 +321,17 @@ export const createBillExamplePayload: PayloadData = {
     ],
   },
 };
+
 export const updateBillExamplePayload = createBillExamplePayload;
+
 export const deleteBillExamplePayload = createBillExamplePayload;
+
 export const getBillExamplePayload = createBillExamplePayload;
+
 export const listBillsExamplePayload = {
   data: [createBillExamplePayload.data],
 };
+
 export const bulkCreateBillsExamplePayload: PayloadData = {
   data: {
     bulk: [
@@ -326,9 +343,13 @@ export const bulkCreateBillsExamplePayload: PayloadData = {
     ],
   },
 };
+
 export const bulkUpdateBillsExamplePayload = bulkCreateBillsExamplePayload;
+
 export const createCustomerExamplePayload = getCustomerExamplePayload;
+
 export const deleteCustomerExamplePayload = getCustomerExamplePayload;
+
 export const getCustomerBankAccountExamplePayload: PayloadData = {
   data: {
     entity: "CustomerBankAccount",
@@ -352,13 +373,17 @@ export const getCustomerBankAccountExamplePayload: PayloadData = {
     rndDepExpireDate: "2024-08-13",
   },
 };
+
 export const listCustomerBankAccountExamplePayload = {
   data: [getCustomerBankAccountExamplePayload.data],
 };
+
 export const listCustomerExamplePayload = {
   data: [getCustomerExamplePayload.data],
 };
+
 export const updateCustomerExamplePayload = getCustomerExamplePayload;
+
 export const getInvoiceExamplePayload: PayloadData = {
   data: {
     entity: "Invoice",
@@ -440,12 +465,17 @@ export const getInvoiceExamplePayload: PayloadData = {
     invoiceCustomFields: [],
   },
 };
+
 export const updateInvoiceExamplePayload = getInvoiceExamplePayload;
+
 export const createInvoiceExamplePayload = getInvoiceExamplePayload;
+
 export const deleteInvoiceExamplePayload = getInvoiceExamplePayload;
+
 export const listInvoiceExamplePayload = {
   data: [getInvoiceExamplePayload.data],
 };
+
 export const bulkCreateInvoicesExamplePayload: PayloadData = {
   data: {
     bulk: [
@@ -457,8 +487,10 @@ export const bulkCreateInvoicesExamplePayload: PayloadData = {
     ],
   },
 };
+
 export const bulkUpdateInvoicesExamplePayload =
   bulkCreateInvoicesExamplePayload;
+
 export const generateMfaChallengeIdExamplePayload: PayloadData = {
   data: {
     challengeId:
@@ -467,6 +499,7 @@ export const generateMfaChallengeIdExamplePayload: PayloadData = {
       "!b2XqzA2v6u5T49jY5eRcVdWfXgHnKpLmQsTuBvNwZ0aDgIjOyClErFtGuHiJkMoPy",
   },
 };
+
 export const mfaAuthenticateExamplePayload: PayloadData = {
   data: {
     machineName: "Acme Instance",
@@ -474,6 +507,7 @@ export const mfaAuthenticateExamplePayload: PayloadData = {
     deviceId: "Acme-BillMFA",
   },
 };
+
 export const createVendorBankAccountExamplePayload: PayloadData = {
   data: {
     entity: "VendorBankAccount",
@@ -505,8 +539,10 @@ export const createVendorBankAccountExamplePayload: PayloadData = {
     regulatory7: null,
   },
 };
+
 export const deleteVendorBankAccountExamplePayload =
   createVendorBankAccountExamplePayload;
+
 export const bulkCreateVendorBankAccountsExamplePayload: PayloadData = {
   data: {
     bulk: [
@@ -518,8 +554,10 @@ export const bulkCreateVendorBankAccountsExamplePayload: PayloadData = {
     ],
   },
 };
+
 export const createCustomerBankAccountExamplePayload =
   getCustomerBankAccountExamplePayload;
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     body: {

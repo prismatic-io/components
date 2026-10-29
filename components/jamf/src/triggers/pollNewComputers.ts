@@ -16,6 +16,7 @@ import {
   resolveSafeHorizon,
   resolveStartCursor,
 } from "../util";
+
 export const pollNewComputers = pollingTrigger({
   display: {
     label: "New Computers",
@@ -39,17 +40,21 @@ export const pollNewComputers = pollingTrigger({
     const state = (context.polling.getState() ?? {}) as ComputerPollingState;
     const incoming = payload.paginationState as ComputerPollCursor | undefined;
     const seed = lookBackDate || now;
+
     const client = await createClient(connection, context.debug.enabled);
+
     const result = await drainWatermark(
       fetchComputerPage(client),
       resolveStartCursor(state, incoming, seed),
       resolveSafeHorizon(now),
       context.batch?.enabled === true ? 1 : MAX_POLL_PAGES,
     );
+
     context.polling.setState(nextPollingState(state, seed, result));
     context.logger.debug(
       `Polled ${result.delivered.length} computers, drained=${result.drained}`,
     );
+
     return {
       payload: {
         ...payload,

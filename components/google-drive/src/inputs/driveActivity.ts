@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanItemInput, cleanStringInput } from "../util";
 import { connection, fetchAll, pageToken } from "./common";
+
 export const itemName = input({
   label: "File ID",
   type: "string",
@@ -11,6 +12,7 @@ export const itemName = input({
   dataSource: "selectFiles",
   clean: cleanItemInput,
 });
+
 export const ancestorName = input({
   label: "Folder or Drive ID",
   type: "string",
@@ -22,6 +24,7 @@ export const ancestorName = input({
   dataSource: "selectFolder",
   clean: cleanItemInput,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -31,6 +34,7 @@ export const filter = input({
   placeholder: "Enter filter expression",
   clean: cleanStringInput,
 });
+
 export const consolidationStrategy = input({
   label: "Consolidation Strategy",
   type: "string",
@@ -44,6 +48,7 @@ export const consolidationStrategy = input({
   ],
   clean: cleanStringInput,
 });
+
 export const queryDriveActivityInputs = {
   connection,
   itemName,

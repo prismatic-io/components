@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createPostExamplePayload } from "../../examplePayloads";
 import { createPostInputs } from "../../inputs";
 import { createPostOutputSchema } from "../../outputSchemas";
+
 export const createPost = action({
   display: {
     label: "Create Post",
@@ -41,8 +42,7 @@ export const createPost = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createPostExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createPostExamplePayload,
   examplePayload: createPostExamplePayload,
 });

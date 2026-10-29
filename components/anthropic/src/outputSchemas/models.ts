@@ -5,6 +5,7 @@ const capabilitySupportSchema = {
   },
   required: ["supported"],
 };
+
 const nullableCapabilitySupportSchema = {
   type: ["object", "null"],
   properties: {
@@ -12,6 +13,7 @@ const nullableCapabilitySupportSchema = {
   },
   required: ["supported"],
 };
+
 export const getModelOutputSchema = {
   type: "object" as const,
   properties: {
@@ -88,6 +90,7 @@ export const getModelOutputSchema = {
   },
   required: ["id", "type", "display_name", "created_at"],
 };
+
 export const listModelsOutputSchema = {
   type: "object" as const,
   properties: {

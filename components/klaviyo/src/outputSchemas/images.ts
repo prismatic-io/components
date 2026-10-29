@@ -1,4 +1,5 @@
 import { collectionLinksSchema, resourceLinksSchema } from "./shared";
+
 const imageResourceObject = {
   type: "object" as const,
   properties: {
@@ -19,6 +20,7 @@ const imageResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const getImageOutputSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +29,7 @@ export const getImageOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listImagesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -38,5 +41,7 @@ export const listImagesOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const updateImageOutputSchema = getImageOutputSchema;
+
 export const uploadImageOutputSchema = getImageOutputSchema;

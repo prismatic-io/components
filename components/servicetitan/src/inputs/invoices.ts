@@ -1,4 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -21,6 +22,7 @@ import {
   technicianId,
   typeId,
 } from "./common";
+
 const invoiceId = input({
   label: "Invoice ID",
   type: "string",
@@ -31,6 +33,7 @@ const invoiceId = input({
   clean: util.types.toNumber,
   dataSource: "selectInvoice",
 });
+
 const itemId = input({
   label: "Item ID",
   type: "string",
@@ -40,6 +43,7 @@ const itemId = input({
   placeholder: "Enter an item ID",
   clean: util.types.toString,
 });
+
 const adjustmentToId = input({
   label: "Adjustment To ID",
   type: "string",
@@ -50,6 +54,7 @@ const adjustmentToId = input({
   clean: util.types.toNumber,
   dataSource: "selectInvoice",
 });
+
 const number = input({
   label: "Number",
   type: "string",
@@ -59,6 +64,7 @@ const number = input({
   placeholder: "Enter an invoice number",
   clean: cleanStringInput,
 });
+
 const invoicedOn = input({
   label: "Invoiced On",
   type: "string",
@@ -68,6 +74,7 @@ const invoicedOn = input({
   placeholder: "Enter the invoice date and time in UTC",
   clean: cleanStringInput,
 });
+
 const subtotal = input({
   label: "Subtotal",
   type: "string",
@@ -77,6 +84,7 @@ const subtotal = input({
   placeholder: "Enter a subtotal amount",
   clean: cleanNumberInput,
 });
+
 const tax = input({
   label: "Tax",
   type: "string",
@@ -86,6 +94,7 @@ const tax = input({
   placeholder: "Enter a tax amount",
   clean: cleanNumberInput,
 });
+
 const royaltyStatus = input({
   label: "Status",
   type: "string",
@@ -94,6 +103,7 @@ const royaltyStatus = input({
   model: mapModelValues(["Pending", "Sent", "Failed"], true),
   clean: cleanStringInput,
 });
+
 const reviewStatus = input({
   label: "Review Status",
   type: "string",
@@ -102,6 +112,7 @@ const reviewStatus = input({
   model: mapModelValues(["NeedsReview", "OnHold", "Reviewed"], true),
   clean: cleanStringInput,
 });
+
 const items = input({
   label: "Items",
   type: "code",
@@ -136,6 +147,7 @@ const items = input({
   comments: "The items of the invoice.",
   clean: cleanCodeInput,
 });
+
 const royaltyDate = input({
   label: "Date",
   type: "string",
@@ -145,6 +157,7 @@ const royaltyDate = input({
   placeholder: "Enter the royalty date and time in UTC",
   clean: cleanStringInput,
 });
+
 const royaltySentOn = input({
   label: "Sent On",
   type: "string",
@@ -154,6 +167,7 @@ const royaltySentOn = input({
   placeholder: "Enter the royalty sent date and time in UTC",
   clean: cleanStringInput,
 });
+
 const royaltyMemo = input({
   label: "Memo",
   type: "string",
@@ -163,6 +177,7 @@ const royaltyMemo = input({
   placeholder: "Enter a royalty memo",
   clean: cleanStringInput,
 });
+
 const assignedToId = input({
   label: "Assigned To ID",
   type: "string",
@@ -172,6 +187,7 @@ const assignedToId = input({
   placeholder: "Enter a user ID",
   clean: cleanNumberInput,
 });
+
 const payments = input({
   label: "Payments",
   type: "code",
@@ -191,6 +207,7 @@ const payments = input({
   comments: "The payments of the invoice.",
   clean: cleanCodeInput,
 });
+
 const skuId = input({
   label: "SKU ID",
   type: "string",
@@ -200,6 +217,7 @@ const skuId = input({
   placeholder: "Enter a SKU ID",
   clean: cleanNumberInput,
 });
+
 const skuName = input({
   label: "SKU Name",
   type: "string",
@@ -209,6 +227,7 @@ const skuName = input({
   placeholder: "Enter a SKU name",
   clean: cleanStringInput,
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -218,6 +237,7 @@ const description = input({
   placeholder: "Enter a description",
   clean: util.types.toString,
 });
+
 const quantity = input({
   label: "Quantity",
   type: "string",
@@ -227,6 +247,7 @@ const quantity = input({
   placeholder: "Enter a quantity",
   clean: util.types.toNumber,
 });
+
 const unitPrice = input({
   label: "Unit Price",
   type: "string",
@@ -236,6 +257,7 @@ const unitPrice = input({
   placeholder: "Enter a unit price",
   clean: cleanNumberInput,
 });
+
 const cost = input({
   label: "Cost",
   type: "string",
@@ -245,6 +267,7 @@ const cost = input({
   placeholder: "Enter a cost amount",
   clean: cleanNumberInput,
 });
+
 const isAddOn = input({
   label: "Is Add On",
   type: "string",
@@ -254,6 +277,7 @@ const isAddOn = input({
   default: "",
   clean: cleanBooleanInput,
 });
+
 const signature = input({
   label: "Signature",
   type: "string",
@@ -263,6 +287,7 @@ const signature = input({
   placeholder: "Enter a signature",
   clean: cleanStringInput,
 });
+
 const technicianAcknowledgementSignature = input({
   label: "Technician Acknowledgement Signature",
   type: "string",
@@ -272,6 +297,7 @@ const technicianAcknowledgementSignature = input({
   placeholder: "Enter a technician acknowledgement signature",
   clean: cleanStringInput,
 });
+
 const inventoryWarehouseName = input({
   label: "Inventory Warehouse Name",
   type: "string",
@@ -281,6 +307,7 @@ const inventoryWarehouseName = input({
   placeholder: "Enter an inventory warehouse name",
   clean: cleanStringInput,
 });
+
 const skipUpdatingMembershipPrices = input({
   label: "Skip Updating Membership Prices",
   type: "string",
@@ -290,6 +317,7 @@ const skipUpdatingMembershipPrices = input({
   default: "",
   clean: cleanBooleanInput,
 });
+
 const itemGroupName = input({
   label: "Item Group Name",
   type: "string",
@@ -299,6 +327,7 @@ const itemGroupName = input({
   placeholder: "Enter an item group name",
   clean: cleanStringInput,
 });
+
 const itemGroupRootId = input({
   label: "Item Group Root ID",
   type: "string",
@@ -308,6 +337,7 @@ const itemGroupRootId = input({
   placeholder: "Enter an item group root ID",
   clean: cleanNumberInput,
 });
+
 const inventoryLocationId = input({
   label: "Inventory Location ID",
   type: "string",
@@ -317,6 +347,7 @@ const inventoryLocationId = input({
   placeholder: "Enter an inventory location ID",
   clean: cleanNumberInput,
 });
+
 const durationBillingId = input({
   label: "Duration Billing ID",
   type: "string",
@@ -326,6 +357,7 @@ const durationBillingId = input({
   placeholder: "Enter a duration billing ID",
   clean: cleanNumberInput,
 });
+
 const id = input({
   label: "Invoice Item ID",
   type: "string",
@@ -335,6 +367,7 @@ const id = input({
   placeholder: "Enter an invoice item ID",
   clean: cleanNumberInput,
 });
+
 const royaltyDetails = structuredObjectInput({
   label: "Royalty Details",
   required: false,
@@ -346,6 +379,7 @@ const royaltyDetails = structuredObjectInput({
     royaltyMemo,
   },
 });
+
 const updateInvoiceItemsAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -363,6 +397,7 @@ const updateInvoiceItemsAdditionalFields = structuredObjectInput({
     itemGroupName,
   },
 });
+
 export const createInvoicesInputs = {
   connection,
   adjustmentToId,
@@ -381,11 +416,13 @@ export const createInvoicesInputs = {
   assignedToId,
   items,
 };
+
 export const deleteInvoiceItemInputs = {
   connection,
   invoiceId,
   itemId,
 };
+
 export const listInvoicesInputs = {
   connection,
   fetchAll,
@@ -394,6 +431,7 @@ export const listInvoicesInputs = {
   sort,
   customQueryParams,
 };
+
 export const updateInvoiceInputs = {
   connection,
   invoiceId,
@@ -413,6 +451,7 @@ export const updateInvoiceInputs = {
   items,
   payments,
 };
+
 export const updateInvoiceCustomFieldsInputs = {
   connection,
   operations: {
@@ -420,6 +459,7 @@ export const updateInvoiceCustomFieldsInputs = {
     comments: "The operations to perform on the invoice.",
   },
 };
+
 export const updateInvoiceItemsInputs = {
   connection,
   invoiceId,

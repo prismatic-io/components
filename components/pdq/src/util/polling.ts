@@ -11,21 +11,13 @@ import type {
   PollableRecord,
 } from "../types";
 import { fetchData } from "./pagination";
-export const TComparator = <
-  T extends {
-    id: string;
-  },
->(
-  a: T,
-  b: T,
-): number => (a.id < b.id ? -1 : 1);
-export const pollResourceModel: {
-  label: string;
-  value: string;
-}[] = Object.keys(POLL_RESOURCE_CONFIG).map((value) => ({
-  label: value,
-  value,
-}));
+
+export const TComparator = <T extends { id: string }>(a: T, b: T): number =>
+  a.id < b.id ? -1 : 1;
+
+export const pollResourceModel: { label: string; value: string }[] =
+  Object.keys(POLL_RESOURCE_CONFIG).map((value) => ({ label: value, value }));
+
 export const filterRecordsInsertedAfter = (
   records: PollableRecord[],
   lastPolledAt: string,
@@ -38,6 +30,7 @@ export const filterRecordsInsertedAfter = (
     return !Number.isNaN(insertedMs) && insertedMs > lastPolledAtMs;
   });
 };
+
 export const fetchAllInsertedAfter = async (
   client: HttpClient,
   path: string,
@@ -58,6 +51,7 @@ export const fetchAllInsertedAfter = async (
       break;
     }
     records.push(...data);
+
     const oldest = data[data.length - 1];
     const oldestMs = oldest?.insertedAt
       ? new Date(oldest.insertedAt).getTime()
@@ -69,6 +63,7 @@ export const fetchAllInsertedAfter = async (
   } while (keepFetching);
   return records;
 };
+
 export const resolvePollingRecordChanges = (
   data: PdqChangesObject | undefined,
 ): PdqRecordChange[] => {
@@ -77,12 +72,15 @@ export const resolvePollingRecordChanges = (
     (record): PdqRecordChange => ({ changeType: "created", record }),
   );
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
+
   if (!LOOK_BACK_DATE_PATTERN.test(str)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const parts = str.split("-");
   const year = util.types.toNumber(parts[0]);
   const month = util.types.toNumber(parts[1]);
@@ -95,8 +93,10 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
+
   if (parsed > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return str;
 };

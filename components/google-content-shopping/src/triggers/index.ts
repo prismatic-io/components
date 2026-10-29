@@ -1,5 +1,6 @@
 import { trigger } from "@prismatic-io/spectral";
 import { pubSubWebhookExamplePayload } from "../examplePayloads/triggers";
+
 export const pubSubWebhook = trigger({
   display: {
     label: "Pub/Sub Webhook",
@@ -17,4 +18,5 @@ export const pubSubWebhook = trigger({
   scheduleSupport: "invalid",
   examplePayload: pubSubWebhookExamplePayload,
 });
+
 export default { pubSubWebhook };

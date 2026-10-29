@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { NO_CONTENT_RESPONSE } from "./constants";
+
 export const listCompaniesExamplePayload = {
   data: {
     "@odata.context":
@@ -20,6 +21,7 @@ export const listCompaniesExamplePayload = {
     ],
   },
 };
+
 export const getAccountExamplePayload = {
   data: {
     id: "2256e220-e60b-ef11-9f8e-6045bdc8c192",
@@ -38,6 +40,7 @@ export const getAccountExamplePayload = {
     lastModifiedDateTime: "2024-05-06T20:21:22.54Z",
   },
 };
+
 export const listAccountsExamplePayload = {
   data: {
     "@odata.context":
@@ -62,6 +65,7 @@ export const listAccountsExamplePayload = {
     ],
   },
 };
+
 export const createCustomerExamplePayload = {
   data: {
     id: "8ba01a7a-5734-ef11-8409-7c1e5213ec0e",
@@ -93,6 +97,7 @@ export const createCustomerExamplePayload = {
     lastModifiedDateTime: "2024-06-27T07:33:02.2Z",
   },
 };
+
 export const listCustomersExamplePayload = {
   data: {
     value: [
@@ -302,6 +307,7 @@ export const listCustomersExamplePayload = {
     ],
   },
 };
+
 export const getCustomerExamplePayload = {
   data: {
     id: "8ba01a7a-5734-ef11-8409-7c1e5213ec0e",
@@ -333,6 +339,7 @@ export const getCustomerExamplePayload = {
     lastModifiedDateTime: "2024-06-27T07:33:02.2Z",
   },
 };
+
 export const getCompanyInformationExamplePayload = {
   data: {
     displayName: "CRONUS USA, Inc.",
@@ -351,6 +358,7 @@ export const getCompanyInformationExamplePayload = {
     currentFiscalYearStartDate: "2021-01-01",
   },
 };
+
 export const updateCompanyInformationExamplePayload = {
   data: {
     displayName: "CRONUS USA, Inc.",
@@ -370,6 +378,7 @@ export const updateCompanyInformationExamplePayload = {
     industry: "",
   },
 };
+
 export const createAttachmentExamplePayload = {
   data: {
     "@odata.context":
@@ -387,6 +396,7 @@ export const createAttachmentExamplePayload = {
       "https://api.businesscentral.dynamics.com/v2.0/29dd78b9-6d0d-47ab-9427-2a49d9a1deb1/Production/api/v2.0/companies(f1678e37-e50b-ef11-9f8e-6045bdc8c192)/attachments(25b8238e-f034-ef11-840b-002248241214)/attachmentContent",
   },
 };
+
 export const getAttachmentExamplePayload = {
   data: {
     "@odata.context":
@@ -403,6 +413,7 @@ export const getAttachmentExamplePayload = {
     ],
   },
 };
+
 export const createShipmentMethodExamplePayload = {
   data: {
     id: "be90f4f2-1735-ef11-8409-6045bdfedf9a",
@@ -411,6 +422,7 @@ export const createShipmentMethodExamplePayload = {
     lastModifiedDateTime: "2024-06-28T06:30:46.263Z",
   },
 };
+
 export const getSalesShipmentLinesExamplePayload = {
   data: {
     "@odata.context":
@@ -432,6 +444,7 @@ export const getSalesShipmentLinesExamplePayload = {
     shipmentDate: "2024-05-06",
   },
 };
+
 export const createItemExamplePayload = {
   data: {
     id: "5247fc6c-2f35-ef11-840b-002248241214",
@@ -458,6 +471,7 @@ export const createItemExamplePayload = {
     lastModifiedDateTime: "2024-06-28T09:18:58.05Z",
   },
 };
+
 export const createSalesOrderExamplePayload = {
   data: {
     id: "54a53ee8-3835-ef11-840b-00224820d4a6",
@@ -513,6 +527,7 @@ export const createSalesOrderExamplePayload = {
     email: "robert.townes@contoso.com",
   },
 };
+
 export const listSalesOrdersExamplePayload = {
   data: {
     value: [
@@ -572,6 +587,7 @@ export const listSalesOrdersExamplePayload = {
     ],
   },
 };
+
 export const listSalesShipmentLinesExamplePayload = {
   data: {
     value: [
@@ -594,6 +610,7 @@ export const listSalesShipmentLinesExamplePayload = {
     ],
   },
 };
+
 export const listSalesShipmentExamplePayload = {
   data: {
     "@odata.context":
@@ -646,6 +663,7 @@ export const listSalesShipmentExamplePayload = {
     ],
   },
 };
+
 export const getSaleShipmentExamplePayload = {
   data: {
     id: "647a3456-e60b-ef11-9f8e-6045bdc8c192",
@@ -692,6 +710,7 @@ export const getSaleShipmentExamplePayload = {
     email: "robert.townes@contoso.com",
   },
 };
+
 export const createSalesInvoiceExamplePayload = {
   data: {
     id: "b353895e-5635-ef11-8409-6045bdfedf9a",
@@ -730,6 +749,7 @@ export const createSalesInvoiceExamplePayload = {
     email: "helen.ray@contoso.com",
   },
 };
+
 export const listSalesInvoicesExamplePayload = {
   data: {
     value: [
@@ -794,11 +814,13 @@ export const listSalesInvoicesExamplePayload = {
     ],
   },
 };
+
 export const SUCCESS_PAYLOAD = {
   data: {
     message: "Success",
   },
 };
+
 export const createPurchaseOrderExamplePayload = {
   data: {
     id: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
@@ -851,13 +873,17 @@ export const createPurchaseOrderExamplePayload = {
     shortcutDimension2Code: "",
   },
 };
+
 export const getPurchaseOrderExamplePayload = createPurchaseOrderExamplePayload;
+
 export const updatePurchaseOrderExamplePayload = getPurchaseOrderExamplePayload;
+
 export const listPurchaseOrdersExamplePayload = {
   data: {
     value: [getPurchaseOrderExamplePayload.data],
   },
 };
+
 export const createPurchaseOrderLineExamplePayload = {
   data: {
     id: "1e8cb9c0-44e3-ea11-bb43-000d3a2feca1",
@@ -893,15 +919,19 @@ export const createPurchaseOrderLineExamplePayload = {
     locationId: "00000000-0000-0000-0000-000000000000",
   },
 };
+
 export const getPurchaseOrderLineExamplePayload =
   createPurchaseOrderLineExamplePayload;
+
 export const listPurchaseOrderLinesExamplePayload = {
   data: {
     value: [getPurchaseOrderLineExamplePayload.data],
   },
 };
+
 export const updatePurchaseOrderLineExamplePayload =
   getPurchaseOrderLineExamplePayload;
+
 export const getPurchaseReceiptExamplePayload = {
   data: {
     id: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
@@ -938,11 +968,13 @@ export const getPurchaseReceiptExamplePayload = {
     lastModifiedDateTime: new Date("2019-01-01"),
   },
 };
+
 export const listPurchaseReceiptsExamplePayload = {
   data: {
     value: [getPurchaseReceiptExamplePayload.data],
   },
 };
+
 export const getPurchaseReceiptLineExamplePayload = {
   data: {
     id: "dd8db9c0-44e3-ea11-bb43-000d3a2feca1",
@@ -959,9 +991,11 @@ export const getPurchaseReceiptLineExamplePayload = {
     expectedReceiptDate: new Date("2021-01-01"),
   },
 };
+
 export const listPurchaseReceiptLinesExamplePayload = {
   data: { value: [getPurchaseReceiptLineExamplePayload.data] },
 };
+
 export const deleteAllSubscriptionsExamplePayload = {
   data: {
     subscriptionsRemoved: [
@@ -976,6 +1010,7 @@ export const deleteAllSubscriptionsExamplePayload = {
     ],
   },
 };
+
 export const createSubscriptionExamplePayload = {
   data: {
     "@odata.context":
@@ -995,6 +1030,7 @@ export const createSubscriptionExamplePayload = {
     systemModifiedBy: "ds58w-ee2b-429f-aa8c-sd4899",
   },
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     "@odata.context":
@@ -1002,9 +1038,11 @@ export const listSubscriptionsExamplePayload = {
     value: [createSubscriptionExamplePayload.data],
   },
 };
+
 export const noContentExamplePayload = {
   data: NO_CONTENT_RESPONSE,
 };
+
 export const listVendorsExamplePayload = {
   data: {
     value: [
@@ -1035,6 +1073,7 @@ export const listVendorsExamplePayload = {
     ],
   },
 };
+
 export const getVendorExamplePayload = {
   data: {
     id: "5d115c9c-44e3-ea11-bb43-000d3a2feca1",
@@ -1061,8 +1100,11 @@ export const getVendorExamplePayload = {
     lastModifiedDateTime: "2024-05-06T20:21:41.53Z",
   },
 };
+
 export const createVendorExamplePayload = getVendorExamplePayload;
+
 export const updateVendorExamplePayload = getVendorExamplePayload;
+
 export const listPurchaseInvoicesExamplePayload = {
   data: {
     value: [
@@ -1116,18 +1158,23 @@ export const listPurchaseInvoicesExamplePayload = {
     ],
   },
 };
+
 export const getPurchaseInvoiceExamplePayload = {
   data: listPurchaseInvoicesExamplePayload.data.value[0],
 };
+
 export const createPurchaseInvoiceExamplePayload =
   getPurchaseInvoiceExamplePayload;
+
 export const updatePurchaseInvoiceExamplePayload =
   getPurchaseInvoiceExamplePayload;
+
 export const postPurchaseInvoiceExamplePayload = {
   data: {
     message: "Purchase invoice posted successfully",
   },
 };
+
 export const listGeneralLedgerEntriesExamplePayload = {
   data: {
     value: [
@@ -1149,9 +1196,11 @@ export const listGeneralLedgerEntriesExamplePayload = {
     ],
   },
 };
+
 export const getGeneralLedgerEntryExamplePayload = {
   data: listGeneralLedgerEntriesExamplePayload.data.value[0],
 };
+
 export const listItemLedgerEntriesExamplePayload = {
   data: {
     value: [
@@ -1174,12 +1223,12 @@ export const listItemLedgerEntriesExamplePayload = {
     ],
   },
 };
+
 export const getItemLedgerEntryExamplePayload = {
   data: listItemLedgerEntriesExamplePayload.data.value[0],
 };
-export const pollChangesExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

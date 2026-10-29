@@ -3,6 +3,7 @@ import { createBambooClient } from "../../client";
 import { whosOutExamplePayload } from "../../examplePayloads";
 import { whosOutInputs } from "../../inputs";
 import { filterFalseyValues } from "../../util";
+
 export const whosOut = action({
   display: {
     label: "List Who's Out",

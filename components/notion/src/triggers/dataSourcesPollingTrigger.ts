@@ -23,6 +23,7 @@ import {
   resolveRecordChanges,
   resolveRoundState,
 } from "../utils";
+
 export const dataSourcesPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Data Sources",
@@ -50,16 +51,20 @@ export const dataSourcesPollingTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const state = context.polling.getState() as unknown as PollingState;
     const handoff = context.instanceState?.[BACKFILL_CURSOR_KEY];
+
     const incoming =
       (payload.paginationState as NotionPaginationState | undefined) ??
       state.inFlightCursor;
+
     const windowStart =
       incoming?.windowStart ||
       state.lastPolledAt ||
       (typeof handoff === "string" ? handoff : "") ||
       (params.lookBackDate ? `${params.lookBackDate}T00:00:00.000Z` : "") ||
       floorToMinute(new Date());
+
     const client = createClient(params.connection, context.debug.enabled);
+
     const round = await fetchSearchResultsRound(
       client,
       "data_source",
@@ -69,24 +74,29 @@ export const dataSourcesPollingTrigger = pollingTrigger({
         ? Math.min(MAX_POLL_PAGES_PER_RUN, MAX_BATCHED_PAGES_PER_RUN)
         : MAX_POLL_PAGES_PER_RUN,
     );
+
     const merged = mergePollingCursor(round.records, incoming);
     const { created, updated } = partitionRecordChanges(
       round.records,
       windowStart,
       state.boundaryIds,
     );
+
     const { nextState, pollingState } = resolveRoundState({
       nextCursor: round.nextCursor,
       windowStart,
       merged,
       previous: state,
     });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Notion data sources from ${windowStart}: ${round.records.length} walked, ${created.length} new, ${updated.length} updated${nextState ? ", more pages outstanding" : ""}`,
       );
     }
+
     context.polling.setState(pollingState);
+
     return {
       payload: {
         ...payload,
@@ -107,6 +117,7 @@ export const dataSourcesPollingTrigger = pollingTrigger({
     const incoming = payload.paginationState as
       | NotionPaginationState
       | undefined;
+
     if (!incoming && context.instanceState?.[BACKFILL_COMPLETED_KEY]) {
       context.logger.debug(
         "Notion data source initial sync already completed for this instance; skipping.",
@@ -119,11 +130,14 @@ export const dataSourcesPollingTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const windowStart =
       incoming?.windowStart ||
       (params.lookBackDate ? `${params.lookBackDate}T00:00:00.000Z` : "") ||
       floorToMinute(new Date());
+
     const client = createClient(params.connection, context.debug.enabled);
+
     const round = await fetchSearchResultsRound(
       client,
       "data_source",
@@ -131,19 +145,23 @@ export const dataSourcesPollingTrigger = pollingTrigger({
       incoming?.startCursor,
       DEFAULT_BACKFILL_MAX_PAGES,
     );
+
     const merged = mergePollingCursor(round.records, incoming);
     const { created, updated } = partitionRecordChanges(
       round.records,
       windowStart,
     );
+
     context.logger.info(
       `Notion data source initial sync from ${windowStart}: ${round.records.length} walked${round.nextCursor ? ", more pages outstanding" : ", backfill complete"}`,
     );
+
     if (round.nextCursor) {
       context.logger.error(
         `Notion data source initial sync stopped at its ${DEFAULT_BACKFILL_MAX_PAGES} page limit with more pages outstanding. The first scheduled poll is pointed back at ${windowStart}, so nothing is skipped and what the sync already sent is sent again. Narrow the Look-back Date to avoid this.`,
       );
     }
+
     return {
       payload: {
         ...payload,

@@ -3,6 +3,7 @@ import { createV3Client } from "../../connections/auth";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { connectionInput, webhookDetails, webhookUrl } from "../../inputs";
 import { isBasicAuth } from "../../util";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -20,9 +21,11 @@ export const createWebhook = action({
       context.debug.enabled,
       useBasicAuth,
     );
+
     const toSend = useBasicAuth
       ? { ...params.webhookDetails, url: params.webhookUrl }
       : { url: params.webhookUrl, webhooks: params.webhookDetails };
+
     const { data } = await client.post("/webhook", toSend);
     return { data };
   },

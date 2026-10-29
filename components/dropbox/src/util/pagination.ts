@@ -5,6 +5,7 @@ import {
   MAX_SHARING_LIMIT,
 } from "../constants";
 import type { DropboxItemsKey, DropboxPaginatedResult } from "../types";
+
 export const fetchAllFolderEntries = async (
   dbx: Dropbox,
   params: {
@@ -28,6 +29,7 @@ export const fetchAllFolderEntries = async (
     params.cursor,
   );
 };
+
 export const fetchAllSharedFolders = async (
   dbx: Dropbox,
   params: {
@@ -49,6 +51,7 @@ export const fetchAllSharedFolders = async (
     params.cursor,
   );
 };
+
 export const fetchAllSharedLinks = async (
   dbx: Dropbox,
   params: {
@@ -69,13 +72,10 @@ export const fetchAllSharedLinks = async (
     params.cursor,
     "links",
   );
+
 export const fetchAllTeamFolders = async (
   dbx: Dropbox,
-  params: {
-    limit?: number;
-    fetchAll: boolean;
-    cursor?: string;
-  },
+  params: { limit?: number; fetchAll: boolean; cursor?: string },
 ): Promise<DropboxResponse<team.TeamFolderListResult>> => {
   const limit = params.fetchAll ? MAX_SHARING_LIMIT : params.limit;
   return fetchAllDropboxPages(
@@ -85,6 +85,7 @@ export const fetchAllTeamFolders = async (
     params.cursor,
   );
 };
+
 export const fetchAllSearchFiles = async (
   dbx: Dropbox,
   params: {
@@ -112,6 +113,7 @@ export const fetchAllSearchFiles = async (
     "matches",
   );
 };
+
 export const fetchAllSearchFolders = async (
   dbx: Dropbox,
   params: {
@@ -139,6 +141,7 @@ export const fetchAllSearchFolders = async (
     "matches",
   );
 };
+
 export const fetchAllDropboxPages = async <T extends DropboxPaginatedResult>(
   fetchFirst: () => Promise<T>,
   fetchContinue: (cursor: string) => Promise<T>,
@@ -149,19 +152,23 @@ export const fetchAllDropboxPages = async <T extends DropboxPaginatedResult>(
   if (!fetchAll) {
     return cursor ? fetchContinue(cursor) : fetchFirst();
   }
+
   const allItems: unknown[] = [];
   let hasMore = true;
   let cursorToken: string | undefined;
   let lastResponse: T;
+
   do {
     lastResponse = cursorToken
       ? await fetchContinue(cursorToken)
       : await fetchFirst();
+
     const result = lastResponse.result as Record<string, unknown>;
     allItems.push(...((result[itemsKey] as unknown[]) || []));
     hasMore = !!result.has_more;
     cursorToken = result.cursor as string | undefined;
   } while (hasMore && cursorToken);
+
   return {
     ...lastResponse,
     result: {

@@ -2,6 +2,7 @@ import { ListCrawlersCommand } from "@aws-sdk/client-glue";
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { awsRegion, connectionInput } from "../inputs";
+
 export const selectCrawler = dataSource({
   display: {
     label: "Select Crawler",
@@ -13,8 +14,10 @@ export const selectCrawler = dataSource({
   },
   perform: async (_context, { awsRegion, awsConnection }) => {
     const glue = await createClient({ awsRegion, awsConnection });
+
     const allCrawlerNames: string[] = [];
     let nextToken: string | undefined;
+
     do {
       const command = new ListCrawlersCommand({
         MaxResults: 50,
@@ -26,6 +29,7 @@ export const selectCrawler = dataSource({
       }
       nextToken = response.NextToken || undefined;
     } while (nextToken);
+
     return {
       result: allCrawlerNames
         .map<Element>((name) => ({

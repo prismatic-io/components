@@ -4,6 +4,7 @@ import { updateOutboundEventReconciliationExamplePayload } from "../../examplePa
 import { updateOutboundEventReconciliationInputs } from "../../inputs";
 import { outboundEventShortSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const updateOutboundEventReconciliation = action({
   display: {
     label: "Update Outbound Event Reconciliation",
@@ -21,15 +22,19 @@ export const updateOutboundEventReconciliation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const response = await client.put(
         `/outboundevents/${integrationGuid}/events/${eventGuid}`,
         { resourcesReconciled: reconcilePayload },
       );
+
       const updatedEvent = response.data;
+
       context.logger.info("Updated outbound event reconciliation status", {
         integrationGuid,
         eventGuid,
       });
+
       return { data: updatedEvent };
     } catch (error) {
       handleArenaError(

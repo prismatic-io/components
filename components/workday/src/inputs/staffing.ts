@@ -8,6 +8,7 @@ import {
   extraParameters,
   workerId,
 } from "./common";
+
 const effectiveDateJobChange = input({
   label: "Effective Date",
   comments:
@@ -18,6 +19,7 @@ const effectiveDateJobChange = input({
   required: true,
   clean: (value: unknown) => util.types.toDate(value),
 });
+
 const effectiveDateOrgAssignment = input({
   label: "Effective Date",
   comments:
@@ -28,6 +30,7 @@ const effectiveDateOrgAssignment = input({
   required: true,
   clean: (value: unknown) => util.types.toDate(value),
 });
+
 const jobChangeJobId = input({
   label: "Job ID",
   comments:
@@ -38,6 +41,7 @@ const jobChangeJobId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const supervisoryOrganizationId = input({
   label: "Supervisory Organization ID",
   comments:
@@ -48,6 +52,7 @@ const supervisoryOrganizationId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const locationId = input({
   label: "Location ID",
   comments:
@@ -58,6 +63,7 @@ const locationId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const orgAssignmentJobId = input({
   label: "Job ID",
   comments:
@@ -68,6 +74,7 @@ const orgAssignmentJobId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const positionId = input({
   label: "Position ID",
   comments:
@@ -78,6 +85,7 @@ const positionId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const reasonId = input({
   label: "Reason ID",
   comments:
@@ -88,9 +96,13 @@ const reasonId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const getStaffingWorkersParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/get-/workers).`;
+
 const getWorkerExplicitSkillsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/get-/workers/-ID-/explicitSkills).`;
+
 const initiateJobChangeExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/post-/workers/-ID-/jobChanges) for more information.`;
+
 const initiateJobChangeExtraBodyExample = JSON.stringify(
   {
     template: {
@@ -100,7 +112,9 @@ const initiateJobChangeExtraBodyExample = JSON.stringify(
   null,
   2,
 );
+
 const initiateOrganizationAssignmentChangeExtraBodyComments = `${extraBody.comments} Company, cost center, region, and other organizations are set after initiation with the PATCH /organizationAssignmentChanges/{ID} subresource endpoints. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.staffing.slice(1)}/post-/workers/-ID-/organizationAssignmentChanges) for more information.`;
+
 const initiateOrganizationAssignmentChangeExtraBodyExample = JSON.stringify(
   {
     descriptor: "Organization assignment change for Logan McNeil",
@@ -108,7 +122,9 @@ const initiateOrganizationAssignmentChangeExtraBodyExample = JSON.stringify(
   null,
   2,
 );
+
 export const getStaffingWorkerByIdInputs = { connection, workerId };
+
 export const getStaffingWorkersInputs = {
   connection,
   ...paginationQueryStringInputs,
@@ -117,6 +133,7 @@ export const getStaffingWorkersInputs = {
     comments: getStaffingWorkersParamsComments,
   },
 };
+
 export const getWorkerExplicitSkillsInputs = {
   connection,
   workerId,
@@ -126,11 +143,13 @@ export const getWorkerExplicitSkillsInputs = {
     comments: getWorkerExplicitSkillsParamsComments,
   },
 };
+
 export const getWorkerServiceDatesInputs = {
   connection,
   workerId,
   ...paginationQueryStringInputs,
 };
+
 export const initiateJobChangeInputs = {
   connection,
   workerId,
@@ -145,6 +164,7 @@ export const initiateJobChangeInputs = {
     example: initiateJobChangeExtraBodyExample,
   },
 };
+
 export const initiateOrganizationAssignmentChangeInputs = {
   connection,
   workerId,

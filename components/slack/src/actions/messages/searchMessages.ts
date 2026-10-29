@@ -3,6 +3,7 @@ import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { searchMessagesExamplePayload } from "../../examplePayloads";
 import { searchMessagesInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const searchMessages = action({
   display: {
     label: "Search Messages",
@@ -38,14 +39,10 @@ export const searchMessages = action({
       page,
       team_id,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { query },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { query }): Promise<{ data: unknown }> => ({
     data: {
       ...searchMessagesExamplePayload,
       query,

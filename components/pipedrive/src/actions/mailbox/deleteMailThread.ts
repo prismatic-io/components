@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteMailThreadInputs } from "../../inputs";
 import { deleteMailThreadExamplePayload } from "../../examplePayloads";
 import { deleteMailThreadOutputSchema } from "../../outputSchemas";
+
 export const deleteMailThread = action({
   display: {
     label: "Delete Mail Thread",

@@ -9,6 +9,7 @@ import {
   resolveImplementationTaskAssignee,
   toOptionalString,
 } from "../../util";
+
 export const updateChangeImplementationTask = action({
   display: {
     label: "Update Change Implementation Task",
@@ -32,6 +33,7 @@ export const updateChangeImplementationTask = action({
         dueDate: toOptionalString(params.dueDate),
         status: toOptionalString(params.status),
       };
+
       const { data } = await client.put(
         `/changes/${util.types.toString(params.changeGuid)}/implementationtasks/${util.types.toString(params.implementationTaskGuid)}`,
         requestData,

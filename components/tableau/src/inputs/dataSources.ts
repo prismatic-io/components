@@ -1,4 +1,5 @@
 import { apiVersion, connectionInput, workbookId } from "./common";
+
 export const selectConnectionInputs = {
   tableauConnection: connectionInput,
   workbookId: {
@@ -6,16 +7,20 @@ export const selectConnectionInputs = {
     dataSource: undefined,
   },
 };
+
 export const selectProjectInputs = {
   tableauConnection: connectionInput,
 };
+
 export const selectUserInputs = {
   tableauConnection: connectionInput,
 };
+
 export const selectWebhookInputs = {
   tableauConnection: connectionInput,
   apiVersion,
 };
+
 export const selectWorkbookInputs = {
   tableauConnection: connectionInput,
 };

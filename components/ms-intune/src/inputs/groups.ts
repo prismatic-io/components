@@ -2,6 +2,7 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanBooleanStringInput, cleanStringInput } from "../util";
 import { bodyFields, connection, fetchAll, odataGroupParams } from "./common";
 import { groupId } from "./mobileApps";
+
 const assignedLabels = input({
   label: "Assigned Labels",
   type: "code",
@@ -18,6 +19,7 @@ const assignedLabels = input({
   ),
   clean: cleanStringInput,
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -27,6 +29,7 @@ const description = input({
   placeholder: "Enter group description",
   clean: cleanStringInput,
 });
+
 const displayName = input({
   label: "Display Name",
   type: "string",
@@ -36,6 +39,7 @@ const displayName = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const mailNickname = input({
   label: "Mail Nickname",
   type: "string",
@@ -46,6 +50,7 @@ const mailNickname = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const securityEnabled = input({
   label: "Security Enabled",
   type: "boolean",
@@ -54,6 +59,7 @@ const securityEnabled = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const visibility = input({
   label: "Visibility",
   type: "string",
@@ -63,6 +69,7 @@ const visibility = input({
   placeholder: "Enter visibility level",
   clean: cleanStringInput,
 });
+
 const mailEnabled = input({
   label: "Mail Enabled",
   type: "boolean",
@@ -71,12 +78,14 @@ const mailEnabled = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const createAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
   comments: "Less common group properties.",
   inputs: { description, assignedLabels, visibility },
 });
+
 export const createGroupInputs = {
   connection,
   displayName,
@@ -86,6 +95,7 @@ export const createGroupInputs = {
   additionalFields: createAdditionalFields,
   bodyFields,
 };
+
 export const deleteGroupInputs = {
   connection,
   groupId: {
@@ -93,6 +103,7 @@ export const deleteGroupInputs = {
     comments: "The unique identifier of the group to delete.",
   },
 };
+
 export const getGroupInputs = {
   connection,
   groupId: {
@@ -100,6 +111,7 @@ export const getGroupInputs = {
     comments: "The unique identifier of the group to retrieve.",
   },
 };
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -113,18 +125,21 @@ const listFilters = structuredObjectInput({
     $select: odataGroupParams.$select,
   },
 });
+
 export const listGroupsInputs = {
   connection,
   fetchAll,
   $top: odataGroupParams.$top,
   filters: listFilters,
 };
+
 const updateAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
   comments: "Less common group properties.",
   inputs: { description, assignedLabels, visibility },
 });
+
 export const updateGroupInputs = {
   connection,
   groupId: {

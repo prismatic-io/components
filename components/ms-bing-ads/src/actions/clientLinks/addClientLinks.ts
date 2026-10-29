@@ -5,6 +5,7 @@ import { addClientLinksExamplePayload } from "../../examplePayloads";
 import { addClientLinksInputs } from "../../inputs/clientLinks";
 import type { AddClientLinksResponse, OperationError } from "../../types";
 import { toArray } from "../../util";
+
 export const addClientLinks = action({
   display: {
     label: "Add Client Link",
@@ -32,6 +33,7 @@ export const addClientLinks = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<AddClientLinksResponse>({
       debug,
       args: {
@@ -56,6 +58,7 @@ export const addClientLinks = action({
       soapAction: SOAP_ACTION.AddClientLinks,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data:
         response?.OperationErrors?.OperationError ||

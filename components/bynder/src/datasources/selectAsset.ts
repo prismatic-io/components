@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connection } from "../inputs";
 import type { Records } from "../types";
 import { sortArray } from "../util";
+
 export const selectAsset = dataSource({
   display: {
     label: "Select Asset",
@@ -34,6 +35,7 @@ export const selectAsset = dataSource({
       }
       page++;
     } while (keepFetching);
+
     if (Array.isArray(records)) {
       const objects = sortArray<Records>(
         records as unknown as Records[],
@@ -42,6 +44,7 @@ export const selectAsset = dataSource({
         key: asset.id.toString(),
         label: `${asset.name} (ID: ${asset.id})`,
       }));
+
       return { result: objects };
     }
     return { result: [] };

@@ -5,6 +5,7 @@ import { selectDirectoryAuditExamplePayload } from "../examplePayloads";
 import { selectDirectoryAuditInputs } from "../inputs";
 import type { SelectableDirectoryAudit } from "../types";
 import { paginateResults } from "../util";
+
 export const selectDirectoryAudit = dataSource({
   display: {
     label: "Select Directory Audit",
@@ -19,12 +20,14 @@ export const selectDirectoryAudit = dataSource({
       ENDPOINTS.DIRECTORY_AUDITS,
       true,
     );
+
     const result = (data.value as SelectableDirectoryAudit[])
       .map<Element>((audit) => ({
         label: audit.activityDisplayName,
         key: audit.id.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

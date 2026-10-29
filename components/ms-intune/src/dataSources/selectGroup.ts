@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectGroupExamplePayload } from "../examplePayloads";
 import { selectGroupInputs } from "../inputs";
 import { paginateResults } from "../util";
+
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",
@@ -13,6 +14,7 @@ export const selectGroup = dataSource({
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false, true);
     const data = await paginateResults(client, ENDPOINTS.GROUPS, true);
+
     return data.value.map((group: { id: string; displayName: string }) => {
       return {
         label: group.displayName,

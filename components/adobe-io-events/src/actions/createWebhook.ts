@@ -17,6 +17,7 @@ import {
 } from "../inputs";
 import type { EventOfInterest } from "../types/EventOfInterest";
 import type { Registration } from "../types/Registration";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook/Journal Registration",
@@ -48,6 +49,7 @@ export const createWebhook = action({
     } catch (_error) {
       throw new Error("Events of Interest must be valid JSON");
     }
+
     const body: Registration = {
       client_id: connection.fields?.clientId as string,
       name,

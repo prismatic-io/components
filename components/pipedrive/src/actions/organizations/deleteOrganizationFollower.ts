@@ -4,6 +4,7 @@ import { deleteOrganizationFollowerInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deleteOrganizationFollowerExamplePayload } from "../../examplePayloads";
 import { deleteOrganizationFollowerOutputSchema } from "../../outputSchemas";
+
 export const deleteOrganizationFollower = action({
   display: {
     label: "Delete Organization Follower",

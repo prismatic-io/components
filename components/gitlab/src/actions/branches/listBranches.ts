@@ -4,6 +4,7 @@ import { listBranchesExamplePayload } from "../../examplePayloads";
 import { listBranchesInputs } from "../../inputs";
 import { listBranchesOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listBranches = action({
   display: {
     label: "List Branches",
@@ -27,9 +28,8 @@ export const listBranches = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listBranchesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listBranchesExamplePayload,
   examplePayload: listBranchesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

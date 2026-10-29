@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listSpacesExamplePayload } from "../../examplePayloads";
 import { connectionInput, limit, paramsInputFields, sort } from "../../inputs";
+
 export const listSpaces = action({
   display: {
     label: "List Spaces",
@@ -17,6 +18,7 @@ export const listSpaces = action({
         ...paramsInputFields,
       },
     });
+
     return {
       data,
     };

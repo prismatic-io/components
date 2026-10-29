@@ -4,6 +4,7 @@ import { getPostSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getPostSubscriptionExamplePayload } from "../../../examplePayloads";
+
 export const getPostSubscription = action({
   display: {
     label: "Get Post Subscription",
@@ -15,6 +16,7 @@ export const getPostSubscription = action({
     const { data } = await client.get<SubscriptionResponse>(
       `/community/posts/${postId}/subscriptions/${subscriptionId}`,
     );
+
     return {
       data,
     };

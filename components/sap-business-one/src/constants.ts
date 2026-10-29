@@ -9,6 +9,7 @@ export enum API_VERSION {
   V1 = "v1",
   V2 = "v2",
 }
+
 export const POLL_RESOURCE_CONFIG: Record<
   string,
   {

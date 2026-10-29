@@ -7,6 +7,7 @@ import {
   brandIdToDelete,
   storeHash,
 } from "../../inputs";
+
 export const deleteBrand = action({
   display: {
     label: "Delete Brand",
@@ -21,9 +22,12 @@ export const deleteBrand = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/brands/${brandIdToDelete}`;
+
     try {
       const response = await client.delete(endpoint);
+
       return {
         data: response.data,
       };

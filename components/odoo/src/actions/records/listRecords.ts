@@ -8,6 +8,7 @@ import {
   paginateSearchLegacy,
 } from "../../legacy";
 import { paginateSearch } from "../../util";
+
 export const listRecords = action({
   display: {
     label: "List Records",
@@ -48,8 +49,7 @@ export const listRecords = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listRecordsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listRecordsExamplePayload,
   examplePayload: listRecordsExamplePayload,
 });

@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createDataBricksClient } from "../client";
 import { connectionInput } from "../inputs";
 import type { Warehouse } from "../types";
+
 const selectWarehouse = dataSource({
   display: {
     label: "Select SQL Warehouse",
@@ -11,9 +12,9 @@ const selectWarehouse = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, params) => {
     const client = createDataBricksClient(params.connection, "2.0", false);
-    const response = await client.get<{
-      warehouses: Warehouse[];
-    }>("sql/warehouses");
+    const response = await client.get<{ warehouses: Warehouse[] }>(
+      "sql/warehouses",
+    );
     if (!response.data.warehouses) {
       throw new Error("No Databricks SQL Warehouses found in workspace");
     }
@@ -25,4 +26,5 @@ const selectWarehouse = dataSource({
     };
   },
 });
+
 export default { selectWarehouse };

@@ -4,6 +4,7 @@ import { deleteAllWebhookSubscriptionsInputs } from "../../inputs";
 import type { GuruWebhookSubscription } from "../../types";
 import { deleteWebhookSubscription } from "./deleteWebhookSubscription";
 import { listWebhookSubscriptions } from "./listWebhookSubscriptions";
+
 export const deleteAllWebhookSubscriptions = action({
   display: {
     label: "Delete All Webhook Subscriptions",
@@ -17,7 +18,9 @@ export const deleteAllWebhookSubscriptions = action({
         connection,
       },
     );
+
     const subscriptions = subscriptionsData as GuruWebhookSubscription[];
+
     const results = await Promise.allSettled(
       subscriptions.map((subscription) =>
         deleteWebhookSubscription
@@ -28,8 +31,10 @@ export const deleteAllWebhookSubscriptions = action({
           .then(() => subscription.id),
       ),
     );
+
     const deletedSubscriptions: string[] = [];
     const failedSubscriptions: string[] = [];
+
     results.forEach((result, i) => {
       const subscriptionId = subscriptions[i].id;
       if (result.status === "fulfilled") {
@@ -42,6 +47,7 @@ export const deleteAllWebhookSubscriptions = action({
         );
       }
     });
+
     const data = {
       message: `Successfully deleted ${deletedSubscriptions.length} webhook subscriptions`,
       deletedCount: deletedSubscriptions.length,
@@ -50,6 +56,7 @@ export const deleteAllWebhookSubscriptions = action({
       deletedSubscriptions,
       failedSubscriptions,
     };
+
     return { data };
   },
   inputs: deleteAllWebhookSubscriptionsInputs,

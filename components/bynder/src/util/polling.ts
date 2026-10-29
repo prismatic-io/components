@@ -7,6 +7,7 @@ import type {
   PollResourceConfig,
 } from "../types/triggers";
 import { fetchAllRecords, fetchCollections } from "./index";
+
 export const fetchRecordsForResource = async (
   conn: Connection,
   resourceType: string,
@@ -70,6 +71,7 @@ export const fetchRecordsForResource = async (
       throw new Error(`Unsupported resource type: ${resourceType}`);
   }
 };
+
 const filterByTimestamp = (
   records: BynderRecord[],
   since: string,
@@ -84,6 +86,7 @@ const filterByTimestamp = (
   };
   const created: BynderRecord[] = [];
   const updated: BynderRecord[] = [];
+
   for (const record of records) {
     if (isAfter(record[createdAtField])) {
       created.push(record);
@@ -91,8 +94,10 @@ const filterByTimestamp = (
       updated.push(record);
     }
   }
+
   return { created, updated };
 };
+
 export const collectRecordChanges = (
   records: BynderRecord[],
   since: string,
@@ -116,6 +121,7 @@ export const collectRecordChanges = (
     updated: isInitialSync || showUpdatedRecords ? updated : [],
   };
 };
+
 export const resolveBynderRecordChanges = (
   data: BynderChangesObject | undefined,
 ): BynderRecordChange[] => {

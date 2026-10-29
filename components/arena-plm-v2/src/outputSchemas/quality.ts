@@ -43,6 +43,7 @@ export const workflowDecisionResponseSchema = {
     guid: { type: "string" },
   },
 };
+
 export const addQualityStepApproverOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +51,7 @@ export const addQualityStepApproverOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const attributeGroupFullSchema = {
   type: "object" as const,
   properties: {
@@ -200,6 +202,7 @@ export const attributeGroupFullSchema = {
     },
   },
 };
+
 export const changeQualityProcessStatusOutputSchema = {
   type: "object" as const,
   properties: {
@@ -251,16 +254,19 @@ export const changeQualityProcessStatusOutputSchema = {
     status: { type: "string" },
   },
 };
+
 export const deleteQualityProcessOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteQualityProcessStepAffectedOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const listQualityProcessNumberFormatsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -268,6 +274,7 @@ export const listQualityProcessNumberFormatsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listQualityProcessOwnersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -285,6 +292,7 @@ export const listQualityProcessOwnersOutputSchema = {
     count: { type: "integer" },
   },
 };
+
 export const qualityAffectedSchema = {
   type: "object" as const,
   properties: {
@@ -310,6 +318,7 @@ export const qualityAffectedSchema = {
     notes: { type: "string" },
   },
 };
+
 export const listQualityProcessStepAffectedOutputSchema = {
   type: "object" as const,
   properties: {
@@ -317,6 +326,7 @@ export const listQualityProcessStepAffectedOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const qualityProcessStepSchema = {
   type: "object" as const,
   properties: {
@@ -452,6 +462,7 @@ export const qualityProcessStepSchema = {
     reopenedDate: { type: "string" },
   },
 };
+
 export const listQualityProcessStepsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -459,6 +470,7 @@ export const listQualityProcessStepsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listQualityProcessTemplateAttributeGroupsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -466,6 +478,7 @@ export const listQualityProcessTemplateAttributeGroupsOutputSchema = {
     results: { type: "array", items: attributeGroupFullSchema },
   },
 };
+
 export const listQualityProcessTemplateAttributesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -679,6 +692,7 @@ export const listQualityProcessTemplateAttributesOutputSchema = {
     },
   },
 };
+
 export const qualityTemplateSchema = {
   type: "object" as const,
   properties: {
@@ -1033,6 +1047,7 @@ export const qualityTemplateSchema = {
     },
   },
 };
+
 export const listQualityProcessTemplatesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1040,6 +1055,7 @@ export const listQualityProcessTemplatesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const workflowDecisionFullSchema = {
   type: "object" as const,
   properties: {
@@ -1091,6 +1107,7 @@ export const workflowDecisionFullSchema = {
     },
   },
 };
+
 export const listQualityStepDecisionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1098,6 +1115,7 @@ export const listQualityStepDecisionsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const qualityProcessVoFullResultSchema = {
   type: "object" as const,
   properties: {
@@ -1141,6 +1159,7 @@ export const qualityProcessVoFullResultSchema = {
     targetDateComments: { type: "string" },
   },
 };
+
 export const qualityProcessListSchema = {
   type: "object" as const,
   properties: {
@@ -1148,6 +1167,7 @@ export const qualityProcessListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const qualityProcessSchema = {
   type: "object" as const,
   properties: {

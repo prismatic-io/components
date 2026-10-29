@@ -5,6 +5,7 @@ import { getClient } from "../../client";
 import { listVendorBankAccountsInputs } from "../../inputs/vendor";
 import { listVendorBankAccountsExamplePayload } from "../../examplePayloads";
 import { BANK_ACCOUNT_LIST_ENDPOINTS } from "../../constants";
+
 export const listVendorBankAccounts = action({
   display: {
     label: "List Vendor Bank Accounts",
@@ -19,6 +20,7 @@ export const listVendorBankAccounts = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       start,
       max,
@@ -31,17 +33,17 @@ export const listVendorBankAccounts = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       BANK_ACCOUNT_LIST_ENDPOINTS.vendorBankAccount,
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listVendorBankAccountsExamplePayload.data,
   }),
   inputs: listVendorBankAccountsInputs,

@@ -43,6 +43,7 @@ export const describeOpportunitiesExamplePayload = {
     ],
   },
 };
+
 export const getOpportunitiesByFilterExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",
@@ -69,6 +70,7 @@ export const getOpportunitiesByFilterExamplePayload = {
     ],
   },
 };
+
 export const syncOpportunitiesExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",
@@ -87,6 +89,7 @@ export const syncOpportunitiesExamplePayload = {
     ],
   },
 };
+
 export const deleteOpportunitiesExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",

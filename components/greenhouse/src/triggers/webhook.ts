@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { trigger, util } from "@prismatic-io/spectral";
 import { webhookExamplePayload } from "../examplePayloads";
 import { secret_key } from "../inputs";
+
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -42,6 +43,7 @@ export const webhook = trigger({
       }
       throw new Error("Unhandled event type");
     }
+
     throw new Error("Signature verification failed");
   },
   inputs: {

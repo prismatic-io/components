@@ -5,6 +5,7 @@ import { submitMetricsExamplePayload } from "../../examplePayloads";
 import { submitMetricsInputs } from "../../inputs";
 import { submitMetricsOutputSchema } from "../../outputSchemas";
 import type { SubmitMetricsResponse } from "../../types";
+
 export const submitMetrics = action({
   display: {
     label: "Submit Metrics",
@@ -23,11 +24,10 @@ export const submitMetrics = action({
       SUBMIT_METRICS_PATH,
       { series: metricSeries },
     );
+
     return { data: response.data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...submitMetricsExamplePayload,
   }),
   examplePayload: submitMetricsExamplePayload,

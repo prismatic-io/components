@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { bulkUpdateVendorsInputs } from "../../inputs/vendor";
 import { bulkUpdateVendorsExamplePayload } from "../../examplePayloads";
+
 export const bulkUpdateVendors = action({
   display: {
     label: "Bulk Update Vendors",
@@ -15,6 +16,7 @@ export const bulkUpdateVendors = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       bulk: vendorUpdateBulk,
     };
@@ -23,17 +25,17 @@ export const bulkUpdateVendors = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Bulk/Crud/Update/Vendor.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: bulkUpdateVendorsExamplePayload.data,
   }),
   inputs: bulkUpdateVendorsInputs,

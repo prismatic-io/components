@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { deleteBulkJobInputs } from "../../inputs";
 import { deleteBulkJobExamplePayload } from "../../examplePayloads";
+
 export const deleteBulkJob = action({
   display: {
     label: "Delete Bulk Job",
@@ -20,8 +21,7 @@ export const deleteBulkJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteBulkJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteBulkJobExamplePayload,
   examplePayload: deleteBulkJobExamplePayload,
 });

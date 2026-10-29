@@ -5,6 +5,7 @@ import { listContactsExamplePayload } from "../../examplePayloads";
 import { listContactsInputs } from "../../inputs";
 import { getAllPaginatedData, getProps } from "../../util";
 import { CONTACT_PROPS, hubspotPaths } from "../../constants";
+
 export const listContacts = action({
   display: {
     label: "List Contacts",
@@ -18,10 +19,12 @@ export const listContacts = action({
       timeout: params.timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       CONTACT_PROPS,
       params.additionalProperties || [],
     );
+
     const data = await getAllPaginatedData(
       client,
       hubspotPaths.objects("contacts"),
@@ -37,6 +40,7 @@ export const listContacts = action({
         },
       },
     );
+
     return { data };
   },
   inputs: listContactsInputs,

@@ -7,6 +7,7 @@ import {
   connection,
   fetchAll,
 } from "./common";
+
 const odataAuditParams = {
   fetchAll,
   $filter,
@@ -14,6 +15,7 @@ const odataAuditParams = {
   $top,
   $skipToken,
 };
+
 const microsoftEntraId = input({
   label: "Microsoft Entra ID",
   example: "705c034c-034c-705c-4c03-5c704c035c70",
@@ -25,10 +27,12 @@ const microsoftEntraId = input({
   clean: util.types.toString,
   dataSource: "selectDirectoryAudit",
 });
+
 export const getDirectoyAuditInputs = {
   connection,
   microsoftEntraId,
 };
+
 const listPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -38,6 +42,7 @@ const listPagination = structuredObjectInput({
     $skipToken: odataAuditParams.$skipToken,
   },
 });
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -47,6 +52,7 @@ const listFilters = structuredObjectInput({
     $orderBy: odataAuditParams.$orderBy,
   },
 });
+
 export const listDirectoryAuditsInputs = {
   connection,
   fetchAll: odataAuditParams.fetchAll,

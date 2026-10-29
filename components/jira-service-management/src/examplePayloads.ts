@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { SUCCESS_RESPONSE } from "./constants";
+
 export const listServiceDesksExamplePayload = {
   data: {
     _expands: [],
@@ -24,6 +25,7 @@ export const listServiceDesksExamplePayload = {
     ],
   },
 };
+
 export const getServiceDeskExamplePayload = {
   data: {
     id: "10001",
@@ -35,6 +37,7 @@ export const getServiceDeskExamplePayload = {
     },
   },
 };
+
 export const listRequestsExamplePayload = {
   data: {
     _expands: [],
@@ -67,6 +70,7 @@ export const listRequestsExamplePayload = {
     ],
   },
 };
+
 export const createRequestExamplePayload = {
   data: {
     issueId: "107001",
@@ -91,6 +95,7 @@ export const createRequestExamplePayload = {
     },
   },
 };
+
 export const getRequestExamplePayload = {
   data: {
     issueId: "107001",
@@ -123,6 +128,7 @@ export const getRequestExamplePayload = {
     },
   },
 };
+
 export const addCommentExamplePayload = {
   data: {
     _expands: ["attachment", "renderedBody"],
@@ -148,6 +154,7 @@ export const addCommentExamplePayload = {
     },
   },
 };
+
 export const listCommentsExamplePayload = {
   data: {
     _expands: [],
@@ -184,6 +191,7 @@ export const listCommentsExamplePayload = {
     ],
   },
 };
+
 export const addAttachmentExamplePayload = {
   data: {
     comment: {
@@ -238,12 +246,14 @@ export const addAttachmentExamplePayload = {
     },
   },
 };
+
 export const uploadTemporaryFileExamplePayload = {
   data: {
     temporaryAttachmentId: "temp8186986881700442965",
     fileName: "atlassian.png",
   },
 };
+
 export const listApprovalsExamplePayload = {
   data: {
     _expands: [],
@@ -280,6 +290,7 @@ export const listApprovalsExamplePayload = {
     ],
   },
 };
+
 export const approveRequestExamplePayload = {
   data: {
     id: "1",
@@ -303,6 +314,7 @@ export const approveRequestExamplePayload = {
     },
   },
 };
+
 export const listSlaExamplePayload = {
   data: {
     _expands: [],
@@ -331,6 +343,7 @@ export const listSlaExamplePayload = {
     ],
   },
 };
+
 export const listTransitionsExamplePayload = {
   data: {
     _expands: [],
@@ -347,9 +360,11 @@ export const listTransitionsExamplePayload = {
     ],
   },
 };
+
 export const transitionRequestExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const listOrganizationsExamplePayload = {
   data: {
     _expands: [],
@@ -373,6 +388,7 @@ export const listOrganizationsExamplePayload = {
     ],
   },
 };
+
 export const createOrganizationExamplePayload = {
   data: {
     _links: {
@@ -383,6 +399,7 @@ export const createOrganizationExamplePayload = {
     scimManaged: false,
   },
 };
+
 export const getOrganizationExamplePayload = {
   data: {
     _links: {
@@ -393,9 +410,11 @@ export const getOrganizationExamplePayload = {
     scimManaged: false,
   },
 };
+
 export const deleteOrganizationExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const listOrganizationUsersExamplePayload = {
   data: {
     _expands: [],
@@ -421,12 +440,15 @@ export const listOrganizationUsersExamplePayload = {
     ],
   },
 };
+
 export const addOrganizationUsersExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const removeOrganizationUsersExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const listServiceDeskOrganizationsExamplePayload = {
   data: {
     _expands: [],
@@ -449,12 +471,15 @@ export const listServiceDeskOrganizationsExamplePayload = {
     ],
   },
 };
+
 export const addServiceDeskOrganizationExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const removeServiceDeskOrganizationExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const listOrganizationPropertiesExamplePayload = {
   data: {
     keys: [
@@ -465,6 +490,7 @@ export const listOrganizationPropertiesExamplePayload = {
     ],
   },
 };
+
 export const getOrganizationPropertyExamplePayload = {
   data: {
     key: "tier",
@@ -474,12 +500,15 @@ export const getOrganizationPropertyExamplePayload = {
     },
   },
 };
+
 export const setOrganizationPropertyExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const deleteOrganizationPropertyExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const createCustomerExamplePayload = {
   data: {
     accountId:
@@ -492,6 +521,7 @@ export const createCustomerExamplePayload = {
     timeZone: "Australia/Sydney",
   },
 };
+
 export const createPortalOnlyCustomerExamplePayload = {
   data: {
     accountId: "5b10ac8d82e05b22cc7d4ef5",
@@ -507,6 +537,7 @@ export const createPortalOnlyCustomerExamplePayload = {
     },
   },
 };
+
 export const listCustomersExamplePayload = {
   data: {
     _expands: [],
@@ -534,15 +565,19 @@ export const listCustomersExamplePayload = {
     ],
   },
 };
+
 export const addCustomersExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const removeCustomersExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const revokePortalAccessExamplePayload = {
   data: SUCCESS_RESPONSE,
 };
+
 export const listRequestTypesExamplePayload = {
   data: {
     _expands: [],
@@ -588,6 +623,7 @@ export const listRequestTypesExamplePayload = {
     ],
   },
 };
+
 export const getRequestTypeExamplePayload = {
   data: {
     _expands: [],
@@ -619,6 +655,7 @@ export const getRequestTypeExamplePayload = {
     },
   },
 };
+
 export const listQueuesExamplePayload = {
   data: {
     _expands: [],
@@ -651,6 +688,7 @@ export const listQueuesExamplePayload = {
     ],
   },
 };
+
 export const listQueueIssuesExamplePayload = {
   data: {
     _expands: [],
@@ -695,12 +733,14 @@ export const listQueueIssuesExamplePayload = {
     ],
   },
 };
+
 const dataSourcePicklistExamplePayload = {
   result: [
     { key: "10001", label: "IT Help Desk" },
     { key: "10002", label: "Customer Service" },
   ],
 };
+
 export const selectServiceDeskExamplePayload = dataSourcePicklistExamplePayload;
 export const selectOrganizationExamplePayload =
   dataSourcePicklistExamplePayload;
@@ -730,6 +770,7 @@ export const selectOpsScheduleExamplePayload = {
     },
   ],
 };
+
 export const createIntegrationAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -737,6 +778,7 @@ export const createIntegrationAlertExamplePayload = {
     requestId: "43a29c5c-3dbf-4fa4-9c26-f4f71023e120",
   },
 };
+
 export const acknowledgeIntegrationAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -744,6 +786,7 @@ export const acknowledgeIntegrationAlertExamplePayload = {
     requestId: "8eb01b62-04a5-4d57-a4a8-602e6ef5deaf",
   },
 };
+
 export const closeIntegrationAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -751,6 +794,7 @@ export const closeIntegrationAlertExamplePayload = {
     requestId: "2b0b8a2a-9ca6-4b5d-a3b1-3b1f0ce15de0",
   },
 };
+
 export const addIntegrationAlertNoteExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -758,6 +802,7 @@ export const addIntegrationAlertNoteExamplePayload = {
     requestId: "a93e4881-0c2e-4f2a-9f3a-0e2bdc9a6d11",
   },
 };
+
 export const getIntegrationAlertRequestExamplePayload = {
   data: {
     data: {
@@ -774,6 +819,7 @@ export const getIntegrationAlertRequestExamplePayload = {
     requestId: "43a29c5c-3dbf-4fa4-9c26-f4f71023e120",
   },
 };
+
 export const listOpsAlertsExamplePayload = {
   data: {
     values: [
@@ -807,6 +853,7 @@ export const listOpsAlertsExamplePayload = {
     count: 79,
   },
 };
+
 export const getOpsAlertExamplePayload = {
   data: {
     data: {
@@ -835,7 +882,9 @@ export const getOpsAlertExamplePayload = {
     requestId: "0a2b8c39-1ad7-46a9-9b43-6f5a13d4f7c0",
   },
 };
+
 export const deleteOpsAlertExamplePayload = { data: SUCCESS_RESPONSE };
+
 export const createOpsAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -843,6 +892,7 @@ export const createOpsAlertExamplePayload = {
     requestId: "8b7f1f8d-9b4c-4e2c-8e1d-2b5a7c9d0f1a",
   },
 };
+
 export const acknowledgeOpsAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -850,6 +900,7 @@ export const acknowledgeOpsAlertExamplePayload = {
     requestId: "8eb01b62-04a5-4d57-a4a8-602e6ef5deaf",
   },
 };
+
 export const closeOpsAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -857,6 +908,7 @@ export const closeOpsAlertExamplePayload = {
     requestId: "2b0b8a2a-9ca6-4b5d-a3b1-3b1f0ce15de0",
   },
 };
+
 export const snoozeOpsAlertExamplePayload = {
   data: {
     result: "Request will be processed",
@@ -864,6 +916,7 @@ export const snoozeOpsAlertExamplePayload = {
     requestId: "1de1f7a8-9e0e-4b13-a4a6-b7f5e4ed3f70",
   },
 };
+
 export const listOpsSchedulesExamplePayload = {
   data: {
     values: [
@@ -880,6 +933,7 @@ export const listOpsSchedulesExamplePayload = {
     _expands: [],
   },
 };
+
 export const getOpsScheduleExamplePayload = {
   data: {
     id: "55a1ec02-92b6-4c95-9f0a-44213c8c5fb6",
@@ -903,6 +957,7 @@ export const getOpsScheduleExamplePayload = {
     ],
   },
 };
+
 export const getOpsOnCallExamplePayload = {
   data: {
     onCallParticipants: [
@@ -931,6 +986,7 @@ export const getOpsOnCallExamplePayload = {
     ],
   },
 };
+
 export const getAssetObjectExamplePayload = {
   data: {
     workspaceId: "f1668d0c-828c-470c-b7d1-8c4f48cd345a",
@@ -995,9 +1051,13 @@ export const getAssetObjectExamplePayload = {
     },
   },
 };
+
 export const createAssetObjectExamplePayload = getAssetObjectExamplePayload;
+
 export const updateAssetObjectExamplePayload = getAssetObjectExamplePayload;
+
 export const deleteAssetObjectExamplePayload = { data: SUCCESS_RESPONSE };
+
 export const searchAssetObjectsExamplePayload = {
   data: {
     startAt: 0,
@@ -1029,6 +1089,7 @@ export const searchAssetObjectsExamplePayload = {
     isLast: true,
   },
 };
+
 export const listAssetSchemasExamplePayload = {
   data: {
     startAt: 0,
@@ -1054,9 +1115,11 @@ export const listAssetSchemasExamplePayload = {
     ],
   },
 };
+
 export const getAssetSchemaExamplePayload = {
   data: listAssetSchemasExamplePayload.data.values[0],
 };
+
 export const listSchemaObjectTypesExamplePayload = {
   data: {
     entries: [
@@ -1095,6 +1158,7 @@ export const listSchemaObjectTypesExamplePayload = {
     ],
   },
 };
+
 export const onNewRequestExamplePayload: {
   payload: TriggerPayload;
   polledNoChanges?: boolean;
@@ -1150,6 +1214,7 @@ export const onNewRequestExamplePayload: {
   },
   polledNoChanges: false,
 };
+
 export const onNewOpsAlertExamplePayload: {
   payload: TriggerPayload;
   polledNoChanges?: boolean;

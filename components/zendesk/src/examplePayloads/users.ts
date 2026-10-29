@@ -1,4 +1,5 @@
 import { SUCCESS_MESSAGE } from "../constants";
+
 export const listUsersRaw = [
   {
     id: 223443,
@@ -9,6 +10,7 @@ export const listUsersRaw = [
     name: "James A. Rosen",
   },
 ];
+
 const searchUsersRaw = [
   {
     id: 35436,
@@ -20,6 +22,7 @@ const searchUsersRaw = [
     name: "Terry Gilliam",
   },
 ];
+
 const createUserRaw = {
   id: 35436,
   name: "Roger Wilco",
@@ -34,11 +37,19 @@ const createUserRaw = {
   updated_at: "2024-04-17T17:18:10Z",
   url: "https://company.zendesk.com/api/v2/users/35436.json",
 };
+
 const showUserRaw = createUserRaw;
+
 const updateUserRaw = createUserRaw;
+
 export const createUserExamplePayload = { data: createUserRaw };
+
 export const deleteUserExamplePayload = { data: SUCCESS_MESSAGE };
+
 export const listUsersExamplePayload = { data: listUsersRaw };
+
 export const searchUsersExamplePayload = { data: searchUsersRaw };
+
 export const showUserExamplePayload = { data: showUserRaw as unknown };
+
 export const updateUserExamplePayload = { data: updateUserRaw };

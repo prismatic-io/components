@@ -5,6 +5,7 @@ interface CustomerClientQuery {
   descriptiveName: string;
   id: string;
 }
+
 export interface CustomerClientResult {
   customerClient: CustomerClientQuery;
 }

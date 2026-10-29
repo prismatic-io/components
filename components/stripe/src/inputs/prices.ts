@@ -11,6 +11,7 @@ import {
   timeout,
 } from "./common";
 import { active } from "./products";
+
 export const unitPrice = input({
   label: "Unit Price",
   type: "string",
@@ -21,6 +22,7 @@ export const unitPrice = input({
   required: false,
   clean: cleanAmountInput,
 });
+
 export const nickname = input({
   label: "Nickname",
   type: "string",
@@ -30,6 +32,7 @@ export const nickname = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const recurringInterval = input({
   label: "Recurring Interval",
   type: "string",
@@ -44,6 +47,7 @@ export const recurringInterval = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const createPriceInputs = {
   productId,
   currency,
@@ -56,16 +60,19 @@ export const createPriceInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getPriceInputs = {
   priceId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listPricesInputs = {
   timeout,
   pagination: forwardCursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const updatePriceInputs = {
   priceId,
   active,

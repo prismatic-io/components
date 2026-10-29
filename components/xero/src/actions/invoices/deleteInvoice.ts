@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { deleteInvoiceInputs } from "../../inputs";
 import { deleteInvoiceExamplePayload } from "../../examplePayloads";
+
 export const deleteInvoice = action({
   display: {
     label: "Delete Invoice",

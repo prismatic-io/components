@@ -4,6 +4,7 @@ import { listProjectWebhooksExamplePayload } from "../../examplePayloads";
 import { listProjectWebhooksInputs } from "../../inputs";
 import { listProjectWebhooksOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listProjectWebhooks = action({
   display: {
     label: "List Project Webhooks",
@@ -22,9 +23,8 @@ export const listProjectWebhooks = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listProjectWebhooksExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listProjectWebhooksExamplePayload,
   examplePayload: listProjectWebhooksExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

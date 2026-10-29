@@ -8,6 +8,7 @@ import {
   groupId,
   pageSize,
 } from "./common";
+
 const paginationInput = () =>
   structuredObjectInput({
     label: "Pagination",
@@ -18,6 +19,7 @@ const paginationInput = () =>
       pageSize,
     },
   });
+
 const groupName = input({
   label: "Group Name",
   type: "string",
@@ -27,6 +29,7 @@ const groupName = input({
   comments: "The name of the group.",
   clean: cleanFunctionForString,
 });
+
 const created = input({
   label: "Created",
   type: "string",
@@ -37,6 +40,7 @@ const created = input({
     "Date of creation of the group. Format would be yyyy-MM-dd'T'HH:mm:ssZ",
   clean: cleanFunctionForString,
 });
+
 const isDefaultGroup = input({
   label: "Is Default Group",
   type: "string",
@@ -59,12 +63,14 @@ const isDefaultGroup = input({
   ],
   clean: cleanFunctionForBoolean,
 });
+
 export const createGroupInputs = {
   connection,
   groupName,
   created,
   isDefaultGroup,
 };
+
 export const deleteGroupInputs = {
   connection,
   groupId: {
@@ -73,6 +79,7 @@ export const deleteGroupInputs = {
     required: true,
   },
 };
+
 export const getGroupInputs = {
   connection,
   groupId: {
@@ -81,11 +88,13 @@ export const getGroupInputs = {
     required: true,
   },
 };
+
 export const listGroupsInputs = {
   connection,
   fetchAll,
   pagination: paginationInput(),
 };
+
 export const listGroupEventsInputs = {
   connection,
   groupId: {
@@ -96,6 +105,7 @@ export const listGroupEventsInputs = {
   fetchAll,
   pagination: paginationInput(),
 };
+
 export const listGroupUsersInputs = {
   connection,
   groupId: {
@@ -106,6 +116,7 @@ export const listGroupUsersInputs = {
   fetchAll,
   pagination: paginationInput(),
 };
+
 export const updateGroupInputs = {
   connection,
   groupId: {
@@ -123,6 +134,7 @@ export const updateGroupInputs = {
   },
   isDefaultGroup,
 };
+
 export const selectGroupInputs = {
   connection,
   filterQuery,

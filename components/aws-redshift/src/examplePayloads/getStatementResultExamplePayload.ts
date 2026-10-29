@@ -1,4 +1,5 @@
 import type { GetStatementResultCommandOutput } from "@aws-sdk/client-redshift-data";
+
 export const getStatementResultExamplePayload: {
   data: GetStatementResultCommandOutput;
 } = {

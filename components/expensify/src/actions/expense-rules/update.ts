@@ -9,6 +9,7 @@ import {
 } from "../../inputs";
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
+
 export const updateExpenseRule = action({
   display: {
     description:
@@ -43,6 +44,7 @@ export const updateExpenseRule = action({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

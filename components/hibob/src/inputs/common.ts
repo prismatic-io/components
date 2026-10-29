@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The HiBob connection to use.",
 });
+
 export const employeeId = input({
   label: "Employee ID",
   type: "string",

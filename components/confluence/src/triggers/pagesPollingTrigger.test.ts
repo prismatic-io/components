@@ -4,6 +4,7 @@ import type { Page } from "../types";
 import { resolvePageRecordChanges } from "../util";
 import { newSpacesPollingTrigger } from "./newSpacesPollingTrigger";
 import { pagesPollingTrigger } from "./pagesPollingTrigger";
+
 describe("polling trigger batching", () => {
   test.each([
     ["New and Updated Pages", pagesPollingTrigger],
@@ -14,6 +15,7 @@ describe("polling trigger batching", () => {
     expect(trigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
 });
+
 describe("resolvePageRecordChanges", () => {
   const created: Page = {
     id: "1",
@@ -27,6 +29,7 @@ describe("resolvePageRecordChanges", () => {
     createdAt: "2025-01-01T00:00:00.000Z",
     version: { createdAt: "2026-01-02T00:00:00.000Z" },
   };
+
   test("tags every page with how it changed", () => {
     expect(
       resolvePageRecordChanges({
@@ -38,10 +41,12 @@ describe("resolvePageRecordChanges", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("returns [] for empty or undefined changes", () => {
     expect(resolvePageRecordChanges({})).toEqual([]);
     expect(resolvePageRecordChanges(undefined)).toEqual([]);
   });
+
   test("tolerates an absent array", () => {
     expect(resolvePageRecordChanges({ createdRecords: [created] })).toEqual([
       { changeType: "created", record: created },
@@ -50,6 +55,7 @@ describe("resolvePageRecordChanges", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const payload = {
       ...defaultTriggerPayload(),

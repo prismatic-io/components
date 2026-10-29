@@ -9,6 +9,7 @@ import {
   pagination,
   personId,
 } from "./common";
+
 const assignmentId = input({
   label: "Assignment ID",
   type: "string",
@@ -19,6 +20,7 @@ const assignmentId = input({
   example: "300100551559732",
   clean: cleanId,
 });
+
 export const getAssignmentInputs = {
   connection,
   personId,
@@ -26,6 +28,7 @@ export const getAssignmentInputs = {
   expand,
   includeMetadataLinks,
 };
+
 export const listAssignmentsInputs = {
   connection,
   personId,

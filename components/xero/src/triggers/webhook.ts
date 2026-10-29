@@ -2,6 +2,7 @@ import { type HttpResponse, trigger, util } from "@prismatic-io/spectral";
 import crypto from "crypto";
 import { webhookInputs } from "../inputs";
 import { webhookExamplePayload } from "../examplePayloads";
+
 const validateSignature = (
   signature: string,
   payload: string | Buffer,
@@ -11,8 +12,10 @@ const validateSignature = (
     .createHmac("sha256", util.types.toString(webhookKey))
     .update(payload)
     .digest("base64");
+
   return signature === hash;
 };
+
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -31,6 +34,7 @@ export const webhook = trigger({
     }
     const incomingSignature = payload.headers["x-xero-signature"];
     const incomingPayload = payload.rawBody.data as string | Buffer;
+
     const response: HttpResponse = {
       statusCode: 200,
       contentType: "text/plain; charset=utf-8",
@@ -39,11 +43,13 @@ export const webhook = trigger({
       contentType: "text/plain; charset=utf-8",
       statusCode: 401,
     };
+
     const isValid = validateSignature(
       incomingSignature,
       incomingPayload,
       params.webhookKey,
     );
+
     if (isValid) {
       return Promise.resolve({
         payload,

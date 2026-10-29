@@ -5,6 +5,7 @@ import { getWorkersExamplePayload } from "../../examplePayloads";
 import { getWorkersInputs } from "../../inputs";
 import { getWorkersOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const getWorkers = action({
   display: {
     label: "List Workers",

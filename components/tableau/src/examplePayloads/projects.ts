@@ -17,6 +17,7 @@ const projectObject = {
     datasourceCount: "3",
   },
 };
+
 export const listProjectsExamplePayload = {
   data: {
     pagination: {
@@ -29,14 +30,19 @@ export const listProjectsExamplePayload = {
     },
   },
 };
+
 export const searchProjectsExamplePayload = listProjectsExamplePayload;
+
 export const getProjectExamplePayload = listProjectsExamplePayload;
+
 export const createProjectExamplePayload = {
   data: {
     project: projectObject,
   },
 };
+
 export const updateProjectExamplePayload = createProjectExamplePayload;
+
 export const deleteProjectsExamplePayload = {
   data: null,
 };

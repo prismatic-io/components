@@ -1,4 +1,5 @@
 import { trigger } from "@prismatic-io/spectral";
+
 export const postmarkWebhook = trigger({
   display: {
     label: "Webhook",
@@ -16,4 +17,5 @@ export const postmarkWebhook = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export default { postmarkWebhook };

@@ -6,6 +6,7 @@ import {
 import { createRedshiftClient } from "../../client";
 import { getStatementResultInputs } from "../../inputs";
 import { getStatementResultExamplePayload } from "../../examplePayloads";
+
 export const getStatementResult = action({
   display: {
     label: "Get Statement Result",
@@ -22,12 +23,15 @@ export const getStatementResult = action({
       awsRegion,
       context.debug.enabled,
     );
+
     const commandInput: GetStatementResultCommandInput = {
       Id: statementId,
       NextToken: nextToken,
     };
+
     const command = new GetStatementResultCommand(commandInput);
     const response = await client.send(command);
+
     return {
       data: response,
     };

@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connectionInput, userIdInput } from "../inputs";
 import { createClient } from "../client";
+
 export const selectLabel = dataSource({
   display: {
     label: "Select Label",

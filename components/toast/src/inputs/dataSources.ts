@@ -1,14 +1,18 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection, restaurantExternalId } from "./shared";
+
 const restaurantExternalIdWithoutDs = {
   ...restaurantExternalId,
   dataSource: undefined,
 };
+
 export const selectEmployeeInputs = {
   connection,
   restaurantExternalId: restaurantExternalIdWithoutDs,
 };
+
 export const selectJobInputs = selectEmployeeInputs;
+
 const startDate = input({
   label: "Start Date (Required)",
   type: "string",
@@ -19,6 +23,7 @@ const startDate = input({
   placeholder: "2015-10-10T06:00:00.000+0000",
   clean: util.types.toString,
 });
+
 const endDate = input({
   label: "End Date (Required)",
   type: "string",
@@ -29,12 +34,14 @@ const endDate = input({
   placeholder: "2015-10-10T12:00:00.000+0000",
   clean: util.types.toString,
 });
+
 export const selectShiftInputs = {
   connection,
   restaurantExternalId: restaurantExternalIdWithoutDs,
   startDate,
   endDate,
 };
+
 const timeEntryStartDate = input({
   label: "Start Date (Required)",
   type: "string",
@@ -45,6 +52,7 @@ const timeEntryStartDate = input({
   placeholder: "2015-10-10T06:00:00.000+0000",
   clean: util.types.toString,
 });
+
 const timeEntryEndDate = input({
   label: "End Date (Required)",
   type: "string",
@@ -55,11 +63,14 @@ const timeEntryEndDate = input({
   placeholder: "2015-10-10T12:00:00.000+0000",
   clean: util.types.toString,
 });
+
 export const selectTimeEntryInputs = {
   connection,
   restaurantExternalId: restaurantExternalIdWithoutDs,
   startDate: timeEntryStartDate,
   endDate: timeEntryEndDate,
 };
+
 export const selectConnectedRestaurantInputs = { connection };
+
 export const selectAccesibleRestaurantInputs = selectConnectedRestaurantInputs;

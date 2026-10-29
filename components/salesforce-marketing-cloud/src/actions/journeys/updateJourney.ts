@@ -4,6 +4,7 @@ import { JOURNEYS_PATH } from "../../constants";
 import { updateJourneyExamplePayload } from "../../examplePayloads";
 import { updateJourneyInputs } from "../../inputs";
 import { updateJourneyOutputSchema } from "../../outputSchemas";
+
 export const updateJourney = action({
   examplePayload: updateJourneyExamplePayload,
   display: {
@@ -29,6 +30,7 @@ export const updateJourney = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       id: journeyId,
       key: journeyKey,
@@ -36,15 +38,15 @@ export const updateJourney = action({
       version: journeyVersion,
       ...journeyExtraBody,
     };
+
     const { data } = await client.put(JOURNEYS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { journeyId, journeyKey, workflowApiVersion, journeyVersion },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateJourneyExamplePayload.data,
       id: journeyId,

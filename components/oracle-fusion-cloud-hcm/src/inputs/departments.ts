@@ -7,6 +7,7 @@ import {
   includeMetadataLinks,
   pagination,
 } from "./common";
+
 const departmentId = input({
   label: "Department ID",
   type: "string",
@@ -18,12 +19,14 @@ const departmentId = input({
   example: "300100012345678",
   clean: cleanId,
 });
+
 export const getDepartmentInputs = {
   connection,
   effectiveDate,
   departmentId,
   includeMetadataLinks,
 };
+
 export const listDepartmentsInputs = {
   connection,
   fetchAll,

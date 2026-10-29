@@ -9,6 +9,7 @@ import {
 } from "./mergeRequests";
 import { listProjectsInputs } from "./projects";
 import { pollChangesInputs } from "./triggers";
+
 describe("optional true/false selects", () => {
   test.each([
     [
@@ -42,6 +43,7 @@ describe("optional true/false selects", () => {
     expect(field.clean("false")).toBe(false);
   });
 });
+
 describe("boolean toggle cleans", () => {
   test.each([
     ["Fetch All", fetchAll.clean],
@@ -55,6 +57,7 @@ describe("boolean toggle cleans", () => {
     expect(clean("false")).toBe(false);
     expect(clean(false)).toBe(false);
   });
+
   test.each([
     ["Fetch All", fetchAll.clean],
     ["Membership", listProjectsInputs.membership.clean],
@@ -65,6 +68,7 @@ describe("boolean toggle cleans", () => {
     expect(clean(undefined)).toBe(false);
   });
 });
+
 describe("pagination number cleans", () => {
   test.each([
     ["Per Page", perPage.clean],
@@ -73,6 +77,7 @@ describe("pagination number cleans", () => {
     expect(clean("20")).toBe(20);
     expect(clean(" 2 ")).toBe(2);
   });
+
   test.each([
     ["Per Page", perPage.clean],
     ["Page", page.clean],
@@ -80,6 +85,7 @@ describe("pagination number cleans", () => {
     expect(clean("")).toBe(0);
     expect(clean(undefined)).toBe(0);
   });
+
   test.each([
     ["Per Page", perPage.clean],
     ["Page", page.clean],
@@ -87,6 +93,7 @@ describe("pagination number cleans", () => {
     expect(() => clean("abc")).toThrow(/cannot be coerced to a number/);
   });
 });
+
 describe("file content clean", () => {
   test.each([
     ["Create File Content", createFileInputs.content.clean],
@@ -94,6 +101,7 @@ describe("file content clean", () => {
   ])("%s keeps indentation and the trailing newline", (_name, clean) => {
     expect(clean("  key: v\n")).toBe("  key: v\n");
   });
+
   test.each([
     ["Create File Content", createFileInputs.content.clean],
     ["Update File Content", updateFileInputs.content.clean],

@@ -5,6 +5,7 @@ import { paginateRecordsWithCursor } from "../../util";
 import { WebhookVersion } from "../../constants";
 import { getActivityFieldsV2ExamplePayload } from "../../examplePayloads";
 import { getActivityFieldsV2OutputSchema } from "../../outputSchemas";
+
 export const getActivityFieldsV2 = action({
   display: {
     label: "Get Activity Fields (V2)",
@@ -20,6 +21,7 @@ export const getActivityFieldsV2 = action({
       context.debug.enabled,
       WebhookVersion.V2,
     );
+
     const data = await paginateRecordsWithCursor(
       client,
       "activityFields",

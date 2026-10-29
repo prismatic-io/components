@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { createVendorInputs } from "../../inputs/vendor";
 import { createVendorExamplePayload } from "../../examplePayloads";
+
 export const createVendor = action({
   display: {
     label: "Create Vendor",
@@ -18,6 +19,7 @@ export const createVendor = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       obj: {
         entity: "Vendor",
@@ -32,17 +34,17 @@ export const createVendor = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Create/Vendor.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createVendorExamplePayload.data,
   }),
   inputs: createVendorInputs,

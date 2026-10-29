@@ -6,6 +6,7 @@ import {
   summarizeTextExamplePayload,
 } from "../examplePayloads";
 import { connectionInput, messagesInput, modelInput } from "../inputs";
+
 const createCompletions = action({
   display: {
     label: "Create Multiple Chat Completions",
@@ -43,6 +44,7 @@ const createCompletions = action({
   },
   examplePayload: createCompletionsExamplePayload,
 });
+
 const summarizeText = action({
   display: {
     label: "Summarize Text",
@@ -75,4 +77,5 @@ const summarizeText = action({
   },
   examplePayload: summarizeTextExamplePayload,
 });
+
 export default { createCompletions, summarizeText };

@@ -4,6 +4,7 @@ import { selectFilesInputs } from "../inputs";
 import { disambiguateElements, getDriveQueryParams } from "../util";
 import { fetchFiles } from "../util/pagination";
 import { selectFilesExamplePayload } from "../examplePayloads";
+
 export const selectFiles = dataSource({
   display: {
     label: "List Files",
@@ -12,6 +13,7 @@ export const selectFiles = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, params) => {
     const drive = createClient(params.connection);
+
     const { files } = await fetchFiles({
       drive,
       initialParams: {
@@ -22,6 +24,7 @@ export const selectFiles = dataSource({
       },
       fetchAll: true,
     });
+
     return {
       result: disambiguateElements(
         files.map((file) => ({ key: file.id, label: file.name })),

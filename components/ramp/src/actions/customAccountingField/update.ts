@@ -8,6 +8,7 @@ import {
   name,
 } from "../../inputs";
 import { updateCustomAccountingFieldOutputSchema } from "../../outputSchemas";
+
 export const updateCustomAccountingField = action({
   display: {
     label: "Update Custom Accounting Field",
@@ -35,6 +36,7 @@ export const updateCustomAccountingField = action({
     { connection, customAccountingFieldId, name, isSplittable },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.patch(
       `/accounting/fields/${customAccountingFieldId}`,
       {
@@ -49,9 +51,7 @@ export const updateCustomAccountingField = action({
   examplePerform: async (
     _context,
     { customAccountingFieldId, name, isSplittable },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateCustomAccountingFieldResponse,
       id: customAccountingFieldId,

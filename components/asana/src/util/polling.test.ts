@@ -4,17 +4,16 @@ import {
   partitionTasksByTimestamp,
   resolvePollingRecordChanges,
 } from "./polling";
-const makeTask = (
-  overrides: Partial<Task> & {
-    gid: string;
-  },
-): Task =>
+
+const makeTask = (overrides: Partial<Task> & { gid: string }): Task =>
   ({
     name: "Test Task",
     ...overrides,
   }) as Task;
+
 describe("partitionTasksByTimestamp", () => {
   const sinceDate = new Date("2024-06-01T00:00:00Z");
+
   it("puts tasks created after sinceDate into created", () => {
     const task = makeTask({
       gid: "1",
@@ -25,6 +24,7 @@ describe("partitionTasksByTimestamp", () => {
     expect(result.created).toEqual([task]);
     expect(result.updated).toEqual([]);
   });
+
   it("puts tasks modified (but not created) after sinceDate into updated", () => {
     const task = makeTask({
       gid: "2",
@@ -35,6 +35,7 @@ describe("partitionTasksByTimestamp", () => {
     expect(result.created).toEqual([]);
     expect(result.updated).toEqual([task]);
   });
+
   it("puts tasks with no dates into updated", () => {
     const task = makeTask({
       gid: "3",
@@ -45,6 +46,7 @@ describe("partitionTasksByTimestamp", () => {
     expect(result.created).toEqual([]);
     expect(result.updated).toEqual([task]);
   });
+
   it("excludes tasks older than sinceDate in both fields", () => {
     const task = makeTask({
       gid: "4",
@@ -55,6 +57,7 @@ describe("partitionTasksByTimestamp", () => {
     expect(result.created).toEqual([]);
     expect(result.updated).toEqual([]);
   });
+
   it("partitions a mixed list correctly", () => {
     const created = makeTask({
       gid: "1",
@@ -79,9 +82,11 @@ describe("partitionTasksByTimestamp", () => {
     expect(result.updated).toEqual([updated]);
   });
 });
+
 describe("resolvePollingRecordChanges", () => {
   const created = makeTask({ gid: "1", created_at: "2024-07-01T00:00:00Z" });
   const updated = makeTask({ gid: "2", modified_at: "2024-07-01T00:00:00Z" });
+
   it("tags every record with how it changed", () => {
     const result: PollingRecordChange[] = resolvePollingRecordChanges({
       created: [created],
@@ -92,10 +97,12 @@ describe("resolvePollingRecordChanges", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   it("returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({})).toEqual([]);
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   it("tolerates an absent array", () => {
     expect(resolvePollingRecordChanges({ created: [created] })).toEqual([
       { changeType: "created", record: created },

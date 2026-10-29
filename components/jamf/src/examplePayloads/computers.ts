@@ -1,8 +1,7 @@
 import type { Element } from "@prismatic-io/spectral";
 import type { ComputerInventory, PagedResponse } from "../types";
-export const getComputerExamplePayload: {
-  data: ComputerInventory;
-} = {
+
+export const getComputerExamplePayload: { data: ComputerInventory } = {
   data: {
     id: "1",
     udid: "A8C5F29D-1234-5678-ABCD-9E0F1B2C3D4E",
@@ -42,6 +41,7 @@ export const getComputerExamplePayload: {
     },
   },
 };
+
 export const listComputersExamplePayload: {
   data: PagedResponse<ComputerInventory>;
 } = {
@@ -50,13 +50,11 @@ export const listComputersExamplePayload: {
     totalCount: 1,
   },
 };
-export const updateComputerExamplePayload: {
-  data: string;
-} = {
+
+export const updateComputerExamplePayload: { data: string } = {
   data: "Successfully updated computer 1",
 };
-export const selectComputerExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectComputerExamplePayload: { result: Element[] } = {
   result: [{ key: "1", label: "MacBook-Pro-001" }],
 };

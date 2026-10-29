@@ -1,6 +1,7 @@
 export const createEnvelopeResponse = {
   envelope_id: "<envelopeId>",
 };
+
 export const createEmbeddedEnvelopeResponse = {
   envelope_id: "uuid",
   recipients: [
@@ -10,6 +11,7 @@ export const createEmbeddedEnvelopeResponse = {
     },
   ],
 };
+
 export const getEnvelopeResponse = {
   envelope_id: "<envelopeId>",
   status: "ACTIVE",
@@ -26,6 +28,7 @@ export const getEnvelopeResponse = {
     ],
   },
 };
+
 export const findEnvelopesResponse = {
   envelopes: [
     {
@@ -36,10 +39,12 @@ export const findEnvelopesResponse = {
     },
   ],
 };
+
 export const listEnvelopesResponse = {
   findEnvelopesResponse,
   total: 123,
 };
+
 export const pollEnvelopesExamplePayload = {
   data: {
     created: [
@@ -52,13 +57,17 @@ export const pollEnvelopesExamplePayload = {
     ],
   },
 };
+
 export const getEnvelopeStatusResponse = {
   status: "COMPLETED/ARCHIVED/ACTIVE/ERRORED",
 };
+
 export const sendReminderResponse = {
   recipient_id: "uuid",
 };
+
 export const genericMediaResponse = Buffer.from("media");
+
 export const getIDVSessionResultResponse = {
   session_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   client_session_token_ttl: 599,

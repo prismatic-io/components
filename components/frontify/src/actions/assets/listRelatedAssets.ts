@@ -5,6 +5,7 @@ import { listRelatedAssetsExamplePayload as examplePayload } from "../../example
 import { listRelatedAssetsInputs as inputs } from "../../inputs/assets";
 import { graphqlFetchAll } from "../../utils/graphqlFetchAll";
 import type ListRelatedAssetsResponse from "../types/listRelatedAssets";
+
 export const listRelatedAssets = action({
   display: {
     label: "List Related Assets",
@@ -13,9 +14,7 @@ export const listRelatedAssets = action({
   perform: async (
     context,
     { connection, assetId, pagination, fetchAll },
-  ): Promise<{
-    data: ListRelatedAssetsResponse;
-  }> => {
+  ): Promise<{ data: ListRelatedAssetsResponse }> => {
     const client = createClient({ connection, debug: context.debug.enabled });
     const query = gql`
       query listRelatedAssets($assetId: ID!, $page: Int, $limit: Int) {
@@ -142,6 +141,7 @@ export const listRelatedAssets = action({
         }
       }
     `;
+
     if (fetchAll) {
       const hasNextPath = ["asset", "relatedAssets", "hasNextPage"];
       const responses: ListRelatedAssetsResponse[] = await graphqlFetchAll({
@@ -150,16 +150,17 @@ export const listRelatedAssets = action({
         params: { assetId },
         hasNextPath,
       });
+
       if (responses.length === 1) {
         return { data: responses[0] };
       }
+
       const baseResponse = responses.slice(-1)[0];
       const combinedRelatedAssets = responses.flatMap(
         (response) => response.asset.relatedAssets.items,
       );
-      const formattedResponse: {
-        data: ListRelatedAssetsResponse;
-      } = {
+
+      const formattedResponse: { data: ListRelatedAssetsResponse } = {
         data: {
           asset: {
             ...baseResponse.asset,
@@ -170,13 +171,16 @@ export const listRelatedAssets = action({
           },
         },
       };
+
       return formattedResponse;
     }
+
     const response: ListRelatedAssetsResponse = await client.request(query, {
       assetId,
       page: pagination.page,
       limit: pagination.limit,
     });
+
     return {
       data: response,
     };

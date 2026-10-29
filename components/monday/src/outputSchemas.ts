@@ -11,6 +11,7 @@ export const archiveBoardOutputSchema = {
   },
   required: ["archive_board"],
 };
+
 export const createBoardOutputSchema = {
   type: "object" as const,
   properties: {
@@ -24,6 +25,7 @@ export const createBoardOutputSchema = {
   },
   required: ["create_board"],
 };
+
 export const getBoardOutputSchema = {
   type: "object" as const,
   properties: {
@@ -58,6 +60,7 @@ export const getBoardOutputSchema = {
   },
   required: ["boards"],
 };
+
 export const listBoardsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -82,6 +85,7 @@ export const listBoardsOutputSchema = {
   },
   required: ["boards"],
 };
+
 export const getItemsByColumnValueNewOutputSchema = {
   type: "object" as const,
   properties: {
@@ -125,6 +129,7 @@ export const getItemsByColumnValueNewOutputSchema = {
   },
   required: ["items_by_column_values"],
 };
+
 export const createWebhookOutputSchema = {
   type: "object" as const,
   properties: {
@@ -141,6 +146,7 @@ export const createWebhookOutputSchema = {
   },
   required: ["create_webhook"],
 };
+
 export const deleteWebhookOutputSchema = {
   type: "object" as const,
   properties: {
@@ -155,6 +161,7 @@ export const deleteWebhookOutputSchema = {
   },
   required: ["delete_webhook"],
 };
+
 export const listWebhooksOutputSchema = {
   type: "object" as const,
   properties: {

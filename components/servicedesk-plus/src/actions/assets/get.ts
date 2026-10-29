@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createAssetResponse as getAssetResponse } from "../../examplePayloads";
 import { assetId, connectionInput } from "../../inputs";
+
 export const getAsset = action({
   display: {
     label: "Get Asset",

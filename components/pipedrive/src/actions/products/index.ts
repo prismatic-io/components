@@ -9,6 +9,7 @@ import { getProductFollowers } from "./getProductFollowers";
 import { getProductUsers } from "./getProductUsers";
 import { getProducts } from "./getProducts";
 import { updateProduct } from "./updateProduct";
+
 export default {
   getProducts,
   addProduct,

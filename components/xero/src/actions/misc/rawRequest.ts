@@ -2,6 +2,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { action } from "@prismatic-io/spectral";
 import { rawRequestInputs } from "../../inputs";
 import { getHeaders } from "../../util";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",

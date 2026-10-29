@@ -6,6 +6,7 @@ import { fetchTemplates } from "../../util";
 import { listTemplatesExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 import type { FieldsTemplate } from "../../types";
+
 export const listTemplates = action({
   display: {
     label: "List Templates",
@@ -24,6 +25,7 @@ export const listTemplates = action({
       [],
       undefined,
     );
+
     return {
       data,
     };

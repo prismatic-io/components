@@ -4,6 +4,7 @@ import { connection, userId, from, to } from "../../inputs";
 import { getAllPaginationResults } from "../../util";
 import type { Recording } from "../../interfaces/Recording";
 import { getPhoneRecordingsExamplePayload } from "../../examplePayloads";
+
 export const getPhoneRecordings = action({
   display: {
     label: "Get Phone Recordings",
@@ -14,17 +15,18 @@ export const getPhoneRecordings = action({
     { connection, userId, from, to },
   ) => {
     const client = createZoomClient({ connection, debug });
-    const data: {
-      recordings: Recording[];
-    } = await getAllPaginationResults<Recording>(
-      client,
-      `/phone/users/${userId}/recordings`,
-      "recordings",
-      {
-        from,
-        to,
-      },
-    );
+
+    const data: { recordings: Recording[] } =
+      await getAllPaginationResults<Recording>(
+        client,
+        `/phone/users/${userId}/recordings`,
+        "recordings",
+        {
+          from,
+          to,
+        },
+      );
+
     return {
       data,
     };

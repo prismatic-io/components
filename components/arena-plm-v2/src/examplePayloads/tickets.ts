@@ -3,6 +3,7 @@ const sampleUser = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleTicketFull = {
   guid: "7TK12ET34IK56OK78UK90AK1",
   url: {
@@ -38,6 +39,7 @@ const sampleTicketFull = {
     },
   ],
 };
+
 const sampleItemCompact = {
   guid: "2MM33NN44OO55PP66QQ77RR8",
   number: "PRT-001045",
@@ -49,6 +51,7 @@ const sampleItemCompact = {
     app: "https://app.bom.com/items/2MM33NN44OO55PP66QQ77RR8",
   },
 };
+
 const sampleFileDetail = {
   guid: "7GG88HH99II00JJ11KK22LL3",
   name: "failure-analysis.pdf",
@@ -67,6 +70,7 @@ const sampleFileDetail = {
   latest: true,
   private: false,
 };
+
 const sampleChangeCompact = {
   guid: "5AB12CD34EF56GH78IJ90KL1",
   number: "ECO-000512",
@@ -76,19 +80,23 @@ const sampleChangeCompact = {
     app: "https://app.bom.com/changes/5AB12CD34EF56GH78IJ90KL1",
   },
 };
+
 const sampleTicketChangeAssoc = {
   guid: "4CA55CA66CA77CA88CA99CA0",
   change: sampleChangeCompact,
 };
+
 const sampleTicketFileAssoc = {
   guid: "5FA66FA77FA88FA99FA00FA1",
   file: sampleFileDetail,
 };
+
 const sampleTicketItemAssoc = {
   guid: "6IA77IA88IA99IA00IA11IA2",
   item: sampleItemCompact,
   latestRevisionAssociation: true,
 };
+
 const sampleTicketQualityAssoc = {
   guid: "7QA88QA99QA00QA11QA22QA3",
   qualityProcess: {
@@ -101,6 +109,7 @@ const sampleTicketQualityAssoc = {
     name: "Root Cause Analysis",
   },
 };
+
 const sampleTicketReference = {
   guid: "0TR11TR22TR33TR44TR55TR6",
   ticket: {
@@ -109,6 +118,7 @@ const sampleTicketReference = {
     title: "Related field return for the same connector lot",
   },
 };
+
 const sampleTicketTemplate = {
   guid: "1TT22TT33TT44TT55TT66TT7",
   name: "Quality Ticket",
@@ -116,13 +126,19 @@ const sampleTicketTemplate = {
   active: true,
   category: { guid: "2CT33CT44CT55CT66CT77CT8", name: "Quality" },
 };
+
 export const addTicketChangeExamplePayload = { data: sampleTicketChangeAssoc };
+
 export const addTicketFileExamplePayload = { data: sampleTicketFileAssoc };
+
 export const addTicketItemExamplePayload = { data: sampleTicketItemAssoc };
+
 export const addTicketQualityProcessExamplePayload = {
   data: sampleTicketQualityAssoc,
 };
+
 export const addTicketReferenceExamplePayload = { data: sampleTicketReference };
+
 export const changeTicketStatusExamplePayload = {
   data: {
     guid: "2SC33SC44SC55SC66SC77SC8",
@@ -133,44 +149,53 @@ export const changeTicketStatusExamplePayload = {
     creationDateTime: "2026-03-19T14:20:00Z",
   },
 };
+
 export const createTicketExamplePayload = { data: sampleTicketFull };
+
 export const deleteTicketExamplePayload = {
   data: {
     success: true,
     message: "Ticket deleted successfully",
   },
 };
+
 export const getTicketByGuidExamplePayload = { data: sampleTicketFull };
+
 export const listTicketChangesExamplePayload = {
   data: {
     results: [sampleTicketChangeAssoc],
     count: 1,
   },
 };
+
 export const listTicketFilesExamplePayload = {
   data: {
     results: [sampleTicketFileAssoc],
     count: 1,
   },
 };
+
 export const listTicketItemsExamplePayload = {
   data: {
     results: [sampleTicketItemAssoc],
     count: 1,
   },
 };
+
 export const listTicketQualityProcessesExamplePayload = {
   data: {
     results: [sampleTicketQualityAssoc],
     count: 1,
   },
 };
+
 export const listTicketReferencesExamplePayload = {
   data: {
     results: [sampleTicketReference],
     count: 1,
   },
 };
+
 export const listTicketsExamplePayload = {
   data: {
     results: [
@@ -202,6 +227,7 @@ export const listTicketsExamplePayload = {
     count: 2,
   },
 };
+
 export const listTicketTemplateAttributesExamplePayload = {
   data: {
     results: [
@@ -222,42 +248,49 @@ export const listTicketTemplateAttributesExamplePayload = {
     count: 1,
   },
 };
+
 export const listTicketTemplatesExamplePayload = {
   data: {
     results: [sampleTicketTemplate],
     count: 1,
   },
 };
+
 export const removeTicketChangeExamplePayload = {
   data: {
     success: true,
     message: "Ticket change removed successfully",
   },
 };
+
 export const removeTicketFileExamplePayload = {
   data: {
     success: true,
     message: "Ticket file removed successfully",
   },
 };
+
 export const removeTicketItemExamplePayload = {
   data: {
     success: true,
     message: "Ticket item removed successfully",
   },
 };
+
 export const removeTicketQualityProcessExamplePayload = {
   data: {
     success: true,
     message: "Ticket quality process removed successfully",
   },
 };
+
 export const removeTicketReferenceExamplePayload = {
   data: {
     success: true,
     message: "Ticket reference removed successfully",
   },
 };
+
 export const updateTicketExamplePayload = {
   data: {
     ...sampleTicketFull,

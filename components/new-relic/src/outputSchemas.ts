@@ -6,6 +6,7 @@ export const sendEventDataOutputSchema = {
   },
   required: ["success", "uuid"],
 };
+
 export const sendMetricsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -13,12 +14,14 @@ export const sendMetricsOutputSchema = {
   },
   required: ["requestId"],
 };
+
 export const sendLogsOutputSchema = {
   type: "object" as const,
   properties: {
     requestId: { type: "string" },
   },
 };
+
 export const sendDetailedLogsOutputSchema = {
   type: "object" as const,
   properties: {

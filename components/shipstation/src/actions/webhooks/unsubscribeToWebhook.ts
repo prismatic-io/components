@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { unsubscribeToWebhookExamplePayload } from "../../examplePayloads";
 import { unsubscribeToWebhookInputs } from "../../inputs";
+
 export const unsubscribeToWebhook = action({
   display: {
     label: "Unsubscribe from Webhook",
@@ -12,6 +13,7 @@ export const unsubscribeToWebhook = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(`/webhooks/${webhookId}`);
     return { data };
   },

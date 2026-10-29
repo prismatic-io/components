@@ -31,8 +31,10 @@ import type {
   PollingStream,
   StreamWindowParams,
 } from "../types";
+
 export const isBasicAuth = (connection: Connection): boolean =>
   isAtlassianBasicAuth(connection, CONNECTION_KEYS);
+
 export const validateDescription = (
   description?: string,
   ADFdescription?: object,
@@ -42,6 +44,7 @@ export const validateDescription = (
       `You can only provide a description, either "Description" or "ADF Description".`,
     );
   }
+
   if (description) {
     return {
       content: [
@@ -64,21 +67,19 @@ export const validateDescription = (
   }
   return undefined;
 };
+
 export const getIssueType = (
   name: string,
   id: string,
   required = true,
-):
-  | {
-      name?: string;
-      id?: string;
-    }
-  | undefined => {
+): { name?: string; id?: string } | undefined => {
   const NO_CHARACTERS = 0;
   let namePresent = false;
   let idPresent = false;
+
   if (name) namePresent = name.length > NO_CHARACTERS;
   if (id) idPresent = id.length > NO_CHARACTERS;
+
   if (namePresent && idPresent) {
     throw new Error(
       `You can only provide a value for the type of issue, either "Issue Type Name" or "Issue Type ID".`,
@@ -97,12 +98,10 @@ export const getIssueType = (
   }
   return undefined;
 };
+
 export const projectIdsClean = (
   rawValue: unknown,
-): {
-  projectId: string;
-  projectName?: string;
-}[] => {
+): { projectId: string; projectName?: string }[] => {
   if (!Array.isArray(rawValue)) {
     return [{ projectId: util.types.toString(rawValue) }];
   }
@@ -112,8 +111,10 @@ export const projectIdsClean = (
       projectName: label,
     }));
   }
+
   return rawValue.map((val) => ({ projectId: util.types.toString(val) }));
 };
+
 export const labelsClean = (rawLabels): string[] | undefined => {
   if (Array.isArray(rawLabels)) {
     const labelsArray = rawLabels.map((label) => util.types.toString(label));
@@ -121,25 +122,32 @@ export const labelsClean = (rawLabels): string[] | undefined => {
   }
   return undefined;
 };
+
 export const recordsInputClean = (value: unknown) => {
   const NO_LENGTH = 0;
   const valueAsString = util.types.toString(value);
   const recordsString = valueAsString.trim();
+
   if (value) {
     if (recordsString.length === NO_LENGTH) {
       throw new Error(EMPTY_INPUT_ERROR_MESSAGE);
     }
     const records: Record<string, string>[] = JSON.parse(recordsString);
+
     if (!Array.isArray(records)) {
       throw new Error(ARRAY_ERROR_MESSAGE);
     }
+
     if (records.length === NO_LENGTH) {
       throw new Error(EMPTY_ARRAY_ERROR_MESSAGE);
     }
+
     return records;
   }
+
   return undefined;
 };
+
 export const dynamicFieldsClean = (value: unknown): KeyValuePair[] => {
   if (value) {
     const data = recordsInputClean(value);
@@ -150,14 +158,18 @@ export const dynamicFieldsClean = (value: unknown): KeyValuePair[] => {
         );
       }
     });
+
     return value as KeyValuePair[];
   }
+
   return undefined;
 };
+
 export const fieldValuesClean = (value: unknown) =>
   util.types.keyValPairListToObject(
     util.types.toObject(dynamicFieldsClean(value)) as KeyValuePair[],
   );
+
 export const cleanCodeInput = (value: unknown) => {
   if (value) {
     const object = util.types.toObject(value);
@@ -168,6 +180,7 @@ export const cleanCodeInput = (value: unknown) => {
   }
   return undefined;
 };
+
 export const cleanAttachmentArray = (value: unknown) => {
   const attachmentArray = cleanCodeInput(value);
   attachmentArray?.forEach((attachment) => {
@@ -179,26 +192,32 @@ export const cleanAttachmentArray = (value: unknown) => {
   });
   return attachmentArray;
 };
+
 export const downloadIssueAttachment = async (
   client: HttpClient,
   jiraConnection: Connection,
   issueId: string,
 ) => {
   const { data: issueData } = await client.get(`/issue/${issueId}`);
+
   const attachmentData = issueData.fields?.attachment[0];
   if (!attachmentData) {
     throw new Error("Unable to find any attachments on the given issue.");
   }
+
   const { content: contentUrl, mimeType: contentType } = attachmentData;
   if (!contentUrl && !contentType) {
     throw new Error("Unable to find download link on the given attachment.");
   }
+
   const data = await downloadFile(jiraConnection, contentUrl);
+
   return {
     data,
     contentType,
   };
 };
+
 export const downloadArrayOfAttachments = async (
   jiraConnection: Connection,
   baseUrl: string,
@@ -215,6 +234,7 @@ export const downloadArrayOfAttachments = async (
   );
   return data;
 };
+
 export const getAttachmentsFromIssue = (data: Issue) => {
   const attachments =
     data.fields.attachment.map(({ id, mimeType }) => ({
@@ -223,6 +243,7 @@ export const getAttachmentsFromIssue = (data: Issue) => {
     })) || [];
   return attachments as Attachment[];
 };
+
 export const downloadAttachmentsFromIssue = async (
   data: Issue,
   jiraConnection: Connection,
@@ -231,6 +252,7 @@ export const downloadAttachmentsFromIssue = async (
   const attachments = getAttachmentsFromIssue(data);
   return await downloadArrayOfAttachments(jiraConnection, baseUrl, attachments);
 };
+
 export const getIssueById = async (
   client: HttpClient,
   issueId: string,
@@ -238,16 +260,17 @@ export const getIssueById = async (
   const { data } = await client.get(`/issue/${issueId}`);
   return data;
 };
+
 export const getPaginatedData = async <T>(
   client: HttpClient,
   url: string,
   fetchAll: boolean,
   isBasicAuth = false,
 ) => {
-  const response: {
-    data: PaginatedResponse<T>;
-  } = await client.get(url);
+  const response: { data: PaginatedResponse<T> } = await client.get(url);
+
   if (!fetchAll || isBasicAuth) return response;
+
   let isLast = response.data.isLast;
   let startAt = response.data.startAt;
   const total = response.data.total;
@@ -255,15 +278,19 @@ export const getPaginatedData = async <T>(
   const maxResults = response.data.maxResults;
   const totalPages = Math.ceil(total / maxResults);
   let currentPage = 1;
+
   while (!isLast && currentPage < totalPages) {
     startAt += maxResults;
     currentPage += 1;
+
     const { data: newData } = await client.get(url, {
       params: { maxResults, startAt },
     });
+
     allData.push(...newData.values);
     isLast = newData.isLast;
   }
+
   return {
     data: {
       ...response.data,
@@ -271,12 +298,16 @@ export const getPaginatedData = async <T>(
     },
   };
 };
+
 export const toOptionalString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+
 export const toJqlDate = (iso: string, timeZone: string): string => {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -291,7 +322,9 @@ export const toJqlDate = (iso: string, timeZone: string): string => {
     parts.find((p) => p.type === type)?.value ?? "";
   return `${part("year")}/${part("month")}/${part("day")} ${part("hour")}:${part("minute")}`;
 };
+
 const FALLBACK_TIME_ZONE = "UTC";
+
 const isValidTimeZone = (zone: unknown): zone is string => {
   if (typeof zone !== "string" || zone.trim() === "") return false;
   try {
@@ -301,11 +334,10 @@ const isValidTimeZone = (zone: unknown): zone is string => {
     return false;
   }
 };
+
 const resolveAccountTimeZone = async (
   client: HttpClient,
-  logger: {
-    warn: (message: string) => void;
-  },
+  logger: { warn: (message: string) => void },
 ): Promise<string> => {
   const { data } = await client.get("/myself");
   const zone = data?.timeZone;
@@ -315,6 +347,7 @@ const resolveAccountTimeZone = async (
   );
   return FALLBACK_TIME_ZONE;
 };
+
 const fetchIssuesWindow = async (
   client: HttpClient,
   {
@@ -325,14 +358,12 @@ const fetchIssuesWindow = async (
     additionalJql,
     timeZone,
   }: IssuesWindowParams,
-): Promise<{
-  issues: JiraIssue[];
-  nextPageToken: string | undefined;
-}> => {
+): Promise<{ issues: JiraIssue[]; nextPageToken: string | undefined }> => {
   const updatedClause = `updated >= "${toJqlDate(sinceISO, timeZone)}"`;
   const jql = additionalJql
     ? `(${additionalJql}) AND ${updatedClause}`
     : updatedClause;
+
   const issues: JiraIssue[] = [];
   let token = nextPageToken;
   for (let page = 0; page < maxPages; page++) {
@@ -342,6 +373,7 @@ const fetchIssuesWindow = async (
       maxResults: pageSize,
     };
     if (token) params.nextPageToken = token;
+
     const { data } = await client.get(ENDPOINTS.SEARCH_JQL, { params });
     issues.push(...((data?.issues ?? []) as JiraIssue[]));
     token = data?.nextPageToken || undefined;
@@ -349,6 +381,7 @@ const fetchIssuesWindow = async (
   }
   return { issues, nextPageToken: token };
 };
+
 export const fetchStreamWindow = async (
   createClient: () => Promise<HttpClient>,
   {
@@ -378,6 +411,7 @@ export const fetchStreamWindow = async (
   });
   return { ...window, timeZone };
 };
+
 export const buildPollingCursor = (
   nextPageToken: string | undefined,
   streamStartedAt: Date,
@@ -392,6 +426,7 @@ export const buildPollingCursor = (
         jqlFilter,
       }
     : null;
+
 export const buildPollingState = (
   next: PollingCursor | null,
   streamStartedAt: Date,
@@ -409,23 +444,19 @@ export const buildPollingState = (
   lastPolledAt: (next ? sinceDate : streamStartedAt).toISOString(),
   ...(isBackfill && next ? { backfillActive: true } : {}),
 });
+
 const pollWindowBounds = (
   batching: boolean,
-): {
-  pageSize: number;
-  maxPages: number;
-} => ({
+): { pageSize: number; maxPages: number } => ({
   pageSize: POLL_PAGE_SIZE,
   maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
 });
+
 export const resolvePollingStart = (
   state: PollingState,
   lookBackDate: string | undefined,
   now: Date,
-): {
-  sinceDate: Date;
-  isBackfill: boolean;
-} => {
+): { sinceDate: Date; isBackfill: boolean } => {
   const seedSince = lookBackDate ? new Date(lookBackDate) : now;
   return {
     sinceDate: state.lastPolledAt ? new Date(state.lastPolledAt) : seedSince,
@@ -434,6 +465,7 @@ export const resolvePollingStart = (
       (!state.lastPolledAt && Boolean(lookBackDate)),
   };
 };
+
 export const resolvePollingStream = (
   state: PollingState,
   incoming: PollingCursor | undefined,
@@ -450,6 +482,7 @@ export const resolvePollingStream = (
     timeZone: resumable ? (held.timeZone ?? FALLBACK_TIME_ZONE) : undefined,
   };
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -458,6 +491,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -466,6 +500,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -480,11 +515,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolveJiraIssueChanges = (
   data: JiraIssueChangesObject | undefined,
 ): JiraIssueChange[] => {
@@ -498,6 +536,7 @@ export const resolveJiraIssueChanges = (
     ),
   ];
 };
+
 export const partitionIssuesByTimestamp = (
   issues: JiraIssue[],
   since: Date,

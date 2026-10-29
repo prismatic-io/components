@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getActivityTypesInputs } from "../../inputs";
 import { getActivityTypesExamplePayload } from "../../examplePayloads";
 import { getActivityTypesOutputSchema } from "../../outputSchemas";
+
 export const getActivityTypes = action({
   display: {
     label: "Get Activity Types",

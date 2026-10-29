@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteAttachmentInputs } from "../../inputs";
+
 export const deleteAttachment = action({
   display: {
     label: "Delete Attachment",

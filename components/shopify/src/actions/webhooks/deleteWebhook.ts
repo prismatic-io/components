@@ -3,6 +3,7 @@ import { deleteWebhookPayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
 import { deleteWebhookGql } from "../graphql/webhooks/deleteWebhookGql";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -19,6 +20,7 @@ export const deleteWebhook = action({
       shopifyConnection: params.shopifyConnection,
       webhookId: `gid://shopify/WebhookSubscription/${params.webhookId}`,
     });
+
     return { data };
   },
   examplePerform: async () => ({

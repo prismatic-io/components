@@ -3,6 +3,7 @@ import { listBrandWorkspaceProjectsQuery } from "../actions/brands/listBrandWork
 import type ListBrandWorkspaceProjectsResponse from "../actions/types/listBrandWorkspaceProjects";
 import { createClient } from "../client";
 import { workspaceProjectInputs as inputs } from "../inputs/dataSources";
+
 export const workspaceProjectDatasource = dataSource({
   display: {
     label: "Select Workspace Project",
@@ -19,6 +20,7 @@ export const workspaceProjectDatasource = dataSource({
         label: project.name,
       };
     });
+
     return {
       result,
     };

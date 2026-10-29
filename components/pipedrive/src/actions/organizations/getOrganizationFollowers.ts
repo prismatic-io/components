@@ -4,6 +4,7 @@ import { getOrganizationFollowersInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getOrganizationFollowersExamplePayload } from "../../examplePayloads";
 import { getOrganizationFollowersOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationFollowers = action({
   display: {
     label: "Get Organization Followers",

@@ -20,6 +20,7 @@ export const sendMessageExamplePayload = {
     acceptedScopes: ["chat:write"],
   },
 };
+
 export const updateMessageExamplePayload = {
   ok: true,
   channel: "C123ABC456",
@@ -30,19 +31,24 @@ export const updateMessageExamplePayload = {
     user: "U34567890",
   },
 };
+
 export const deletePendingMessageExamplePayload = {
   ok: true,
 };
+
 export const deleteMessageExamplePayload = {
   ok: true,
   channel: "C123ABC456",
   ts: "1401383885.000061",
 };
+
 export const postEphemeralMessageExamplePayload = {
   ok: true,
   message_ts: "1502210682.580145",
 };
+
 export const webhookDefaultExamplePayload = { text: "ok" };
+
 export const postBlockMessageExamplePayload = {
   ok: true,
   channel: "C011B7U3R9U",
@@ -65,6 +71,7 @@ export const postBlockMessageExamplePayload = {
     acceptedScopes: ["chat:write"],
   },
 };
+
 export const listScheduledMessagesExamplePayload = {
   ok: true,
   scheduled_messages: [

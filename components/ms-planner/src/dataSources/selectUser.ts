@@ -5,6 +5,7 @@ import { selectUserExamplePayload } from "../examplePayloads";
 import { DIRECTORY_PAGE_SIZE, PLANNER_ENDPOINTS } from "../constants";
 import { fetchAllDirectory } from "../utils";
 import { selectUserInputs } from "../inputs";
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -21,6 +22,7 @@ export const selectUser = dataSource({
         $top: DIRECTORY_PAGE_SIZE,
       },
     );
+
     const result = value.map<Element>((user) => ({
       label: util.types.toString(user.displayName || user.mail),
       key: util.types.toString(user.id),

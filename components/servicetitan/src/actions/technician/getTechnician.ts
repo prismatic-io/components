@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getTechnicianExamplePayload } from "../../examplePayloads";
 import { getTechnicianInputs } from "../../inputs";
 import { getTechnicianOutputSchema } from "../../outputSchemas";
+
 export const getTechnician = action({
   display: {
     label: "Get Technician",

@@ -21,6 +21,7 @@ import {
 } from "../inputs";
 import type { Company } from "../interfaces";
 import { fetchPaginatedData } from "../utils";
+
 const describeCompany = action({
   display: {
     label: "Describe Company",
@@ -37,6 +38,7 @@ const describeCompany = action({
   },
   examplePayload: describeCompanyExamplePayload,
 });
+
 const getCompaniesByFilter = action({
   display: {
     label: "Get Companies By Filter",
@@ -65,12 +67,14 @@ const getCompaniesByFilter = action({
     if (nextPageToken) {
       params.nextPageToken = nextPageToken;
     }
+
     const data = await fetchPaginatedData<Company>(
       client,
       `/v1/companies.json`,
       fetchAll,
       params,
     );
+
     return { data };
   },
   inputs: {
@@ -84,6 +88,7 @@ const getCompaniesByFilter = action({
   },
   examplePayload: getCompaniesByFilterExamplePayload,
 });
+
 const syncCompanies = action({
   display: {
     label: "Sync Companies (Create, Update, Upsert)",
@@ -114,6 +119,7 @@ const syncCompanies = action({
   },
   examplePayload: syncCompaniesExamplePayload,
 });
+
 const deleteCompanies = action({
   display: {
     label: "Delete Companies",
@@ -134,6 +140,7 @@ const deleteCompanies = action({
   },
   examplePayload: deleteCompaniesExamplePayload,
 });
+
 export default {
   describeCompany,
   getCompaniesByFilter,

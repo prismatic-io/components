@@ -4,6 +4,7 @@ import { createOrderExamplePayload as examplePayload } from "../../../examplePay
 import { createOrderInputs as inputs } from "../../../inputsGql";
 import { createOrderGqlOutputSchema } from "../../../outputSchemas";
 import createOrderQuery from "../queries/orders/CreateOrder.gql";
+
 export const createOrderGql = action({
   display: {
     label: "Create Order",
@@ -17,11 +18,13 @@ export const createOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      orderCreate: Record<string, unknown>;
-    } = await client.request(createOrderQuery, {
-      order: orderData,
-    });
+
+    const data: { orderCreate: Record<string, unknown> } = await client.request(
+      createOrderQuery,
+      {
+        order: orderData,
+      },
+    );
     return { data: data.orderCreate };
   },
   examplePerform: async () => examplePayload,

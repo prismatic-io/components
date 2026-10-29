@@ -5,6 +5,7 @@ import { getScheduleExamplePayload } from "../../examplePayloads";
 import { getScheduleInputs } from "../../inputs";
 import type { ODataAttrs } from "../../types";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const getSchedule = action({
   display: {
     label: "Get Schedule Availability",
@@ -14,6 +15,7 @@ export const getSchedule = action({
   inputs: getScheduleInputs,
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     const payload = {
       availabilityViewInterval: params.availabilityViewInterval,
       schedules: params.schedules,
@@ -26,10 +28,9 @@ export const getSchedule = action({
         timeZone: params.endTimezone,
       },
     };
+
     const { data } = await client.post<
-      {
-        value: ScheduleInformation[];
-      } & ODataAttrs
+      { value: ScheduleInformation[] } & ODataAttrs
     >(
       computeEndpointBasedOnConnection(
         params.connection,

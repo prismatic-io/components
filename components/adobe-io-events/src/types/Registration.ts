@@ -1,4 +1,5 @@
 import type { EventOfInterest } from "./EventOfInterest";
+
 export type Registration = {
   client_id: string;
   name: string;

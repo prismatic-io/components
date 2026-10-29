@@ -14,6 +14,7 @@ import {
   getBase64FromUrl,
   listAllHistory,
 } from "../utils";
+
 export const managedPushNotificationEvents = trigger({
   display: {
     label: "Managed Push Notification Events",
@@ -31,12 +32,14 @@ export const managedPushNotificationEvents = trigger({
       context.logger.info(
         `${context.flow.name} Trigger invoked by schedule - renewing webhook`,
       );
+
       const integrationFlowName = context.flow.name;
       const encodedId = getBase64FromUrl(
         context.webhookUrls[integrationFlowName],
       );
       const prefixedTopicId = generatePrefixedHash(topicId, encodedId);
       const topicName = `projects/${projectId}/topics/${prefixedTopicId}`;
+
       const client = await createClient(connection);
       context.logger.info(
         `Renewing push notification schedule for user ${userId} and topic ${topicName}`,
@@ -70,6 +73,7 @@ export const managedPushNotificationEvents = trigger({
     const state = context.crossFlowState?.[encodedId] as unknown as {
       historyId: string;
     };
+
     const finalPayload: TriggerPayload = { ...payload };
     let message: GmailNotificationBody["message"];
     try {
@@ -107,12 +111,15 @@ export const managedPushNotificationEvents = trigger({
           context.debug.enabled,
           context.logger,
         );
+
         messages.push(...detailedMessages);
       }
     }
+
     context.crossFlowState[encodedId] = {
       historyId: data.historyId,
     };
+
     finalPayload.body.data = {
       ...(finalPayload.body.data as object),
       message,

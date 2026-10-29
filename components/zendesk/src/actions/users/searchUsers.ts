@@ -3,6 +3,7 @@ import { createClient } from "../../auth";
 import { searchUsersExamplePayload } from "../../examplePayloads";
 import { searchUsersInputs } from "../../inputs";
 import { searchUsersOutputSchema } from "../../outputSchemas";
+
 export const searchUsers = action({
   display: {
     label: "Search Users",
@@ -17,11 +18,14 @@ export const searchUsers = action({
       zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const externalId = util.types.toString(externalIdBase);
+
     const result = await client.users.search({
       ...(externalId ? { external_id: externalId } : {}),
       query: query,
     });
+
     return {
       data: result,
     };

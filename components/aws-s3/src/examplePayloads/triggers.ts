@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { PolledBucket } from "../types";
+
 const exampleTriggerPayloadBase: Omit<TriggerPayload, "headers" | "body"> = {
   queryParameters: {},
   rawBody: { data: null },
@@ -30,6 +31,7 @@ const exampleTriggerPayloadBase: Omit<TriggerPayload, "headers" | "body"> = {
   startedAt: "2024-01-15T00:00:00.000Z",
   globalDebug: false,
 };
+
 export const snsS3NotificationWebhookExamplePayload: {
   branch: string;
   payload: TriggerPayload;
@@ -97,12 +99,9 @@ export const snsS3NotificationWebhookExamplePayload: {
     },
   },
 };
+
 export const pollChangesFilesTriggerExamplePayload: {
-  payload: TriggerPayload & {
-    body: {
-      data: string[];
-    };
-  };
+  payload: TriggerPayload & { body: { data: string[] } };
   polledNoChanges: boolean;
 } = {
   payload: {
@@ -112,12 +111,9 @@ export const pollChangesFilesTriggerExamplePayload: {
   },
   polledNoChanges: false,
 };
+
 export const pollNewBucketsTriggerExamplePayload: {
-  payload: TriggerPayload & {
-    body: {
-      data: PolledBucket[];
-    };
-  };
+  payload: TriggerPayload & { body: { data: PolledBucket[] } };
   polledNoChanges: boolean;
 } = {
   payload: {

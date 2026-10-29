@@ -116,6 +116,7 @@ export const retrievePostExamplePayload = {
     url: "https://your-company.canny.io/admin/board/feature-requests/p/an-awesome-feature-request",
   },
 };
+
 export const listPostsExamplePayload = {
   data: {
     hasMore: true,
@@ -233,11 +234,13 @@ export const listPostsExamplePayload = {
     ],
   },
 };
+
 export const createPostExamplePayload = {
   data: {
     id: "553c3ef8b8cdcd1501ba5678",
   },
 };
+
 export const updatePostExamplePayload = { data: "success" };
 export const deletePostExamplePayload = { data: "success" };
 export const changePostStatusExamplePayload = {

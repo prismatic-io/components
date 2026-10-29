@@ -4,6 +4,7 @@ import { addPersonFollowerInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { addPersonFollowerExamplePayload } from "../../examplePayloads";
 import { addPersonFollowerOutputSchema } from "../../outputSchemas";
+
 export const addPersonFollower = action({
   display: {
     label: "Add Person Follower",

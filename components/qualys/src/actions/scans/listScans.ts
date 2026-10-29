@@ -5,6 +5,7 @@ import { listScansInputs } from "../../inputs";
 import { listScansOutputSchema } from "../../outputSchemas";
 import type { ClassicScanResponse } from "../../types";
 import { ensureArray, normalizeScan, parseXml } from "../../util";
+
 export const listScans = action({
   display: {
     label: "List Scans",
@@ -22,6 +23,7 @@ export const listScans = action({
     { connection, scanRef, scanState, launchedAfter },
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
+
     const response = await client.get<string>("/api/2.0/fo/scan/", {
       params: {
         action: "list",
@@ -30,10 +32,13 @@ export const listScans = action({
         launched_after_datetime: launchedAfter,
       },
     });
+
     const parsed = await parseXml<ClassicScanResponse>(response.data);
+
     const scans = ensureArray(
       parsed.SCAN_LIST_OUTPUT?.RESPONSE?.SCAN_LIST?.SCAN,
     );
+
     return { data: scans.map(normalizeScan) };
   },
   examplePayload: listScansExamplePayload,

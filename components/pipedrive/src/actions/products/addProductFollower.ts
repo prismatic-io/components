@@ -4,6 +4,7 @@ import { addProductFollowerInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { addProductFollowerExamplePayload } from "../../examplePayloads";
 import { addProductFollowerOutputSchema } from "../../outputSchemas";
+
 export const addProductFollower = action({
   display: {
     label: "Add Product Follower",

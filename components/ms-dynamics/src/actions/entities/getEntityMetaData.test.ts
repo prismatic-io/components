@@ -1,19 +1,25 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { getEntityMetaDataExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
+
 const { mockRetrieveEntity } = vi.hoisted(() => ({
   mockRetrieveEntity: vi.fn(),
 }));
+
 vi.mock("../../client", () => ({
   createCrmClient: vi
     .fn()
     .mockResolvedValue({ retrieveEntity: mockRetrieveEntity }),
 }));
+
 import { getEntityMetaData } from "./getEntityMetaData";
+
 const conn = createMockConnection();
 const ctx = createMockContext();
+
 describe("getEntityMetaData", () => {
   afterEach(() => vi.clearAllMocks());
+
   test("happy path returns entity definition", async () => {
     mockRetrieveEntity.mockResolvedValueOnce(
       getEntityMetaDataExamplePayload.data.result,
@@ -30,6 +36,7 @@ describe("getEntityMetaData", () => {
       key: "LogicalName='account'",
     });
   });
+
   test("error path surfaces the failure", async () => {
     mockRetrieveEntity.mockRejectedValueOnce(new Error("Entity not found"));
     await expect(

@@ -7,6 +7,7 @@ import {
   sourcePath,
   sourceStorageName,
 } from "../../inputs";
+
 export const copyFolder = action({
   display: {
     label: "Copy Folder",
@@ -30,6 +31,7 @@ export const copyFolder = action({
     },
   ) => {
     const client = await getAsposeClient(connection, context.debug.enabled);
+
     await client.put(`/words/storage/folder/copy/${sourcePath}`, null, {
       params: {
         DestPath: destinationPath,
@@ -37,6 +39,7 @@ export const copyFolder = action({
         DestStorageName: destinationStorageName || undefined,
       },
     });
+
     return { data: null };
   },
   examplePayload: { data: null },

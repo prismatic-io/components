@@ -20,6 +20,7 @@ const webhookRecordSchema = {
     version: { type: "string" },
   },
 };
+
 export const createWebhookOutputSchema = {
   type: "object",
   properties: {
@@ -33,6 +34,7 @@ export const createWebhookOutputSchema = {
     },
   },
 };
+
 export const deleteWebhookOutputSchema = {
   type: "object",
   properties: {
@@ -50,6 +52,7 @@ export const deleteWebhookOutputSchema = {
     },
   },
 };
+
 export const listWebhooksOutputSchema = {
   type: "object",
   properties: {

@@ -7,10 +7,12 @@ import {
   limitInput,
   modelInput,
 } from "./common";
+
 export const getModelInputs = {
   connection: connectionInput,
   model: modelInput,
 };
+
 const paginationInput = structuredObjectInput({
   key: "pagination",
   label: "Pagination",
@@ -21,6 +23,7 @@ const paginationInput = structuredObjectInput({
     limit: limitInput,
   },
 });
+
 export const listModelsInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,

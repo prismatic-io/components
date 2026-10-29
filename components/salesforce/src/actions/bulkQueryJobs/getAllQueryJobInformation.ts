@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { getAllQueryJobInformationInputs } from "../../inputs";
 import { getAllQueryJobInformationExamplePayload } from "../../examplePayloads";
+
 export const getAllQueryJobInformation = action({
   display: {
     label: "List All Bulk Query Job Information",
@@ -37,8 +38,7 @@ export const getAllQueryJobInformation = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getAllQueryJobInformationExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getAllQueryJobInformationExamplePayload,
   examplePayload: getAllQueryJobInformationExamplePayload,
 });

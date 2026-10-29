@@ -16,6 +16,7 @@ export const listElementProfilesExamplePayload = {
     ],
   },
 };
+
 export const getElementProfileAccessoriesExamplePayload = {
   data: [
     {
@@ -31,6 +32,7 @@ export const getElementProfileAccessoriesExamplePayload = {
     },
   ],
 };
+
 export const syncElementProfileExamplePayload = {
   data: {
     id: 9045,

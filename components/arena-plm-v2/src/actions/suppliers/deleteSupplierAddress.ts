@@ -4,6 +4,7 @@ import { deleteSupplierAddressExamplePayload } from "../../examplePayloads";
 import { deleteSupplierAddressInputs } from "../../inputs";
 import { deleteSupplierAddressOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteSupplierAddress = action({
   display: {
     label: "Delete Supplier Address",
@@ -19,16 +20,20 @@ export const deleteSupplierAddress = action({
   perform: async (context, { connection, supplierGuid, addressGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting supplier address", {
         supplierGuid,
         addressGuid,
       });
+
       await client.delete(
         `/suppliers/${supplierGuid}/addresses/${addressGuid}`,
       );
+
       context.logger.info(
         `Successfully deleted address: ${addressGuid} from supplier: ${supplierGuid}`,
       );
+
       return {
         data: {
           success: true,

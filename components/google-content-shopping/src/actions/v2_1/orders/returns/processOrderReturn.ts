@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../../client";
 import { processOrderReturnExamplePayload } from "../../../../examplePayloads/v2_1";
 import { processOrderReturnInputs } from "../../../../inputs/v2_1";
+
 export const processOrderReturn = action({
   display: {
     label: "Process Order Return (Legacy v2.1)",
@@ -23,6 +24,7 @@ export const processOrderReturn = action({
     context.logger.warn(
       "'Process Order Return' is deprecated as Google is retiring the Orders endpoints in the Content API.",
     );
+
     const client = createClient(connectionInput);
     const { data } = await client.orderreturns.process({
       merchantId,

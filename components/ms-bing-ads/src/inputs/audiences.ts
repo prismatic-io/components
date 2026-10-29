@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanOptionalString, cleanStringArray } from "../util";
 import {
   accountIdInput,
@@ -6,6 +7,7 @@ import {
   customerIdInput,
   returnAdditionalFieldsInput,
 } from "./common";
+
 const audienceTypeModel = [
   { label: "Remarketing List", value: "RemarketingList" },
   { label: "Custom Audience", value: "CustomAudience" },
@@ -20,6 +22,7 @@ const audienceTypeModel = [
     value: "ImpressionBasedRemarketingList",
   },
 ];
+
 const audiencesBodyInput = input({
   label: "Audiences",
   type: "code",
@@ -43,6 +46,7 @@ const audiencesBodyInput = input({
   ),
   clean: util.types.toObject,
 });
+
 const updateAudiencesBodyInput = input({
   ...audiencesBodyInput,
   comments:
@@ -61,6 +65,7 @@ const updateAudiencesBodyInput = input({
     2,
   ),
 });
+
 const audienceIdsInput = input({
   label: "Audience IDs",
   placeholder: "Enter audience ID",
@@ -72,6 +77,7 @@ const audienceIdsInput = input({
   example: "5012345",
   clean: cleanStringArray,
 });
+
 const audienceTypeInput = input({
   label: "Audience Type",
   type: "string",
@@ -81,18 +87,21 @@ const audienceTypeInput = input({
     "The audience type to return. Required when Audience IDs is empty — the API needs a type to know which audiences to return.",
   clean: cleanOptionalString,
 });
+
 export const addAudiencesInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
   customerId: { ...customerIdInput, required: true },
   audiences: audiencesBodyInput,
 };
+
 export const updateAudiencesInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
   customerId: { ...customerIdInput, required: true },
   audiences: updateAudiencesBodyInput,
 };
+
 export const deleteAudiencesInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -103,6 +112,7 @@ export const deleteAudiencesInputs = {
     comments: "An array of audience identifiers to delete.",
   },
 };
+
 export const getAudiencesByIdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },

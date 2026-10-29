@@ -4,6 +4,7 @@ import { listSalesOrdersExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "ms-utils";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput, fetchAll, odataParams } from "../../inputs/general";
+
 export const listSalesOrders = action({
   display: {
     label: "List Sales Orders",
@@ -44,6 +45,7 @@ export const listSalesOrders = action({
       $search,
       $select,
     };
+
     return await paginateResults<
       (typeof listSalesOrdersExamplePayload)["data"]["value"][number]
     >({

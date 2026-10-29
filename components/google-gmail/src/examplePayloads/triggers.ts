@@ -4,6 +4,7 @@ import type {
   TriggerPayload,
 } from "@prismatic-io/spectral";
 import { getEventHistoryExamplePayload } from "./actions";
+
 export const managedPushNotificationEventsExamplePayload: TriggerBranchingResult<TriggerPayload> =
   {
     response: {
@@ -87,8 +88,10 @@ export const managedPushNotificationEventsExamplePayload: TriggerBranchingResult
       globalDebug: false,
     },
   };
+
 export const pushNotificationWebhookExamplePayload: TriggerBaseResult<TriggerPayload> =
   managedPushNotificationEventsExamplePayload;
+
 export const pollChangesTriggerExamplePayload = {
   polledNoChanges: false,
   response: {

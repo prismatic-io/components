@@ -1,4 +1,5 @@
 import { attachmentSchema, customFieldsSchema } from "./common";
+
 export const ticketSchema = {
   type: "object" as const,
   properties: {
@@ -48,6 +49,7 @@ export const ticketSchema = {
   },
   required: ["id"],
 };
+
 export const ticketOutputSchema = {
   type: "object" as const,
   properties: {
@@ -55,6 +57,7 @@ export const ticketOutputSchema = {
   },
   required: ["ticket"],
 };
+
 export const listTicketsOutputSchema = {
   type: "object" as const,
   properties: {

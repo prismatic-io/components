@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const createProductExamplePayload = {
   data: {
     createStandardProduct: {
@@ -7,6 +8,7 @@ export const createProductExamplePayload = {
     },
   },
 };
+
 export const createCustomerExamplePayload = {
   data: {
     createCustomer: {
@@ -32,6 +34,7 @@ export const createCustomerExamplePayload = {
     },
   },
 };
+
 export const getCustomerByEmailAddressExamplePayload = {
   data: {
     customers: {
@@ -58,6 +61,7 @@ export const getCustomerByEmailAddressExamplePayload = {
     },
   },
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     me: {
@@ -122,6 +126,7 @@ export const getCurrentUserExamplePayload = {
     },
   },
 };
+
 export const genericRequestExamplePayload = {
   data: {
     me: {
@@ -131,9 +136,8 @@ export const genericRequestExamplePayload = {
     },
   },
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

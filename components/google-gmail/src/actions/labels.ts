@@ -5,6 +5,7 @@ import {
   listLabelsExamplePayload,
   getLabelByNameExamplePayload,
 } from "../examplePayloads";
+
 const listLabels = action({
   display: {
     label: "List Labels",
@@ -20,6 +21,7 @@ const listLabels = action({
   },
   examplePayload: listLabelsExamplePayload,
 });
+
 const getLabelByName = action({
   display: {
     label: "Get Label by Name",
@@ -49,4 +51,5 @@ const getLabelByName = action({
   },
   examplePayload: getLabelByNameExamplePayload,
 });
+
 export default { getLabelByName, listLabels };

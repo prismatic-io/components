@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listTimeOffBalancesExamplePayload } from "../../examplePayloads";
 import { connectionInput, employee_id } from "../../inputs";
+
 export const listTimeOffBalances = action({
   display: {
     label: "List Time Off Balances",

@@ -6,6 +6,7 @@ import { findRecord } from "./findRecord";
 import { findRecords } from "./findRecords";
 import { getRecord } from "./getRecord";
 import { query } from "./query";
+
 export default {
   createRecord,
   deleteRecord,

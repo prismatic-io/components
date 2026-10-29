@@ -5,6 +5,7 @@ import { paginateRecordsWithCursor, sortRecords } from "../util";
 import type { Person } from "../types/persons";
 import { selectPersonExamplePayload } from "../examplePayloads";
 import { WebhookVersion } from "../constants";
+
 export const selectPerson = dataSource({
   display: {
     label: "Select Person",
@@ -21,10 +22,12 @@ export const selectPerson = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "id").map<Element>((person) => ({
       key: person.id.toString(),
       label: `${person.first_name}${person.last_name ? ` ${person.last_name}` : ""}`,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

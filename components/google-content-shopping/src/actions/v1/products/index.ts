@@ -6,6 +6,7 @@ import { listProductsMerchant } from "./listProducts";
 import localInventory from "./localInventory";
 import regionalInventory from "./regionalInventory";
 import { updateProductMerchant } from "./updateProduct";
+
 export default {
   getProductMerchant,
   listProductsMerchant,

@@ -1,4 +1,5 @@
 import type { PaginatedResponse } from "../types";
+
 export const getAutomationExamplePayload = {
   data: {
     id: "6b6ec44f-aaf1-4d3d-9f05-074a0328a9ee",
@@ -54,9 +55,8 @@ export const getAutomationExamplePayload = {
     ],
   },
 };
-export const listAutomationsExamplePayload: {
-  data: PaginatedResponse;
-} = {
+
+export const listAutomationsExamplePayload: { data: PaginatedResponse } = {
   data: {
     page: 1,
     pageSize: 1,
@@ -94,8 +94,11 @@ export const listAutomationsExamplePayload: {
     ],
   },
 };
+
 export const createAutomationExamplePayload = getAutomationExamplePayload;
+
 export const updateAutomationExamplePayload = getAutomationExamplePayload;
+
 export const executeAutomationActivitiesExamplePayload = {
   data: "Automation Started Successfully",
 };

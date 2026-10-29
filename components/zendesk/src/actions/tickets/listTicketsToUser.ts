@@ -3,6 +3,7 @@ import { createClient } from "../../auth";
 import { listTicketsToUserExamplePayload } from "../../examplePayloads";
 import { listTicketsToUserInputs } from "../../inputs";
 import { listTicketsToUserOutputSchema } from "../../outputSchemas";
+
 export const listTicketsToUser = action({
   display: {
     label: "List Tickets Assigned To User",
@@ -15,6 +16,7 @@ export const listTicketsToUser = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const result = await client.tickets.listAssigned(params.userId);
     return {
       data: result,
@@ -22,6 +24,7 @@ export const listTicketsToUser = action({
   },
   examplePerform: async () => listTicketsToUserExamplePayload,
   inputs: listTicketsToUserInputs,
+
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listTicketsToUserOutputSchema,

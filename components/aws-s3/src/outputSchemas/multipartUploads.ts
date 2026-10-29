@@ -8,6 +8,7 @@ import {
   requestChargedSchema,
   serverSideEncryptionProperties,
 } from "./shared";
+
 export const createMultipartUploadOutputSchema = {
   type: "object" as const,
   properties: {
@@ -24,6 +25,7 @@ export const createMultipartUploadOutputSchema = {
   },
   required: [],
 };
+
 export const uploadPartOutputSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +41,7 @@ export const uploadPartOutputSchema = {
   },
   required: [],
 };
+
 export const generatePresignedForMultiparUploadsOutputSchema = {
   type: "array" as const,
   items: {
@@ -50,6 +53,7 @@ export const generatePresignedForMultiparUploadsOutputSchema = {
     required: ["url", "partNumber"],
   },
 };
+
 export const completeMultipartUploadOutputSchema = {
   type: "object" as const,
   properties: {
@@ -68,6 +72,7 @@ export const completeMultipartUploadOutputSchema = {
   },
   required: [],
 };
+
 export const listPartsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -103,6 +108,7 @@ export const listPartsOutputSchema = {
   },
   required: [],
 };
+
 export const listMultipartUploadsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -138,6 +144,7 @@ export const listMultipartUploadsOutputSchema = {
   },
   required: [],
 };
+
 export const abortMultipartUploadOutputSchema = {
   type: "object" as const,
   properties: {

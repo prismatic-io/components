@@ -8,6 +8,7 @@ import {
   validateFileParsable,
 } from "../helpers";
 import { fileUrl } from "../inputs/general";
+
 export const parse = action({
   display: {
     label: "Read from URL",
@@ -29,6 +30,7 @@ export const parse = action({
     const data = await Promise.resolve(
       parseXlsx(bufferData as unknown as ArrayBuffer),
     );
+
     return {
       data,
     };

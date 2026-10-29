@@ -1,5 +1,6 @@
 import { onPremConnection } from "@prismatic-io/spectral";
 import { DEFAULT_GITLAB_URL } from "../constants";
+
 export const accessToken = onPremConnection({
   key: "accessToken",
   display: {

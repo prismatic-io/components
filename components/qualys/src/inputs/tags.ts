@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
 import { connection, fetchAll, pageSize } from "./common";
+
 export const tagId = input({
   label: "Tag ID",
   type: "string",
@@ -11,6 +12,7 @@ export const tagId = input({
   dataSource: "selectTag",
   example: "12345",
 });
+
 const tagNameFilter = input({
   label: "Tag Name",
   type: "string",
@@ -20,6 +22,7 @@ const tagNameFilter = input({
   placeholder: "Enter tag name",
   example: "LS:",
 });
+
 const parentTagId = input({
   label: "Parent Tag ID",
   type: "string",
@@ -31,6 +34,7 @@ const parentTagId = input({
   placeholder: "Enter parent tag ID",
   example: "100",
 });
+
 const tagName = input({
   label: "Tag Name",
   type: "string",
@@ -41,6 +45,7 @@ const tagName = input({
   placeholder: "Enter tag name",
   example: "LS:Environment=Production",
 });
+
 const color = input({
   label: "Color",
   type: "string",
@@ -51,6 +56,7 @@ const color = input({
   placeholder: "Enter hex color code",
   example: "#FF5733",
 });
+
 const criticalityScore = input({
   label: "Criticality Score",
   type: "string",
@@ -61,6 +67,7 @@ const criticalityScore = input({
   placeholder: "Enter criticality score (1-5)",
   example: "3",
 });
+
 const ruleType = input({
   label: "Rule Type",
   type: "string",
@@ -78,6 +85,7 @@ const ruleType = input({
     { label: "Asset Search", value: "ASSET_SEARCH" },
   ],
 });
+
 const ruleText = input({
   label: "Rule Text",
   type: "string",
@@ -88,6 +96,7 @@ const ruleText = input({
   placeholder: "Enter rule expression",
   example: "Windows.*Server",
 });
+
 const updateTagName = input({
   label: "Tag Name",
   type: "string",
@@ -97,6 +106,7 @@ const updateTagName = input({
   placeholder: "Enter new tag name",
   example: "LS:Environment=Staging",
 });
+
 export const listTagsInputs = {
   connection,
   fetchAll,
@@ -104,6 +114,7 @@ export const listTagsInputs = {
   tagNameFilter,
   parentTagId,
 };
+
 export const createTagInputs = {
   connection,
   tagName,
@@ -113,6 +124,7 @@ export const createTagInputs = {
   ruleType,
   ruleText,
 };
+
 export const updateTagInputs = {
   connection,
   tagId,

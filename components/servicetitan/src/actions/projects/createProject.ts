@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createProjectExamplePayload } from "../../examplePayloads";
 import { createProjectInputs } from "../../inputs";
 import { createProjectOutputSchema } from "../../outputSchemas";
+
 export const createProject = action({
   display: {
     label: "Create Project",

@@ -3,6 +3,7 @@ import {
   cursorMetaSchema,
   offsetPaginationProperties,
 } from "./pagination";
+
 export const sectionSchema = {
   type: "object" as const,
   properties: {
@@ -23,17 +24,21 @@ export const sectionSchema = {
   },
   required: ["locale", "name"],
 };
+
 export const createSectionOutputSchema = {
   type: "object" as const,
   properties: { section: sectionSchema },
   required: ["section"],
 };
+
 export const deleteSectionOutputSchema = { type: "string" as const };
+
 export const getSectionOutputSchema = {
   type: "object" as const,
   properties: { section: sectionSchema },
   required: ["section"],
 };
+
 export const listSectionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -44,6 +49,7 @@ export const listSectionsOutputSchema = {
   },
   required: ["sections"],
 };
+
 export const updateSectionOutputSchema = {
   type: "object" as const,
   properties: { section: sectionSchema },

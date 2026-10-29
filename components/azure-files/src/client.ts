@@ -3,6 +3,7 @@ import {
   StorageSharedKeyCredential,
 } from "@azure/storage-file-share";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
+
 export const createAuthorizedClient = (azureConnection: Connection) => {
   switch (azureConnection.key) {
     case "storageSharedKey":
@@ -17,6 +18,7 @@ export const createAuthorizedClient = (azureConnection: Connection) => {
       return ShareServiceClient.fromConnectionString(
         util.types.toString(azureConnection.fields.connectionString),
       );
+
     default:
       throw new ConnectionError(
         azureConnection,

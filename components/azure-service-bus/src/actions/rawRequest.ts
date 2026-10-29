@@ -5,7 +5,9 @@ import {
   sendRawRequest,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { connection } from "../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -17,6 +19,7 @@ export const rawRequest = action({
     const headers = {
       Authorization: `Bearer ${token}`,
     };
+
     try {
       const { data } = await sendRawRequest(
         baseUrl,

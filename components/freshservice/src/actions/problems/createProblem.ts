@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { createProblemExamplePayload as examplePayload } from "../../examplePayloads";
 import { createProblemInputs as inputs } from "../../inputs";
 import { problemOutputSchema } from "../../outputSchemas";
+
 export const createProblem = action({
   display: {
     label: "Create Problem",
@@ -27,6 +28,7 @@ export const createProblem = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       subject,
       email,
@@ -40,7 +42,9 @@ export const createProblem = action({
       item_category: categorization.itemCategory,
       ...problemsAdditionalFields,
     };
+
     const { data } = await client.post(`/problems`, payload);
+
     return {
       data,
     };

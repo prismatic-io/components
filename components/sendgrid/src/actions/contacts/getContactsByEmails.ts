@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { getContactsByEmailsExamplePayload } from "../../examplePayloads";
 import { getContactsByEmailsInputs } from "../../inputs";
 import { getContactsByEmailsOutputSchema } from "../../outputSchemas";
+
 export const getContactsByEmails = action({
   display: {
     label: "Get Contacts by Emails",
@@ -13,6 +14,7 @@ export const getContactsByEmails = action({
   performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, emails }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     let emailArray: string[];
     if (typeof emails === "string") {
       emailArray = emails
@@ -22,9 +24,11 @@ export const getContactsByEmails = action({
     } else {
       throw new Error("Emails input must be a comma-separated string.");
     }
+
     if (!emailArray || emailArray.length === 0) {
       throw new Error("Please provide at least one email address.");
     }
+
     try {
       const [_response, body] = await client.request({
         method: "POST",
@@ -34,12 +38,7 @@ export const getContactsByEmails = action({
       return { data: body };
     } catch (err) {
       const error = err as {
-        response?: {
-          body?: {
-            errors: unknown;
-          };
-          statusCode?: number;
-        };
+        response?: { body?: { errors: unknown }; statusCode?: number };
         code?: string;
       };
       if (
@@ -53,11 +52,15 @@ export const getContactsByEmails = action({
           )
           .join(", ");
         throw new Error(
-          `Failed to get contacts by emails: ${messages} (Status: ${error.code || error.response?.statusCode})`,
+          `Failed to get contacts by emails: ${messages} (Status: ${
+            error.code || error.response?.statusCode
+          })`,
         );
       }
       throw new Error(
-        `Failed to get contacts by emails: ${util.types.toString(error)} (Status: ${error.code || error.response?.statusCode})`,
+        `Failed to get contacts by emails: ${util.types.toString(
+          error,
+        )} (Status: ${error.code || error.response?.statusCode})`,
       );
     }
   },
@@ -65,9 +68,7 @@ export const getContactsByEmails = action({
     type: "actionOutput",
     schema: getContactsByEmailsOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: getContactsByEmailsExamplePayload.data,
   }),
   examplePayload: getContactsByEmailsExamplePayload,

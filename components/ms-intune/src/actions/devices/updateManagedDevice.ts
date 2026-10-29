@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS, ODATA_TYPES } from "../../constants";
 import { updateManagedDeviceExamplePayload } from "../../examplePayloads";
 import { updateManagedDeviceInputs } from "../../inputs";
+
 export const updateManagedDevice = action({
   display: {
     label: "Update Managed Device",

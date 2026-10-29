@@ -1,5 +1,6 @@
 import type { ClassicTicket, NormalizedTicket } from "../types";
 import { ensureArray } from "./xml";
+
 export const normalizeTicket = (ticket: ClassicTicket): NormalizedTicket => ({
   number: ticket.NUMBER,
   creationDatetime: ticket.CREATION_DATETIME,

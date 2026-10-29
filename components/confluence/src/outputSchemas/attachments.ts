@@ -1,4 +1,5 @@
 import { versionSchema } from "./common";
+
 export const attachmentSchema = {
   type: "object" as const,
   properties: {
@@ -48,6 +49,7 @@ export const attachmentSchema = {
     "version",
   ],
 };
+
 export const listAttachmentsOutputSchema = {
   type: "object" as const,
   properties: {

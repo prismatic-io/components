@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, toKeyValuePairList, toObjectCannedACL } from "../utils";
+
 export const objectKey = input({
   label: "Object Key",
   placeholder: "Enter object key",
@@ -10,6 +11,7 @@ export const objectKey = input({
   example: "path/to/file.txt",
   clean: util.types.toString,
 });
+
 export const fileContents = input({
   label: "File Contents",
   placeholder: "Output data from previous step or string content",
@@ -20,6 +22,7 @@ export const fileContents = input({
   example: "My File Contents",
   clean: util.types.toData,
 });
+
 export const bucket = input({
   label: "Bucket Name",
   placeholder: "Enter bucket name",
@@ -31,6 +34,7 @@ export const bucket = input({
   dataSource: "selectBucket",
   clean: util.types.toString,
 });
+
 export const tagging = input({
   label: "Object Tags",
   placeholder: "Enter tag value",
@@ -42,6 +46,7 @@ export const tagging = input({
   example: "Environment, Production",
   clean: toKeyValuePairList,
 });
+
 export const accessKeyInput = input({
   label: "Connection",
   type: "connection",
@@ -49,6 +54,7 @@ export const accessKeyInput = input({
   comments:
     "The AWS S3 connection to use for authentication. Access keys provide programmatic access to AWS resources. [Learn more](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).",
 });
+
 export const acl = input({
   label: "ACL Permissions",
   comments:
@@ -70,6 +76,7 @@ export const acl = input({
   default: "",
   clean: toObjectCannedACL,
 });
+
 export const expirationSeconds = input({
   label: "Expiration Seconds",
   type: "string",
@@ -80,6 +87,7 @@ export const expirationSeconds = input({
     "Number of seconds until the presigned URL expires. Default is 3600 (1 hour).",
   clean: util.types.toInt,
 });
+
 export const versionId = input({
   label: "Version ID",
   type: "string",

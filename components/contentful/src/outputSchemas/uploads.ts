@@ -1,4 +1,5 @@
 import { emptyResultSchema, linkSchema } from "./shared";
+
 const uploadSchema = {
   type: "object" as const,
   properties: {
@@ -15,6 +16,9 @@ const uploadSchema = {
     },
   },
 };
+
 export const getUploadOutputSchema = uploadSchema;
+
 export const uploadFileOutputSchema = uploadSchema;
+
 export const deleteUploadOutputSchema = emptyResultSchema;

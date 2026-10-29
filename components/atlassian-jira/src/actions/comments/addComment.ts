@@ -8,6 +8,7 @@ import {
   fieldValues,
   issueId,
 } from "../../inputs";
+
 export const addComment = action({
   display: {
     label: "Add Comment",
@@ -18,6 +19,7 @@ export const addComment = action({
       params.jiraConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/issue/${params.issueId}/comment`, {
       body: {
         content: [

@@ -8,6 +8,7 @@ import {
   payEntryInput,
 } from "../../inputs";
 import { objectToFormData } from "../../util";
+
 export const createPayEntry = action({
   display: {
     label: "Create Pay Entry",
@@ -26,9 +27,12 @@ export const createPayEntry = action({
   ) => {
     validateV1Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data: fileData, contentType } = file;
+
     const formData = objectToFormData(payEntryInput);
     formData.append("file", fileData, { contentType, filename: fileName });
+
     const { data } = await client.post(
       `/payroll/v1/companies/${companyId}/payEntryImport`,
       formData.getBuffer(),

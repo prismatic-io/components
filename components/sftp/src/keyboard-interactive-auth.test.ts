@@ -1,6 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import listDirectory from "./actions/directories/listDirectory";
 import { basic } from "./connections";
+
 const basicAuthConnection = createConnection(basic, {
   username: "myuser",
   password: "mypass",
@@ -8,6 +9,7 @@ const basicAuthConnection = createConnection(basic, {
   port: "2223",
   timeout: "3000",
 });
+
 describe("Connect to server that only allows keyboard-interactive", () => {
   if (!process.env.DOCKER_ENABLED) {
     console.warn(

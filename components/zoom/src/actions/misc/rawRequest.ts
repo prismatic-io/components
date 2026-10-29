@@ -5,7 +5,9 @@ import {
   inputs as httpClientInputs,
   sendRawRequest,
 } from "@prismatic-io/spectral/dist/clients/http";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -14,6 +16,7 @@ export const rawRequest = action({
   perform: async (context, { connection, ...rawRequestInputs }) => {
     const baseUrl = `https://api.zoom.us/v2`;
     const token = connection?.token?.access_token;
+
     try {
       const { data, headers } = await sendRawRequest(
         baseUrl,
@@ -25,6 +28,7 @@ export const rawRequest = action({
           Authorization: `Bearer ${token}`,
         },
       );
+
       return {
         data: { data, headers },
       };

@@ -12,6 +12,7 @@ import productPriceViews from "./productPriceViews";
 import salesInvoice from "./salesInvoice";
 import salesOrder from "./salesOrder";
 import taxCode from "./taxCode";
+
 export default {
   ...customer,
   ...customerDeliveryAddress,

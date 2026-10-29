@@ -4,6 +4,7 @@ import { hubspotPaths } from "../constants";
 import { selectPropertyExamplePayload } from "../examplePayloads";
 import { selectPropertyInputs } from "../inputs";
 import type { Property } from "../types";
+
 export const selectProperty = dataSource({
   display: {
     label: "Select Property",
@@ -15,9 +16,10 @@ export const selectProperty = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
-    const { data } = await client.get<{
-      results: Property[];
-    }>(hubspotPaths.properties(objectType));
+    const { data } = await client.get<{ results: Property[] }>(
+      hubspotPaths.properties(objectType),
+    );
+
     const result = data.results.map<Element>((property) => ({
       label: `${property.label} (${property.name})`,
       key: property.name,

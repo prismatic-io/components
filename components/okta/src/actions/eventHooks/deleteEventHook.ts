@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteEventHookExamplePayload } from "../../examplePayloads/webhook";
 import { deleteEventHookInputs } from "../../inputs/webhooks";
 import { deleteEventHookById } from "../../util/eventHooks";
+
 export const deleteEventHook = action({
   display: {
     label: "Delete Event Hook",
@@ -11,7 +12,9 @@ export const deleteEventHook = action({
   inputs: deleteEventHookInputs,
   perform: async (context, { connection, eventHookId }) => {
     const client = await createClient(connection, context.debug.enabled);
+
     const data = await deleteEventHookById(client, eventHookId);
+
     return {
       data,
     };

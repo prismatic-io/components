@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteCallLogInputs } from "../../inputs";
 import { deleteCallLogExamplePayload } from "../../examplePayloads";
 import { deleteCallLogOutputSchema } from "../../outputSchemas";
+
 export const deleteCallLog = action({
   display: {
     label: "Delete Call Log",

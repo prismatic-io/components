@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { shipmentMethodId } from "../../inputs/customers/createCustomerInputs";
 import { connectionInput } from "../../inputs/general";
 import type { ShipmentMethod } from "../../interfaces";
+
 export const deleteShipmentMethod = action({
   display: {
     label: "Delete Shipment Method",
@@ -20,6 +21,7 @@ export const deleteShipmentMethod = action({
     await client.delete<ShipmentMethod>(
       `/companies(${companyId})/shipmentMethods(${shipmentMethodId})`,
     );
+
     return SUCCESS_PAYLOAD;
   },
   inputs: {

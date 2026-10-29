@@ -3,6 +3,7 @@ import { pageSingleSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { updatePageInputs } from "../../inputs";
 import { getPageExamplePayload as updatePageExamplePayload } from "../../examplePayloads";
+
 export const updatePage = action({
   display: {
     label: "Update Page",
@@ -44,9 +45,7 @@ export const updatePage = action({
   examplePerform: async (
     _context,
     { pageId, title, spaceId, parentId, status },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updatePageExamplePayload,
       ...(pageId ? { id: pageId } : {}),

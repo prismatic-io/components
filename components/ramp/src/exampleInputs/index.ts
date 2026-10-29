@@ -2,6 +2,7 @@ export const subsidiariesExample = [
   "d4fb347a-e24d-46aa-bdbd-f51ee6f3938b",
   "dc9e25cd-15f9-4a90-9de7-d05207641300",
 ];
+
 export const failedSyncsExample = [
   {
     error: {
@@ -11,6 +12,7 @@ export const failedSyncsExample = [
     id: "d471d830-2e73-4082-8a75-68540f83e86e",
   },
 ];
+
 export const successfulSyncsExample = [
   {
     id: "5a58eb94-a583-458f-810d-c794f32f2f90",
@@ -21,6 +23,7 @@ export const successfulSyncsExample = [
     reference_id: "83283a15-c0a0-4105-9724-2fcfefa9924f",
   },
 ];
+
 export const optionsExample = [
   {
     id: "418",

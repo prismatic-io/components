@@ -1,11 +1,13 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, version } from "../inputs";
+
 interface Webhook {
   id: number;
   topic: string;
   subscription_url: string;
 }
+
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",

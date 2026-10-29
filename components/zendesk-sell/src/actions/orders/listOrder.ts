@@ -4,6 +4,7 @@ import { getZendeskClient } from "../../client";
 import { listOrderExamplePayload } from "../../examplePayloads";
 import { listOrderInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listOrder = action({
   display: {
     label: "List Orders",
@@ -22,6 +23,7 @@ export const listOrder = action({
         ...(sortBy && { sort_by: sortBy }),
         ...(dealId && { deal_id: dealId }),
       };
+
       const data: unknown = await fetchAllPages(
         client,
         "/orders",

@@ -8,6 +8,7 @@ import {
   parent_id_Tree,
   storeHash,
 } from "../../inputs";
+
 export const createCategoryTree = action({
   display: {
     label: "Create Category Tree",
@@ -23,16 +24,21 @@ export const createCategoryTree = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/categories`;
+
     if (typeof parent_id_Tree !== "string") {
       throw new Error("parent_id_Tree must be a string");
     }
+
     const parentId = parseInt(parent_id_Tree, 10);
+
     const body = {
       parent_id: parentId,
       name: categoryNameTree,
     };
+
     try {
       const response = await client.post(endpoint, body);
+
       return {
         data: response.data,
       };
@@ -42,6 +48,7 @@ export const createCategoryTree = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

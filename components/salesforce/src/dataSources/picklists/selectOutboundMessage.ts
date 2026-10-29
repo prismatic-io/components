@@ -7,6 +7,7 @@ import {
   removeObjectPrefix,
 } from "../../util";
 import type { ElementWithLabel } from "../../types";
+
 export const selectOutboundMessage = dataSource({
   display: {
     label: "Select Outbound Message",
@@ -18,6 +19,7 @@ export const selectOutboundMessage = dataSource({
     const salesforceClient = await createSalesforceClient(connection, version);
     const outboundMessages =
       await listWorkflowOutboundMessagesFunction(salesforceClient);
+
     const objects: ElementWithLabel[] = (outboundMessages || []).map(
       (message) => {
         const fullName = removeObjectPrefix(message.fullName);
@@ -27,6 +29,7 @@ export const selectOutboundMessage = dataSource({
         };
       },
     );
+
     return {
       result: filterAndSort(objects, filterQuery),
     };

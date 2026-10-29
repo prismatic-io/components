@@ -15,10 +15,14 @@ import type {
   PollingState,
   WatermarkWindow,
 } from "../types";
+
 const SECOND_MS = 1000;
 const ZONE_LESS = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d+)?$/;
+
 const toWall = (ms: number): string => new Date(ms).toISOString().slice(0, 19);
+
 const toRequestTime = (ms: number): string => new Date(ms).toISOString();
+
 const secondOf = (value: unknown): number | null => {
   if (typeof value !== "string") {
     return null;
@@ -27,10 +31,13 @@ const secondOf = (value: unknown): number | null => {
   const ms = Date.parse(zoneLess ? `${zoneLess[1]}Z` : value);
   return Number.isNaN(ms) ? null : Math.floor(ms / SECOND_MS) * SECOND_MS;
 };
+
 const normalizeWatermark = (value: string): string =>
   toWall(secondOf(value) ?? Date.now());
+
 export const resolveSafeHorizon = (now: string): string =>
   toWall(Date.parse(now) - WATERMARK_SKEW_MARGIN_MS);
+
 export const fetchOrdersPage =
   (client: ReturnType<typeof createShipStationClient>): FetchOrderPage =>
   async ({ modifyDateStart, modifyDateEnd }) => {
@@ -45,10 +52,12 @@ export const fetchOrdersPage =
     });
     return Array.isArray(data?.orders) ? data.orders : [];
   };
+
 const sameCursor = (a: OrderPollCursor, b: OrderPollCursor): boolean =>
   a.watermark === b.watermark &&
   a.boundaryIds.length === b.boundaryIds.length &&
   a.boundaryIds.every((id) => b.boundaryIds.includes(id));
+
 const normalRound = async (
   name: string,
   fetchPage: FetchOrderPage,
@@ -68,6 +77,7 @@ const normalRound = async (
   if (full && seconds.every((at) => at === watermarkMs)) {
     return { delivered: [], cursor, drained: false, stuck: true };
   }
+
   const boundary = new Set(cursor.boundaryIds);
   const delivered: OrderRecord[] = [];
   let latestMs = watermarkMs;
@@ -91,6 +101,7 @@ const normalRound = async (
       latestIds.push(record.orderId);
     }
   });
+
   const next: OrderPollCursor =
     latestMs === watermarkMs
       ? {
@@ -108,6 +119,7 @@ const normalRound = async (
   }
   return { delivered, cursor: next, drained: false, stuck: false };
 };
+
 export const drainWatermark = async (
   name: string,
   fetchPage: FetchOrderPage,
@@ -135,8 +147,10 @@ export const drainWatermark = async (
   }
   return { records, cursor, drained: false };
 };
+
 export const pagesPerRound = (batchingEnabled: boolean): number =>
   batchingEnabled ? 1 : MAX_POLL_PAGES;
+
 export const resolveWatermarkWindow = (
   state: PollingState | null | undefined,
   lookBackDate: string | undefined,
@@ -158,6 +172,7 @@ export const resolveWatermarkWindow = (
   const since = toWall(Date.parse(now));
   return { since, createdSince: since, isInitialSync: false };
 };
+
 export const resolveStartCursor = (
   state: PollingState | null | undefined,
   incoming: OrderPollCursor | undefined,
@@ -168,6 +183,7 @@ export const resolveStartCursor = (
     watermark: window.since,
     boundaryIds: state?.lastPolledAt ? (state.boundaryIds ?? []) : [],
   };
+
 export const nextPollingState = (
   state: PollingState | null | undefined,
   window: WatermarkWindow,
@@ -188,6 +204,7 @@ export const nextPollingState = (
     ...(window.isInitialSync ? { initialSyncFrom: window.createdSince } : {}),
   };
 };
+
 export const classifyWatermarkRecords = (
   records: OrderRecord[],
   window: WatermarkWindow,

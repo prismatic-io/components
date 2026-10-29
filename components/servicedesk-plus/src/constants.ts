@@ -1,5 +1,7 @@
 import type { MapModel } from "./interfaces";
+
 export const DEFAULT_BATCH_SIZE = 50;
+
 export const DATA_CENTERS: MapModel[] = [
   {
     label: "United States",
@@ -34,22 +36,21 @@ export const DATA_CENTERS: MapModel[] = [
     value: "https://servicedeskplus.uk",
   },
 ];
+
 export const UNSUPPORTED_CONNECTION_TYPE = "Unsupported connection type";
 export const MISSING_CONNECTION_FIELD = "Connection is not fully configured.";
 export const MISSING_AUTHENTICATION = "Connection is not authenticated.";
-export const POLL_RESOURCE_CONFIG: Record<
-  string,
-  {
-    label: string;
-  }
-> = {
+
+export const POLL_RESOURCE_CONFIG: Record<string, { label: string }> = {
   requests: { label: "Requests" },
   problems: { label: "Problems" },
   assets: { label: "Assets" },
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({ label, value }),
 );
+
 export const SUPPORTED_CONDITIONS = [
   {
     label: "Equals",
@@ -100,6 +101,7 @@ export const SUPPORTED_CONDITIONS = [
     value: "not contains",
   },
 ];
+
 export const CRITERIA_TYPES = [
   {
     label: "String",

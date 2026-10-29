@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createPortalOnlyCustomerExamplePayload } from "../../examplePayloads";
 import { createPortalOnlyCustomerInputs } from "../../inputs";
+
 export const createPortalOnlyCustomer = action({
   display: {
     label: "Create Portal-Only Customer",

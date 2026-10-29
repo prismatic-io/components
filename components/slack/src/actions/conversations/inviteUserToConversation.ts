@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { inviteUserToConversationExamplePayload } from "../../examplePayloads";
 import { inviteUserToConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const inviteUserToConversation = action({
   display: {
     label: "Invite User to Conversation",
@@ -22,11 +23,10 @@ export const inviteUserToConversation = action({
       channel: channelName,
       users: userId,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: inviteUserToConversationExamplePayload,
   }),
   examplePayload: {

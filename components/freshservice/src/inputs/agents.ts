@@ -13,12 +13,15 @@ import {
   fetchAll,
   pagination,
 } from "./common";
+
 const agentsDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#agent_attributes) for more information.";
+
 const agentsAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${agentsDocumentationComments}`,
 });
+
 const levelOptions = [
   { label: "Beginner", value: "1" },
   { label: "Intermediate", value: "2" },
@@ -27,6 +30,7 @@ const levelOptions = [
   { label: "Master", value: "5" },
   { label: "Guru", value: "6" },
 ];
+
 const firstName = input({
   label: "First Name",
   comments: "The given name of the agent.",
@@ -36,6 +40,7 @@ const firstName = input({
   example: "Rolanda",
   clean: util.types.toString,
 });
+
 const email = input({
   label: "Email",
   comments: "The primary email address used to identify the agent.",
@@ -45,6 +50,7 @@ const email = input({
   example: "rolanda.hooch@hogwarts.edu",
   clean: util.types.toString,
 });
+
 const roles = input({
   label: "Roles",
   comments: `Roles of the agent. An array of hashes. ${agentsDocumentationComments}`,
@@ -62,6 +68,7 @@ const roles = input({
   ),
   clean: (value) => cleanArrayCodeInput(value, "Roles"),
 });
+
 const lastName = input({
   label: "Last Name",
   comments: "The family name of the agent.",
@@ -71,6 +78,7 @@ const lastName = input({
   example: "Hooch",
   clean: cleanStringInput,
 });
+
 const address = input({
   label: "Address",
   comments: "The physical or mailing address of the agent.",
@@ -80,6 +88,7 @@ const address = input({
   example: "Gryffindor Tower",
   clean: cleanStringInput,
 });
+
 const occasional = input({
   label: "Occasional",
   comments:
@@ -88,6 +97,7 @@ const occasional = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const jobTitle = input({
   label: "Job Title",
   comments: "The role or position held by the agent.",
@@ -97,6 +107,7 @@ const jobTitle = input({
   example: "Flying Instructor",
   clean: cleanStringInput,
 });
+
 const workPhoneNumber = input({
   label: "Work Phone Number",
   comments: "The office or desk phone number for the agent.",
@@ -106,6 +117,7 @@ const workPhoneNumber = input({
   example: "77762443",
   clean: cleanStringInput,
 });
+
 const mobilePhoneNumber = input({
   label: "Mobile Phone Number",
   comments: "The cell phone number for the agent.",
@@ -115,6 +127,7 @@ const mobilePhoneNumber = input({
   example: "77762443",
   clean: cleanStringInput,
 });
+
 const departmentIds = input({
   label: "Department IDs",
   comments: "Unique IDs of the departments associated with the agent.",
@@ -124,6 +137,7 @@ const departmentIds = input({
   example: JSON.stringify([554], null, 2),
   clean: (value) => cleanArrayCodeInput(value, "Department IDs"),
 });
+
 const canSeeAllTicketsFromAssociatedDepartments = input({
   label: "Can See All Tickets From Associated Departments",
   comments:
@@ -132,6 +146,7 @@ const canSeeAllTicketsFromAssociatedDepartments = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const agentId = input({
   label: "Agent ID",
   comments: "The unique identifier for the agent.",
@@ -142,6 +157,7 @@ const agentId = input({
   dataSource: "selectAgent",
   clean: util.types.toString,
 });
+
 const scoreboardLevelId = input({
   label: "Scoreboard Level ID",
   comments: "The Arcade gamification level assigned to the agent.",
@@ -152,6 +168,7 @@ const scoreboardLevelId = input({
   model: levelOptions,
   clean: cleanNumberInput,
 });
+
 const signature = input({
   label: "Signature",
   comments: "Signature of the agent in HTML format.",
@@ -162,12 +179,14 @@ const signature = input({
   example: "<p>Best regards,<br />Rolanda Hooch</p>",
   clean: cleanStringInput,
 });
+
 const contactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
   comments: "Email, phone, and other contact channel details.",
   inputs: { workPhoneNumber, mobilePhoneNumber, address },
 });
+
 export const createAgentInputs = {
   connection,
   firstName,
@@ -181,6 +200,7 @@ export const createAgentInputs = {
   canSeeAllTicketsFromAssociatedDepartments,
   agentsAdditionalFields,
 };
+
 export const deactivateAgentInputs = {
   connection,
   agentId: input({
@@ -188,6 +208,7 @@ export const deactivateAgentInputs = {
     comments: "Unique ID of the agent to deactivate.",
   }),
 };
+
 export const forgetAgentInputs = {
   connection,
   agentId: input({
@@ -195,16 +216,19 @@ export const forgetAgentInputs = {
     comments: "Unique ID of the agent to forget.",
   }),
 };
+
 export const getAgentInputs = {
   connection,
   agentId,
 };
+
 export const listAgentsInputs = {
   connection,
   fetchAll,
   pagination,
   additionalQueryParams,
 };
+
 const updateAgentAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -236,6 +260,7 @@ const updateAgentAdditionalFields = structuredObjectInput({
     }),
   },
 });
+
 export const updateAgentInputs = {
   connection,
   agentId: input({

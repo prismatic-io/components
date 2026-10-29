@@ -8,6 +8,7 @@ import {
   includeMetadataLinks,
   pagination,
 } from "./common";
+
 const locationId = input({
   label: "Location ID",
   type: "string",
@@ -19,6 +20,7 @@ const locationId = input({
   example: "300100012345678",
   clean: cleanId,
 });
+
 const LocationCode = input({
   label: "Location Code",
   type: "string",
@@ -28,6 +30,7 @@ const LocationCode = input({
   example: "US-NYC",
   clean: cleanString,
 });
+
 const LocationName = input({
   label: "Location Name",
   type: "string",
@@ -37,6 +40,7 @@ const LocationName = input({
   example: "New York Office",
   clean: cleanString,
 });
+
 const EffectiveStartDate = input({
   label: "Effective Start Date",
   type: "string",
@@ -46,6 +50,7 @@ const EffectiveStartDate = input({
   example: "2024-01-01",
   clean: cleanString,
 });
+
 const EffectiveEndDate = input({
   label: "Effective End Date",
   type: "string",
@@ -56,6 +61,7 @@ const EffectiveEndDate = input({
   example: "4712-12-31",
   clean: cleanString,
 });
+
 const SetCode = input({
   label: "Set Code",
   type: "string",
@@ -65,6 +71,7 @@ const SetCode = input({
   example: "COMMON",
   clean: cleanString,
 });
+
 const SetId = input({
   label: "Set ID",
   type: "string",
@@ -74,6 +81,7 @@ const SetId = input({
   example: "300000001",
   clean: cleanString,
 });
+
 const Description = input({
   label: "Description",
   type: "string",
@@ -83,6 +91,7 @@ const Description = input({
   example: "Corporate headquarters",
   clean: cleanString,
 });
+
 const EmailAddress = input({
   label: "Email Address",
   type: "string",
@@ -92,6 +101,7 @@ const EmailAddress = input({
   example: "nyc-office@example.com",
   clean: cleanString,
 });
+
 const Country = input({
   label: "Country",
   type: "string",
@@ -102,6 +112,7 @@ const Country = input({
   example: "US",
   clean: cleanString,
 });
+
 const AddressUsageType = input({
   label: "Address Usage Type",
   type: "string",
@@ -112,6 +123,7 @@ const AddressUsageType = input({
   example: "MAIN",
   clean: cleanString,
 });
+
 const AddressLine1 = input({
   label: "Street Address",
   type: "string",
@@ -121,6 +133,7 @@ const AddressLine1 = input({
   example: "123 Main St",
   clean: cleanString,
 });
+
 const TownOrCity = input({
   label: "City",
   type: "string",
@@ -130,6 +143,7 @@ const TownOrCity = input({
   example: "New York",
   clean: cleanString,
 });
+
 const Region1 = input({
   label: "State/Province",
   type: "string",
@@ -139,6 +153,7 @@ const Region1 = input({
   example: "NY",
   clean: cleanString,
 });
+
 const PostalCode = input({
   label: "Zip/Postal Code",
   type: "string",
@@ -148,6 +163,7 @@ const PostalCode = input({
   example: "10001",
   clean: cleanString,
 });
+
 const AddressEffectiveStartDate = input({
   label: "Address Effective Start Date",
   type: "string",
@@ -157,6 +173,7 @@ const AddressEffectiveStartDate = input({
   example: "2024-01-01",
   clean: cleanString,
 });
+
 const AddressEffectiveEndDate = input({
   label: "Address Effective End Date",
   type: "string",
@@ -166,6 +183,7 @@ const AddressEffectiveEndDate = input({
   example: "4712-12-31",
   clean: cleanString,
 });
+
 const LocAddressUsageId = input({
   label: "Location Address Usage ID",
   type: "string",
@@ -176,6 +194,7 @@ const LocAddressUsageId = input({
   example: "300100000000001",
   clean: cleanString,
 });
+
 const primaryAddress = structuredObjectInput({
   label: "Primary Address",
   required: false,
@@ -193,6 +212,7 @@ const primaryAddress = structuredObjectInput({
     LocAddressUsageId,
   },
 });
+
 export const createLocationInputs = {
   connection,
   LocationCode: { ...LocationCode, required: true },
@@ -206,12 +226,14 @@ export const createLocationInputs = {
   primaryAddress,
   additionalFields,
 };
+
 export const getLocationInputs = {
   connection,
   effectiveDate,
   locationId,
   includeMetadataLinks,
 };
+
 export const listLocationsInputs = {
   connection,
   fetchAll,
@@ -219,6 +241,7 @@ export const listLocationsInputs = {
   effectiveDate,
   includeMetadataLinks,
 };
+
 export const updateLocationInputs = {
   connection,
   locationId,
@@ -233,6 +256,7 @@ export const updateLocationInputs = {
   primaryAddress,
   additionalFields,
 };
+
 export const deleteLocationInputs = {
   connection,
   locationId,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { listCompanyListsExamplePayload } from "../../examplePayloads";
 import { listCompanyListsInputs } from "../../inputs";
+
 export const listCompanyLists = action({
   display: {
     label: "List Company Lists",
@@ -9,6 +10,7 @@ export const listCompanyLists = action({
   },
   perform: async (context, { connection, includeArchived }) => {
     const client = getClient(connection, context.debug.enabled);
+
     const { data } = await client.get("/company/named-lists", {
       params: {
         includeArchived,

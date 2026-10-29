@@ -4,6 +4,7 @@ import { createWebhookTriggerExamplePayload } from "../../examplePayloads";
 import { createWebhookTriggerInputs } from "../../inputs";
 import { createWebhookTriggerOutputSchema } from "../../outputSchemas";
 import { fetchTriggers } from "../../util";
+
 export const createWebhookTrigger = action({
   display: {
     label: "Create Webhook Trigger",

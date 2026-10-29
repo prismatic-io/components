@@ -4,6 +4,7 @@ import { listPoliciesExamplePayload } from "../../examplePayloads/policies";
 import { listPoliciesInputs } from "../../inputs/policies";
 import type { Policy } from "../../interfaces/policies";
 import { paginateRecordsWithLink } from "../../util/util";
+
 export const listPolicies = action({
   display: {
     label: "List Policies",
@@ -25,6 +26,7 @@ export const listPolicies = action({
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
+
     const data = await paginateRecordsWithLink<Policy>(
       client,
       "/policies",
@@ -40,6 +42,7 @@ export const listPolicies = action({
         type,
       },
     );
+
     return {
       data,
     };

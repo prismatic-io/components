@@ -34,6 +34,7 @@ import {
   taxNumber,
   updated_or_created_since,
 } from "../inputs";
+
 export const listContacts = action({
   display: {
     label: "List Contacts",
@@ -41,6 +42,7 @@ export const listContacts = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get("/contacts", {
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
@@ -49,12 +51,14 @@ export const listContacts = action({
           util.types.toString(params.updated_or_created_since) || undefined,
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, itemsPerPage, page, updated_or_created_since },
 });
+
 export const listContactTypes = action({
   display: {
     label: "List Contact Types",
@@ -62,18 +66,21 @@ export const listContactTypes = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get("/contact_types", {
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
         page: util.types.toInt(params.page) || undefined,
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, itemsPerPage, page },
 });
+
 export const listContactPeople = action({
   display: {
     label: "List Contact People",
@@ -81,6 +88,7 @@ export const listContactPeople = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get("/contact_persons", {
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
@@ -89,12 +97,14 @@ export const listContactPeople = action({
           util.types.toString(params.updated_or_created_since) || undefined,
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, itemsPerPage, page, updated_or_created_since },
 });
+
 export const getContact = action({
   display: {
     label: "Get Contact",
@@ -102,13 +112,16 @@ export const getContact = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get(`/contacts/${params.contactId}`);
+
     return {
       data,
     };
   },
   inputs: { connection, contactId },
 });
+
 export const getContactPerson = action({
   display: {
     label: "Get Contact Person",
@@ -116,15 +129,18 @@ export const getContactPerson = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get(
       `/contact_persons/${params.contactPersonId}`,
     );
+
     return {
       data,
     };
   },
   inputs: { connection, contactPersonId },
 });
+
 export const deleteContact = action({
   display: {
     label: "Delete Contact",
@@ -132,13 +148,16 @@ export const deleteContact = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.delete(`/contacts/${params.contactId}`);
+
     return {
       data,
     };
   },
   inputs: { connection, contactId },
 });
+
 export const deleteContactPerson = action({
   display: {
     label: "Delete Contact Person",
@@ -146,13 +165,16 @@ export const deleteContactPerson = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.delete(`/contacts/${params.contactPersonId}`);
+
     return {
       data,
     };
   },
   inputs: { connection, contactPersonId },
 });
+
 export const createContact = action({
   display: {
     label: "Create Contact",
@@ -160,6 +182,7 @@ export const createContact = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const deliveryAddress = {
       address_line_1: util.types.toString(params.deliveryLine1) || undefined,
       address_line_2: util.types.toString(params.deliveryLine2) || undefined,
@@ -173,6 +196,7 @@ export const createContact = action({
       region: util.types.toString(params.deliveryRegion) || undefined,
       is_main_address: util.types.toBool(params.isMainDelivery) || undefined,
     };
+
     const { data } = await client.post(`/contacts`, {
       contact: {
         name: util.types.toString(params.name),
@@ -203,6 +227,7 @@ export const createContact = action({
                 country_id: util.types.toString(params.countryId) || undefined,
                 bank_account_id:
                   util.types.toString(params.bankAccountId) || undefined,
+
                 address_type_id:
                   util.types.toString(params.addressTypeId) || undefined,
                 name: util.types.toString(params.addressName) || undefined,
@@ -223,6 +248,7 @@ export const createContact = action({
         },
       },
     });
+
     return {
       data,
     };
@@ -304,6 +330,7 @@ export const createContact = action({
     },
   },
 });
+
 export const updateContact = action({
   display: {
     label: "Update Contact",
@@ -312,6 +339,7 @@ export const updateContact = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const deliveryAddress = {
       address_line_1: util.types.toString(params.deliveryLine1) || undefined,
       address_line_2: util.types.toString(params.deliveryLine2) || undefined,
@@ -325,6 +353,7 @@ export const updateContact = action({
       region: util.types.toString(params.deliveryRegion) || undefined,
       is_main_address: util.types.toBool(params.isMainDelivery) || undefined,
     };
+
     const { data } = await client.put(`/contacts/${params.contactId}`, {
       contact: {
         name: util.types.toString(params.name),
@@ -355,6 +384,7 @@ export const updateContact = action({
                 country_id: util.types.toString(params.countryId) || undefined,
                 bank_account_id:
                   util.types.toString(params.bankAccountId) || undefined,
+
                 address_type_id:
                   util.types.toString(params.addressTypeId) || undefined,
                 name: util.types.toString(params.addressName) || undefined,
@@ -375,6 +405,7 @@ export const updateContact = action({
         },
       },
     });
+
     return {
       data,
     };

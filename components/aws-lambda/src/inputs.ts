@@ -1,5 +1,7 @@
 import { input } from "@prismatic-io/spectral";
+
 export { awsRegion, connectionInput, dynamicAccessAllInputs } from "aws-utils";
+
 export const functionName = input({
   label: "Function Name or ARN",
   placeholder: "Function Name or ARN",
@@ -10,6 +12,7 @@ export const functionName = input({
   example: "my-function",
   dataSource: "selectFunction",
 });
+
 export const invokeArgs = input({
   label: "Payload",
   placeholder: "Payload",
@@ -19,6 +22,7 @@ export const invokeArgs = input({
     "The payload to send the lambda function. This can be a JSON string or object that can be serialized into JSON.",
   example: `{"firstKey":"firstValue","secondKey":"secondValue"}`,
 });
+
 export const invokeType = input({
   label: "Invoke Type",
   placeholder: "Invoke Type",
@@ -33,6 +37,7 @@ export const invokeType = input({
     { label: "DryRun", value: "DryRun" },
   ],
 });
+
 export const maxItems = input({
   label: "Max Items",
   type: "string",
@@ -41,6 +46,7 @@ export const maxItems = input({
     "Provide an integer value for the maximum amount of items that will be returned. Provide a value from 1 to 50.",
   example: `20`,
 });
+
 export const marker = input({
   label: "Marker",
   type: "string",

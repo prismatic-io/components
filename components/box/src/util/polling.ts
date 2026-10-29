@@ -15,13 +15,16 @@ import type {
   PollingResult,
   PollingState,
 } from "../types";
+
 export const getStoreKey = (flowName: string): string =>
   `boxTrigger-${flowName}`;
+
 export const getLegacyStoreKey = (
   targetId: string,
   targetType: string,
   flowName: string,
 ): string => `boxTrigger-${targetId}-${targetType}-${flowName}`;
+
 export const buildPollingResult = <T>(
   payload: TriggerPayload,
   data: NewOrUpdatedFilesResult<T>,
@@ -31,6 +34,7 @@ export const buildPollingResult = <T>(
     ({ polledNoChanges }) => polledNoChanges,
   ),
 });
+
 export const getLastPolledAt = (
   context: PollingContext,
   defaultLastPolledAt: string,
@@ -40,11 +44,9 @@ export const getLastPolledAt = (
     defaultLastPolledAt
   );
 };
+
 export const normalizeDatesBetweenEntries = <
-  T extends {
-    created_at?: string;
-    modified_at?: string;
-  },
+  T extends { created_at?: string; modified_at?: string },
 >(
   entries: T[],
 ): (Omit<T, "created_at" | "modified_at"> & {
@@ -61,17 +63,16 @@ export const normalizeDatesBetweenEntries = <
     };
   });
 };
+
 export const computeNewEntries = <
-  T extends {
-    created_at?: string;
-    modified_at?: string;
-  },
+  T extends { created_at?: string; modified_at?: string },
 >(
   entries: T[],
   lastPolledAt: string,
 ): T[] => {
   return entries.filter((entry) => entry.created_at > lastPolledAt);
 };
+
 export const resolvePollingRecordChanges = (
   data: BoxChangesObject | undefined,
 ): BoxRecordChange[] => {
@@ -85,6 +86,7 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const resolveFolderChanges = (
   data: BoxFolderChangesObject | undefined,
 ): BoxFolderChange[] => {
@@ -93,6 +95,7 @@ export const resolveFolderChanges = (
     (record): BoxFolderChange => ({ changeType: "new", record }),
   );
 };
+
 export const resolveCommentChanges = (
   data: BoxCommentChangesObject | undefined,
 ): BoxCommentChange[] => {
@@ -101,12 +104,15 @@ export const resolveCommentChanges = (
     (record): BoxCommentChange => ({ changeType: "new", record }),
   );
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
+
   if (!LOOK_BACK_DATE_PATTERN.test(str)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const parts = str.split("-");
   const year = util.types.toNumber(parts[0]);
   const month = util.types.toNumber(parts[1]);
@@ -119,8 +125,10 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
+
   if (parsed > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return str;
 };

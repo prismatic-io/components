@@ -3,6 +3,7 @@ import {
   cursorMetaSchema,
   offsetPaginationProperties,
 } from "./pagination";
+
 export const postSchema = {
   type: "object" as const,
   properties: {
@@ -29,17 +30,21 @@ export const postSchema = {
   },
   required: ["title"],
 };
+
 export const createPostOutputSchema = {
   type: "object" as const,
   properties: { post: postSchema },
   required: ["post"],
 };
+
 export const deletePostOutputSchema = { type: "string" as const };
+
 export const getPostOutputSchema = {
   type: "object" as const,
   properties: { post: postSchema },
   required: ["post"],
 };
+
 export const listPostsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +55,7 @@ export const listPostsOutputSchema = {
   },
   required: ["posts"],
 };
+
 export const updatePostOutputSchema = {
   type: "object" as const,
   properties: { post: postSchema },

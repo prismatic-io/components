@@ -5,6 +5,7 @@ import { listTopicsInputs } from "../../inputs";
 import { listTopicsOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Topic } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listTopics = action({
   display: {
     label: "List Topics",
@@ -18,6 +19,7 @@ export const listTopics = action({
       "page[size]": pagination.pageLimit,
       "page[after]": pagination.cursor,
     };
+
     if (fetchAll) {
       const topics: Topic[] = [];
       return {
@@ -32,26 +34,18 @@ export const listTopics = action({
         },
       };
     }
+
     const { data } = await client.get<
-      | PaginatedResponse<{
-          topics: Topic[];
-        }>
-      | {
-          topics: Topic[];
-        }
+      PaginatedResponse<{ topics: Topic[] }> | { topics: Topic[] }
     >("/community/topics", {
       params,
     });
+
     return {
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> =>
+  examplePerform: async (_context, { fetchAll }): Promise<{ data: unknown }> =>
     fetchAll
       ? { data: { topics: listTopicsExamplePayload.data.topics } }
       : { data: listTopicsExamplePayload.data },

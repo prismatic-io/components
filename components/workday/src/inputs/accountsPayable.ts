@@ -9,6 +9,7 @@ import {
   paginationQueryStringInputs,
   extraParameters,
 } from "./common";
+
 const supplierInvoiceRequestId = input({
   label: "Supplier Invoice Request ID",
   comments: "Identifies the supplier invoice request.",
@@ -19,7 +20,9 @@ const supplierInvoiceRequestId = input({
   clean: util.types.toString,
   dataSource: "selectSupplierInvoiceRequest",
 });
+
 const postSupplierInvoiceRequestsExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.accountsPayable.slice(1)}/post-/supplierInvoiceRequests) for more information.`;
+
 const postSupplierInvoiceRequestsExtraBodyExample = JSON.stringify(
   {
     lines: [
@@ -92,6 +95,7 @@ const postSupplierInvoiceRequestsExtraBodyExample = JSON.stringify(
   null,
   2,
 );
+
 const supplierId = input({
   label: "Supplier ID",
   comments: "Identifies the supplier for the supplier invoice request.",
@@ -101,6 +105,7 @@ const supplierId = input({
   placeholder: "Enter supplier ID",
   clean: util.types.toString,
 });
+
 const invoiceDate = input({
   label: "Invoice Date",
   comments:
@@ -111,6 +116,7 @@ const invoiceDate = input({
   placeholder: "Enter invoice date (YYYY-MM-DD)",
   clean: (value: unknown) => util.types.toDate(value),
 });
+
 const currencyId = input({
   label: "Currency ID",
   comments: "Identifies the currency used for the invoice.",
@@ -120,6 +126,7 @@ const currencyId = input({
   placeholder: "Enter currency ID",
   clean: cleanStringInput,
 });
+
 const taxAmount = input({
   label: "Tax Amount",
   comments: "Total tax amount applied to the invoice.",
@@ -129,6 +136,7 @@ const taxAmount = input({
   placeholder: "Enter tax amount",
   clean: cleanStringInput,
 });
+
 const requesterId = input({
   label: "Requester ID",
   comments: "Identifies the worker who requested the invoice.",
@@ -138,6 +146,7 @@ const requesterId = input({
   placeholder: "Enter requester ID",
   clean: cleanStringInput,
 });
+
 const controlTotalAmount = input({
   label: "Control Total Amount",
   comments: "Expected total amount used to validate invoice line totals.",
@@ -147,6 +156,7 @@ const controlTotalAmount = input({
   placeholder: "Enter control total amount",
   clean: cleanStringInput,
 });
+
 const paymentTermsId = input({
   label: "Payment Terms ID",
   comments: "Identifies the payment terms that apply to the invoice.",
@@ -156,6 +166,7 @@ const paymentTermsId = input({
   placeholder: "Enter payment terms ID",
   clean: cleanStringInput,
 });
+
 const referenceTypeId = input({
   label: "Reference Type ID",
   comments: "Identifies the reference type for the invoice.",
@@ -165,6 +176,7 @@ const referenceTypeId = input({
   placeholder: "Enter reference type ID",
   clean: cleanStringInput,
 });
+
 const supplierInvoiceId = input({
   label: "Supplier Invoice ID",
   comments: "Identifies the supplier invoice.",
@@ -174,6 +186,7 @@ const supplierInvoiceId = input({
   placeholder: "Enter supplier invoice ID",
   clean: cleanStringInput,
 });
+
 const supplierInvoiceDescriptor = input({
   label: "Supplier Invoice Descriptor",
   comments: "Human-readable descriptor for the supplier invoice.",
@@ -183,12 +196,14 @@ const supplierInvoiceDescriptor = input({
   placeholder: "Enter supplier invoice descriptor",
   clean: cleanStringInput,
 });
+
 const amount = structuredObjectInput({
   label: "Amounts",
   required: false,
   comments: "Currency, tax amount, and control total amount.",
   inputs: { currencyId, taxAmount, controlTotalAmount },
 });
+
 const attachmentFile = input({
   label: "File",
   comments:
@@ -199,6 +214,7 @@ const attachmentFile = input({
   placeholder: "Output data from previous step",
   clean: util.types.toData,
 });
+
 const fileLength = input({
   label: "File Length",
   comments:
@@ -209,6 +225,7 @@ const fileLength = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 const contentTypeId = input({
   label: "Content Type ID",
   comments: "Identifies the MIME content type of the attachment.",
@@ -218,6 +235,7 @@ const contentTypeId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const fileName = input({
   label: "File Name",
   comments: `Display name of the attached file. Defaults to "attachment" with the file's suggested extension.`,
@@ -227,6 +245,7 @@ const fileName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const supplierInvoiceRequestAttachmentDescriptor = input({
   label: "Descriptor",
   comments: "Human-readable descriptor for the attachment.",
@@ -236,6 +255,7 @@ const supplierInvoiceRequestAttachmentDescriptor = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const supplierInvoiceRequestAttachmentId = input({
   label: "Supplier Invoice Request Attachment ID",
   comments: "Identifies the attachment on the supplier invoice request.",
@@ -245,6 +265,7 @@ const supplierInvoiceRequestAttachmentId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const supplierInvoiceInstanceId = input({
   label: "Supplier Invoice Instance ID",
   comments: "Identifies the supplier invoice instance to submit for approval.",
@@ -254,6 +275,7 @@ const supplierInvoiceInstanceId = input({
   placeholder: "Enter supplier invoice instance ID",
   clean: util.types.toString,
 });
+
 const supplierInvoiceInstanceDescriptor = input({
   label: "Supplier Invoice Instance Descriptor",
   comments:
@@ -264,15 +286,18 @@ const supplierInvoiceInstanceDescriptor = input({
   placeholder: "Enter supplier invoice instance descriptor",
   clean: util.types.toString,
 });
+
 export const getSupplierInvoiceRequestAttachmentsInputs = {
   connection,
   supplierInvoiceRequestId,
   ...paginationQueryStringInputs,
 };
+
 export const getSupplierInvoiceRequestsByIdInputs = {
   connection,
   supplierInvoiceRequestId,
 };
+
 export const listSupplierInvoiceRequestsInputs = {
   connection,
   ...paginationQueryStringInputs,
@@ -281,6 +306,7 @@ export const listSupplierInvoiceRequestsInputs = {
     comments: `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.accountsPayable.slice(1)}/get-/supplierInvoiceRequests).`,
   },
 };
+
 export const postSupplierInvoiceRequestsInputs = {
   connection,
   companyId: {
@@ -305,12 +331,14 @@ export const postSupplierInvoiceRequestsInputs = {
     comments: postSupplierInvoiceRequestsExtraBodyComments,
   },
 };
+
 const attachmentDetails = structuredObjectInput({
   label: "Attachment Details",
   required: false,
   comments: "File length, file name, and descriptor for the attachment.",
   inputs: { fileLength, fileName, supplierInvoiceRequestAttachmentDescriptor },
 });
+
 export const postSupplierInvoiceRequestsAttachmentsInputs = {
   connection,
   supplierInvoiceRequestId,
@@ -319,6 +347,7 @@ export const postSupplierInvoiceRequestsAttachmentsInputs = {
   contentTypeId,
   supplierInvoiceRequestAttachmentId,
 };
+
 export const submitSupplierInvoiceRequestInputs = {
   connection,
   supplierInvoiceRequestId,

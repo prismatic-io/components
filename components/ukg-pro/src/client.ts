@@ -10,6 +10,7 @@ import {
   getBaseUrl,
   validateConnection,
 } from "./util/connection";
+
 export const createClient = async (
   connection: Connection,
   debug = false,
@@ -17,6 +18,7 @@ export const createClient = async (
   validateConnection(connection);
   const baseUrl = getBaseUrl(connection);
   const headers = await getAuthHeaders(connection);
+
   return createHttpClient({
     baseUrl,
     headers: {
@@ -27,6 +29,7 @@ export const createClient = async (
     debug,
   });
 };
+
 export const createBasicAuthClient = (
   connection: Connection,
   debug = false,
@@ -36,8 +39,10 @@ export const createBasicAuthClient = (
       `Expected ${ukgProBasicAuth.key} connection, got ${connection.key}. Use Basic Auth connection for Personnel and Configuration APIs.`,
     );
   }
+
   const { baseUrl, username, password, customerApiKey } = connection.fields;
   const credentials = Buffer.from(`${username}:${password}`).toString("base64");
+
   return createHttpClient({
     baseUrl: util.types.toString(baseUrl),
     headers: {

@@ -13,6 +13,7 @@ import {
 import type { BooksGetRecordsPerformInput } from "../types";
 import { getBooksUrl } from "../util/general";
 import { fetchAllPages } from "../util/pagination";
+
 const booksGetRecords = action({
   display: {
     label: "Books - Get Records",
@@ -52,6 +53,7 @@ const booksGetRecords = action({
       ClientType.BOOKS,
       context.debug.enabled,
     );
+
     const url = getBooksUrl(parentRecordType, parentRecordId, recordType);
     const params = Object.fromEntries(
       Object.entries({
@@ -60,6 +62,7 @@ const booksGetRecords = action({
         per_page,
       }).filter(([_key, val]) => Boolean(val)),
     );
+
     const data = await fetchAllPages(
       booksClient,
       url,
@@ -74,4 +77,5 @@ const booksGetRecords = action({
   },
   examplePayload: booksGetRecordsExamplePayload,
 });
+
 export default booksGetRecords;

@@ -4,6 +4,7 @@ import { editGuestOnWorkspaceExamplePayload } from "../../examplePayloads";
 import { editGuestOnWorkspaceInputs } from "../../inputs";
 import { editGuestOnWorkspaceOutputSchema } from "../../outputSchemas";
 import type { EditGuestOnWorkspaceBody } from "../../types";
+
 export const editGuestOnWorkspace = action({
   display: {
     label: "Edit Guest on Workspace",
@@ -41,7 +42,9 @@ export const editGuestOnWorkspace = action({
       can_create_views: canCreateViews,
       custom_role_id: customRoleId,
     };
+
     const { data } = await client.put(`/team/${teamId}/guest/${guestId}`, body);
+
     return {
       data,
     };

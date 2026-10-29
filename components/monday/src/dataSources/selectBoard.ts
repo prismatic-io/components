@@ -4,6 +4,7 @@ import { selectBoardExamplePayload } from "../examplePayloads";
 import { selectBoardInputs } from "../inputs";
 import type { BoardIdName } from "../types";
 import { getAllBoards } from "../util";
+
 export const selectBoard = dataSource({
   display: {
     label: "Select Board",
@@ -13,7 +14,9 @@ export const selectBoard = dataSource({
   examplePayload: selectBoardExamplePayload,
   perform: async (_context, { connection }) => {
     const client = getMondayClient(connection, false);
+
     const { boards } = await getAllBoards<BoardIdName>(client, true);
+
     const result = boards.map<Element>((board) => ({
       label: board.name,
       key: board.id,

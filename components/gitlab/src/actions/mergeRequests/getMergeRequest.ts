@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getMergeRequestExamplePayload } from "../../examplePayloads";
 import { getMergeRequestInputs } from "../../inputs";
 import { getMergeRequestOutputSchema } from "../../outputSchemas";
+
 export const getMergeRequest = action({
   display: {
     label: "Get Merge Request",

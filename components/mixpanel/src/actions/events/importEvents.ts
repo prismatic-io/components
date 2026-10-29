@@ -4,6 +4,7 @@ import { importEventsInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { importEventsExamplePayload } from "../../examplePayloads";
 import { importEventsOutputSchema } from "../../outputSchemas";
+
 export const importEvents = action({
   display: {
     label: "Import Events",
@@ -32,8 +33,7 @@ export const importEvents = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => importEventsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    importEventsExamplePayload,
   examplePayload: importEventsExamplePayload,
 });

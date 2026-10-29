@@ -6,6 +6,7 @@ import {
 } from "../../examplePayloads/v1/dataSources";
 import { connectionInput, version } from "../../inputs";
 import type { UserDataSources } from "../../types";
+
 export const usersNames = dataSource({
   display: {
     label: "Fetch User Names (Harvest v1/v2)",
@@ -27,6 +28,7 @@ export const usersNames = dataSource({
   dataSourceType: "picklist",
   examplePayload: userNamesV1DataSourceExamplePayload,
 });
+
 export const users = dataSource({
   display: {
     label: "Fetch User Emails (Harvest v1/v2)",

@@ -5,6 +5,7 @@ import { getArPaymentExamplePayload } from "../../examplePayloads";
 import { OBJECT_AR_PAYMENT } from "../../constants";
 import { getArPaymentInputs } from "../../inputs";
 import { getArPaymentOutputSchema } from "../../outputSchemas";
+
 export const getArPayment = action({
   display: {
     label: "Get AR Payment",

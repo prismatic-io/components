@@ -6,6 +6,7 @@ import { getShopConfigGqlOutputSchema } from "../../../outputSchemas";
 import type { Shop } from "../../../types";
 import { shopMapper } from "../mappers/shopMapper";
 import getShopConfigQuery from "../queries/shops/GetShopConfig.gql";
+
 export const getShopConfigGql = action({
   display: {
     label: "Get Shop Configuration",
@@ -19,9 +20,8 @@ export const getShopConfigGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      shop: Shop;
-    } = await client.request(getShopConfigQuery);
+    const data: { shop: Shop } = await client.request(getShopConfigQuery);
+
     return {
       data: { data: { shop: shopMapper(data.shop) } },
     };

@@ -5,6 +5,7 @@ import { selectAccountMerchantInputs } from "../../inputs/v1";
 import type { AccountSummary } from "../../types";
 import { fetchAllPages } from "../../util/pagination";
 import { toPicklist } from "../../util/picklist";
+
 export const selectAccountMerchant = dataSource({
   display: {
     label: "Select Account (Merchant v1)",
@@ -14,6 +15,7 @@ export const selectAccountMerchant = dataSource({
   inputs: selectAccountMerchantInputs,
   perform: async (_context, { connection }) => {
     const client = createClientMerchant(connection);
+
     const accounts = await fetchAllPages<AccountSummary>(async (token) => {
       const { data } = await client.get("/accounts/v1/accounts", {
         params: { pageToken: token },
@@ -23,6 +25,7 @@ export const selectAccountMerchant = dataSource({
         nextPageToken: data.nextPageToken,
       };
     });
+
     return toPicklist(accounts, (account) => ({
       label: account.accountName || account.accountId || "Unknown",
       key: account.accountId || "",

@@ -1,7 +1,9 @@
 import type { Connection } from "@prismatic-io/spectral";
+
 export interface CRMRecords {
   data: CRMRecord[];
 }
+
 export interface CRMRecord {
   id: string;
   Created_Time: string;
@@ -10,15 +12,19 @@ export interface CRMRecord {
   Name?: string;
   Subject?: string;
 }
+
 export interface BookContactsRecords {
   contacts: BookRecord[];
 }
+
 export interface BookRecord {
   created_time: string;
   last_modified_time: string;
   [key: string]: string;
 }
+
 export type ZohoRecord = CRMRecord | BookRecord;
+
 export interface NotificationTriggerInputs {
   connection: Connection;
   channelId?: string;
@@ -29,6 +35,7 @@ export interface NotificationTriggerInputs {
   notifyOnRelatedAction?: boolean;
   notificationCondition?: unknown;
 }
+
 export interface EnableNotificationParams {
   channelId: string | number;
   events: unknown;
@@ -39,11 +46,13 @@ export interface EnableNotificationParams {
   notifyOnRelatedAction?: boolean;
   notificationCondition?: unknown;
 }
+
 export interface DisableSpecificNotificationParams {
   channelId: string | number;
   events: unknown;
   notifyOnRelatedAction?: boolean;
 }
+
 export interface WatchConfig {
   channel_id: string | number;
   events?: unknown;
@@ -54,15 +63,18 @@ export interface WatchConfig {
   notify_on_related_action?: boolean;
   return_affected_field_values?: boolean;
 }
+
 export interface NotificationChannel {
   channel_id: string;
   events: string[];
   notify_url?: string;
   channel_expiry?: string;
 }
+
 export interface WatchResponse {
   watch: NotificationChannel[];
 }
+
 export interface NotificationsBody {
   token?: string;
   channelExpiry?: string;
@@ -72,6 +84,7 @@ export interface NotificationsBody {
   notifyOnRelatedAction?: boolean;
   returnAffectedFieldValues?: boolean;
 }
+
 export interface paginationParams {
   searchFields?: string;
   fields?: string;
@@ -84,6 +97,7 @@ export interface paginationParams {
   channelId?: string | number;
   module?: string;
 }
+
 export interface CrmGetRecordsPerformInput {
   connection: Connection;
   recordType: string;
@@ -96,6 +110,7 @@ export interface CrmGetRecordsPerformInput {
   fetchAll?: boolean;
   ifModifiedSince?: string;
 }
+
 export interface BooksGetRecordsPerformInput {
   connection: Connection;
   recordType: string;
@@ -107,37 +122,45 @@ export interface BooksGetRecordsPerformInput {
   fetchAll?: boolean;
   ifModifiedSince?: string;
 }
+
 export interface CRMChangesObject {
   created?: CRMRecord[];
   updated?: CRMRecord[];
 }
+
 export interface CRMRecordChange {
   changeType: "created" | "updated";
   record: CRMRecord;
 }
+
 export interface BooksChangesObject {
   created?: BookRecord[];
   updated?: BookRecord[];
 }
+
 export interface BooksRecordChange {
   changeType: "created" | "updated";
   record: BookRecord;
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   lastUpdated?: string;
   backfillActive?: boolean;
 }
+
 export interface CRMPollingState extends PollingState {
   pageToken?: string;
   streamStartedAt?: string;
   restartedStream?: boolean;
 }
+
 export interface CRMPollingCursor extends Record<string, unknown> {
   pageToken: string;
   streamStartedAt: string;
   restartedStream?: boolean;
 }
+
 export interface CRMWindowParams {
   connection: Connection;
   recordType: string;

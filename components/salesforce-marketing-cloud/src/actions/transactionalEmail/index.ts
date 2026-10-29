@@ -6,6 +6,7 @@ import { listEmailDefinitions } from "./listEmailDefinitions";
 import { sendEmail } from "./sendEmail";
 import { sendEmailBatch } from "./sendEmailBatch";
 import { updateEmailDefinition } from "./updateEmailDefinition";
+
 export default {
   createEmailDefinition,
   deleteEmailDefinition,

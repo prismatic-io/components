@@ -4,6 +4,7 @@ import { getAssignmentExamplePayload } from "../../examplePayloads/assignments";
 import { getAssignmentInputs } from "../../inputs";
 import { assignmentOutputSchema } from "../../outputSchemas";
 import type { Assignment } from "../../types";
+
 export const getAssignment = action({
   display: {
     label: "Get Assignment",

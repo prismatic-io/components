@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../utils";
 import { connectionInput, pagination } from "./common";
+
 export const organization = input({
   label: "Organization",
   type: "string",
@@ -10,6 +11,7 @@ export const organization = input({
   placeholder: "Enter organization name",
   clean: util.types.toString,
 });
+
 const org = input({
   label: "Org",
   type: "string",
@@ -17,6 +19,7 @@ const org = input({
   clean: cleanString,
   comments: "The organization name",
 });
+
 const orgRepoType = input({
   label: "Type",
   type: "string",
@@ -33,6 +36,7 @@ const orgRepoType = input({
   clean: cleanString,
   comments: "Specifies the types of repositories to return",
 });
+
 const orgRepoSort = input({
   label: "Sort",
   type: "string",
@@ -47,6 +51,7 @@ const orgRepoSort = input({
   clean: cleanString,
   comments: "The property to sort the results by",
 });
+
 const orgRepoDirection = input({
   label: "Direction",
   type: "string",
@@ -58,6 +63,7 @@ const orgRepoDirection = input({
   clean: cleanString,
   comments: "The order to sort by",
 });
+
 export const reposListForOrgInputs = {
   connection: connectionInput,
   org,
@@ -66,6 +72,7 @@ export const reposListForOrgInputs = {
   direction: orgRepoDirection,
   pagination,
 };
+
 export const orgsListForAuthenticatedUserInputs = {
   connection: connectionInput,
   pagination,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createCandidateExamplePayload } from "../../examplePayloads";
 import { createCandidateInputs } from "../../inputs";
 import { cleanResultFromResponse } from "../../util";
+
 export const createCandidate = action({
   display: {
     label: "Create Candidate",

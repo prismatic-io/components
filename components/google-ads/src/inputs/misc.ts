@@ -1,7 +1,9 @@
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { GOOGLE_ADS_API_VERSION, GOOGLE_ADS_BASE_URL } from "../constants";
 import { connectionInput } from "./common";
+
 const { debugRequest: _, ...baseRawRequestInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   connection: connectionInput,
   ...baseRawRequestInputs,

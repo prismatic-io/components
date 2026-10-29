@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanSpaceDelimitedString, cleanStringArray } from "../util";
 import {
   accountIdInput,
@@ -6,6 +7,7 @@ import {
   customerIdInput,
   returnAdditionalFieldsInput,
 } from "./common";
+
 const campaignTypeModel = [
   { label: "Audience", value: "Audience" },
   { label: "Dynamic Search Ads", value: "DynamicSearchAds" },
@@ -13,6 +15,7 @@ const campaignTypeModel = [
   { label: "Search", value: "Search" },
   { label: "Shopping", value: "Shopping" },
 ];
+
 const campaignsBodyInput = input({
   label: "Campaigns",
   type: "code",
@@ -36,6 +39,7 @@ const campaignsBodyInput = input({
   ),
   clean: util.types.toObject,
 });
+
 const updateCampaignsBodyInput = {
   ...campaignsBodyInput,
   comments:
@@ -53,6 +57,7 @@ const updateCampaignsBodyInput = {
     2,
   ),
 };
+
 const campaignIdsInput = input({
   label: "Campaign IDs",
   placeholder: "Enter campaign ID",
@@ -64,6 +69,7 @@ const campaignIdsInput = input({
   example: "542512145",
   clean: cleanStringArray,
 });
+
 const campaignTypeInput = input({
   label: "Campaign Type",
   type: "string",
@@ -74,18 +80,21 @@ const campaignTypeInput = input({
     "The type(s) of campaigns to return. Defaults to Search when omitted. Specify additional types to include non-Search campaigns.",
   clean: cleanSpaceDelimitedString,
 });
+
 export const addCampaignsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
   customerId: { ...customerIdInput, required: true },
   campaigns: campaignsBodyInput,
 };
+
 export const updateCampaignsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
   customerId: { ...customerIdInput, required: true },
   campaigns: updateCampaignsBodyInput,
 };
+
 export const deleteCampaignsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -96,6 +105,7 @@ export const deleteCampaignsInputs = {
     comments: "An array of campaign identifiers to delete.",
   },
 };
+
 export const getCampaignsByAccountIdInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -103,11 +113,13 @@ export const getCampaignsByAccountIdInputs = {
   campaignType: campaignTypeInput,
   returnAdditionalFields: returnAdditionalFieldsInput,
 };
+
 export const selectCampaignIdInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true, dataSource: undefined },
   customerId: { ...customerIdInput, required: true, dataSource: undefined },
 };
+
 export const getCampaignsByIdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },

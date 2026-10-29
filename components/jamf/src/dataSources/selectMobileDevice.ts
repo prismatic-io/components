@@ -4,6 +4,7 @@ import { selectMobileDeviceExamplePayload } from "../examplePayloads";
 import { selectMobileDeviceInputs } from "../inputs";
 import type { MobileDevice } from "../types";
 import { mapToSortedElements, paginateResults } from "../util";
+
 export const selectMobileDevice = dataSource({
   display: {
     label: "Select Mobile Device",

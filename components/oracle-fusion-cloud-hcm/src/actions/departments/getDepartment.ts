@@ -4,6 +4,7 @@ import { getDepartmentExamplePayload } from "../../examplePayloads/departments";
 import { getDepartmentInputs } from "../../inputs";
 import { departmentOutputSchema } from "../../outputSchemas";
 import type { Department } from "../../types";
+
 export const getDepartment = action({
   display: {
     label: "Get Department",

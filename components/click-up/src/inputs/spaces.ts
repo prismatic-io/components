@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, getSpaceId, getTeamId } from "./common";
+
 const spaceName = input({
   label: "Space Name",
   type: "string",
@@ -9,6 +10,7 @@ const spaceName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const color = input({
   label: "Color",
   type: "string",
@@ -18,6 +20,7 @@ const color = input({
   required: true,
   clean: util.types.toString,
 });
+
 const privateInput = input({
   label: "Private",
   type: "boolean",
@@ -26,6 +29,7 @@ const privateInput = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const adminCanManage = input({
   label: "Admin Can Manage",
   type: "boolean",
@@ -34,6 +38,7 @@ const adminCanManage = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const multipleAssignees = input({
   label: "Multiple Assignees",
   type: "boolean",
@@ -42,6 +47,7 @@ const multipleAssignees = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableDueDates = input({
   label: "Enable Due Dates",
   type: "boolean",
@@ -50,6 +56,7 @@ const enableDueDates = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const useStartDate = input({
   label: "Use Start Date",
   type: "boolean",
@@ -58,6 +65,7 @@ const useStartDate = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const remapDueDates = input({
   label: "Remap Due Dates",
   type: "boolean",
@@ -66,6 +74,7 @@ const remapDueDates = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const remapClosedDueDates = input({
   label: "Remap Closed Due Dates",
   type: "boolean",
@@ -74,6 +83,7 @@ const remapClosedDueDates = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const enableTimeTracking = input({
   label: "Enable Time Tracking",
   type: "boolean",
@@ -82,6 +92,7 @@ const enableTimeTracking = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableTags = input({
   label: "Enable Tags",
   type: "boolean",
@@ -90,6 +101,7 @@ const enableTags = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableTimeEstimates = input({
   label: "Enable Time Estimates",
   type: "boolean",
@@ -98,6 +110,7 @@ const enableTimeEstimates = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableChecklists = input({
   label: "Enable Checklists",
   type: "boolean",
@@ -106,6 +119,7 @@ const enableChecklists = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableCustomFields = input({
   label: "Enable Custom Fields",
   type: "boolean",
@@ -114,6 +128,7 @@ const enableCustomFields = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableRemapDependencies = input({
   label: "Enable Remap Dependencies",
   type: "boolean",
@@ -122,6 +137,7 @@ const enableRemapDependencies = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enableDependencyWarning = input({
   label: "Enable Dependency Warning",
   type: "boolean",
@@ -130,6 +146,7 @@ const enableDependencyWarning = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const enablePortfolios = input({
   label: "Enable Portfolios",
   type: "boolean",
@@ -138,6 +155,7 @@ const enablePortfolios = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const createSpaceInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -156,18 +174,22 @@ export const createSpaceInputs = {
   enableDependencyWarning,
   enablePortfolios,
 };
+
 export const deleteSpaceInputs = {
   clickUpConnection: connectionInput,
   spaceId: getSpaceId(true),
 };
+
 export const getSpaceInputs = {
   clickUpConnection: connectionInput,
   spaceId: getSpaceId(true),
 };
+
 export const listSpacesInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
 };
+
 export const updateSpaceInputs = {
   clickUpConnection: connectionInput,
   spaceId: getSpaceId(true),

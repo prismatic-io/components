@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listJobApplicationsExamplePayload } from "../../examplePayloads";
 import { defaultListInputs } from "../../inputs";
 import { paginateData } from "../../util";
+
 export const listJobApplications = action({
   display: {
     label: "List Job Applications",

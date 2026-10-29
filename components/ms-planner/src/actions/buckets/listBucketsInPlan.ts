@@ -7,6 +7,7 @@ import { listBucketsInPlanOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { fetchAllPlanner } from "../../utils";
 import { listBucketsInPlanInputs } from "../../inputs";
+
 export const listBucketsInPlan = action({
   display: {
     label: "List Buckets in Plan",
@@ -26,12 +27,7 @@ export const listBucketsInPlan = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { planId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { planId }): Promise<{ data: unknown }> => ({
     data: {
       ...listBucketsInPlanExamplePayload.data,
       value: listBucketsInPlanExamplePayload.data.value.map((bucket) => ({

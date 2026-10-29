@@ -4,6 +4,7 @@ import { ASSETS_PATH } from "../../constants";
 import { getAssetExamplePayload } from "../../examplePayloads";
 import { getAssetInputs } from "../../inputs";
 import { assetOutputSchema } from "../../outputSchemas";
+
 export const getAsset = action({
   examplePayload: getAssetExamplePayload,
   display: {
@@ -21,6 +22,7 @@ export const getAsset = action({
     const { data } = await client.get(
       `${ASSETS_PATH}/${encodeURIComponent(assetId)}`,
     );
+
     return { data };
   },
 });

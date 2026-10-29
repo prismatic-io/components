@@ -3,6 +3,7 @@ import { getGuruClient } from "../../client";
 import { listTeamMembersPayload } from "../../examplePayloads";
 import { listTeamMembersInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
+
 export const listTeamMembers = action({
   display: {
     label: "List Team Members",
@@ -10,11 +11,14 @@ export const listTeamMembers = action({
   },
   perform: async (context, { connection, search, fetchAll }) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const queryParams = {
       search,
     };
+
     const url = "/members";
     const data = await fetchGuruResults(client, url, fetchAll, queryParams);
+
     return { data };
   },
   inputs: listTeamMembersInputs,

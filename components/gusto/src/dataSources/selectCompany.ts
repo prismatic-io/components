@@ -1,10 +1,12 @@
 import { type Element, dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput } from "../inputs";
+
 interface Company {
   uuid: string;
   name: string;
 }
+
 export const selectCompany = dataSource({
   display: {
     label: "Select Company",
@@ -15,12 +17,14 @@ export const selectCompany = dataSource({
   perform: async (_context, { connection }) => {
     const client = createClient(connection);
     const { data } = await client.get<Company[]>("/companies");
+
     const result = data
       .map<Element>((company) => ({
         label: company.name,
         key: company.uuid.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   examplePayload: {

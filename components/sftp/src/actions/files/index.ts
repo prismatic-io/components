@@ -5,6 +5,7 @@ import writeFile from "./writeFile";
 import appendFile from "./appendFile";
 import deleteFile from "./deleteFile";
 import moveFile from "./moveFile";
+
 export default {
   readFile,
   fastGet,

@@ -4,6 +4,7 @@ import { selectLocationExamplePayload } from "../examplePayloads";
 import { selectLocationInputs } from "../inputs";
 import type { Location } from "../types";
 import { fetchAllPages, toPicklistResult } from "../util";
+
 export const selectLocation = dataSource({
   display: {
     label: "Select Location",

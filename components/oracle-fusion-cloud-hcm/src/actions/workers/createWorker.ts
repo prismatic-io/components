@@ -5,6 +5,7 @@ import { createWorkerInputs } from "../../inputs";
 import { workerRecordOutputSchema } from "../../outputSchemas";
 import type { WorkerRecord } from "../../types";
 import { dropEmptyRows } from "../../util";
+
 export const createWorker = action({
   display: {
     label: "Create Worker",
@@ -37,6 +38,7 @@ export const createWorker = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const relationships = dropEmptyRows(workRelationships);
     const hasValidRelationship = (relationships ?? []).some(
       (r) => r.LegalEntityId && r.StartDate && r.WorkerType,
@@ -46,6 +48,7 @@ export const createWorker = action({
         "Create Worker requires at least one work relationship with Legal Entity ID, Start Date, and Worker Type.",
       );
     }
+
     const names = [
       { NameType, LastName, LegislationCode, FirstName, MiddleNames, Title },
     ];

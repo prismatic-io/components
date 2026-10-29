@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import { saleShipmentId } from "../../inputs/saleShipments/getSaleShipmentInputs";
 import type { SaleShipment } from "../../interfaces";
+
 export const getSaleShipment = action({
   display: {
     label: "Get Sales Shipment",
@@ -17,9 +18,11 @@ export const getSaleShipment = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get<SaleShipment>(
       `/companies(${companyId})/salesShipments(${saleShipmentId})`,
     );
+
     return { data };
   },
   inputs: {

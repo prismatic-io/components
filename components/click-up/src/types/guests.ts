@@ -3,16 +3,23 @@ import type {
   IncludeSharedQueryParams,
   PermissionLevelBody,
 } from "./common";
+
 export type AddGuestToFolderBody = PermissionLevelBody;
+
 export type AddGuestToFolderQueryParams = IncludeSharedQueryParams;
+
 export type AddGuestToListBody = PermissionLevelBody;
+
 export type AddGuestToListQueryParams = IncludeSharedQueryParams;
+
 export type AddGuestToTaskBody = PermissionLevelBody;
+
 export interface AddGuestToTaskQueryParams
   extends IncludeSharedQueryParams,
     CustomTaskIdsQueryParams {
   custom_task_ids: boolean;
 }
+
 export interface EditGuestOnWorkspaceBody {
   username: string;
   can_edit_tags: boolean;
@@ -21,6 +28,7 @@ export interface EditGuestOnWorkspaceBody {
   can_create_views: boolean;
   custom_role_id: number;
 }
+
 export interface InviteGuestToWorkspaceBody {
   email: string;
   can_edit_tags: boolean;
@@ -29,5 +37,7 @@ export interface InviteGuestToWorkspaceBody {
   can_create_views: boolean;
   custom_role_id: number;
 }
+
 export type RemoveGuestFromFolderQueryParams = IncludeSharedQueryParams;
+
 export type RemoveGuestFromListQueryParams = IncludeSharedQueryParams;

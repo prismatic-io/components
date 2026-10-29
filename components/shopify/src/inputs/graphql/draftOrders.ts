@@ -14,6 +14,7 @@ import {
   tags,
   taxExempt,
 } from "./common";
+
 const draftOrderId = input({
   label: "Draft Order ID",
   type: "string",
@@ -24,6 +25,7 @@ const draftOrderId = input({
   clean: cleanDraftOrderId,
   dataSource: LIST_DRAFT_ORDERS_DATASOURCE_REFERENCE,
 });
+
 const lineItems = input({
   label: "Line Items",
   type: "code",
@@ -61,9 +63,11 @@ const lineItems = input({
     null,
     2,
   ),
+
   comments: "Provide a JSON array containing line item objects.",
   clean: (value) => cleanArrayCodeInput(value, "Line items"),
 });
+
 const useCustomerAddress = input({
   label: "Use Customer Address",
   type: "boolean",
@@ -73,6 +77,7 @@ const useCustomerAddress = input({
     "This flag determines if the order will use the customers default address.",
   clean: util.types.toBool,
 });
+
 const note = input({
   label: "Note",
   type: "string",
@@ -82,19 +87,23 @@ const note = input({
   comments: "A note on the draft order.",
   clean: cleanStringInput,
 });
+
 export const listDraftOrdersInputs = {
   shopifyConnection,
   getAlldata,
   pagination,
 };
+
 export const getDraftOrderInputs = {
   shopifyConnection,
   draftOrderId,
 };
+
 export const deleteDraftOrderInputs = {
   shopifyConnection,
   draftOrderId,
 };
+
 export const createDraftOrderInputs = {
   shopifyConnection,
   customerIdGql,
@@ -113,10 +122,12 @@ export const createDraftOrderInputs = {
   }),
   additionalFields,
 };
+
 export const completeDraftOrderInputs = {
   shopifyConnection,
   draftOrderId,
 };
+
 export const countDraftOrdersInputs = {
   shopifyConnection,
 };

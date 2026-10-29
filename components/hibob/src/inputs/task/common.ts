@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const taskId = input({
   label: "Task ID",
   type: "string",

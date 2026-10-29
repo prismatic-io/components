@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { deleteTableRecordInputs } from "../../../inputs";
 import { deleteTable } from "../../../util";
+
 export const deleteTableRecord = action({
   display: {
     label: "Delete Table Record",
@@ -24,9 +25,7 @@ export const deleteTableRecord = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: null },
   }),
   inputs: deleteTableRecordInputs,

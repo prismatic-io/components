@@ -18,17 +18,22 @@ import {
 import { EXAMPLES } from "../constants";
 import { setupAgentWithHandoffs, cleanupMcpServers } from "./utils";
 import type { AgentConfigData } from "../types";
+
 export const classifyAndBranch = action({
   display: {
     label: "Agent: Classify and Branch",
     description: "Use AI to analyze input and route to the appropriate branch",
   },
+
   allowsBranching: true,
   staticBranchNames: ["Else"],
   dynamicBranchInput: "branches",
+
   inputs: {
     openaiConnection: openaiConnectionInput,
+
     model: modelInput,
+
     classificationInstructions: input({
       label: "Classification Instructions",
       type: "text",
@@ -37,6 +42,7 @@ export const classifyAndBranch = action({
       example: EXAMPLES.classificationInstructions,
       default: "",
     }),
+
     branches: input({
       label: "Branch Definitions",
       type: "string",
@@ -46,6 +52,7 @@ export const classifyAndBranch = action({
         "Define branches and their classification criteria. Key = branch name, Value = description of when to use this branch",
       example: EXAMPLES.branchDefinitions,
     }),
+
     inputText: input({
       label: "Input Text",
       type: "text",
@@ -53,21 +60,24 @@ export const classifyAndBranch = action({
       comments: "The text to analyze and classify (e.g., email content)",
       example: "Can you make the urgent meeting tomorrow morning at 10am?",
     }),
+
     agentTools: agentToolsInput,
+
     agentMcpServers: agentMcpServersInput,
+
     fileIds: fileIdsInput,
   },
+
   perform: async (context, params) => {
     setDefaultOpenAIKey(
       util.types.toString(params.openaiConnection.fields.apiKey),
     );
-    const branches = params.branches as {
-      key: string;
-      value: string;
-    }[];
+
+    const branches = params.branches as { key: string; value: string }[];
     const branchDescriptions = branches
       .map((b) => `- "${b.key}": ${b.value}`)
       .join("\n");
+
     const systemPrompt = `You are an expert classifier. Analyze the provided input and determine which category best applies.
 
 Available categories:
@@ -79,6 +89,7 @@ ${
     ? `\nAdditional instructions: ${params.classificationInstructions}`
     : ""
 }`;
+
     const configData = {
       agent: {
         name: "Classifier",
@@ -113,13 +124,16 @@ ${
       tools: params.agentTools || [],
       mcpServers: params.agentMcpServers || [],
     };
+
     const { agent: classifier, allMcpServers } = await setupAgentWithHandoffs({
       configData: configData as unknown as AgentConfigData,
       handoffConfigs: undefined,
       context,
     });
+
     try {
       let agentInput: AgentInputItem[];
+
       if (params.fileIds && params.fileIds.length > 0) {
         // biome-ignore lint/suspicious/noExplicitAny: Dynamic content array
         const contentArray: any[] = [
@@ -128,27 +142,33 @@ ${
             text: util.types.toString(params.inputText),
           },
         ];
+
         for (const fileId of params.fileIds) {
           contentArray.push({
             type: "input_file",
             file: { id: util.types.toString(fileId) },
           });
         }
+
         const userMessage = {
           role: "user",
           content: contentArray,
         } as UserMessageItem;
+
         agentInput = [userMessage];
       } else {
         agentInput = [user(util.types.toString(params.inputText))];
       }
+
       const result = await run(classifier, agentInput);
       const classification = result.finalOutput as {
         branch?: string;
         confidence?: string;
         reasoning?: string;
       };
+
       await cleanupMcpServers(allMcpServers);
+
       return {
         branch: classification?.branch || "Else",
         data: {

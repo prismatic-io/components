@@ -4,6 +4,7 @@ import { getClient } from "../../client";
 import { uploadFileToFolderExamplePayload } from "../../examplePayloads";
 import { uploadFileToFolderInputs } from "../../inputs";
 import { FolderType } from "../../types/folderTypes";
+
 export const uploadFileToFolder = action({
   display: {
     label: "Upload File To Folder",
@@ -14,6 +15,7 @@ export const uploadFileToFolder = action({
     { connection, employeeId, folderType, fileData, fileName, folderId },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     let endpoint: string;
     switch (folderType) {
       case FolderType.SHARED:
@@ -31,11 +33,13 @@ export const uploadFileToFolder = action({
       default:
         throw new Error(`Invalid folder type: ${folderType}`);
     }
+
     const formData = new FormData();
     formData.append("file", fileData.data, {
       filename: fileName,
       contentType: fileData.contentType,
     });
+
     const { data } = await client.post(endpoint, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

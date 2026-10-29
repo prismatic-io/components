@@ -16,6 +16,7 @@ import {
   text,
   to,
 } from "../inputs";
+
 export const sendEmail = action({
   display: {
     label: "Send Email",
@@ -39,6 +40,7 @@ export const sendEmail = action({
       awsConnection: params.awsConnection,
       awsRegion: params.awsRegion,
     });
+
     const { to, cc, bcc, replyTo } = params;
     const mailComposer = new MailComposer({
       to,

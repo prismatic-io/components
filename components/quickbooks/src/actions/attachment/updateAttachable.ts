@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { connectionInput, minorVersion, updateRequestBody } from "../../inputs";
+
 export const updateAttachable = action({
   display: {
     label: "Update Attachable",
@@ -9,6 +10,7 @@ export const updateAttachable = action({
   },
   perform: async (context, { connection, updateRequestBody, minorVersion }) => {
     const client = createHttpClient(connection, context.debug.enabled);
+
     const { data } = await client.post("/attachable", updateRequestBody, {
       headers: {
         Accept: "application/json",

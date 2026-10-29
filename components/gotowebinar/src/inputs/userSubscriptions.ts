@@ -5,6 +5,7 @@ import {
 } from "../constants";
 import { toOptionalString } from "../util";
 import { connection, userSubscriptionKey } from "./common";
+
 export const webhookUrl = input({
   label: "Webhook URL",
   comments:
@@ -15,6 +16,7 @@ export const webhookUrl = input({
   placeholder: "Enter a webhook URL",
   clean: util.types.toString,
 });
+
 export const eventName = input({
   label: "Event Name",
   comments: "The event to subscribe to.",
@@ -23,6 +25,7 @@ export const eventName = input({
   model: EVENT_NAMES_MODEL,
   clean: util.types.toString,
 });
+
 export const eventVersion = input({
   label: "Event Version",
   comments: "The schema version of the event payload to receive.",
@@ -31,6 +34,7 @@ export const eventVersion = input({
   default: "1.0.0",
   clean: util.types.toString,
 });
+
 export const userSubscriptionKeys = input({
   label: "User Subscription Keys",
   comments:
@@ -45,6 +49,7 @@ export const userSubscriptionKeys = input({
     });
   },
 });
+
 export const deleteWebhook = input({
   label: "Delete Webhooks",
   comments:
@@ -56,6 +61,7 @@ export const deleteWebhook = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const webhookKey = input({
   label: "Webhook Key",
   comments: "The unique identifier for the webhook to update.",
@@ -65,6 +71,7 @@ export const webhookKey = input({
   placeholder: "Enter a webhook key",
   clean: util.types.toString,
 });
+
 export const updateUserSubscriptionKey = input({
   label: "User Subscription Key",
   comments: "The unique identifier for the user subscription to update.",
@@ -74,6 +81,7 @@ export const updateUserSubscriptionKey = input({
   placeholder: "Enter a user subscription key",
   clean: util.types.toString,
 });
+
 export const userSubscriptionState = input({
   label: "User Subscription State",
   comments: "The status to apply to the user subscription.",
@@ -84,19 +92,23 @@ export const userSubscriptionState = input({
   clean: util.types.toString,
   model: USER_SUBSCRIPTION_STATUS_MODEL,
 });
+
 export const getUserSubscriptionInputs = {
   connection,
   userSubscriptionKey,
 };
+
 export const listUserSubscriptionsInputs = {
   connection,
 };
+
 export const createUserSubscriptionInputs = {
   connection,
   webhookUrl,
   eventName,
   eventVersion,
 };
+
 export const updateUserSubscriptionInputs = {
   connection,
   webhookKey,
@@ -108,6 +120,7 @@ export const updateUserSubscriptionInputs = {
     clean: toOptionalString,
   },
 };
+
 export const deleteUserSubscriptionInputs = {
   connection,
   userSubscriptionKeys,

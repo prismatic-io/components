@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getDatasetInputs } from "../../inputs";
+
 export const getDataset = action({
   display: {
     description: "Returns the dataset specified by datasetID.",

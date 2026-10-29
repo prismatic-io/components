@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection, fetchAll, pagination } from "./common";
+
 const campaignId = input({
   label: "Campaign ID",
   type: "string",
@@ -11,6 +12,7 @@ const campaignId = input({
   dataSource: "selectCampaign",
   clean: util.types.toString,
 });
+
 const campaignName = input({
   label: "Campaign Name",
   type: "string",
@@ -20,6 +22,7 @@ const campaignName = input({
   placeholder: "Enter campaign name",
   clean: util.types.toString,
 });
+
 const campaignDescription = input({
   label: "Campaign Description",
   type: "string",
@@ -30,6 +33,7 @@ const campaignDescription = input({
   placeholder: "Enter campaign description",
   clean: toOptionalString,
 });
+
 const campaignCode = input({
   label: "Campaign Code",
   type: "string",
@@ -39,6 +43,7 @@ const campaignCode = input({
   placeholder: "Enter campaign code",
   clean: toOptionalString,
 });
+
 const campaignColor = input({
   label: "Color",
   type: "string",
@@ -49,6 +54,7 @@ const campaignColor = input({
   placeholder: "Enter hex color code",
   clean: toOptionalString,
 });
+
 const campaignExtraBody = input({
   label: "Extra Body",
   type: "code",
@@ -58,6 +64,7 @@ const campaignExtraBody = input({
   example: JSON.stringify({ favorite: true }, null, 2),
   clean: util.types.toObject,
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -70,19 +77,23 @@ const additionalFields = structuredObjectInput({
     campaignExtraBody,
   },
 });
+
 export const listCampaignsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getCampaignInputs = {
   connection,
   campaignId,
 };
+
 export const deleteCampaignInputs = {
   connection,
   campaignId,
 };
+
 export const createCampaignInputs = {
   connection,
   campaignName,

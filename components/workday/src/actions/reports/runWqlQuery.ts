@@ -10,6 +10,7 @@ import {
   queryWqlPage,
 } from "../../util";
 import { runWqlQueryOutputSchema } from "../../outputSchemas";
+
 export const runWqlQuery = action({
   display: {
     label: "Run WQL Query",
@@ -29,6 +30,7 @@ export const runWqlQuery = action({
     }
     const client = getClient(connection, context.debug.enabled);
     const path = buildWqlPath(resolvedTenant);
+
     const data = fetchAll
       ? await queryWqlAll(client, path, query, pagination.limit || undefined)
       : await queryWqlPage(client, path, query, {

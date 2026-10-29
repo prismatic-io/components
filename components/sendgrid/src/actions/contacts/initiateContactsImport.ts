@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { initiateContactsImportExamplePayload } from "../../examplePayloads";
 import { initiateContactsImportInputs } from "../../inputs";
 import { initiateContactsImportOutputSchema } from "../../outputSchemas";
+
 export const initiateContactsImport = action({
   display: {
     label: "Initiate Contacts Import",
@@ -17,6 +18,7 @@ export const initiateContactsImport = action({
     { sendGridConnection, list_ids, field_mappings, is_compressed },
   ) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const payload: {
       list_ids?: string[];
       file_type: "csv";
@@ -25,6 +27,7 @@ export const initiateContactsImport = action({
       file_type: "csv",
       field_mappings,
     };
+
     if (list_ids && typeof list_ids === "string") {
       payload.list_ids = list_ids
         .split(",")
@@ -32,6 +35,7 @@ export const initiateContactsImport = action({
         .filter((id) => id);
       if (payload.list_ids.length === 0) delete payload.list_ids;
     }
+
     const [_response, body] = await client.request({
       method: "PUT",
       url: `/${API_VERSION}/marketing/contacts/imports`,
@@ -44,9 +48,7 @@ export const initiateContactsImport = action({
     type: "actionOutput",
     schema: initiateContactsImportOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: initiateContactsImportExamplePayload.data,
   }),
   examplePayload: initiateContactsImportExamplePayload,

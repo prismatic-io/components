@@ -10,6 +10,7 @@ import {
   topic,
   topicAdditionalFields,
 } from "../../inputs";
+
 export const createTopic = action({
   display: {
     description: "Creates the given topic with the given name.",
@@ -61,6 +62,7 @@ export const createTopic = action({
   },
   examplePayload: createTopicExamplePayload,
 });
+
 export const setTopicIamPolicy = action({
   display: {
     label: "Set Gmail IAM Policy for Topic",
@@ -76,6 +78,7 @@ export const setTopicIamPolicy = action({
   },
   perform: async (_context, { connectionInput, topic }) => {
     const client = createClient(connectionInput);
+
     const { data } = await client.projects.topics.setIamPolicy({
       resource: topic,
       requestBody: {

@@ -4,6 +4,7 @@ import { createClient } from "../client";
 import { destinationsDataSourceExamplePayload } from "../examplePayloads/datasources";
 import { connectionInput } from "../inputs";
 import type { Destination, DestinationsResponse } from "../interfaces";
+
 export const selectDestinations = dataSource({
   display: {
     label: "Select Destinations",
@@ -17,12 +18,14 @@ export const selectDestinations = dataSource({
     const { data } = await client.get<DestinationsResponse>(
       "/notifications/v1/destinations",
     );
+
     const result: Element[] = data.destinations.map(
       (destination: Destination) => ({
         label: destination.name,
         key: util.types.toString(destination.destinationId),
       }),
     );
+
     return { result };
   },
   dataSourceType: "picklist",

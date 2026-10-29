@@ -3,6 +3,7 @@ import { createAssetsClient } from "../../../client";
 import { SUCCESS_RESPONSE } from "../../../constants";
 import { deleteAssetObjectExamplePayload } from "../../../examplePayloads";
 import { deleteAssetObjectInputs } from "../../../inputs";
+
 export const deleteAssetObject = action({
   display: {
     label: "Delete Asset Object",

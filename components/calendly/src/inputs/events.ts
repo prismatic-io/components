@@ -14,6 +14,7 @@ import {
   endTime,
   user,
 } from "./common";
+
 const eventUuid = input({
   label: "Event UUID",
   type: "string",
@@ -23,6 +24,7 @@ const eventUuid = input({
   dataSource: "events",
   clean: util.types.toString,
 });
+
 const inviteeUuid = input({
   label: "Invitee UUID",
   type: "string",
@@ -32,6 +34,7 @@ const inviteeUuid = input({
   clean: util.types.toString,
   dataSource: "selectEventInvitee",
 });
+
 const reason = input({
   label: "Reason",
   type: "string",
@@ -40,28 +43,33 @@ const reason = input({
   placeholder: "Enter cancellation reason",
   clean: cleanString,
 });
+
 export const cancelEventInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
   uuid: { ...uuid, dataSource: "events" },
   reason,
 };
+
 export const deleteScheduledEventDataInputs = {
   connection,
   startTime,
   endTime,
 };
+
 export const getEventInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
   uuid: { ...uuid, dataSource: "events" },
 };
+
 export const getEventInviteeInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
   eventUuid,
   inviteeUuid,
 };
+
 export const listEventInviteesInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
@@ -70,6 +78,7 @@ export const listEventInviteesInputs = {
   sort,
   status,
 };
+
 export const listEventsInputs = {
   connection,
   inviteeEmail,

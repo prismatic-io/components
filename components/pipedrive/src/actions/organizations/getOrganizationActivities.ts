@@ -4,6 +4,7 @@ import { getOrganizationActivitiesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getOrganizationActivitiesExamplePayload } from "../../examplePayloads";
 import { getOrganizationActivitiesOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationActivities = action({
   display: {
     label: "Get Organization Activities",

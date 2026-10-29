@@ -5,6 +5,7 @@ import { readAssociationsExamplePayload } from "../../examplePayloads";
 import { readAssociationsInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
 import { mapReadAssociations } from "../../util";
+
 export const readAssociations = action({
   display: {
     label: "Read Association",
@@ -22,6 +23,7 @@ export const readAssociations = action({
       timeout,
       debugRequest,
     });
+
     const { data } = await client.post(
       hubspotPaths.associations(fromObjectType, toObjectType, "/batch/read"),
       {
@@ -32,6 +34,7 @@ export const readAssociations = action({
         ],
       },
     );
+
     return { data: mapReadAssociations(data) };
   },
   inputs: readAssociationsInputs,

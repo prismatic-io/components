@@ -4,6 +4,7 @@ import {
   pageInfoSchema,
   userErrorsArraySchema,
 } from "./shared";
+
 const moneyBagSchema = {
   type: "object" as const,
   properties: {
@@ -11,12 +12,14 @@ const moneyBagSchema = {
     presentmentMoney: moneyV2Schema,
   },
 };
+
 const shopMoneyOnlySchema = {
   type: "object" as const,
   properties: {
     shopMoney: moneyV2Schema,
   },
 };
+
 const gqlOrderSchema = {
   type: "object" as const,
   properties: {
@@ -99,6 +102,7 @@ const gqlOrderSchema = {
     shippingAddress: { type: ["object", "null"] },
   },
 };
+
 export const cancelOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -113,6 +117,7 @@ export const cancelOrderGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const closeOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -120,8 +125,11 @@ export const closeOrderGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const countOrdersGqlOutputSchema = countSchema;
+
 export const createOrderGqlOutputSchema = closeOrderGqlOutputSchema;
+
 export const deleteOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -129,12 +137,14 @@ export const deleteOrderGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const getOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
     order: gqlOrderSchema,
   },
 };
+
 export const listOrdersGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -142,6 +152,7 @@ export const listOrdersGqlOutputSchema = {
     pageInfo: pageInfoSchema,
   },
 };
+
 export const getOrderOutputSchema = {
   type: "object" as const,
   properties: {

@@ -4,6 +4,7 @@ import { ASSETS_PATH } from "../../constants";
 import { updateAssetExamplePayload } from "../../examplePayloads";
 import { updateAssetInputs } from "../../inputs";
 import { assetOutputSchema } from "../../outputSchemas";
+
 export const updateAsset = action({
   examplePayload: updateAssetExamplePayload,
   display: {
@@ -29,6 +30,7 @@ export const updateAsset = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       name: assetName,
       description: assetDescription,
@@ -36,18 +38,18 @@ export const updateAsset = action({
       content: assetContent,
       ...assetExtraBody,
     };
+
     const { data } = await client.patch(
       `${ASSETS_PATH}/${encodeURIComponent(assetId)}`,
       body,
     );
+
     return { data };
   },
   examplePerform: async (
     _context,
     { assetName, assetDescription, categoryId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateAssetExamplePayload.data,
       name: assetName ?? updateAssetExamplePayload.data.name,

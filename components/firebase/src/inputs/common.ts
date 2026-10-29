@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Firebase connection to use.",
 });
+
 export const collection = input({
   label: "Collection",
   placeholder: "Enter collection name",
@@ -16,6 +18,7 @@ export const collection = input({
   dataSource: "selectCollection",
   clean: util.types.toString,
 });
+
 export const orderBy = input({
   label: "Order By",
   placeholder: "Enter field name",
@@ -25,6 +28,7 @@ export const orderBy = input({
   example: "Name",
   clean: cleanString,
 });
+
 export const queryOperatorCode = input({
   label: "Query Operators",
   type: "code",

@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { exportCRMDataExamplePayload } from "../../examplePayloads";
 import { exportCRMDataInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const exportCRMData = action({
   display: {
     label: "Export CRM Data",
@@ -39,6 +40,7 @@ export const exportCRMData = action({
         "List Id is required for Schema Type PublicExportListRequest",
       );
     }
+
     const payload = {
       exportType: schemaType,
       format,
@@ -50,9 +52,11 @@ export const exportCRMData = action({
       ...(publicCrmSearchRequest && { publicCrmSearchRequest }),
       ...(listId && { listId }),
     };
+
     const data = (
       await client.post(hubspotPaths.exports("/export/async"), payload)
     ).data;
+
     return {
       data,
     };

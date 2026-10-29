@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { updateFileExamplePayload } from "../../examplePayloads";
 import { updateFileInputs } from "../../inputs";
 import { updateFileOutputSchema } from "../../outputSchemas";
+
 export const updateFile = action({
   display: {
     label: "Update File",
@@ -30,9 +31,8 @@ export const updateFile = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateFileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateFileExamplePayload,
   examplePayload: updateFileExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

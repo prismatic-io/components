@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { listTeamsExamplePayload } from "../../examplePayloads";
 import { listTeamsInputs } from "../../inputs";
 import { listTeamsOutputSchema } from "../../outputSchemas";
+
 export const listTeams = action({
   display: {
     label: "List Teams",

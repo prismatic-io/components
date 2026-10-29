@@ -17,16 +17,19 @@ import {
   EVENT_WEBHOOK_TYPE,
   EVENT_WEBHOOK_VERSION,
 } from "./constants";
+
 export const listAllEventHooksFN = async (client: HttpClient) => {
   const { data } = await client.get<Webhook[]>("/eventHooks");
   return data;
 };
+
 export const deactivateEventHookFN = async (
   client: HttpClient,
   eventHookId: string,
 ) => {
   return await client.post(`/eventHooks/${eventHookId}/lifecycle/deactivate`);
 };
+
 export const deleteEventHookById = async (
   client: HttpClient,
   eventHookId: string,
@@ -35,12 +38,14 @@ export const deleteEventHookById = async (
   await client.delete(`/eventHooks/${eventHookId}`);
   return { id: eventHookId, deleted: true };
 };
+
 export const deleteAllEventHooksFN = async (
   client: HttpClient,
   eventHookUrl?: string,
 ) => {
   const eventHooks = await listAllEventHooksFN(client);
   const deletedHooks: EventHookDeletion[] = [];
+
   await Promise.all(
     eventHooks.map(async (hook) => {
       if (!eventHookUrl || hook.channel.config.uri === eventHookUrl) {
@@ -49,8 +54,10 @@ export const deleteAllEventHooksFN = async (
       }
     }),
   );
+
   return deletedHooks;
 };
+
 export const verifyEventHookFN = async (
   client: HttpClient,
   eventHookId: string,
@@ -60,6 +67,7 @@ export const verifyEventHookFN = async (
   );
   return data;
 };
+
 export const createEventHookFN = async (
   client: HttpClient,
   {
@@ -77,7 +85,9 @@ export const createEventHookFN = async (
       "You must provide either Event Hook Items or Dynamic Event Hook Items.",
     );
   }
+
   const items = eventHookItemsCode ? eventHookItemsCode : eventHookItems;
+
   const body = {
     name: eventHookName,
     events: {
@@ -98,6 +108,7 @@ export const createEventHookFN = async (
   const { data } = await client.post<Webhook>(`/eventHooks`, body);
   return data;
 };
+
 export const createEventHookTrigger = async (
   context: ActionContext,
   {
@@ -123,11 +134,13 @@ export const createEventHookTrigger = async (
     eventHookUrlHeaders,
     eventHookFilter,
   });
+
   await verifyEventHookFN(client, id);
   context.logger.info(
     `Created event hook ${id} for flow ${context.flow.name} (${flowId})`,
   );
 };
+
 export const deleteEventHookTrigger = async (
   context: ActionContext,
   { connection }: CreateEventHookTriggerData,
@@ -141,6 +154,7 @@ export const deleteEventHookTrigger = async (
     `Deleted ${deletedEventHooks.length} event hooks associated with flow ${context.flow.name} (${flowId})`,
   );
 };
+
 export const eventHookPerformFN = async (
   _context: ActionContext,
   payload: TriggerPayload,
@@ -158,6 +172,7 @@ export const eventHookPerformFN = async (
         })
       : "",
   };
+
   return Promise.resolve({
     payload,
     response,

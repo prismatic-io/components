@@ -13,6 +13,7 @@ const metadataErrorSchema = {
     statusCode: { type: "string" },
   },
 };
+
 export const metadataResultSchema = {
   type: "object" as const,
   properties: {
@@ -22,6 +23,7 @@ export const metadataResultSchema = {
   },
   required: ["success"],
 };
+
 const filePropertiesSchema = {
   type: "object" as const,
   properties: {
@@ -51,6 +53,7 @@ const filePropertiesSchema = {
     "type",
   ],
 };
+
 export const filePropertiesListSchema = {
   type: "array" as const,
   items: filePropertiesSchema,

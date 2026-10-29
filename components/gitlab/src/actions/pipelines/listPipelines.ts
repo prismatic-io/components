@@ -4,6 +4,7 @@ import { listPipelinesExamplePayload } from "../../examplePayloads";
 import { listPipelinesInputs } from "../../inputs";
 import { listPipelinesOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listPipelines = action({
   display: {
     label: "List Pipelines",
@@ -35,9 +36,8 @@ export const listPipelines = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listPipelinesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listPipelinesExamplePayload,
   examplePayload: listPipelinesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

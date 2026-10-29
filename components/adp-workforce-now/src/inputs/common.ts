@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanKeyValPair, cleanNumber, cleanString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The ADP Workforce Now connection to use.",
 });
+
 export const aoid = input({
   label: "Associate OID",
   type: "string",
@@ -16,6 +18,7 @@ export const aoid = input({
   clean: cleanString,
   dataSource: "selectWorker",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -25,6 +28,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination. Ignores $skip and $top.",
   clean: util.types.toBool,
 });
+
 export const $count = input({
   label: "Count",
   type: "string",
@@ -44,6 +48,7 @@ export const $count = input({
     "When true, the response includes the total number of records matching the query. Cannot be combined with $top or $skip.",
   clean: cleanString,
 });
+
 export const $filter = input({
   label: "Filter",
   type: "string",
@@ -54,6 +59,7 @@ export const $filter = input({
   example: "/mobileUserAccounts/associateOID eq 'G4O73G9Z62SL2NFM'",
   clean: cleanString,
 });
+
 export const $select = input({
   label: "Select",
   type: "string",
@@ -64,6 +70,7 @@ export const $select = input({
   example: "/mobileUserAccounts/associateOID,/mobileUserAccounts/governmentID",
   clean: cleanString,
 });
+
 export const $skip = input({
   label: "Skip",
   type: "string",
@@ -74,6 +81,7 @@ export const $skip = input({
   example: "20",
   clean: cleanNumber,
 });
+
 export const $top = input({
   label: "Top",
   type: "string",
@@ -83,6 +91,7 @@ export const $top = input({
   example: "10",
   clean: cleanNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -92,6 +101,7 @@ export const pagination = structuredObjectInput({
     $top,
   },
 });
+
 export const $expand = input({
   label: "Expand",
   type: "string",
@@ -102,6 +112,7 @@ export const $expand = input({
   example: "dayEntries",
   clean: cleanString,
 });
+
 export const queryParams = input({
   label: "Query Parameters",
   type: "string",

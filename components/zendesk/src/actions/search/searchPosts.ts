@@ -4,6 +4,7 @@ import { searchPostsExamplePayload } from "../../examplePayloads";
 import { searchPostsInputs } from "../../inputs";
 import { searchPostsOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse } from "../../types";
+
 export const searchPosts = action({
   display: {
     label: "Search Posts",
@@ -27,11 +28,12 @@ export const searchPosts = action({
       created_after: dateRangeFilters.filterCreatedAfter,
       created_at: dateRangeFilters.filterCreatedAt,
     };
-    const { data } = await client.get<
-      PaginatedResponse<{
-        results: unknown;
-      }>
-    >("/help_center/community_posts/search", { params });
+
+    const { data } = await client.get<PaginatedResponse<{ results: unknown }>>(
+      "/help_center/community_posts/search",
+      { params },
+    );
+
     return { data };
   },
   examplePerform: async () => searchPostsExamplePayload,

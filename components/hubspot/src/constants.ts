@@ -1,5 +1,7 @@
 export const BASE_URL = "https://api.hubapi.com";
+
 export const API_VERSION = "2026-09";
+
 export const hubspotPaths = {
   objects: (objectType: string, suffix = "") =>
     `/crm/objects/${API_VERSION}/${objectType}${suffix}`,
@@ -17,6 +19,7 @@ export const hubspotPaths = {
   oauthIntrospect: `/oauth/${API_VERSION}/token/introspect`,
   accountDetails: `/account-info/${API_VERSION}/details`,
 };
+
 export const EVENT_TYPES = [
   { label: "Contact Creation", value: "contact.creation" },
   { label: "Contact Deletion", value: "contact.deletion" },
@@ -59,6 +62,7 @@ export const EVENT_TYPES = [
     value: "line_item.associationChange",
   },
 ];
+
 export const EVENT_TYPES_PROPERTY_CHANGE = [
   { label: "Contact Property Change", value: "contact.propertyChange" },
   { label: "Company Property Change", value: "company.propertyChange" },
@@ -71,22 +75,33 @@ export const EVENT_TYPES_PROPERTY_CHANGE = [
     value: "conversation.propertyChange",
   },
 ];
+
 export const SUCCESS_MESSAGE = "All webhooks deleted successfully";
+
 export const MAX_SEARCH_LIMIT = 200;
-export const MAX_SEARCH_RESULTS = 10000;
-export const BATCHED_WINDOW_LIMIT = 1000;
-export const POLL_REQUEST_TIMEOUT_MS = 10000;
+
+export const MAX_SEARCH_RESULTS = 10_000;
+export const BATCHED_WINDOW_LIMIT = 1_000;
+
+export const POLL_REQUEST_TIMEOUT_MS = 10_000;
+
 export const CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY = "hs_lastmodifieddate";
 export const CUSTOM_OBJECT_CREATED_PROPERTY = "hs_createdate";
+
 export const CUSTOM_OBJECT_SEARCH_ENDPOINT =
   "/crm/v3/objects/{objectType}/search";
+
 export const CUSTOM_OBJECT_PLACEHOLDER = "{objecttype}";
+
 export const SEARCH_ENDPOINT_PATTERN =
   /^\/crm\/(?:v3\/objects|objects\/\d{4}-\d{2})\/([^/]+)\/search$/i;
+
 export const TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START = 7;
+
 export const MAX_FILTER_GROUPS = 5;
 export const MAX_FILTERS_PER_GROUP = 6;
 export const MAX_FILTERS_TOTAL = 18;
+
 export const SEARCH_ENDPOINTS = [
   { label: "Companies", value: "/crm/v3/objects/companies/search" },
   { label: "Contacts", value: "/crm/v3/objects/contacts/search" },
@@ -106,6 +121,7 @@ export const SEARCH_ENDPOINTS = [
   { label: "Notes", value: "/crm/v3/objects/notes/search" },
   { label: "Tasks", value: "/crm/v3/objects/tasks/search" },
 ];
+
 export const HUBSPOT_DATE_PROPERTIES = {
   carts: {
     createdate: "createdate",
@@ -200,6 +216,7 @@ export const HUBSPOT_DATE_PROPERTIES = {
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
 };
+
 export const ENGAGEMENT_OBJECTS = [
   { label: "Tasks", value: "tasks" },
   { label: "Postal Mail", value: "postal_mail" },
@@ -209,6 +226,7 @@ export const ENGAGEMENT_OBJECTS = [
   { label: "Emails", value: "emails" },
   { label: "Communications", value: "communications" },
 ];
+
 export const STANDARD_OBJECT_TYPES: ReadonlyArray<{
   label: string;
   key: string;
@@ -225,6 +243,7 @@ export const STANDARD_OBJECT_TYPES: ReadonlyArray<{
   { label: "Products", key: "0-7", name: "products" },
   { label: "Feedback Submissions", key: "0-19", name: "feedback_submissions" },
 ];
+
 export const ENGAGEMENT_PROPERTIES = [
   { label: "Task - Timestamp", value: "hs_timestamp" },
   { label: "Task - Body", value: "hs_task_body" },
@@ -291,11 +310,16 @@ export const ENGAGEMENT_PROPERTIES = [
   { label: "Communication - Body", value: "hs_communication_body" },
   { label: "Communication - Timestamp", value: "hs_timestamp" },
 ];
+
 export const OBJECT_ID_PROPERTY = "hs_object_id";
+
 export const RATE_LIMIT_MAX_ATTEMPTS = 5;
-export const RATE_LIMIT_FALLBACK_DELAY_MS = 1000;
+export const RATE_LIMIT_FALLBACK_DELAY_MS = 1_000;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const COMPANY_PROPS = ["name", "state", "city", "domain", "industry"];
+
 export const CONTACT_PROPS = [
   "firstname",
   "lastname",
@@ -304,7 +328,9 @@ export const CONTACT_PROPS = [
   "website",
   "phone",
 ];
+
 export const DEAL_PROPS = ["dealname", "closedate", "dealstage"];
+
 export const DEAL_SEARCH_PROPS = [
   "hs_object_id",
   "createdate",

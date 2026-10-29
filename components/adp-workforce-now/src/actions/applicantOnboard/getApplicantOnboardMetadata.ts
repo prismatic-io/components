@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getApplicantOnboardMetadataExamplePayload } from "../../examplePayloads";
 import { getApplicantOnboardMetadataInputs } from "../../inputs";
 import { getApplicantOnboardMetadataOutputSchema } from "../../outputSchemas";
+
 export const getApplicantOnboardMetadata = action({
   display: {
     label: "Get Applicant Onboard Metadata",

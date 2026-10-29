@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../../util/clean";
 import { showNewRecords, showUpdatedRecords } from "../v1/triggers";
 import { connectionInput } from "./common";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -12,6 +13,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesV3Inputs = {
   connection: connectionInput,
   lookBackDate,

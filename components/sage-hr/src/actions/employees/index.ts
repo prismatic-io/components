@@ -9,6 +9,7 @@ import { rehireEmployee } from "./rehire";
 import { terminateEmployee } from "./terminate";
 import { updateEmployee } from "./update";
 import { updateEmployeeCustomField } from "./updateCustomField";
+
 export default {
   createEmployee,
   getEmployee,

@@ -16,6 +16,7 @@ export const listAccountDetailsExamplePayload = {
     },
   },
 };
+
 export const listCustomFieldsExamplePayload = {
   data: {
     items: [
@@ -47,6 +48,7 @@ export const listCustomFieldsExamplePayload = {
     },
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     data: {},
@@ -55,6 +57,7 @@ export const rawRequestExamplePayload = {
     },
   },
 };
+
 export const getStreamExamplePayload = {
   data: {
     items: [
@@ -79,6 +82,7 @@ export const getStreamExamplePayload = {
     },
   },
 };
+
 export const getCustomFieldsStreamExamplePayload = {
   data: {
     items: [
@@ -103,6 +107,7 @@ export const getCustomFieldsStreamExamplePayload = {
     },
   },
 };
+
 export const getProductsStreamExamplePayload = {
   data: {
     items: [

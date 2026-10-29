@@ -204,6 +204,7 @@ export const priceOutputSchema = {
     "type",
   ],
 };
+
 export const listPricesOutputSchema = {
   type: "object" as const,
   properties: {

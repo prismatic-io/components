@@ -5,6 +5,7 @@ import job from "./job";
 import misc from "./misc";
 import restaurant from "./restaurant";
 import shift from "./shift";
+
 export default {
   ...deposit,
   ...employee,

@@ -3,6 +3,7 @@ import { getGroupInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import type { Group } from "../../types";
 import { getGroupExamplePayload } from "../../examplePayloads";
+
 export const getGroup = action({
   display: {
     label: "Get Group",
@@ -11,7 +12,9 @@ export const getGroup = action({
   inputs: getGroupInputs,
   perform: async (context, { connection, groupId }) => {
     const client = getAdobeSignClient(connection, context.debug.enabled);
+
     const { data } = await client.get<Group>(`/groups/${groupId}`);
+
     return {
       data,
     };

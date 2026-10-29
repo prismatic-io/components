@@ -1,14 +1,17 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const cleanString = (value: unknown): string | undefined => {
   const str = util.types.toString(value);
   return str ? str : undefined;
 };
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Slack connection to use.",
 });
+
 export const cursor = input({
   label: "Cursor",
   placeholder: "Enter cursor value",
@@ -18,6 +21,7 @@ export const cursor = input({
   example: "3",
   clean: cleanString,
 });
+
 export const limit = input({
   label: "Limit",
   placeholder: "Enter limit",
@@ -27,6 +31,7 @@ export const limit = input({
   comments: "The maximum number of results to return.",
   clean: (value: unknown) => util.types.toNumber(value, 80),
 });
+
 export const page = input({
   label: "Page",
   placeholder: "Enter page number",
@@ -37,6 +42,7 @@ export const page = input({
   default: "1",
   clean: (value: unknown) => util.types.toNumber(value, 1),
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -44,6 +50,7 @@ export const fetchAll = input({
   comments: "When true, fetches all pages of results.",
   clean: util.types.toBool,
 });
+
 export const channelName = input({
   label: "Channel Name or ID",
   placeholder: "Enter channel name or ID",
@@ -54,6 +61,7 @@ export const channelName = input({
   dataSource: "selectChannels",
   clean: util.types.toString,
 });
+
 export const channelId = input({
   label: "Channel ID",
   placeholder: "Enter channel ID",
@@ -64,6 +72,7 @@ export const channelId = input({
   dataSource: "selectChannels",
   clean: util.types.toString,
 });
+
 export const userId = input({
   label: "User ID",
   placeholder: "Enter user ID",
@@ -74,6 +83,7 @@ export const userId = input({
   dataSource: "selectUsers",
   clean: util.types.toString,
 });
+
 export const teamId = input({
   label: "Team ID",
   placeholder: "Enter team ID",
@@ -85,6 +95,7 @@ export const teamId = input({
   dataSource: "selectTeams",
   clean: cleanString,
 });
+
 export const team_id = input({
   label: "Team ID",
   placeholder: "Enter team ID",
@@ -96,6 +107,7 @@ export const team_id = input({
   dataSource: "selectTeams",
   clean: cleanString,
 });
+
 export const includePublicChannels = input({
   label: "Include Public Channels",
   type: "boolean",
@@ -103,6 +115,7 @@ export const includePublicChannels = input({
   comments: "When true, includes public channels in results.",
   clean: util.types.toBool,
 });
+
 export const includePrivateChannels = input({
   label: "Include Private Channels",
   type: "boolean",
@@ -110,6 +123,7 @@ export const includePrivateChannels = input({
   comments: "When true, includes private channels in results.",
   clean: util.types.toBool,
 });
+
 export const includeMultiPartyImchannels = input({
   label: "Include Multi-Party IM Channels",
   type: "boolean",
@@ -117,6 +131,7 @@ export const includeMultiPartyImchannels = input({
   comments: "When true, includes multi-party IM (mpim) channels in results.",
   clean: util.types.toBool,
 });
+
 export const includeImChannels = input({
   label: "Include IM Channels",
   type: "boolean",
@@ -124,6 +139,7 @@ export const includeImChannels = input({
   comments: "When true, includes direct message (IM) channels in results.",
   clean: util.types.toBool,
 });
+
 export const query = input({
   label: "Query",
   placeholder: "Enter search query",
@@ -134,6 +150,7 @@ export const query = input({
   example: "pickleface",
   clean: util.types.toString,
 });
+
 export const highlight = input({
   label: "Highlight",
   type: "boolean",
@@ -142,6 +159,7 @@ export const highlight = input({
   example: "false",
   clean: util.types.toBool,
 });
+
 export const sort_dir = input({
   label: "Sort Direction",
   placeholder: "Select sort direction",
@@ -157,6 +175,7 @@ export const sort_dir = input({
   clean: (value: unknown) =>
     util.types.toString(value, "desc") as import("../types").SortDir,
 });
+
 export const sortSearch = input({
   label: "Sort",
   placeholder: "Select sort method",
@@ -172,6 +191,7 @@ export const sortSearch = input({
   clean: (value: unknown) =>
     util.types.toString(value, "score") as import("../types").SearchAllSort,
 });
+
 export const fileType = input({
   label: "File Type",
   placeholder: "Enter file type",

@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { listTagsExamplePayload } from "../../examplePayloads";
 import { listTagsInputs } from "../../inputs";
 import { listTagsOutputSchema } from "../../outputSchemas";
+
 export const listTags = action({
   display: {
     label: "List Tags",

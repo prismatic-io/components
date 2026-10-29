@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { paginateByPage } from "../../util/pagination";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -20,6 +21,7 @@ export const createWebhook = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     if (!allowDuplicates) {
       const allWebhooks = await paginateByPage<{
         callbackUrl: string;
@@ -43,6 +45,7 @@ export const createWebhook = action({
         };
       }
     }
+
     const createBody: Record<string, unknown> = {
       callbackUrl,
       events: ["*.*"],
@@ -51,14 +54,18 @@ export const createWebhook = action({
       scopeObjectId,
       version: 1,
     };
+
     if (subscopeColumnIds && (subscopeColumnIds as number[]).length > 0) {
       createBody.subscope = { columnIds: subscopeColumnIds };
     }
+
     const createResult = await client.post(`/webhooks`, createBody);
+
     const verificationResult = await client.put(
       `/webhooks/${createResult.data.result.id}`,
       { enabled: true },
     );
+
     return { data: verificationResult.data };
   },
   inputs: createWebhookInputs,

@@ -7,11 +7,13 @@ import type { AtlassianConnectionKeys } from "../interfaces/AtlassianConnectionK
 import { buildAuthHeaders } from "./buildAuthHeaders";
 import { resolveAtlassianHost } from "./resolveHost";
 import { validateAtlassianConnection } from "./validateConnection";
+
 export interface CreateAtlassianClientOptions {
   keys: AtlassianConnectionKeys;
   apiPath: string;
   debug?: boolean;
 }
+
 export const createAtlassianClient = async <TClient = HttpClient>(
   connection: Connection,
   options: CreateAtlassianClientOptions,

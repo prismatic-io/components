@@ -4,6 +4,7 @@ import { queryProfilesInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { queryProfilesExamplePayload } from "../../examplePayloads";
 import { queryProfilesOutputSchema } from "../../outputSchemas";
+
 export const queryProfiles = action({
   display: {
     label: "Query Profile",
@@ -59,8 +60,7 @@ export const queryProfiles = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => queryProfilesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    queryProfilesExamplePayload,
   examplePayload: queryProfilesExamplePayload,
 });

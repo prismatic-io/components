@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { usersGetByUsernameExamplePayload } from "../../examplePayloads";
 import { usersGetByUsernameInputs } from "../../inputs";
 import { usersGetByUsernameOutputSchema } from "../../outputSchemas";
+
 export const usersGetByUsername = action({
   display: {
     label: "Get User by Username",

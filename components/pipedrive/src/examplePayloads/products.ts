@@ -32,6 +32,7 @@ const productRecord = {
   files_count: 0,
   followers_count: 1,
 };
+
 export const getProductsExamplePayload = {
   data: {
     success: true,
@@ -41,12 +42,14 @@ export const getProductsExamplePayload = {
     },
   },
 };
+
 export const addProductExamplePayload = {
   data: {
     success: true,
     data: productRecord,
   },
 };
+
 export const deleteProductExamplePayload = {
   data: {
     success: true,
@@ -55,18 +58,21 @@ export const deleteProductExamplePayload = {
     },
   },
 };
+
 export const getProductExamplePayload = {
   data: {
     success: true,
     data: productRecord,
   },
 };
+
 export const updateProductExamplePayload = {
   data: {
     success: true,
     data: productRecord,
   },
 };
+
 export const getProductDealsExamplePayload = {
   data: {
     success: true,
@@ -97,6 +103,7 @@ export const getProductDealsExamplePayload = {
     },
   },
 };
+
 export const getProductFilesExamplePayload = {
   data: {
     success: true,
@@ -135,6 +142,7 @@ export const getProductFilesExamplePayload = {
     },
   },
 };
+
 export const getProductFollowersExamplePayload = {
   data: {
     success: true,
@@ -151,6 +159,7 @@ export const getProductFollowersExamplePayload = {
     },
   },
 };
+
 export const addProductFollowerExamplePayload = {
   data: {
     success: true,
@@ -162,6 +171,7 @@ export const addProductFollowerExamplePayload = {
     },
   },
 };
+
 export const deleteProductFollowerExamplePayload = {
   data: {
     success: true,
@@ -170,6 +180,7 @@ export const deleteProductFollowerExamplePayload = {
     },
   },
 };
+
 export const getProductUsersExamplePayload = {
   data: {
     success: true,

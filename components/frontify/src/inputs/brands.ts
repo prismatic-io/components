@@ -1,6 +1,7 @@
 import { structuredObjectInput } from "@prismatic-io/spectral";
 import { fetchAll, limit, page } from "./pagination";
 import { brandId, connection } from "./sharedInputs";
+
 export const getBrandInputs = {
   connection,
   brandId: {
@@ -8,6 +9,7 @@ export const getBrandInputs = {
     comments: "ID of the Brand to retrieve.",
   },
 };
+
 export const listBrandLibrariesInputs = {
   connection,
   brandId: {
@@ -22,9 +24,11 @@ export const listBrandLibrariesInputs = {
     inputs: { page, limit },
   }),
 };
+
 export const listBrandsInputs = {
   connection,
 };
+
 export const listBrandWorkspaceProjectsInputs = {
   connection,
   brandId: {

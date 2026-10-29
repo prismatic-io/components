@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { deleteAccountExamplePayload } from "../../../examplePayloads/v2_1";
 import { deleteAccountInputs } from "../../../inputs/v2_1";
+
 export const deleteAccount = action({
   display: {
     description: "Deletes a Merchant Center sub-account.",

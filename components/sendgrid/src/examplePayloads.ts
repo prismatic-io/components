@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const listWebhooksExamplePayload = {
   data: {
     max_allowed: 5,
@@ -29,6 +30,7 @@ export const listWebhooksExamplePayload = {
     ],
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     enabled: true,
@@ -53,12 +55,14 @@ export const createWebhookExamplePayload = {
     updated_date: "2024-07-10T11:20:00Z",
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {
     success: true,
     message: "Webhook deleted successfully",
   },
 };
+
 export const getWebhookExamplePayload = {
   data: {
     enabled: true,
@@ -84,18 +88,21 @@ export const getWebhookExamplePayload = {
     updated_at: "2024-06-20T14:45:00Z",
   },
 };
+
 export const testWebhookExamplePayload = {
   data: {
     success: true,
     message: "Test event sent successfully",
   },
 };
+
 export const toggleSignatureVerificationExamplePayload = {
   data: {
     id: "b4c46f7a-9012-4e8d-bc5f-7d3a1e8b9c0d",
     public_key: "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE",
   },
 };
+
 export const updateWebhookExamplePayload = {
   data: {
     enabled: true,
@@ -120,6 +127,7 @@ export const updateWebhookExamplePayload = {
     updated_date: "2024-06-20T14:45:00Z",
   },
 };
+
 export const addOrUpdateContactExamplePayload = {
   data: {
     job_id: "d9f0c7e2-5a14-4b8e-9c3d-6f1e2a7b8c9d",
@@ -128,6 +136,7 @@ export const addOrUpdateContactExamplePayload = {
     },
   },
 };
+
 export const getContactsByEmailsExamplePayload = {
   data: {
     result: {
@@ -161,6 +170,7 @@ export const getContactsByEmailsExamplePayload = {
     },
   },
 };
+
 export const getImportStatusExamplePayload = {
   data: {
     id: "d9f0c7e2-5a14-4b8e-9c3d-6f1e2a7b8c9d",
@@ -179,6 +189,7 @@ export const getImportStatusExamplePayload = {
     finished_at: "2024-08-01T10:01:30Z",
   },
 };
+
 export const initiateContactsImportExamplePayload = {
   data: {
     job_id: "e3a4b5c6-d7e8-9f01-2345-6789abcdef01",
@@ -199,6 +210,7 @@ export const initiateContactsImportExamplePayload = {
     },
   },
 };
+
 export const getAllFieldDefinitionsExamplePayload = {
   data: {
     custom_fields: [
@@ -232,14 +244,12 @@ export const getAllFieldDefinitionsExamplePayload = {
     },
   },
 };
-export const sendEmailExamplePayload: {
-  data: unknown;
-} = {
+
+export const sendEmailExamplePayload: { data: unknown } = {
   data: [{ body: { message: "success" }, statusCode: 202, headers: {} }, {}],
 };
-export const sendEmailWithDynamicTemplateExamplePayload: {
-  data: unknown;
-} = {
+
+export const sendEmailWithDynamicTemplateExamplePayload: { data: unknown } = {
   data: [
     {
       body: { message: "success" },
@@ -249,11 +259,11 @@ export const sendEmailWithDynamicTemplateExamplePayload: {
     {},
   ],
 };
-export const sendMultipleEmailsExamplePayload: {
-  data: unknown;
-} = {
+
+export const sendMultipleEmailsExamplePayload: { data: unknown } = {
   data: [{ body: { message: "success" }, statusCode: 202, headers: {} }, {}],
 };
+
 export const createListExamplePayload = {
   data: {
     id: "a7b8c9d0-e1f2-3456-7890-abcdef123456",
@@ -264,6 +274,7 @@ export const createListExamplePayload = {
     },
   },
 };
+
 export const getListByIdExamplePayload = {
   data: {
     id: "a7b8c9d0-e1f2-3456-7890-abcdef123456",
@@ -284,6 +295,7 @@ export const getListByIdExamplePayload = {
     },
   },
 };
+
 export const getAllListsExamplePayload = {
   data: {
     result: [
@@ -307,6 +319,7 @@ export const getAllListsExamplePayload = {
     },
   },
 };
+
 export const selectWebhookExamplePayload = {
   result: [
     {
@@ -315,15 +328,15 @@ export const selectWebhookExamplePayload = {
     },
   ],
 };
+
 export const sendGridListsDataSourceExamplePayload = {
   result: [
     { label: "Summer Newsletter (1020 contacts)", key: "abc-123" },
     { label: "Product Updates (50 contacts)", key: "def-456" },
   ],
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -379,9 +392,8 @@ export const pollChangesTriggerExamplePayload: {
     globalDebug: false,
   },
 };
-export const eventWebhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const eventWebhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "Accept-Encoding": "gzip",
@@ -483,9 +495,8 @@ export const eventWebhookExamplePayload: {
     globalDebug: true,
   },
 };
-export const webhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const webhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "Content-Type": "application/json",

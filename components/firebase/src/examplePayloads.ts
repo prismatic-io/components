@@ -12,12 +12,14 @@ export const getDocumentExamplePayload = {
     readTime: new Date("2025-03-10T11:45:09.789Z"),
   },
 };
+
 export const createDocumentExamplePayload = {
   data: {
     id: "aBcDeFgHiJkLmNoPqRsT",
     path: "users/aBcDeFgHiJkLmNoPqRsT",
   },
 };
+
 export const removeFieldExamplePayload = {
   data: {
     _writeTime: {
@@ -26,6 +28,7 @@ export const removeFieldExamplePayload = {
     },
   } as unknown,
 };
+
 export const listDocumentsExamplePayload = {
   data: [
     {
@@ -38,6 +41,7 @@ export const listDocumentsExamplePayload = {
     },
   ],
 };
+
 export const listCollectionsExamplePayload = {
   data: [
     {
@@ -46,6 +50,7 @@ export const listCollectionsExamplePayload = {
     },
   ],
 };
+
 export const updateDocumentExamplePayload = {
   data: {
     _writeTime: {
@@ -54,9 +59,11 @@ export const updateDocumentExamplePayload = {
     },
   } as unknown,
 };
+
 export const bulkCreateDocumentsExamplePayload = {
   data: "Documents created successfully.",
 };
+
 export const deleteDocumentExamplePayload = {
   data: {
     _writeTime: {
@@ -65,12 +72,14 @@ export const deleteDocumentExamplePayload = {
     },
   } as unknown,
 };
+
 export const selectCollectionExamplePayload = {
   result: [
     { key: "users", label: "users" },
     { key: "orders", label: "orders" },
   ],
 };
+
 export const selectDocumentExamplePayload = {
   result: [
     { key: "aBcDeFgHiJkLmNoPqRsT", label: "users/aBcDeFgHiJkLmNoPqRsT" },

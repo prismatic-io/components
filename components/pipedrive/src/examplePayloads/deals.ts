@@ -225,6 +225,7 @@ export const getDealsExamplePayload = {
     },
   },
 };
+
 const singleDeal = {
   id: 1,
   creator_user_id: {
@@ -334,18 +335,21 @@ const singleDeal = {
   org_hidden: false,
   person_hidden: false,
 };
+
 export const addDealExamplePayload = {
   data: {
     success: true,
     data: singleDeal,
   },
 };
+
 export const getDealExamplePayload = {
   data: {
     success: true,
     data: singleDeal,
   },
 };
+
 export const updateDealExamplePayload = {
   data: {
     success: true,
@@ -360,6 +364,7 @@ export const updateDealExamplePayload = {
     },
   },
 };
+
 export const deleteDealExamplePayload = {
   data: {
     success: true,
@@ -368,6 +373,7 @@ export const deleteDealExamplePayload = {
     },
   },
 };
+
 export const searchDealsExamplePayload = {
   data: {
     success: true,
@@ -413,6 +419,7 @@ export const searchDealsExamplePayload = {
     },
   },
 };
+
 export const getDealsSummaryExamplePayload = {
   data: {
     success: true,
@@ -441,6 +448,7 @@ export const getDealsSummaryExamplePayload = {
     },
   },
 };
+
 export const getDealsTimelineExamplePayload = {
   data: {
     success: true,
@@ -488,6 +496,7 @@ export const getDealsTimelineExamplePayload = {
     },
   },
 };
+
 export const mergeDealsExamplePayload = {
   data: {
     success: true,
@@ -551,6 +560,7 @@ export const mergeDealsExamplePayload = {
     },
   },
 };
+
 export const getDealActivitiesExamplePayload = {
   data: {
     data: [
@@ -607,6 +617,7 @@ export const getDealActivitiesExamplePayload = {
     },
   },
 };
+
 export const getDealFilesExamplePayload = {
   data: {
     success: true,
@@ -653,6 +664,7 @@ export const getDealFilesExamplePayload = {
     },
   },
 };
+
 export const getDealFollowersExamplePayload = {
   data: {
     data: [
@@ -676,6 +688,7 @@ export const getDealFollowersExamplePayload = {
     },
   },
 };
+
 export const addDealFollowerExamplePayload = {
   data: {
     success: true,
@@ -687,6 +700,7 @@ export const addDealFollowerExamplePayload = {
     },
   },
 };
+
 export const deleteDealFollowerExamplePayload = {
   data: {
     success: true,
@@ -695,6 +709,7 @@ export const deleteDealFollowerExamplePayload = {
     },
   },
 };
+
 export const getDealMailMessagesExamplePayload = {
   data: {
     success: true,
@@ -755,6 +770,7 @@ export const getDealMailMessagesExamplePayload = {
     },
   },
 };
+
 export const getDealParticipantsExamplePayload = {
   data: {
     success: true,
@@ -805,6 +821,7 @@ export const getDealParticipantsExamplePayload = {
     },
   },
 };
+
 export const addDealParticipantExamplePayload = {
   data: {
     success: true,
@@ -839,6 +856,7 @@ export const addDealParticipantExamplePayload = {
     },
   },
 };
+
 export const deleteDealParticipantExamplePayload = {
   data: {
     success: true,
@@ -847,12 +865,14 @@ export const deleteDealParticipantExamplePayload = {
     },
   },
 };
+
 export const getDealUsersExamplePayload = {
   data: {
     success: true,
     data: [18487521, 18487522],
   },
 };
+
 export const getDealProductsExamplePayload = {
   data: {
     data: [
@@ -893,6 +913,7 @@ export const getDealProductsExamplePayload = {
     },
   },
 };
+
 export const addDealProductExamplePayload = {
   data: {
     success: true,
@@ -919,6 +940,7 @@ export const addDealProductExamplePayload = {
     },
   },
 };
+
 export const updateDealProductExamplePayload = {
   data: {
     success: true,
@@ -945,6 +967,7 @@ export const updateDealProductExamplePayload = {
     },
   },
 };
+
 export const deleteDealProductExamplePayload = {
   data: {
     success: true,

@@ -20,6 +20,7 @@ import {
   shipToContactNameInput,
   termNameInput,
 } from "./common";
+
 const invoiceLineItemsInput = input({
   label: "Invoice Line Items",
   type: "code",
@@ -45,6 +46,7 @@ const invoiceLineItemsInput = input({
     "https://developer.intacct.com/api/accounts-receivable/invoices/#create-invoice-legacy",
   clean: cleanFunctionForXml,
 });
+
 const exchRateDateInput = input({
   label: "Exchange Rate Date",
   type: "string",
@@ -54,6 +56,7 @@ const exchRateDateInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ponumberInput = input({
   label: "Reference Number",
   type: "string",
@@ -63,6 +66,7 @@ const ponumberInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const externalIdInput = input({
   label: "External ID",
   type: "string",
@@ -72,6 +76,7 @@ const externalIdInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const noglInput = input({
   label: "No GL",
   comments: "Do not post to GL. Use false for No, true for Yes.",
@@ -94,6 +99,7 @@ const noglInput = input({
     },
   ],
 });
+
 const customFieldsXmlInput = input({
   label: "Custom Fields",
   type: "code",
@@ -108,6 +114,7 @@ const customFieldsXmlInput = input({
   required: false,
   clean: cleanFunctionForXml,
 });
+
 const dateDueInput = input({
   label: "Date Due",
   type: "string",
@@ -117,6 +124,7 @@ const dateDueInput = input({
   placeholder: "Enter date (MM/DD/YYYY)",
   clean: util.types.toString,
 });
+
 const exchRateInput = input({
   label: "Exchange Rate",
   type: "string",
@@ -125,6 +133,7 @@ const exchRateInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const invoiceCurrencyAndExchangeRate = structuredObjectInput({
   label: "Currency and Exchange Rate",
   required: false,
@@ -139,6 +148,7 @@ export const invoiceCurrencyAndExchangeRate = structuredObjectInput({
     exchRateTypeInput,
   },
 });
+
 export const updateInvoiceCurrencyAndExchangeRate = structuredObjectInput({
   label: "Currency and Exchange Rate",
   required: false,
@@ -154,6 +164,7 @@ export const updateInvoiceCurrencyAndExchangeRate = structuredObjectInput({
     exchRateInput,
   },
 });
+
 export const createInvoiceInputs = {
   connection,
   invoiceLineItemsInput,
@@ -198,11 +209,13 @@ export const createInvoiceInputs = {
   attachmentsIdInput,
   customFieldsXmlInput,
 };
+
 export const getInvoiceInputs = {
   connection,
   fieldsInput,
   recordNoInput: { ...recordNoInput, dataSource: "selectInvoice" },
 };
+
 export const updateInvoiceInputs = {
   connection,
   keyId: { ...keyId, dataSource: "selectInvoice" },

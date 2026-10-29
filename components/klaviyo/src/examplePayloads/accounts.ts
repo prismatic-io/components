@@ -2,9 +2,8 @@ import type {
   GetAccountResponse,
   GetAccountResponseCollection,
 } from "klaviyo-api";
-export const getAccountExamplePayload: {
-  data: GetAccountResponse;
-} = {
+
+export const getAccountExamplePayload: { data: GetAccountResponse } = {
   data: {
     data: {
       type: "account",
@@ -37,6 +36,7 @@ export const getAccountExamplePayload: {
     },
   },
 };
+
 export const listAccountsExamplePayload: {
   data: GetAccountResponseCollection;
 } = {
@@ -79,6 +79,7 @@ export const listAccountsExamplePayload: {
     },
   },
 };
+
 export const selectAccountExamplePayload = {
   result: [{ label: "Klaviyo Demo", key: "01HABCDEF0123456789ABCDEF" }],
 };

@@ -7,6 +7,7 @@ import {
   timeout,
   userId,
 } from "./common";
+
 const username = input({
   label: "Username",
   type: "string",
@@ -17,6 +18,7 @@ const username = input({
   placeholder: "Enter username",
   clean: toOptionalString,
 });
+
 const siteRole = input({
   label: "Site Role",
   type: "string",
@@ -37,6 +39,7 @@ const siteRole = input({
     { label: "Viewer", value: "Viewer" },
   ],
 });
+
 const authSetting = input({
   label: "Auth Setting",
   type: "string",
@@ -51,6 +54,7 @@ const authSetting = input({
     { label: "OpenId", value: "OpenID" },
   ],
 });
+
 const userSearchField = input({
   label: "Search Field",
   type: "string",
@@ -65,11 +69,13 @@ const userSearchField = input({
     { label: "Site Role", value: "siteRole" },
   ],
 });
+
 export const listUsersInputs = {
   timeout,
   pagination,
   tableauConnection: connectionInput,
 };
+
 export const searchUsersInputs = {
   searchField: userSearchField,
   searchString: { ...searchString, example: "john.doe@test.com" },
@@ -77,16 +83,19 @@ export const searchUsersInputs = {
   tableauConnection: connectionInput,
   pagination,
 };
+
 export const getUserInputs = {
   userId,
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const deleteUserInputs = {
   userId,
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const createUserInputs = {
   username,
   siteRole,
@@ -94,6 +103,7 @@ export const createUserInputs = {
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const updateUserInputs = {
   userId,
   username,

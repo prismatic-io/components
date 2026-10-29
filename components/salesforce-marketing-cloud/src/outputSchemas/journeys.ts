@@ -9,6 +9,7 @@ const journeyTriggerSchema = {
   },
   additionalProperties: true,
 };
+
 const journeyGoalSchema = {
   type: "object" as const,
   properties: {
@@ -20,6 +21,7 @@ const journeyGoalSchema = {
   },
   additionalProperties: true,
 };
+
 const journeyActivitySchema = {
   type: "object" as const,
   properties: {
@@ -43,6 +45,7 @@ const journeyActivitySchema = {
   },
   additionalProperties: true,
 };
+
 export const createJourneyOutputSchema = {
   type: "object" as const,
   properties: {
@@ -62,6 +65,7 @@ export const createJourneyOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const getJourneyOutputSchema = {
   type: "object" as const,
   properties: {
@@ -90,6 +94,7 @@ export const getJourneyOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const updateJourneyOutputSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +103,7 @@ export const updateJourneyOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listJourneysOutputSchema = {
   type: "object" as const,
   properties: {
@@ -122,6 +128,7 @@ export const listJourneysOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const exitContactFromJourneyOutputSchema = {
   type: "object" as const,
   properties: {
@@ -150,6 +157,7 @@ export const exitContactFromJourneyOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const fireEntryEventOutputSchema = {
   type: "object" as const,
   properties: {

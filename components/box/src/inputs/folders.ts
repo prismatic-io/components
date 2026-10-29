@@ -8,6 +8,7 @@ import {
   offset,
   path,
 } from "./common";
+
 export const fields = input({
   label: "Fields/Metadata",
   type: "string",
@@ -18,16 +19,19 @@ export const fields = input({
   example: "content_created_at,name,size,modified_at",
   clean: cleanCommaSeparatedString,
 });
+
 export const folderPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Marker, limit, and offset controls for paging through results.",
   inputs: { limit, marker, offset },
 });
+
 export const createFolderInputs = {
   path,
   boxConnection: connectionInput,
 };
+
 export const listFolderWithPaginationInputs = {
   path,
   fetchAll,

@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { listAccountsInputs } from "../../inputs";
 import { listAccountsExamplePayload } from "../../examplePayloads";
+
 export const listAccounts = action({
   display: {
     label: "List Accounts",
@@ -23,5 +24,6 @@ export const listAccounts = action({
     return { data };
   },
   inputs: listAccountsInputs,
+
   examplePayload: listAccountsExamplePayload,
 });

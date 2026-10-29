@@ -6,6 +6,7 @@ import {
   workspaceMemberUserSchema,
   workspaceTeamProperties,
 } from "./shared";
+
 const memberSchema = {
   type: "object" as const,
   properties: {
@@ -14,15 +15,18 @@ const memberSchema = {
     shared: optionalSharedSchema,
   },
 };
+
 export const getUserOutputSchema = {
   type: "object" as const,
   properties: { member: memberSchema },
 };
+
 export const editUserOnWorkspaceOutputSchema = {
   type: "object" as const,
   properties: { member: memberSchema },
   required: ["member"],
 };
+
 export const inviteUserToWorkspaceOutputSchema = {
   type: "object" as const,
   properties: {
@@ -38,6 +42,7 @@ export const inviteUserToWorkspaceOutputSchema = {
   },
   required: ["team"],
 };
+
 export const removeUserFromWorkspaceOutputSchema = {
   type: "object" as const,
   properties: {

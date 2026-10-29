@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Zendesk Sell connection to use.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",

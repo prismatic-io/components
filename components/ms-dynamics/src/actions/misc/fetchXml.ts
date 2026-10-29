@@ -3,6 +3,7 @@ import { createCrmClient } from "../../client";
 import { fetchXmlExamplePayload } from "../../examplePayloads";
 import { fetchXmlInputs } from "../../inputs";
 import { paginateFetchXml } from "../../util";
+
 export const fetchXml = action({
   display: {
     label: "Run Fetch XML Query",
@@ -24,6 +25,7 @@ export const fetchXml = action({
   ) => {
     const { pageNumber, nextPageId } = pagination;
     const client = await createCrmClient(connection, context.debug.enabled);
+
     const executeFn = async (page?: number, cookie?: string) => {
       const result = await client.fetch({
         collection: entityType,
@@ -35,9 +37,11 @@ export const fetchXml = action({
       });
       return result as unknown as Record<string, unknown>;
     };
+
     if (shouldFetchAll) {
       return paginateFetchXml(executeFn, true, pageNumber, nextPageId);
     }
+
     const result = await client.fetch({
       collection: entityType,
       fetchXml: xmlQuery,

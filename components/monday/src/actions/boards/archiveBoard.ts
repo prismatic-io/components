@@ -4,6 +4,7 @@ import { getMondayClient } from "../../client";
 import { archiveBoardExamplePayload } from "../../examplePayloads";
 import { archiveBoardInputs } from "../../inputs";
 import { archiveBoardOutputSchema } from "../../outputSchemas";
+
 export const archiveBoard = action({
   display: {
     label: "Archive Board",

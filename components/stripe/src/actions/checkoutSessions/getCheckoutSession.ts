@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getCheckoutSessionInputs } from "../../inputs";
 import { checkoutSessionOutputSchema } from "../../outputSchemas";
 import { createCheckoutSessionExamplePayload as examplePayload } from "../../examplePayloads/checkoutSessions";
+
 export const getCheckoutSession = action({
   display: {
     label: "Get Checkout Session",
@@ -14,7 +15,9 @@ export const getCheckoutSession = action({
       stripeConnection,
       timeout,
     });
+
     const session = await client.checkout.sessions.retrieve(sessionId);
+
     return {
       data: session,
     };
@@ -24,5 +27,6 @@ export const getCheckoutSession = action({
     type: "actionOutput",
     schema: checkoutSessionOutputSchema,
   }),
+
   examplePayload,
 });

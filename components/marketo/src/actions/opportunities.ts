@@ -18,6 +18,7 @@ import {
   idsToDeleteInput,
   nextPageTokenInput,
 } from "../inputs";
+
 const describeOpportunities = action({
   display: {
     label: "Describe Opportunities",
@@ -34,6 +35,7 @@ const describeOpportunities = action({
   },
   examplePayload: describeOpportunitiesExamplePayload,
 });
+
 const getOpportunitiesByFilter = action({
   display: {
     label: "Get Opportunities By Filter",
@@ -69,6 +71,7 @@ const getOpportunitiesByFilter = action({
   },
   examplePayload: getOpportunitiesByFilterExamplePayload,
 });
+
 const syncOpportunities = action({
   display: {
     label: "Sync Opportunities (Create, Update, Upsert)",
@@ -99,6 +102,7 @@ const syncOpportunities = action({
   },
   examplePayload: syncOpportunitiesExamplePayload,
 });
+
 const deleteOpportunities = action({
   display: {
     label: "Delete Opportunities",
@@ -119,6 +123,7 @@ const deleteOpportunities = action({
   },
   examplePayload: deleteOpportunitiesExamplePayload,
 });
+
 export default {
   describeOpportunities,
   getOpportunitiesByFilter,

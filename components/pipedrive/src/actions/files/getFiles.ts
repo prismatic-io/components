@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getFilesInputs } from "../../inputs";
 import { getFilesExamplePayload } from "../../examplePayloads";
 import { getFilesOutputSchema } from "../../outputSchemas";
+
 export const getFiles = action({
   display: {
     label: "List Files",

@@ -7,6 +7,7 @@ export interface CreateListBody {
   assignee?: number;
   status?: string;
 }
+
 export interface UpdateListBody {
   name: string;
   content: string;

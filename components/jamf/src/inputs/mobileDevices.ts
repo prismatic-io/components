@@ -9,6 +9,7 @@ import {
   resourceId,
   sort,
 } from "./common";
+
 const section = input({
   label: "Section",
   type: "string",
@@ -38,18 +39,21 @@ const section = input({
   placeholder: "Enter section",
   example: "GENERAL",
 });
+
 const mobileDeviceResourceId = {
   ...resourceId,
   label: "Mobile Device",
   comments: "The unique identifier of the mobile device.",
   dataSource: "selectMobileDevice",
 };
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const listMobileDevicesInputs = {
   connection,
   fetchAll,

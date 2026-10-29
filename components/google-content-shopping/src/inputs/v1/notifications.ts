@@ -5,6 +5,7 @@ import {
   connectionOnlyInputs,
   paginationGroupedInputs,
 } from "./common";
+
 const callBackUri = input({
   label: "Callback URI",
   type: "string",
@@ -14,6 +15,7 @@ const callBackUri = input({
   placeholder: "Enter Callback URL",
   required: true,
 });
+
 const registeredEvent = input({
   label: "Registered Event",
   type: "string",
@@ -29,6 +31,7 @@ const registeredEvent = input({
     },
   ],
 });
+
 const targetAccount = input({
   label: "Target Account",
   type: "string",
@@ -39,6 +42,7 @@ const targetAccount = input({
   placeholder: "Enter Target Account resource name",
   required: false,
 });
+
 const allManagedAccounts = input({
   label: "All Managed Accounts",
   type: "boolean",
@@ -48,11 +52,13 @@ const allManagedAccounts = input({
   default: "true",
   required: false,
 });
+
 export const getPubSubNotificationInputs = {
   ...connectionOnlyInputs,
   account,
   ...paginationGroupedInputs,
 };
+
 export const updatePubSubNotificationInputs = {
   ...connectionOnlyInputs,
   account,

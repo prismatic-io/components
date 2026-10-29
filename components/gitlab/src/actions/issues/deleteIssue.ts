@@ -4,6 +4,7 @@ import { ISSUE_DELETED_MESSAGE } from "../../constants";
 import { deleteIssueExamplePayload } from "../../examplePayloads";
 import { deleteIssueInputs } from "../../inputs";
 import { deleteIssueOutputSchema } from "../../outputSchemas";
+
 export const deleteIssue = action({
   display: {
     label: "Delete Issue",
@@ -22,9 +23,8 @@ export const deleteIssue = action({
       data: { success: true, message: ISSUE_DELETED_MESSAGE },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteIssueExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteIssueExamplePayload,
   examplePayload: deleteIssueExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

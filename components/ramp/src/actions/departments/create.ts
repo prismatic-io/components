@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDepartmentResponse as createDepartmentResponse } from "../../examplePayloads/departments";
 import { connection, name } from "../../inputs";
 import { createDepartmentOutputSchema } from "../../outputSchemas";
+
 export const createDepartment = action({
   display: {
     label: "Create Department",
@@ -22,6 +23,7 @@ export const createDepartment = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, name }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/departments`, {
       name,
     });
@@ -29,12 +31,7 @@ export const createDepartment = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { name }): Promise<{ data: unknown }> => ({
     data: {
       ...createDepartmentResponse,
       name: name ?? createDepartmentResponse.name,

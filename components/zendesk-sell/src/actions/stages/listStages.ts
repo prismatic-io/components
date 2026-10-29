@@ -4,6 +4,7 @@ import { getZendeskClient } from "../../client";
 import { listStagesExamplePayload } from "../../examplePayloads";
 import { listStagesInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listStages = action({
   display: {
     label: "List Stages",
@@ -24,6 +25,7 @@ export const listStages = action({
         ...(name && { name: name }),
         ...(active && { active: active }),
       };
+
       const data: unknown = await fetchAllPages(
         client,
         "/stages",

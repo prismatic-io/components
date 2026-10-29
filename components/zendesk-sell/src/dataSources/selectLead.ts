@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getZendeskClient } from "../client";
 import { selectLeadInputs } from "../inputs/dataSources";
+
 export const selectLead = dataSource({
   display: {
     label: "Select Lead",
@@ -12,6 +13,7 @@ export const selectLead = dataSource({
     const { data } = await client.get("/leads", {
       headers: { Accept: "application/json" },
     });
+
     return {
       result: data.items
         .map((lead: any) => {

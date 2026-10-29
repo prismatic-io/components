@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createCommentExamplePayload } from "../../examplePayloads";
 import { createCommentInputs } from "../../inputs";
 import { createCommentOutputSchema } from "../../outputSchemas";
+
 export const createComment = action({
   display: {
     label: "Create Comment",
@@ -37,8 +38,7 @@ export const createComment = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createCommentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createCommentExamplePayload,
   examplePayload: createCommentExamplePayload,
 });

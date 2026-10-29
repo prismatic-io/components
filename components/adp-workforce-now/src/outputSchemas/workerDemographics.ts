@@ -13,6 +13,7 @@ import {
   statusTypeSchema,
 } from "./common";
 import { workAssignmentSchema } from "./workers";
+
 const demographicPersonSchema = {
   type: "object" as const,
   properties: {
@@ -37,6 +38,7 @@ const demographicPersonSchema = {
   },
   additionalProperties: true,
 };
+
 const workerDemographicSchema = {
   type: "object" as const,
   properties: {
@@ -53,6 +55,7 @@ const workerDemographicSchema = {
     links: linksSchema,
   },
 };
+
 const workerDemographicsResponseSchema = {
   type: "object" as const,
   properties: {
@@ -61,6 +64,7 @@ const workerDemographicsResponseSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 export const getWorkerDemographicsOutputSchema = {
   type: "object" as const,
   properties: { ...workerDemographicsResponseSchema.properties },

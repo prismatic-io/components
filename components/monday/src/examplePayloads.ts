@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const archiveBoardExamplePayload = {
   data: {
     archive_board: {
@@ -6,6 +7,7 @@ export const archiveBoardExamplePayload = {
     },
   },
 };
+
 export const createBoardExamplePayload = {
   data: {
     create_board: {
@@ -13,6 +15,7 @@ export const createBoardExamplePayload = {
     },
   },
 };
+
 export const getBoardExamplePayload = {
   data: {
     boards: [
@@ -46,6 +49,7 @@ export const getBoardExamplePayload = {
     ],
   },
 };
+
 export const getItemsByColumnValueNewExamplePayload = {
   data: {
     items_by_column_values: [
@@ -116,6 +120,7 @@ export const getItemsByColumnValueNewExamplePayload = {
     ],
   },
 };
+
 export const listBoardsExamplePayload = {
   data: {
     boards: [
@@ -140,6 +145,7 @@ export const listBoardsExamplePayload = {
     ],
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     create_webhook: {
@@ -150,6 +156,7 @@ export const createWebhookExamplePayload = {
     },
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {
     delete_webhook: {
@@ -158,6 +165,7 @@ export const deleteWebhookExamplePayload = {
     },
   },
 };
+
 export const listWebhooksExamplePayload = {
   data: {
     webhooks: [
@@ -176,18 +184,21 @@ export const listWebhooksExamplePayload = {
     ],
   },
 };
+
 export const selectBoardExamplePayload = {
   result: [
     { label: "H2 Kickoff", key: "2924980809" },
     { label: "Engineering Backlog", key: "2924980810" },
   ],
 };
+
 export const selectWebhookExamplePayload = {
   result: [
     { label: "147295839 - create_item", key: "147295839" },
     { label: "147295840 - change_column_value", key: "147295840" },
   ],
 };
+
 export const webhookExamplePayload = {
   payload: {
     headers: {
@@ -249,6 +260,7 @@ export const webhookExamplePayload = {
   } as unknown as TriggerPayload,
   branch: "Notification",
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

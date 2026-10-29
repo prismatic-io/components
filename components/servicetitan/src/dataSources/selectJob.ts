@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { selectJobExamplePayload } from "../examplePayloads";
 import { selectJobInputs } from "../inputs";
 import type { Job } from "../types";
+
 export const selectJob = dataSource({
   display: {
     label: "Select Job",
@@ -26,12 +27,14 @@ export const selectJob = dataSource({
       cursor = data.hasMore;
       page++;
     } while (cursor && page < 10);
+
     const objects = jobs
       .sort((a, b) => (a.id < b.id ? -1 : 1))
       .map<Element>((job) => ({
         key: job.id.toString(),
         label: `#${job.id}`,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

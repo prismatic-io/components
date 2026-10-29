@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { createTeamExamplePayload } from "../../examplePayloads";
 import { createTeamInputs } from "../../inputs";
 import { createTeamOutputSchema } from "../../outputSchemas";
+
 export const createTeam = action({
   display: {
     label: "Create Team",
@@ -24,7 +25,9 @@ export const createTeam = action({
       name,
       members,
     };
+
     const { data } = await client.post(`/team/${teamId}/group`, body);
+
     return {
       data,
     };

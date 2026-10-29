@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { createInvoiceInputs } from "../../inputs";
 import { createInvoiceExamplePayload } from "../../examplePayloads";
+
 export const createInvoice = action({
   display: {
     label: "Create Invoice",
@@ -29,6 +30,7 @@ export const createInvoice = action({
     },
   ) => {
     const client = await getXeroClient(xeroConnection, context.debug.enabled);
+
     const invoiceValues = {
       Type: invoiceType,
       Contact: {

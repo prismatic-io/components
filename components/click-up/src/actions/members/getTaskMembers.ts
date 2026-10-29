@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getTaskMembersExamplePayload } from "../../examplePayloads";
 import { getTaskMembersInputs } from "../../inputs";
 import { getTaskMembersOutputSchema } from "../../outputSchemas";
+
 export const getTaskMembers = action({
   display: {
     label: "Get Task Members",
@@ -19,7 +20,9 @@ export const getTaskMembers = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/task/${taskId}/member`);
+
     return {
       data,
     };

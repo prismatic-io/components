@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { getApplicationV3ExamplePayload } from "../../../examplePayloads/v3/applications";
 import { getApplicationV3Inputs } from "../../../inputs/v3/applications";
 import type { V3Application } from "../../../types";
+
 export const getApplicationV3 = action({
   display: {
     label: "Get Application",

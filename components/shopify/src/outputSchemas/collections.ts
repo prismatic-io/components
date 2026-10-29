@@ -1,4 +1,5 @@
 import { countSchema, pageInfoSchema, userErrorsArraySchema } from "./shared";
+
 const collectionSchema = {
   type: "object" as const,
   properties: {
@@ -22,6 +23,7 @@ const collectionSchema = {
     title: { type: "string" as const },
   },
 };
+
 export const listCollectionsGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -29,13 +31,16 @@ export const listCollectionsGqlOutputSchema = {
     pageInfo: pageInfoSchema,
   },
 };
+
 export const getCollectionGqlOutputSchema = {
   type: "object" as const,
   properties: {
     collection: collectionSchema,
   },
 };
+
 export const countCollectionsGqlOutputSchema = countSchema;
+
 export const deleteCollectionGqlOutputSchema = {
   type: "object" as const,
   properties: {

@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { updateSalesOrderPayload } from "../../examplePayloads";
 import { company, connection, site } from "../../inputs/general";
 import updateSalesOrderInputs from "../../inputs/salesOrder/updateSalesOrderInputs";
+
 export const updateSalesOrder = action({
   display: {
     label: "Update Sales Order",

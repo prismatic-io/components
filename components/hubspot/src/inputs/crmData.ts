@@ -6,6 +6,7 @@ import {
   valueListInputClean,
 } from "../util";
 import { connectionInput, name, objectType, timeout } from "./common";
+
 const importId = input({
   label: "Import ID",
   type: "string",
@@ -16,6 +17,7 @@ const importId = input({
   dataSource: "selectImport",
   clean: util.types.toString,
 });
+
 const importOperations = input({
   label: "Import Operations",
   type: "code",
@@ -26,6 +28,7 @@ const importOperations = input({
   clean: toOptionalObject,
   example: JSON.stringify({ "0-1": "CREATE" }, null, 2),
 });
+
 const dateFormat = input({
   label: "Date Format",
   type: "string",
@@ -41,6 +44,7 @@ const dateFormat = input({
   example: "YEAR_MONTH_DAY",
   clean: util.types.toString,
 });
+
 const marketableContactImport = input({
   label: "Marketable Contact Import",
   type: "boolean",
@@ -49,6 +53,7 @@ const marketableContactImport = input({
   comments: "When true, the contacts being imported are marketable.",
   clean: util.types.toBool,
 });
+
 const createContactListFromImport = input({
   label: "Create Contact List From Import",
   type: "boolean",
@@ -57,6 +62,7 @@ const createContactListFromImport = input({
   comments: "When true, creates a static list of the contacts from the import.",
   clean: util.types.toBool,
 });
+
 const importOptions = structuredObjectInput({
   label: "Import Options",
   required: false,
@@ -68,6 +74,7 @@ const importOptions = structuredObjectInput({
     createContactListFromImport,
   },
 });
+
 const files = input({
   label: "Files",
   type: "code",
@@ -108,6 +115,7 @@ const files = input({
     2,
   ),
 });
+
 const dataFiles = input({
   label: "Data CSV File",
   type: "data",
@@ -118,6 +126,7 @@ const dataFiles = input({
   example: "key: 'contact-import-file.csv', value: 'binary data'",
   clean: toKeyValueListObject,
 });
+
 const schemaType = input({
   label: "Schema Type",
   type: "string",
@@ -131,6 +140,7 @@ const schemaType = input({
   ],
   clean: util.types.toString,
 });
+
 const format = input({
   label: "Format",
   type: "string",
@@ -144,6 +154,7 @@ const format = input({
   ],
   clean: util.types.toString,
 });
+
 const exportName = input({
   label: "Export Name",
   type: "string",
@@ -153,6 +164,7 @@ const exportName = input({
   example: "My Export",
   clean: util.types.toString,
 });
+
 const objectProperties = input({
   label: "Object Properties",
   type: "string",
@@ -162,6 +174,7 @@ const objectProperties = input({
   example: "email",
   clean: valueListInputClean,
 });
+
 const associatedObjectType = input({
   label: "Associated Object Type",
   type: "string",
@@ -172,6 +185,7 @@ const associatedObjectType = input({
   example: "name",
   clean: toOptionalString,
 });
+
 const language = input({
   label: "Language",
   type: "string",
@@ -193,6 +207,7 @@ const language = input({
     "The language code for header labels and system-generated text in the export.",
   clean: util.types.toString,
 });
+
 const publicCrmSearchRequest = input({
   label: "Public CRM Search Request (Only for PublicExportViewRequest)",
   type: "code",
@@ -219,6 +234,7 @@ const publicCrmSearchRequest = input({
     2,
   ),
 });
+
 const listId = input({
   label: "List Id (Only and required for PublicExportListRequest)",
   type: "string",
@@ -228,20 +244,24 @@ const listId = input({
   example: "123456",
   clean: toOptionalString,
 });
+
 export const cancelImportInputs = {
   hubspotConnection: connectionInput,
   importId,
   timeout,
 };
+
 export const listActiveImportsInputs = {
   hubspotConnection: connectionInput,
   timeout,
 };
+
 export const getAnImportInputs = {
   hubspotConnection: connectionInput,
   importId,
   timeout,
 };
+
 export const importCRMDataInputs = {
   hubspotConnection: connectionInput,
   name: {
@@ -255,6 +275,7 @@ export const importCRMDataInputs = {
   importOptions,
   timeout,
 };
+
 export const exportCRMDataInputs = {
   hubspotConnection: connectionInput,
   schemaType,

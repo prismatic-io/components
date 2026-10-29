@@ -6,6 +6,7 @@ import { listContentPropertiesForPageInputs } from "../../inputs";
 import type { ContentProperty } from "../../types";
 import { listContentPropertiesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util";
+
 export const listContentPropertiesForPage = action({
   display: {
     label: "List Content Properties for Page",
@@ -23,6 +24,7 @@ export const listContentPropertiesForPage = action({
   ) => {
     const client = await createClient(connectionInput, context.debug.enabled);
     const url = `/pages/${pageId}/properties`;
+
     if (fetchAll) {
       const results = await paginateResults<ContentProperty>(
         client,
@@ -31,6 +33,7 @@ export const listContentPropertiesForPage = action({
       );
       return { data: { results } };
     }
+
     const { data } = await client.get(url, {
       params: {
         cursor: pagination.cursor,
@@ -43,9 +46,7 @@ export const listContentPropertiesForPage = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listContentPropertiesExamplePayload,
   }),
   examplePayload: {

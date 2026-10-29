@@ -5,6 +5,7 @@ import { countVariantsInputs as inputs } from "../../../inputsGql";
 import { countVariantsGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";
 import countVariantsQuery from "../queries/variants/CountVariants.gql";
+
 export const countVariantsGql = action({
   display: {
     label: "Count Variants",
@@ -18,9 +19,11 @@ export const countVariantsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
       productVariantsCount: Count;
     } = await client.request(countVariantsQuery);
+
     return {
       data: data.productVariantsCount,
     };

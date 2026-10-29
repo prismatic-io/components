@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getSpaceExamplePayload } from "../../examplePayloads";
 import { getSpaceInputs } from "../../inputs";
 import { getSpaceOutputSchema } from "../../outputSchemas";
+
 export const getSpace = action({
   display: {
     label: "Get Space",
@@ -19,7 +20,9 @@ export const getSpace = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/space/${spaceId}`);
+
     return {
       data,
     };

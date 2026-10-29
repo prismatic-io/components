@@ -55,6 +55,7 @@ export const describeCompanyExamplePayload = {
     ],
   },
 };
+
 export const getCompaniesByFilterExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",
@@ -75,6 +76,7 @@ export const getCompaniesByFilterExamplePayload = {
     ],
   },
 };
+
 export const syncCompaniesExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",
@@ -93,6 +95,7 @@ export const syncCompaniesExamplePayload = {
     ],
   },
 };
+
 export const deleteCompaniesExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",

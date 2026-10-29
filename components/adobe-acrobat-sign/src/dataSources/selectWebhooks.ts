@@ -3,6 +3,7 @@ import { selectWebhooksInputs } from "../inputs";
 import { getAdobeSignClient } from "../client";
 import type { WebhookResponse } from "../types";
 import { fetchAdobeSignResults, filterAndSort } from "../util";
+
 export const selectWebhooks = dataSource({
   display: {
     label: "Select Webhooks",
@@ -16,6 +17,7 @@ export const selectWebhooks = dataSource({
     { connection, filterQuery, scope, webhookResourceType },
   ) => {
     const client = getAdobeSignClient(connection);
+
     const webhooks = await fetchAdobeSignResults<
       WebhookResponse,
       "userWebhookList",
@@ -30,10 +32,12 @@ export const selectWebhooks = dataSource({
       },
       "userWebhookList",
     );
+
     const elements = webhooks.map((webhook) => ({
       label: `${webhook.name} - ${webhook.scope}`,
       key: webhook.id,
     }));
+
     return {
       result: filterAndSort(elements, filterQuery),
     };

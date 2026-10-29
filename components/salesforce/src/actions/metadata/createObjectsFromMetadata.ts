@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { createObjectsFromMetadataInputs } from "../../inputs";
 import { genericCreateUpdateFullNameExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const createObjectsFromMetadata = action({
   display: {
     label: "Create Metadata",
@@ -18,6 +19,7 @@ export const createObjectsFromMetadata = action({
         metadata,
       });
     }
+
     const command = salesforceClient.metadata.create(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
@@ -27,9 +29,8 @@ export const createObjectsFromMetadata = action({
     const result = await executeSFAction(context, command);
     return { data: result };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateFullNameExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateFullNameExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveMetadataOutputSchema,

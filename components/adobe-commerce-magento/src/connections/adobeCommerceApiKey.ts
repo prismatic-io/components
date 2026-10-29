@@ -1,4 +1,5 @@
 import { connection, util } from "@prismatic-io/spectral";
+
 export const adobeCommerceApiKey = connection({
   key: "adobeCommerceApiKey",
   display: {

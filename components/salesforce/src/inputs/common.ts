@@ -15,12 +15,14 @@ import {
   dynamicFieldsClean,
   toRequiredTrimmedString,
 } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Salesforce connection to use.",
 });
+
 export const version = input({
   label: "Version",
   placeholder: "Enter Salesforce API version number",
@@ -31,6 +33,7 @@ export const version = input({
   example: DEFAULT_SF_VERSION,
   clean: cleanVersionInput,
 });
+
 export const filterQuery = input({
   label: "Filter Query",
   type: "string",
@@ -40,6 +43,7 @@ export const filterQuery = input({
   placeholder: "Enter text to filter by",
   clean: cleanStringInput,
 });
+
 export const recordType = input({
   label: "Record Type",
   placeholder: "Enter record type (e.g., Account, Contact)",
@@ -51,6 +55,7 @@ export const recordType = input({
   clean: toRequiredTrimmedString("Record Type"),
   dataSource: "selectRecordType",
 });
+
 export const workflowRecordType = input({
   label: "Record Type",
   placeholder: "Enter record type",
@@ -62,6 +67,7 @@ export const workflowRecordType = input({
   example: "Account",
   clean: util.types.toString,
 });
+
 export const recordId = input({
   label: "Record ID",
   placeholder: "Enter record ID",
@@ -71,6 +77,7 @@ export const recordId = input({
   example: "0017000000hOMChAAO",
   clean: util.types.toString,
 });
+
 export const fieldValues = input({
   label: "Field Values",
   placeholder: "Enter field name and value",
@@ -82,6 +89,7 @@ export const fieldValues = input({
   clean: (val) =>
     util.types.keyValPairListToObject((val || []) as KeyValuePair[]),
 });
+
 export const fieldValueTypes = input({
   label: "Field Value Types",
   placeholder: "Enter field name and type",
@@ -93,6 +101,7 @@ export const fieldValueTypes = input({
   example: "Name:string,Phone:string",
   clean: cleanKeyValueListToObject,
 });
+
 export const externalIdFieldName = input({
   label: "External ID Field Name",
   placeholder: "Enter external ID field name",
@@ -102,6 +111,7 @@ export const externalIdFieldName = input({
   example: "ExtId__c",
   clean: util.types.toString,
 });
+
 export const dynamicRecordType = input({
   label: "Record Type",
   placeholder: "Enter or select a record type",
@@ -112,6 +122,7 @@ export const dynamicRecordType = input({
   example: "Account",
   clean: toRequiredTrimmedString("Record Type"),
 });
+
 export const dynamicValues = input({
   label: "Dynamic Fields",
   placeholder: "Enter dynamic field values as JSON",
@@ -133,6 +144,7 @@ export const dynamicValues = input({
       util.types.toObject(dynamicFieldsClean(value) || []) as KeyValuePair[],
     ),
 });
+
 export const sortInput = input({
   label: "Sort Criteria",
   placeholder: "Enter sort criteria",
@@ -143,6 +155,7 @@ export const sortInput = input({
   required: false,
   clean: cleanSortCriteria,
 });
+
 export const pageSize = input({
   label: "Page Size",
   placeholder: "Enter page size",
@@ -153,6 +166,7 @@ export const pageSize = input({
   example: "20",
   clean: cleanNumberInput,
 });
+
 export const pageNumber = input({
   label: "Page Number",
   placeholder: "Enter page number",
@@ -163,6 +177,7 @@ export const pageNumber = input({
   example: "3",
   clean: cleanNumberInput,
 });
+
 export const maxRecordsToFetch = input({
   label: "Max Records To Fetch",
   type: "string",
@@ -174,12 +189,14 @@ export const maxRecordsToFetch = input({
   default: "20000",
   clean: cleanNumberInput,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { pageSize, pageNumber, maxRecordsToFetch },
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -189,6 +206,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const queryString = input({
   label: "SOQL Query",
   placeholder: "Enter SOQL query",
@@ -199,6 +217,7 @@ export const queryString = input({
   example: "SELECT Id, Name FROM Opportunity",
   clean: util.types.toString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -208,6 +227,7 @@ export const name = input({
   example: "myExampleObject",
   clean: util.types.toString,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -217,6 +237,7 @@ export const description = input({
   placeholder: "Enter description",
   clean: cleanStringInput,
 });
+
 export const listInputs = {
   version,
   fetchAll,
@@ -227,8 +248,11 @@ export const listInputs = {
   sort: sortInput,
   connection: connectionInput,
 };
+
 export const getCurrentUserInputs = { version, connection: connectionInput };
+
 const { debugRequest: _debugRequest, ...httpRequestInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   connection: connectionInput,
   ...httpRequestInputs,
@@ -240,6 +264,7 @@ export const rawRequestInputs = {
   },
   version,
 };
+
 export const validateConnectionInputs = {
   version,
   connection: connectionInput,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createOrUpdateUserExamplePayload } from "../../examplePayloads";
 import { createOrUpdateUserInputs } from "../../inputs";
 import { createOrUpdateUserOutputSchema } from "../../outputSchemas";
+
 export const createOrUpdateUser = action({
   display: {
     label: "Create or Update User",
@@ -29,8 +30,7 @@ export const createOrUpdateUser = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createOrUpdateUserExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createOrUpdateUserExamplePayload,
   examplePayload: createOrUpdateUserExamplePayload,
 });

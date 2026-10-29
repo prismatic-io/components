@@ -4,6 +4,7 @@ import { getCurrentUser } from "./getCurrentUser";
 import { getUser } from "./getUser";
 import { listAssignableUsers } from "./listAssignableUsers";
 import { searchUsers } from "./searchUsers";
+
 export default {
   searchUsers,
   getCurrentUser,

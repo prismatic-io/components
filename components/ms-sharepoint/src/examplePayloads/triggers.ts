@@ -32,11 +32,13 @@ export const webhookNotificationExamplePayload = {
     },
   },
 };
+
 export const webhookValidationExamplePayload = {
   queryParameters: {
     validationToken: "Validation: Testing connector endpoint validation.",
   },
 };
+
 export const pollSiteChangesExamplePayload = {
   body: {
     data: {
@@ -117,6 +119,7 @@ export const pollSiteChangesExamplePayload = {
     },
   },
 };
+
 export const drivePollingTriggerExamplePayload = {
   body: {
     data: {
@@ -192,6 +195,7 @@ export const drivePollingTriggerExamplePayload = {
     },
   },
 };
+
 export const folderPollingTriggerExamplePayload = {
   body: {
     data: {

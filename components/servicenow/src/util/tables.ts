@@ -11,6 +11,7 @@ import type {
   PostTableProps,
   PutTableProps,
 } from "../types";
+
 export const buildTableUrl = (
   apiVersion: string,
   tableName: unknown,
@@ -22,6 +23,7 @@ export const buildTableUrl = (
       ? "/api/now/table/"
       : `/api/now/${util.types.toString(apiVersion)}/table/`;
   tableUrl = urljoin(subpath, util.types.toString(tableName));
+
   if (queryParameters) {
     if (queryParameters?.sys_id) {
       tableUrl = urljoin(tableUrl, util.types.toString(queryParameters.sys_id));
@@ -35,15 +37,15 @@ export const buildTableUrl = (
       tableUrl = urljoin(tableUrl, `?${stringify(filteredParams)}`);
     }
   }
+
   return tableUrl;
 };
+
 export const buildPayload = (
-  fieldValuesInput: {
-    key: string;
-    value: unknown;
-  }[],
+  fieldValuesInput: { key: string; value: unknown }[],
 ): Record<string, unknown> =>
   Object.fromEntries(fieldValuesInput.map(({ key, value }) => [key, value]));
+
 const makeTableRequest = async (
   method: Method,
   {
@@ -80,18 +82,23 @@ const makeTableRequest = async (
     return result;
   }
 };
+
 export const postTable = async (tableProps: PostTableProps) => {
   return makeTableRequest("POST", tableProps);
 };
+
 export const getTable = async (tableProps: GetTableProps) => {
   return makeTableRequest("GET", tableProps);
 };
+
 export const putTable = async (tableProps: PutTableProps) => {
   return makeTableRequest("PUT", tableProps);
 };
+
 export const deleteTable = async (tableProps: DeleteTableProps) => {
   return makeTableRequest("DELETE", tableProps);
 };
+
 export const getAllTables = async ({
   connection,
   instanceUrl,

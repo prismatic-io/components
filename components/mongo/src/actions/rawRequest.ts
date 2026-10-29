@@ -4,6 +4,7 @@ import { getDbClient } from "../client";
 import { rawRequestExamplePayload } from "../examplePayloads";
 import type { Document } from "mongodb";
 import type { ErrorWithMessage } from "../types";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -19,6 +20,7 @@ export const rawRequest = action({
       debug: context.debug.enabled,
       logger: context.logger,
     });
+
     try {
       return {
         data: runAdminCommand

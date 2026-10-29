@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listJobsExamplePayload } from "../../examplePayloads";
 import { listJobsInputs } from "../../inputs";
+
 export const listJobs = action({
   display: {
     label: "List Jobs",

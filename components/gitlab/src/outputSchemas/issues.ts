@@ -14,6 +14,7 @@ import {
   strEnum,
   userSchema,
 } from "./shared";
+
 export const issueMilestoneSchema = nullable(
   obj({
     id: num,
@@ -28,6 +29,7 @@ export const issueMilestoneSchema = nullable(
     closed_at: nullableStr,
   }),
 );
+
 export const issueSchema = obj({
   id: num,
   iid: num,
@@ -78,9 +80,15 @@ export const issueSchema = obj({
   ),
   health_status: nullableStr,
 });
+
 export const issueListSchema = list(issueSchema);
+
 export const createIssueOutputSchema = issueSchema;
+
 export const getIssueOutputSchema = issueSchema;
+
 export const listIssuesOutputSchema = issueListSchema;
+
 export const updateIssueOutputSchema = issueSchema;
+
 export const deleteIssueOutputSchema = deletedSchema;

@@ -39,9 +39,11 @@ export const getAccessibleCustomFieldsExamplePayload = {
     ],
   },
 };
+
 export const setCustomFieldValueExamplePayload = {
   data: {},
 };
+
 export const removeCustomFieldValueExamplePayload = {
   data: {},
 };

@@ -3,6 +3,7 @@ import FormData from "form-data";
 import { createClient } from "../../client";
 import { uploadTemporaryFileExamplePayload } from "../../examplePayloads";
 import { uploadTemporaryFileInputs } from "../../inputs";
+
 export const uploadTemporaryFile = action({
   display: {
     label: "Upload Temporary File",
@@ -19,8 +20,10 @@ export const uploadTemporaryFile = action({
       context.debug.enabled,
       true,
     );
+
     const formData = new FormData();
     formData.append("file", fileContents.data, { filename: fileName });
+
     const { data } = await client.post(
       `/servicedesk/${serviceDeskId}/attachTemporaryFile`,
       formData,

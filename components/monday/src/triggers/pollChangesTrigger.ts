@@ -9,6 +9,7 @@ import {
   partitionItemsByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Items",
@@ -33,11 +34,13 @@ export const pollChangesTrigger = pollingTrigger({
     const now = new Date();
     const lastState = context.polling.getState() as PollingState | undefined;
     const isBackfill = !lastState?.lastPolledAt && Boolean(lookBackDate);
+
     const sinceDate = lastState?.lastPolledAt
       ? new Date(lastState.lastPolledAt)
       : lookBackDate
         ? new Date(`${lookBackDate}T00:00:00.000Z`)
         : now;
+
     const client = getMondayClient(
       connection,
       context.debug.enabled,
@@ -48,19 +51,24 @@ export const pollChangesTrigger = pollingTrigger({
       boardId,
       sinceDate.toISOString(),
     );
+
     const { created, updated } = partitionItemsByTimestamp(items, sinceDate);
+
     context.polling.setState({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
+
     const result = {
       created: isBackfill || showNewRecords ? created : [],
       updated: isBackfill || showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled board ${boardId}: ${items.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

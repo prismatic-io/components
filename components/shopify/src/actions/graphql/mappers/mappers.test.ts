@@ -2,6 +2,7 @@ import { customerMapper } from "./customerMapper";
 import { paginationMapper } from "./paginationMapper";
 import { productImageMapper } from "./productImageMapper";
 import { webhookMapper } from "./webhookMapper";
+
 describe("customerMapper", () => {
   const gqlCustomer = {
     id: "gid://shopify/Customer/8000000000000",
@@ -60,10 +61,12 @@ describe("customerMapper", () => {
       countryCodeV2: "US",
     },
   };
+
   test("converts GID to numeric ID", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.id).toBe(8000000000000);
   });
+
   test("converts camelCase to snake_case fields", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.first_name).toBe("John");
@@ -72,20 +75,24 @@ describe("customerMapper", () => {
     expect(result.verified_email).toBe(true);
     expect(result.tax_exempt).toBe(false);
   });
+
   test("joins tags array into comma-separated string", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.tags).toBe("wholesale,vip");
   });
+
   test("extracts last_order_id from nested lastOrder", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.last_order_id).toBe(555);
     expect(result.last_order_name).toBe("#555");
   });
+
   test("handles null lastOrder", () => {
     const result = customerMapper({ ...gqlCustomer, lastOrder: null });
     expect(result.last_order_id).toBe(null);
     expect(result.last_order_name).toBe(null);
   });
+
   test("maps address GIDs to numeric IDs", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.addresses[0].id).toBe(9000);
@@ -93,6 +100,7 @@ describe("customerMapper", () => {
     expect(result.addresses[0].province_code).toBe("IL");
     expect(result.addresses[0].country_code).toBe("US");
   });
+
   test("maps emailMarketingConsent to snake_case", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.email_marketing_consent).toEqual({
@@ -101,10 +109,12 @@ describe("customerMapper", () => {
       consent_updated_at: null,
     });
   });
+
   test("handles null smsMarketingConsent", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.sms_marketing_consent).toBe(null);
   });
+
   test("preserves admin_graphql_api_id as original GID", () => {
     const result = customerMapper(gqlCustomer);
     expect(result.admin_graphql_api_id).toBe(
@@ -112,6 +122,7 @@ describe("customerMapper", () => {
     );
   });
 });
+
 describe("paginationMapper", () => {
   test("maps a page with more results", () => {
     const result = paginationMapper({
@@ -124,6 +135,7 @@ describe("paginationMapper", () => {
     expect(result.pageInfo).toBe("abc123");
     expect(result.rel).toBe('rel="next"');
   });
+
   test("maps a final page", () => {
     const result = paginationMapper({
       hasNextPage: false,
@@ -134,6 +146,7 @@ describe("paginationMapper", () => {
     expect(result.rel).toBe(null);
   });
 });
+
 describe("webhookMapper", () => {
   test("converts webhook subscription to REST format", () => {
     const result = webhookMapper({
@@ -147,6 +160,7 @@ describe("webhookMapper", () => {
       metafieldNamespaces: [],
       apiVersion: { displayName: "2026-07" },
     });
+
     expect(result.id).toBe(12345);
     expect(result.address).toBe("https://example.com/webhook");
     expect(result.topic).toBe("orders/create");
@@ -154,6 +168,7 @@ describe("webhookMapper", () => {
     expect(result.api_version).toBe("2026-07");
   });
 });
+
 describe("productImageMapper", () => {
   test("maps product image to REST format", () => {
     const result = productImageMapper(
@@ -171,6 +186,7 @@ describe("productImageMapper", () => {
       999,
       3,
     );
+
     expect(result.id).toBe(111);
     expect(result.alt).toBe("Alt text");
     expect(result.position).toBe(3);
@@ -180,6 +196,7 @@ describe("productImageMapper", () => {
     expect(result.src).toBe("https://cdn.shopify.com/img.jpg");
     expect(result.admin_graphql_api_id).toBe("gid://shopify/MediaImage/111");
   });
+
   test("handles null image", () => {
     const result = productImageMapper(
       {
@@ -192,6 +209,7 @@ describe("productImageMapper", () => {
       999,
       1,
     );
+
     expect(result.width).toBe(null);
     expect(result.height).toBe(null);
     expect(result.src).toBeUndefined();

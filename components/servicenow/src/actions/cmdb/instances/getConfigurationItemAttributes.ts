@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getConfigurationItemAttributesExamplePayload } from "../../../examplePayloads";
 import { getConfigurationItemAttributesInputs } from "../../../inputs";
 import { createNowApiClient } from "../../../util";
+
 export const getConfigurationItemAttributes = action({
   display: {
     label: "Get Configuration Item Attributes",

@@ -6,6 +6,7 @@ import {
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
 import { signIn } from "../../util";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -23,6 +24,7 @@ export const rawRequest = action({
         site: { id },
       },
     } = await signIn({ tableauConnection: connection });
+
     try {
       const baseUrl = `https://${connection.fields.hostName}/api/${apiVersion}/sites/${id}`;
       const { data } = await sendRawRequest(baseUrl, httpClientInputs, {

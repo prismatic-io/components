@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAlgoliaClient } from "../../client";
 import { moveIndexExamplePayload } from "../../examplePayloads";
 import { connectionInput, indexName } from "../../inputs";
+
 export const moveIndex = action({
   display: {
     label: "Move Index",
@@ -14,6 +15,7 @@ export const moveIndex = action({
       isGoingToRead: false,
       debug: context.debug.enabled,
     });
+
     try {
       const { data } = await client.post(`/1/indexes/${indexFrom}/operation`, {
         operation: "move",

@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createGitlabClient } from "../../client";
 import { rawRequestInputs } from "../../inputs";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",

@@ -7,12 +7,15 @@ import {
 } from "../../constants";
 import { ingestOfflineConversionsExamplePayload } from "../../examplePayloads";
 import { ingestOfflineConversions } from "./ingestOfflineConversions";
+
 const connection = createConnection(
   oauth,
   { developerToken: "test-developer-token" },
   { access_token: "test-access-token" },
 );
+
 const PATH = `/${GOOGLE_DATA_MANAGER_API_VERSION}/events:ingest`;
+
 const params = {
   connection,
   events: [
@@ -32,8 +35,10 @@ const params = {
   encoding: "HEX",
   validateOnly: false,
 };
+
 describe("ingestOfflineConversions", () => {
   afterEach(() => nock.cleanAll());
+
   test("posts events to the Data Manager host and returns the request id", async () => {
     const scope = nock(GOOGLE_DATA_MANAGER_BASE_URL, {
       reqheaders: { authorization: "Bearer test-access-token" },
@@ -45,14 +50,18 @@ describe("ingestOfflineConversions", () => {
         encoding: "HEX",
       })
       .reply(200, ingestOfflineConversionsExamplePayload.data);
+
     const { result } = await invoke(ingestOfflineConversions, params);
+
     expect(result.data).toEqual(ingestOfflineConversionsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("surfaces an API error response", async () => {
     nock(GOOGLE_DATA_MANAGER_BASE_URL)
       .post(PATH)
       .reply(400, { error: { code: 400, message: "Invalid event" } });
+
     await expect(invoke(ingestOfflineConversions, params)).rejects.toThrow();
   });
 });

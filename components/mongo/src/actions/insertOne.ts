@@ -3,6 +3,7 @@ import { document, connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { insertOneExamplePayload } from "../examplePayloads";
 import type { ErrorWithMessage } from "../types";
+
 const insertOne = action({
   display: {
     label: "Insert One",
@@ -14,6 +15,7 @@ const insertOne = action({
       debug: context.debug.enabled,
       logger: context.logger,
     });
+
     try {
       return {
         data: await client.insertOne(document),
@@ -32,4 +34,5 @@ const insertOne = action({
   },
   examplePayload: insertOneExamplePayload,
 });
+
 export default insertOne;

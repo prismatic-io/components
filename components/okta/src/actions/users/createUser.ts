@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createUserExamplePayload } from "../../examplePayloads/users";
 import { createUserInputs } from "../../inputs/users";
 import type { User } from "../../interfaces/user";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -71,6 +72,7 @@ export const createUser = action({
         activate: provisioningOptions.activate,
       },
     });
+
     return { data };
   },
   examplePayload: createUserExamplePayload,

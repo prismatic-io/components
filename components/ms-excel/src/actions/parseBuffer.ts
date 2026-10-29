@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { file } from "../inputs/general";
 import { parse } from "node-xlsx";
+
 export const parseBuffer = action({
   display: {
     label: "Read from Buffer",

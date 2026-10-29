@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { searchCatalogItemsExamplePayload } from "../../examplePayloads";
 import { searchCatalogItemsInputs } from "../../inputs";
+
 export const searchCatalogItems = action({
   display: {
     label: "Search Catalog Items",
@@ -26,6 +27,7 @@ export const searchCatalogItems = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       textFilter,
       categoryIds,
@@ -37,10 +39,12 @@ export const searchCatalogItems = action({
       productTypes,
       customAttributeFilters,
     };
+
     const response = await client.post(
       "/v2/catalog/search-catalog-items",
       requestBody,
     );
+
     return {
       data: response.data,
     };

@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { openViewExamplePayload } from "../../examplePayloads";
 import { openViewInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const openView = action({
   display: {
     label: "Open View",
@@ -22,14 +23,10 @@ export const openView = action({
       trigger_id,
       view,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { view },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { view }): Promise<{ data: unknown }> => ({
     data: {
       ...openViewExamplePayload,
       view: { ...openViewExamplePayload.view, ...view },

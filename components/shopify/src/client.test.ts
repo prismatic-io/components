@@ -10,7 +10,9 @@ import {
   DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
   DEFAULT_SHOPIFY_VERSION,
 } from "./constants";
+
 const HOST = "test-store.myshopify.com";
+
 const createLogger = () =>
   ({
     debug: vi.fn(),
@@ -18,21 +20,22 @@ const createLogger = () =>
     warn: vi.fn(),
     error: vi.fn(),
     metric: vi.fn(),
-  }) as unknown as ActionLogger & {
-    warn: ReturnType<typeof vi.fn>;
-  };
+  }) as unknown as ActionLogger & { warn: ReturnType<typeof vi.fn> };
+
 const connectionWithVersion = (apiVersion?: string) =>
   createConnection(adminApiAccessToken, {
     host: HOST,
     adminApiAccessToken: "shpat_test",
     apiVersion,
   });
+
 const restVersion = (client: ReturnType<typeof getShopifyClient>) =>
   client.defaults.baseURL?.split("/admin/api/")[1];
 const graphQlVersion = (client: ReturnType<typeof getShopifyGraphQlClient>) =>
   String(Reflect.get(client, "url"))
     .split("/admin/api/")[1]
     .replace("/graphql.json", "");
+
 describe("API version resolution and outdated-version warning", () => {
   const factories = [
     {
@@ -70,6 +73,7 @@ describe("API version resolution and outdated-version warning", () => {
         ),
     },
   ];
+
   describe.each(factories)("$name", ({ defaultVersion, build }) => {
     test("warns and keeps the connection's version when it is older than the default", () => {
       const logger = createLogger();
@@ -86,11 +90,13 @@ describe("API version resolution and outdated-version warning", () => {
         ),
       );
     });
+
     test("does not warn when the connection's version equals the default", () => {
       const logger = createLogger();
       expect(build(defaultVersion, undefined, logger)).toEqual(defaultVersion);
       expect(logger.warn).not.toHaveBeenCalled();
     });
+
     test.each([
       "2099-01",
       "unstable",
@@ -99,6 +105,7 @@ describe("API version resolution and outdated-version warning", () => {
       expect(build(apiVersion, undefined, logger)).toEqual(apiVersion);
       expect(logger.warn).not.toHaveBeenCalled();
     });
+
     test.each([
       undefined,
       "",
@@ -107,6 +114,7 @@ describe("API version resolution and outdated-version warning", () => {
       expect(build(apiVersion, undefined, logger)).toEqual(defaultVersion);
       expect(logger.warn).not.toHaveBeenCalled();
     });
+
     test("uses an explicit override without checking the connection's version", () => {
       const logger = createLogger();
       expect(build("2026-01", "2025-10", logger)).toEqual("2025-10");
@@ -114,6 +122,7 @@ describe("API version resolution and outdated-version warning", () => {
     });
   });
 });
+
 describe("Test getShopifyHostname", () => {
   test.each([
     "YOUR-SHOPIFY-DOMAIN.myshopify.com",
@@ -124,6 +133,7 @@ describe("Test getShopifyHostname", () => {
     const result = getShopifyHostname(value);
     expect(result).toEqual("YOUR-SHOPIFY-DOMAIN.myshopify.com");
   });
+
   test("Verify it throws errors when it doesn't match", () => {
     expect(() => getShopifyHostname("some-bad-value")).toThrow(
       'Unable to parse hostname "some-bad-value". It should look like "YOUR-SHOPIFY-DOMAIN.myshopify.com".',

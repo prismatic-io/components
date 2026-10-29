@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createTicketExamplePayload as examplePayload } from "../../examplePayloads/tickets";
 import { createTicketInputs as inputs } from "../../inputs/tickets";
 import type { CreateTicketResponse } from "../../interfaces/tickets";
+
 export const createTicket = action({
   display: {
     label: "Create Ticket",
@@ -20,6 +21,7 @@ export const createTicket = action({
       ...ticketTimestamps,
       ...additionalFields,
     });
+
     return {
       data,
     };

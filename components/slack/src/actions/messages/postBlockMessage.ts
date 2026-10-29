@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { postBlockMessageExamplePayload } from "../../examplePayloads";
 import { postBlockMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const postBlockMessage = action({
   display: {
     label: "Post Block Message",
@@ -25,14 +26,13 @@ export const postBlockMessage = action({
       text: message,
       thread_ts: messageId || undefined,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { channelName, message, username, messageId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...postBlockMessageExamplePayload,
       channel: channelName,

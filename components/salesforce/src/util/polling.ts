@@ -11,6 +11,7 @@ import type {
   SalesforceRecordChange,
 } from "../types";
 import { buildSOQLQuery, formatSOQLDateTime, formatSOQLId } from "./query";
+
 const recordId = (record: PollingTriggerObject): string => {
   const id = record.Id;
   if (typeof id !== "string" || id === "") {
@@ -20,10 +21,12 @@ const recordId = (record: PollingTriggerObject): string => {
   }
   return id;
 };
+
 const keyOf = (record: PollingTriggerObject): [string, string] => [
   formatSOQLDateTime(record.LastModifiedDate),
   recordId(record),
 ];
+
 export const advanceCursor = (
   records: PollingTriggerObject[],
   cursor: PollingCursor,
@@ -38,11 +41,14 @@ export const advanceCursor = (
       );
     }
   }
+
   if (records.length === 0 || records.length < pageSize) {
     return { emit: records, nextCursor: null };
   }
+
   const [watermark, lastId] = keyOf(records[records.length - 1]);
   const previous = formatSOQLDateTime(cursor.watermark);
+
   const advanced =
     watermark > previous ||
     (watermark === previous &&
@@ -52,6 +58,7 @@ export const advanceCursor = (
       `Cannot advance the polling cursor: the page ended at (${watermark}, ${lastId}), at or before the current position (${cursor.watermark}, ${cursor.lastId ?? "none"}). Records must arrive sorted ascending by LastModifiedDate, Id.`,
     );
   }
+
   return {
     emit: records,
     nextCursor: {
@@ -63,8 +70,10 @@ export const advanceCursor = (
     },
   };
 };
+
 export const buildPollingConditions = (cursor: PollingCursor): string[] => {
   const watermark = formatSOQLDateTime(cursor.watermark);
+
   return [
     `LastModifiedDate >= ${watermark}`,
     `LastModifiedDate < ${formatSOQLDateTime(cursor.windowEnd)}`,
@@ -78,10 +87,13 @@ export const buildPollingConditions = (cursor: PollingCursor): string[] => {
       : []),
   ];
 };
+
 export const classifyFromCursor = (cursor: PollingCursor): Date =>
   new Date(new Date(formatSOQLDateTime(cursor.watermark)).getTime() - 1);
+
 export const createdSinceCursor = (cursor: PollingCursor): Date =>
   new Date(new Date(formatSOQLDateTime(cursor.windowStart)).getTime() - 1);
+
 export const fetchPollingPage = async (
   client: Connection,
   { recordType, fields, filters, cursor, pageSize }: FetchPollingPageParams,
@@ -91,6 +103,7 @@ export const fetchPollingPage = async (
       `Invalid polling page size ${pageSize}: must be a positive integer.`,
     );
   }
+
   const soql = buildSOQLQuery({
     recordType,
     fields,
@@ -99,17 +112,21 @@ export const fetchPollingPage = async (
     maxRecords: pageSize,
     conditions: buildPollingConditions(cursor),
   });
+
   const result = await client.query(soql, {
     autoFetch: true,
     maxFetch: pageSize,
   });
+
   if (result.done !== true && result.records.length < pageSize) {
     throw new Error(
       `Salesforce returned ${result.records.length} of ${pageSize} requested records without confirming the result set was complete. Refusing to treat this as the final page.`,
     );
   }
+
   return result.records as PollingTriggerObject[];
 };
+
 export const fetchPollingWindow = async (
   client: Connection,
   params: FetchPollingPageParams,
@@ -119,6 +136,7 @@ export const fetchPollingWindow = async (
     params.cursor,
     params.pageSize,
   );
+
 export const getPollingChanges = (
   showNewRecords: boolean,
   showUpdatedRecords: boolean,
@@ -126,18 +144,18 @@ export const getPollingChanges = (
   lastPolledAtDate: Date,
   createdSinceDate: Date,
   deletedRecords: DeletedRecord[] = [],
-  options: {
-    snapshot?: boolean;
-  } = {},
+  options: { snapshot?: boolean } = {},
 ) => {
   let changes = 0;
   const changesObject = searchRecords.reduce(
     (acc, record) => {
       const recordUpdatedAt = new Date(record.LastModifiedDate);
       const recordCreatedAt = new Date(record.CreatedDate);
+
       const changeExists =
         recordUpdatedAt > lastPolledAtDate ||
         recordCreatedAt > createdSinceDate;
+
       if (changeExists) {
         const isCreated = recordCreatedAt > createdSinceDate;
         const isUpdated = options.snapshot
@@ -162,12 +180,15 @@ export const getPollingChanges = (
       deletedRecords,
     },
   );
+
   changes += deletedRecords.length;
+
   return {
     changesObject,
     changes,
   };
 };
+
 export const resolvePollingRecordChanges = (
   data: SalesforceChangesObject | undefined,
 ): SalesforceRecordChange[] => {
@@ -188,6 +209,7 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 const assertValidDateString = (value: unknown, field: string): string => {
   if (typeof value !== "string" || Number.isNaN(new Date(value).getTime())) {
     throw new Error(
@@ -196,6 +218,7 @@ const assertValidDateString = (value: unknown, field: string): string => {
   }
   return value;
 };
+
 export const resolveCursor = ({
   incoming,
   state,
@@ -223,8 +246,10 @@ export const resolveCursor = ({
         `Invalid polling cursor.lastId: ${JSON.stringify(resumed.lastId)}. Expected a string.`,
       );
     }
+
     return { ...resumed, windowStart };
   }
+
   if (state.lastPolledAt) {
     const watermark = assertValidDateString(
       state.lastPolledAt,
@@ -237,6 +262,7 @@ export const resolveCursor = ({
       isBackfill: false,
     } satisfies PollingCursor;
   }
+
   if (lookBackDate) {
     return {
       watermark: lookBackDate,
@@ -245,6 +271,7 @@ export const resolveCursor = ({
       isBackfill: true,
     } satisfies PollingCursor;
   }
+
   return {
     watermark: now,
     windowStart: now,
@@ -252,10 +279,9 @@ export const resolveCursor = ({
     isBackfill: false,
   } satisfies PollingCursor;
 };
+
 export const resolveCursorSafely = (
-  params: ResolveCursorParams & {
-    logger: PollingLogger;
-  },
+  params: ResolveCursorParams & { logger: PollingLogger },
 ): PollingCursor => {
   const { incoming, state, lookBackDate, now, logger } = params;
   try {

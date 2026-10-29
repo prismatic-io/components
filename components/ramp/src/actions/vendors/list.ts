@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { Vendor } from "../../interfaces/vendors";
 import { listVendorsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listVendors = action({
   display: {
     label: "List Vendors",
@@ -23,6 +24,7 @@ export const listVendors = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<Vendor>(
       client,
       "/accounting/vendors",
@@ -40,9 +42,7 @@ export const listVendors = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listVendorsResponse,
       page: fetchAll ? null : listVendorsResponse.page,

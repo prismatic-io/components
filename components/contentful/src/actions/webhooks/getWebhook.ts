@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { getWebhookExamplePayload } from "../../examplePayloads";
 import { getWebhookInputs } from "../../inputs";
 import { getWebhookOutputSchema } from "../../outputSchemas";
+
 export const getWebhook = action({
   display: {
     label: "Get Webhook",
@@ -16,6 +17,7 @@ export const getWebhook = action({
     const data: WebhookProps = (
       await space.getWebhook(webhookId)
     ).toPlainObject();
+
     return {
       data,
     };

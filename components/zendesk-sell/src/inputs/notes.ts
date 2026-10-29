@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const tags = input({
   label: "Tags",
   comments: "Tags to apply to the note.",
@@ -8,6 +9,7 @@ const tags = input({
   collection: "valuelist",
   required: false,
 });
+
 const isImportant = input({
   label: "Is Important",
   comments: "When true, marks the note as important.",
@@ -21,6 +23,7 @@ const isImportant = input({
   required: false,
   clean: util.types.toString,
 });
+
 const noteType = input({
   label: "Type",
   comments:
@@ -31,6 +34,7 @@ const noteType = input({
   required: false,
   clean: util.types.toString,
 });
+
 const contentRequired = input({
   label: "Content",
   comments: "The body text of the note.",
@@ -40,6 +44,7 @@ const contentRequired = input({
   required: true,
   clean: util.types.toString,
 });
+
 const contentOptional = input({
   label: "Content",
   comments: "The body text of the note.",
@@ -49,6 +54,7 @@ const contentOptional = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceTypeRequired = input({
   label: "Resource Type",
   comments:
@@ -59,6 +65,7 @@ const resourceTypeRequired = input({
   required: true,
   clean: util.types.toString,
 });
+
 const resourceTypeOptional = input({
   label: "Resource Type",
   comments:
@@ -69,6 +76,7 @@ const resourceTypeOptional = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceIdRequired = input({
   label: "Resource ID",
   comments: "The unique identifier of the resource the note is attached to.",
@@ -78,6 +86,7 @@ const resourceIdRequired = input({
   required: true,
   clean: util.types.toString,
 });
+
 const noteId = input({
   label: "Note ID",
   comments: "The unique identifier of the note.",
@@ -88,6 +97,7 @@ const noteId = input({
   clean: util.types.toString,
   dataSource: "selectNote",
 });
+
 const position = input({
   label: "Position",
   comments:
@@ -98,6 +108,7 @@ const position = input({
   required: true,
   clean: util.types.toString,
 });
+
 const limit = input({
   label: "Limit",
   comments: "The maximum number of events to return in a single response.",
@@ -107,6 +118,7 @@ const limit = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments:
@@ -117,6 +129,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const includes = input({
   label: "Includes",
   comments:
@@ -127,6 +140,7 @@ const includes = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of note IDs to be returned in a request.",
@@ -136,6 +150,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const creatorId = input({
   label: "Creator ID",
   comments:
@@ -146,6 +161,7 @@ const creatorId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const q = input({
   label: "Query",
   comments:
@@ -156,6 +172,7 @@ const q = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceType = input({
   label: "Resource Type",
   comments:
@@ -170,6 +187,7 @@ const resourceType = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceId = input({
   label: "Resource ID",
   comments: "The unique identifier of the resource the note is attached to.",
@@ -179,6 +197,7 @@ const resourceId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -189,6 +208,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -199,12 +219,14 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, perPage },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -212,6 +234,7 @@ const additionalFields = structuredObjectInput({
     "Additional optional fields for the request. Includes: Sort By, Includes, and Query.",
   inputs: { sortBy, includes, q },
 });
+
 export const createNoteInputs = {
   connection,
   content: contentRequired,
@@ -221,19 +244,23 @@ export const createNoteInputs = {
   isImportant,
   type: noteType,
 };
+
 export const deleteNoteInputs = {
   connection,
   id: noteId,
 };
+
 export const getNoteInputs = {
   connection,
   id: noteId,
 };
+
 export const getNotesStreamInputs = {
   connection,
   position,
   limit,
 };
+
 export const listNotesInputs = {
   connection,
   fetchAll,
@@ -244,6 +271,7 @@ export const listNotesInputs = {
   pagination,
   additionalFields,
 };
+
 export const updateNoteInputs = {
   connection,
   content: contentOptional,

@@ -1,23 +1,29 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
+
 export const cleanCodeInput = (value: unknown): object | undefined => {
   if (value) {
     return util.types.toObject(value);
   }
   return undefined;
 };
+
 export const cleanBooleanInput = (value: unknown): boolean | undefined =>
   value ? util.types.toBool(value) : undefined;
+
 export const cleanNumberInput = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanKeyValueListInput = (
   value: unknown,
 ): Record<string, unknown> | undefined =>
   value
     ? util.types.keyValPairListToObject(value as KeyValuePair[])
     : undefined;
+
 export const cleanNumberValueListInput = (
   value: unknown,
 ): number[] | undefined => {
@@ -28,6 +34,7 @@ export const cleanNumberValueListInput = (
   }
   return undefined;
 };
+
 export const cleanStringValueListInput = (
   value: unknown,
 ): string[] | undefined => {
@@ -38,6 +45,7 @@ export const cleanStringValueListInput = (
   }
   return undefined;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -46,6 +54,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw =
     typeof value === "string" ? value.trim() : util.types.toString(value);
   const match =
@@ -55,6 +64,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = util.types.toNumber(yearStr);
   const month = util.types.toNumber(monthStr);
@@ -69,18 +79,17 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
   return parsed.toISOString();
 };
+
 export const mapModelValues = (
   values: string[],
   addEmptyValue = false,
-): {
-  value: string;
-  label: string;
-}[] => {
+): { value: string; label: string }[] => {
   if (addEmptyValue) {
     return [
       {
@@ -102,7 +111,9 @@ export const mapModelValues = (
     };
   });
 };
+
 export const mapBooleanModelInput = mapModelValues(["true", "false"], true);
+
 export const mapStatusModelInput = mapModelValues(
   ["Pending", "Posted", "Exported"],
   true,

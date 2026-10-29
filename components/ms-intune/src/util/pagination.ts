@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const paginateResults = async (
   client: HttpClient,
   url: string,

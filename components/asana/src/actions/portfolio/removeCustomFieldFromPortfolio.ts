@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { removeCustomFieldFromPortfolioExamplePayload } from "../../examplePayloads";
 import { removeCustomFieldFromPortfolioInputs } from "../../inputs";
 import { emptyResponseOutputSchema } from "../../outputSchemas";
+
 export const removeCustomFieldFromPortfolio = action({
   display: {
     label: "Remove Custom Field from Portfolio",

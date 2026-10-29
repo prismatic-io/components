@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { createDocumentInputs } from "../../inputs";
 import { createDocumentExamplePayload } from "../../examplePayloads";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export const createDocument = action({
   display: {
     label: "Create Document",

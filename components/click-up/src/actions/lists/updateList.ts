@@ -4,6 +4,7 @@ import { updateListExamplePayload } from "../../examplePayloads";
 import { updateListInputs } from "../../inputs";
 import { updateListOutputSchema } from "../../outputSchemas";
 import type { UpdateListBody } from "../../types";
+
 export const updateList = action({
   display: {
     label: "Update List",
@@ -45,7 +46,9 @@ export const updateList = action({
       status,
       unset_status: unsetStatus,
     };
+
     const { data } = await client.put(`/list/${listId}`, body);
+
     return {
       data,
     };

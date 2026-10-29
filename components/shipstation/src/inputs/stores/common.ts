@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput, validateJSON } from "../../util";
+
 export const marketplaceIdInput = input({
   label: "Marketplace ID",
   type: "string",
@@ -8,6 +9,7 @@ export const marketplaceIdInput = input({
   placeholder: "Enter marketplace ID",
   clean: cleanStringInput,
 });
+
 export const storeIdInput = input({
   label: "Store ID",
   type: "string",
@@ -17,6 +19,7 @@ export const storeIdInput = input({
   dataSource: "selectStores",
   clean: util.types.toString,
 });
+
 export const storeUpdateDataInput = input({
   label: "Store Update Data",
   type: "code",

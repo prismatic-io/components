@@ -7,6 +7,7 @@ import {
   maxResults,
   searchString,
 } from "../../inputs";
+
 export const queryV3 = action({
   display: {
     label: "Query",

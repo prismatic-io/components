@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { createPurchaseInvoiceExamplePayload } from "../../examplePayloads";
 import { createPurchaseInvoiceInputs } from "../../inputs/purchaseInvoices";
 import type { PurchaseInvoice } from "../../interfaces";
+
 export const createPurchaseInvoice = action({
   display: {
     label: "Create Purchase Invoice",
@@ -63,6 +64,7 @@ export const createPurchaseInvoice = action({
       `/companies(${companyId})/purchaseInvoices`,
       payload,
     );
+
     return {
       data,
     };

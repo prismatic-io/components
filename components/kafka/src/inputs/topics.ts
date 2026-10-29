@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { brokers, clientId, connection } from "./common";
+
 export const topic = input({
   label: "Topic",
   type: "string",
@@ -11,4 +12,5 @@ export const topic = input({
   placeholder: "Enter topic name",
   clean: util.types.toString,
 });
+
 export const listTopicsInputs = { connection, clientId, brokers };

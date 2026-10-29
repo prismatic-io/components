@@ -8,6 +8,7 @@ import {
   resourceId,
   sort,
 } from "./common";
+
 const departmentName = input({
   label: "Name",
   type: "string",
@@ -17,12 +18,14 @@ const departmentName = input({
   placeholder: "Enter department name",
   example: "Information Technology",
 });
+
 const departmentResourceId = {
   ...resourceId,
   label: "Department",
   comments: "The unique identifier of the department.",
   dataSource: "selectDepartment",
 };
+
 export const createDepartmentInputs = { connection, departmentName };
 export const deleteDepartmentInputs = {
   connection,
@@ -38,6 +41,7 @@ const pagination = structuredObjectInput({
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const listDepartmentsInputs = {
   connection,
   fetchAll,

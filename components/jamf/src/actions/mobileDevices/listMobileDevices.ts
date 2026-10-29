@@ -4,6 +4,7 @@ import { listMobileDevicesExamplePayload } from "../../examplePayloads";
 import { listMobileDevicesInputs } from "../../inputs";
 import type { MobileDeviceInventory } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listMobileDevices = action({
   display: {
     label: "List Mobile Devices",

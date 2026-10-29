@@ -5,6 +5,7 @@ import { activateFlowInputs } from "../../inputs";
 import { activateFlowFunction, processMetadataResult } from "../../util";
 import { generateApiName } from "../../util";
 import { activateFlowExamplePayload } from "../../examplePayloads";
+
 export const activateFlow = action({
   display: {
     label: "Activate Flow",
@@ -18,9 +19,8 @@ export const activateFlow = action({
     const result = await activateFlowFunction(client, fullName);
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => activateFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    activateFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

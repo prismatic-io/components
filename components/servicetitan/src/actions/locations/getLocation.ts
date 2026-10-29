@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getLocationExamplePayload } from "../../examplePayloads";
 import { getLocationInputs } from "../../inputs";
 import { getLocationOutputSchema } from "../../outputSchemas";
+
 export const getLocation = action({
   display: {
     label: "Get Location",

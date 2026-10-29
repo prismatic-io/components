@@ -3,6 +3,7 @@ import { getGuruClient } from "../client";
 import { selectCardInputs } from "../inputs";
 import type { GuruCard } from "../types";
 import { fetchGuruResults } from "../util";
+
 export const selectCard = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -25,6 +26,7 @@ export const selectCard = dataSource({
       true,
       queryParams,
     );
+
     return {
       result: cards.map(
         (card: GuruCard): Element => ({

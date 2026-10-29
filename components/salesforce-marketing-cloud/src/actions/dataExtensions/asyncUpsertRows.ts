@@ -4,6 +4,7 @@ import { ASYNC_DATA_EXTENSIONS_PATH } from "../../constants";
 import { asyncUpsertRowsExamplePayload } from "../../examplePayloads";
 import { asyncUpsertRowsInputs } from "../../inputs";
 import { asyncUpsertRowsOutputSchema } from "../../outputSchemas";
+
 export const asyncUpsertRows = action({
   examplePayload: asyncUpsertRowsExamplePayload,
   display: {
@@ -19,18 +20,19 @@ export const asyncUpsertRows = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, dataExtensionKey, batchRows }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       items: batchRows,
     };
+
     const { data } = await client.put(
       `${ASYNC_DATA_EXTENSIONS_PATH}/key:${encodeURIComponent(dataExtensionKey)}/rows`,
       body,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: asyncUpsertRowsExamplePayload.data,
   }),
 });

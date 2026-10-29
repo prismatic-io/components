@@ -4,6 +4,7 @@ import type {
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
 import type { QueryCondition, QueryDocsParams } from "../types";
+
 export const queryDocs = async ({
   db,
   collection,
@@ -11,6 +12,7 @@ export const queryDocs = async ({
   orderBy,
 }: QueryDocsParams): Promise<QueryDocumentSnapshot<DocumentData>[]> => {
   let query: Query = db.collection(collection);
+
   if (queryOperatorCode) {
     try {
       const jsonArrayQuery = JSON.parse(queryOperatorCode);
@@ -35,9 +37,11 @@ export const queryDocs = async ({
       throw error;
     }
   }
+
   if (orderBy) {
     query = query.orderBy(orderBy.trim());
   }
+
   let result: Array<QueryDocumentSnapshot<DocumentData>>;
   try {
     const queryResult = await query.get();
@@ -48,5 +52,6 @@ export const queryDocs = async ({
     }
     throw error;
   }
+
   return result;
 };

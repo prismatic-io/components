@@ -4,6 +4,7 @@ import connections from "./connections";
 import dataSources from "./dataSources";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import triggers from "./triggers";
+
 export default component({
   key: "odoo",
   public: true,

@@ -9,6 +9,7 @@ const stageData = {
   created_at: "2023-06-15T10:00:00Z",
   updated_at: "2024-11-20T14:35:12Z",
 };
+
 export const listStagesExamplePayload = {
   data: {
     items: [
@@ -30,6 +31,7 @@ export const listStagesExamplePayload = {
     },
   },
 };
+
 export const getStagesStreamExamplePayload = {
   data: {
     items: [

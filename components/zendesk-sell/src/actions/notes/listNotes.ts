@@ -4,6 +4,7 @@ import { getZendeskClient } from "../../client";
 import { listNotesExamplePayload } from "../../examplePayloads";
 import { listNotesInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listNotes = action({
   display: {
     label: "List Notes",
@@ -46,6 +47,7 @@ export const listNotes = action({
           resource_id: resourceId,
         }),
       };
+
       const data: unknown = await fetchAllPages(
         client,
         "/notes",

@@ -7,6 +7,7 @@ import {
 } from "./examplePayloads";
 import { selectBucketInputs, selectFileInputs } from "./inputs";
 import { paginateGCSResults, sortAlphabetically } from "./util";
+
 export const selectBucket = dataSource({
   display: {
     label: "Select Bucket",
@@ -16,6 +17,7 @@ export const selectBucket = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, params) => {
     const storage = googleStorageClient(params.connection);
+
     const result = await paginateGCSResults<Bucket>(
       async ({ maxResults, pageToken }) =>
         storage.getBuckets({ maxResults, pageToken }),
@@ -30,6 +32,7 @@ export const selectBucket = dataSource({
   },
   examplePayload: selectBucketExamplePayload,
 });
+
 export const selectFile = dataSource({
   display: {
     label: "Select File",
@@ -41,6 +44,7 @@ export const selectFile = dataSource({
     const storage = googleStorageClient(params.connection);
     const bucket = storage.bucket(params.bucketName);
     const prefixValue = params.prefix;
+
     const result = await paginateGCSResults<File>(
       async ({ maxResults, pageToken }) =>
         bucket.getFiles({
@@ -59,4 +63,5 @@ export const selectFile = dataSource({
   },
   examplePayload: selectFileExamplePayload,
 });
+
 export default { selectBucket, selectFile };

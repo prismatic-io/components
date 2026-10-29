@@ -4,6 +4,7 @@ import { getLocationExamplePayload } from "../../examplePayloads/locations";
 import { getLocationInputs } from "../../inputs";
 import { locationOutputSchema } from "../../outputSchemas";
 import type { Location } from "../../types";
+
 export const getLocation = action({
   display: {
     label: "Get Location",

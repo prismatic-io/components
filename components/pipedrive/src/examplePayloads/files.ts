@@ -30,6 +30,7 @@ const singleFile = {
   name: "test file name",
   description: "test file description",
 };
+
 export const getFilesExamplePayload = {
   data: {
     success: true,
@@ -44,6 +45,7 @@ export const getFilesExamplePayload = {
     },
   },
 };
+
 export const addFileExamplePayload = {
   data: {
     success: true,
@@ -56,24 +58,28 @@ export const addFileExamplePayload = {
     },
   },
 };
+
 export const getFileExamplePayload = {
   data: {
     success: true,
     data: singleFile,
   },
 };
+
 export const updateFileExamplePayload = {
   data: {
     success: true,
     data: singleFile,
   },
 };
+
 export const deleteFileExamplePayload = {
   data: {
     success: true,
     data: { id: 123 },
   },
 };
+
 export const downloadFileExamplePayload = {
   data: Buffer.from("Hello, World"),
   contentType: "text/plain",

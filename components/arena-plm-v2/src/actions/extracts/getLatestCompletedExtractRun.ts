@@ -4,6 +4,7 @@ import { getLatestCompletedExtractRunExamplePayload } from "../../examplePayload
 import { getLatestCompletedExtractRunInputs } from "../../inputs";
 import { runSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getLatestCompletedExtractRun = action({
   display: {
     label: "Get Latest Completed Extract Run",

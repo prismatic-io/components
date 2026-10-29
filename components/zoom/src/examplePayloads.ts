@@ -16,6 +16,7 @@ export const addMeetingRegistrantExamplePayload = {
     participant_pin_code: 380303,
   },
 };
+
 export const createMeetingExamplePayload = {
   data: {
     assistant_id: "kFFvsJc-Q1OSxaJQLvaa_A",
@@ -179,6 +180,7 @@ export const createMeetingExamplePayload = {
     type: 2,
   },
 };
+
 export const getMeetingExamplePayload = {
   data: {
     assistant_id: "kFFvsJc-Q1OSxaJQLvaa_A",
@@ -343,6 +345,7 @@ export const getMeetingExamplePayload = {
     type: 2,
   },
 };
+
 export const getMeetingInvitationExamplePayload = {
   data: {
     invitation:
@@ -350,6 +353,7 @@ export const getMeetingInvitationExamplePayload = {
     sip_links: ["5550100@zoomcrc.com"],
   },
 };
+
 export const getMeetingRecordingsExamplePayload = {
   data: {
     account_id: "Cx3wERazSgup7ZWRHQM8-w",
@@ -401,6 +405,7 @@ export const getMeetingRecordingsExamplePayload = {
     ],
   },
 };
+
 export const listMeetingRegistrantsExamplePayload = {
   data: {
     registrants: [
@@ -437,6 +442,7 @@ export const listMeetingRegistrantsExamplePayload = {
     ],
   },
 };
+
 export const listMeetingsExamplePayload = {
   data: {
     meetings: [
@@ -457,6 +463,7 @@ export const listMeetingsExamplePayload = {
     ],
   },
 };
+
 export const getPhoneRecordingsExamplePayload = {
   data: {
     recordings: [
@@ -489,6 +496,7 @@ export const getPhoneRecordingsExamplePayload = {
     ],
   },
 };
+
 export const createUserExamplePayload = {
   data: {
     email: "jchill@example.com",
@@ -498,6 +506,7 @@ export const createUserExamplePayload = {
     type: 1,
   },
 };
+
 export const getUserExamplePayload = {
   data: {
     id: "zJKyaiAyTNC-MWjiWC18KQ",
@@ -556,6 +565,7 @@ export const getUserExamplePayload = {
     zoom_one_type: 4,
   },
 };
+
 export const listChatMessagesExamplePayload = {
   data: {
     messages: [
@@ -619,6 +629,7 @@ export const listChatMessagesExamplePayload = {
     ],
   },
 };
+
 export const listUserChannelsExamplePayload = {
   data: {
     channels: [
@@ -640,6 +651,7 @@ export const listUserChannelsExamplePayload = {
     ],
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     users: [
@@ -675,6 +687,7 @@ export const listUsersExamplePayload = {
     ],
   },
 };
+
 export const addWebinarRegistrantExamplePayload = {
   data: {
     id: 92674392836,
@@ -692,6 +705,7 @@ export const addWebinarRegistrantExamplePayload = {
     ],
   },
 };
+
 export const getWebinarExamplePayload = {
   data: {
     host_email: "jchill@example.com",
@@ -816,6 +830,7 @@ export const getWebinarExamplePayload = {
     record_file_id: "f09340e1-cdc3-4eae-9a74-98f9777ed908",
   },
 };
+
 export const listWebinarParticipantsExamplePayload = {
   data: {
     participants: [
@@ -834,6 +849,7 @@ export const listWebinarParticipantsExamplePayload = {
     ],
   },
 };
+
 export const listWebinarRegistrantsExamplePayload = {
   data: {
     registrants: [
@@ -869,6 +885,7 @@ export const listWebinarRegistrantsExamplePayload = {
     ],
   },
 };
+
 export const listWebinarsExamplePayload = {
   data: {
     webinars: [

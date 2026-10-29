@@ -8,7 +8,9 @@ import {
   isClientCredentials,
   validateConnection,
 } from "./connection";
+
 const USER_ID = "48d31887-5fad-4d73-a9f5-3c356e68a038";
+
 const authCode = createConnection(
   templatedOauth,
   {},
@@ -24,12 +26,14 @@ const clientCredentialsNoUser = createConnection(
   {},
   { access_token: "test-token" },
 );
+
 describe("isClientCredentials", () => {
   test("distinguishes the unattended connection from the authorization code one", () => {
     expect(isClientCredentials(clientCredentials)).toBe(true);
     expect(isClientCredentials(authCode)).toBe(false);
   });
 });
+
 describe("computeEndpointBasedOnConnection", () => {
   test("returns the path unchanged on an authorization code connection", () => {
     expect(
@@ -42,6 +46,7 @@ describe("computeEndpointBasedOnConnection", () => {
       ),
     ).toBe("/me/memberOf/microsoft.graph.group");
   });
+
   test("rewrites a leading /me segment to /users/{userId} on a client credentials connection", () => {
     expect(
       computeEndpointBasedOnConnection(
@@ -56,11 +61,13 @@ describe("computeEndpointBasedOnConnection", () => {
       ),
     ).toBe(`/users/${USER_ID}/planner/plans`);
   });
+
   test("rewrites a bare /me path with nothing after it", () => {
     expect(computeEndpointBasedOnConnection(clientCredentials, "/me")).toBe(
       `/users/${USER_ID}`,
     );
   });
+
   test("leaves a segment that merely starts with 'me' alone", () => {
     expect(
       computeEndpointBasedOnConnection(clientCredentials, "/members"),
@@ -69,11 +76,13 @@ describe("computeEndpointBasedOnConnection", () => {
       computeEndpointBasedOnConnection(clientCredentials, "/meetings/123"),
     ).toBe("/meetings/123");
   });
+
   test("leaves a /me that is not the leading segment alone", () => {
     expect(
       computeEndpointBasedOnConnection(clientCredentials, "/groups/me/plans"),
     ).toBe("/groups/me/plans");
   });
+
   test("throws a ConnectionError when the client credentials connection has no User ID", () => {
     expect(() =>
       computeEndpointBasedOnConnection(
@@ -89,10 +98,12 @@ describe("computeEndpointBasedOnConnection", () => {
     ).toThrow(/requires a User ID/);
   });
 });
+
 describe("validateConnection", () => {
   test("accepts a connection carrying an access token", () => {
     expect(() => validateConnection(authCode)).not.toThrow();
   });
+
   test("throws a ConnectionError when the connection produced no access token", () => {
     const noToken = createConnection(templatedOauth, {});
     expect(() => validateConnection(noToken)).toThrow(ConnectionError);
@@ -100,6 +111,7 @@ describe("validateConnection", () => {
       /No access token was found/,
     );
   });
+
   test("throws when the token object is present but the access token is blank", () => {
     const blankToken = createConnection(
       templatedOauth,

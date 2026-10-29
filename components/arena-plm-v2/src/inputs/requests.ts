@@ -26,6 +26,7 @@ import {
   statusInput,
   titleInput,
 } from "./common";
+
 const requestGuidInput = input({
   label: "Request GUID",
   type: "string",
@@ -35,6 +36,7 @@ const requestGuidInput = input({
   example: "RQ4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const issueGuidInput = input({
   label: "Issue GUID",
   type: "string",
@@ -44,6 +46,7 @@ const issueGuidInput = input({
   example: "RQ4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const responseInput = input({
   label: "Response",
   type: "text",
@@ -52,6 +55,7 @@ const responseInput = input({
   comments: "Response to the evaluation issue.",
   clean: util.types.toString,
 });
+
 const markupGuidInput = input({
   label: "Markup GUID",
   type: "string",
@@ -61,6 +65,7 @@ const markupGuidInput = input({
   example: "RQ4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requestFileAssociationGuidInput = input({
   label: "Request File Association GUID",
   type: "string",
@@ -70,6 +75,7 @@ const requestFileAssociationGuidInput = input({
   example: "RQ4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const fromStatusInput = input({
   label: "From Status",
   type: "string",
@@ -84,6 +90,7 @@ const fromStatusInput = input({
   comments: "Current status of the request (optional).",
   clean: toOptionalString,
 });
+
 const resolutionNotesInput = input({
   label: "Resolution Notes",
   type: "text",
@@ -92,6 +99,7 @@ const resolutionNotesInput = input({
   comments: "Notes about the resolution (typically used when closing).",
   clean: toOptionalString,
 });
+
 const resolutionCodeInput = input({
   label: "Resolution Code",
   type: "string",
@@ -100,6 +108,7 @@ const resolutionCodeInput = input({
   comments: "Code indicating the type of resolution.",
   clean: toOptionalString,
 });
+
 const deferralCodeInput = input({
   label: "Deferral Code",
   type: "string",
@@ -108,6 +117,7 @@ const deferralCodeInput = input({
   comments: "Code indicating the reason for deferral.",
   clean: toOptionalString,
 });
+
 const deferDeadlineDateTimeInput = input({
   label: "Defer Deadline Date Time",
   type: "string",
@@ -117,6 +127,7 @@ const deferDeadlineDateTimeInput = input({
   example: "2026-05-10T09:15:00Z",
   clean: toOptionalString,
 });
+
 const problemInput = input({
   label: "Problem Description",
   type: "text",
@@ -125,6 +136,7 @@ const problemInput = input({
   comments: "Description of the problem that needs to be addressed.",
   clean: toOptionalString,
 });
+
 const requestedActionInput = input({
   label: "Requested Action",
   type: "text",
@@ -133,6 +145,7 @@ const requestedActionInput = input({
   comments: "Description of the action requested to solve the problem.",
   clean: toOptionalString,
 });
+
 const evaluatorGroupGuidInput = input({
   label: "Evaluator Group GUID",
   type: "string",
@@ -142,6 +155,7 @@ const evaluatorGroupGuidInput = input({
   example: "RQ4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const requestCodeInput = input({
   label: "Request Code",
   type: "string",
@@ -150,6 +164,7 @@ const requestCodeInput = input({
   comments: "Code associated with the request.",
   clean: toOptionalString,
 });
+
 const creatorParticipationInput = input({
   label: "Creator Participation",
   type: "boolean",
@@ -158,6 +173,7 @@ const creatorParticipationInput = input({
   comments: "When true, the creator participates in the request evaluation.",
   clean: util.types.toBool,
 });
+
 const supplierVisibilityInput = input({
   label: "Supplier Visibility",
   type: "boolean",
@@ -166,6 +182,7 @@ const supplierVisibilityInput = input({
   comments: "When true, the request is visible to suppliers.",
   clean: util.types.toBool,
 });
+
 const issueInput = input({
   label: "Issue Description",
   type: "text",
@@ -174,6 +191,7 @@ const issueInput = input({
   comments: "Description of the evaluation issue to create.",
   clean: util.types.toString,
 });
+
 const lifecycleStatusInput = input({
   label: "Lifecycle Status",
   type: "string",
@@ -183,6 +201,7 @@ const lifecycleStatusInput = input({
     "Filter by lifecycle status (e.g., UNSUBMITTED, SUBMITTED, PROMOTED, CLOSED, DEFERRED).",
   clean: toOptionalString,
 });
+
 export const addEvaluationIssueResponseInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -195,6 +214,7 @@ export const addEvaluationIssueResponseInputs = {
   },
   response: responseInput,
 };
+
 export const addItemToRequestInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -211,6 +231,7 @@ export const addItemToRequestInputs = {
     comments: "Optional notes about adding this item to the request.",
   },
 };
+
 export const attachFileToRequestInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -222,6 +243,7 @@ export const attachFileToRequestInputs = {
     comments: "GUID of the file to attach to the request.",
   },
 };
+
 export const changeEvaluationIssueStatusInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -251,6 +273,7 @@ export const changeEvaluationIssueStatusInputs = {
     comments: "Optional response when changing the issue status.",
   },
 };
+
 export const changeRequestStatusInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -283,6 +306,7 @@ export const changeRequestStatusInputs = {
   deferralCode: deferralCodeInput,
   deferDeadlineDateTime: deferDeadlineDateTimeInput,
 };
+
 export const createRequestInputs = {
   connection: connectionInput,
   title: {
@@ -309,6 +333,7 @@ export const createRequestInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const createRequestEvaluationIssueInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -321,6 +346,7 @@ export const createRequestEvaluationIssueInputs = {
     comments: "When true, the issue is visible to suppliers.",
   },
 };
+
 export const createRequestMarkupFileInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -329,6 +355,7 @@ export const createRequestMarkupFileInputs = {
   },
   markupGuid: markupGuidInput,
 };
+
 export const deleteRequestInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -336,6 +363,7 @@ export const deleteRequestInputs = {
     comments: "GUID of the request to delete.",
   },
 };
+
 export const deleteRequestMarkupFileInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -344,6 +372,7 @@ export const deleteRequestMarkupFileInputs = {
   },
   requestFileAssociationGuid: requestFileAssociationGuidInput,
 };
+
 export const listEvaluationIssueResponsesInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -355,6 +384,7 @@ export const listEvaluationIssueResponsesInputs = {
     comments: "GUID of the evaluation issue to get responses for.",
   },
 };
+
 export const getRequestByGuidInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -363,9 +393,11 @@ export const getRequestByGuidInputs = {
   },
   includeEmptyAdditionalAttributes: includeEmptyAdditionalAttributesInput,
 };
+
 export const listRequestAdministratorsInputs = {
   connection: connectionInput,
 };
+
 export const listRequestChangesInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -373,6 +405,7 @@ export const listRequestChangesInputs = {
     comments: "GUID of the request to get changes for.",
   },
 };
+
 export const listRequestEvaluationIssuesInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -380,9 +413,11 @@ export const listRequestEvaluationIssuesInputs = {
     comments: "GUID of the request to get evaluation issues for.",
   },
 };
+
 export const listRequestEvaluatorGroupsInputs = {
   connection: connectionInput,
 };
+
 export const listRequestFilesInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -390,6 +425,7 @@ export const listRequestFilesInputs = {
     comments: "GUID of the request to get files for.",
   },
 };
+
 export const listRequestItemAttributesInputs = {
   connection: connectionInput,
   includePossibleValues: includePossibleValuesInput,
@@ -401,6 +437,7 @@ export const listRequestItemAttributesInputs = {
     comments: "Whether to include deleted attributes.",
   },
 };
+
 export const listRequestItemsInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -408,6 +445,7 @@ export const listRequestItemsInputs = {
     comments: "GUID of the request to get items for.",
   },
 };
+
 export const listRequestMarkupFilesInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -415,9 +453,11 @@ export const listRequestMarkupFilesInputs = {
     comments: "GUID of the request to get markup files for.",
   },
 };
+
 export const listRequestNumberSequencePrefixesInputs = {
   connection: connectionInput,
 };
+
 export const listRequestNumberSequencesInputs = {
   connection: connectionInput,
   objectType: {
@@ -435,6 +475,7 @@ export const listRequestNumberSequencesInputs = {
     comments: "The object type for which to list number sequences.",
   },
 };
+
 export const listRequestQualityProcessesInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -442,6 +483,7 @@ export const listRequestQualityProcessesInputs = {
     comments: "GUID of the request to get quality processes for.",
   },
 };
+
 export const listRequestsInputs = {
   connection: connectionInput,
   number: {
@@ -484,9 +526,11 @@ export const listRequestsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listRequestStatusChangeAttributesInputs = {
   connection: connectionInput,
 };
+
 export const removeFileFromRequestInputs = {
   connection: connectionInput,
   requestGuid: {
@@ -498,6 +542,7 @@ export const removeFileFromRequestInputs = {
     comments: "GUID of the request-file association to remove.",
   },
 };
+
 export const updateRequestInputs = {
   connection: connectionInput,
   requestGuid: {

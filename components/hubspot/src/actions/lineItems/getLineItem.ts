@@ -5,6 +5,7 @@ import { getHubspotClient } from "../../client";
 import { getLineItemInputs } from "../../inputs";
 import { getProps } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const getLineItem = action({
   display: {
     label: "Get Line Item",
@@ -24,6 +25,7 @@ export const getLineItem = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     if (!lineItemId && !lineItemName) {
       throw new Error(
         "You must supply an Id or name to retrieve a line item record.",
@@ -34,34 +36,41 @@ export const getLineItem = action({
       timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       ["name"],
       additionalProperties || [],
     );
+
     const params = {
       ...parameterizedProperties,
       associations: associationsList,
       archived: archived,
     };
+
     if (lineItemName) {
       const result = await client.get(hubspotPaths.objects("line_items"), {
         params,
       });
       const { results: lineItems } = result.data;
+
       const filteredLineItems = (lineItems || []).filter((item) => {
         return item?.properties?.name === lineItemName;
       });
+
       if (filteredLineItems.length === 0) {
         throw new Error(`No line items found matching ${lineItemName}`);
       }
       return { data: filteredLineItems };
     }
+
     const { data } = await client.get(
       hubspotPaths.objects("line_items", `/${lineItemId}`),
       {
         params,
       },
     );
+
     return { data };
   },
   inputs: getLineItemInputs,

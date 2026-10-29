@@ -3,6 +3,7 @@ import { createClient } from "../../auth";
 import { listTicketsByUserExamplePayload } from "../../examplePayloads";
 import { listTicketsByUserInputs } from "../../inputs";
 import { listTicketsByUserOutputSchema } from "../../outputSchemas";
+
 export const listTicketsByUser = action({
   display: {
     label: "List Tickets Requested By User",
@@ -15,6 +16,7 @@ export const listTicketsByUser = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const result = await client.tickets.listByUserRequested(params.userId);
     return {
       data: result,
@@ -22,6 +24,7 @@ export const listTicketsByUser = action({
   },
   examplePerform: async () => listTicketsByUserExamplePayload,
   inputs: listTicketsByUserInputs,
+
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listTicketsByUserOutputSchema,

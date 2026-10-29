@@ -5,6 +5,7 @@ import { bulkUpsertRecordsInputs } from "../../inputs";
 import { bulkUpsertRecordsExamplePayload } from "../../examplePayloads";
 import { Readable } from "node:stream";
 import { executeSFAction } from "../../util";
+
 export const bulkUpsertRecords = action({
   display: {
     label: "Bulk Upsert Records",
@@ -38,9 +39,8 @@ export const bulkUpsertRecords = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => bulkUpsertRecordsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    bulkUpsertRecordsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: bulkLoadRecordsOutputSchema,

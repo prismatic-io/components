@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectEmployeeExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
+
 export const selectEmployee = dataSource({
   display: {
     label: "Select Employee",
@@ -19,6 +20,7 @@ export const selectEmployee = dataSource({
     }[] = [];
     let currentPage = 1;
     let totalPages = 1;
+
     do {
       const { data } = await client.get("/employees", {
         params: { page: currentPage },
@@ -31,6 +33,7 @@ export const selectEmployee = dataSource({
       }
       currentPage++;
     } while (currentPage <= totalPages);
+
     return {
       result: allEmployees
         .map<Element>((item) => ({

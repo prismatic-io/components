@@ -3,6 +3,7 @@ import { dataSource, util } from "@prismatic-io/spectral";
 import { createGeminiClient } from "../client";
 import { selectFileExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { selectFileInputs } from "../inputs/dataSources";
+
 export const selectFile = dataSource({
   display: {
     label: "Select File",
@@ -12,6 +13,7 @@ export const selectFile = dataSource({
   perform: async (context, { connection }) => {
     const client = createGeminiClient(connection);
     const listedFiles = await client.files.list();
+
     const files = [];
     let fileArray = listedFiles.page;
     while (true) {
@@ -23,12 +25,14 @@ export const selectFile = dataSource({
       }
       fileArray = await listedFiles.nextPage();
     }
+
     const result = files
       .map<Element>((file) => ({
         label: util.types.toString(file.displayName || file.name),
         key: util.types.toString(file.name),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
     return { result };
   },
   dataSourceType: "picklist",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getActivityFieldsInputs } from "../../inputs";
 import { getActivityFieldsExamplePayload } from "../../examplePayloads";
 import { getActivityFieldsOutputSchema } from "../../outputSchemas";
+
 export const getActivityFields = action({
   display: {
     label: "Get Activity Fields",

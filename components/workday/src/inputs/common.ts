@@ -6,12 +6,14 @@ import {
   cleanNumberInput,
   cleanStringInput,
 } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Workday connection to use.",
 });
+
 export const extraBody = input({
   label: "Extra Body",
   type: "code",
@@ -27,6 +29,7 @@ export const extraBody = input({
   placeholder: "Enter extra body fields as JSON",
   clean: (value: unknown) => cleanCodeInput(value, "Extra Body"),
 });
+
 export const workerId = input({
   label: "Worker ID",
   comments: "Unique identifier for the Workday worker record.",
@@ -37,6 +40,7 @@ export const workerId = input({
   dataSource: "selectWorker",
   clean: util.types.toString,
 });
+
 export const instanceDescriptor = input({
   label: "Instance Descriptor",
   comments: "Human-readable preview label for the referenced instance.",
@@ -46,6 +50,7 @@ export const instanceDescriptor = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const instanceId = input({
   label: "Instance ID",
   comments: "Identifies the Workday instance being referenced.",
@@ -55,6 +60,7 @@ export const instanceId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const instanceHref = input({
   label: "Instance Href",
   comments: "Direct API link pointing to the referenced instance.",
@@ -64,6 +70,7 @@ export const instanceHref = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const referenceId = input({
   label: "Reference ID",
   comments: "Reference ID used for lookups within Workday Web Services.",
@@ -73,6 +80,7 @@ export const referenceId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const companyId = input({
   label: "Company ID",
   comments: "Identifies the Workday company.",
@@ -82,6 +90,7 @@ export const companyId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const memo = input({
   label: "Memo",
   comments: "Free-text memo attached to the transaction.",
@@ -91,6 +100,7 @@ export const memo = input({
   placeholder: "Enter memo",
   clean: cleanStringInput,
 });
+
 export const extraParameters = input({
   label: "Extra Parameters",
   type: "string",
@@ -102,6 +112,7 @@ export const extraParameters = input({
     "Query parameters to be used in the request. This should be a list of key-value pairs.",
   clean: cleanKeyValueListInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -111,6 +122,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   comments:
@@ -138,10 +150,12 @@ export const pagination = structuredObjectInput({
     }),
   },
 });
+
 export const paginationQueryStringInputs = {
   fetchAll,
   pagination,
 };
+
 export const modelBooleanUpdateInput = input({
   label: "",
   type: "string",
@@ -153,6 +167,7 @@ export const modelBooleanUpdateInput = input({
   })),
   clean: cleanBooleanInput,
 });
+
 export const organizationTypeId = input({
   label: "Organization Type ID",
   comments:
@@ -163,6 +178,7 @@ export const organizationTypeId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const tenant = input({
   label: "Tenant",
   comments: "The Workday tenant name used in API paths.",
@@ -172,6 +188,7 @@ export const tenant = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const reportUrl = input({
   label: "Report URL",
   comments:

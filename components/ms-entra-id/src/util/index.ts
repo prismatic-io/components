@@ -13,6 +13,7 @@ import {
   TriggerBranches,
 } from "../constants";
 import type { Subscription } from "../types";
+
 export const validateConnection = (connection: Connection): void => {
   if (!CONNECTION_KEYS.includes(connection.key)) {
     throw new ConnectionError(
@@ -21,15 +22,20 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const toOptionalString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanStringInput = toOptionalString;
 export const cleanNumberInput = toOptionalNumber;
+
 const throwCodeInputError = (inputLabel: string) => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     try {
@@ -40,6 +46,7 @@ export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+
 export const cleanGroupTypes = (groupType: unknown) => {
   if (groupType && typeof groupType === "string") {
     const groupTypes = groupType.split(",");
@@ -47,32 +54,36 @@ export const cleanGroupTypes = (groupType: unknown) => {
   }
   return undefined;
 };
+
 export const toOptionalObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const cleanBooleanInput = (value: unknown): boolean | undefined =>
   value ? util.types.toBool(value) : undefined;
+
 export const getConsistencyLevelHeader = (
   eventualConsistencyLevelHeader: boolean,
 ) => (eventualConsistencyLevelHeader ? { ConsistencyLevel: "Eventual" } : {});
+
 export const getUpsertHeader = (useAsUpsert: boolean) =>
   useAsUpsert ? { Prefer: "create-if-missing" } : {};
+
 export const getMinimalHeader = (returnMinimal: boolean) => {
   return returnMinimal ? { Prefer: "return=minimal" } : {};
 };
+
 export const getOptionalBooleanModel = () =>
   ["True", "False"].map((choice) => ({
     label: choice,
     value: choice.toLowerCase(),
   }));
+
 export const getValues = async (
   getAllPaginatedResults: boolean,
   client: HttpClient,
   path: string,
   config: Record<string, unknown> & {
-    params?: {
-      $top?: string;
-      $select?: string;
-    };
+    params?: { $top?: string; $select?: string };
   },
 ) => {
   if (getAllPaginatedResults) {
@@ -80,8 +91,10 @@ export const getValues = async (
       delete config.params.$top;
     }
   }
+
   const { data: ogData } = await client.get(path, config);
   let nextLink: string | undefined = ogData?.["@odata.nextLink"];
+
   if (getAllPaginatedResults) {
     while (nextLink) {
       const { data } = await client.get(nextLink);
@@ -90,8 +103,10 @@ export const getValues = async (
     }
     delete ogData["@odata.nextLink"];
   }
+
   return { data: ogData };
 };
+
 export const triggerPerformFunction = async (
   _context: ActionContext<ConfigVarResultCollection>,
   payload: TriggerPayload,
@@ -108,11 +123,13 @@ export const triggerPerformFunction = async (
       },
       branch: TriggerBranches.URLValidation,
     });
+
   return Promise.resolve({
     payload,
     branch: TriggerBranches.Notification,
   });
 };
+
 export const cleanChangeType = (changeType: unknown): string => {
   if (changeType && Array.isArray(changeType)) {
     if (changeType.length === 0) {
@@ -135,8 +152,10 @@ export const addMinutesToDate = (
       const milliseconds = `${match.slice(1, 4)}0000`;
       return `.${milliseconds}Z`;
     });
+
   return formattedDate;
 };
+
 export const removeSubscriptions = async (
   client: HttpClient,
   instanceWebhooks: Set<string>,
@@ -144,14 +163,18 @@ export const removeSubscriptions = async (
   const {
     data: { value: subscriptions },
   } = await getValues(true, client, `/subscriptions`, {});
+
   const subscriptionsToRemove: string[] = (subscriptions as Subscription[])
     .filter(({ notificationUrl }) => instanceWebhooks.has(notificationUrl))
     .map(({ id }) => id);
+
   await Promise.all(
     subscriptionsToRemove.map((id) => client.delete(`/subscriptions/${id}`)),
   );
+
   return { subscriptionsRemoved: subscriptionsToRemove };
 };
+
 export const subscribeToResource = async (
   client: HttpClient,
   endpoint: string,
@@ -162,15 +185,18 @@ export const subscribeToResource = async (
   const {
     data: { value: subscriptions },
   } = await getValues(true, client, `/subscriptions`, {});
+
   const existingSubscription = (subscriptions as Subscription[]).find(
     ({ notificationUrl }) => notificationUrl === endpoint,
   );
+
   if (existingSubscription) {
     await client.patch(`/subscriptions/${existingSubscription.id}`, {
       expirationDateTime,
     });
     return;
   }
+
   const payload = {
     changeType,
     notificationUrl: endpoint,
@@ -179,6 +205,7 @@ export const subscribeToResource = async (
   };
   await client.post(`/subscriptions`, payload);
 };
+
 export const cleanHeaders = (headersList: unknown): Record<string, string> => {
   if (Array.isArray(headersList)) {
     return util.types.keyValPairListToObject(headersList);

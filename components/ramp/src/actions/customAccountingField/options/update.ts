@@ -8,6 +8,7 @@ import {
   value,
 } from "../../../inputs";
 import { updateCustomAccountingFieldOptionOutputSchema } from "../../../outputSchemas";
+
 export const updateCustomAccountingFieldOption = action({
   display: {
     label: "Update Custom Accounting Field Option",
@@ -35,6 +36,7 @@ export const updateCustomAccountingFieldOption = action({
     { connection, customAccountingFieldOptionId, reactivate, value },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.patch(
       `/accounting/field-options/${customAccountingFieldOptionId}`,
       {
@@ -46,12 +48,7 @@ export const updateCustomAccountingFieldOption = action({
       data,
     };
   },
-  examplePerform: async (
-    _context,
-    { value },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { value }): Promise<{ data: unknown }> => ({
     data: {
       ...updateCustomAccountingFieldOptionResponsev,
       value: value ?? updateCustomAccountingFieldOptionResponsev.value,

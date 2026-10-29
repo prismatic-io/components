@@ -4,6 +4,7 @@ import { deleteFileExamplePayload } from "../../examplePayloads";
 import { deleteFileInputs } from "../../inputs";
 import { deleteFileOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteFile = action({
   display: {
     label: "Delete File",
@@ -19,14 +20,18 @@ export const deleteFile = action({
   perform: async (context, { connection, fileGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting file from Arena", {
         fileGuid,
       });
+
       const { status } = await client.delete(`/files/${fileGuid}`);
+
       context.logger.info("File deleted successfully", {
         fileGuid,
         statusCode: status,
       });
+
       return {
         data: {
           success: true,

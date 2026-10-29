@@ -3,6 +3,7 @@ import {
   inputs as httpClientInputs,
   sendRawRequest,
 } from "@prismatic-io/spectral/dist/clients/http";
+
 import {
   cleanOdata,
   getCredentialsFromConnection,
@@ -10,7 +11,9 @@ import {
 } from "../../utils";
 import { BASE_URL } from "../../constants";
 import { connection } from "../../inputs/shared";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -20,6 +23,7 @@ export const rawRequest = action({
     validateConnection(connection);
     const { applicationId, accessKey } =
       getCredentialsFromConnection(connection);
+
     const { data, headers } = await sendRawRequest(
       BASE_URL,
       { ...rawRequestInputs, debugRequest: context.debug.enabled },
@@ -28,6 +32,7 @@ export const rawRequest = action({
         Authorization: `Bearer ${applicationId}`,
       },
     );
+
     return { data: { data: cleanOdata(data), headers } };
   },
   inputs: {

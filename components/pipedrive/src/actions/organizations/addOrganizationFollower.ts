@@ -4,6 +4,7 @@ import { addOrganizationFollowerInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { addOrganizationFollowerExamplePayload } from "../../examplePayloads";
 import { addOrganizationFollowerOutputSchema } from "../../outputSchemas";
+
 export const addOrganizationFollower = action({
   display: {
     label: "Add Organization Follower",

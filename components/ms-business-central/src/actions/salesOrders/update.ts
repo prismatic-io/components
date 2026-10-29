@@ -16,6 +16,7 @@ import {
 import { salesOrderId } from "../../inputs/salesOrders/updateSalesOrderInputs";
 import type { SalesOrder } from "../../interfaces";
 import { cleanStringInput } from "../../utils";
+
 export const updateSalesOrder = action({
   display: {
     label: "Update Sales Order",
@@ -26,6 +27,7 @@ export const updateSalesOrder = action({
     context,
     {
       additionalProperties,
+
       email,
       sellToAddressLine1,
       shipToAddressLine1,
@@ -55,6 +57,7 @@ export const updateSalesOrder = action({
       currencyCode,
       customerId,
     };
+
     const { data } = await client.patch<SalesOrder>(
       `/companies(${companyId})/salesOrders(${salesOrderId})`,
       payload,
@@ -64,6 +67,7 @@ export const updateSalesOrder = action({
         },
       },
     );
+
     return { data };
   },
   inputs: {

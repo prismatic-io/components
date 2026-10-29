@@ -11,10 +11,12 @@ import {
   disableSpecificNotificationEvents,
   enableNotificationChannel,
 } from "./notifications";
+
 export const mergeCRMPollingFields = (
   additionalFields: string[] = [],
 ): string[] =>
   Array.from(new Set([...DEFAULT_POLLING_CRM_FIELDS, ...additionalFields]));
+
 export const getCRMModifiedOrCreatedRecords = (
   records: CRMRecord[],
   lastUpdated: string,
@@ -36,6 +38,7 @@ export const getCRMModifiedOrCreatedRecords = (
     },
   );
 };
+
 export const polledChanges = (filteredRecords: {
   created: ZohoRecord[];
   updated: ZohoRecord[];
@@ -44,6 +47,7 @@ export const polledChanges = (filteredRecords: {
     filteredRecords.created.length === 0 && filteredRecords.updated.length === 0
   );
 };
+
 export const getBooksModifiedOrCreatedRecords = <T extends BookRecord>(
   records: T[],
   lastUpdated: string,
@@ -65,6 +69,7 @@ export const getBooksModifiedOrCreatedRecords = <T extends BookRecord>(
     },
   );
 };
+
 export const createNotificationTrigger = async (
   context: ActionContext,
   {
@@ -83,9 +88,11 @@ export const createNotificationTrigger = async (
     ClientType.CRM,
     context.debug.enabled,
   );
+
   const flowName = context.flow.name;
   const webhookUrl = context.webhookUrls[flowName];
   const finalChannelId = getChannelId(channelId);
+
   try {
     await enableNotificationChannel(crmClient, {
       channelId: finalChannelId,
@@ -98,6 +105,7 @@ export const createNotificationTrigger = async (
       notificationCondition,
     });
     context.crossFlowState.zohoChannelId = finalChannelId;
+
     context.logger.info(
       `Created notification channel ${finalChannelId} for flow ${flowName}`,
     );
@@ -108,6 +116,7 @@ export const createNotificationTrigger = async (
     throw error;
   }
 };
+
 export const deleteNotificationTrigger = async (
   context: ActionContext,
   {
@@ -122,11 +131,13 @@ export const deleteNotificationTrigger = async (
     ClientType.CRM,
     context.debug.enabled,
   );
+
   const flowName = context.flow.name;
   const storedChannelId = context.crossFlowState.zohoChannelId as
     | number
     | undefined;
   const notificationChannelId = storedChannelId ?? channelId;
+
   if (notificationChannelId == null || notificationChannelId === "") {
     context.logger.error(
       "No channel ID provided or stored in instance state; cannot disable notifications",
@@ -135,15 +146,18 @@ export const deleteNotificationTrigger = async (
       "No channel ID provided or stored in instance state; cannot disable notifications",
     );
   }
+
   context.logger.debug(
     `Deleting notification for channel ${notificationChannelId}`,
   );
+
   try {
     await disableSpecificNotificationEvents(crmClient, {
       channelId: notificationChannelId,
       events,
       notifyOnRelatedAction,
     });
+
     context.logger.info(
       `Disabled specific event notifications for channel ${notificationChannelId} in flow ${flowName}`,
     );
@@ -154,6 +168,7 @@ export const deleteNotificationTrigger = async (
     throw error;
   }
 };
+
 export const getChannelId = (
   channelId: number | string | undefined,
 ): number => {
@@ -163,5 +178,6 @@ export const getChannelId = (
       return parsed;
     }
   }
+
   return Math.floor(Date.now() / 1000);
 };

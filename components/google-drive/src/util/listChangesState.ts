@@ -1,10 +1,13 @@
 import { type ActionContext, util } from "@prismatic-io/spectral";
 import { LIST_CHANGES_STATE_KEY_PREFIX } from "../constants";
 import type { ResolvedListChangesPageToken } from "../types";
+
 export const getListChangesNewStateKey = (context: ActionContext): string =>
   `${LIST_CHANGES_STATE_KEY_PREFIX}:${context.flow.stableId}:${context.stepId}`;
+
 export const getListChangesLegacyStateKey = (context: ActionContext): string =>
   context.stepId;
+
 export const resolveListChangesPageToken = (
   context: ActionContext,
 ): ResolvedListChangesPageToken => {

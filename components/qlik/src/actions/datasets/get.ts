@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getDatasetExamplePayload } from "../../examplePayloads";
 import { connectionInput, dataSetId, projections } from "../../inputs";
+
 export const getDataset = action({
   display: {
     label: "Get Data Set",
@@ -15,6 +16,7 @@ export const getDataset = action({
         projections: projections || undefined,
       },
     });
+
     return {
       data,
     };

@@ -3,7 +3,9 @@ import { getShopifyGraphQlClient } from "../../../client";
 import { getOrderExamplePayload as examplePayload } from "../../../examplePayloads";
 import { getOrderInputs as inputs } from "../../../inputsGql";
 import { getOrderGqlOutputSchema } from "../../../outputSchemas";
+
 import getOrderQuery from "../queries/orders/GetOrder.gql";
+
 export const getOrderGql = action({
   display: {
     label: "Get Order",
@@ -17,9 +19,11 @@ export const getOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = await client.request(getOrderQuery, {
       id: orderId,
     });
+
     return {
       data,
     };

@@ -14,6 +14,7 @@ import {
   updatedAtGte,
   updatedAtLte,
 } from "./common";
+
 export const attachmentId = input({
   label: "Attachment ID",
   type: "string",
@@ -23,6 +24,7 @@ export const attachmentId = input({
   example: "4949394",
   clean: util.types.toString,
 });
+
 export const applicationId = {
   ...application_id,
   required: true,
@@ -31,6 +33,7 @@ export const applicationId = {
   dataSource: "applicationsV3",
   clean: util.types.toNumber,
 };
+
 export const applicationIds = input({
   label: "Application IDs",
   type: "string",
@@ -41,11 +44,13 @@ export const applicationIds = input({
   example: "1003961,1003962",
   clean: toOptionalString,
 });
+
 export const candidateIds = {
   ...candidate_ids,
   comments:
     "Comma-separated list of candidate IDs; returns only attachments whose application belongs to one of these candidates. Maximum 50 items.",
 };
+
 export const attachmentIds = input({
   label: "Attachment IDs",
   type: "string",
@@ -56,6 +61,7 @@ export const attachmentIds = input({
   example: "4949394,4949395",
   clean: toOptionalString,
 });
+
 export const attachmentType = input({
   label: "Attachment Type",
   type: "string",
@@ -65,6 +71,7 @@ export const attachmentType = input({
     "Classification of the document. Determines access defaults and display grouping in Greenhouse.",
   clean: util.types.toString,
 });
+
 export const attachmentTypeFilter = input({
   label: "Attachment Type",
   type: "string",
@@ -74,6 +81,7 @@ export const attachmentTypeFilter = input({
     "Return only attachments of this type. When omitted, all types are included.",
   clean: toOptionalString,
 });
+
 export const filename = input({
   label: "Filename",
   type: "string",
@@ -84,6 +92,7 @@ export const filename = input({
   example: "jane_doe_resume.pdf",
   clean: util.types.toString,
 });
+
 export const fileContent = input({
   label: "File Content (Base64)",
   type: "string",
@@ -94,6 +103,7 @@ export const fileContent = input({
   example: "JVBERi0xLjQKJ...",
   clean: toOptionalString,
 });
+
 export const fileUrl = input({
   label: "File URL",
   type: "string",
@@ -104,6 +114,7 @@ export const fileUrl = input({
   example: "https://cdn.example.com/resumes/jane_doe.pdf",
   clean: toOptionalString,
 });
+
 export const visibility = input({
   label: "Visibility",
   type: "string",
@@ -113,6 +124,7 @@ export const visibility = input({
     "Access level for the attachment within Greenhouse. When omitted, the default is inferred from the attachment type.",
   clean: toOptionalString,
 });
+
 const idFilters = structuredObjectInput({
   label: "ID Filters",
   required: false,
@@ -120,6 +132,7 @@ const idFilters = structuredObjectInput({
     "Optional filters that narrow results to attachments matching specific record IDs: attachment, application, and candidate IDs. Each accepts a comma-separated list of up to 50 IDs.",
   inputs: { attachmentIds, applicationIds, candidateIds },
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -127,6 +140,7 @@ const dateRangeFilters = structuredObjectInput({
     "Optional inclusive date-range filters. Narrow results by when attachments were created or last updated.",
   inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
 });
+
 export const listAttachmentsV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
@@ -134,6 +148,7 @@ export const listAttachmentsV3Inputs = {
   attachmentTypeFilter,
   dateRangeFilters,
 };
+
 export const createAttachmentV3Inputs = {
   connection: connectionInput,
   applicationId,
@@ -143,6 +158,7 @@ export const createAttachmentV3Inputs = {
   fileUrl,
   visibility,
 };
+
 export const deleteAttachmentV3Inputs = {
   connection: connectionInput,
   attachmentId,

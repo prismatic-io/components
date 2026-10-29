@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { WEBHOOK_ENCODE_AS_OPTIONS } from "../constants";
 import { toOptionalString } from "../utils";
 import { connection } from "./common";
+
 export const webhookName = input({
   label: "Webhook Name",
   type: "string",
@@ -12,6 +13,7 @@ export const webhookName = input({
   example: "my-integration-webhook",
   clean: util.types.toString,
 });
+
 export const webhookUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -21,6 +23,7 @@ export const webhookUrl = input({
   example: "https://hooks.example.com/datadog",
   clean: util.types.toString,
 });
+
 export const webhookCustomHeaders = input({
   label: "Custom Headers",
   type: "code",
@@ -32,6 +35,7 @@ export const webhookCustomHeaders = input({
   example: '{"Authorization": "Bearer my-token"}',
   clean: toOptionalString,
 });
+
 export const webhookEncodeAs = input({
   label: "Encode As",
   type: "string",
@@ -40,6 +44,7 @@ export const webhookEncodeAs = input({
   comments: 'Encoding type for the webhook payload. Defaults to "json".',
   clean: toOptionalString,
 });
+
 export const webhookPayload = input({
   label: "Payload",
   type: "code",
@@ -51,6 +56,7 @@ export const webhookPayload = input({
   example: '{"title": "$ALERT_TITLE", "status": "$ALERT_STATUS"}',
   clean: toOptionalString,
 });
+
 export const createWebhookInputs = {
   connection,
   webhookName,
@@ -59,6 +65,7 @@ export const createWebhookInputs = {
   webhookEncodeAs,
   webhookPayload,
 };
+
 export const updateWebhookInputs = {
   connection,
   webhookName,
@@ -67,10 +74,12 @@ export const updateWebhookInputs = {
   webhookEncodeAs,
   webhookPayload,
 };
+
 export const getWebhookInputs = {
   connection,
   webhookName,
 };
+
 export const deleteWebhookInputs = {
   connection,
   webhookName,

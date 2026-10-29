@@ -6,6 +6,7 @@ import type {
 } from "klaviyo-api";
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { KlaviyoRecord } from "../types";
+
 const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
   headers: {},
   queryParameters: {},
@@ -37,11 +38,9 @@ const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
   startedAt: "2024-01-15T00:00:00.000Z",
   globalDebug: false,
 };
+
 const pollProfileAndListChangesTriggerBody: {
-  data: {
-    created: KlaviyoRecord[];
-    updated: KlaviyoRecord[];
-  };
+  data: { created: KlaviyoRecord[]; updated: KlaviyoRecord[] };
 } = {
   data: {
     created: [
@@ -111,6 +110,7 @@ const pollProfileAndListChangesTriggerBody: {
     ],
   },
 };
+
 export const pollProfileAndListChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -119,9 +119,8 @@ export const pollProfileAndListChangesTriggerExamplePayload: {
     body: pollProfileAndListChangesTriggerBody,
   },
 };
-export const createProfileExamplePayload: {
-  data: PostProfileResponse;
-} = {
+
+export const createProfileExamplePayload: { data: PostProfileResponse } = {
   data: {
     data: {
       type: "profile",
@@ -236,6 +235,7 @@ export const createProfileExamplePayload: {
     },
   },
 };
+
 export const getProfileExamplePayload: {
   data: GetProfileResponsePluralConversationsCompoundDocument;
 } = {
@@ -384,6 +384,7 @@ export const getProfileExamplePayload: {
                     },
                     isMember: true,
                   },
+
                   {
                     type: "profile-metric",
                     metricId: "string",
@@ -479,6 +480,7 @@ export const getProfileExamplePayload: {
     ],
   },
 };
+
 export const listProfileExamplePayload: {
   data: GetProfileResponseCollection;
 } = {
@@ -591,16 +593,15 @@ export const listProfileExamplePayload: {
     },
   },
 };
-export const subscribeProfilesExamplePayload: {
-  data: string;
-} = {
+
+export const subscribeProfilesExamplePayload: { data: string } = {
   data: "Profiles subscribed successfully.",
 };
-export const unsubscribeProfilesExamplePayload: {
-  data: string;
-} = {
+
+export const unsubscribeProfilesExamplePayload: { data: string } = {
   data: "Profiles unsubscribed successfully.",
 };
+
 export const updateProfileExamplePayload: {
   data: PatchProfileResponse;
 } = {
@@ -718,6 +719,7 @@ export const updateProfileExamplePayload: {
     },
   },
 };
+
 export const selectProfileExamplePayload = {
   result: [
     { label: "jane.doe@example.com", key: "01HPROFILE0123456789ABCDEF" },

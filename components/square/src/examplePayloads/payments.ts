@@ -67,6 +67,7 @@ export const listPaymentsExamplePayload = {
     cursor: "5Ckfj4JXW8dJxBSXVYEIWkOcW9h8PBDyQf...",
   },
 };
+
 export const getPaymentExamplePayload = {
   data: {
     payment: {
@@ -131,7 +132,9 @@ export const getPaymentExamplePayload = {
     },
   },
 };
+
 export const createPaymentExamplePayload = getPaymentExamplePayload;
+
 export const updatePaymentExamplePayload = {
   data: {
     payment: {
@@ -160,6 +163,7 @@ export const updatePaymentExamplePayload = {
     },
   },
 };
+
 export const completePaymentExamplePayload = {
   data: {
     payment: {
@@ -186,6 +190,7 @@ export const completePaymentExamplePayload = {
     },
   },
 };
+
 export const cancelPaymentExamplePayload = {
   data: {
     payment: {
@@ -204,6 +209,7 @@ export const cancelPaymentExamplePayload = {
     },
   },
 };
+
 export const refundPaymentExamplePayload = {
   data: {
     refund: {
@@ -222,6 +228,7 @@ export const refundPaymentExamplePayload = {
     },
   },
 };
+
 export const getPaymentRefundExamplePayload = {
   data: {
     refund: {
@@ -250,6 +257,7 @@ export const getPaymentRefundExamplePayload = {
     },
   },
 };
+
 export const listPaymentRefundsExamplePayload = {
   data: {
     refunds: [

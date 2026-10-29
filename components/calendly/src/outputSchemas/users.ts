@@ -23,6 +23,7 @@ const userResource = {
     "updated_at",
   ],
 };
+
 export const getUserOutputSchema = {
   type: "object",
   properties: {
@@ -30,6 +31,7 @@ export const getUserOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const getCurrentUserOutputSchema = {
   type: "object",
   properties: {

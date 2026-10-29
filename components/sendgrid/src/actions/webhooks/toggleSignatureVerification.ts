@@ -4,6 +4,7 @@ import { toggleSignatureVerificationExamplePayload } from "../../examplePayloads
 import { toggleSignatureVerificationInputs } from "../../inputs";
 import { toggleSignatureVerificationOutputSchema } from "../../outputSchemas";
 import { toggleSignatureVerificationHelper } from "../../util";
+
 export const toggleSignatureVerification = action({
   display: {
     label: "Toggle Signature Verification",
@@ -14,10 +15,12 @@ export const toggleSignatureVerification = action({
   performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, webhookId, enabled }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const data = await toggleSignatureVerificationHelper(client, {
       webhookId,
       enabled,
     });
+
     return {
       data,
     };
@@ -26,9 +29,7 @@ export const toggleSignatureVerification = action({
     type: "actionOutput",
     schema: toggleSignatureVerificationOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: toggleSignatureVerificationExamplePayload.data,
   }),
   examplePayload: toggleSignatureVerificationExamplePayload,

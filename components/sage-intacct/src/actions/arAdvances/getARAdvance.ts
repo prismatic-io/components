@@ -5,6 +5,7 @@ import { getARAdvanceExamplePayload } from "../../examplePayloads";
 import { OBJECT_AR_ADVANCE } from "../../constants";
 import { getARAdvanceInputs } from "../../inputs";
 import { getARAdvanceOutputSchema } from "../../outputSchemas";
+
 export const getARAdvance = action({
   display: {
     label: "Get AR Advance",

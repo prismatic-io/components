@@ -3,6 +3,7 @@ import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { listConversationsExamplePayload } from "../../examplePayloads";
 import { listConversationsInputs } from "../../inputs";
 import { debugLogger, getChannels } from "../../util";
+
 export const listConversations = action({
   display: {
     label: "List Conversations",
@@ -22,6 +23,7 @@ export const listConversations = action({
     const client = await createOauthClient({
       slackConnection: params.connection,
     });
+
     const parameters = {
       cursor: cursor || undefined,
       exclude_archived: params.excludeArchived || undefined,
@@ -35,12 +37,12 @@ export const listConversations = action({
         params.channelTypes.includeMultiPartyImchannels || undefined,
       includeImChannels: params.channelTypes.includeImChannels || undefined,
     };
+
     const data = await getChannels(client, parameters, params.fetchAll);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listConversationsExamplePayload,
   }),
   examplePayload: {

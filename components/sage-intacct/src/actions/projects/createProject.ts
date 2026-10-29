@@ -11,6 +11,7 @@ import type { AbstractProject } from "@intacct/intacct-sdk/dist/Functions/Projec
 import { createProjectExamplePayload } from "../../examplePayloads";
 import { createProjectInputs } from "../../inputs";
 import { createProjectOutputSchema } from "../../outputSchemas";
+
 export const createProject = action({
   display: {
     label: "Create Project",
@@ -45,14 +46,18 @@ export const createProject = action({
       projectStatus: projectStatusInput,
       active: statusInput,
     } as unknown as AbstractProject);
+
     Object.assign(createProject, additionalFields);
+
     if (context.debug.enabled) {
       context.logger.debug(JSON.stringify(createProject, null, 2));
     }
     const result = await executeAction(connection, createProject);
     const { _data: projectsArray, _status } =
       convertResultToGenericObject(result);
+
     checkSuccess(_status, "Failed to create project");
+
     return {
       data: getObjectFromArray(projectsArray),
     };

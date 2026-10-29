@@ -4,10 +4,12 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { validateConnection } from "./util/general";
+
 export enum ClientType {
   CRM = "CRM",
   BOOKS = "BOOKS",
 }
+
 export const getBaseUrl = (
   connection: Connection,
   clientType: ClientType,
@@ -19,6 +21,7 @@ export const getBaseUrl = (
     ? `https://www.zohoapis.${tld}/crm/v8/`
     : `https://www.zohoapis.${tld}/books/v3/`;
 };
+
 export const requestHeaders = (
   connection: Connection,
 ): Record<string, string> => {
@@ -28,17 +31,20 @@ export const requestHeaders = (
     Accept: "application/json",
   };
 };
+
 export const createClient = (
   connection: Connection,
   clientType: ClientType,
   debugRequest: boolean,
 ): HttpClient => {
   validateConnection(connection);
+
   const client = createHttpClient({
     baseUrl: getBaseUrl(connection, clientType),
     headers: requestHeaders(connection),
     responseType: "json",
     debug: debugRequest,
   });
+
   return client;
 };

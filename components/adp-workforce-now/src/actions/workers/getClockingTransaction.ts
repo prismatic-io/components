@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getClockingTransactionExamplePayload } from "../../examplePayloads";
 import { getClockingTransactionInputs } from "../../inputs";
 import { getClockingTransactionOutputSchema } from "../../outputSchemas";
+
 export const getClockingTransaction = action({
   display: {
     label: "Get Clocking Transaction",

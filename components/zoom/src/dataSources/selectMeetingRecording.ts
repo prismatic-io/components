@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { selectMeetingRecordingInputs } from "../inputs";
 import { createZoomClient } from "../client";
 import type { MeetingRecording } from "../interfaces/MeetingRecording";
+
 export const selectMeetingRecording = dataSource({
   display: {
     label: "Select Meeting Recording",
@@ -16,6 +17,7 @@ export const selectMeetingRecording = dataSource({
     );
     const recordingFiles = data.recording_files || [];
     const audioFiles = data.participant_audio_files || [];
+
     const resultRecordingFiles = recordingFiles.map(
       ({ id, download_url }, index): Element => {
         return {
@@ -24,6 +26,7 @@ export const selectMeetingRecording = dataSource({
         };
       },
     );
+
     const resultAudioFiles = audioFiles.map(
       ({ id, download_url, file_name }): Element => {
         return {
@@ -32,6 +35,7 @@ export const selectMeetingRecording = dataSource({
         };
       },
     );
+
     return {
       result: [...resultRecordingFiles, ...resultAudioFiles],
     };

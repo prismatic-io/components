@@ -5,6 +5,7 @@ import {
   returnAddressInput,
   warehouseNameInput,
 } from "./common";
+
 export const createWarehouseInputs = {
   connectionInput,
   warehouseName: warehouseNameInput,

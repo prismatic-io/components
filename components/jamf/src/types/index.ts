@@ -2,6 +2,7 @@ export interface PagedResponse<T> {
   results: T[];
   totalCount: number;
 }
+
 export interface RichPagedResponse<T> extends PagedResponse<T> {
   page: number;
   pageSize: number;
@@ -9,10 +10,12 @@ export interface RichPagedResponse<T> extends PagedResponse<T> {
   hasNext: boolean;
   hasPrevious: boolean;
 }
+
 export interface JamfCreateResponse {
   id: string;
   href: string;
 }
+
 export interface ComputerInventory {
   id: string;
   udid: string | null;
@@ -23,9 +26,7 @@ export interface ComputerInventory {
     platform: string;
     assetTag: string | null;
     reportDate: string | null;
-    remoteManagement: {
-      managed: boolean;
-    };
+    remoteManagement: { managed: boolean };
     supervised: boolean;
   };
   hardware?: {
@@ -54,11 +55,14 @@ export interface ComputerInventory {
     firewall: boolean | null;
   };
 }
+
 export type NewComputersChanges = ComputerInventory[];
+
 export interface NewComputerChange {
   changeType: "created";
   record: ComputerInventory;
 }
+
 export interface MobileDevice {
   id: string;
   managementId: string | null;
@@ -73,6 +77,7 @@ export interface MobileDevice {
   modelIdentifier: string | null;
   softwareUpdateDeviceId: string | null;
 }
+
 export interface MobileDeviceDetail extends MobileDevice {
   osVersion: string | null;
   osType: string | null;
@@ -80,6 +85,7 @@ export interface MobileDeviceDetail extends MobileDevice {
   email: string | null;
   department: string | null;
 }
+
 export interface MobileDeviceInventory {
   mobileDeviceId: string;
   deviceType: string | null;
@@ -167,6 +173,7 @@ export interface MobileDeviceInventory {
     lostModeEnabled: boolean | null;
   } | null;
 }
+
 export interface JamfUser {
   id: string;
   username: string;
@@ -175,21 +182,21 @@ export interface JamfUser {
   position: string | null;
   enableCustomPhotoUrl: boolean;
   customPhotoUrl: string | null;
-  ldapServer: {
-    id: string;
-    name: string | null;
-  } | null;
+  ldapServer: { id: string; name: string | null } | null;
   extensionAttributes: unknown[];
 }
+
 export interface Department {
   id: string;
   name: string;
 }
+
 export interface Category {
   id: string;
   name: string;
   priority: number;
 }
+
 export interface Script {
   id: string;
   name: string;
@@ -209,6 +216,7 @@ export interface Script {
   osRequirements: string | null;
   scriptContents: string | null;
 }
+
 export interface Package {
   id: string;
   packageName: string;
@@ -247,6 +255,7 @@ export interface Package {
   format: string;
   sha3512: string;
 }
+
 export interface Webhook {
   id: number;
   name: string;
@@ -265,49 +274,59 @@ export interface Webhook {
   display_fields?: unknown[];
   smart_group_id?: number;
 }
+
 export interface WebhookListItem {
   id: number;
   name: string;
 }
+
 export interface WebhookMutationResult {
   id: number | null;
 }
+
 export interface WebhookResponse {
   webhook: Webhook;
 }
+
 export interface WebhooksListResponse {
   webhooks: WebhookListItem[];
 }
+
 export interface ManagedWebhookState {
   webhookIds: number[];
   webhookAuthValue: string;
 }
+
 export interface ComputerPollCursor extends Record<string, unknown> {
   watermark: string;
   boundaryIds: string[];
-  tieGroup?: {
-    lastKey: string | null;
-  };
+  tieGroup?: { lastKey: string | null };
 }
+
 export interface ComputerPollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   boundaryIds?: string[];
   cursor?: ComputerPollCursor;
 }
+
 export interface ComputerPageQuery {
   filter: string;
   sort: string;
   pageSize: number;
 }
+
 export type FetchComputerPage = (
   query: ComputerPageQuery,
 ) => Promise<ComputerInventory[]>;
+
 export interface ComputerDrainRound {
   delivered: ComputerInventory[];
   cursor: ComputerPollCursor;
   drained: boolean;
 }
+
 export interface MobileDevicePollingState {
   lastMaxId?: number;
 }
+
 export type AttrSelector<T> = keyof T | ((item: T) => unknown);

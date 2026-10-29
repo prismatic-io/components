@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPipelineMovementStatisticsInputs } from "../../inputs";
 import { getPipelineMovementStatisticsExamplePayload } from "../../examplePayloads";
 import { getPipelineMovementStatisticsOutputSchema } from "../../outputSchemas";
+
 export const getPipelineMovementStatistics = action({
   display: {
     label: "Get Pipeline Movement Statistics",

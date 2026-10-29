@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ARCHIVE_CONTACT_EXAMPLE_PAYLOAD } from "../../examplePayloads/contacts";
 import { connectionInput, idInput } from "../../inputs";
+
 export const archiveContact = action({
   display: {
     label: "Archive Contact",

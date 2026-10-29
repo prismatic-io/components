@@ -6,6 +6,7 @@ import type { Person } from "../../types/persons";
 import { getPersonsExamplePayload } from "../../examplePayloads";
 import { WebhookVersion } from "../../constants";
 import { getPersonsOutputSchema } from "../../outputSchemas";
+
 export const getPersons = action({
   display: {
     label: "Get Persons",
@@ -28,6 +29,7 @@ export const getPersons = action({
       context.debug.enabled,
       WebhookVersion.V2,
     );
+
     const data = await paginateRecordsWithCursor<Person>(
       client,
       "persons",

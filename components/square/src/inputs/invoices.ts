@@ -6,6 +6,7 @@ import {
   pagination,
   squareConnection,
 } from "./common";
+
 const invoiceQuery = input({
   label: "Query",
   type: "code",
@@ -34,6 +35,7 @@ const invoiceQuery = input({
     return JSON.parse(util.types.toString(queryInput));
   },
 });
+
 const invoiceId = input({
   label: "Invoice ID",
   type: "string",
@@ -44,6 +46,7 @@ const invoiceId = input({
   dataSource: "selectInvoice",
   clean: util.types.toString,
 });
+
 const updateInvoiceInput = input({
   label: "Update Invoice",
   type: "code",
@@ -77,35 +80,42 @@ const updateInvoiceInput = input({
     return JSON.parse(util.types.toString(updateInvoiceInput));
   },
 });
+
 export const listInvoicesInputs = {
   squareConnection,
   locationId,
   fetchAll,
   pagination,
 };
+
 export const searchInvoicesInputs = {
   squareConnection,
   invoiceQuery,
   pagination,
 };
+
 export const getInvoiceInputs = {
   squareConnection,
   invoiceId,
 };
+
 export const updateInvoiceInputs = {
   squareConnection,
   invoiceId,
   updateInvoiceInput,
 };
+
 export const publishInvoiceInputs = {
   squareConnection,
   invoiceId,
   idempotencyKey,
 };
+
 export const cancelInvoiceInputs = {
   squareConnection,
   invoiceId,
 };
+
 export const deleteInvoiceInputs = {
   squareConnection,
   invoiceId,

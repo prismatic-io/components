@@ -1,4 +1,5 @@
 import { connection, templateConnectionInputs } from "@prismatic-io/spectral";
+
 export const apiTokenConnection = connection({
   key: "apiToken",
   display: {

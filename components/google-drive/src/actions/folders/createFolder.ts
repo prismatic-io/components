@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { FOLDER_MIME_TYPE } from "../../constants";
 import { createFolderInputs } from "../../inputs";
 import { createFolderExamplePayload } from "../../examplePayloads";
+
 export const createFolder = action({
   display: {
     label: "Create Folder",
@@ -11,6 +12,7 @@ export const createFolder = action({
   performSafety: "notAllowed",
   perform: async (_context, { connection, folderName, parentFolderId }) => {
     const drive = createClient(connection);
+
     const { data } = await drive.files.create({
       requestBody: {
         name: folderName,
@@ -19,17 +21,17 @@ export const createFolder = action({
       },
       supportsAllDrives: true,
     });
+
     return {
       data,
     };
   },
   inputs: createFolderInputs,
+
   examplePerform: async (
     _context,
     { folderName },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createFolderExamplePayload.data,
       name: folderName,
@@ -37,4 +39,5 @@ export const createFolder = action({
   }),
   examplePayload: createFolderExamplePayload,
 });
+
 export default createFolder;

@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { createChatCompletionExamplePayload } from "../examplePayloads";
 import { createChatCompletionInputs } from "../inputs";
 import type { IChatCompletionParams } from "../interfaces";
+
 export const createChatCompletion = action({
   display: {
     label: "Create Chat Completion",
@@ -23,6 +24,7 @@ export const createChatCompletion = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const messagesArray = messages as IChatCompletionParams["messages"];
+
     const data = await client.createChatCompletion({
       model,
       messages: messagesArray,
@@ -31,6 +33,7 @@ export const createChatCompletion = action({
       stream,
       ...additionalFields,
     });
+
     return { data };
   },
   examplePayload: createChatCompletionExamplePayload,

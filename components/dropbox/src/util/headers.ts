@@ -1,5 +1,6 @@
 import { util } from "@prismatic-io/spectral";
 import type { RawRequestHeaderInputs } from "../types";
+
 export const getHeadersRawRequest = (
   dropboxToken: string,
   httpClientInputs: RawRequestHeaderInputs,
@@ -22,6 +23,7 @@ export const getHeadersRawRequest = (
   }
   return headers;
 };
+
 export const getUserTypeHeader = (
   userType: "admin" | "user",
   teamMemberId: string,

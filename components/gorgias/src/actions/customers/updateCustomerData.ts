@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { MESSAGES } from "../../constants";
 import { successEmptyExamplePayload as examplePayload } from "../../examplePayloads/shared";
 import { updateCustomerDataInputs as inputs } from "../../inputs/customers";
+
 export const updateCustomerData = action({
   display: {
     label: "Update Customer Data",
@@ -13,6 +14,7 @@ export const updateCustomerData = action({
       connection,
       debug: context.debug.enabled,
     }).put(`/customers/${id}/data`, body);
+
     return {
       data: { message: MESSAGES.SUCCESS },
     };

@@ -8,6 +8,7 @@ import {
   fileName,
 } from "../../inputs";
 import { convertXMLToJSON } from "../../util";
+
 export const createMultipartUpload = action({
   display: {
     label: "Create Multipart Upload",
@@ -35,6 +36,7 @@ export const createMultipartUpload = action({
         "Content-Type": contentType,
       },
     });
+
     return {
       data: convertXMLToJSON(data),
     };

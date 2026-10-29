@@ -10,6 +10,7 @@ import type {
   RequestCategoryResultRep,
 } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const listCategories = action({
   display: {
     label: "List Categories",
@@ -28,6 +29,7 @@ export const listCategories = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         path,
         includeDeleted,
@@ -35,16 +37,20 @@ export const listCategories = action({
         user,
         action,
       };
+
       context.logger.info(`Fetching ${objectType} categories from Arena`, {
         objectType,
         queryParamNames: Object.keys(queryParams),
       });
+
       const { data } = await client.get(`/settings/${objectType}/categories`, {
         params: queryParams,
       });
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} ${objectType} categories`,
       );
+
       let responseData: CategoryResponse;
       switch (objectType) {
         case "changes":
@@ -59,6 +65,7 @@ export const listCategories = action({
           responseData = data as CategoryFullResultRep;
           break;
       }
+
       return { data: responseData };
     } catch (error: unknown) {
       handleArenaError(

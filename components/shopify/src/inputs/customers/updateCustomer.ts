@@ -11,6 +11,7 @@ import {
   updateLastName,
   verifiedEmail,
 } from "./common";
+
 export const updateCustomerInputs = {
   shopifyConnection: connectionInput,
   customerId,

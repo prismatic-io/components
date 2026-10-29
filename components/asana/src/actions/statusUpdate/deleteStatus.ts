@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { deleteStatusExamplePayload } from "../../examplePayloads";
 import { deleteStatusInputs } from "../../inputs";
 import { emptyResponseOutputSchema } from "../../outputSchemas";
+
 export const deleteStatus = action({
   display: {
     label: "Delete Status Update",

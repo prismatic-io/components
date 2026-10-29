@@ -4,6 +4,7 @@ import { selectDepartmentExamplePayload } from "../examplePayloads";
 import { selectDepartmentInputs } from "../inputs";
 import type { Department } from "../types";
 import { mapToSortedElements, paginateResults } from "../util";
+
 export const selectDepartment = dataSource({
   display: {
     label: "Select Department",

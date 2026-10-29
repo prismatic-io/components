@@ -1,4 +1,5 @@
 import { companySchema, idOnlySchema, successStringSchema } from "./shared";
+
 export const listCompaniesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -9,5 +10,7 @@ export const listCompaniesOutputSchema = {
   required: ["companies", "hasNextPage", "cursor"],
   additionalProperties: true,
 };
+
 export const updateCompanyOutputSchema = idOnlySchema;
+
 export const deleteCompanyOutputSchema = successStringSchema;

@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+
 export const applyTaxAfterDiscount = input({
   label: "Apply Tax After Discount",
   type: "boolean",
@@ -8,6 +9,7 @@ export const applyTaxAfterDiscount = input({
   comments: "When true, applies tax after discount is calculated.",
   clean: util.types.toBool,
 });
+
 export const createTime = input({
   label: "Create Time",
   placeholder: "Enter creation time",

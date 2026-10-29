@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateAdSetResponse } from "../../examplePayloads";
 import { updateAdSetInputs } from "../../inputs";
+
 export const updateAdSet = action({
   display: {
     label: "Update Ad Set",
@@ -21,6 +22,7 @@ export const updateAdSet = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await client.post(
       `/${adId}`,
       {},
@@ -34,6 +36,7 @@ export const updateAdSet = action({
         },
       },
     );
+
     return {
       data,
     };

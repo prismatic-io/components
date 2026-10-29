@@ -4,6 +4,7 @@ import { listFulfillmentServicesExamplePayload as examplePayload } from "../../.
 import { listFulfillmentServicesInputs as inputs } from "../../../inputsGql";
 import { listFulfillmentServicesGqlOutputSchema } from "../../../outputSchemas";
 import listFulfillmentServicesQuery from "../queries/fulfillmentServices/ListFulfillmentServices.gql";
+
 export const listFulfillmentServicesGql = action({
   display: {
     label: "List Fulfillment Services",
@@ -22,9 +23,11 @@ export const listFulfillmentServicesGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      shop: Record<string, unknown>;
-    } = await client.request(listFulfillmentServicesQuery);
+
+    const data: { shop: Record<string, unknown> } = await client.request(
+      listFulfillmentServicesQuery,
+    );
+
     return {
       data: data.shop,
     };

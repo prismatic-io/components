@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { editJobV3ExamplePayload } from "../../../examplePayloads/v3/jobs";
 import { editJobV3Inputs } from "../../../inputs/v3/jobs";
 import { generatePayload } from "../../../util";
+
 export const editJobV3 = action({
   display: {
     label: "Edit Job",
@@ -28,6 +29,7 @@ export const editJobV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       name,
       notes,
@@ -41,6 +43,7 @@ export const editJobV3 = action({
       external_department_id: externalDepartmentId,
       custom_fields: customFields,
     });
+
     const { data } = await client.patch(`/jobs/${jobId}`, body);
     return { data };
   },

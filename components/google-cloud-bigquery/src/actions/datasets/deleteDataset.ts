@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteDatasetInputs } from "../../inputs";
+
 export const deleteDataset = action({
   display: {
     description:

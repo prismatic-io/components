@@ -7,6 +7,7 @@ import {
   pollChangesBatchConfig,
   pollChangesResolver,
 } from "./pollChanges";
+
 export const pollChangesCustomObjectsTrigger = pollingTrigger({
   display: {
     label: "New and Updated Custom Records",

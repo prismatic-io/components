@@ -1,10 +1,13 @@
 import type { ActionContext } from "@prismatic-io/spectral";
+
 import { getBase64FromUrl, deactivateAndDeleteFlowResources } from "../../util";
+
 import type {
   FlowTriggerInstanceState,
   OnInstanceDeleteFlowFunctionParams,
 } from "../../types";
 import { createSalesforceClient } from "../../client";
+
 export const onInstanceDeleteFlowFunction = async (
   context: ActionContext,
   { version, connection }: OnInstanceDeleteFlowFunctionParams,
@@ -17,10 +20,12 @@ export const onInstanceDeleteFlowFunction = async (
     );
     const flowState: FlowTriggerInstanceState =
       context?.crossFlowState?.flowTriggerState?.[encodedId];
+
     if (flowState?.flowFullName && flowState?.outboundMessageFullName) {
       const client = await createSalesforceClient(connection, version);
       const flowFullName = flowState.flowFullName;
       const outboundMessageFullName = flowState.outboundMessageFullName;
+
       await deactivateAndDeleteFlowResources(
         client,
         context.logger,
@@ -29,6 +34,7 @@ export const onInstanceDeleteFlowFunction = async (
         context.debug.enabled,
       );
     }
+
     delete context?.crossFlowState?.flowTriggerState?.[encodedId];
     context.logger.info(
       `Flow trigger for ${integrationFlowName} deleted successfully`,

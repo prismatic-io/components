@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { createMailFolderSubscriptionExamplePayload } from "../../examplePayloads";
 import { createMailFolderSubscriptionInputs } from "../../inputs";
 import { fetchAllData } from "../../util";
+
 export const createMailFolderSubscription = action({
   display: {
     label: "Create Mail Folder Subscription",
@@ -15,6 +16,7 @@ export const createMailFolderSubscription = action({
     { notificationUrl, expirationDateTime, connection, changeType },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const subscriptionsData = await fetchAllData<Subscription>(
       client,
       "/subscriptions",
@@ -25,12 +27,14 @@ export const createMailFolderSubscription = action({
       ({ notificationUrl: notificationUrlFromMicrosoft }) =>
         notificationUrl === notificationUrlFromMicrosoft,
     );
+
     if (existingSubscription) {
       context.logger.warn(
         "A webhook with the specified Notification URL already exists. Skipping webhook creation and returning existing webhook.",
       );
       return { data: existingSubscription };
     }
+
     context.logger.info(
       "A subscription for Mail Folders does not exist, creating one.",
     );

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const attachmentId = input({
   label: "Attachment ID",
   comments: "The ID of the attachment to update.",
@@ -8,6 +9,7 @@ export const attachmentId = input({
   example: "25b8238e-f034-ef11-840b-002248241214",
   clean: util.types.toString,
 });
+
 export const attachmentContent = input({
   label: "Attachment Content",
   comments: "The content of the attachment.",

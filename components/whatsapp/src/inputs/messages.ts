@@ -15,6 +15,7 @@ import {
   TEMPLATE_JSON_EXAMPLE,
   TEXT_JSON_EXAMPLE,
 } from "../constants";
+
 const phoneNumberId = input({
   label: "Phone Number ID",
   type: "string",
@@ -25,6 +26,7 @@ const phoneNumberId = input({
   example: "912345678912345",
   clean: util.types.toString,
 });
+
 const audio = input({
   label: "Audio",
   type: "code",
@@ -34,6 +36,7 @@ const audio = input({
   example: AUDIO_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Audio"),
 });
+
 const bizOpaqueCallbackData = input({
   label: "Biz Opaque Callback Data",
   type: "string",
@@ -43,6 +46,7 @@ const bizOpaqueCallbackData = input({
   example: "Some arbitrary string",
   clean: cleanStringInput,
 });
+
 const contacts = input({
   label: "Contacts",
   type: "code",
@@ -52,6 +56,7 @@ const contacts = input({
   example: CONTACTS_JSON_EXAMPLE,
   clean: (value: unknown) => cleanArrayCodeInput(value, "Contacts"),
 });
+
 const contextInput = input({
   label: "Context",
   type: "code",
@@ -62,6 +67,7 @@ const contextInput = input({
   example: CONTEXT_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Context"),
 });
+
 const document = input({
   label: "Document",
   type: "code",
@@ -72,6 +78,7 @@ const document = input({
   example: DOCUMENT_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Document"),
 });
+
 const image = input({
   label: "Image",
   type: "code",
@@ -81,6 +88,7 @@ const image = input({
   example: IMAGE_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Image"),
 });
+
 const interactive = input({
   label: "Interactive",
   type: "code",
@@ -90,6 +98,7 @@ const interactive = input({
   example: INTERACTIVE_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Interactive"),
 });
+
 const location = input({
   label: "Location",
   type: "code",
@@ -99,6 +108,7 @@ const location = input({
   example: LOCATION_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Location"),
 });
+
 const reaction = input({
   label: "Reaction",
   type: "code",
@@ -108,6 +118,7 @@ const reaction = input({
   example: REACTION_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Reaction"),
 });
+
 const previewUrl = input({
   label: "Preview URL",
   type: "boolean",
@@ -117,6 +128,7 @@ const previewUrl = input({
     "When true, enables URL previews in text messages. Required when type is text.",
   clean: util.types.toBool,
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -126,6 +138,7 @@ const status = input({
   example: "read",
   clean: cleanStringInput,
 });
+
 const sticker = input({
   label: "Sticker",
   type: "code",
@@ -136,6 +149,7 @@ const sticker = input({
   example: STICKER_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Sticker"),
 });
+
 const template = input({
   label: "Template",
   type: "code",
@@ -145,6 +159,7 @@ const template = input({
   example: TEMPLATE_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Template"),
 });
+
 const text = input({
   label: "Text",
   type: "code",
@@ -154,6 +169,7 @@ const text = input({
   example: TEXT_JSON_EXAMPLE,
   clean: (value: unknown) => cleanCodeInput(value, "Text"),
 });
+
 const to = input({
   label: "To",
   type: "string",
@@ -164,6 +180,7 @@ const to = input({
   example: "12124567890",
   clean: util.types.toString,
 });
+
 const type = input({
   label: "Type",
   type: "string",
@@ -175,6 +192,7 @@ const type = input({
   model: MESSAGE_TYPES_MODEL,
   clean: cleanStringInput,
 });
+
 export const sendMessageInputs = {
   connection,
   phoneNumberId,

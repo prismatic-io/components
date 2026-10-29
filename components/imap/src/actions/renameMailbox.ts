@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { renameMailboxExamplePayload } from "../examplePayloads";
 import { renameMailboxInputs } from "../inputs/actions";
+
 export const renameMailbox = action({
   display: {
     label: "Rename Mailbox",

@@ -4,6 +4,7 @@ import { listQualityProcessTemplateAttributeGroupsExamplePayload } from "../../e
 import { listQualityProcessTemplateAttributeGroupsInputs } from "../../inputs";
 import { listQualityProcessTemplateAttributeGroupsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessTemplateAttributeGroups = action({
   display: {
     label: "List Quality Process Template Attribute Groups",
@@ -19,9 +20,11 @@ export const listQualityProcessTemplateAttributeGroups = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/settings/qualityprocesses/templates/${params.templateGuid}/attributegroups`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

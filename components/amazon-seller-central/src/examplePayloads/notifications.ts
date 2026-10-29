@@ -24,6 +24,7 @@ export const listDestinationsExamplePayload = {
     ],
   },
 };
+
 export const getDestinationExamplePayload = {
   data: {
     name: "Production SQS Queue",
@@ -35,6 +36,7 @@ export const getDestinationExamplePayload = {
     },
   },
 };
+
 export const createDestinationExamplePayload = {
   data: {
     name: "Production SQS Queue",
@@ -46,9 +48,11 @@ export const createDestinationExamplePayload = {
     },
   },
 };
+
 export const deleteDestinationExamplePayload = {
   data: {},
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     subscriptions: [
@@ -88,6 +92,7 @@ export const listSubscriptionsExamplePayload = {
     ],
   },
 };
+
 export const getSubscriptionByIdExamplePayload = {
   data: {
     subscriptionId: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
@@ -101,6 +106,7 @@ export const getSubscriptionByIdExamplePayload = {
     },
   },
 };
+
 export const createSubscriptionExamplePayload = {
   data: {
     subscriptionId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
@@ -108,9 +114,11 @@ export const createSubscriptionExamplePayload = {
     destinationId: "d0e9e693-cd56-4d1f-b63a-418f2d169d4a",
   },
 };
+
 export const deleteSubscriptionExamplePayload = {
   data: {},
 };
+
 export const deleteAllSubscriptionsExamplePayload = {
   data: {},
 };

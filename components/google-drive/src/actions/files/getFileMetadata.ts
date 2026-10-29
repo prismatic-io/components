@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getFileMetadataInputs } from "../../inputs";
 import { getFileMetadataOutputSchema } from "../../outputSchemas";
 import { getFileMetadataExamplePayload } from "../../examplePayloads";
+
 export const getFileMetadata = action({
   display: {
     label: "Get File Metadata",
@@ -11,11 +12,13 @@ export const getFileMetadata = action({
   performSafety: "safe",
   perform: async (_context, { connection, fileId, metadataFields }) => {
     const drive = createClient(connection);
+
     const { data } = await drive.files.get({
       fileId,
       fields: metadataFields,
       supportsAllDrives: true,
     });
+
     return {
       data,
     };
@@ -27,4 +30,5 @@ export const getFileMetadata = action({
   }),
   examplePayload: getFileMetadataExamplePayload,
 });
+
 export default getFileMetadata;

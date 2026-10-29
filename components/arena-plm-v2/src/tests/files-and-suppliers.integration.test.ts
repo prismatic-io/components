@@ -6,7 +6,9 @@ import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage, getRecordString } from "../util";
 import { guidOf, resultData, resultList } from "./resultHelpers";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
@@ -14,8 +16,10 @@ const testConnection = createConnection(arenaUsernamePassword, {
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 describe("Files Domain", () => {
   let testFileGuid: string | undefined;
+
   beforeAll(async () => {
     const result = await harness.action("listFiles", {
       connection: testConnection,
@@ -28,6 +32,7 @@ describe("Files Domain", () => {
       );
     }
   });
+
   it("listFiles - returns a paginated result with a results array", async () => {
     const result = await harness.action("listFiles", {
       connection: testConnection,
@@ -36,6 +41,7 @@ describe("Files Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("getFileByGuid - returns file detail for a known file", async () => {
     if (!testFileGuid) {
       console.warn("Skipping getFileByGuid: no file found in workspace");
@@ -48,6 +54,7 @@ describe("Files Domain", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(testFileGuid);
   });
+
   it("listFileEditions - returns edition list for a known file", async () => {
     if (!testFileGuid) {
       console.warn("Skipping listFileEditions: no file found in workspace");
@@ -59,6 +66,7 @@ describe("Files Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("listFileCorrections - returns corrections list for a known file", async () => {
     if (!testFileGuid) {
       console.warn("Skipping listFileCorrections: no file found in workspace");
@@ -70,6 +78,7 @@ describe("Files Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("listFileMarkups - returns markups list for a known file", async () => {
     if (!testFileGuid) {
       console.warn("Skipping listFileMarkups: no file found in workspace");
@@ -81,6 +90,7 @@ describe("Files Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("downloadFileContent - returns base64-encoded content for a known file", async () => {
     if (!testFileGuid) {
       console.warn("Skipping downloadFileContent: no file found in workspace");
@@ -92,6 +102,7 @@ describe("Files Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("getFileWatermarkContent - returns watermarked content for a known file", async () => {
     if (!testFileGuid) {
       console.warn(
@@ -119,26 +130,37 @@ describe("Files Domain", () => {
       throw err;
     }
   });
+
   it.skip("createFileWithContent - multipart upload, skipped in integration tests", async () => {});
+
   it.skip("createFileEdition - multipart upload, skipped in integration tests", async () => {});
+
   it.skip("updateFileContent - multipart upload, skipped in integration tests", async () => {});
+
   it.skip("changeFileCheckoutStatus - multipart upload, skipped in integration tests", async () => {});
+
   it.skip("createFileCorrection - multipart upload, skipped in integration tests", async () => {});
+
   it.skip("createFileMarkup - multipart upload, skipped in integration tests", async () => {});
+
   it.skip("deleteFile - destructive; requires a file created via multipart upload (skipped)", async () => {});
 });
+
 describe("Suppliers Domain", () => {
   let mainSupplierGuid: string | undefined;
   let testPhoneNumberGuid: string | undefined;
   let testAddressGuid: string | undefined;
   let testFileAssocGuid: string | undefined;
+
   let sharedFileGuid: string | undefined;
+
   beforeAll(async () => {
     const filesResult = await harness.action("listFiles", {
       connection: testConnection,
       limit: 1,
     });
     sharedFileGuid = resultData(filesResult).results?.[0]?.guid;
+
     try {
       const createResult = await harness.action("createSupplier", {
         connection: testConnection,
@@ -158,6 +180,7 @@ describe("Suppliers Domain", () => {
       );
     }
   });
+
   afterAll(async () => {
     if (mainSupplierGuid) {
       try {
@@ -173,6 +196,7 @@ describe("Suppliers Domain", () => {
       }
     }
   });
+
   it("createSupplier - created the test supplier and returned a guid", () => {
     if (!mainSupplierGuid) {
       console.warn(
@@ -182,6 +206,7 @@ describe("Suppliers Domain", () => {
     }
     expect(mainSupplierGuid).toBeTruthy();
   });
+
   it("listSuppliers - returns a paginated list with a results array", async () => {
     const result = await harness.action("listSuppliers", {
       connection: testConnection,
@@ -190,6 +215,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("getSupplierByGuid - returns the detail of the created test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn("Skipping getSupplierByGuid: mainSupplierGuid not set");
@@ -202,6 +228,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(mainSupplierGuid);
   });
+
   it("updateSupplier - updates the description of the test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn("Skipping updateSupplier: mainSupplierGuid not set");
@@ -215,6 +242,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(mainSupplierGuid);
   });
+
   it("deleteSupplier - creates a transient supplier and deletes it", async () => {
     let createResult: unknown;
     try {
@@ -232,12 +260,14 @@ describe("Suppliers Domain", () => {
     }
     expect(resultData(createResult).guid).toBeTruthy();
     const guidToDelete = resultData(createResult).guid as string;
+
     const deleteResult = await harness.action("deleteSupplier", {
       connection: testConnection,
       supplierGuid: guidToDelete,
     });
     expect(resultData(deleteResult).deleted).toBe(true);
   });
+
   it("listSupplierApprovalStatuses - returns approval status list", async () => {
     const result = await harness.action("listSupplierApprovalStatuses", {
       connection: testConnection,
@@ -246,6 +276,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("createSupplierPhoneNumber - adds a phone number to the test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn(
@@ -263,6 +294,7 @@ describe("Suppliers Domain", () => {
     expect(resultData(result).guid).toBeTruthy();
     testPhoneNumberGuid = resultData(result).guid as string;
   });
+
   it("listSupplierPhoneNumbers - returns phone number list for the test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn(
@@ -277,6 +309,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("updateSupplierPhoneNumber - updates the comment on the test phone number", async () => {
     if (!mainSupplierGuid || !testPhoneNumberGuid) {
       console.warn(
@@ -293,6 +326,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(testPhoneNumberGuid);
   });
+
   it("deleteSupplierPhoneNumber - deletes the test phone number", async () => {
     if (!mainSupplierGuid || !testPhoneNumberGuid) {
       console.warn(
@@ -308,6 +342,7 @@ describe("Suppliers Domain", () => {
     expect(resultData(result).deleted).toBe(true);
     testPhoneNumberGuid = undefined;
   });
+
   it("createSupplierAddress - adds an address to the test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn("Skipping createSupplierAddress: mainSupplierGuid not set");
@@ -331,6 +366,7 @@ describe("Suppliers Domain", () => {
     expect(createdAddressGuid).toBeTruthy();
     testAddressGuid = createdAddressGuid;
   });
+
   it("listSupplierAddresses - returns address list for the test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn("Skipping listSupplierAddresses: mainSupplierGuid not set");
@@ -343,6 +379,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("updateSupplierAddress - updates the city on the test address", async () => {
     if (!mainSupplierGuid || !testAddressGuid) {
       console.warn(
@@ -358,6 +395,7 @@ describe("Suppliers Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("deleteSupplierAddress - deletes the test address", async () => {
     if (!mainSupplierGuid || !testAddressGuid) {
       console.warn(
@@ -373,6 +411,7 @@ describe("Suppliers Domain", () => {
     expect(resultData(result).deleted).toBe(true);
     testAddressGuid = undefined;
   });
+
   it("listSupplierFileAssociations - returns file association list for the test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn(
@@ -387,6 +426,7 @@ describe("Suppliers Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("createSupplierFileAssociation - associates a file with the test supplier", async () => {
     if (!mainSupplierGuid || !sharedFileGuid) {
       console.warn(
@@ -403,6 +443,7 @@ describe("Suppliers Domain", () => {
     expect(resultData(result).guid).toBeTruthy();
     testFileAssocGuid = resultData(result).guid as string;
   });
+
   it("deleteSupplierFileAssociation - removes the test file association from the supplier", async () => {
     if (!mainSupplierGuid || !testFileAssocGuid) {
       console.warn(
@@ -418,6 +459,7 @@ describe("Suppliers Domain", () => {
     expect(resultData(result).deleted).toBe(true);
     testFileAssocGuid = undefined;
   });
+
   it("listSupplierQualityProcessAssociations - returns quality process list for test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn(
@@ -434,6 +476,7 @@ describe("Suppliers Domain", () => {
     );
     expect(result.data).toBeDefined();
   });
+
   it("getSupplierQualityProcessAssociation - returns a single association when one exists on test supplier", async () => {
     if (!mainSupplierGuid) {
       console.warn(
@@ -468,10 +511,14 @@ describe("Suppliers Domain", () => {
     expect(resultData(result).guid).toBe(assocGuid);
   });
 });
+
 describe("Supplier Items Domain", () => {
   let testSupplierGuid: string | undefined;
+
   let testSupplierItemGuid: string | undefined;
+
   let testItemFileAssocGuid: string | undefined;
+
   beforeAll(async () => {
     const suppliersResult = await harness.action("listSuppliers", {
       connection: testConnection,
@@ -484,6 +531,7 @@ describe("Supplier Items Domain", () => {
       );
       return;
     }
+
     try {
       const createResult = await harness.action("createSupplierItem", {
         connection: testConnection,
@@ -504,6 +552,7 @@ describe("Supplier Items Domain", () => {
       );
     }
   });
+
   afterAll(async () => {
     if (testSupplierItemGuid) {
       try {
@@ -519,6 +568,7 @@ describe("Supplier Items Domain", () => {
       }
     }
   });
+
   it("createSupplierItem - created the test supplier item and returned a guid", () => {
     if (!testSupplierItemGuid) {
       console.warn(
@@ -528,6 +578,7 @@ describe("Supplier Items Domain", () => {
     }
     expect(testSupplierItemGuid).toBeTruthy();
   });
+
   it("listSupplierItems - returns a paginated list with a results array", async () => {
     const result = await harness.action("listSupplierItems", {
       connection: testConnection,
@@ -536,6 +587,7 @@ describe("Supplier Items Domain", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   it("getSupplierItemByGuid - returns detail for the created test supplier item", async () => {
     if (!testSupplierItemGuid) {
       console.warn(
@@ -550,6 +602,7 @@ describe("Supplier Items Domain", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(testSupplierItemGuid);
   });
+
   it("updateSupplierItem - updates the description on the test supplier item", async () => {
     if (!testSupplierItemGuid) {
       console.warn("Skipping updateSupplierItem: testSupplierItemGuid not set");
@@ -563,6 +616,7 @@ describe("Supplier Items Domain", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(testSupplierItemGuid);
   });
+
   it("deleteSupplierItem - creates a transient supplier item and deletes it", async () => {
     if (!testSupplierGuid) {
       console.warn("Skipping deleteSupplierItem: testSupplierGuid not set");
@@ -585,12 +639,14 @@ describe("Supplier Items Domain", () => {
     }
     expect(resultData(createResult).guid).toBeTruthy();
     const guidToDelete = resultData(createResult).guid as string;
+
     const deleteResult = await harness.action("deleteSupplierItem", {
       connection: testConnection,
       supplierItemGuid: guidToDelete,
     });
     expect(resultData(deleteResult).success).toBe(true);
   });
+
   it("listSupplierItemFiles - returns file list for the test supplier item", async () => {
     if (!testSupplierItemGuid) {
       console.warn(
@@ -609,7 +665,9 @@ describe("Supplier Items Domain", () => {
       testItemFileAssocGuid = guidOf(fileResults[0]);
     }
   });
+
   it.skip("createSupplierItemFile - multipart upload, skipped in integration tests", async () => {});
+
   it("getSupplierItemFileContent - downloads binary content for a supplier item file if one exists", async () => {
     if (!testSupplierItemGuid || !testItemFileAssocGuid) {
       console.warn(
@@ -624,6 +682,7 @@ describe("Supplier Items Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("listSupplierItemCompliance - returns compliance list for the test supplier item", async () => {
     if (!testSupplierItemGuid) {
       console.warn(
@@ -637,6 +696,7 @@ describe("Supplier Items Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("listSupplierItemSourcing - returns sourcing relationships for the test supplier item", async () => {
     if (!testSupplierItemGuid) {
       console.warn(
@@ -650,6 +710,7 @@ describe("Supplier Items Domain", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   it("listSupplierItemRequirements - returns all compliance requirements from settings", async () => {
     const result = await harness.action("listSupplierItemRequirements", {
       connection: testConnection,

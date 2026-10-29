@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { deleteAllSubscriptionsExamplePayload } from "../../examplePayloads";
 import { deleteAllSubscriptionsInputs } from "../../inputs/subscriptions";
 import { deleteAllSubscriptionsFn } from "../../utils";
+
 export const deleteAllInstanceSubscriptions = action({
   display: {
     label: "Delete All Instance Subscriptions",
@@ -20,6 +21,7 @@ export const deleteAllInstanceSubscriptions = action({
       client,
       instanceWebhooks,
     );
+
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
   examplePayload: deleteAllSubscriptionsExamplePayload,

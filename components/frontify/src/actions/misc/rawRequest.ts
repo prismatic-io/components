@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import type { RequestDocument } from "graphql-request";
 import { createClient } from "../../client";
 import { rawRequestInputs as inputs } from "../../inputs/misc";
+
 export const rawRequest = action({
   display: {
     label: "Raw GraphQL Request",
@@ -12,6 +13,7 @@ export const rawRequest = action({
       connection,
       debug: context.debug.enabled,
     }).request(query as RequestDocument, variableMap);
+
     return {
       data: response,
     };

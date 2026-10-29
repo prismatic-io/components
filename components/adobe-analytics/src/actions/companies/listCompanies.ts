@@ -2,7 +2,9 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listCompaniesExamplePayload } from "../../examplePayloads";
 import { listCompaniesInputs } from "../../inputs";
+
 import type { DiscoveryResponse } from "../../types";
+
 export const listCompanies = action({
   display: {
     label: "List Companies",

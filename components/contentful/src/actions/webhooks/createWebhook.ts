@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -24,9 +25,8 @@ export const createWebhook = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createWebhookExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createWebhookExamplePayload,
   inputs: createWebhookInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

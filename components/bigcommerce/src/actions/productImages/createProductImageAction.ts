@@ -9,6 +9,7 @@ import {
   createProductImageProductId,
   storeHash,
 } from "../../inputs";
+
 export const createProductImageAction = action({
   display: {
     label: "Create Product Image",
@@ -29,6 +30,7 @@ export const createProductImageAction = action({
       image_file,
       image_url,
     };
+
     try {
       const response = await client.post(endpoint, requestBody);
       return {
@@ -40,6 +42,7 @@ export const createProductImageAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

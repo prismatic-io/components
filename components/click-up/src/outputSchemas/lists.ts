@@ -4,6 +4,7 @@ import {
   requiredSpaceRefSchema,
   statusRefSchema,
 } from "./shared";
+
 const listProperties = {
   id: { type: "string" },
   name: { type: "string" },
@@ -36,6 +37,7 @@ const listProperties = {
   statuses: { type: "array", items: statusRefSchema },
   inbound_address: { type: "string" },
 };
+
 export const createListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -53,6 +55,7 @@ export const createListOutputSchema = {
     },
   },
 };
+
 export const getListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -63,6 +66,7 @@ export const getListOutputSchema = {
     permission_level: { type: "string" },
   },
 };
+
 export const updateListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -70,6 +74,7 @@ export const updateListOutputSchema = {
     assignee: { type: ["string", "null"] },
   },
 };
+
 export const getListsOutputSchema = {
   type: "object" as const,
   properties: {

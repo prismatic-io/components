@@ -4,6 +4,7 @@ import { fetchPaginatedData, filterAndSort } from "../utils";
 import type { Company } from "../interfaces";
 import { selectCompanyInputs } from "../inputs";
 import type { ElementWithLabel } from "../types";
+
 export const selectCompany = dataSource({
   display: {
     label: "Select Company",
@@ -20,16 +21,19 @@ export const selectCompany = dataSource({
       filterType,
       filterValues,
     };
+
     const { result: companies } = await fetchPaginatedData<Company>(
       client,
       `/v1/companies.json`,
       true,
       params,
     );
+
     const objects = companies.map<ElementWithLabel>((company) => ({
       key: util.types.toString(company.id),
       label: company.company,
     }));
+
     return { result: filterAndSort(objects, filterQuery) };
   },
 });

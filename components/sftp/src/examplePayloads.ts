@@ -2,22 +2,28 @@ export const readFileExamplePayload = {
   data: "Sample file contents",
   contentType: "text/plain",
 };
+
 export const fastGetExamplePayload = {
   data: Buffer.from("Sample file contents"),
   contentType: "text/plain",
 };
+
 export const writeFileExamplePayload = {
   data: "Uploaded data stream to /upload/path/to/file.txt",
 };
+
 export const appendFileExamplePayload = {
   data: "Appended data to /upload/path/to/file.txt",
 };
+
 export const deleteFileExamplePayload = {
   data: null,
 };
+
 export const moveFileExamplePayload = {
   data: null,
 };
+
 export const statFileExamplePayload = {
   data: {
     mode: 33279,
@@ -35,9 +41,11 @@ export const statFileExamplePayload = {
     isSocket: false,
   },
 };
+
 export const listDirectoryExamplePayload = {
   data: ["folder1/file.txt", "folder1/subfolder/example.txt", "root.txt"],
 };
+
 export const createDirectoryExamplePayload = {
   data: "/path/to/new/directory/",
 };

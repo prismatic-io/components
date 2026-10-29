@@ -11,14 +11,17 @@ export interface Policy {
   lastUpdated: string;
   _links: Links;
 }
+
 interface Links {
   self: Rules;
   rules: Rules;
 }
+
 interface Rules {
   href: string;
   hints: Hints;
 }
+
 interface Hints {
   allow: string[];
 }

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { listBulkJobsInputs } from "../../inputs";
 import { listBulkQueryJobsExamplePayload } from "../../examplePayloads";
+
 export const listBulkJobs = action({
   display: {
     label: "List Bulk Jobs",
@@ -29,8 +30,7 @@ export const listBulkJobs = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listBulkQueryJobsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listBulkQueryJobsExamplePayload,
   examplePayload: listBulkQueryJobsExamplePayload,
 });

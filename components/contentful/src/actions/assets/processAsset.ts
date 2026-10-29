@@ -5,6 +5,7 @@ import { processAssetExamplePayload } from "../../examplePayloads";
 import { processAssetInputs } from "../../inputs";
 import { processAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const processAsset = action({
   display: {
     label: "Process Asset",
@@ -18,15 +19,15 @@ export const processAsset = action({
       spaceId,
       environmentId,
     );
+
     const asset: Asset = await environment.getAsset(assetId);
     await asset.processForAllLocales();
     return {
       data: {},
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => processAssetExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    processAssetExamplePayload,
   inputs: processAssetInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

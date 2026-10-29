@@ -4,6 +4,7 @@ import { listTrainingPlanQualityExamplePayload } from "../../examplePayloads";
 import { listTrainingPlanQualityInputs } from "../../inputs";
 import { referencedQualityListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listTrainingPlanQuality = action({
   display: {
     label: "List Training Plan Quality Processes",
@@ -18,15 +19,19 @@ export const listTrainingPlanQuality = action({
   perform: async (context, { connection, trainingGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Fetching quality processes for training plan ${trainingGuid}`,
       );
+
       const { data } = await client.get(
         `/trainingplans/${trainingGuid}/quality`,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} quality process associations`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

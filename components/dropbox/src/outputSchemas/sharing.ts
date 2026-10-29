@@ -8,6 +8,7 @@ import {
   teamInfoSchema,
   withDropboxEnvelope,
 } from "./shared";
+
 export const getSharedMetadataForFileOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: {
@@ -28,9 +29,11 @@ export const getSharedMetadataForFileOutputSchema = withDropboxEnvelope({
   },
   required: ["id", "name", "policy", "preview_url"],
 });
+
 export const getSharedMetadataForFolderOutputSchema = withDropboxEnvelope(
   sharedFolderMetadataSchema,
 );
+
 export const listSharingFolderOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: {
@@ -39,6 +42,7 @@ export const listSharingFolderOutputSchema = withDropboxEnvelope({
   },
   required: ["entries"],
 });
+
 export const shareFolderOutputSchema = withDropboxEnvelope({
   oneOf: [
     {
@@ -59,6 +63,7 @@ export const shareFolderOutputSchema = withDropboxEnvelope({
     },
   ],
 });
+
 export const unshareFolderOutputSchema = withDropboxEnvelope({
   oneOf: [
     {

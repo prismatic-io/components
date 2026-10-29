@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { getInvoiceInputs } from "../../inputs/invoice";
 import { getInvoiceExamplePayload } from "../../examplePayloads";
+
 export const getInvoice = action({
   display: {
     label: "Get Invoice",
@@ -15,16 +16,19 @@ export const getInvoice = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = { id: invoiceId };
     const stringifiedData = stringify({
       data: JSON.stringify(sendData),
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Read/Invoice.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };

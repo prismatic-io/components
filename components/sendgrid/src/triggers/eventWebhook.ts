@@ -13,6 +13,7 @@ import {
   toggleSignatureVerificationHelper,
   updateWebhookHelper,
 } from "../util";
+
 export const eventWebhook = trigger({
   display: {
     label: "Managed Webhook Events",
@@ -25,6 +26,7 @@ export const eventWebhook = trigger({
       { sendGridConnection, friendlyName, events },
     ) => {
       logger.info("Starting Event Webhook trigger creation process");
+
       const integrationFlowName = flow.name;
       const encodedId = getBase64FromUrl(webhookUrls[integrationFlowName]);
       const state = crossFlowState?.[encodedId] as unknown as WebhookState;
@@ -33,6 +35,7 @@ export const eventWebhook = trigger({
       const webhookId = state?.webhookId;
       const client = createAuthorizedClient(sendGridConnection);
       const eventsPayload = eventsBuilder(events);
+
       if (webhookId) {
         logger.info(
           `Webhook ID found, updating existing webhook for integration flow: ${integrationFlowName}`,
@@ -60,9 +63,11 @@ export const eventWebhook = trigger({
           );
         }
       }
+
       logger.info(
         `No webhook ID found, creating a new one for integration flow: ${integrationFlowName}`,
       );
+
       let newWebhookId: string;
       try {
         const data = await createWebhookHelper(client, {
@@ -80,6 +85,7 @@ export const eventWebhook = trigger({
       } catch (e) {
         handleWebhookError(e, "create webhook on instance deployment", logger);
       }
+
       try {
         const data = await toggleSignatureVerificationHelper(client, {
           webhookId: newWebhookId,
@@ -87,6 +93,7 @@ export const eventWebhook = trigger({
         });
         logger.info("Signature verification enabled successfully");
         if (debug.enabled) logger.info(JSON.stringify(data));
+
         (crossFlowState[encodedId] as WebhookState).publicKey = data.public_key;
       } catch (e) {
         handleWebhookError(
@@ -101,10 +108,12 @@ export const eventWebhook = trigger({
       { sendGridConnection },
     ) => {
       logger.info(`Starting Event Webhook trigger deletion process`);
+
       const encodedId = getBase64FromUrl(webhookUrls[flow.name]);
       const state = crossFlowState?.[encodedId] as unknown as WebhookState;
       const webhookId = state?.webhookId;
       const client = createAuthorizedClient(sendGridConnection);
+
       if (webhookId) {
         try {
           await deleteWebhookHelper(client, {
@@ -119,6 +128,7 @@ export const eventWebhook = trigger({
           handleWebhookError(e, "delete webhook on instance deletion", logger);
         }
       }
+
       logger.info(
         `No webhook ID found, skipping webhook deletion for integration flow: ${flow.name}`,
       );
@@ -138,6 +148,7 @@ export const eventWebhook = trigger({
     if (isSimulatedTestExecution) {
       return { payload };
     }
+
     const encodedId = getBase64FromUrl(webhookUrls[flow.name]);
     const state = crossFlowState?.[encodedId] as unknown as {
       webhookId: string;
@@ -145,12 +156,14 @@ export const eventWebhook = trigger({
     };
     const publicKey = state?.publicKey;
     const headers = util.types.lowerCaseHeaders(payload.headers);
+
     const signature = headers[
       "x-twilio-email-event-webhook-signature"
     ] as string;
     const timestamp = headers[
       "x-twilio-email-event-webhook-timestamp"
     ] as string;
+
     if (!publicKey) {
       throw new Error(
         "Public key not found on state - webhook signature validation failed",
@@ -161,22 +174,28 @@ export const eventWebhook = trigger({
         "SendGrid signature headers missing - webhook signature validation failed",
       );
     }
+
     const eventWebhook = new EventWebhook();
     const ecPublicKey = eventWebhook.convertPublicKeyToECDSA(publicKey);
+
     const rawPayload = payload.rawBody.data as string;
+
     const isValid = eventWebhook.verifySignature(
       ecPublicKey,
       rawPayload,
       signature,
       timestamp,
     );
+
     if (!isValid) {
       if (debug.enabled) logger.warn("Webhook signature validation failed");
       throw new Error(
         "Invalid webhook signature - request may not be from SendGrid",
       );
     }
+
     if (debug.enabled) logger.info("Webhook signature validated successfully");
+
     return {
       payload,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { NO_CONTENT_RESPONSE, NO_CONTENT_RESPONSE_TEXT } from "../../constants";
 import { updateJobApplicationInputs } from "../../inputs";
+
 export const updateJobApplication = action({
   display: {
     label: "Update Job Application",

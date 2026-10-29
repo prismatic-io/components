@@ -37,6 +37,7 @@ import {
   templateId,
   trackingFields,
 } from "../../inputs";
+
 export const updateMeeting = action({
   display: {
     label: "Update Meeting",
@@ -84,6 +85,7 @@ export const updateMeeting = action({
     },
   ) => {
     const client = createZoomClient({ connection, debug });
+
     const { data } = await client.patch(
       `/meetings/${meetingId}`,
       {
@@ -126,6 +128,7 @@ export const updateMeeting = action({
       },
       { params: { occurrence_id: occurrenceIdQuery } },
     );
+
     return {
       data,
     };

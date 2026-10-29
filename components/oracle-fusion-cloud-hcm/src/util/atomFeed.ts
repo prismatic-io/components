@@ -7,17 +7,20 @@ import type {
   HcmAtomChangesObject,
   HcmAtomRecordChange,
 } from "../types";
+
 export const atomFeedModel = Object.entries(ATOM_FEED_CONFIG).map(
   ([value, { label }]) => ({
     label,
     value,
   }),
 );
+
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
   attributeNamePrefix: "@_",
   isArray: (name) => name === "entry" || name === "Attribute",
 });
+
 const parseAtomEntry = (
   entry: Record<string, unknown>,
   feedName: string,
@@ -29,6 +32,7 @@ const parseAtomEntry = (
   const innerContent =
     (innerKey ? (contentWrapper?.[innerKey] as Record<string, unknown>) : {}) ??
     {};
+
   const rawAttrs = (innerContent.ChangedAttributes as Record<string, unknown>)
     ?.Attribute;
   const changedAttributes: string[] = Array.isArray(rawAttrs)
@@ -36,6 +40,7 @@ const parseAtomEntry = (
     : rawAttrs
       ? [util.types.toString(rawAttrs)]
       : [];
+
   return {
     id: util.types.toString(entry.id),
     feedName,
@@ -45,6 +50,7 @@ const parseAtomEntry = (
     content: innerContent,
   };
 };
+
 export const fetchAtomEntries = async (
   client: HttpClient,
   feedName: string,
@@ -53,6 +59,7 @@ export const fetchAtomEntries = async (
 ): Promise<AtomFeedEntry[]> => {
   const allEntries: AtomFeedEntry[] = [];
   let page = 1;
+
   let pageEntries: AtomFeedEntry[];
   do {
     const { data: rawXml } = await client.get<string>(`/atomFeed/${feedName}`, {
@@ -63,16 +70,20 @@ export const fetchAtomEntries = async (
         orderBy: "updated:asc",
       },
     });
+
     const parsed = xmlParser.parse(util.types.toString(rawXml));
     const feed: Record<string, unknown> = parsed?.feed ?? {};
     const rawEntries: Record<string, unknown>[] =
       (feed.entry as Record<string, unknown>[]) ?? [];
+
     pageEntries = rawEntries.map((entry) => parseAtomEntry(entry, feedName));
     allEntries.push(...pageEntries);
     page++;
   } while (pageEntries.length === pageSize);
+
   return allEntries;
 };
+
 export const resolveAtomPollingRecordChanges = (
   data: HcmAtomChangesObject | undefined,
 ): HcmAtomRecordChange[] => {

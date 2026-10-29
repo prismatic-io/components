@@ -5,6 +5,7 @@ import { getCompanyExamplePayload } from "../../examplePayloads";
 import { getCompanyInputs } from "../../inputs";
 import { getCompanyOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedData, getProps } from "../../util";
+
 export const getCompany = action({
   display: {
     label: "Get Company",
@@ -30,22 +31,28 @@ export const getCompany = action({
         "You must supply either an Id, domain, or name to retrieve a company record.",
       );
     }
+
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       COMPANY_PROPS,
       additionalProperties || [],
     );
+
     const params = {
       ...parameterizedProperties,
       associations: associationsList,
       archived: archived,
     };
+
     const companiesUrl = hubspotPaths.objects("companies");
+
     if (domain) {
       const companies = await getAllPaginatedData(
         client,
@@ -60,20 +67,19 @@ export const getCompany = action({
           },
         },
       );
+
       const filteredCompanies = (
-        (companies as unknown as {
-          properties?: {
-            domain?: string;
-          };
-        }[]) || []
+        (companies as unknown as { properties?: { domain?: string } }[]) || []
       ).filter((company) => {
         return company?.properties?.domain === domain;
       });
+
       if (filteredCompanies.length === 0) {
         throw new Error(`No companies found matching ${domain}`);
       }
       return { data: filteredCompanies };
     }
+
     if (companyName) {
       const companies = await getAllPaginatedData(
         client,
@@ -88,12 +94,9 @@ export const getCompany = action({
           },
         },
       );
+
       const filteredCompanies = (
-        (companies as unknown as {
-          properties?: {
-            name?: string;
-          };
-        }[]) || []
+        (companies as unknown as { properties?: { name?: string } }[]) || []
       ).filter((company) => {
         return company?.properties?.name === companyName;
       });
@@ -105,6 +108,7 @@ export const getCompany = action({
     const { data } = await client.get(`${companiesUrl}/${companyId}`, {
       params,
     });
+
     return { data };
   },
   inputs: getCompanyInputs,

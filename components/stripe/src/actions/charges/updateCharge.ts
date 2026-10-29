@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { updateChargeExamplePayload } from "../../examplePayloads/charges";
 import { updateChargeInputs } from "../../inputs";
 import { chargeOutputSchema } from "../../outputSchemas";
+
 export const updateCharge = action({
   display: {
     label: "Update Charge",
@@ -55,10 +56,9 @@ export const updateCharge = action({
       fraudDetails,
       transferGroup,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const charge = updateChargeExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...charge,
@@ -78,5 +78,6 @@ export const updateCharge = action({
     type: "actionOutput",
     schema: chargeOutputSchema,
   }),
+
   examplePayload: updateChargeExamplePayload,
 });

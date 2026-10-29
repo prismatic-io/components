@@ -17,6 +17,7 @@ import {
   uniqueRetailPrice,
   uniqueSalePrice,
 } from "../../inputs";
+
 export const updateProduct = action({
   display: {
     label: "Update Product",
@@ -58,6 +59,7 @@ export const updateProduct = action({
       retail_price: uniqueRetailPrice,
       sale_price: uniqueSalePrice,
     };
+
     try {
       const response = await client.put(endpoint, body);
       return {
@@ -69,6 +71,7 @@ export const updateProduct = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

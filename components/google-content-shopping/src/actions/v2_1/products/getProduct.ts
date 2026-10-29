@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { getProductExamplePayload } from "../../../examplePayloads/v2_1";
 import { getProductInputs } from "../../../inputs/v2_1";
+
 export const getProduct = action({
   display: {
     description: "Retrieves a product from the Merchant Center account.",

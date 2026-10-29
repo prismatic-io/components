@@ -3,6 +3,7 @@ import { getQueryJobInformationOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { getQueryJobInformationInputs } from "../../inputs";
 import { getQueryJobInformationExamplePayload } from "../../examplePayloads";
+
 export const getQueryJobInformation = action({
   display: {
     label: "Get Bulk Query Job Information",

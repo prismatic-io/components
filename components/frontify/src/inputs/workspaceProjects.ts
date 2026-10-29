@@ -6,10 +6,12 @@ import {
   connection,
   projectId,
 } from "./sharedInputs";
+
 export const getWorkspaceProjectInputs = {
   connection,
   projectId,
 };
+
 export const listWorkspaceProjectAssetsInputs = {
   connection,
   projectId,
@@ -23,6 +25,7 @@ export const listWorkspaceProjectAssetsInputs = {
     inputs: { page, limit },
   }),
 };
+
 export const listWorkspaceProjectFoldersInputs = {
   connection,
   projectId,

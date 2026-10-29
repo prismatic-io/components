@@ -5,6 +5,7 @@ import { toOptionalString, toTrimmedString } from "../helpers/misc";
 import { validateConnection } from "../helpers/validateConnection";
 import type { Credentials } from "../interfaces/Credentials";
 import type { GetClientParamsProps } from "../interfaces/GetClientParamsProps";
+
 export const getClientParams = async ({
   awsRegion,
   awsConnection,
@@ -26,17 +27,20 @@ export const getClientParams = async ({
     }
     shouldAssumeRole = awsConnection.key === assumeRoleConnection.key;
   }
+
   if (!awsConnection && (!dynamicAccessKeyId || !dynamicSecretAccessKey)) {
     throw new Error(
       "You must specify either a connection input or dynamic access key and secret inputs.",
     );
   }
+
   const { accessKeyId, secretAccessKey }: Credentials = awsConnection
     ? getCredentials(awsConnection)
     : {
         accessKeyId: dynamicAccessKeyId,
         secretAccessKey: dynamicSecretAccessKey,
       };
+
   const credentials: Credentials = shouldAssumeRole
     ? await assumeRole(
         awsRegion,
@@ -50,6 +54,7 @@ export const getClientParams = async ({
         secretAccessKey,
         sessionToken: dynamicSessionToken,
       };
+
   const region: string | undefined =
     awsRegion.length > 0 ? awsRegion : undefined;
   return { region, credentials };

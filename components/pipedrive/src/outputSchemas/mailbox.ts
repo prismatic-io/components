@@ -14,6 +14,7 @@ const mailPartySchema = {
     linked_deal_status: { type: "string" },
   },
 };
+
 const mailThreadRecordSchema = {
   type: "object",
   properties: {
@@ -55,6 +56,7 @@ const mailThreadRecordSchema = {
     all_messages_sent_flag: { type: "integer" },
   },
 };
+
 const mailMessageRecordSchema = {
   type: "object",
   properties: {
@@ -108,6 +110,7 @@ const mailMessageRecordSchema = {
     timestamp: { type: "string" },
   },
 };
+
 export const getMailThreadsOutputSchema = {
   type: "object",
   properties: {
@@ -133,6 +136,7 @@ export const getMailThreadsOutputSchema = {
     },
   },
 };
+
 export const deleteMailThreadOutputSchema = {
   type: "object",
   properties: {
@@ -150,6 +154,7 @@ export const deleteMailThreadOutputSchema = {
     },
   },
 };
+
 export const getMailThreadOutputSchema = {
   type: "object",
   properties: {
@@ -162,6 +167,7 @@ export const getMailThreadOutputSchema = {
     },
   },
 };
+
 export const getMailThreadMessagesOutputSchema = {
   type: "object",
   properties: {
@@ -174,6 +180,7 @@ export const getMailThreadMessagesOutputSchema = {
     },
   },
 };
+
 export const getMailMessageOutputSchema = {
   type: "object",
   properties: {

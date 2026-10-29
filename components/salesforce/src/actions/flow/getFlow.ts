@@ -4,6 +4,7 @@ import { getFlowInputs } from "../../inputs";
 import { getFlowFunction } from "../../util";
 import { generateApiName } from "../../util";
 import { getFlowExamplePayload } from "../../examplePayloads";
+
 export const getFlow = action({
   display: {
     label: "Get Flow",
@@ -17,8 +18,6 @@ export const getFlow = action({
     const result = await getFlowFunction(client, fullName);
     return { data: result as unknown };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => getFlowExamplePayload,
   examplePayload: getFlowExamplePayload,
 });

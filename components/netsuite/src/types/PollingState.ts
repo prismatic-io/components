@@ -1,7 +1,9 @@
 import type { PollingTriggerObject } from "./PollingTriggerObject";
+
 export interface NetSuitePollingState {
   lastPolledAt: string;
 }
+
 export interface PollingChangesResult {
   changesObject: {
     createdRecords?: PollingTriggerObject[];
@@ -9,10 +11,12 @@ export interface PollingChangesResult {
   };
   changes: number;
 }
+
 export interface PollingQueryParams {
   lookBackDate?: string;
   additionalFilter?: string;
 }
+
 export interface BuiltPollingQuery {
   query: string;
   lastPolledAt: string;

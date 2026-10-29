@@ -4,6 +4,7 @@ import { createListExamplePayload } from "../../examplePayloads";
 import { createListInputs } from "../../inputs";
 import { createListOutputSchema } from "../../outputSchemas";
 import type { CreateListBody } from "../../types";
+
 export const createList = action({
   display: {
     label: "Create List",
@@ -42,7 +43,9 @@ export const createList = action({
       ...(assigneeInt !== undefined && { assignee: assigneeInt }),
       ...(status?.length && { status }),
     };
+
     const { data } = await client.post(`/folder/${folderId}/list`, body);
+
     return {
       data,
     };

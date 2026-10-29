@@ -21,6 +21,7 @@ import {
   versions,
 } from "../../inputs";
 import { getIssueType, validateDescription } from "../../util";
+
 export const updateIssue = action({
   display: {
     label: "Update Issue",
@@ -31,11 +32,13 @@ export const updateIssue = action({
       params.jiraConnection,
       context.debug.enabled,
     );
+
     const issuetype = getIssueType(params.issueType, params.issueTypeId, false);
     const description = validateDescription(
       params.description,
       params.ADFdescription,
     );
+
     const config = {
       fields: {
         project: {

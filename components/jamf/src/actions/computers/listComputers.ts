@@ -4,6 +4,7 @@ import { listComputersExamplePayload } from "../../examplePayloads";
 import { listComputersInputs } from "../../inputs";
 import type { ComputerInventory } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listComputers = action({
   display: {
     label: "List Computers",

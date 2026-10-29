@@ -4,6 +4,7 @@ import { listTagsDataSourceExamplePayload } from "../examplePayloads";
 import { listTagsDataSourceInputs } from "../inputs";
 import type { Tag } from "../types";
 import { paginateResults } from "../util";
+
 export const listTagsDataSource = dataSource({
   display: {
     label: "Select Tags",
@@ -19,6 +20,7 @@ export const listTagsDataSource = dataSource({
       results,
       "tags",
     );
+
     return {
       result: paginatedResults.map((tag) => ({
         label: tag.name,

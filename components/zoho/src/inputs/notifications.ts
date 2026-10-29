@@ -5,6 +5,7 @@ import {
 } from "../constants";
 import { toOptionalObject, toOptionalString } from "../util/general";
 import { connectionInput, fetchAll, page, per_page } from "./common";
+
 export const channelId = input({
   label: "Channel ID",
   placeholder: "Enter the Channel ID",
@@ -16,6 +17,7 @@ export const channelId = input({
     "User-defined unique numeric identifier for the notification channel. You create this ID when enabling notifications and use it to reference the channel in subsequent operations. Must be a number.",
   clean: util.types.toString,
 });
+
 export const notificationEvents = input({
   label: "Events",
   placeholder: "Enter one or more events",
@@ -27,6 +29,7 @@ export const notificationEvents = input({
   clean: util.types.toObject,
   example: JSON.stringify(NOTIFICATION_EVENTS_EXAMPLE, null, 2),
 });
+
 export const notifyUrl = input({
   label: "Notify URL",
   placeholder: "Enter the notification URL",
@@ -36,6 +39,7 @@ export const notifyUrl = input({
   comments: "The URL that will receive POST notifications about the actions.",
   clean: util.types.toString,
 });
+
 export const notificationToken = input({
   label: "Token",
   placeholder: "Enter verification token",
@@ -46,6 +50,7 @@ export const notificationToken = input({
   example: "my_verification_token_123",
   clean: toOptionalString,
 });
+
 export const channelExpiry = input({
   label: "Channel Expiry",
   placeholder: "Enter ISO Datetime for Expiry",
@@ -56,6 +61,7 @@ export const channelExpiry = input({
     "ISO datetime for expiry. Maximum 1 week from now. Default is 1 hour.",
   clean: toOptionalString,
 });
+
 export const returnAffectedFieldValues = input({
   label: "Return Affected Field Values",
   type: "boolean",
@@ -64,6 +70,7 @@ export const returnAffectedFieldValues = input({
     "When true, includes updated field values in the notification callback.",
   clean: util.types.toBool,
 });
+
 export const notifyOnRelatedAction = input({
   label: "Notify On Related Action",
   type: "boolean",
@@ -73,6 +80,7 @@ export const notifyOnRelatedAction = input({
     "When true, triggers notifications when associated record actions occur.",
   clean: util.types.toBool,
 });
+
 export const notificationCondition = input({
   label: "Notification Condition",
   placeholder: "Fields to watch",
@@ -84,6 +92,7 @@ export const notificationCondition = input({
   clean: toOptionalObject,
   example: JSON.stringify(NOTIFICATION_CONDITION_EXAMPLE, null, 2),
 });
+
 export const notificationModule = input({
   label: "Module",
   placeholder: "Enter module name",
@@ -94,6 +103,7 @@ export const notificationModule = input({
   example: "Leads",
   clean: toOptionalString,
 });
+
 export const channelIds = input({
   label: "Channel IDs",
   placeholder: "Enter one or more Channel IDs",
@@ -104,6 +114,7 @@ export const channelIds = input({
   clean: util.types.toString,
   example: "123456789,987654321",
 });
+
 export const notificationEnableInputs = {
   connection: connectionInput,
   channelId,
@@ -115,6 +126,7 @@ export const notificationEnableInputs = {
   notifyOnRelatedAction,
   notificationCondition,
 };
+
 export const notificationGetDetailsInputs = {
   channelId,
   fetchAll,
@@ -123,6 +135,7 @@ export const notificationGetDetailsInputs = {
   per_page,
   connection: connectionInput,
 };
+
 export const notificationUpdateInputs = {
   connection: connectionInput,
   channelId,
@@ -132,16 +145,19 @@ export const notificationUpdateInputs = {
   channelExpiry,
   notificationCondition,
 };
+
 export const notificationDisableInputs = {
   connection: connectionInput,
   channelIds,
 };
+
 export const notificationSpecificDisableInputs = {
   connection: connectionInput,
   channelId,
   events: notificationEvents,
   notifyOnRelatedAction,
 };
+
 export const notificationsTriggerInputs = {
   connection: connectionInput,
   channelId: {
@@ -157,6 +173,7 @@ export const notificationsTriggerInputs = {
   notifyOnRelatedAction,
   notificationCondition,
 };
+
 export const selectNotificationChannelInputs = {
   connection: connectionInput,
 };

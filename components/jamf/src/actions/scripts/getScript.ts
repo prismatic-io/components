@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getScriptExamplePayload } from "../../examplePayloads";
 import { getScriptInputs } from "../../inputs";
 import type { Script } from "../../types";
+
 export const getScript = action({
   display: {
     label: "Get Script",

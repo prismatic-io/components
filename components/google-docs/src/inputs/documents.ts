@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, connectionInput } from "./common";
+
 const documentId = input({
   label: "Document ID",
   type: "string",
@@ -9,6 +10,7 @@ const documentId = input({
   placeholder: "Enter document ID",
   clean: util.types.toString,
 });
+
 const suggestionsViewMode = input({
   label: "Suggestions View Mode",
   type: "string",
@@ -36,6 +38,7 @@ const suggestionsViewMode = input({
   default: "DEFAULT_FOR_CURRENT_ACCESS",
   clean: util.types.toString,
 });
+
 const title = input({
   label: "Title",
   type: "string",
@@ -45,6 +48,7 @@ const title = input({
   placeholder: "Enter document title",
   clean: util.types.toString,
 });
+
 const requests = input({
   label: "Requests",
   type: "code",
@@ -65,6 +69,7 @@ const requests = input({
   ]),
   clean: util.types.toString,
 });
+
 const requiredRevisionId = input({
   label: "Required Revision ID",
   type: "string",
@@ -75,6 +80,7 @@ const requiredRevisionId = input({
   placeholder: "Enter required revision ID",
   clean: cleanString,
 });
+
 const targetRevisionId = input({
   label: "Target Revision ID",
   type: "string",
@@ -85,15 +91,18 @@ const targetRevisionId = input({
   placeholder: "Enter target revision ID",
   clean: cleanString,
 });
+
 export const getDocumentInputs = {
   googleConnection: connectionInput,
   documentId,
   suggestionsViewMode,
 };
+
 export const createDocumentInputs = {
   googleConnection: connectionInput,
   title,
 };
+
 export const batchUpdateDocumentsInputs = {
   googleConnection: connectionInput,
   documentId: {

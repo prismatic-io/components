@@ -9,6 +9,7 @@ import {
   searchInput,
   filterInput,
 } from "../inputs";
+
 export const selectMessage = dataSource({
   display: {
     label: "Select Message",
@@ -34,6 +35,7 @@ export const selectMessage = dataSource({
         $filter: filter,
       },
     );
+
     const result = value.map<Element>((message) => ({
       label: util.types.toString(message.subject),
       key: util.types.toString(message.id),

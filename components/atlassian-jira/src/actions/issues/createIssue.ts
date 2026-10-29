@@ -20,6 +20,7 @@ import {
   versions,
 } from "../../inputs";
 import { getIssueType, validateDescription } from "../../util";
+
 export const createIssue = action({
   display: {
     label: "Create Issue",
@@ -30,11 +31,14 @@ export const createIssue = action({
       params.jiraConnection,
       context.debug.enabled,
     );
+
     const description = validateDescription(
       params.description,
       params.ADFdescription,
     );
+
     const issuetype = getIssueType(params.issueType, params.issueTypeId);
+
     const config = {
       fields: {
         project: {
@@ -70,6 +74,7 @@ export const createIssue = action({
         ...params.dynamicValues,
       },
     };
+
     const { data } = await client.post("/issue", config);
     return { data };
   },

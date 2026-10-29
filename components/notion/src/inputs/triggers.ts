@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../utils";
 import { connectionInput } from "./common";
 import { dataSourceIdInput } from "./notionDataSources";
+
 const lookBackDateInput = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -12,14 +13,17 @@ const lookBackDateInput = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pagesPollingTriggerInputs = {
   connection: connectionInput,
   lookBackDate: lookBackDateInput,
 };
+
 export const dataSourcesPollingTriggerInputs = {
   connection: connectionInput,
   lookBackDate: lookBackDateInput,
 };
+
 export const dataSourceItemsPollingTriggerInputs = {
   connection: connectionInput,
   dataSourceId: dataSourceIdInput,

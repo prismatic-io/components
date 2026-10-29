@@ -2,7 +2,9 @@ import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { ApiPlane } from "../constants";
 import { connection } from "./common";
+
 const { debugRequest, ...rawRequestHttpInputs } = httpClientInputs;
+
 const plane = input({
   label: "API Plane",
   type: "string",
@@ -15,6 +17,7 @@ const plane = input({
     { label: "Classic (VM/PC)", value: ApiPlane.Classic },
   ],
 });
+
 export const rawRequestInputs = {
   connection,
   plane,

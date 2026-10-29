@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../utils";
 import { connectionInput, owner, repo } from "./common";
+
 const blobContent = input({
   label: "Content",
   type: "string",
@@ -8,6 +9,7 @@ const blobContent = input({
   clean: cleanString,
   comments: "The content of the new blob",
 });
+
 const blobEncoding = input({
   label: "Encoding",
   type: "string",
@@ -16,6 +18,7 @@ const blobEncoding = input({
   clean: cleanString,
   comments: 'The encoding used for "content"',
 });
+
 export const gitCreateBlobInputs = {
   connection: connectionInput,
   owner,
@@ -23,6 +26,7 @@ export const gitCreateBlobInputs = {
   content: blobContent,
   encoding: blobEncoding,
 };
+
 const gitRef = input({
   label: "Ref",
   type: "string",
@@ -31,6 +35,7 @@ const gitRef = input({
   comments:
     'The name of the fully qualified reference (ie: "refs/heads/master")',
 });
+
 const gitSha = input({
   label: "Sha",
   type: "string",
@@ -38,6 +43,7 @@ const gitSha = input({
   clean: cleanString,
   comments: "The SHA1 value for this reference",
 });
+
 export const gitCreateRefInputs = {
   connection: connectionInput,
   owner,
@@ -45,6 +51,7 @@ export const gitCreateRefInputs = {
   ref: gitRef,
   sha: gitSha,
 };
+
 const gitRefName = input({
   label: "Ref",
   type: "string",
@@ -52,12 +59,14 @@ const gitRefName = input({
   clean: cleanString,
   comments: "ref parameter",
 });
+
 export const gitGetRefInputs = {
   connection: connectionInput,
   owner,
   repo,
   ref: gitRefName,
 };
+
 const gitTree = input({
   label: "Tree",
   type: "code",
@@ -72,6 +81,7 @@ const gitTree = input({
   ),
   clean: util.types.toObject,
 });
+
 const baseTree = input({
   label: "Base Tree",
   type: "string",
@@ -81,6 +91,7 @@ const baseTree = input({
   comments:
     "The SHA1 of an existing Git tree object which will be used as the base for the new tree",
 });
+
 export const gitCreateTreeInputs = {
   connection: connectionInput,
   owner,

@@ -11,6 +11,7 @@ import {
   shipmentAdditionalFieldsInput,
   weightInput,
 } from "./common";
+
 export const createShipmentLabelInputs = {
   connectionInput,
   carrierCode,

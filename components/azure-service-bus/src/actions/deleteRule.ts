@@ -11,6 +11,7 @@ import {
   subscriptionName,
   topicName,
 } from "../inputs";
+
 export const deleteRule = action({
   display: {
     label: "Delete Rule",
@@ -51,4 +52,5 @@ export const deleteRule = action({
     ruleName,
   },
 });
+
 export default { deleteRule };

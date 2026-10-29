@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { connectionInput, invoiceId, syncToken } from "../../inputs";
+
 export const voidInvoice = action({
   display: {
     label: "Void Invoice",
@@ -11,6 +12,7 @@ export const voidInvoice = action({
       quickbooksConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       "/invoice",
       {
@@ -26,6 +28,7 @@ export const voidInvoice = action({
         },
       },
     );
+
     return {
       data: data.Invoice,
     };

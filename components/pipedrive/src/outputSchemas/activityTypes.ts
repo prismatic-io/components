@@ -13,6 +13,7 @@ const activityTypeRecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 export const getActivityTypesOutputSchema = {
   type: "object",
   properties: {

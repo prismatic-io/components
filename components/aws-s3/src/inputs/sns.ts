@@ -3,6 +3,7 @@ import { awsRegion, dynamicAccessAllInputs } from "aws-utils";
 import { INPUT_EVENT_TYPES_MODEL } from "../constants";
 import { toTrimmedStringArray } from "../utils";
 import { accessKeyInput, bucket } from "./common";
+
 const name = input({
   label: "Name",
   type: "string",
@@ -12,6 +13,7 @@ const name = input({
   comments: "The name of the SNS topic to create.",
   clean: util.types.toString,
 });
+
 const snsTopicArn = input({
   label: "SNS Topic ARN",
   type: "string",
@@ -22,6 +24,7 @@ const snsTopicArn = input({
     "The Amazon Resource Name (ARN) of the SNS topic. For more information, see [Getting started with Amazon SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-getting-started.html).",
   clean: util.types.toString,
 });
+
 const bucketOwnerAccountid = input({
   label: "Bucket Owner Account ID",
   type: "string",
@@ -32,6 +35,7 @@ const bucketOwnerAccountid = input({
     "The 12-digit AWS Account ID of the bucket owner. Find this in the AWS Console account settings or use the 'Get Current Account' action.",
   clean: util.types.toString,
 });
+
 const endpoint = input({
   label: "Webhook Endpoint",
   type: "string",
@@ -42,6 +46,7 @@ const endpoint = input({
   comments: "The HTTPS endpoint URL that will receive S3 event notifications.",
   clean: util.types.toString,
 });
+
 const subscriptionArn = input({
   label: "Subscription ARN",
   type: "string",
@@ -52,6 +57,7 @@ const subscriptionArn = input({
   comments: "The Amazon Resource Name (ARN) of the SNS topic subscription.",
   clean: util.types.toString,
 });
+
 const eventsList = input({
   label: "Event Types",
   comments:
@@ -64,6 +70,7 @@ const eventsList = input({
   required: true,
   clean: toTrimmedStringArray,
 });
+
 const eventNotificationName = input({
   label: "Event Notification Name",
   type: "string",
@@ -73,6 +80,7 @@ const eventNotificationName = input({
   comments: "A unique name for the event notification configuration.",
   clean: util.types.toString,
 });
+
 export const bucketEventTriggerConfigurationInputs = {
   awsConnection: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -83,12 +91,14 @@ export const bucketEventTriggerConfigurationInputs = {
   bucketOwnerAccountid,
   awsRegion,
 };
+
 export const createTopicInputs = {
   awsConnection: accessKeyInput,
   ...dynamicAccessAllInputs,
   name,
   awsRegion,
 };
+
 export const subscribeToTopicInputs = {
   awsConnection: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -96,12 +106,14 @@ export const subscribeToTopicInputs = {
   endpoint,
   awsRegion,
 };
+
 export const unsubscribeFromTopicInputs = {
   awsConnection: accessKeyInput,
   ...dynamicAccessAllInputs,
   subscriptionArn,
   awsRegion,
 };
+
 export const updateTopicPolicyInputs = {
   awsConnection: accessKeyInput,
   ...dynamicAccessAllInputs,

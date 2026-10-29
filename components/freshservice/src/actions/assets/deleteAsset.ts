@@ -4,6 +4,7 @@ import { SUCCESS_RESPONSE } from "../../constants";
 import { deleteAssetExamplePayload as examplePayload } from "../../examplePayloads";
 import { deleteAssetInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
+
 export const deleteAsset = action({
   display: {
     label: "Delete Asset (Deprecated)",
@@ -15,7 +16,9 @@ export const deleteAsset = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(`/assets/${assetDisplayId}`);
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const technicianSchema = {
   type: "object" as const,
   properties: {
@@ -306,6 +307,7 @@ const technicianSchema = {
     "status",
   ],
 };
+
 const technicianIdSchema = {
   type: "object" as const,
   properties: {
@@ -316,7 +318,11 @@ const technicianIdSchema = {
   },
   required: ["id"],
 };
+
 export const listTechniciansOutputSchema = listEnvelope(technicianSchema);
+
 export const getTechnicianOutputSchema = technicianSchema;
+
 export const createTechnicianOutputSchema = technicianIdSchema;
+
 export const updateTechnicianOutputSchema = technicianIdSchema;

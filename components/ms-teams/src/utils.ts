@@ -3,21 +3,27 @@ import { URL } from "node:url";
 import type { Connection } from "@prismatic-io/spectral";
 import { util } from "@prismatic-io/spectral";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanObject = (value: unknown) => {
   if (value === "") {
     return undefined;
   }
+
   return util.types.toObject(value);
 };
+
 export const getUserPath = (userPrincipalName: string | undefined): string =>
   userPrincipalName ? `/users/${userPrincipalName}` : "/me";
+
 const cleanUrlQueryParams = (url: string): string => {
   const urlObj = new URL(url);
   urlObj.search = "";
   return urlObj.toString();
 };
+
 export const getAdminConsentToken = async (
   connection: Connection,
 ): Promise<Connection> => {
@@ -37,9 +43,11 @@ export const getAdminConsentToken = async (
     util.types.toString(connection.fields.tokenUrl),
   );
   const { data } = await tokenClient.post(url, postData);
+
   connection.token = data;
   return connection;
 };
+
 export const paginateResults = async (
   client,
   url,
@@ -52,6 +60,7 @@ export const paginateResults = async (
     let lastResponse = null;
     let firstRequest = true;
     let paramsToSend = params;
+
     do {
       if (
         firstRequest &&
@@ -72,13 +81,16 @@ export const paginateResults = async (
       results.push(...value);
       nextLink = data["@odata.nextLink"];
     } while (nextLink);
+
     return {
       value: results,
       ...lastResponse,
     };
   }
+
   const { data } = await client.get(url, {
     params,
   });
+
   return data;
 };

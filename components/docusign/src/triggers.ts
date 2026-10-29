@@ -7,6 +7,7 @@ import {
   webhookExists as webhookExistsFn,
 } from "./utils";
 import { getDocuSignClient } from "./client";
+
 export const accountTrigger = trigger({
   display: {
     label: "Account Level Trigger",
@@ -61,4 +62,5 @@ export const accountTrigger = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export default { accountTrigger };

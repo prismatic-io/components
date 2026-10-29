@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { CAMPAIGNS_PATH } from "../../constants";
 import { deleteCampaignExamplePayload } from "../../examplePayloads";
 import { deleteCampaignInputs } from "../../inputs";
+
 export const deleteCampaign = action({
   examplePayload: deleteCampaignExamplePayload,
   display: {
@@ -13,12 +14,12 @@ export const deleteCampaign = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, campaignId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(`${CAMPAIGNS_PATH}/${campaignId}`);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteCampaignExamplePayload.data,
   }),
 });

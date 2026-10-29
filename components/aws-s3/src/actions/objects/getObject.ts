@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createS3Client } from "../../client";
 import { getObjectExamplePayload } from "../../examplePayloads";
 import { getObjectInputs } from "../../inputs";
+
 export const getObject = action({
   display: {
     label: "Get Object",
@@ -40,6 +41,7 @@ export const getObject = action({
     const response = await s3.send(command);
     const objectBodyAsArray = await response.Body.transformToByteArray();
     const objectAsABuffer = Buffer.from(objectBodyAsArray);
+
     return {
       data: objectAsABuffer,
       contentType: response.ContentType,

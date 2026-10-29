@@ -18,6 +18,7 @@ import {
   totalQuantity,
   updated_or_created_since,
 } from "../inputs";
+
 export const listSalesInvoices = action({
   display: {
     label: "List Sales Invoices",
@@ -25,6 +26,7 @@ export const listSalesInvoices = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get("/sales_invoices", {
       params: {
         items_per_page: util.types.toInt(params.itemsPerPage) || undefined,
@@ -33,12 +35,14 @@ export const listSalesInvoices = action({
           util.types.toString(params.updated_or_created_since) || undefined,
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, itemsPerPage, page, updated_or_created_since },
 });
+
 export const getSalesInvoice = action({
   display: {
     label: "Get Sales Invoice",
@@ -46,15 +50,18 @@ export const getSalesInvoice = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.get(
       `/sales_invoices/${params.salesInvoiceId}`,
     );
+
     return {
       data,
     };
   },
   inputs: { connection, salesInvoiceId },
 });
+
 export const deleteSalesInvoice = action({
   display: {
     label: "Delete Sales Invoice",
@@ -62,16 +69,19 @@ export const deleteSalesInvoice = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.delete(
       `/sales_invoices/${params.salesInvoiceId}`,
       {},
     );
+
     return {
       data,
     };
   },
   inputs: { connection, salesInvoiceId },
 });
+
 export const createSalesInvoice = action({
   display: {
     label: "Create Sales Invoice",
@@ -79,6 +89,7 @@ export const createSalesInvoice = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.post(`/sales_invoices`, {
       sales_invoice: {
         contact_id: util.types.toString(params.contactId),
@@ -88,12 +99,14 @@ export const createSalesInvoice = action({
         total_amount: util.types.toNumber(params.totalAmount),
       },
     });
+
     return {
       data,
     };
   },
   inputs: { connection, contactId, date, invoiceLines, totalAmount },
 });
+
 export const updateSalesInvoice = action({
   display: {
     label: "Update Sales Invoice",
@@ -101,6 +114,7 @@ export const updateSalesInvoice = action({
   },
   perform: async (context, params) => {
     const client = getSageClient(params.connection, context.debug.enabled);
+
     const { data } = await client.put(
       `/sales_invoices/${params.salesInvoiceId}`,
       {
@@ -121,6 +135,7 @@ export const updateSalesInvoice = action({
         },
       },
     );
+
     return {
       data,
     };

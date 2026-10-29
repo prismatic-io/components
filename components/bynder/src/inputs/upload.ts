@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { initialiseUploadResponse } from "../examplePayloads";
 import { cleanCodeInput, cleanNumber, cleanString } from "../util";
+
 export const multipartParams = input({
   label: "Multipart Parameters",
   type: "code",
@@ -12,6 +13,7 @@ export const multipartParams = input({
   placeholder: "Enter multipart parameters as JSON",
   clean: cleanCodeInput,
 });
+
 export const file = input({
   label: "File",
   type: "data",
@@ -20,6 +22,7 @@ export const file = input({
   placeholder: "File from previous step",
   clean: util.types.toData,
 });
+
 export const chunks = input({
   label: "Chunks",
   type: "string",
@@ -29,6 +32,7 @@ export const chunks = input({
   placeholder: "Enter total chunk count",
   clean: cleanNumber,
 });
+
 export const chunk = input({
   label: "Chunk",
   type: "string",
@@ -38,6 +42,7 @@ export const chunk = input({
   placeholder: "Enter chunk index number",
   clean: cleanNumber,
 });
+
 export const uploadURL = input({
   label: "Upload URL",
   type: "string",
@@ -48,6 +53,7 @@ export const uploadURL = input({
   placeholder: "Enter Amazon S3 upload URL",
   clean: cleanString,
 });
+
 export const targetid = input({
   label: "Target ID",
   type: "string",
@@ -57,6 +63,7 @@ export const targetid = input({
   placeholder: "Enter target ID",
   clean: cleanString,
 });
+
 export const items = input({
   label: "Items",
   type: "string",

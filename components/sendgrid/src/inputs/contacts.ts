@@ -5,6 +5,7 @@ import {
   cleanStringInput,
 } from "../util";
 import { connectionInput } from "./common";
+
 const contactListIds = input({
   label: "List IDs",
   type: "string",
@@ -17,6 +18,7 @@ const contactListIds = input({
   dataSource: "sendGridListsDataSource",
   clean: cleanStringInput,
 });
+
 const contactsInput = input({
   label: "Contacts",
   type: "code",
@@ -43,6 +45,7 @@ const contactsInput = input({
     "An array of contact objects to add or update. See SendGrid docs for contact object structure.",
   clean: cleanContactsArrayInput,
 });
+
 const emailsInput = input({
   label: "Emails",
   type: "string",
@@ -52,6 +55,7 @@ const emailsInput = input({
   comments: "Comma-separated email addresses to search for.",
   clean: util.types.toString,
 });
+
 const fieldMappingsInput = input({
   label: "Field Mappings",
   type: "code",
@@ -63,6 +67,7 @@ const fieldMappingsInput = input({
     "An array of field definition IDs to map the uploaded CSV columns. Use null to skip a column. Get IDs from 'Get All Field Definitions' action.",
   clean: cleanFieldMappingsInput,
 });
+
 const jobId = input({
   label: "Job ID",
   type: "string",
@@ -73,6 +78,7 @@ const jobId = input({
     "The job ID returned from Import Contacts, Add/Update Contact, or Delete Contacts operations.",
   clean: util.types.toString,
 });
+
 const isCompressedInput = input({
   label: "Is Compressed",
   type: "boolean",
@@ -81,21 +87,25 @@ const isCompressedInput = input({
   comments: "When true, indicates that the CSV file will be gzip-compressed.",
   clean: util.types.toBool,
 });
+
 export const addOrUpdateContactInputs = {
   sendGridConnection: connectionInput,
   list_ids: contactListIds,
   contacts: contactsInput,
 };
+
 export const getContactsByEmailsInputs = {
   sendGridConnection: connectionInput,
   emails: emailsInput,
 };
+
 export const initiateContactsImportInputs = {
   sendGridConnection: connectionInput,
   list_ids: contactListIds,
   field_mappings: fieldMappingsInput,
   is_compressed: isCompressedInput,
 };
+
 export const getImportStatusInputs = {
   sendGridConnection: connectionInput,
   job_id: jobId,

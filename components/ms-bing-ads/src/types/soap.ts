@@ -4,22 +4,27 @@ export interface AccountInfo {
   Number: string;
   AccountLifeCycleStatus: string;
 }
+
 export interface GetAccountsInfoResponse {
   AccountsInfo: {
     AccountInfo: AccountInfo | AccountInfo[];
   };
 }
+
 export interface CustomerInfo {
   Id: number;
   Name: string;
 }
+
 export interface GetCustomersInfoResponse {
   CustomersInfo: {
     CustomerInfo: CustomerInfo | CustomerInfo[];
   };
 }
+
 export type GetLinkedAccountsAndCustomersInfoResponse =
   GetAccountsInfoResponse & GetCustomersInfoResponse;
+
 export interface GetCustomerResponse {
   Customer: {
     CustomerFinancialStatus: string;
@@ -52,6 +57,7 @@ export interface GetCustomerResponse {
     };
   };
 }
+
 export interface AdvertiserAccount {
   BillToCustomerId: number;
   CurrencyCode: string;
@@ -90,16 +96,19 @@ export interface AdvertiserAccount {
   };
   AutoTagType: string;
 }
+
 export interface SearchAccountsResponse {
   Accounts: {
     AdvertiserAccount: AdvertiserAccount | AdvertiserAccount[];
   };
 }
+
 export interface OperationError {
   Code: number;
   Details: string;
   Message: string;
 }
+
 export interface AddClientLinksResponse {
   OperationErrors: {
     OperationError: OperationError | OperationError[];
@@ -110,7 +119,9 @@ export interface AddClientLinksResponse {
     };
   };
 }
+
 export type UpdateClientLinksResponse = AddClientLinksResponse;
+
 export interface ClientLink {
   ClientEntityId: number;
   ClientEntityName: string;
@@ -132,14 +143,17 @@ export interface ClientLink {
   Timestamp: string;
   Type: string;
 }
+
 export interface SearchClientLinksResponse {
   ClientLinks: {
     ClientLink: ClientLink | ClientLink[];
   };
 }
+
 export interface SendUserInvitationResponse {
   UserInvitationId: number;
 }
+
 export interface OfflineConversion {
   ConversionCurrencyCode: string;
   ConversionName: string;

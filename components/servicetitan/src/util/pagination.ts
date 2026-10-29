@@ -1,5 +1,6 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { ListGeneric } from "../types";
+
 export async function fetchAllRecords<T>(
   client: HttpClient,
   url: string,
@@ -32,8 +33,10 @@ export async function fetchAllRecords<T>(
     hasMore &&
     (maxRecords === undefined || records.length < maxRecords)
   );
+
   const truncated = maxRecords !== undefined && records.length > maxRecords;
   const data = truncated ? records.slice(0, maxRecords) : records;
+
   return {
     page,
     pageSize: 500,

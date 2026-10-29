@@ -8,6 +8,7 @@ import {
   checkDeveloperApiKeyAndAppId,
   deleteAllAppSubscriptions,
 } from "../../util";
+
 export const deleteAllWebhooks = action({
   display: {
     label: "Delete All Instanced Webhooks",
@@ -24,9 +25,12 @@ export const deleteAllWebhooks = action({
       },
       false,
     );
+
     const { developerApiKey, appId } =
       checkDeveloperApiKeyAndAppId(hubspotConnection);
+
     await deleteAllAppSubscriptions(client, appId, developerApiKey);
+
     return {
       data: {
         message: SUCCESS_MESSAGE,

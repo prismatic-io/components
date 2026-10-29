@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { deleteArticleAttachmentExamplePayload } from "../../examplePayloads";
 import { deleteArticleAttachmentInputs } from "../../inputs";
 import { deleteArticleAttachmentOutputSchema } from "../../outputSchemas";
+
 export const deleteArticleAttachment = action({
   display: {
     label: "Delete Article Attachment",
@@ -14,6 +15,7 @@ export const deleteArticleAttachment = action({
     const { data } = await client.delete(
       `/help_center/articles/attachments/${articleAttachmentId}`,
     );
+
     return {
       data,
     };

@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { getWebhookExamplePayload as updateWebhookExamplePayload } from "../../examplePayloads/webhooks";
 import { updateWebhookInputs } from "../../inputs";
 import { webhookEndpointOutputSchema } from "../../outputSchemas";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
@@ -31,9 +32,7 @@ export const updateWebhook = action({
   examplePerform: async (
     _context,
     { webhookEvents, webhookId, webhookUrl },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateWebhookExamplePayload.data,
       id: webhookId,
@@ -47,5 +46,6 @@ export const updateWebhook = action({
     type: "actionOutput",
     schema: webhookEndpointOutputSchema,
   }),
+
   examplePayload: updateWebhookExamplePayload,
 });

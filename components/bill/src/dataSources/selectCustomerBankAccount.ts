@@ -4,6 +4,7 @@ import { getClient } from "../client";
 import { stringify } from "qs";
 import { cleanReturnData } from "../util";
 import { PAGE_SIZE, BANK_ACCOUNT_LIST_ENDPOINTS } from "../constants";
+
 export const selectCustomerBankAccount = dataSource({
   display: {
     label: "Select Customer Bank Account",
@@ -14,6 +15,7 @@ export const selectCustomerBankAccount = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const { client, loginData } = await getClient(connection, false);
+
     const sendData = {
       start: 0,
       max: PAGE_SIZE,
@@ -23,20 +25,20 @@ export const selectCustomerBankAccount = dataSource({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       BANK_ACCOUNT_LIST_ENDPOINTS.customerBankAccount,
       stringifiedData,
     );
+
     const cleanData = cleanReturnData(data);
     const objects = (
-      cleanData as {
-        id: string;
-        nameOnAccount: string;
-      }[]
+      cleanData as { id: string; nameOnAccount: string }[]
     ).map<Element>((customerBankAccount) => ({
       key: customerBankAccount.id,
       label: customerBankAccount.nameOnAccount,
     }));
+
     return { result: objects };
   },
 });

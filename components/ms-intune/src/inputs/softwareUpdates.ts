@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll, odataSoftwareUpdatesParams } from "./common";
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -11,12 +12,14 @@ const listFilters = structuredObjectInput({
     $format: odataSoftwareUpdatesParams.$format,
   },
 });
+
 export const listSoftwareUpdateStatusSummaryInputs = {
   connection,
   fetchAll,
   $skipToken: odataSoftwareUpdatesParams.$skipToken,
   filters: listFilters,
 };
+
 const displayName = input({
   label: "Display Name",
   comments: "The display name of the software update status summary.",
@@ -26,6 +29,7 @@ const displayName = input({
   placeholder: "Enter display name",
   clean: util.types.toString,
 });
+
 const compliantDeviceCount = input({
   label: "Compliant Device Count",
   comments:
@@ -36,6 +40,7 @@ const compliantDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const nonCompliantDeviceCount = input({
   label: "Non-Compliant Device Count",
   comments:
@@ -46,6 +51,7 @@ const nonCompliantDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const remediatedDeviceCount = input({
   label: "Remediated Device Count",
   comments: "The number of devices that have been remediated.",
@@ -55,6 +61,7 @@ const remediatedDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const errorDeviceCount = input({
   label: "Error Device Count",
   comments:
@@ -65,6 +72,7 @@ const errorDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const unknownDeviceCount = input({
   label: "Unknown Device Count",
   comments:
@@ -75,6 +83,7 @@ const unknownDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const conflictDeviceCount = input({
   label: "Conflict Device Count",
   comments:
@@ -85,6 +94,7 @@ const conflictDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const notApplicableDeviceCount = input({
   label: "Not Applicable Device Count",
   comments:
@@ -95,6 +105,7 @@ const notApplicableDeviceCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const compliantUserCount = input({
   label: "Compliant User Count",
   comments: "The number of users that are compliant with the software update.",
@@ -104,6 +115,7 @@ const compliantUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const nonCompliantUserCount = input({
   label: "Non-Compliant User Count",
   comments:
@@ -114,6 +126,7 @@ const nonCompliantUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const remediatedUserCount = input({
   label: "Remediated User Count",
   comments: "The number of users that have been remediated.",
@@ -123,6 +136,7 @@ const remediatedUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const errorUserCount = input({
   label: "Error User Count",
   comments: "The number of users that have an error with the software update.",
@@ -132,6 +146,7 @@ const errorUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const unknownUserCount = input({
   label: "Unknown User Count",
   comments:
@@ -142,6 +157,7 @@ const unknownUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const conflictUserCount = input({
   label: "Conflict User Count",
   comments:
@@ -152,6 +168,7 @@ const conflictUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const notApplicableUserCount = input({
   label: "Not Applicable User Count",
   comments:
@@ -162,6 +179,7 @@ const notApplicableUserCount = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 const deviceCounts = structuredObjectInput({
   label: "Device Counts",
   required: false,
@@ -176,6 +194,7 @@ const deviceCounts = structuredObjectInput({
     notApplicableDeviceCount,
   },
 });
+
 const userCounts = structuredObjectInput({
   label: "User Counts",
   required: false,
@@ -190,6 +209,7 @@ const userCounts = structuredObjectInput({
     notApplicableUserCount,
   },
 });
+
 export const updateSoftwareUpdateStatusSummaryInputs = {
   connection,
   displayName,

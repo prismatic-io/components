@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updatePersonalContactExamplePayload } from "../../examplePayloads";
 import { updatePersonalContactInputs } from "../../inputs";
 import { updatePersonalContactOutputSchema } from "../../outputSchemas";
+
 export const updatePersonalContact = action({
   display: {
     label: "Update Personal Contact",
@@ -45,9 +46,8 @@ export const updatePersonalContact = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updatePersonalContactExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updatePersonalContactExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: updatePersonalContactOutputSchema,

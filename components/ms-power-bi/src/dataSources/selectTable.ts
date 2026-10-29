@@ -4,6 +4,7 @@ import { createClient } from "../client";
 import { TResponse } from "../interfaces/TResponse";
 import type { Table } from "../interfaces/Table";
 import { paginateResults } from "../utils";
+
 export const selectTable = dataSource({
   display: {
     label: "Select Table",
@@ -28,6 +29,7 @@ export const selectTable = dataSource({
       true,
       parameters,
     );
+
     return {
       result: tables
         .sort((a, b) => (a.name < b.name ? -1 : 1))

@@ -15,6 +15,7 @@ const userObject = {
   date_joined: "1672531200000",
   date_invited: "1672531200000",
 };
+
 const invitedByObject = {
   id: 81942670,
   username: "Jane Smith",
@@ -24,6 +25,7 @@ const invitedByObject = {
   profilePicture:
     "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
 };
+
 const memberObject = {
   member: {
     user: userObject,
@@ -35,15 +37,18 @@ const memberObject = {
     },
   },
 };
+
 const workspaceRoles = [
   { id: 1, name: "owner", custom: false },
   { id: 2, name: "admin", custom: false },
   { id: 3, name: "member", custom: false },
   { id: 4, name: "guest", custom: false },
 ];
+
 export const getUserExamplePayload = {
   data: memberObject,
 };
+
 export const inviteUserToWorkspaceExamplePayload = {
   data: {
     team: {
@@ -65,9 +70,11 @@ export const inviteUserToWorkspaceExamplePayload = {
     },
   },
 };
+
 export const editUserOnWorkspaceExamplePayload = {
   data: memberObject,
 };
+
 export const removeUserFromWorkspaceExamplePayload = {
   data: {
     team: {

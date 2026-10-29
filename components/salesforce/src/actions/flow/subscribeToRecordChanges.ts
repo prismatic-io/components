@@ -5,6 +5,7 @@ import { subscribeToRecordChangesExamplePayload } from "../../examplePayloads";
 import { createFlowRecordSubscription } from "../../helpers";
 import { generatePrefixedHash } from "../../util";
 import { createSalesforceClient } from "../../client";
+
 export const subscribeToRecordChanges = action({
   display: {
     label: "Subscribe to Record Changes",
@@ -32,6 +33,7 @@ export const subscribeToRecordChanges = action({
     const instanceId = context.instance.id;
     const flowId = context.flow.id;
     const name = generatePrefixedHash(prefix, instanceId, flowId);
+
     const data = await createFlowRecordSubscription(context, {
       version,
       client,
@@ -44,13 +46,13 @@ export const subscribeToRecordChanges = action({
       filterFormula,
       name,
     });
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => subscribeToRecordChangesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    subscribeToRecordChangesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: subscribeToRecordChangesOutputSchema,

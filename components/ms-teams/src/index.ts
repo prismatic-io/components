@@ -4,6 +4,7 @@ import triggers from "./triggers";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export default component({
   key: "ms-teams",
   public: true,

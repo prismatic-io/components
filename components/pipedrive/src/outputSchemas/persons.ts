@@ -13,6 +13,7 @@ export const getPersonsOutputSchema = {
     },
   },
 };
+
 export const singlePersonV2OutputSchema = {
   type: "object",
   properties: {
@@ -58,6 +59,7 @@ export const singlePersonV2OutputSchema = {
     },
   },
 };
+
 export const deletePersonOutputSchema = {
   type: "object",
   properties: {
@@ -69,6 +71,7 @@ export const deletePersonOutputSchema = {
     },
   },
 };
+
 export const searchPersonsOutputSchema = {
   type: "object",
   properties: {
@@ -126,6 +129,7 @@ export const searchPersonsOutputSchema = {
     },
   },
 };
+
 export const mergePersonsOutputSchema = {
   type: "object",
   properties: {
@@ -153,6 +157,7 @@ export const mergePersonsOutputSchema = {
     },
   },
 };
+
 export const getPersonActivitiesOutputSchema = {
   type: "object",
   properties: {
@@ -189,6 +194,7 @@ export const getPersonActivitiesOutputSchema = {
     },
   },
 };
+
 export const getPersonDealsOutputSchema = {
   type: "object",
   properties: {
@@ -221,6 +227,7 @@ export const getPersonDealsOutputSchema = {
     },
   },
 };
+
 export const getPersonFilesOutputSchema = {
   type: "object",
   properties: {
@@ -259,6 +266,7 @@ export const getPersonFilesOutputSchema = {
     },
   },
 };
+
 export const getPersonFollowersOutputSchema = {
   type: "object",
   properties: {
@@ -282,6 +290,7 @@ export const getPersonFollowersOutputSchema = {
     },
   },
 };
+
 export const addPersonFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -296,6 +305,7 @@ export const addPersonFollowerOutputSchema = {
     },
   },
 };
+
 export const deletePersonFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -307,6 +317,7 @@ export const deletePersonFollowerOutputSchema = {
     },
   },
 };
+
 export const getPersonMailMessagesOutputSchema = {
   type: "object",
   properties: {
@@ -348,6 +359,7 @@ export const getPersonMailMessagesOutputSchema = {
     },
   },
 };
+
 export const getPersonProductsOutputSchema = {
   type: "object",
   properties: {
@@ -386,6 +398,7 @@ export const getPersonProductsOutputSchema = {
     },
   },
 };
+
 export const getPersonUpdatesOutputSchema = {
   type: "object",
   properties: {
@@ -421,6 +434,7 @@ export const getPersonUpdatesOutputSchema = {
     },
   },
 };
+
 export const getPersonUsersOutputSchema = {
   type: "object",
   properties: {
@@ -431,6 +445,7 @@ export const getPersonUsersOutputSchema = {
     },
   },
 };
+
 export const deletePersonPictureOutputSchema = {
   type: "object",
   properties: {

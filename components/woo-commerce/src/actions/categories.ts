@@ -17,6 +17,7 @@ import {
   search,
 } from "../inputs";
 import { paginateRecords } from "../util";
+
 export const listProductCategories = action({
   display: {
     label: "List Product Categories",
@@ -67,6 +68,7 @@ export const listProductCategories = action({
     };
   },
 });
+
 export const getProductCategory = action({
   display: {
     label: "Get Product Category",
@@ -85,6 +87,7 @@ export const getProductCategory = action({
     };
   },
 });
+
 export const deleteProductCategory = action({
   display: {
     label: "Delete Product Category",
@@ -103,6 +106,7 @@ export const deleteProductCategory = action({
     };
   },
 });
+
 export const createProductCategory = action({
   display: {
     label: "Create Product Category",

@@ -4,6 +4,7 @@ import { getProductInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getProductExamplePayload } from "../../examplePayloads";
 import { getProductOutputSchema } from "../../outputSchemas";
+
 export const getProduct = action({
   display: {
     label: "Get Product",

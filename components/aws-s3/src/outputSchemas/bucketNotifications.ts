@@ -21,7 +21,9 @@ const notificationFilterSchema = {
   },
   required: [],
 };
+
 const eventsSchema = { type: "array", items: { type: "string" } };
+
 export const getBucketNotificationConfigurationOutputSchema = {
   type: "object" as const,
   properties: {

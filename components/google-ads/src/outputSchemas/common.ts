@@ -6,18 +6,21 @@ export const googleRpcStatusSchema = {
     details: { type: "array", items: { type: "object" } },
   },
 };
+
 export const mutateResourceNameResultSchema = {
   type: "object" as const,
   properties: {
     resourceName: { type: "string" },
   },
 };
+
 export const localServicesAggregatorInfoSchema = {
   type: "object" as const,
   properties: {
     aggregatorProviderId: { type: "string" },
   },
 };
+
 export const userIdentifierSchema = {
   type: "object" as const,
   properties: {

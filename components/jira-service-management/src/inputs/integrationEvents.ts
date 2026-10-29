@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalArray, toOptionalObject, toOptionalString } from "../util";
 import { connection } from "./common";
+
 const alertMessage = input({
   label: "Message",
   type: "string",
@@ -11,6 +12,7 @@ const alertMessage = input({
   example: "Disk usage at 95% on web-prod-01",
   clean: util.types.toString,
 });
+
 const alertAlias = input({
   label: "Alias",
   type: "string",
@@ -21,6 +23,7 @@ const alertAlias = input({
   example: "disk-usage-web-prod-01",
   clean: toOptionalString,
 });
+
 const alertDescription = input({
   label: "Description",
   type: "string",
@@ -31,6 +34,7 @@ const alertDescription = input({
   example: "Disk /var has crossed the 95% threshold and continues to grow.",
   clean: toOptionalString,
 });
+
 const alertResponders = input({
   label: "Responders",
   type: "code",
@@ -49,6 +53,7 @@ const alertResponders = input({
   ),
   clean: toOptionalArray,
 });
+
 const alertVisibleTo = input({
   label: "Visible To",
   type: "code",
@@ -60,6 +65,7 @@ const alertVisibleTo = input({
   example: JSON.stringify([{ type: "team", name: "Platform" }], null, 2),
   clean: toOptionalArray,
 });
+
 const alertActions = input({
   label: "Actions",
   type: "code",
@@ -71,6 +77,7 @@ const alertActions = input({
   example: JSON.stringify(["restart", "ping"], null, 2),
   clean: toOptionalArray,
 });
+
 const alertTags = input({
   label: "Tags",
   type: "code",
@@ -81,6 +88,7 @@ const alertTags = input({
   example: JSON.stringify(["production", "disk"], null, 2),
   clean: toOptionalArray,
 });
+
 const alertDetails = input({
   label: "Details",
   type: "code",
@@ -96,6 +104,7 @@ const alertDetails = input({
   ),
   clean: toOptionalObject,
 });
+
 const alertEntity = input({
   label: "Entity",
   type: "string",
@@ -106,6 +115,7 @@ const alertEntity = input({
   example: "web-prod-01",
   clean: toOptionalString,
 });
+
 const alertSource = input({
   label: "Source",
   type: "string",
@@ -116,6 +126,7 @@ const alertSource = input({
   example: "Datadog",
   clean: toOptionalString,
 });
+
 const alertPriority = input({
   label: "Priority",
   type: "string",
@@ -131,6 +142,7 @@ const alertPriority = input({
   comments: "Priority level of the alert. Defaults to P3.",
   clean: toOptionalString,
 });
+
 const alertUser = input({
   label: "User",
   type: "string",
@@ -141,6 +153,7 @@ const alertUser = input({
   example: "Monica Geller",
   clean: toOptionalString,
 });
+
 const alertNote = input({
   label: "Note",
   type: "string",
@@ -150,6 +163,7 @@ const alertNote = input({
   example: "Acknowledged from monitoring runbook",
   clean: toOptionalString,
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -168,6 +182,7 @@ const additionalFields = structuredObjectInput({
     alertNote,
   },
 });
+
 const alertNoteRequired = input({
   label: "Note",
   type: "string",
@@ -177,6 +192,7 @@ const alertNoteRequired = input({
   example: "Investigating now — engaging the on-call engineer.",
   clean: util.types.toString,
 });
+
 const alertIdentifier = input({
   label: "Alert Identifier",
   type: "string",
@@ -187,6 +203,7 @@ const alertIdentifier = input({
   example: "70413a06-38d6-4c85-92b8-5ebc900d42e2",
   clean: util.types.toString,
 });
+
 const alertIdentifierType = input({
   label: "Identifier Type",
   type: "string",
@@ -201,6 +218,7 @@ const alertIdentifierType = input({
     "Format of the alert identifier. Use `alias` only when the alert is in OPEN status — closed alerts cannot be referenced by alias.",
   clean: toOptionalString,
 });
+
 const requestId = input({
   label: "Request ID",
   type: "string",
@@ -211,6 +229,7 @@ const requestId = input({
   example: "8eb01b62-04a5-4d57-a4a8-602e6ef5deaf",
   clean: util.types.toString,
 });
+
 export const createIntegrationAlertInputs = {
   connection,
   alertMessage,
@@ -218,6 +237,7 @@ export const createIntegrationAlertInputs = {
   alertDescription,
   additionalFields,
 };
+
 export const acknowledgeIntegrationAlertInputs = {
   connection,
   alertIdentifier,
@@ -226,6 +246,7 @@ export const acknowledgeIntegrationAlertInputs = {
   alertSource,
   alertNote,
 };
+
 export const closeIntegrationAlertInputs = {
   connection,
   alertIdentifier,
@@ -234,6 +255,7 @@ export const closeIntegrationAlertInputs = {
   alertSource,
   alertNote,
 };
+
 export const addIntegrationAlertNoteInputs = {
   connection,
   alertIdentifier,
@@ -242,6 +264,7 @@ export const addIntegrationAlertNoteInputs = {
   alertUser,
   alertSource,
 };
+
 export const getIntegrationAlertRequestInputs = {
   connection,
   requestId,

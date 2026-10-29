@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+
 export const line1 = input({
   label: "Billing Line 1",
   placeholder: "Enter billing line 1",
@@ -9,6 +10,7 @@ export const line1 = input({
   comments: "Line 1 of the billing address.",
   clean: cleanStringInput,
 });
+
 export const line2 = input({
   label: "Billing Line 2",
   placeholder: "Enter billing line 2",
@@ -18,6 +20,7 @@ export const line2 = input({
   comments: "Line 2 of the billing address.",
   clean: cleanStringInput,
 });
+
 export const line3 = input({
   label: "Billing Line 3",
   placeholder: "Enter billing line 3",
@@ -27,6 +30,7 @@ export const line3 = input({
   example: "350 Mountain View Dr.",
   clean: cleanStringInput,
 });
+
 export const line4 = input({
   label: "Billing Line 4",
   placeholder: "Enter billing line 4",
@@ -36,6 +40,7 @@ export const line4 = input({
   comments: "Line 4 of the billing address.",
   clean: cleanStringInput,
 });
+
 export const lat = input({
   label: "Billing Latitude",
   placeholder: "Enter latitude",
@@ -45,6 +50,7 @@ export const lat = input({
   comments: "The latitude of the billing address.",
   clean: cleanStringInput,
 });
+
 export const long = input({
   label: "Billing Longitude",
   placeholder: "Enter longitude",
@@ -54,6 +60,7 @@ export const long = input({
   comments: "The longitude of the billing address.",
   clean: cleanStringInput,
 });
+
 export const billingAddressId = input({
   label: "Billing Address ID",
   placeholder: "Enter billing address ID",

@@ -1,7 +1,9 @@
 import { util } from "@prismatic-io/spectral";
+
 const throwCodeInputError = (inputLabel: string) => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     try {
@@ -15,6 +17,7 @@ export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+
 export const cleanArrayCodeInput = (value: unknown, inputLabel: string) => {
   const object = cleanCodeInput(value, inputLabel);
   if (object && typeof object === "object" && !Array.isArray(object)) {
@@ -22,23 +25,29 @@ export const cleanArrayCodeInput = (value: unknown, inputLabel: string) => {
   }
   return object;
 };
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanIntegerInput = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const validateDate = (value: unknown, inputLabel: string): string => {
   if (typeof value !== "string") {
     throw new Error(`Date must be a string for ${inputLabel} input`);
   }
+
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateRegex.test(value)) {
     throw new Error(
       `Date must be in YYYY-MM-DD format for ${inputLabel} input`,
     );
   }
+
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
     throw new Error(`Invalid date provided for ${inputLabel} input`);
   }
+
   return value;
 };

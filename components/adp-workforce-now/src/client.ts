@@ -9,6 +9,7 @@ import {
   normalizeCertificateValue,
   validateConnection,
 } from "./util";
+
 export const createClient = async (
   context: ActionContext,
   connection: Connection,
@@ -17,14 +18,18 @@ export const createClient = async (
   validateConnection(connection);
   const { sslCert, sslKey } = connection.fields;
   const { accessToken } = await fetchToken(context, connection, debug);
+
   const baseUrl = getBaseUrl(connection);
   const axiosClient = createCertClient(sslCert, sslKey, baseUrl, {
     Authorization: `Bearer ${accessToken}`,
     roleCode: "practitioner",
   });
+
   addInterceptorsToClient(axiosClient, context, debug);
+
   return axiosClient;
 };
+
 export const fetchToken = async (
   context: ActionContext,
   connection: Connection,
@@ -32,11 +37,14 @@ export const fetchToken = async (
 ): Promise<PersistedToken> => {
   const { clientId, clientSecret, sslCert, sslKey, subscriberOrganizationOID } =
     connection.fields;
+
   const executionStateKey = `ADP - ${connection.configVarKey}`;
   const baseUrl = getBaseUrl(connection);
   const tokenEndpoint = getTokenEndpoint(connection);
+
   let accessToken = "";
   let expiresDate = 0;
+
   const persistedToken = context.executionState[
     executionStateKey
   ] as PersistedToken;
@@ -50,6 +58,7 @@ export const fetchToken = async (
   if (!accessToken) {
     const tokenClient = createCertClient(sslCert, sslKey, baseUrl);
     addInterceptorsToClient(tokenClient, context, debug);
+
     if (subscriberOrganizationOID) {
       const accessTokenData = await getAccessToken(
         tokenClient,
@@ -57,19 +66,23 @@ export const fetchToken = async (
         clientId,
         clientSecret,
       );
+
       const suscribedOrgClient = createCertClient(sslCert, sslKey, baseUrl, {
         Authorization: `Bearer ${accessTokenData.access_token}`,
       });
       addInterceptorsToClient(suscribedOrgClient, context, debug);
+
       const suscriberData = await getSubscriberApplicationCredentials(
         suscribedOrgClient,
         subscriberOrganizationOID,
       );
+
       const { subscriberClientId, subscriberClientSecret } =
         getSubscribersClientIdAndSecret(
           suscriberData,
           subscriberOrganizationOID,
         );
+
       const apiAccessToken = await getAccessToken(
         tokenClient,
         tokenEndpoint,
@@ -95,10 +108,14 @@ export const fetchToken = async (
       expiresDate = now + expires_in;
     }
   }
+
   const newState: PersistedToken = { accessToken, expiresDate };
+
   context.executionState[executionStateKey] = newState;
+
   return { accessToken, expiresDate };
 };
+
 export const addInterceptorsToClient = (
   client: AxiosInstance,
   context: ActionContext,
@@ -116,6 +133,7 @@ export const addInterceptorsToClient = (
     return request;
   });
 };
+
 const getAccessToken = async (
   client: AxiosInstance,
   tokenEndpoint: unknown,
@@ -138,6 +156,7 @@ const getAccessToken = async (
   );
   return data;
 };
+
 const createCertClient = (
   sslCert: unknown,
   sslKey: unknown,
@@ -154,6 +173,7 @@ const createCertClient = (
     }),
   });
 };
+
 const getSubscriberApplicationCredentials = async (
   client: AxiosInstance,
   subscriberOrganizationOID: unknown,
@@ -181,6 +201,7 @@ const getSubscriberApplicationCredentials = async (
   );
   return data;
 };
+
 const getSubscribersClientIdAndSecret = (
   data: ConsumerApplicationSubscription,
   subscriberOrganizationOID: unknown,
@@ -202,6 +223,7 @@ const getSubscribersClientIdAndSecret = (
     subscriberClientSecret: clientSecret,
   };
 };
+
 export const createSimpleClient = async (
   connection: Connection,
 ): Promise<AxiosInstance> => {
@@ -209,6 +231,7 @@ export const createSimpleClient = async (
   const { sslCert, sslKey, clientId, clientSecret } = connection.fields;
   const baseUrl = getBaseUrl(connection);
   const tokenEndpoint = getTokenEndpoint(connection);
+
   const tokenClient = axios.create({
     baseURL: baseUrl,
     httpsAgent: new https.Agent({
@@ -217,6 +240,7 @@ export const createSimpleClient = async (
       key: normalizeCertificateValue(sslKey),
     }),
   });
+
   const { data: tokenData } = await tokenClient.post(
     util.types.toString(tokenEndpoint),
     {},
@@ -231,8 +255,10 @@ export const createSimpleClient = async (
       },
     },
   );
+
   if (!tokenData?.access_token)
     throw new Error("ADP token response did not include an access token.");
+
   return axios.create({
     baseURL: baseUrl,
     headers: {

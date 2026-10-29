@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { updateAssetExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateAssetInputs as inputs } from "../../inputs";
 import { assetOutputSchema } from "../../outputSchemas";
+
 export const updateAsset = action({
   display: {
     label: "Update Asset (Deprecated)",
@@ -27,6 +28,7 @@ export const updateAsset = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       name: additionalFields.name,
       asset_type_id: assetTypeId,
@@ -40,7 +42,9 @@ export const updateAsset = action({
       group_id: groupId,
       ...assetsAdditionalFields,
     };
+
     const { data } = await client.put(`/assets/${assetDisplayId}`, payload);
+
     return {
       data,
     };

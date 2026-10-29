@@ -5,6 +5,7 @@ import { createChangeInputs } from "../../inputs";
 import { changeFullSchema } from "../../outputSchemas";
 import type { ChangeCreateVo, SingleGuidVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createChange = action({
   display: {
     label: "Create Change",
@@ -39,6 +40,7 @@ export const createChange = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const requestPayload: ChangeCreateVo = {
         title: title || undefined,
         description: description || undefined,
@@ -53,6 +55,7 @@ export const createChange = action({
           ? { value: numberSequencePrefix }
           : undefined,
       };
+
       if (routings && Array.isArray(routings) && routings.length > 0) {
         const validRoutings = (routings as string[])
           .filter(
@@ -63,10 +66,12 @@ export const createChange = action({
           requestPayload.routings = validRoutings;
         }
       }
+
       requestPayload.additionalAttributes = resolveAdditionalAttributes(
         { additionalAttributeJson, additionalAttributes, attributeDefinitions },
         context,
       );
+
       context.logger.info("Creating change in Arena", {
         changeTitle: title,
         hasCategory: !!categoryGuid,
@@ -83,12 +88,15 @@ export const createChange = action({
             ? attributeDefinitions.length
             : 0,
       });
+
       const { data } = await client.post("/changes", requestPayload);
+
       context.logger.info("Change created successfully", {
         changeGuid: data.guid,
         changeNumber: data.number,
         changeTitle: data.title,
       });
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Change");

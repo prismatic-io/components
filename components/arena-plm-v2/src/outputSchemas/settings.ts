@@ -16,6 +16,7 @@ export const apiUseageSchema = {
     },
   },
 };
+
 export const exportSchema = {
   type: "object" as const,
   properties: {
@@ -33,6 +34,7 @@ export const exportSchema = {
     },
   },
 };
+
 export const fileAccessSchema = {
   type: "object" as const,
   properties: {
@@ -68,6 +70,7 @@ export const fileAccessSchema = {
     },
   },
 };
+
 export const listApiUsagesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -75,6 +78,7 @@ export const listApiUsagesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listRecentActivityExportsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -82,6 +86,7 @@ export const listRecentActivityExportsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listRecentActivityFileAccessesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -89,6 +94,7 @@ export const listRecentActivityFileAccessesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const reportRunSchema = {
   type: "object" as const,
   properties: {
@@ -114,6 +120,7 @@ export const reportRunSchema = {
     },
   },
 };
+
 export const listRecentActivityReportRunsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -121,6 +128,7 @@ export const listRecentActivityReportRunsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const userAccessSchema = {
   type: "object" as const,
   properties: {
@@ -140,6 +148,7 @@ export const userAccessSchema = {
     },
   },
 };
+
 export const listRecentActivityUserAccessesOutputSchema = {
   type: "object" as const,
   properties: {

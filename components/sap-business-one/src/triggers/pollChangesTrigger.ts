@@ -13,6 +13,7 @@ import {
   resolvePollingRecordChanges,
   resolvePollWindow,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -34,6 +35,7 @@ export const pollChangesTrigger = pollingTrigger({
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState | undefined;
     const { since, isBackfill } = resolvePollWindow(
@@ -41,6 +43,7 @@ export const pollChangesTrigger = pollingTrigger({
       params.lookBackDate,
       now,
     );
+
     if (!isBackfill && !params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -48,21 +51,27 @@ export const pollChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const client = await createClient(
       params.connection,
       context,
       context.debug.enabled,
     );
+
     const changes = await fetchChanges(client, config, since, isBackfill);
+
     const created = isBackfill || params.showNewRecords ? changes.created : [];
     const updated =
       isBackfill || params.showUpdatedRecords ? changes.updated : [];
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${changes.total} ${params.pollResourceType} records: ${created.length} created, ${updated.length} updated since last poll.`,
       );
     }
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: { ...payload, body: { data: { created, updated } } },
       polledNoChanges: created.length + updated.length === 0,

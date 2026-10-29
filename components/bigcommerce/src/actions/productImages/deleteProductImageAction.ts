@@ -8,6 +8,7 @@ import {
   deleteProductImageProductId,
   storeHash,
 } from "../../inputs";
+
 export const deleteProductImageAction = action({
   display: {
     label: "Delete Product Image",
@@ -23,6 +24,7 @@ export const deleteProductImageAction = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${product_id}/images/${image_id}`;
+
     try {
       const response = await client.delete(endpoint);
       return {
@@ -34,6 +36,7 @@ export const deleteProductImageAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { deleteTimeEntryExamplePayload } from "../../examplePayloads";
 import { deleteTimeEntryInputs } from "../../inputs";
 import { deleteTimeEntryOutputSchema } from "../../outputSchemas";
+
 export const deleteTimeEntry = action({
   display: {
     label: "Delete Time Entry",
@@ -19,9 +20,11 @@ export const deleteTimeEntry = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(
       `/team/${teamId}/time_entries/${timerId}`,
     );
+
     return {
       data,
     };

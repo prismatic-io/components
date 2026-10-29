@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { createSoftwareExamplePayload as examplePayload } from "../../examplePayloads";
 import { createSoftwareInputs as inputs } from "../../inputs";
 import { softwareOutputSchema } from "../../outputSchemas";
+
 export const createSoftware = action({
   display: {
     label: "Create Software",
@@ -25,6 +26,7 @@ export const createSoftware = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       application: {
         name,
@@ -39,7 +41,9 @@ export const createSoftware = action({
         ...softwareAdditionalFields,
       },
     };
+
     const { data } = await client.post(`/applications`, payload);
+
     return {
       data,
     };

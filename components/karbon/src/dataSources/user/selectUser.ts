@@ -3,6 +3,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import type { User } from "../../interfaces/User";
 import { connection } from "../../inputs/shared";
 import { getPaginatedData } from "../../utils";
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -23,6 +24,7 @@ export const selectUser = dataSource({
       key: user.Id,
       label: `${user.Name} ${user.EmailAddress}`,
     }));
+
     return { result: objects };
   },
 });

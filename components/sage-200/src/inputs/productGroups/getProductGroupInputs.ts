@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 const productGroupId = input({
   label: "Product Group ID",
   comments: "The ID of the product group to retrieve.",
@@ -10,6 +11,7 @@ const productGroupId = input({
   dataSource: "selectProductGroup",
   clean: cleanStringInput,
 });
+
 export default {
   productGroupId,
 };

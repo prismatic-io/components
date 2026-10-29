@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getZendeskClient } from "../../client";
 import { updateLeadExamplePayload } from "../../examplePayloads";
 import { updateLeadInputs } from "../../inputs";
+
 export const updateLead = action({
   display: {
     label: "Update Lead",
@@ -89,6 +90,7 @@ export const updateLead = action({
           },
         },
       );
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);

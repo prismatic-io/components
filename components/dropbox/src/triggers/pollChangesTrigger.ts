@@ -21,6 +21,7 @@ import {
   resolveSyncCursor,
   resolveSyncPageSize,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Files",
@@ -47,6 +48,7 @@ export const pollChangesTrigger = pollingTrigger({
     const stateKey = getSyncCursorStateKey(context);
     const incoming = payload.paginationState as SyncCursor | undefined;
     const lookBackDate = String(params.lookBackDate ?? "");
+
     if (!lookBackDate) {
       const baseline = await dbx.filesListFolderGetLatestCursor({
         path: settings.path,
@@ -61,6 +63,7 @@ export const pollChangesTrigger = pollingTrigger({
         stateKey,
       );
     }
+
     const page = await fetchSyncPage(
       dbx,
       settings,
@@ -70,15 +73,18 @@ export const pollChangesTrigger = pollingTrigger({
         cleanInitialSyncPageSize(params.initialSyncPageSize),
       ),
     );
+
     const filtered: ListChangesResult = {
       ...page,
       entries: filterEntriesByLookBackDate(page.entries, lookBackDate),
     };
+
     if (context.debug?.enabled) {
       context.logger.debug(
         `Initial sync ${incoming ? "continued" : "started"} for ${settings.path || "the account root"} from ${lookBackDate}: ${page.entries.length} entries read, ${filtered.entries.length} within the look-back window, ${page.has_more ? "more pages remain" : "backfill complete"}`,
       );
     }
+
     return buildSyncRound(payload, filtered, settings, stateKey);
   },
   onDeployResolver: {
@@ -95,16 +101,19 @@ export const pollChangesTrigger = pollingTrigger({
       params.userType,
       params.teamMemberId,
     );
+
     const incoming = payload.paginationState as SyncCursor | undefined;
     const established = resolveListChangesCursor(context, settings);
     const cursor =
       incoming?.cursor ??
       established.value?.cursor ??
       resolveSyncCursor(context, settings)?.cursor;
+
     const stateKey = established.key;
     const legacyCleanup = established.isLegacy
       ? { instanceState: { [getLegacyStateKey(context)]: null } }
       : {};
+
     if (!cursor) {
       const baseline = await dbx.filesListFolderGetLatestCursor({
         path: settings.path,
@@ -128,17 +137,20 @@ export const pollChangesTrigger = pollingTrigger({
         ...legacyCleanup,
       };
     }
+
     const page = await fetchSyncPage(
       dbx,
       settings,
       cursor,
       MAX_LIST_FOLDER_LIMIT,
     );
+
     if (context.debug?.enabled) {
       context.logger.debug(
         `Polled ${settings.path || "the account root"}: ${page.entries.length} entries, ${page.has_more ? "more pages remain" : "caught up"}`,
       );
     }
+
     return {
       ...buildSyncRound(payload, page, settings, stateKey),
       ...legacyCleanup,

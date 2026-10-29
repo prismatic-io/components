@@ -3,33 +3,31 @@ import { resolvePollingRecordChanges } from "../util";
 import { customersPollingTrigger } from "./customersPollingTrigger";
 import { ordersPollingTrigger } from "./ordersPollingTrigger";
 import { productsPollingTrigger } from "./productsPollingTrigger";
+
 interface BatchableTrigger {
   triggerResolverSupport?: string;
-  batchConfig?: {
-    batchSize: number;
-    concurrentBatchLimit?: number;
-  };
+  batchConfig?: { batchSize: number; concurrentBatchLimit?: number };
   triggerResolver?: {
     resolveItems?: (
       context: never,
       result: never,
-    ) => {
-      changeType: string;
-      record: unknown;
-    }[];
+    ) => { changeType: string; record: unknown }[];
     getNextPaginationState?: (context: never, result: never) => unknown;
   };
 }
+
 const pollingTriggers: [string, BatchableTrigger][] = [
   ["New and Updated Customers", customersPollingTrigger as BatchableTrigger],
   ["New and Updated Orders", ordersPollingTrigger as BatchableTrigger],
   ["New and Updated Products", productsPollingTrigger as BatchableTrigger],
 ];
+
 const resolveThrough = (trigger: BatchableTrigger, data: unknown) =>
   trigger.triggerResolver?.resolveItems?.(
     {} as never,
     { payload: { body: { data } } } as never,
   );
+
 const createdOrder = {
   id: "gid://shopify/Order/10079785100",
   name: "#1001",
@@ -42,6 +40,7 @@ const updatedOrder = {
   createdAt: "2024-11-08T09:00:00Z",
   updatedAt: "2024-11-10T14:22:00Z",
 };
+
 describe("polling trigger batching", () => {
   test.each(
     pollingTriggers,
@@ -53,6 +52,7 @@ describe("polling trigger batching", () => {
     });
     expect(trigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
   });
+
   test("resolvePollingRecordChanges flattens created then updated into tagged items", () => {
     expect(
       resolvePollingRecordChanges({
@@ -64,12 +64,14 @@ describe("polling trigger batching", () => {
       { changeType: "updated", record: updatedOrder },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual(
       [],
     );
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolvePollingRecordChanges tolerates an individually absent array", () => {
     const createdOnly = {
       created: [createdOrder],
@@ -77,6 +79,7 @@ describe("polling trigger batching", () => {
     const updatedOnly = {
       updated: [updatedOrder],
     } as unknown as PollingChangesObject<typeof updatedOrder>;
+
     expect(resolvePollingRecordChanges(createdOnly)).toEqual([
       { changeType: "created", record: createdOrder },
     ]);
@@ -84,6 +87,7 @@ describe("polling trigger batching", () => {
       { changeType: "updated", record: updatedOrder },
     ]);
   });
+
   test.each(
     pollingTriggers,
   )("%s resolveItems tags the records it reads off payload.body.data", (_label, trigger) => {
@@ -97,6 +101,7 @@ describe("polling trigger batching", () => {
       { changeType: "updated", record: updatedOrder },
     ]);
   });
+
   test.each(
     pollingTriggers,
   )("%s resolveItems returns [] when perform reported no changes", (_label, trigger) => {
@@ -117,6 +122,7 @@ describe("polling trigger batching", () => {
         {} as never,
         { payload: { paginationState } } as never,
       );
+
     expect(next(cursor)).toEqual(cursor);
     expect(next(undefined)).toBeNull();
   });

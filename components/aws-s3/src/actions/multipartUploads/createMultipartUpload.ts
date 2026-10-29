@@ -5,6 +5,7 @@ import { createMultipartUploadExamplePayload } from "../../examplePayloads";
 import { createMultipartUploadInputs } from "../../inputs";
 import { createMultipartUploadOutputSchema } from "../../outputSchemas";
 import { encodeTags } from "../../utils";
+
 export const createMultipartUpload = action({
   display: {
     label: "Create Multipart Upload",
@@ -41,6 +42,7 @@ export const createMultipartUpload = action({
       Tagging: encodeTags(tagging),
     });
     const result = await s3.send(command);
+
     return { data: result };
   },
   inputs: createMultipartUploadInputs,

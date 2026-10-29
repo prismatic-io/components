@@ -15,6 +15,7 @@ import {
   systemLogsWindowBounds,
 } from "../util/polling";
 import { getBaseUrl } from "../util/util";
+
 export const newSystemLogsPollingTrigger = pollingTrigger({
   display: {
     label: "New System Logs",
@@ -49,6 +50,7 @@ export const newSystemLogsPollingTrigger = pollingTrigger({
         ...systemLogsWindowBounds(context.batch?.enabled === true),
       },
     );
+
     const held = window.next ?? link;
     context.polling.setState({
       seeded: true,
@@ -56,6 +58,7 @@ export const newSystemLogsPollingTrigger = pollingTrigger({
     } satisfies SystemLogsPollingState);
     const next: SystemLogsCursor | null =
       window.hasMore && window.next ? { next: window.next, filter } : null;
+
     return {
       payload: {
         ...payload,

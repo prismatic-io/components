@@ -9,6 +9,7 @@ import {
   str,
   visibilityEnum,
 } from "./shared";
+
 const groupProperties = {
   id: num,
   name: str,
@@ -41,7 +42,9 @@ const groupProperties = {
   file_template_project_id: nullableNum,
   ip_restriction_ranges: nullableStr,
 };
+
 export const groupSchema = obj(groupProperties);
+
 export const groupDetailSchema = obj({
   ...groupProperties,
   runners_token: str,
@@ -64,6 +67,9 @@ export const groupDetailSchema = obj({
   require_sha_for_merge: bool,
   lock_require_sha_for_merge: bool,
 });
+
 export const groupListSchema = list(groupSchema);
+
 export const getGroupOutputSchema = groupDetailSchema;
+
 export const listGroupsOutputSchema = groupListSchema;

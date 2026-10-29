@@ -1,5 +1,6 @@
 import { connection } from "../common";
 import { includeArchived, listName } from "./common";
+
 export const getCompanyListInputs = {
   connection,
   listName: {

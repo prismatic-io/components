@@ -4,6 +4,7 @@ import {
   publishSysProperties,
   tagsMetadataSchema,
 } from "./shared";
+
 const assetSchema = {
   type: "object" as const,
   properties: {
@@ -41,14 +42,22 @@ const assetSchema = {
     },
   },
 };
+
 export const listAssetsOutputSchema = {
   type: "array" as const,
   items: assetSchema,
 };
+
 export const createAssetOutputSchema = assetSchema;
+
 export const updateAssetOutputSchema = assetSchema;
+
 export const getAssetOutputSchema = assetSchema;
+
 export const publishAnAssetOutputSchema = assetSchema;
+
 export const unpublishAnAssetOutputSchema = assetSchema;
+
 export const deleteAssetOutputSchema = emptyResultSchema;
+
 export const processAssetOutputSchema = emptyResultSchema;

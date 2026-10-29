@@ -4,6 +4,7 @@ import { listAttachmentsV3ExamplePayload } from "../../../examplePayloads/v3/att
 import { listAttachmentsV3Inputs } from "../../../inputs/v3/attachments";
 import type { V3Attachment } from "../../../types";
 import { generatePayload, paginateV3 } from "../../../util";
+
 export const listAttachmentsV3 = action({
   display: {
     label: "List Attachments",
@@ -22,6 +23,7 @@ export const listAttachmentsV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const filterParams = generatePayload({
       ids: idFilters.attachmentIds,
       application_ids: idFilters.applicationIds,
@@ -32,6 +34,7 @@ export const listAttachmentsV3 = action({
       "updated_at[gte]": dateRangeFilters.updatedAtGte,
       "updated_at[lte]": dateRangeFilters.updatedAtLte,
     });
+
     const data = await paginateV3<V3Attachment>(
       client,
       "/attachments",

@@ -543,6 +543,7 @@ export const disputeOutputSchema = {
     "status",
   ],
 };
+
 export const listDisputesOutputSchema = {
   type: "object" as const,
   properties: {

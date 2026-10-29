@@ -6,6 +6,7 @@ import type { UserChannel } from "./UserChannel";
 import type { User } from "./User";
 import type { Participant } from "./Participant";
 import type { Webinar } from "./Webinar";
+
 export interface PaginationResults {
   next_page_token: string | null;
   page_count: number;

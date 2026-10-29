@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createStripeClient } from "../client";
 import { selectCheckoutSessionInputs } from "../inputs";
+
 export const selectCheckoutSession = dataSource({
   display: {
     label: "Select Checkout Session",
@@ -9,11 +10,14 @@ export const selectCheckoutSession = dataSource({
   },
   dataSourceType: "picklist",
   inputs: selectCheckoutSessionInputs,
+
   perform: async (_context, { stripeConnection }) => {
     const client = createStripeClient({
       stripeConnection,
     });
+
     const { data } = await client.checkout.sessions.list({ limit: 100 });
+
     return {
       result: data
         .map<Element>((session) => ({

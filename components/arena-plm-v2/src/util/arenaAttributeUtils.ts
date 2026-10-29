@@ -4,7 +4,9 @@ import type {
   CategoryAttributeDefinitionVo,
 } from "../types";
 import { getRecordString, isRecord } from "./typeGuards";
+
 export const MULTI_SELECT_DELIMITER = "Ɖ";
+
 export const parseArenaAttributeValue = (
   value: unknown,
   attributeDef?: CategoryAttributeDefinitionVo,
@@ -12,7 +14,9 @@ export const parseArenaAttributeValue = (
   if (!attributeDef || value === null || value === undefined) {
     return value;
   }
+
   const { fieldType, multiSelect } = attributeDef;
+
   if (multiSelect && typeof value === "string") {
     if (value.includes(MULTI_SELECT_DELIMITER)) {
       return value
@@ -22,6 +26,7 @@ export const parseArenaAttributeValue = (
     }
     return [value.trim()].filter((v) => v !== "");
   }
+
   if (["NUMBER", "POSITIVE_DOUBLE", "COST"].includes(fieldType)) {
     if (typeof value === "number") {
       return value;
@@ -31,6 +36,7 @@ export const parseArenaAttributeValue = (
       return Number.isNaN(parsed) ? value : parsed;
     }
   }
+
   if (["INTEGER", "POSITIVE_INTEGER"].includes(fieldType)) {
     if (typeof value === "number") {
       return Math.floor(value);
@@ -40,6 +46,7 @@ export const parseArenaAttributeValue = (
       return Number.isNaN(parsed) ? value : parsed;
     }
   }
+
   if (fieldType === "BOOLEAN") {
     if (typeof value === "boolean") {
       return value;
@@ -54,31 +61,37 @@ export const parseArenaAttributeValue = (
       }
     }
   }
+
   return value;
 };
+
 export interface AdditionalAttributeInputs {
   additionalAttributeJson?: unknown;
   additionalAttributes?: unknown;
   attributeDefinitions?: unknown;
 }
+
 const indexDefinitionsByApiName = (
   attributeDefinitions: unknown,
 ): Map<string, CategoryAttributeDefinitionVo> => {
   const byApiName = new Map<string, CategoryAttributeDefinitionVo>();
+
   if (!Array.isArray(attributeDefinitions)) {
     return byApiName;
   }
+
   for (const definition of attributeDefinitions as CategoryAttributeDefinitionVo[]) {
     byApiName.set(definition.apiName, definition);
   }
+
   return byApiName;
 };
+
 export interface AttributeTraceContext {
   logger: ActionLogger;
-  debug: {
-    enabled: boolean;
-  };
+  debug: { enabled: boolean };
 }
+
 export const resolveAdditionalAttributes = (
   {
     additionalAttributeJson,
@@ -98,15 +111,19 @@ export const resolveAdditionalAttributes = (
     }
     return undefined;
   }
+
   if (!Array.isArray(additionalAttributes)) {
     return undefined;
   }
+
   const definitionsByApiName = indexDefinitionsByApiName(attributeDefinitions);
+
   const resolved = (additionalAttributes as unknown[]).flatMap((attribute) => {
     const apiName = getRecordString(attribute, "key")?.trim();
     if (!apiName) {
       return [];
     }
+
     const rawValue = isRecord(attribute) ? attribute.value : undefined;
     if (rawValue === null || rawValue === undefined) {
       return [];
@@ -114,8 +131,10 @@ export const resolveAdditionalAttributes = (
     if (util.types.isString(rawValue) && rawValue.trim() === "") {
       return [];
     }
+
     const definition = definitionsByApiName.get(apiName);
     const value = parseArenaAttributeValue(rawValue, definition);
+
     if (context.debug.enabled) {
       context.logger.debug("Processing attribute", {
         apiName,
@@ -126,7 +145,9 @@ export const resolveAdditionalAttributes = (
         hasDefinition: Boolean(definition),
       });
     }
+
     return [{ guid: apiName, value }];
   });
+
   return resolved.length > 0 ? resolved : undefined;
 };

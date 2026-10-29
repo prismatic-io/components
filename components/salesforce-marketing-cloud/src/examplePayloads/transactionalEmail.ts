@@ -1,4 +1,5 @@
 import type { PaginatedResponse } from "../types";
+
 export const getEmailDefinitionExamplePayload = {
   data: {
     requestId: "c537a3f4-ea8c-40b3-81bb-41a91666c82a",
@@ -25,9 +26,8 @@ export const getEmailDefinitionExamplePayload = {
     journey: {},
   },
 };
-export const listEmailDefinitionsExamplePayload: {
-  data: PaginatedResponse;
-} = {
+
+export const listEmailDefinitionsExamplePayload: { data: PaginatedResponse } = {
   data: {
     requestId: "92639bbb-7161-4c27-a08b-e5baf6fdef50",
     definitions: [
@@ -44,16 +44,20 @@ export const listEmailDefinitionsExamplePayload: {
     pageSize: 50,
   },
 };
+
 export const createEmailDefinitionExamplePayload =
   getEmailDefinitionExamplePayload;
+
 export const updateEmailDefinitionExamplePayload =
   getEmailDefinitionExamplePayload;
+
 export const deleteEmailDefinitionExamplePayload = {
   data: {
     requestId: "c537a3f4-ea8c-40b3-81bb-41a91666c82a",
     deletedDefinitionKey: "welcome-email-def",
   },
 };
+
 export const sendEmailExamplePayload = {
   data: {
     requestId: "239a2bc3-bdcb-4f8a-9e08-28aff9f983b7",
@@ -65,6 +69,7 @@ export const sendEmailExamplePayload = {
     ],
   },
 };
+
 export const sendEmailBatchExamplePayload = {
   data: {
     requestId: "ccdb94bf-fcac-4fef-b194-08f534a2079a",
@@ -79,6 +84,7 @@ export const sendEmailBatchExamplePayload = {
     ],
   },
 };
+
 export const getEmailSendStatusExamplePayload = {
   data: {
     requestId: "30486456-ed41-46ba-96eb-06c4ff3b95d9",

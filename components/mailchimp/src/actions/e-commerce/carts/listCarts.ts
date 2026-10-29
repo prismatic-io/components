@@ -8,6 +8,7 @@ import {
   connectionInput,
 } from "../../../inputs";
 import { paginatedRequest } from "../../../utils/pagination";
+
 export const listCarts = action({
   display: {
     label: "List Carts",
@@ -15,6 +16,7 @@ export const listCarts = action({
   },
   perform: async (context, params) => {
     const client = await createClient(params.connection, context.debug.enabled);
+
     return paginatedRequest({
       client,
       endpoint: `/ecommerce/stores/${params.storeId}/carts`,
@@ -32,4 +34,5 @@ export const listCarts = action({
     connection: connectionInput,
   },
 });
+
 export default listCarts;

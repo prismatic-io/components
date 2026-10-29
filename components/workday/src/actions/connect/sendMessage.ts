@@ -5,6 +5,7 @@ import { sendMessageExamplePayload } from "../../examplePayloads";
 import { sendMessageInputs } from "../../inputs";
 import { compactObject, getIdObject } from "../../util";
 import { sendMessageOutputSchema } from "../../outputSchemas";
+
 export const sendMessage = action({
   display: {
     label: "Send Message",

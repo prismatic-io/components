@@ -4,12 +4,9 @@ import type {
   DataSourcesChangesObject,
   PagesChangesObject,
 } from "../types";
+
 export const pagesPollingTriggerExamplePayload: TriggerBaseResult<
-  TriggerPayload & {
-    body: {
-      data: PagesChangesObject;
-    };
-  }
+  TriggerPayload & { body: { data: PagesChangesObject } }
 > = {
   payload: {
     headers: {},
@@ -84,12 +81,9 @@ export const pagesPollingTriggerExamplePayload: TriggerBaseResult<
   },
   polledNoChanges: false,
 };
+
 export const dataSourcesPollingTriggerExamplePayload: TriggerBaseResult<
-  TriggerPayload & {
-    body: {
-      data: DataSourcesChangesObject;
-    };
-  }
+  TriggerPayload & { body: { data: DataSourcesChangesObject } }
 > = {
   payload: {
     headers: {},
@@ -159,12 +153,9 @@ export const dataSourcesPollingTriggerExamplePayload: TriggerBaseResult<
   },
   polledNoChanges: false,
 };
+
 export const dataSourceItemsPollingTriggerExamplePayload: TriggerBaseResult<
-  TriggerPayload & {
-    body: {
-      data: DataSourceItemsChangesObject;
-    };
-  }
+  TriggerPayload & { body: { data: DataSourceItemsChangesObject } }
 > = {
   payload: {
     headers: {},

@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { getVendorBankAccountInputs } from "../../inputs/vendor";
 import { getVendorBankAccountExamplePayload } from "../../examplePayloads";
+
 export const getVendorBankAccount = action({
   display: {
     label: "Get Vendor Bank Account",
@@ -15,6 +16,7 @@ export const getVendorBankAccount = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       id: vendorBankAccountId,
     };
@@ -23,10 +25,12 @@ export const getVendorBankAccount = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Read/VendorBankAccount.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };

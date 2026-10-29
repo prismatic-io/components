@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updatePaymentExamplePayload } from "../../examplePayloads";
 import { updatePaymentInputs } from "../../inputs";
 import { updatePaymentOutputSchema } from "../../outputSchemas";
+
 export const updatePayment = action({
   display: {
     label: "Update Payment",

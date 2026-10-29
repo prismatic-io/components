@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getAttachmentExamplePayload } from "../../examplePayloads";
 import { getAttachmentInputs } from "../../inputs";
 import { createNowApiClient } from "../../util";
+
 export const getAttachment = action({
   display: {
     label: "Get Attachment",

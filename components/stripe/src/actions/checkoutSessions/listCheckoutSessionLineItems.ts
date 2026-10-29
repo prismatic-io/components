@@ -4,6 +4,7 @@ import { listCheckoutSessionLineItemsInputs } from "../../inputs";
 import { listCheckoutSessionLineItemsOutputSchema } from "../../outputSchemas";
 import { listCheckoutSessionLineItemsExamplePayload } from "../../examplePayloads/checkoutSessions";
 import type Stripe from "stripe";
+
 export const listCheckoutSessionLineItems = action({
   display: {
     label: "List Checkout Session Line Items",
@@ -18,11 +19,13 @@ export const listCheckoutSessionLineItems = action({
       stripeConnection,
       timeout,
     });
+
     const lineItems = (await client.checkout.sessions.listLineItems(sessionId, {
       limit: pagination.limit,
       starting_after: pagination.startingAfter,
       ending_before: pagination.endingBefore,
     })) as Stripe.ApiList<Stripe.LineItem>;
+
     return {
       data: lineItems,
     };
@@ -32,5 +35,6 @@ export const listCheckoutSessionLineItems = action({
     type: "actionOutput",
     schema: listCheckoutSessionLineItemsOutputSchema,
   }),
+
   examplePayload: listCheckoutSessionLineItemsExamplePayload,
 });

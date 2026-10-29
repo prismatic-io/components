@@ -11,12 +11,15 @@ import {
   fetchAll,
   pagination,
 } from "./common";
+
 const requestersDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#requester_attributes) for more information.";
+
 const requestersAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${requestersDocumentationComments}`,
 });
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -26,6 +29,7 @@ const firstName = input({
   placeholder: "Enter first name",
   clean: util.types.toString,
 });
+
 const primaryEmail = input({
   label: "Primary Email",
   type: "string",
@@ -35,6 +39,7 @@ const primaryEmail = input({
   placeholder: "Enter primary email",
   clean: util.types.toString,
 });
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -44,6 +49,7 @@ const lastName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const jobTitle = input({
   label: "Job Title",
   type: "string",
@@ -53,6 +59,7 @@ const jobTitle = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const workPhoneNumber = input({
   label: "Work Phone Number",
   type: "string",
@@ -62,6 +69,7 @@ const workPhoneNumber = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const mobilePhoneNumber = input({
   label: "Mobile Phone Number",
   type: "string",
@@ -71,6 +79,7 @@ const mobilePhoneNumber = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const reportingManagerId = input({
   label: "Reporting Manager ID",
   type: "string",
@@ -80,6 +89,7 @@ const reportingManagerId = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 const secondaryEmails = input({
   label: "Secondary Emails",
   type: "code",
@@ -93,6 +103,7 @@ const secondaryEmails = input({
   ),
   clean: (value) => cleanArrayCodeInput(value, "Secondary Emails"),
 });
+
 const departmentIds = input({
   label: "Department IDs",
   type: "code",
@@ -102,6 +113,7 @@ const departmentIds = input({
   example: JSON.stringify([554], null, 2),
   clean: (value) => cleanArrayCodeInput(value, "Department IDs"),
 });
+
 const address = input({
   label: "Address",
   type: "string",
@@ -111,6 +123,7 @@ const address = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const requesterId = input({
   label: "Requester ID",
   type: "string",
@@ -121,12 +134,14 @@ const requesterId = input({
   dataSource: "selectRequester",
   clean: util.types.toNumber,
 });
+
 const createRequesterContactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
   comments: "Email, phone, and other contact channel details.",
   inputs: { secondaryEmails, workPhoneNumber, mobilePhoneNumber, address },
 });
+
 export const createRequesterInputs = {
   connection,
   firstName,
@@ -138,6 +153,7 @@ export const createRequesterInputs = {
   departmentIds,
   requestersAdditionalFields,
 };
+
 export const deactivateRequesterInputs = {
   connection,
   requesterId: input({
@@ -145,16 +161,19 @@ export const deactivateRequesterInputs = {
     comments: "Unique ID of the requester to deactivate.",
   }),
 };
+
 export const getRequesterInputs = {
   connection,
   requesterId,
 };
+
 export const listRequestersInputs = {
   connection,
   fetchAll,
   pagination,
   additionalQueryParams,
 };
+
 const updateRequesterContactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
@@ -171,6 +190,7 @@ const updateRequesterContactInfo = structuredObjectInput({
     address,
   },
 });
+
 export const updateRequesterInputs = {
   connection,
   requesterId: input({

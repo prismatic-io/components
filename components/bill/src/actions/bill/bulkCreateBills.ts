@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { bulkCreateBillsInputs } from "../../inputs/bill";
 import { bulkCreateBillsExamplePayload } from "../../examplePayloads";
+
 export const bulkCreateBills = action({
   display: {
     label: "Bulk Create Bills",
@@ -15,6 +16,7 @@ export const bulkCreateBills = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       bulk: billsCreateBulk,
     };
@@ -23,17 +25,17 @@ export const bulkCreateBills = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Bulk/Crud/Create/Bill.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: bulkCreateBillsExamplePayload.data,
   }),
   inputs: bulkCreateBillsInputs,

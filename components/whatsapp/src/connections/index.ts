@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const whatsAppAccessToken = connection({
   key: "whatsapp-access-token",
   display: {
@@ -15,4 +16,5 @@ export const whatsAppAccessToken = connection({
     },
   },
 });
+
 export default [whatsAppAccessToken];

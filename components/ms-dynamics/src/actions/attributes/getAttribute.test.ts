@@ -1,19 +1,25 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { getAttributeExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
+
 const { mockRetrieveAttribute } = vi.hoisted(() => ({
   mockRetrieveAttribute: vi.fn(),
 }));
+
 vi.mock("../../client", () => ({
   createCrmClient: vi
     .fn()
     .mockResolvedValue({ retrieveAttribute: mockRetrieveAttribute }),
 }));
+
 import { getAttribute } from "./getAttribute";
+
 const conn = createMockConnection();
 const ctx = createMockContext();
+
 describe("getAttribute", () => {
   afterEach(() => vi.clearAllMocks());
+
   test("happy path returns attribute data", async () => {
     mockRetrieveAttribute.mockResolvedValueOnce(
       getAttributeExamplePayload.data,
@@ -27,6 +33,7 @@ describe("getAttribute", () => {
     } as any);
     expect(result.data).toEqual(getAttributeExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     mockRetrieveAttribute.mockRejectedValueOnce(
       new Error("Attribute not found"),

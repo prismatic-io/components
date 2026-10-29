@@ -14,6 +14,7 @@ import {
   shipToName,
 } from "../../inputs/salesOrders/createSalesOrderInputs";
 import type { SalesOrder } from "../../interfaces";
+
 export const createSalesOrder = action({
   display: {
     label: "Create Sales Order",
@@ -24,6 +25,7 @@ export const createSalesOrder = action({
     context,
     {
       additionalProperties,
+
       email,
       sellToAddressLine1,
       shipToAddressLine1,
@@ -52,10 +54,12 @@ export const createSalesOrder = action({
       currencyCode,
       customerId,
     };
+
     const { data } = await client.post<SalesOrder>(
       `/companies(${companyId})/salesOrders`,
       payload,
     );
+
     return { data };
   },
   inputs: {

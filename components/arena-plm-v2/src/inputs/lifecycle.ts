@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalObject, toOptionalString } from "../util";
 import { changeGuidInput, connectionInput } from "./common";
+
 const changeLifecycleStatusInput = input({
   label: "Target Status",
   type: "string",
@@ -24,6 +25,7 @@ const changeLifecycleStatusInput = input({
   ],
   clean: util.types.toString,
 });
+
 const changeLifecycleFromStatusInput = input({
   label: "From Status",
   type: "string",
@@ -47,6 +49,7 @@ const changeLifecycleFromStatusInput = input({
   ],
   clean: toOptionalString,
 });
+
 const changeLifecycleCommentInput = input({
   label: "Comment",
   type: "text",
@@ -56,6 +59,7 @@ const changeLifecycleCommentInput = input({
   example: "Approved by engineering team after review",
   clean: toOptionalString,
 });
+
 const changeLifecycleAdministratorsInput = input({
   label: "Administrators",
   type: "data",
@@ -65,6 +69,7 @@ const changeLifecycleAdministratorsInput = input({
   example: '[{"guid": "abc123-def456-ghi789"}]',
   clean: toOptionalObject,
 });
+
 const changeAdminNeedConfigInput = input({
   label: "Administrator Configuration Needed",
   type: "boolean",
@@ -74,6 +79,7 @@ const changeAdminNeedConfigInput = input({
     "When true, administrator configuration is needed for this transition.",
   clean: util.types.toBool,
 });
+
 const changeLifecycleImplementationStatusInput = input({
   label: "Implementation Status",
   type: "data",
@@ -83,6 +89,7 @@ const changeLifecycleImplementationStatusInput = input({
   example: '{"guid": "status-guid", "value": "IN_PROGRESS"}',
   clean: toOptionalObject,
 });
+
 export const changeLifecycleStatusInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,

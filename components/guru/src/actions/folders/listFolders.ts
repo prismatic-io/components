@@ -3,6 +3,7 @@ import { getGuruClient } from "../../client";
 import { listFoldersPayload } from "../../examplePayloads";
 import { listFoldersInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
+
 export const listFolders = action({
   display: {
     label: "List Folders",
@@ -10,16 +11,19 @@ export const listFolders = action({
   },
   perform: async (context, { connection, q, search, fetchAll }) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const queryParams = {
       q,
       search,
     };
+
     const data = await fetchGuruResults(
       client,
       "/folders",
       fetchAll,
       queryParams,
     );
+
     return { data };
   },
   inputs: listFoldersInputs,

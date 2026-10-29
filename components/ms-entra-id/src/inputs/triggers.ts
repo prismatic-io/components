@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanChangeType } from "../util";
 import { connection, expirationDateTime } from "./common";
+
 const changeType = input({
   label: "Change Type",
   type: "string",
@@ -15,17 +16,20 @@ const changeType = input({
   example: "updated",
   clean: cleanChangeType,
 });
+
 const expirationTriggerDateTime = input({
   ...expirationDateTime,
   required: false,
   comments:
     "The date and time when the trigger subscription expires. If not specified, the subscription defaults to 29 days from the current date and time. This trigger must be reactivated after expiration.",
 });
+
 export const userTriggerInputs = {
   connection,
   changeType,
   expirationTriggerDateTime,
 };
+
 export const groupTriggerInputs = {
   connection,
   changeType,

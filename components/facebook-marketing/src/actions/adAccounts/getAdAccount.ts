@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getAdAccountResponse } from "../../examplePayloads";
 import { getAdAccountInputs } from "../../inputs";
+
 export const getAdAccount = action({
   display: {
     label: "Get Ad Account",
@@ -9,11 +10,13 @@ export const getAdAccount = action({
   },
   perform: async (context, { version, connection, adAccountId, fields }) => {
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await client.get(`/${adAccountId}`, {
       params: {
         fields,
       },
     });
+
     return {
       data,
     };

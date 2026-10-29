@@ -3,6 +3,7 @@ import {
   OAuth2PkceMethod,
   OAuth2Type,
 } from "@prismatic-io/spectral";
+
 export const salesforceOAuth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",

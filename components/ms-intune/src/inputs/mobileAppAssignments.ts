@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection, fetchAll, odataParams } from "./common";
 import { intent, mobileAppId, settings, target } from "./mobileApps";
+
 const mobileAppAssignmentId = input({
   label: "Mobile App Assignment ID",
   comments: "Unique Identifier for the mobile app assignment to get.",
@@ -11,6 +12,7 @@ const mobileAppAssignmentId = input({
   clean: util.types.toString,
   dataSource: "selectMobileAppAssignment",
 });
+
 export const createMobileAppAssignmentInputs = {
   connection,
   mobileAppId: {
@@ -21,6 +23,7 @@ export const createMobileAppAssignmentInputs = {
   target,
   settings,
 };
+
 export const deleteMobileAppAssignmentInputs = {
   connection,
   mobileAppId: {
@@ -32,17 +35,20 @@ export const deleteMobileAppAssignmentInputs = {
     comments: "The ID of the mobile app assignment to delete.",
   },
 };
+
 export const getMobileAppAssignmentInputs = {
   connection,
   mobileAppId,
   mobileAppAssignmentId,
 };
+
 export const listMobileAppAssignmentsInputs = {
   connection,
   mobileAppId,
   fetchAll,
   ...odataParams,
 };
+
 export const updateMobileAppAssignmentInputs = {
   connection,
   mobileAppId: {

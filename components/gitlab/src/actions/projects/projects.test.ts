@@ -13,11 +13,14 @@ import { getCurrentUser } from "../users/getCurrentUser";
 import { listUsers } from "../users/listUsers";
 import { getProject } from "./getProject";
 import { listProjects } from "./listProjects";
+
 const exampleGroup = listGroupsExamplePayload.data[0];
 const exampleProject = getProjectExamplePayload.data;
 const exampleUser = listUsersExamplePayload.data[0];
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
+
 test("List Projects filters by membership and search", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects")
@@ -32,6 +35,7 @@ test("List Projects filters by membership and search", async () => {
   });
   expect(result?.data).toEqual([exampleProject]);
 });
+
 test("Get Project accepts an encoded path", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/acme%2Fpayments-service")
@@ -42,6 +46,7 @@ test("Get Project accepts an encoded path", async () => {
   });
   expect(result?.data).toEqual(exampleProject);
 });
+
 test("List Groups and Get Group", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/groups")
@@ -64,6 +69,7 @@ test("List Groups and Get Group", async () => {
     (await invoke(getGroup, { connection, group: "acme" })).result?.data,
   ).toEqual(exampleGroup);
 });
+
 test("Get Current User and List Users", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/user")
@@ -86,6 +92,7 @@ test("Get Current User and List Users", async () => {
     ).result?.data,
   ).toEqual([exampleUser]);
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Not Found" };
@@ -93,6 +100,7 @@ describe("error paths", () => {
     fetchAll: false,
     pagination: { perPage: 0, page: undefined },
   };
+
   test("List Projects rejects on 404", async () => {
     nock(GITLAB_URL).get("/api/v4/projects").query(true).reply(404, notFound);
     await expect(
@@ -104,18 +112,21 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Get Project rejects on 404", async () => {
     nock(GITLAB_URL).get("/api/v4/projects/999").reply(404, notFound);
     await expect(
       invoke(getProject, { connection, project: "999" }),
     ).rejects.toThrow();
   });
+
   test("List Groups rejects on 404", async () => {
     nock(GITLAB_URL).get("/api/v4/groups").query(true).reply(404, notFound);
     await expect(
       invoke(listGroups, { connection, ...paging, search: undefined }),
     ).rejects.toThrow();
   });
+
   test("Get Group rejects on 404", async () => {
     nock(GITLAB_URL)
       .get("/api/v4/groups/missing")
@@ -125,10 +136,12 @@ describe("error paths", () => {
       invoke(getGroup, { connection, group: "missing" }),
     ).rejects.toThrow();
   });
+
   test("Get Current User rejects on 404", async () => {
     nock(GITLAB_URL).get("/api/v4/user").reply(404, notFound);
     await expect(invoke(getCurrentUser, { connection })).rejects.toThrow();
   });
+
   test("List Users rejects on 404", async () => {
     nock(GITLAB_URL).get("/api/v4/users").query(true).reply(404, notFound);
     await expect(

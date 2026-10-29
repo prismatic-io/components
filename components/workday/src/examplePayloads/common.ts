@@ -25,6 +25,7 @@ export const getWorkerBusinessTitleChangesExamplePayload = {
     total: 1,
   },
 };
+
 export const postWorkerBusinessTitleChangeExamplePayload = {
   data: {
     proposedBusinessTitle: "Senior Sales Representative",
@@ -33,6 +34,7 @@ export const postWorkerBusinessTitleChangeExamplePayload = {
     descriptor: "Business Title Change",
   },
 };
+
 export const postJobChangesExamplePayload = {
   data: {
     supervisoryOrganization: {
@@ -59,6 +61,7 @@ export const postJobChangesExamplePayload = {
     descriptor: "Job Change",
   },
 };
+
 export const listOrganizationsExamplePayload = {
   data: {
     data: [
@@ -71,6 +74,7 @@ export const listOrganizationsExamplePayload = {
     total: 1,
   },
 };
+
 export const getOrganizationByIdExamplePayload = {
   data: {
     descriptor: "Field Sales - Southern Europe (Jared Ellis)",
@@ -78,6 +82,7 @@ export const getOrganizationByIdExamplePayload = {
     id: "3aa5550b7fe348b98d7b5741afc65534",
   },
 };
+
 export const getCustomerByIdExamplePayload = {
   data: {
     name: "Global Modern Services, Inc. (USA)",

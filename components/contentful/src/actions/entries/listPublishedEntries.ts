@@ -10,6 +10,7 @@ import { listPublishedEntriesExamplePayload } from "../../examplePayloads";
 import { listPublishedEntriesInputs } from "../../inputs";
 import { listPublishedEntriesOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems, getEnvironment } from "../../util";
+
 export const listPublishedEntries = action({
   display: {
     label: "List Published Entries",
@@ -23,6 +24,7 @@ export const listPublishedEntries = action({
       spaceId,
       environmentId,
     );
+
     const allItems: EntryProps<KeyValueMap>[] = await getAllPaginatedItems<
       Entry,
       EntryProps<KeyValueMap>
@@ -33,13 +35,13 @@ export const listPublishedEntries = action({
           "sys.publishedAt[exists]": true,
         }) as ReturnType<typeof environment.getEntries>,
     );
+
     return {
       data: allItems as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listPublishedEntriesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listPublishedEntriesExamplePayload,
   inputs: listPublishedEntriesInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

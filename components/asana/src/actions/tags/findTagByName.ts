@@ -4,6 +4,7 @@ import { findTagByNameExamplePayload } from "../../examplePayloads";
 import { findTagByNameInputs } from "../../inputs";
 import { findTagByNameOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Tag } from "../../types";
+
 export const findTagByName = action({
   display: {
     label: "Find Tag by Name",

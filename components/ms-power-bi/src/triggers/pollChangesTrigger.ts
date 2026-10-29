@@ -15,6 +15,7 @@ import type {
 } from "../types";
 import { resolvePollingRecordChanges } from "../util/polling";
 import { paginateResults } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
@@ -41,15 +42,18 @@ export const pollChangesTrigger = pollingTrigger({
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
     const config = POLL_RESOURCE_CONFIG[resourceType];
+
     if (!config) {
       throw new Error(`Unsupported resource type: ${resourceType}`);
     }
+
     const client = createClient({ connection }, context.debug.enabled);
     const { value: records } = await paginateResults<PowerBIRecord>(
       client,
       config.endpoint,
       true,
     );
+
     const hasTimestamps = config.createdAtField !== null;
     const lastPolledAt =
       lastState?.lastPolledAt ??
@@ -58,7 +62,9 @@ export const pollChangesTrigger = pollingTrigger({
         : now);
     const isBackfill =
       hasTimestamps && !lastState?.lastPolledAt && Boolean(lookBackDate);
+
     let created: PowerBIRecord[];
+
     if (hasTimestamps) {
       const lastPolledDate = new Date(lastPolledAt);
       created = records.filter((r) => {
@@ -83,17 +89,21 @@ export const pollChangesTrigger = pollingTrigger({
       const knownSet = new Set(lastState.knownIds);
       created = records.filter((r) => !knownSet.has(r.id));
     }
+
     const filteredCreated = isBackfill || showNewRecords ? created : [];
+
     const newState: PollingState = { lastPolledAt: now };
     if (!hasTimestamps) {
       newState.knownIds = records.map((r) => r.id);
     }
     context.polling.setState(newState as unknown as Record<string, unknown>);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${records.length} total, ${filteredCreated.length} new`,
       );
     }
+
     return {
       payload: {
         ...payload,

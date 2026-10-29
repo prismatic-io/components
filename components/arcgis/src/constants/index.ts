@@ -28,6 +28,7 @@ export const FEATURES_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const SEARCH_LAYERS_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -43,6 +44,7 @@ export const SEARCH_LAYERS_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const LOCATION_TRACKING_INFO_JSON_EXAMPLE = JSON.stringify(
   {
     layerId: "e1eb5f1b-605d-41de-8254-b1f8b50f22af",
@@ -51,6 +53,7 @@ export const LOCATION_TRACKING_INFO_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const SEARCH_TABLES_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -65,9 +68,11 @@ export const SEARCH_TABLES_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const BACKGROUND_JSON_EXAMPLE = JSON.stringify({
   color: [255, 255, 255, 255],
 });
+
 export const BASEMAP_JSON_EXAMPLE = JSON.stringify(
   {
     baseMapLayers: [
@@ -86,6 +91,7 @@ export const BASEMAP_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const BOOKMARKS_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -123,6 +129,7 @@ export const BOOKMARKS_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const GEOTRIGGERS_INFO_JSON_EXAMPLE = JSON.stringify(
   {
     geotriggers: [
@@ -187,6 +194,7 @@ export const GEOTRIGGERS_INFO_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const INITIAL_STATE_JSON_EXAMPLE = JSON.stringify(
   {
     viewpoint: {
@@ -207,6 +215,7 @@ export const INITIAL_STATE_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const MAP_FLOOR_INFO_JSON_EXAMPLE = JSON.stringify(
   {
     facilityLayer: {
@@ -228,6 +237,7 @@ export const MAP_FLOOR_INFO_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const MAP_RANGE_INFO_JSON_EXAMPLE = JSON.stringify(
   {
     activeRangeName: "floors",
@@ -237,6 +247,7 @@ export const MAP_RANGE_INFO_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const OPERATIONAL_LAYERS_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -260,6 +271,7 @@ export const OPERATIONAL_LAYERS_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const PARCEL_FABRIC_JSON_EXAMPLE = JSON.stringify(
   {
     id: "123",
@@ -269,6 +281,7 @@ export const PARCEL_FABRIC_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const PRESENTATION_JSON_EXAMPLE = JSON.stringify(
   {
     displayTimeSlider: false,
@@ -323,6 +336,7 @@ export const PRESENTATION_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const SPATIAL_REFERENCE_JSON_EXAMPLE = JSON.stringify(
   {
     wkid: 102100,
@@ -331,6 +345,7 @@ export const SPATIAL_REFERENCE_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const TABLES_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -344,6 +359,7 @@ export const TABLES_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const UTILITY_NETWORKS_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -369,6 +385,7 @@ export const UTILITY_NETWORKS_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const EXTENT_JSON_EXAMPLE = JSON.stringify(
   {
     xmin: -134.74729261792592,
@@ -380,6 +397,7 @@ export const EXTENT_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const DRAWING_INFO_JSON_EXAMPLE = JSON.stringify(
   {
     transparency: 0,
@@ -406,6 +424,7 @@ export const DRAWING_INFO_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const FIELDS_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -454,6 +473,7 @@ export const FIELDS_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const TEMPLATES_JSON_EXAMPLE = JSON.stringify(
   [
     {
@@ -472,6 +492,7 @@ export const TEMPLATES_JSON_EXAMPLE = JSON.stringify(
   null,
   2,
 );
+
 export const EXPORT_LAYERS_JSON_EXAMPLE = JSON.stringify(
   [{ id: 0 }, { id: 1, where: "POP1999 > 100000" }],
   null,

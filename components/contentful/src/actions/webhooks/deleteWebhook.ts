@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -15,13 +16,13 @@ export const deleteWebhook = action({
     const space: Space = await client.getSpace(spaceId);
     const webhook: WebHooks = await space.getWebhook(webhookId);
     await webhook.delete();
+
     return {
       data: {},
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteWebhookExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteWebhookExamplePayload,
   inputs: deleteWebhookInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

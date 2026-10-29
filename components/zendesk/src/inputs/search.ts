@@ -19,6 +19,7 @@ import {
   topicId,
   topicIds,
 } from "./common";
+
 export const searchArticlesInputs = {
   zendeskConnection: connectionInput,
   searchQuery,
@@ -54,6 +55,7 @@ export const searchArticlesInputs = {
   dateRangeFilters,
   filterLabelNames,
 };
+
 export const searchPostsInputs = {
   zendeskConnection: connectionInput,
   searchQuery,
@@ -85,6 +87,7 @@ export const searchPostsInputs = {
   }),
   dateRangeFilters,
 };
+
 export const unifiedSearchInputs = {
   zendeskConnection: connectionInput,
   searchQuery,

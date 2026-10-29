@@ -3,6 +3,7 @@ import { rawRequestInputs } from "../../inputs";
 import { validateConnection } from "../../util";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { GRAPH_API_URL } from "../../constants";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -12,6 +13,7 @@ export const rawRequest = action({
   perform: async (context, { connection, ...httpClientInputs }) => {
     validateConnection(connection);
     const token = connection.fields.accessToken;
+
     const { data } = await sendRawRequest(GRAPH_API_URL, httpClientInputs, {
       Authorization: `Bearer ${token}`,
     });

@@ -4,6 +4,7 @@ import { updateQualityProcessStepExamplePayload } from "../../examplePayloads";
 import { updateQualityProcessStepInputs } from "../../inputs";
 import { qualityProcessStepSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const updateQualityProcessStep = action({
   display: {
     label: "Update Quality Process Step",
@@ -19,10 +20,12 @@ export const updateQualityProcessStep = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.put(
         `/qualityprocesses/${params.qualityProcessGuid}/steps/${params.stepGuid}`,
         params.data,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Quality Process Step");

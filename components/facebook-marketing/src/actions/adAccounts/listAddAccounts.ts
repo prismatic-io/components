@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listAdAccountsResponse } from "../../examplePayloads";
 import { listAdAccountsInputs } from "../../inputs";
 import { getPaginatedData } from "../../util";
+
 export const listAddAccounts = action({
   display: {
     label: "List Ad Accounts",
@@ -24,6 +25,7 @@ export const listAddAccounts = action({
         fields,
       },
     );
+
     return {
       data,
     };

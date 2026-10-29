@@ -8,11 +8,7 @@ export const pollEventsTriggerPayload = {
       contentType: null,
     },
     paginationState: undefined as
-      | {
-          syncToken?: string;
-          pageToken: string;
-          drainStartedAt: string;
-        }
+      | { syncToken?: string; pageToken: string; drainStartedAt: string }
       | undefined,
     body: {
       data: {
@@ -70,6 +66,7 @@ export const pollEventsTriggerPayload = {
   },
   polledNoChanges: false,
 };
+
 export const calendarChangeEventsPayload = {
   branch: "Push Notifications",
   payload: {

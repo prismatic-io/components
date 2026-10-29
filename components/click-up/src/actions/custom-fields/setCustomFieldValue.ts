@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { setCustomFieldValueExamplePayload } from "../../examplePayloads";
 import { setCustomFieldValueInputs } from "../../inputs";
+
 export const setCustomFieldValue = action({
   display: {
     label: "Set Custom Field Value",
@@ -21,6 +22,7 @@ export const setCustomFieldValue = action({
     const { data } = await client.post(`/task/${taskId}/field/${fieldId}`, {
       value,
     });
+
     return {
       data,
     };

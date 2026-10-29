@@ -4,6 +4,7 @@ import { rawHttpClient } from "../../auth";
 import { getArticleAttachmentOutputSchema } from "../../outputSchemas";
 import type { ArticleAttachment } from "../../types";
 import { getArticleAttachmentExamplePayload } from "../../examplePayloads";
+
 export const getArticleAttachment = action({
   display: {
     label: "Get Article Attachment",
@@ -19,6 +20,7 @@ export const getArticleAttachment = action({
     const { data } = await client.get<{
       article_attachment: ArticleAttachment;
     }>(`/help_center/articles/${articleId}/attachments/${articleAttachmentId}`);
+
     return {
       data,
     };

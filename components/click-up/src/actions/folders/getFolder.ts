@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getFolderExamplePayload } from "../../examplePayloads";
 import { getFolderInputs } from "../../inputs";
 import { getFolderOutputSchema } from "../../outputSchemas";
+
 export const getFolder = action({
   display: {
     label: "Get Folder",
@@ -16,7 +17,9 @@ export const getFolder = action({
   performSafety: "safe",
   perform: async (context, { connection, folderId }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/folder/${folderId}`);
+
     return {
       data,
     };

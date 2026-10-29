@@ -4,6 +4,7 @@ import { listRecordsExamplePayload } from "../../examplePayloads";
 import { listRecordsInputs } from "../../inputs";
 import type { AirtableRecord } from "../../types";
 import { getBaseId, paginateData } from "../../util";
+
 export const listRecords = action({
   display: {
     label: "List Records",
@@ -14,6 +15,7 @@ export const listRecords = action({
       params.airtableConnection,
       context.debug.enabled,
     );
+
     const baseId = getBaseId(params.airtableConnection, params.baseId);
     const data = await paginateData<AirtableRecord>(
       client,
@@ -26,6 +28,7 @@ export const listRecords = action({
       },
       true,
     );
+
     return { data };
   },
   inputs: listRecordsInputs,

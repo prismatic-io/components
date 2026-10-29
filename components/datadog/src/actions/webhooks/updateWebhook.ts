@@ -8,6 +8,7 @@ import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookOutputSchema } from "../../outputSchemas";
 import type { WebhooksIntegration } from "../../types";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
@@ -32,6 +33,7 @@ export const updateWebhook = action({
     },
   ) => {
     const client = createClient(connection);
+
     const response = await client.put<WebhooksIntegration>(
       `${WEBHOOKS_CONFIGURATION_PATH}/${encodeURIComponent(webhookName)}`,
       {
@@ -41,6 +43,7 @@ export const updateWebhook = action({
         payload: webhookPayload,
       },
     );
+
     return { data: response.data };
   },
   examplePerform: async (
@@ -52,9 +55,7 @@ export const updateWebhook = action({
       webhookEncodeAs,
       webhookPayload,
     },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateWebhookExamplePayload.data,
       name: webhookName,

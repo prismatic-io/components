@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { toSortedElements } from "./utils/elements";
+
 export const createProductsExamplePayload = {
   data: {
     id: 2079,
@@ -72,6 +73,7 @@ export const createProductsExamplePayload = {
     ],
   },
 };
+
 export const listProductsExamplePayload = {
   data: {
     items: [
@@ -317,6 +319,7 @@ export const listProductsExamplePayload = {
     total_count: 3,
   },
 };
+
 export const listProductAttributesExamplePayload = {
   data: {
     items: [
@@ -381,9 +384,11 @@ export const listProductAttributesExamplePayload = {
     total_count: 1,
   },
 };
+
 export const createProductAttributesExamplePayload = {
   data: listProductAttributesExamplePayload.data.items[0],
 };
+
 export const createProductOptionsExamplePayload = {
   data: {
     product_sku: "MS-Champ",
@@ -398,6 +403,7 @@ export const createProductOptionsExamplePayload = {
     max_characters: 15,
   },
 };
+
 export const listProductOptionTypesExamplePayload = {
   data: [
     { label: "Field", code: "field", group: "Text", extension_attributes: {} },
@@ -437,6 +443,7 @@ export const listProductOptionTypesExamplePayload = {
     { label: "Time", code: "time", group: "Date", extension_attributes: {} },
   ],
 };
+
 export const listProductTypesExamplePayload = {
   data: [
     { name: "simple", label: "Simple Product", extension_attributes: {} },
@@ -455,6 +462,7 @@ export const listProductTypesExamplePayload = {
     },
   ],
 };
+
 export const getOrderExamplePayload = {
   data: {
     applied_rule_ids: "1",
@@ -684,7 +692,9 @@ export const getOrderExamplePayload = {
     },
   },
 };
+
 export const createOrderExamplePayload = getOrderExamplePayload;
+
 export const listOrdersExamplePayload = {
   data: {
     items: [getOrderExamplePayload.data],
@@ -703,6 +713,7 @@ export const listOrdersExamplePayload = {
     total_count: 1,
   },
 };
+
 export const listOrderItemsExamplePayload = {
   data: {
     items: [getOrderExamplePayload.data.items[0]],
@@ -719,9 +730,11 @@ export const listOrderItemsExamplePayload = {
     total_count: 1,
   },
 };
+
 export const cancelOrderExamplePayload = {
   data: true,
 };
+
 export const createCustomerExamplePayload = {
   data: {
     id: 2,
@@ -760,16 +773,20 @@ export const createCustomerExamplePayload = {
     disable_auto_group_change: 0,
   },
 };
+
 export const getCustomerExamplePayload = createCustomerExamplePayload;
+
 export const updateCustomerExamplePayload = {
   data: {
     ...createCustomerExamplePayload.data,
     updated_at: "2017-02-14 09:41:52",
   },
 };
+
 export const deleteCustomerExamplePayload = {
   data: true,
 };
+
 export const searchCustomersExamplePayload = {
   data: {
     items: [createCustomerExamplePayload.data],
@@ -788,6 +805,7 @@ export const searchCustomersExamplePayload = {
     total_count: 1,
   },
 };
+
 export const getTransactionExamplePayload = {
   data: {
     transaction_id: 12,
@@ -804,6 +822,7 @@ export const getTransactionExamplePayload = {
     extension_attributes: {},
   },
 };
+
 export const listTransactionsExamplePayload = {
   data: {
     items: [
@@ -835,9 +854,8 @@ export const listTransactionsExamplePayload = {
     total_count: 1,
   },
 };
-export const pollChangesExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -906,6 +924,7 @@ export const pollChangesExamplePayload: {
     globalDebug: false,
   },
 };
+
 export const selectCustomerExamplePayload = {
   result: [
     {
@@ -914,6 +933,7 @@ export const selectCustomerExamplePayload = {
     },
   ],
 };
+
 export const selectOrderExamplePayload = {
   result: [
     {
@@ -922,6 +942,7 @@ export const selectOrderExamplePayload = {
     },
   ],
 };
+
 export const selectTransactionExamplePayload = {
   result: [
     {
@@ -930,6 +951,7 @@ export const selectTransactionExamplePayload = {
     },
   ],
 };
+
 export const productTypesExamplePayload = {
   result: toSortedElements(
     listProductTypesExamplePayload.data,
@@ -939,6 +961,7 @@ export const productTypesExamplePayload = {
     }),
   ),
 };
+
 export const productOptionTypesExamplePayload = {
   result: toSortedElements(
     listProductOptionTypesExamplePayload.data,
@@ -948,6 +971,7 @@ export const productOptionTypesExamplePayload = {
     }),
   ),
 };
+
 export const productAttributeTypesExamplePayload = {
   result: [
     { label: "Date", key: "date" },

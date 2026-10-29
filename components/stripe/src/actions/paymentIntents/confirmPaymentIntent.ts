@@ -4,6 +4,7 @@ import { confirmPaymentIntentExamplePayload } from "../../examplePayloads/paymen
 import { confirmPaymentIntentInputs } from "../../inputs";
 import { paymentIntentOutputSchema } from "../../outputSchemas";
 import type Stripe from "stripe";
+
 export const confirmPaymentIntent = action({
   display: {
     label: "Confirm Payment Intent",
@@ -59,13 +60,12 @@ export const confirmPaymentIntent = action({
       captureMethod,
       additionalFields,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const intent = confirmPaymentIntentExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...intent,
@@ -86,5 +86,6 @@ export const confirmPaymentIntent = action({
     type: "actionOutput",
     schema: paymentIntentOutputSchema,
   }),
+
   examplePayload: confirmPaymentIntentExamplePayload,
 });

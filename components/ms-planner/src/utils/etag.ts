@@ -1,16 +1,13 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { CONFLICT_STATUSES, ETAG_RETRY_LIMIT } from "../constants";
 import type { Etagged } from "../types";
+
 const statusOf = (error: unknown): number | undefined =>
-  (
-    error as {
-      response?: {
-        status?: number;
-      };
-    }
-  )?.response?.status;
+  (error as { response?: { status?: number } })?.response?.status;
+
 const isConflict = (error: unknown): boolean =>
   CONFLICT_STATUSES.includes(statusOf(error) ?? 0);
+
 const writeWithEtag = async <T>(
   client: HttpClient,
   path: string,
@@ -20,6 +17,7 @@ const writeWithEtag = async <T>(
   if (providedEtag) {
     return write(providedEtag);
   }
+
   let lastError: unknown;
   for (let attempt = 0; attempt <= ETAG_RETRY_LIMIT; attempt += 1) {
     const etag = await resolveEtag(client, path);
@@ -32,11 +30,13 @@ const writeWithEtag = async <T>(
       lastError = error;
     }
   }
+
   throw new Error(
     `Microsoft Planner reported a version conflict on ${path} after ${ETAG_RETRY_LIMIT + 1} attempts. The resource is being modified concurrently by another client.`,
     { cause: lastError },
   );
 };
+
 export const patchWithEtag = async <T>(
   client: HttpClient,
   path: string,
@@ -53,6 +53,7 @@ export const patchWithEtag = async <T>(
     });
     return data;
   });
+
 export const deleteWithEtag = async (
   client: HttpClient,
   path: string,
@@ -62,6 +63,7 @@ export const deleteWithEtag = async (
     await client.delete(path, { headers: { "If-Match": etag } });
   });
 };
+
 export const resolveEtag = async (
   client: HttpClient,
   path: string,

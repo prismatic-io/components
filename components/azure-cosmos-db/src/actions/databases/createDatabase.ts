@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { createDatabaseInputs } from "../../inputs";
 import { createDatabaseExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const createDatabase = action({
   display: {
     label: "Create Database",
@@ -17,9 +18,11 @@ export const createDatabase = action({
       resourceLink: "",
       debug: context.debug.enabled,
     });
+
     const body = {
       id: databaseId,
     };
+
     const { data } = await client.post(`/${resourceLink}`, body);
     return {
       data,

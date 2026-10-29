@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { createSubscriptionExamplePayload } from "../../examplePayloads/subscriptions";
 import { createSubscriptionInputs } from "../../inputs";
 import { subscriptionOutputSchema } from "../../outputSchemas";
+
 export const createSubscription = action({
   display: {
     label: "Create Subscription",
@@ -62,15 +63,14 @@ export const createSubscription = action({
       cancelAt,
       metadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const subscription = createSubscriptionExamplePayload.data as Record<
       string,
       unknown
     >;
     const items = subscription.items as Record<string, unknown>;
     const [item] = items.data as Record<string, unknown>[];
+
     return {
       data: {
         ...subscription,
@@ -103,5 +103,6 @@ export const createSubscription = action({
     type: "actionOutput",
     schema: subscriptionOutputSchema,
   }),
+
   examplePayload: createSubscriptionExamplePayload,
 });

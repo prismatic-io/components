@@ -5,6 +5,7 @@ import { listAssignmentsInputs } from "../../inputs";
 import { listAssignmentsOutputSchema } from "../../outputSchemas";
 import type { Assignment } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listAssignments = action({
   display: {
     label: "List Assignments",

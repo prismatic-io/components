@@ -1,4 +1,5 @@
 import type { TriggerBaseResult, TriggerPayload } from "@prismatic-io/spectral";
+
 export const baseCustomerPayload = {
   entityid: "CUST-001",
   companyname: "Acme Corporation",
@@ -26,6 +27,7 @@ export const baseCustomerPayload = {
     country: "US",
   },
 };
+
 export const baseContactPayload = {
   firstname: "John",
   lastname: "Doe",
@@ -37,6 +39,7 @@ export const baseContactPayload = {
   subsidiary: { id: "1" },
   isPrivate: false,
 };
+
 export const baseVendorPayload = {
   entityid: "VEND-001",
   companyname: "Supply Co LLC",
@@ -53,6 +56,7 @@ export const baseVendorPayload = {
     country: "US",
   },
 };
+
 export const baseSalesOrderPayload = {
   entity: { id: "456" },
   trandate: "2024-10-20",
@@ -80,6 +84,7 @@ export const baseSalesOrderPayload = {
     ],
   },
 };
+
 export const baseInvoicePayload = {
   entity: { id: "456" },
   trandate: "2024-10-20",
@@ -102,6 +107,7 @@ export const baseInvoicePayload = {
     ],
   },
 };
+
 export const baseInventoryItemPayload = {
   itemid: "ITEM-001",
   displayname: "Widget Pro 2000",
@@ -117,6 +123,7 @@ export const baseInventoryItemPayload = {
   isinactive: false,
   tracklandedcost: false,
 };
+
 export const baseEmployeePayload = {
   entityid: "EMP-001",
   firstname: "Jane",
@@ -130,6 +137,7 @@ export const baseEmployeePayload = {
   supervisor: { id: "1047" },
   title: "Senior Software Engineer",
 };
+
 export const baseJournalEntryPayload = {
   trandate: "2024-10-20",
   subsidiary: { id: "1" },
@@ -152,6 +160,7 @@ export const baseJournalEntryPayload = {
     ],
   },
 };
+
 export const createCustomerExamplePayload = {
   data: {
     data: {
@@ -164,6 +173,7 @@ export const createCustomerExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getCustomerExamplePayload = {
   data: {
     data: {
@@ -208,6 +218,7 @@ export const getCustomerExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const updateCustomerExamplePayload = {
   data: {
     data: {
@@ -220,6 +231,7 @@ export const updateCustomerExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const listCustomersExamplePayload = {
   data: {
     data: {
@@ -267,6 +279,7 @@ export const listCustomersExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const deleteCustomerExamplePayload = {
   data: {
     data: {},
@@ -275,6 +288,7 @@ export const deleteCustomerExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const createContactExamplePayload = {
   data: {
     data: {
@@ -303,7 +317,9 @@ export const createContactExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getContactExamplePayload = createContactExamplePayload;
+
 export const createVendorExamplePayload = {
   data: {
     data: {
@@ -337,7 +353,9 @@ export const createVendorExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getVendorExamplePayload = createVendorExamplePayload;
+
 export const createSalesOrderExamplePayload = {
   data: {
     data: {
@@ -387,7 +405,9 @@ export const createSalesOrderExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getSalesOrderExamplePayload = createSalesOrderExamplePayload;
+
 export const createInvoiceExamplePayload = {
   data: {
     data: {
@@ -432,7 +452,9 @@ export const createInvoiceExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getInvoiceExamplePayload = createInvoiceExamplePayload;
+
 export const createInventoryItemExamplePayload = {
   data: {
     data: {
@@ -467,7 +489,9 @@ export const createInventoryItemExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getInventoryItemExamplePayload = createInventoryItemExamplePayload;
+
 export const createEmployeeExamplePayload = {
   data: {
     data: {
@@ -499,7 +523,9 @@ export const createEmployeeExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getEmployeeExamplePayload = createEmployeeExamplePayload;
+
 export const createJournalEntryExamplePayload = {
   data: {
     data: {
@@ -543,7 +569,9 @@ export const createJournalEntryExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const getJournalEntryExamplePayload = createJournalEntryExamplePayload;
+
 export const suiteQLQueryCustomersExamplePayload = {
   data: {
     data: {
@@ -579,6 +607,7 @@ export const suiteQLQueryCustomersExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const suiteQLQueryInvoicesExamplePayload = {
   data: {
     data: {
@@ -624,6 +653,7 @@ export const suiteQLQueryInvoicesExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const suiteQLQueryInventoryExamplePayload = {
   data: {
     data: {
@@ -661,6 +691,7 @@ export const suiteQLQueryInventoryExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const rawRequestGETExamplePayload = {
   data: {
     data: {
@@ -683,6 +714,7 @@ export const rawRequestGETExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const rawRequestPOSTExamplePayload = {
   data: {
     data: {
@@ -706,6 +738,7 @@ export const rawRequestPOSTExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const rawRequestPATCHExamplePayload = {
   data: {
     data: {
@@ -729,6 +762,7 @@ export const rawRequestPATCHExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const rawRequestDELETEExamplePayload = {
   data: {
     data: {
@@ -740,6 +774,7 @@ export const rawRequestDELETEExamplePayload = {
     } as Record<string, string>,
   },
 };
+
 export const exampleSuiteQLQueries = {
   listCustomers:
     "SELECT id, entityid, companyname, email FROM customer WHERE isinactive = 'F' ORDER BY datecreated DESC LIMIT 100",
@@ -754,6 +789,7 @@ export const exampleSuiteQLQueries = {
   recentTransactions:
     "SELECT t.id, t.tranid, t.trandate, t.recordtype, t.entity, t.total FROM transaction t WHERE t.trandate >= CURRENT_DATE - 30 ORDER BY t.trandate DESC LIMIT 100",
 };
+
 export const pollRecordsExamplePayload: TriggerBaseResult<TriggerPayload> = {
   payload: {
     headers: {},

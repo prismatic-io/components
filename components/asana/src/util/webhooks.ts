@@ -25,6 +25,7 @@ import type {
   ResolvedWebhookSecrets,
   WebhookFilterSettings,
 } from "../types";
+
 export const isHeartbeatData = (data: unknown): boolean => {
   const obj = data as Record<string, unknown> | null;
   return (
@@ -34,10 +35,13 @@ export const isHeartbeatData = (data: unknown): boolean => {
     obj.events.length === 0
   );
 };
+
 export const webhookSecretsStateKey = (context: ActionContext): string =>
   `${WEBHOOK_SECRETS_STATE_KEY_PREFIX}:${context.flow.stableId}`;
+
 export const webhookSecretStateKey = (context: ActionContext): string =>
   `${WEBHOOK_SECRET_STATE_KEY_PREFIX}:${context.flow.stableId}`;
+
 export const resolveWebhookSecrets = (
   context: ActionContext,
 ): ResolvedWebhookSecrets => {
@@ -55,6 +59,7 @@ export const resolveWebhookSecrets = (
   }
   return { value: [], isLegacy: false };
 };
+
 export const resolveWebhookSecret = (
   context: ActionContext,
 ): ResolvedWebhookSecret => {
@@ -72,6 +77,7 @@ export const resolveWebhookSecret = (
   }
   return { value: "", isLegacy: false };
 };
+
 export const validateHmac = (
   payload: TriggerPayload,
   signature: string,
@@ -91,6 +97,7 @@ export const validateHmac = (
     "The included signing signature does not match a known Asana signing key. Rejecting.",
   );
 };
+
 export const findWebhook = async ({
   asanaConnection,
   endpoint,
@@ -110,9 +117,7 @@ export const findWebhook = async ({
     do {
       const { data } = await client.get<{
         data: AsanaWebhook[];
-        next_page?: {
-          offset: string;
-        };
+        next_page?: { offset: string };
       }>("/webhooks", {
         params: {
           workspace: workspace.gid,
@@ -129,6 +134,7 @@ export const findWebhook = async ({
       webhook.target === endpoint && webhook.resource.gid === resourceId,
   );
 };
+
 export const createWebhook = async ({
   endpoint,
   resourceId,
@@ -145,9 +151,7 @@ export const createWebhook = async ({
     console.debug("Webhook already exists, skipping creation");
     return existingWebhook;
   } else {
-    const { data } = await client.post<{
-      data: AsanaWebhook;
-    }>("/webhooks", {
+    const { data } = await client.post<{ data: AsanaWebhook }>("/webhooks", {
       data: {
         resource: resourceId,
         target: endpoint,
@@ -157,6 +161,7 @@ export const createWebhook = async ({
     return data.data;
   }
 };
+
 export const deleteWebhook = async ({
   endpoint,
   resourceId,
@@ -173,12 +178,13 @@ export const deleteWebhook = async ({
     return;
   } else {
     console.debug(`Deleting webhook ${existingWebhook.gid}`);
-    await client.delete<{
-      data: AsanaWebhook;
-    }>(`/webhooks/${existingWebhook.gid}`);
+    await client.delete<{ data: AsanaWebhook }>(
+      `/webhooks/${existingWebhook.gid}`,
+    );
     return;
   }
 };
+
 export const getFilters = (
   filterSettings: WebhookFilterSettings,
   resourceType: string,
@@ -194,17 +200,14 @@ export const getFilters = (
     filters.push({ resource_type: resourceType, action: "removed" });
   if (filterSettings.triggerWhenUndeleted)
     filters.push({ resource_type: resourceType, action: "undeleted" });
+
   return filters;
 };
+
 const extractEvents = (data: unknown): Event[] => {
-  return (
-    (
-      data as {
-        events?: Event[];
-      }
-    )?.events ?? []
-  );
+  return (data as { events?: Event[] })?.events ?? [];
 };
+
 const processTask = async (
   taskEvent: Event,
   cachedTasks: CachedTasks,
@@ -230,6 +233,7 @@ const processTask = async (
     taskEvent.task = {};
   }
 };
+
 const processStory = async (
   storyEvent: Event,
   cachedStories: CachedStories,
@@ -258,6 +262,7 @@ const processStory = async (
     storyEvent.task = {};
   }
 };
+
 const getEventsAdditionalData = async (
   asanaConnection: Connection,
   payload: TriggerPayload,
@@ -267,8 +272,10 @@ const getEventsAdditionalData = async (
   const RESOURCE_TYPE_TASK = "task";
   const RESOURCE_TYPE_STORY = "story";
   const events = extractEvents(payload.body.data);
+
   const cachedTasks: CachedTasks = {};
   const cachedStories: CachedStories = {};
+
   for (const event of events) {
     if (!AVOID_ACTIONS.includes(event.action)) {
       switch (event.resource.resource_type) {
@@ -284,15 +291,15 @@ const getEventsAdditionalData = async (
     }
   }
 };
+
 export const getAdditionalData = async (
   context: ActionContext,
   payload: TriggerPayload,
-  inputs: {
-    asanaConnection: Connection;
-  },
+  inputs: { asanaConnection: Connection },
 ): Promise<TriggerPayload> => {
   const events = extractEvents(payload.body.data);
   if (events.length === 0) return Promise.resolve(payload);
+
   await getEventsAdditionalData(inputs.asanaConnection, payload, context);
   return Promise.resolve(payload);
 };

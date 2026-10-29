@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { connectionInput } from "./common";
+
 export const query = input({
   label: "GraphQL Query",
   type: "code",
@@ -14,6 +15,7 @@ export const query = input({
   }`,
   clean: util.types.toString,
 });
+
 export const store = input({
   label: "Store",
   type: "string",
@@ -24,12 +26,15 @@ export const store = input({
   example: "www.example.com",
   clean: util.types.toString,
 });
+
 export const graphQLRawRequestInputs = {
   connection: connectionInput,
   store,
   query,
 };
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const restRawRequestInputs = {
   connection: connectionInput,
   ...rawRequestInputs,

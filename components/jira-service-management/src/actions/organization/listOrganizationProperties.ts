@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listOrganizationPropertiesExamplePayload } from "../../examplePayloads";
 import { listOrganizationPropertiesInputs } from "../../inputs";
+
 export const listOrganizationProperties = action({
   display: {
     label: "List Organization Properties",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_UPDATE_RESPONSE } from "../../constants";
 import { updatePurchaseOrderInputs } from "../../inputs/purchaseOrders/update";
+
 export const updatePurchaseOrder = action({
   display: {
     label: "Update Purchase Order",
@@ -18,10 +19,12 @@ export const updatePurchaseOrder = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(`/PurchaseOrders(${docEntry})`, {
       Comments,
       ...bodyFields,
     });
+
     return {
       data: DEFAULT_UPDATE_RESPONSE,
     };

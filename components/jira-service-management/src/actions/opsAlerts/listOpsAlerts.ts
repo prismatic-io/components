@@ -4,6 +4,7 @@ import { listOpsAlertsExamplePayload } from "../../examplePayloads";
 import { listOpsAlertsInputs } from "../../inputs";
 import type { OpsAlertSummary } from "../../types";
 import { getOpsPaginatedData } from "../../util";
+
 export const listOpsAlerts = action({
   display: {
     label: "List Ops Alerts",

@@ -1,5 +1,7 @@
 import type { CreateWebhookRequestBody } from "box-node-sdk/lib/managers/webhooks";
+
 export type CreateWebhookBody = CreateWebhookRequestBody;
+
 export const WEBHOOK_TRIGGER_TYPES = [
   "FILE.UPLOADED",
   "FILE.PREVIEWED",
@@ -41,8 +43,11 @@ export const WEBHOOK_TRIGGER_TYPES = [
   "SIGN_REQUEST.DECLINED",
   "SIGN_REQUEST.EXPIRED",
 ] as const;
+
 export type WebhookTriggerType = (typeof WEBHOOK_TRIGGER_TYPES)[number];
+
 export type BoxTargetType = "file" | "folder";
+
 export interface StoreState {
   primarySignatureKey: string;
   secondarySignatureKey: string;

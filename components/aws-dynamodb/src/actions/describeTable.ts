@@ -3,6 +3,7 @@ import { awsRegion, connectionInput, tableName } from "../inputs";
 import { createDynamoClient } from "../auth";
 import { DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 import { describeTableExamplePayload } from "../examplePayloads";
+
 export const describeTable = action({
   display: {
     label: "Describe Table",

@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
 import { connectionInput, fileIdInput, folderIdInput } from "./common";
+
 const sharedLinkInput = input({
   label: "Shared Link",
   placeholder: "Enter shared link URL",
@@ -10,6 +11,7 @@ const sharedLinkInput = input({
   example: "https://app.box.com/s/abcd1234efgh5678ijkl",
   clean: util.types.toString,
 });
+
 const sharedLinkPasswordInput = input({
   label: "Shared Link Password",
   placeholder: "Enter shared link password",
@@ -18,6 +20,7 @@ const sharedLinkPasswordInput = input({
   comments: "The password for the shared link, if one is set.",
   clean: util.types.toString,
 });
+
 const fieldsInput = input({
   label: "Fields",
   placeholder: "Enter comma-separated field names",
@@ -28,6 +31,7 @@ const fieldsInput = input({
   example: "type,id,name,size,created_at",
   clean: cleanString,
 });
+
 const sharedLinkAccessInput = input({
   label: "Shared Link Access",
   placeholder: "Enter access level",
@@ -38,6 +42,7 @@ const sharedLinkAccessInput = input({
   example: "open",
   clean: util.types.toString,
 });
+
 const sharedLinkPermissionsInput = input({
   label: "Shared Link Permissions",
   placeholder: "Enter shared link permissions as JSON",
@@ -57,6 +62,7 @@ const sharedLinkPermissionsInput = input({
     "The permissions for the shared link (file). Specify which actions are allowed. See [Box Shared Link Permissions](https://developer.box.com/reference/put-files-id#request-body) for details.",
   clean: util.types.toObject,
 });
+
 const sharedLinkPermissionsFolderInput = input({
   label: "Shared Link Permissions Folder",
   placeholder: "Enter shared link permissions as JSON",
@@ -75,6 +81,7 @@ const sharedLinkPermissionsFolderInput = input({
     "The permissions for the shared link (folder). Specify which actions are allowed. See [Box Shared Link Permissions](https://developer.box.com/reference/put-folders-id#request-body) for details.",
   clean: util.types.toObject,
 });
+
 const sharedLinkVanityNameInput = input({
   label: "Shared Link Vanity Name",
   placeholder: "Enter custom vanity name",
@@ -85,6 +92,7 @@ const sharedLinkVanityNameInput = input({
   example: "q4-financial-report",
   clean: cleanString,
 });
+
 const fileAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -96,6 +104,7 @@ const fileAdditionalFields = structuredObjectInput({
     sharedLinkVanityName: sharedLinkVanityNameInput,
   },
 });
+
 const folderAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -107,16 +116,19 @@ const folderAdditionalFields = structuredObjectInput({
     sharedLinkVanityName: sharedLinkVanityNameInput,
   },
 });
+
 export const findFileForSharedLinkInputs = {
   sharedLink: sharedLinkInput,
   sharedLinkPassword: sharedLinkPasswordInput,
   fields: fieldsInput,
   boxConnection: connectionInput,
 };
+
 export const getSharedLinkForFileInputs = {
   fileId: fileIdInput,
   boxConnection: connectionInput,
 };
+
 export const addSharedLinkToFileInputs = {
   fileId: fileIdInput,
   fields: sharedLinkInput,
@@ -124,6 +136,7 @@ export const addSharedLinkToFileInputs = {
   additionalFields: fileAdditionalFields,
   boxConnection: connectionInput,
 };
+
 export const updateSharedLinkToFileInputs = {
   fileId: fileIdInput,
   sharedLink: sharedLinkInput,
@@ -131,20 +144,24 @@ export const updateSharedLinkToFileInputs = {
   additionalFields: fileAdditionalFields,
   boxConnection: connectionInput,
 };
+
 export const removeSharedLinkFromFileInputs = {
   fileId: fileIdInput,
   boxConnection: connectionInput,
 };
+
 export const findFolderForSharedLinkInputs = {
   sharedLink: sharedLinkInput,
   sharedLinkPassword: sharedLinkPasswordInput,
   fields: fieldsInput,
   boxConnection: connectionInput,
 };
+
 export const getSharedLinkForFolderInputs = {
   folderId: folderIdInput,
   boxConnection: connectionInput,
 };
+
 export const addSharedLinkToFolderInputs = {
   folderId: folderIdInput,
   sharedLink: sharedLinkInput,
@@ -152,6 +169,7 @@ export const addSharedLinkToFolderInputs = {
   additionalFields: folderAdditionalFields,
   boxConnection: connectionInput,
 };
+
 export const updateSharedLinkOnFolderInputs = {
   folderId: folderIdInput,
   sharedLink: sharedLinkInput,
@@ -159,6 +177,7 @@ export const updateSharedLinkOnFolderInputs = {
   additionalFields: folderAdditionalFields,
   boxConnection: connectionInput,
 };
+
 export const removeSharedLinkFromFolderInputs = {
   folderId: folderIdInput,
   boxConnection: connectionInput,

@@ -5,6 +5,7 @@ import { createMailClient } from "../../client";
 import { sendEmailWithDynamicTemplateExamplePayload } from "../../examplePayloads";
 import { sendEmailWithDynamicTemplateInputs } from "../../inputs";
 import { createPayload } from "../../util";
+
 export const sendEmailWithDynamicTemplate = action({
   display: {
     label: "Send Email with Dynamic Template",
@@ -30,17 +31,21 @@ export const sendEmailWithDynamicTemplate = action({
     },
   ) => {
     const sendGrid = createMailClient(sendGridConnection);
+
     if ((!personalizations || personalizations.length === 0) && !to) {
       throw new Error(
         "Either 'To' recipients or 'Personalizations' array must be provided. Provide email addresses in 'To' field for simple sends, or use 'Personalizations' for advanced configurations.",
       );
     }
+
     if (personalizations && personalizations.length > 0 && (to || cc || bcc)) {
       context.logger.warn(
         "Personalizations array is provided, ignoring 'To', 'CC', and 'BCC' individual inputs. Recipients should be defined within the personalizations array.",
       );
     }
+
     let personalizationsArray = [];
+
     if (personalizations && personalizations.length > 0) {
       personalizationsArray = personalizations.map((p) => ({
         ...p,
@@ -50,22 +55,27 @@ export const sendEmailWithDynamicTemplate = action({
       const toRecipients = to.split(",").map((email: string) => ({
         email: email.trim(),
       }));
+
       const personalization: PersonalizationData = {
         to: toRecipients,
         dynamicTemplateData: dynamicTemplateData,
       };
+
       if (cc) {
         personalization.cc = cc.split(",").map((email: string) => ({
           email: email.trim(),
         }));
       }
+
       if (bcc) {
         personalization.bcc = bcc.split(",").map((email: string) => ({
           email: email.trim(),
         }));
       }
+
       personalizationsArray = [personalization];
     }
+
     const payloadParameters: MailData = {
       templateId,
       personalizations: personalizationsArray,
@@ -74,18 +84,22 @@ export const sendEmailWithDynamicTemplate = action({
         ...(fromName && { name: fromName }),
       },
     };
+
     if (!replyToEmail && replyToName) {
       throw new Error(
         "If you want to include the 'Reply To Name' property, you must supply a 'Reply To Email' value.",
       );
     }
+
     if (replyToEmail) {
       payloadParameters.replyTo = {
         email: replyToEmail,
         ...(replyToName && { name: replyToName }),
       };
     }
+
     const payload = createPayload(payloadParameters);
+
     try {
       const result = await sendGrid.send(payload);
       return {
@@ -95,9 +109,7 @@ export const sendEmailWithDynamicTemplate = action({
       throw new Error(util.types.toString(error));
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: sendEmailWithDynamicTemplateExamplePayload.data,
   }),
   examplePayload: sendEmailWithDynamicTemplateExamplePayload,

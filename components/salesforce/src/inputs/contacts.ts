@@ -29,6 +29,7 @@ import {
   street,
   title,
 } from "./fields";
+
 const assistant = input({
   label: "Assistant",
   type: "string",
@@ -38,6 +39,7 @@ const assistant = input({
   clean: cleanStringInput,
   example: "Jane Doe",
 });
+
 const assistantPhone = input({
   label: "Assistant's Phone",
   type: "string",
@@ -47,6 +49,7 @@ const assistantPhone = input({
   clean: cleanStringInput,
   example: "18005555555",
 });
+
 const department = input({
   label: "Department",
   type: "string",
@@ -56,6 +59,7 @@ const department = input({
   clean: cleanStringInput,
   example: "Sales",
 });
+
 const mailingAddress = structuredObjectInput({
   label: "Mailing Address",
   required: false,
@@ -63,6 +67,7 @@ const mailingAddress = structuredObjectInput({
     "Street, city, state, postal code, and country for the mailing address.",
   inputs: { street, city, state, postalCode, country },
 });
+
 const billingAddress = structuredObjectInput({
   label: "Other Address",
   required: false,
@@ -76,6 +81,7 @@ const billingAddress = structuredObjectInput({
     billingCountry,
   },
 });
+
 const nameAndContact = structuredObjectInput({
   label: "Name & Contact Information",
   required: false,
@@ -83,6 +89,7 @@ const nameAndContact = structuredObjectInput({
     "First and last name, phone, fax, and mobile contact channels, and birthdate.",
   inputs: { firstName, lastName, phone, mobile, fax, birthdate },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -96,6 +103,7 @@ const additionalFields = structuredObjectInput({
     description,
   },
 });
+
 export const createContactInputs = {
   email,
   version,
@@ -107,6 +115,7 @@ export const createContactInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const updateContactInputs = {
   version,
   recordId: {
@@ -122,6 +131,7 @@ export const updateContactInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const deleteContactInputs = {
   version,
   recordId: {
@@ -130,4 +140,5 @@ export const deleteContactInputs = {
   },
   connection: connectionInput,
 };
+
 export const listContactsInputs = { ...listInputs };

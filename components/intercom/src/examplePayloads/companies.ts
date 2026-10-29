@@ -18,6 +18,7 @@ export const CREATE_COMPANY_EXAMPLE_PAYLOAD = {
     team_mates: 0,
   },
 };
+
 export const GET_COMPANY_EXAMPLE_PAYLOAD = {
   data: {
     type: "company",
@@ -43,6 +44,7 @@ export const GET_COMPANY_EXAMPLE_PAYLOAD = {
     custom_attributes: {},
   },
 };
+
 export const DELETE_COMPANY_EXAMPLE_PAYLOAD = {
   data: {
     id: "5ba682d23d7cf92bef87bfd4",

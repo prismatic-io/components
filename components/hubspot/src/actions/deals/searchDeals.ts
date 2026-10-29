@@ -4,6 +4,7 @@ import { DEAL_SEARCH_PROPS, hubspotPaths } from "../../constants";
 import { searchDealsExamplePayload } from "../../examplePayloads";
 import { searchDealsInputs } from "../../inputs";
 import { searchResponseSchema } from "../../outputSchemas";
+
 export const searchDeals = action({
   display: {
     label: "Search Deals",
@@ -17,6 +18,7 @@ export const searchDeals = action({
       timeout: params.timeout,
       debugRequest,
     });
+
     const { data } = await client.post(
       hubspotPaths.objects("deals", "/search"),
       {
@@ -36,6 +38,7 @@ export const searchDeals = action({
         after: params.pagination.after,
       },
     );
+
     return { data };
   },
   inputs: searchDealsInputs,

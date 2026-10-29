@@ -4,6 +4,7 @@ import { getExtractExamplePayload } from "../../examplePayloads";
 import { getExtractInputs } from "../../inputs";
 import { extractSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getExtract = action({
   display: {
     label: "Get Extract",

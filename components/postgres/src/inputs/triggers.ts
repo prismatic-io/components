@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { resolveRowCount } from "../util";
 import { connectionInput } from "./common";
+
 export const tableName = input({
   label: "Table Name",
   comments: "The name of the table to monitor for new and updated records.",
@@ -10,6 +11,7 @@ export const tableName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const cursorField = input({
   label: "Cursor Field",
   default: "updated_at",
@@ -21,6 +23,7 @@ export const cursorField = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const castTimestampsToString = input({
   label: "Cast Timestamps to Strings",
   default: "true",
@@ -29,6 +32,7 @@ export const castTimestampsToString = input({
   type: "boolean",
   clean: util.types.toBool,
 });
+
 export const defaultCursorValue = input({
   label: "Default Cursor Value",
   type: "string",
@@ -39,6 +43,7 @@ export const defaultCursorValue = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const maxRecordsPerRecurrence = input({
   label: "Max Records Per Recurrence",
   type: "string",
@@ -49,6 +54,7 @@ export const maxRecordsPerRecurrence = input({
   required: false,
   clean: resolveRowCount,
 });
+
 export const pollTableInputs = {
   postgresConnection: connectionInput,
   tableName,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { createItemInputs } from "../../inputs/items/create";
+
 export const createItem = action({
   display: {
     label: "Create Item",
@@ -21,6 +22,7 @@ export const createItem = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/Items`, {
       ItemCode,
       ItemName,

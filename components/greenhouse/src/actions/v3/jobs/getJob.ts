@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { getJobV3ExamplePayload } from "../../../examplePayloads/v3/jobs";
 import { getJobV3Inputs } from "../../../inputs/v3/jobs";
 import type { V3Job } from "../../../types";
+
 export const getJobV3 = action({
   display: {
     label: "Get Job",

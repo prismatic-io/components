@@ -3,6 +3,7 @@ import {
   metaSchema,
   underscoreConfirmMessageSchema,
 } from "./common";
+
 export const listCompanyCodesOutputSchema = {
   type: "object" as const,
   properties: {

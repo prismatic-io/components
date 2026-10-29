@@ -5,6 +5,7 @@ import { listPackagesExamplePayload } from "../../examplePayloads/packages";
 import { listPackagesInputs } from "../../inputs";
 import { listPackagesOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listPackages = action({
   display: {
     label: "List Packages",
@@ -21,6 +22,7 @@ export const listPackages = action({
     { connection, customQueryParams, fetchAll, filters = {}, pagination = {} },
   ) => {
     const client = createHttpClient(connection, context.debug.enabled);
+
     const data = await fetchAllData(
       client,
       PACKAGES_ENDPOINT,
@@ -37,9 +39,7 @@ export const listPackages = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listPackagesExamplePayload.data,
   }),
   examplePayload: listPackagesExamplePayload,

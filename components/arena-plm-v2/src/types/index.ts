@@ -3,8 +3,11 @@ import type {
   Connection,
   JSONForm,
 } from "@prismatic-io/spectral";
+
 export type JsonFormSchema = JSONForm["schema"];
+
 export type JsonFormUiSchema = JSONForm["uiSchema"];
+
 export interface JsonFormSchemaNode {
   type?: string;
   title?: string;
@@ -15,11 +18,9 @@ export interface JsonFormSchemaNode {
   required?: string[];
   items?: JsonFormSchemaNode;
   properties?: Record<string, JsonFormSchemaNode>;
-  oneOf?: {
-    const: string;
-    title: string;
-  }[];
+  oneOf?: { const: string; title: string }[];
 }
+
 export interface JsonFormUiSchemaNode {
   type: string;
   label?: string;
@@ -28,17 +29,21 @@ export interface JsonFormUiSchemaNode {
   options?: Record<string, unknown>;
   elements?: JsonFormUiSchemaNode[];
 }
+
 export interface ArenaPossibleValueVo {
   value?: string | number | boolean;
   name?: string;
   guid?: string;
   description?: string;
 }
+
 export type ArenaPossibleValue = string | ArenaPossibleValueVo;
+
 export interface CategoryMinimalVo {
   guid: string;
   name?: string;
 }
+
 export interface ChangeCompactVo {
   guid: string;
   number?: string;
@@ -54,21 +59,26 @@ export interface ChangeCompactVo {
     name?: string;
   };
 }
+
 export interface ChangCompactVoResultRep {
   results: ChangeCompactVo[];
   count: number;
 }
+
 export interface SingleGuidVo {
   guid: string;
 }
+
 export interface UrlVo {
   api: string;
   app: string;
 }
+
 export interface AdditionalAttributeCreateVo {
   guid: string;
   value: unknown;
 }
+
 export interface CreateNumberFormatVo {
   guid?: string;
   fields?: {
@@ -76,9 +86,11 @@ export interface CreateNumberFormatVo {
     value: string;
   }[];
 }
+
 export interface OwnerCreateVo {
   fullName: string;
 }
+
 export interface ItemCreateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   category?: SingleGuidVo;
@@ -96,6 +108,7 @@ export interface ItemCreateVo {
   owner?: OwnerCreateVo;
   uom?: string;
 }
+
 export interface ItemUpdateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   category?: SingleGuidVo;
@@ -111,10 +124,12 @@ export interface ItemUpdateVo {
   owner?: OwnerCreateVo;
   uom?: string;
 }
+
 export interface ItemFullVoResultRep {
   results: ItemFullVo[];
   count: number;
 }
+
 export interface ItemFullVo {
   guid: string;
   url: UrlVo;
@@ -159,6 +174,7 @@ export interface ItemFullVo {
     type: string;
   }[];
 }
+
 export interface ChangeCreateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   category?: SingleGuidVo;
@@ -175,6 +191,7 @@ export interface ChangeCreateVo {
   effectivityPlannedDateTime?: string;
   supplierVisibility?: boolean;
 }
+
 export interface ChangeUpdateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   category?: SingleGuidVo;
@@ -188,16 +205,19 @@ export interface ChangeUpdateVo {
   implementationStatus?: string;
   supplierVisibility?: boolean;
 }
+
 export interface CategoryCompactVo {
   guid: string;
   name: string;
   path: string;
 }
+
 export interface UserCompactVo {
   guid: string;
   fullName: string;
   email: string;
 }
+
 export type ChangeLifecycleStatusType =
   | "OPEN"
   | "SUBMITTED_FOR_APPROVAL"
@@ -211,9 +231,11 @@ export type ChangeLifecycleStatusType =
   | "SUBMITTED_FOR_ROUTING"
   | "CANCELED"
   | "COMPLETED";
+
 export interface ChangeLifecycleStatus {
   type: ChangeLifecycleStatusType;
 }
+
 export interface AdditionalAttributeCompactVo {
   guid: string;
   name: string;
@@ -239,6 +261,7 @@ export interface AdditionalAttributeCompactVo {
     | "ENUM";
   multiSelect: boolean;
 }
+
 export interface ChangeFullVo {
   guid: string;
   url: UrlVo;
@@ -279,6 +302,7 @@ export interface ChangeFullVo {
   routings?: ChangeRoutingMinimalVo[];
   additionalAttributes?: AdditionalAttributeCompactVo[];
 }
+
 export interface ErrorResponse {
   errors: {
     code: string;
@@ -286,25 +310,30 @@ export interface ErrorResponse {
     field?: string;
   }[];
 }
+
 export interface UserCompactVoResultRep {
   results: UserCompactVo[];
   count: number;
 }
+
 export interface ChangeRoutingMinimalVo {
   guid: string;
   name: string;
   description?: string;
 }
+
 export interface ChangeRoutingMiniResultRep {
   results: ChangeRoutingMinimalVo[];
   count: number;
 }
+
 export type ArenaItemCostFields =
   | "productionCost"
   | "prototypeCost"
   | "targetPrice"
   | "targetCost"
   | "standardCost";
+
 export interface ArenaItemCosts {
   productionCost?: number;
   prototypeCost?: number;
@@ -312,14 +341,17 @@ export interface ArenaItemCosts {
   targetCost?: number;
   standardCost?: number;
 }
+
 export interface NumberFormatPrefixVo {
   guid: string;
   value: string;
 }
+
 export interface ParentCategoryVo {
   guid: string;
   name: string;
 }
+
 export interface ChangeCategoryVo {
   activated: boolean;
   allowDuplicateRevisions: boolean;
@@ -352,22 +384,27 @@ export interface ChangeCategoryVo {
   structural: boolean;
   systemDefined: boolean;
 }
+
 export interface ChangeCategoryResultRep {
   results: ChangeCategoryVo[];
   count: number;
 }
+
 export interface CategoryFullResultRep {
   results: CategoryVo[];
   count: number;
 }
+
 export interface RequestCategoryResultRep {
   results: RequestCategoryVo[];
   count: number;
 }
+
 export type CategoryResponse =
   | ChangeCategoryResultRep
   | CategoryFullResultRep
   | RequestCategoryResultRep;
+
 export interface CategoryVo {
   activated: boolean;
   assignable: boolean;
@@ -396,6 +433,7 @@ export interface CategoryVo {
   structural: boolean;
   systemDefined: boolean;
 }
+
 export interface RequestCategoryVo {
   activated: boolean;
   assignable: boolean;
@@ -413,14 +451,17 @@ export interface RequestCategoryVo {
   structural: boolean;
   systemDefined: boolean;
 }
+
 export interface CategoryAttributeDefinitionResultRep {
   count: number;
   results: CategoryAttributeDefinitionVo[];
 }
+
 export interface NumberSequencePrefixCompactResultRep {
   results: NumberFormatPrefixVo[];
   count: number;
 }
+
 export interface CategoryAttributeDefinitionVo {
   guid: string;
   active: boolean;
@@ -458,6 +499,7 @@ export interface CategoryAttributeDefinitionVo {
   multiSelect?: boolean;
   maxSelections?: number;
 }
+
 export interface NumberFormatBasicInfoVo {
   active: boolean;
   creationDateTime: string;
@@ -465,6 +507,7 @@ export interface NumberFormatBasicInfoVo {
   guid: string;
   name: string;
 }
+
 export interface NumberFormatFullVo {
   active: boolean;
   creationDateTime: string;
@@ -473,14 +516,17 @@ export interface NumberFormatFullVo {
   name: string;
   fields: NumberFormatFieldFullVo[];
 }
+
 export interface NumberFormatPossibleValueVo {
   value: string;
   description: string;
 }
+
 export interface PreDefinedCodeListVo {
   guid: string;
   name: string;
 }
+
 export interface NumberFormatFieldFullVo {
   apiName: string;
   guid: string;
@@ -494,17 +540,21 @@ export interface NumberFormatFieldFullVo {
   value?: string;
   zeroPadding?: boolean;
 }
+
 export interface NumberFormatCompactResultRep {
   results: NumberFormatBasicInfoVo[];
   count: number;
 }
+
 export interface FileAuthorVo {
   fullName?: string;
 }
+
 export interface FileCategoryVo {
   guid?: string;
   name?: string;
 }
+
 export interface Microsoft365Vo {
   authorEmail?: string;
   creationDate?: string;
@@ -519,6 +569,7 @@ export interface Microsoft365Vo {
   version?: string;
   webUrl?: string;
 }
+
 export interface GoogleDocsVo {
   authorEmail?: string;
   creationDate?: string;
@@ -532,6 +583,7 @@ export interface GoogleDocsVo {
   version?: string;
   webUrl?: string;
 }
+
 export interface FileDetailVo {
   author?: FileAuthorVo;
   category?: FileCategoryVo;
@@ -558,6 +610,7 @@ export interface FileDetailVo {
   title?: string;
   private?: boolean;
 }
+
 export interface SupplierFileCreateVo {
   file?: File | string;
   "file.author.fullName"?: string;
@@ -571,10 +624,12 @@ export interface SupplierFileCreateVo {
   latestEditionAssociation?: boolean;
   primary?: boolean;
 }
+
 export interface SingleValueVo {
   guid?: string;
   value?: string;
 }
+
 export interface ChangeLifecycleTransitionCreateVo {
   change: SingleGuidVo;
   comment?: string;
@@ -584,15 +639,18 @@ export interface ChangeLifecycleTransitionCreateVo {
   status: ChangeLifecycleStatusType;
   implementationStatus?: SingleValueVo;
 }
+
 export interface ChangeImplementationStatusVo {
   guid: string;
   value: string;
 }
+
 export interface ChangeMinimalVo {
   guid: string;
   number: string;
   url: UrlVo;
 }
+
 export interface ChangeLifecycleTransitionFullVo {
   change: ChangeMinimalVo;
   implStatus?: ChangeImplementationStatusVo;
@@ -600,6 +658,7 @@ export interface ChangeLifecycleTransitionFullVo {
   comment?: string;
   administrators?: UserCompactVo[];
 }
+
 export interface AttributeDefinitionVo {
   guid: string;
   active: boolean;
@@ -668,10 +727,12 @@ export interface AttributeDefinitionVo {
   visibleWhenBlank?: boolean;
   private?: boolean;
 }
+
 export interface AttributeDefinitionFullRepResultRep {
   results: AttributeDefinitionVo[];
   count: number;
 }
+
 export interface ItemShortVo {
   guid: string;
   name: string;
@@ -680,6 +741,7 @@ export interface ItemShortVo {
   revisionStatus: string;
   url: UrlVo;
 }
+
 export interface ItemBomCreateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   refDes?: string;
@@ -688,6 +750,7 @@ export interface ItemBomCreateVo {
   lineNumber?: number;
   item: SingleGuidVo;
 }
+
 export interface ItemBomVo {
   guid: string;
   item: ItemShortVo;
@@ -697,6 +760,7 @@ export interface ItemBomVo {
   refDes?: string;
   additionalAttributes?: AdditionalAttributeCompactVo[];
 }
+
 export interface ItemBomUpdateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   refDes?: string;
@@ -704,6 +768,7 @@ export interface ItemBomUpdateVo {
   notes?: string;
   lineNumber?: number;
 }
+
 export interface ItemBomWithSubstituteVo {
   guid: string;
   item: ItemShortVo;
@@ -714,10 +779,12 @@ export interface ItemBomWithSubstituteVo {
   substitutes?: BomSubstituteVo[];
   additionalAttributes?: AdditionalAttributeCompactVo[];
 }
+
 export interface ItemBomVoResultRep {
   results: ItemBomWithSubstituteVo[];
   count: number;
 }
+
 export interface BomSubstituteVo {
   guid: string;
   item: ItemShortVo;
@@ -725,59 +792,72 @@ export interface BomSubstituteVo {
   quantity?: number;
   rank?: number;
 }
+
 export interface BomSubstituteCreateVo {
   item: SingleGuidVo;
   notes?: string;
   quantity?: number;
   rank?: number;
 }
+
 export interface BomSubstituteUpdateVo {
   notes?: string;
   quantity?: number;
   rank?: number;
 }
+
 export interface BomSubstituteVoResultRep {
   results: BomSubstituteVo[];
   count: number;
 }
+
 export interface BomSettingVo {
   automaticallyGenerateLineNumbers?: boolean;
   checkReferenceDesignators?: boolean;
 }
+
 export interface FileAssociationVo {
   guid: string;
   file: FileDetailVo;
 }
+
 export interface FileAssociationCreateVo {
   file: SingleGuidVo;
 }
+
 export interface FileAssociationVoResultRep {
   results: FileAssociationVo[];
   count: number;
 }
+
 export interface ItemFileVo {
   guid: string;
   file: FileDetailVo;
   latestEditionAssociation?: boolean;
   primary?: boolean;
 }
+
 export interface ItemFileCreateVo {
   file: SingleGuidVo;
   latestEditionAssociation?: boolean;
   primary?: boolean;
 }
+
 export interface ItemFileUpdateVo {
   latestEditionAssociation?: boolean;
   primary?: boolean;
 }
+
 export interface ItemFileVoResultRep {
   results: ItemFileVo[];
   count: number;
 }
+
 export interface ItemGuidAndUrlVo {
   guid: string;
   url?: UrlVo;
 }
+
 export interface LifecycleChangeVo {
   item: SingleGuidVo;
   proceedOnNotice?: boolean;
@@ -786,11 +866,13 @@ export interface LifecycleChangeVo {
   revisionNumber?: string;
   retrainingRequired?: boolean;
 }
+
 export interface ItemLifecycleChangeResponseVo {
   effectiveRevItem?: ItemGuidAndUrlVo;
   supersededRevItem?: ItemGuidAndUrlVo;
   workingRevItem?: ItemGuidAndUrlVo;
 }
+
 export interface NumberSequenceCompactVo {
   guid: string;
   name?: string;
@@ -799,29 +881,35 @@ export interface NumberSequenceCompactVo {
   prefix?: string;
   nextNumber?: number;
 }
+
 export interface NumberSequenceResultRep {
   results: NumberSequenceCompactVo[];
   count: number;
 }
+
 export interface RequestEvaluatorGroupShortVo {
   guid: string;
   name?: string;
   description?: string;
 }
+
 export interface RequestEvaluatorGroupShortResultRep {
   results: RequestEvaluatorGroupShortVo[];
   count: number;
 }
+
 export interface EvaluatorGroupCompactVo {
   guid: string;
   name?: string;
   description?: string;
   evaluators?: UserCompactVo[];
 }
+
 export interface SupplierCompactVo {
   guid: string;
   name?: string;
 }
+
 export interface SupplierItemCreateVo {
   number?: string;
   name?: string;
@@ -833,6 +921,7 @@ export interface SupplierItemCreateVo {
   offTheShelf?: boolean;
   procurementType?: string;
 }
+
 export interface SupplierItemUpdateVo {
   number?: string;
   name?: string;
@@ -843,6 +932,7 @@ export interface SupplierItemUpdateVo {
   procurementType?: string;
   additionalAttributes?: AdditionalAttributeCreateVo[];
 }
+
 export interface SupplierItemFullVo {
   creationDateTime?: string;
   number?: string;
@@ -857,10 +947,12 @@ export interface SupplierItemFullVo {
   additionalAttributes?: AdditionalAttributeCompactVo[];
   supplier?: SupplierCompactVo;
 }
+
 export interface QueryResultRepSupplierItemFullVo {
   results: SupplierItemFullVo[];
   count: number;
 }
+
 export interface SupplierItemFileVo {
   guid?: string;
   name?: string;
@@ -874,10 +966,12 @@ export interface SupplierItemFileVo {
   creationDateTime?: string;
   lastModifiedDateTime?: string;
 }
+
 export interface SupplierItemFileVoResultRep {
   results: SupplierItemFileVo[];
   count: number;
 }
+
 export interface SupplierItemComplianceVo {
   guid?: string;
   requirement?: {
@@ -887,10 +981,12 @@ export interface SupplierItemComplianceVo {
   status?: string;
   notes?: string;
 }
+
 export interface SupplierItemComplianceVoResultRep {
   results: SupplierItemComplianceVo[];
   count: number;
 }
+
 export interface OutboundEventIntegrationVo {
   guid: string;
   name: string;
@@ -901,6 +997,7 @@ export interface OutboundEventIntegrationVo {
   creator?: UserCompactVo;
   modifyUser?: UserCompactVo;
 }
+
 export interface IntegrationShortRep {
   guid: string;
   name?: string;
@@ -909,14 +1006,17 @@ export interface IntegrationShortRep {
   type?: string;
   transferType?: string;
 }
+
 export interface IntegrationShortRepResult {
   results: IntegrationShortRep[];
   count: number;
 }
+
 export interface OutboundEventIntegrationVoResultRep {
   results: OutboundEventIntegrationVo[];
   count: number;
 }
+
 export interface SupplierApprovalStatusFullVo {
   guid: string;
   name?: string;
@@ -927,10 +1027,12 @@ export interface SupplierApprovalStatusFullVo {
   custom?: boolean;
   color?: string;
 }
+
 export interface SupplierApprovalStatusResultRep {
   results: SupplierApprovalStatusFullVo[];
   count: number;
 }
+
 export interface SupplierFullVo {
   guid: string;
   name?: string;
@@ -942,6 +1044,7 @@ export interface SupplierFullVo {
   creator?: UserCompactVo;
   modifyUser?: UserCompactVo;
 }
+
 export interface PhoneNumberVo {
   label?: string;
   number?: string;
@@ -949,6 +1052,7 @@ export interface PhoneNumberVo {
   comment?: string;
   guid?: string;
 }
+
 export interface SupplierPhoneNumberVo {
   label?: string;
   number?: string;
@@ -956,16 +1060,19 @@ export interface SupplierPhoneNumberVo {
   comment?: string;
   guid?: string;
 }
+
 export interface SupplierPhoneNumberCreateVo {
   label?: string;
   number?: string;
   extension?: string;
   comment?: string;
 }
+
 export interface SupplierPhoneNumberVoResultRep {
   results?: SupplierPhoneNumberVo[];
   count?: number;
 }
+
 export interface AddressVo {
   label?: string;
   address1?: string;
@@ -977,6 +1084,7 @@ export interface AddressVo {
   country?: string;
   guid?: string;
 }
+
 export interface AddressCreateVo {
   label?: string;
   address1?: string;
@@ -987,33 +1095,40 @@ export interface AddressCreateVo {
   postalCode?: string;
   country?: string;
 }
+
 export interface SupplierAddressCompactVo {
   primary?: boolean;
   address?: AddressVo;
 }
+
 export interface SupplierAddressCreateVo {
   primary?: boolean;
   address?: AddressCreateVo;
 }
+
 export interface SupplierAddressCompactVoResultRep {
   results?: SupplierAddressCompactVo[];
   count?: number;
 }
+
 export interface QualityProcessCompactVo {
   guid?: string;
   number?: string;
   name?: string;
   status?: string;
 }
+
 export interface QualityAssociationVo {
   guid?: string;
   qualityProcess?: QualityProcessCompactVo;
   associationType?: string;
 }
+
 export interface ChangeQualityAssociationVoResultRep {
   results?: QualityAssociationVo[];
   count?: number;
 }
+
 export interface SupplierCreateRequestVo {
   accountNumber?: string;
   additionalAttributes?: AdditionalAttributeCreateVo[];
@@ -1025,6 +1140,7 @@ export interface SupplierCreateRequestVo {
   website?: string;
   supplierId?: string;
 }
+
 export interface SupplierUpdateRequestVo {
   accountNumber?: string;
   additionalAttributes?: AdditionalAttributeCreateVo[];
@@ -1036,10 +1152,12 @@ export interface SupplierUpdateRequestVo {
   website?: string;
   supplierId?: string;
 }
+
 export interface QueryResultRepSupplierFullVo {
   results?: SupplierFullVo[];
   count?: number;
 }
+
 export interface FileFullVo {
   category?: FileCategoryVo;
   checkedOut?: boolean;
@@ -1053,10 +1171,12 @@ export interface FileFullVo {
   storageMethodName?: string;
   title?: string;
 }
+
 export interface FileFullVoResultRep {
   results: FileFullVo[];
   count: number;
 }
+
 export interface TrainingShortVo {
   guid?: string;
   number?: string;
@@ -1069,10 +1189,12 @@ export interface TrainingShortVo {
   status?: string;
   statusName?: string;
 }
+
 export interface TrainingShortVoResultRep {
   results: TrainingShortVo[];
   count: number;
 }
+
 export interface TrainingUserVo {
   guid?: string;
   fullName?: string;
@@ -1083,16 +1205,19 @@ export interface TrainingUserVo {
   completionDateTime?: string;
   dueDateTime?: string;
 }
+
 export interface TrainingUserVoResultRep {
   results: TrainingUserVo[];
   count: number;
 }
+
 export interface TrainingUserCreateVo {
   user: {
     guid: string;
   };
   dueDate?: string;
 }
+
 export interface TrainingRecordVo {
   guid?: string;
   user?: UserCompactVo;
@@ -1101,10 +1226,12 @@ export interface TrainingRecordVo {
   statusName?: string;
   notes?: string;
 }
+
 export interface TrainingRecordVoResultRep {
   results: TrainingRecordVo[];
   count: number;
 }
+
 export interface TrainingStatusChangeVo {
   trainingplan: {
     guid: string;
@@ -1112,6 +1239,7 @@ export interface TrainingStatusChangeVo {
   status: string;
   comment?: string;
 }
+
 export interface TrainingUpdateVo {
   name?: string;
   description?: string;
@@ -1121,6 +1249,7 @@ export interface TrainingUpdateVo {
   };
   additionalAttributes?: AdditionalAttributeCreateVo[];
 }
+
 export interface TrainingQualityAssociationVo {
   guid?: string;
   training?: TrainingShortVo;
@@ -1130,6 +1259,7 @@ export interface TrainingQualityAssociationVo {
     name?: string;
   };
 }
+
 export interface TrainingItemAssociationVo {
   guid?: string;
   training?: TrainingShortVo;
@@ -1139,6 +1269,7 @@ export interface TrainingItemAssociationVo {
     name?: string;
   };
 }
+
 export interface TrainingFileAssociationVo {
   guid?: string;
   training?: TrainingShortVo;
@@ -1149,65 +1280,60 @@ export interface TrainingFileAssociationVo {
     title?: string;
   };
 }
+
 export interface ItemSourcingCreateVo {
   amlRank?: number;
   approved?: boolean;
   makeItem?: boolean;
-  mfrItem?: {
-    guid: string;
-  };
+  mfrItem?: { guid: string };
   notes?: string;
-  vendorItem?: {
-    guid: string;
-  };
+  vendorItem?: { guid: string };
   vendorItemConversionFactor?: number;
 }
+
 export interface ItemSourcingUpdateVo {
   amlRank?: number;
   amlSplit?: number;
   approved?: boolean;
-  mfrItem?: {
-    guid: string;
-  };
+  mfrItem?: { guid: string };
   notes?: string;
-  vendorItem?: {
-    guid: string;
-  };
+  vendorItem?: { guid: string };
   vendorItemConversionFactor?: number;
 }
+
 export interface TrainingItemCreateVo {
-  item: {
-    guid: string;
-  };
+  item: { guid: string };
 }
+
 export interface TrainingFileCreateVo {
-  file: {
-    guid: string;
-  };
+  file: { guid: string };
   latestEditionAssociation?: boolean;
 }
+
 export interface TrainingQualityCreateVo {
   quality: {
     guid: string;
-    step?: {
-      guid: string;
-    };
+    step?: { guid: string };
   };
 }
+
 export interface RequirementUserVo {
   email: string;
   fullName: string;
   guid: string;
 }
+
 export interface RequirementStatusVo {
   guid: string;
   value: string;
   code: string;
 }
+
 export interface RequirementTemplateRefVo {
   guid: string;
   name: string;
 }
+
 export interface RequirementFullVo {
   assignee: RequirementUserVo;
   creationDateTime: string;
@@ -1223,31 +1349,26 @@ export interface RequirementFullVo {
   template: RequirementTemplateRefVo;
   additionalAttributes: AdditionalAttributeCreateVo[];
 }
+
 export interface RequirementCreateVo {
-  template?: {
-    guid: string;
-  };
+  template?: { guid: string };
   number?: string;
   title?: string;
   description?: string;
-  assignee?: {
-    guid: string;
-  };
+  assignee?: { guid: string };
   priority?: string;
-  numberSequencePrefix?: {
-    value: string;
-  };
+  numberSequencePrefix?: { value: string };
   additionalAttributes?: AdditionalAttributeCreateVo[];
 }
+
 export interface RequirementUpdateVo {
   title?: string;
   description?: string;
-  assignee?: {
-    guid: string;
-  };
+  assignee?: { guid: string };
   priority?: string;
   additionalAttributes?: AdditionalAttributeCreateVo[];
 }
+
 export interface RequirementTraceVo {
   guid: string;
   level: number;
@@ -1268,139 +1389,128 @@ export interface RequirementTraceVo {
     url: string;
   };
 }
+
 export interface RequirementTraceCreateVo {
   direction: string;
-  relationshipType?: {
-    guid: string;
-  };
+  relationshipType?: { guid: string };
   objectType?: string;
-  item?: {
-    guid: string;
-  };
-  requirement?: {
-    guid: string;
-  };
+  item?: { guid: string };
+  requirement?: { guid: string };
 }
+
 export interface RequirementTraceUpdateVo {
-  relationshipType?: {
-    guid: string;
-  };
+  relationshipType?: { guid: string };
   suspected?: boolean;
 }
+
 export interface RequirementTemplateVo {
   active: boolean;
   allowUserDefinedNumber: boolean;
   creationDateTime: string;
   creator: RequirementUserVo;
   defaultAssignee: RequirementUserVo;
-  defaultNumberSequence: {
-    guid: string;
-    name: string;
-    prefixes: string[];
-  };
+  defaultNumberSequence: { guid: string; name: string; prefixes: string[] };
   defaultTemplate: boolean;
   description: string;
   guid: string;
   name: string;
-  numberSequences: {
-    guid: string;
-    name: string;
-    prefixes: string[];
-  }[];
+  numberSequences: { guid: string; name: string; prefixes: string[] }[];
 }
+
 export interface RequirementRelationshipTypeVo {
   guid: string;
   upstreamLabel: string;
   downstreamLabel: string;
   description: string;
 }
+
 export interface RequirementFileAssocVo {
   guid: string;
   file: Record<string, unknown>;
 }
+
 export interface RequirementQualityAssocVo {
   guid: string;
   quality: {
     guid: string;
     number?: string;
-    step?: {
-      guid: string;
-      name: string;
-    };
+    step?: { guid: string; name: string };
   };
 }
+
 export interface RequirementTicketAssocVo {
   guid: string;
-  ticket: {
-    guid: string;
-    number: string;
-  };
+  ticket: { guid: string; number: string };
 }
+
 export interface TicketUpdateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   title?: string;
   description?: string;
   fixVersion?: string;
   foundOn?: string;
-  assignee?: {
-    guid: string;
-  };
+  assignee?: { guid: string };
   priority?: string;
 }
+
 export interface TicketItemCreateVo {
-  item: {
-    guid: string;
-  };
+  item: { guid: string };
   latestRevisionAssociation?: boolean;
 }
+
 export interface TicketCreateVo {
   template?: SingleGuidVo;
   title?: string;
   number?: string;
-  numberSequencePrefix?: {
-    value: string;
-  };
+  numberSequencePrefix?: { value: string };
   additionalAttributes?: AdditionalAttributeCreateVo[];
 }
+
 export interface TicketTransitionCreateVo {
   ticket: SingleGuidVo;
   status: string;
 }
+
 export interface ImplementationTaskAssigneeVo {
   user?: SingleGuidVo;
   userGroup?: SingleGuidVo;
 }
+
 export interface ChangeImplementationTaskCreateVo {
   name: string;
   assignee?: ImplementationTaskAssigneeVo;
   dueDate?: string;
 }
+
 export interface ChangeImplementationTaskUpdateVo {
   name?: string;
   assignee?: ImplementationTaskAssigneeVo;
   dueDate?: string;
   status?: string;
 }
+
 export interface ChangeImplementationTaskNoteUpdateVo {
   note?: string;
   label?: string;
   private?: boolean;
 }
+
 export interface ChangeItemAssociationViewVo {
   includedInThisChange?: boolean;
   notes?: string;
 }
+
 export interface ApproverDecisionRequestVo {
   decisionType: string;
   user?: SingleGuidVo;
   group?: SingleGuidVo;
 }
+
 export interface QualityProcessTemplateRefVo {
   guid: string;
-  numberFormat?: {
-    prefix: SingleGuidVo;
-  };
+  numberFormat?: { prefix: SingleGuidVo };
 }
+
 export interface QualityProcessCreateVo {
   name?: string;
   description?: string;
@@ -1409,12 +1519,12 @@ export interface QualityProcessCreateVo {
   owner?: SingleGuidVo;
   template?: QualityProcessTemplateRefVo;
 }
+
 export interface QualityStepAffectedQualityCreateVo {
   guid?: string;
-  affected: {
-    step: SingleGuidVo;
-  };
+  affected: { step: SingleGuidVo };
 }
+
 export interface QualityStepAffectedUrlCreateVo {
   guid?: string;
   affected: {
@@ -1423,24 +1533,29 @@ export interface QualityStepAffectedUrlCreateVo {
     description?: string;
   };
 }
+
 export interface SignOffStepDecisionVo {
   decision: string;
   comments?: string;
 }
+
 export interface RequestIssueResponseCreateVo {
   response: string;
 }
+
 export interface RequestItemCreateVo {
   item: {
     guid: string;
   };
   notes?: string;
 }
+
 export interface RequestIssueChangeStatusVo {
   guid: string;
   status: "OPEN" | "CLOSED";
   response?: string;
 }
+
 export interface RequestTransitionCreateVo {
   request: {
     guid: string;
@@ -1453,6 +1568,7 @@ export interface RequestTransitionCreateVo {
   resolutionCode?: string;
   deferDeadlineDateTime?: string;
 }
+
 export interface RequestCreateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   category?: {
@@ -1471,15 +1587,18 @@ export interface RequestCreateVo {
   creatorParticipation?: boolean;
   supplierVisibility?: boolean;
 }
+
 export interface RequestIssueCreateVo {
   issue: string;
   supplierVisibility?: boolean;
 }
+
 export interface RequestMarkupCreateVo {
   markup: {
     guid: string;
   };
 }
+
 export interface RequestUpdateVo {
   additionalAttributes?: AdditionalAttributeCreateVo[];
   category?: {
@@ -1494,6 +1613,7 @@ export interface RequestUpdateVo {
   requestCode?: string;
   supplierVisibility?: boolean;
 }
+
 export interface LoginResponse {
   arena_session_id?: string;
   arenaSessionId?: string;
@@ -1503,11 +1623,13 @@ export interface LoginResponse {
   reason?: string;
   note?: string;
 }
+
 export interface LoginRequest {
   email: string;
   password: string;
   workspaceId?: number;
 }
+
 export interface ArenaAttribute {
   guid: string;
   name: string;
@@ -1519,14 +1641,17 @@ export interface ArenaAttribute {
   possibleValues?: ArenaPossibleValue[];
   [key: string]: unknown;
 }
+
 export interface ArenaAttributeResponse {
   results: ArenaAttribute[];
   count: number;
 }
+
 export interface ArenaAttributeOption {
   title: string;
   const: string;
 }
+
 export interface ArenaAttributeMetadata {
   name: string;
   apiName: string;
@@ -1535,28 +1660,35 @@ export interface ArenaAttributeMetadata {
   required: boolean;
   custom: boolean;
 }
+
 export interface ExportDefinitionSummary {
   guid?: string;
   number?: number;
   name?: string;
 }
+
 export interface ExportDefinitionResult {
   results?: ExportDefinitionSummary[];
   count?: number;
 }
+
 export type ResourceType = "ITEM" | "CHANGE" | "QUALITY" | "REQUEST";
+
 export type MessageFieldPropertyKey =
   | "itemMessageFields"
   | "changeMessageFields"
   | "qualityMessageFields"
   | "requestMessageFields";
+
 export type ArenaAuthContext = {
   logger: ActionLogger;
   executionState?: Record<string, unknown>;
 };
+
 export interface PersistedArenaAuth {
   credential: string;
 }
+
 export interface ArenaAuthStrategy {
   label: string;
   renewable: boolean;
@@ -1566,19 +1698,23 @@ export interface ArenaAuthStrategy {
   ) => Promise<string>;
   buildHeaders: (credential: string) => Record<string, string>;
 }
+
 export interface ArenaListResponse<T> {
   results: T[];
   count: number;
 }
+
 export interface PollingCursor extends Record<string, unknown> {
   windowStart: string;
   windowEnd: string;
   offset: number;
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   cursor?: PollingCursor;
 }
+
 export interface ArenaRecord {
   guid: string;
   creationDateTime?: string;
@@ -1586,9 +1722,11 @@ export interface ArenaRecord {
   status?: string;
   [key: string]: unknown;
 }
+
 export interface ArenaChangesObject {
   createdRecords?: ArenaRecord[];
 }
+
 export interface ArenaRecordChange {
   changeType: "created";
   record: ArenaRecord;

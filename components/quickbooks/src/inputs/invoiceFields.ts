@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+
 export const billEmail = input({
   label: "Bill Email",
   placeholder: "Enter billing email address",
@@ -9,6 +10,7 @@ export const billEmail = input({
   comments: "The email address to send the invoice to.",
   clean: cleanStringInput,
 });
+
 export const billEmailCc = input({
   label: "Bill Email CC",
   placeholder: "Enter CC email address",
@@ -18,6 +20,7 @@ export const billEmailCc = input({
   comments: "The CC email address for the invoice.",
   clean: cleanStringInput,
 });
+
 export const billEmailBcc = input({
   label: "Bill Email BCC",
   placeholder: "Enter BCC email address",
@@ -27,6 +30,7 @@ export const billEmailBcc = input({
   comments: "The BCC email address for the invoice.",
   clean: cleanStringInput,
 });
+
 export const dueDate = input({
   label: "Due Date",
   placeholder: "Enter due date",
@@ -36,6 +40,7 @@ export const dueDate = input({
   comments: "The due date of the invoice in YYYY-MM-DD format.",
   clean: cleanStringInput,
 });
+
 export const invoiceDate = input({
   label: "Invoice Date",
   placeholder: "Enter invoice date",
@@ -45,6 +50,7 @@ export const invoiceDate = input({
   comments: "The transaction date of the invoice in YYYY-MM-DD format.",
   clean: cleanStringInput,
 });
+
 export const docNumber = input({
   label: "Document Number",
   placeholder: "Enter document number",
@@ -54,6 +60,7 @@ export const docNumber = input({
   comments: "The reference number for the invoice.",
   clean: cleanStringInput,
 });
+
 export const customerMemo = input({
   label: "Customer Memo",
   placeholder: "Enter customer memo",
@@ -63,6 +70,7 @@ export const customerMemo = input({
   comments: "A memo that appears on the invoice sent to the customer.",
   clean: cleanStringInput,
 });
+
 export const privateNote = input({
   label: "Private Note",
   placeholder: "Enter private note",
@@ -72,6 +80,7 @@ export const privateNote = input({
   comments: "An internal note that is not visible to the customer.",
   clean: cleanStringInput,
 });
+
 export const salesTermId = input({
   label: "Sales Term ID",
   placeholder: "Enter sales term ID",
@@ -82,6 +91,7 @@ export const salesTermId = input({
   comments: "The ID of the sales term (e.g., Net 30) to apply to the invoice.",
   clean: cleanStringInput,
 });
+
 export const billingLine1 = input({
   label: "Billing Address Line 1",
   placeholder: "Enter billing address line 1",
@@ -91,6 +101,7 @@ export const billingLine1 = input({
   comments: "Line 1 of the billing address.",
   clean: cleanStringInput,
 });
+
 export const billingLine2 = input({
   label: "Billing Address Line 2",
   placeholder: "Enter billing address line 2",
@@ -100,6 +111,7 @@ export const billingLine2 = input({
   comments: "Line 2 of the billing address.",
   clean: cleanStringInput,
 });
+
 export const billingCity = input({
   label: "Billing City",
   placeholder: "Enter billing city",
@@ -109,6 +121,7 @@ export const billingCity = input({
   comments: "The city of the billing address.",
   clean: cleanStringInput,
 });
+
 export const billingState = input({
   label: "Billing State",
   placeholder: "Enter billing state",
@@ -118,6 +131,7 @@ export const billingState = input({
   comments: "The state or province of the billing address.",
   clean: cleanStringInput,
 });
+
 export const billingPostalCode = input({
   label: "Billing Postal Code",
   placeholder: "Enter billing postal code",
@@ -127,6 +141,7 @@ export const billingPostalCode = input({
   comments: "The postal code of the billing address.",
   clean: cleanStringInput,
 });
+
 export const shippingLine1 = input({
   label: "Shipping Address Line 1",
   placeholder: "Enter shipping address line 1",
@@ -136,6 +151,7 @@ export const shippingLine1 = input({
   comments: "Line 1 of the shipping address.",
   clean: cleanStringInput,
 });
+
 export const shippingLine2 = input({
   label: "Shipping Address Line 2",
   placeholder: "Enter shipping address line 2",
@@ -145,6 +161,7 @@ export const shippingLine2 = input({
   comments: "Line 2 of the shipping address.",
   clean: cleanStringInput,
 });
+
 export const shippingCity = input({
   label: "Shipping City",
   placeholder: "Enter shipping city",
@@ -154,6 +171,7 @@ export const shippingCity = input({
   comments: "The city of the shipping address.",
   clean: cleanStringInput,
 });
+
 export const shippingState = input({
   label: "Shipping State",
   placeholder: "Enter shipping state",
@@ -163,6 +181,7 @@ export const shippingState = input({
   comments: "The state or province of the shipping address.",
   clean: cleanStringInput,
 });
+
 export const shippingPostalCode = input({
   label: "Shipping Postal Code",
   placeholder: "Enter shipping postal code",

@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { createCheckoutSessionExamplePayload as examplePayload } from "../../examplePayloads/checkoutSessions";
 import { updateCheckoutSessionInputs } from "../../inputs";
 import { checkoutSessionOutputSchema } from "../../outputSchemas";
+
 export const updateCheckoutSession = action({
   display: {
     label: "Update Checkout Session",
@@ -17,9 +18,11 @@ export const updateCheckoutSession = action({
       stripeConnection,
       timeout,
     });
+
     const session = await client.checkout.sessions.update(sessionId, {
       metadata,
     });
+
     return {
       data: session,
     };
@@ -27,9 +30,7 @@ export const updateCheckoutSession = action({
   examplePerform: async (
     _context,
     { sessionId, metadata },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...examplePayload.data,
       id: sessionId,
@@ -41,5 +42,6 @@ export const updateCheckoutSession = action({
     type: "actionOutput",
     schema: checkoutSessionOutputSchema,
   }),
+
   examplePayload,
 });

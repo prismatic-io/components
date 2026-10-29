@@ -8,6 +8,7 @@ import {
   fieldValues,
   recordId,
 } from "../inputs";
+
 const crmUpdateRecord = action({
   display: {
     label: "CRM - Update Record",
@@ -29,6 +30,7 @@ const crmUpdateRecord = action({
       ClientType.CRM,
       context.debug.enabled,
     );
+
     const payload = {
       data: [
         {
@@ -39,14 +41,18 @@ const crmUpdateRecord = action({
         },
       ],
     };
+
     const url = `/${recordType}/${recordId}`;
+
     const { data } = await crmClient.request({
       method: "PUT",
       url,
       data: payload,
     });
+
     return data;
   },
   examplePayload: crmUpdateRecordExamplePayload,
 });
+
 export default crmUpdateRecord;

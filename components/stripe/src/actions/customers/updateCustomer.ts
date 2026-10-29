@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { updateCustomerExamplePayload } from "../../examplePayloads/customers";
 import { updateCustomerInputs } from "../../inputs";
 import { customerOutputSchema } from "../../outputSchemas";
+
 export const updateCustomer = action({
   display: {
     label: "Update Customer",
@@ -26,10 +27,12 @@ export const updateCustomer = action({
     if (!customerId) {
       throw new Error("Customer ID is required to update a customer.");
     }
+
     const client = createStripeClient({
       stripeConnection,
       timeout,
     });
+
     const data = await client.customers.update(customerId, {
       name: contactInfo.customerName,
       phone: contactInfo.customerPhone,
@@ -47,6 +50,7 @@ export const updateCustomer = action({
       metadata: customerMetadata,
       ...fieldValues,
     });
+
     return {
       data,
     };
@@ -61,14 +65,13 @@ export const updateCustomer = action({
       customerDescription,
       customerMetadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const customer = updateCustomerExamplePayload.data as Record<
       string,
       unknown
     >;
     const existingAddress = customer.address as Record<string, unknown>;
+
     return {
       data: {
         ...customer,
@@ -96,5 +99,6 @@ export const updateCustomer = action({
     type: "actionOutput",
     schema: customerOutputSchema,
   }),
+
   examplePayload: updateCustomerExamplePayload,
 });

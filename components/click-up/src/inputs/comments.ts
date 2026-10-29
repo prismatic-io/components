@@ -8,6 +8,7 @@ import {
   getTeamId,
   startDate,
 } from "./common";
+
 const getStartId = <R extends boolean>(required: R, comments: string) =>
   input({
     label: "Start ID",
@@ -17,6 +18,7 @@ const getStartId = <R extends boolean>(required: R, comments: string) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 const getCommentText = (required: boolean, comments: string) =>
   input({
     label: "Comment Text",
@@ -26,6 +28,7 @@ const getCommentText = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 const assigneeId = input({
   label: "Assignee",
   type: "string",
@@ -35,6 +38,7 @@ const assigneeId = input({
   required: true,
   clean: cleanNumber,
 });
+
 const getCommentId = (required: boolean, comments: string) =>
   input({
     label: "Comment ID",
@@ -44,6 +48,7 @@ const getCommentId = (required: boolean, comments: string) =>
     required,
     clean: cleanNumber,
   });
+
 const getResolved = (
   required: boolean,
   comments: string,
@@ -57,10 +62,12 @@ const getResolved = (
     default: `${defaultValue}`,
     clean: util.types.toBool,
   });
+
 const startId = getStartId(
   false,
   "The ID of the oldest comment from the previous response. Use with Start Date to retrieve the next page of comments.",
 );
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -68,6 +75,7 @@ const pagination = structuredObjectInput({
     "Start timestamp and start ID cursor controls for paging through results.",
   inputs: { startDate, startId },
 });
+
 export const createTaskCommentInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
@@ -87,10 +95,12 @@ export const createTaskCommentInputs = {
     required: false,
   },
 };
+
 export const deleteCommentInputs = {
   connection: connectionInput,
   commentId: getCommentId(true, "The unique identifier for the comment."),
 };
+
 export const getTaskCommentsInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
@@ -101,6 +111,7 @@ export const getTaskCommentsInputs = {
   ),
   pagination,
 };
+
 export const updateCommentInputs = {
   connection: connectionInput,
   commentId: getCommentId(true, "The unique identifier for the comment."),

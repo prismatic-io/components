@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { updateCustomerExamplePayload } from "../../examplePayloads";
 import { updateCustomerInputs } from "../../inputs";
 import { asJsonObject } from "../../utils";
+
 export const updateCustomer = action({
   display: {
     label: "Update Customer",
@@ -16,10 +17,13 @@ export const updateCustomer = action({
     { connection, customerId, passwordHash, customer },
   ) => {
     const client = await getClient(connection, context.debug.enabled);
+
     const body = asJsonObject(customer, "Customer");
+
     if (passwordHash) {
       body.passwordHash = passwordHash;
     }
+
     const { data } = await client.put(
       `${ENDPOINTS.customers}/${encodeURIComponent(customerId)}`,
       body,

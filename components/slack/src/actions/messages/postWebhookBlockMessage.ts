@@ -3,6 +3,7 @@ import { createWebhookClient } from "../../client";
 import { webhookDefaultExamplePayload } from "../../examplePayloads";
 import { postWebhookBlockMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const postWebhookBlockMessage = action({
   display: {
     label: "Post Slack Block Message From Webhook",
@@ -17,6 +18,7 @@ export const postWebhookBlockMessage = action({
   ) => {
     debugLogger({ message, blocks, debug });
     const webhook = createWebhookClient(connection);
+
     return {
       data: await webhook.send({
         text: message,
@@ -24,9 +26,7 @@ export const postWebhookBlockMessage = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: webhookDefaultExamplePayload,
   }),
   examplePayload: { data: webhookDefaultExamplePayload },

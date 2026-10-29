@@ -17,6 +17,7 @@ import {
   tableId,
 } from "./common";
 import { tableListPaginationFields } from "./pagination";
+
 export const requirePartitionFilter = input({
   label: "Require Partition Filter",
   type: "boolean",
@@ -25,6 +26,7 @@ export const requirePartitionFilter = input({
     "When true, queries over this table require a partition filter that can be used for partition elimination to be specified.",
   required: false,
 });
+
 export const numBytes = input({
   label: "Num Bytes",
   type: "string",
@@ -35,6 +37,7 @@ export const numBytes = input({
   placeholder: "Enter number of bytes",
   required: false,
 });
+
 export const numLongTermBytes = input({
   label: "Num Long Term Bytes",
   type: "string",
@@ -45,6 +48,7 @@ export const numLongTermBytes = input({
   placeholder: "Enter number of long-term bytes",
   required: false,
 });
+
 export const numRows = input({
   label: "Num Rows",
   type: "string",
@@ -55,6 +59,7 @@ export const numRows = input({
   placeholder: "Enter number of rows",
   required: false,
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -65,6 +70,7 @@ export const type = input({
   placeholder: "Enter table type",
   required: false,
 });
+
 export const maxStaleness = input({
   label: "Max Staleness",
   type: "string",
@@ -75,6 +81,7 @@ export const maxStaleness = input({
   placeholder: "Enter max staleness",
   required: false,
 });
+
 export const view = input({
   label: "View",
   type: "string",
@@ -85,6 +92,7 @@ export const view = input({
   placeholder: "Enter view type",
   required: false,
 });
+
 export const schema = input({
   label: "Schema",
   type: "code",
@@ -95,6 +103,7 @@ export const schema = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const timePartitioning = input({
   label: "Time Partitioning",
   type: "code",
@@ -109,6 +118,7 @@ export const timePartitioning = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const rangePartitioning = input({
   label: "Range Partitioning",
   type: "code",
@@ -125,6 +135,7 @@ export const rangePartitioning = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const clustering = input({
   label: "Clustering",
   type: "code",
@@ -137,6 +148,7 @@ export const clustering = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const tableReference = input({
   label: "Table Reference",
   type: "code",
@@ -150,6 +162,7 @@ export const tableReference = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const tableView = input({
   label: "View",
   type: "code",
@@ -168,6 +181,7 @@ export const tableView = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const materializedView = input({
   label: "Materialized View",
   type: "code",
@@ -185,6 +199,7 @@ export const materializedView = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const materializedViewStatus = input({
   label: "Materialized View Status",
   type: "code",
@@ -202,6 +217,7 @@ export const materializedViewStatus = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const externalDataConfiguration = input({
   label: "External Data Configuration",
   type: "code",
@@ -213,6 +229,7 @@ export const externalDataConfiguration = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const streamingBuffer = input({
   label: "Streaming Buffer",
   type: "code",
@@ -227,6 +244,7 @@ export const streamingBuffer = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const snapshotDefinition = input({
   label: "Snapshot Definition",
   type: "code",
@@ -244,6 +262,7 @@ export const snapshotDefinition = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const cloneDefinition = input({
   label: "Clone Definition",
   type: "code",
@@ -261,6 +280,7 @@ export const cloneDefinition = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const tableConstraints = input({
   label: "Table Constraints",
   type: "code",
@@ -290,6 +310,7 @@ export const tableConstraints = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const tableAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -314,6 +335,7 @@ export const tableAdditionalFields = structuredObjectInput({
     maxStaleness,
   },
 });
+
 export const createTableInputs = {
   connectionInput,
   tableReference,
@@ -329,6 +351,7 @@ export const createTableInputs = {
   }),
   additionalFields: tableAdditionalFields,
 };
+
 export const deleteTableInputs = {
   connectionInput,
   datasetId: input({
@@ -347,6 +370,7 @@ export const deleteTableInputs = {
     comments: "Table ID of the table to delete.",
   }),
 };
+
 export const getTableInputs = {
   connectionInput,
   datasetId: input({
@@ -367,6 +391,7 @@ export const getTableInputs = {
   selectedFields,
   view,
 };
+
 export const listTablesInputs = {
   connectionInput,
   projectId: input({
@@ -382,6 +407,7 @@ export const listTablesInputs = {
   fetchAll,
   pagination: tableListPaginationFields,
 };
+
 export const patchTableInputs = {
   connectionInput,
   datasetId: input({
@@ -402,6 +428,7 @@ export const patchTableInputs = {
   tableReference,
   additionalFields: tableAdditionalFields,
 };
+
 export const updateTableInputs = {
   connectionInput,
   datasetId: input({

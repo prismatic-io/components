@@ -1,5 +1,6 @@
 import { STANDARD_OBJECT_TYPES } from "../constants";
 import { toObjectTypeKey } from "./cleanInput";
+
 describe("toObjectTypeKey", () => {
   test.each([
     ["contacts", "0-1"],
@@ -18,6 +19,7 @@ describe("toObjectTypeKey", () => {
   ])("normalizes %p to %p", (value, expected) => {
     expect(toObjectTypeKey(value)).toBe(expected);
   });
+
   test("maps the plural name, the singular name and the ID of every standard object to its ID", () => {
     for (const { key, name } of STANDARD_OBJECT_TYPES) {
       const singular = name.endsWith("ies")
@@ -28,6 +30,7 @@ describe("toObjectTypeKey", () => {
       expect(toObjectTypeKey(key)).toBe(key);
     }
   });
+
   test.each([
     "2-116144016",
     "p_equipment",

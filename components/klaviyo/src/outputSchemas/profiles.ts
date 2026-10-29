@@ -4,7 +4,9 @@ import {
   resourceLinksSchema,
   toManyRelationshipSchema,
 } from "./shared";
+
 const nullableDateTime = { type: ["string", "null"], format: "date-time" };
+
 const consentChannelSchema = {
   type: "object" as const,
   properties: {
@@ -18,6 +20,7 @@ const consentChannelSchema = {
   },
   required: ["consent", "canReceive"],
 };
+
 const whatsAppChannelSchema = {
   type: "object" as const,
   properties: {
@@ -26,6 +29,7 @@ const whatsAppChannelSchema = {
   },
   required: ["consent", "canReceive"],
 };
+
 const smsConsentSchema = (canReceiveKey: string) => ({
   type: "object" as const,
   properties: {
@@ -38,6 +42,7 @@ const smsConsentSchema = (canReceiveKey: string) => ({
   },
   required: [canReceiveKey, "consent"],
 });
+
 const subscriptionsSchema = {
   type: "object" as const,
   properties: {
@@ -124,6 +129,7 @@ const subscriptionsSchema = {
     },
   },
 };
+
 const predictiveAnalyticsSchema = {
   type: "object" as const,
   properties: {
@@ -142,6 +148,7 @@ const predictiveAnalyticsSchema = {
     },
   },
 };
+
 const profileResourceObject = {
   type: "object" as const,
   properties: {
@@ -195,6 +202,7 @@ const profileResourceObject = {
   },
   required: ["type", "attributes", "links"],
 };
+
 const listMemberResourceObject = {
   ...profileResourceObject,
   properties: {
@@ -209,6 +217,7 @@ const listMemberResourceObject = {
     },
   },
 };
+
 export const createProfileOutputSchema = {
   type: "object" as const,
   properties: {
@@ -217,6 +226,7 @@ export const createProfileOutputSchema = {
   },
   required: ["data"],
 };
+
 export const getProfileOutputSchema = {
   type: "object" as const,
   properties: {
@@ -229,6 +239,7 @@ export const getProfileOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listProfileOutputSchema = {
   type: "object" as const,
   properties: {
@@ -240,6 +251,7 @@ export const listProfileOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const listListProfilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -251,10 +263,13 @@ export const listListProfilesOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const updateProfileOutputSchema = createProfileOutputSchema;
+
 export const subscribeProfilesOutputSchema = {
   type: "string" as const,
 };
+
 export const unsubscribeProfilesOutputSchema = {
   type: "string" as const,
 };

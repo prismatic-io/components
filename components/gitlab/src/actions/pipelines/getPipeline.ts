@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getPipelineExamplePayload } from "../../examplePayloads";
 import { getPipelineInputs } from "../../inputs";
 import { getPipelineOutputSchema } from "../../outputSchemas";
+
 export const getPipeline = action({
   display: {
     label: "Get Pipeline",

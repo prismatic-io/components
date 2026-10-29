@@ -4,6 +4,7 @@ import { listAssetsExamplePayload as examplePayload } from "../../examplePayload
 import { listAssetsInputs as inputs } from "../../inputs";
 import { assetsListOutputSchema } from "../../outputSchemas";
 import { getListData } from "../../util";
+
 export const listAssets = action({
   display: {
     label: "List Assets (Deprecated)",
@@ -18,6 +19,7 @@ export const listAssets = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await getListData(client, `/assets`, "assets", {
       fetchAll,
       params: {
@@ -26,6 +28,7 @@ export const listAssets = action({
         page: pagination.page,
       },
     });
+
     return {
       data,
     };

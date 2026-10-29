@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listDeviceCompliancePolicySettingStateSummariesExamplePayload } from "../../examplePayloads";
 import { listDeviceCompliancePolicySettingStateSummariesInputs } from "../../inputs";
+
 export const listDeviceCompliancePolicySettingStateSummaries = action({
   display: {
     label: "List Device Compliance Policy Setting State Summaries",
@@ -14,6 +15,7 @@ export const listDeviceCompliancePolicySettingStateSummaries = action({
     const { data } = await client.get(
       ENDPOINTS.DEVICE_COMPLIANCE_POLICY_SETTING_STATE_SUMMARIES,
     );
+
     return {
       data,
     };

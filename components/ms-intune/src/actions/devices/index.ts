@@ -4,6 +4,7 @@ import { listManagedDevices } from "./listManagedDevices";
 import { retireDevice } from "./retireDevice";
 import { updateManagedDevice } from "./updateManagedDevice";
 import { wipeDevice } from "./wipeDevice";
+
 export default {
   deleteManagedDevice,
   getManagedDevice,

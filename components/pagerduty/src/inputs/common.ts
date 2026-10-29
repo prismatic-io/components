@@ -5,12 +5,14 @@ import {
   toOptionalString,
   toOptionalStringArray,
 } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The PagerDuty connection to use.",
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -20,6 +22,7 @@ export const limit = input({
   clean: toOptionalNumber,
   comments: "The maximum number of results to return per page.",
 });
+
 export const offset = input({
   label: "Offset",
   type: "string",
@@ -30,6 +33,7 @@ export const offset = input({
   comments:
     "The number of results to skip before starting to return results. Used for pagination.",
 });
+
 export const total = input({
   label: "Total",
   type: "boolean",
@@ -39,6 +43,7 @@ export const total = input({
   comments:
     "When true, the total field in pagination responses is populated. By default this field is null to provide the fastest possible response times.",
 });
+
 export const teamIds = input({
   label: "Team IDs",
   type: "string",
@@ -49,6 +54,7 @@ export const teamIds = input({
   clean: toOptionalStringArray,
   comments: "The unique identifiers of the teams to filter results by.",
 });
+
 export const since = input({
   label: "Since",
   type: "string",
@@ -59,6 +65,7 @@ export const since = input({
   comments:
     "The start of the date range over which to search, as a UTC ISO 8601 datetime string.",
 });
+
 export const until = input({
   label: "Until",
   type: "string",
@@ -69,6 +76,7 @@ export const until = input({
   comments:
     "The end of the date range over which to search, as a UTC ISO 8601 datetime string.",
 });
+
 export const eventId = input({
   label: "Event ID",
   type: "string",
@@ -78,6 +86,7 @@ export const eventId = input({
   clean: util.types.toString,
   comments: "The unique identifier for the change event.",
 });
+
 export const event = input({
   label: "Event to Send",
   type: "code",
@@ -86,6 +95,7 @@ export const event = input({
   comments: "The JSON object describing the event payload to send.",
   clean: util.types.toObject,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",

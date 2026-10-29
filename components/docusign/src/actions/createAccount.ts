@@ -27,6 +27,7 @@ import {
   userName,
 } from "../inputs";
 import { cleanObject } from "../utils";
+
 export const createAccount = action({
   display: {
     label: "Create Account",
@@ -66,6 +67,7 @@ export const createAccount = action({
       false,
       context.debug.enabled,
     );
+
     const accountRequest = cleanObject({
       accountName,
       distributorCode,
@@ -99,9 +101,11 @@ export const createAccount = action({
         referrerName,
       },
     });
+
     const body = {
       newAccountRequest: [accountRequest],
     };
+
     const { data } = await client.post(`/`, body);
     return { data };
   },

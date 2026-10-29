@@ -9,6 +9,7 @@ import type {
   SupplierAddressCreateVo,
 } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateSupplierAddress = action({
   display: {
     label: "Update Supplier Address",
@@ -26,7 +27,9 @@ export const updateSupplierAddress = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const addressData: AddressCreateVo = {};
+
       if (label !== undefined && label !== null) addressData.label = label;
       if (address.address1 !== undefined && address.address1 !== null)
         addressData.address1 = address.address1;
@@ -42,13 +45,17 @@ export const updateSupplierAddress = action({
         addressData.postalCode = address.postalCode;
       if (address.country !== undefined && address.country !== null)
         addressData.country = address.country;
+
       const supplierAddressPayload: SupplierAddressCreateVo = {};
+
       if (Object.keys(addressData).length > 0) {
         supplierAddressPayload.address = addressData;
       }
+
       if (isPrimary !== undefined && isPrimary !== null) {
         supplierAddressPayload.primary = isPrimary;
       }
+
       context.logger.info("Updating supplier address", {
         supplierGuid,
         addressGuid,
@@ -58,13 +65,16 @@ export const updateSupplierAddress = action({
         country: address.country,
         isPrimary,
       });
+
       const { data } = await client.put<SupplierAddressCompactVo>(
         `/suppliers/${supplierGuid}/addresses/${addressGuid}`,
         supplierAddressPayload,
       );
+
       context.logger.info(
         `Successfully updated address for supplier: ${supplierGuid} - ${data.address?.label || "No Label"} (${data.address?.guid})`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Supplier Address");

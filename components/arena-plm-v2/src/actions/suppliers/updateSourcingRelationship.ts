@@ -5,6 +5,7 @@ import { updateSourcingRelationshipInputs } from "../../inputs";
 import { itemSourcingSchema } from "../../outputSchemas";
 import type { ItemSourcingUpdateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateSourcingRelationship = action({
   display: {
     label: "Update Sourcing Relationship",
@@ -35,7 +36,9 @@ export const updateSourcingRelationship = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const sourcingData: ItemSourcingUpdateVo = {};
+
       if (amlRank !== undefined) sourcingData.amlRank = amlRank;
       if (approved !== undefined) sourcingData.approved = approved;
       if (mfrItemGuid) sourcingData.mfrItem = { guid: mfrItemGuid };
@@ -44,28 +47,34 @@ export const updateSourcingRelationship = action({
       if (vendorItemConversionFactor !== undefined)
         sourcingData.vendorItemConversionFactor = vendorItemConversionFactor;
       if (amlSplit !== undefined) sourcingData.amlSplit = amlSplit;
+
       context.logger.info("Updating sourcing relationship in Arena", {
         itemGuid: itemGuid,
         sourcingRelationshipGuid: sourcingRelationshipGuid,
         setNull: setNull,
       });
+
       if (context.debug.enabled) {
         context.logger.debug("Sourcing relationship fields being updated", {
           updatedFields: Object.keys(sourcingData),
         });
       }
+
       const queryParams =
         setNull !== undefined ? { setnull: setNull } : undefined;
+
       const { data, status } = await client.put(
         `/items/${itemGuid}/sourcing/${sourcingRelationshipGuid}`,
         sourcingData,
         { params: queryParams },
       );
+
       context.logger.info("Sourcing relationship updated successfully", {
         itemGuid: itemGuid,
         sourcingRelationshipGuid: sourcingRelationshipGuid,
         statusCode: status,
       });
+
       return {
         data,
       };

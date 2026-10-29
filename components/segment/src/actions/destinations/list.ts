@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listDestinationsExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../helpers/pagination";
 import { connectionInput, count, cursor, fetchAll, region } from "../../inputs";
+
 export const listDestinations = action({
   display: {
     label: "List Destinations",

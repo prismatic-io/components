@@ -1,4 +1,5 @@
 import { memberWithProfileSchema } from "./shared";
+
 export const getListMembersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -6,4 +7,5 @@ export const getListMembersOutputSchema = {
   },
   required: ["members"],
 };
+
 export const getTaskMembersOutputSchema = getListMembersOutputSchema;

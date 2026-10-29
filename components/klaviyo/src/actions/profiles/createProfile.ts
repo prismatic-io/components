@@ -5,6 +5,7 @@ import { createProfileInputs as inputs } from "../../inputs";
 import { type ProfileCreateQuery, ProfileEnum } from "klaviyo-api";
 import { createProfileExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const createProfile = action({
   display: {
     label: "Create Profile",

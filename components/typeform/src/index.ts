@@ -4,6 +4,7 @@ import actions from "./actions";
 import dataSources from "./datasources";
 import connections from "./connections";
 import triggers from "./triggers";
+
 export default component({
   key: "typeform",
   public: true,

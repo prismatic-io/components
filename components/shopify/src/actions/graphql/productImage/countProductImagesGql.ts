@@ -5,6 +5,7 @@ import { countProductImagesInputs as inputs } from "../../../inputsGql";
 import { countProductImagesGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";
 import countProductImagesQuery from "../queries/productImage/CountProductImages.gql";
+
 export const countProductImagesGql = action({
   display: {
     label: "Count Product Images",
@@ -19,13 +20,13 @@ export const countProductImagesGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      product: {
-        mediaCount: Count;
-      };
-    } = await client.request(countProductImagesQuery, {
-      productId,
-    });
+    const data: { product: { mediaCount: Count } } = await client.request(
+      countProductImagesQuery,
+      {
+        productId,
+      },
+    );
+
     return {
       data: data.product.mediaCount,
     };

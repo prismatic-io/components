@@ -3,6 +3,7 @@ import { pollTableExamplePayload } from "../examplePayloads";
 import { pollTableInputs } from "../inputs";
 import type { PaginationState, PollTableRow } from "../types";
 import { pollTablePerform } from "./pollTablePerform";
+
 export const pollTable = pollingTrigger({
   display: {
     label: "New and Updated Records",

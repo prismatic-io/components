@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { getSpaceExamplePayload } from "../../examplePayloads";
 import { getSpaceInputs } from "../../inputs";
 import { getSpaceOutputSchema } from "../../outputSchemas";
+
 export const getSpace = action({
   display: {
     label: "Get Space",

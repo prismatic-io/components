@@ -4,6 +4,7 @@ import { createSectionExamplePayload } from "../../examplePayloads";
 import { createSectionInputs } from "../../inputs";
 import { createSectionOutputSchema } from "../../outputSchemas";
 import type { Section } from "../../types";
+
 export const createSection = action({
   display: {
     label: "Create Section",
@@ -30,9 +31,12 @@ export const createSection = action({
         position: position,
       },
     };
-    const { data } = await client.post<{
-      section: Section;
-    }>(`/help_center/categories/${categoryId}/sections`, payload);
+
+    const { data } = await client.post<{ section: Section }>(
+      `/help_center/categories/${categoryId}/sections`,
+      payload,
+    );
+
     return {
       data,
     };

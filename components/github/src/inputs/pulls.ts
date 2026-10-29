@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanString, toOptionalBool } from "../utils";
 import { connectionInput, owner, pagination, repo } from "./common";
+
 export const head = input({
   label: "Head",
   type: "string",
@@ -9,6 +10,7 @@ export const head = input({
   comments:
     "Filter pulls by head user or head organization and branch name in the format of 'user:ref-name' or 'organization:ref-name'",
 });
+
 export const base = input({
   label: "Base",
   type: "string",
@@ -16,6 +18,7 @@ export const base = input({
   clean: cleanString,
   comments: "Filter pulls by base branch name",
 });
+
 const pullRequestTitle = input({
   label: "Title",
   type: "string",
@@ -25,6 +28,7 @@ const pullRequestTitle = input({
   clean: cleanString,
   comments: "The title of the pull request.",
 });
+
 const pullRequestHead = input({
   label: "Head",
   type: "string",
@@ -35,6 +39,7 @@ const pullRequestHead = input({
   comments:
     "The name of the branch where the changes are implemented. For cross-repository pull requests, use the format 'username:branch'.",
 });
+
 const pullRequestBase = input({
   label: "Base",
   type: "string",
@@ -45,6 +50,7 @@ const pullRequestBase = input({
   comments:
     "The name of the branch the changes are pulled into. This should be an existing branch in the repository.",
 });
+
 const pullRequestBody = input({
   label: "Body",
   type: "text",
@@ -56,6 +62,7 @@ const pullRequestBody = input({
   comments:
     "The contents/description of the pull request. Supports markdown formatting.",
 });
+
 const maintainerCanModify = input({
   label: "Maintainer Can Modify",
   type: "boolean",
@@ -64,6 +71,7 @@ const maintainerCanModify = input({
   comments:
     "When true, maintainers can modify the pull request. See [GitHub's documentation](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/allowing-changes-to-a-pull-request-branch-created-from-a-fork) for details.",
 });
+
 const draft = input({
   label: "Draft",
   type: "boolean",
@@ -72,6 +80,7 @@ const draft = input({
   comments:
     "When true, creates the pull request as a draft. Draft pull requests cannot be merged until marked as ready for review.",
 });
+
 export const pullsCreateInputs = {
   connection: connectionInput,
   owner,
@@ -83,6 +92,7 @@ export const pullsCreateInputs = {
   maintainerCanModify,
   draft,
 };
+
 const pullRequestStateFilter = input({
   label: "State",
   type: "string",
@@ -97,6 +107,7 @@ const pullRequestStateFilter = input({
   clean: cleanString,
   comments: "Filters pull requests by their state (open, closed, or all).",
 });
+
 const pullRequestHeadFilter = input({
   label: "Head",
   type: "string",
@@ -107,6 +118,7 @@ const pullRequestHeadFilter = input({
   comments:
     'Filter pull requests by head user or organization and branch name in the format "user:ref-name" or "organization:ref-name".',
 });
+
 const pullRequestBaseFilter = input({
   label: "Base",
   type: "string",
@@ -116,6 +128,7 @@ const pullRequestBaseFilter = input({
   clean: cleanString,
   comments: "Filter pull requests by base branch name.",
 });
+
 const pullRequestSort = input({
   label: "Sort",
   type: "string",
@@ -131,6 +144,7 @@ const pullRequestSort = input({
   clean: cleanString,
   comments: "The field to sort results by.",
 });
+
 const pullRequestDirection = input({
   label: "Direction",
   type: "string",
@@ -143,6 +157,7 @@ const pullRequestDirection = input({
   clean: cleanString,
   comments: "The direction to sort results (ascending or descending).",
 });
+
 export const pullsListInputs = {
   connection: connectionInput,
   owner,

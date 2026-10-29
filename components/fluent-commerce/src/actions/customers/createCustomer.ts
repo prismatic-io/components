@@ -4,6 +4,7 @@ import { createFluentClient } from "../../client";
 import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
 import { createCustomerOutputSchema } from "../../outputSchemas";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -21,6 +22,7 @@ export const createCustomer = action({
       context.debug.enabled,
       context.logger,
     );
+
     const query = gql`
       mutation createCustomer(
         $retailerId: ID!
@@ -67,6 +69,7 @@ export const createCustomer = action({
         }
       }
     `;
+
     const variables: Variables = {
       retailerId: params.retailerId,
       customerEmail: params.customerEmail,
@@ -78,11 +81,11 @@ export const createCustomer = action({
       timezone: params.timezone,
       attributes: params.attributes,
     };
+
     const data = await client.request(query, variables);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createCustomerExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createCustomerExamplePayload,
   examplePayload: createCustomerExamplePayload,
 });

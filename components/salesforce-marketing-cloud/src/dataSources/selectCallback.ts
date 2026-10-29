@@ -2,11 +2,13 @@ import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { ENS_CALLBACKS_PATH } from "../constants";
 import { connection } from "../inputs/common";
+
 interface CallbackItem {
   callbackId: string;
   callbackName: string;
   [key: string]: unknown;
 }
+
 export const selectCallback = dataSource({
   display: {
     label: "Select ENS Callback",
@@ -18,14 +20,18 @@ export const selectCallback = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const { data } = await client.get<CallbackItem[]>(ENS_CALLBACKS_PATH);
+
     const callbacks = Array.isArray(data) ? data : [];
+
     const result = callbacks
       .map<Element>((item) => ({
         label: util.types.toString(item.callbackName),
         key: util.types.toString(item.callbackId),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
     return { result };
   },
   dataSourceType: "picklist",

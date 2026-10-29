@@ -1,5 +1,7 @@
 import { connectionInput } from "./common";
+
 const baseDatasourceInputs = { connectionInput };
+
 export const selectActivityInputs = baseDatasourceInputs;
 export const selectDealInputs = baseDatasourceInputs;
 export const selectFileInputs = baseDatasourceInputs;

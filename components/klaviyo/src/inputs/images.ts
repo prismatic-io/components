@@ -2,11 +2,14 @@ import { input, util } from "@prismatic-io/spectral";
 import { connection, fields } from "./common";
 import { FIELDS_IMAGE_MODEL } from "../constants";
 import { cleanBooleanInput, cleanStringInput } from "../util";
+
 const fieldsImage = input({ ...fields, model: FIELDS_IMAGE_MODEL });
+
 export const listImagesInputs = {
   connection,
   fieldsImage,
 };
+
 const imageUrl = input({
   label: "Image URL",
   comments:
@@ -17,6 +20,7 @@ const imageUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const imageName = input({
   label: "Image Name",
   comments:
@@ -27,6 +31,7 @@ const imageName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const fileData = input({
   label: "File Data",
   placeholder: "Output data from previous step. Use this field or Image URL.",
@@ -36,12 +41,14 @@ const fileData = input({
     "The image to upload, as binary data from a previous step. Use this field or Image URL.",
   clean: util.types.toData,
 });
+
 export const uploadImageInputs = {
   connection,
   imageUrl,
   imageName,
   fileData,
 };
+
 const imageId = input({
   label: "Image ID",
   comments: "The unique identifier for the image.",
@@ -52,11 +59,13 @@ const imageId = input({
   clean: util.types.toString,
   dataSource: "selectImage",
 });
+
 export const getImageInputs = {
   connection,
   imageId,
   fieldsImage,
 };
+
 const imageHidden = input({
   label: "Image Hidden",
   comments: "Controls whether the image is hidden in the image library.",
@@ -68,6 +77,7 @@ const imageHidden = input({
   })),
   clean: cleanBooleanInput,
 });
+
 export const updateImageInputs = {
   connection,
   imageId,

@@ -10,6 +10,7 @@ import {
 } from "../examplePayloads";
 import { clusterIdInput, connectionInput } from "../inputs";
 import type { Cluster, NodeType } from "../types";
+
 const getCluster = action({
   display: {
     label: "Get Cluster",
@@ -32,6 +33,7 @@ const getCluster = action({
   },
   examplePayload: getClusterExamplePayload,
 });
+
 const listClusters = action({
   display: {
     label: "List Clusters",
@@ -47,13 +49,12 @@ const listClusters = action({
     );
     const {
       data: { clusters },
-    } = await client.get<{
-      clusters: Cluster[];
-    }>("clusters/list");
+    } = await client.get<{ clusters: Cluster[] }>("clusters/list");
     return { data: clusters || [] };
   },
   examplePayload: listClustersExamplePayload,
 });
+
 const listNodeTypes = action({
   display: {
     label: "List Node Types",
@@ -67,13 +68,14 @@ const listNodeTypes = action({
       "2.0",
       context.debug.enabled,
     );
-    const response = await client.get<{
-      node_types: NodeType[];
-    }>("clusters/list-node-types");
+    const response = await client.get<{ node_types: NodeType[] }>(
+      "clusters/list-node-types",
+    );
     return { data: response.data.node_types };
   },
   examplePayload: listNodeTypesExamplePayload,
 });
+
 const terminateCluster = action({
   display: {
     label: "Terminate Cluster",
@@ -94,6 +96,7 @@ const terminateCluster = action({
   },
   examplePayload: terminateClusterExamplePayload,
 });
+
 const startTerminatedCluster = action({
   display: {
     label: "Start Terminated Cluster",
@@ -114,6 +117,7 @@ const startTerminatedCluster = action({
   },
   examplePayload: startTerminatedClusterExamplePayload,
 });
+
 const restartCluster = action({
   display: {
     label: "Restart Cluster",
@@ -134,6 +138,7 @@ const restartCluster = action({
   },
   examplePayload: restartClusterExamplePayload,
 });
+
 export default {
   getCluster,
   listClusters,

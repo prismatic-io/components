@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../utils";
+
 export const displayName = input({
   label: "Display Name",
   example: "Adatum Corporation",
@@ -9,6 +10,7 @@ export const displayName = input({
   type: "string",
   clean: util.types.toString,
 });
+
 export const customerType = input({
   label: "Customer Type",
   type: "string",
@@ -19,6 +21,7 @@ export const customerType = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const addressLine1 = input({
   label: "Address Line 1",
   type: "string",
@@ -28,6 +31,7 @@ export const addressLine1 = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const addressLine2 = input({
   label: "Address Line 2",
   type: "string",
@@ -37,6 +41,7 @@ export const addressLine2 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const city = input({
   label: "City",
   type: "string",
@@ -46,6 +51,7 @@ export const city = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const state = input({
   label: "State",
   type: "string",
@@ -55,6 +61,7 @@ export const state = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const country = input({
   label: "Country",
   type: "string",
@@ -64,6 +71,7 @@ export const country = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const postalCode = input({
   label: "Postal Code",
   type: "string",
@@ -73,6 +81,7 @@ export const postalCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -82,6 +91,7 @@ export const phoneNumber = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -91,6 +101,7 @@ export const email = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const website = input({
   label: "Website",
   type: "string",
@@ -100,6 +111,7 @@ export const website = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const taxLiable = input({
   label: "Tax Liable",
   comments: "When true, the customer is liable for sales tax.",
@@ -107,6 +119,7 @@ export const taxLiable = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const taxAreaId = input({
   label: "Tax Area Id",
   type: "string",
@@ -116,6 +129,7 @@ export const taxAreaId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const taxRegistrationNumber = input({
   label: "Tax Registration Number",
   type: "string",
@@ -124,6 +138,7 @@ export const taxRegistrationNumber = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const currencyId = input({
   label: "Currency Id",
   type: "string",
@@ -133,6 +148,7 @@ export const currencyId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const currencyCode = input({
   label: "Currency Code",
   type: "string",
@@ -142,6 +158,7 @@ export const currencyCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const paymentTermsId = input({
   label: "Payment Terms Id",
   type: "string",
@@ -151,6 +168,7 @@ export const paymentTermsId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const shipmentMethodId = input({
   label: "Shipment Method Id",
   type: "string",
@@ -160,6 +178,7 @@ export const shipmentMethodId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const paymentMethodId = input({
   label: "Payment Method Id",
   type: "string",
@@ -169,6 +188,7 @@ export const paymentMethodId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const blocked = input({
   label: "Actions Blocked",
   comments:

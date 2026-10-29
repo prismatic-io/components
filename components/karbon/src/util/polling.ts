@@ -2,7 +2,9 @@ import { util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
 import type { KarbonChangesObject } from "../interfaces/KarbonChangesObject";
 import type { KarbonRecordChange } from "../interfaces/KarbonRecordChange";
+
 export type { KarbonChangesObject, KarbonRecordChange };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
@@ -26,6 +28,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return str;
 };
+
 export const resolvePollingRecordChanges = (
   data: KarbonChangesObject | undefined,
 ): KarbonRecordChange[] => {

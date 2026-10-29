@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { leaveConversationExamplePayload } from "../../examplePayloads";
 import { leaveConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const leaveConversation = action({
   display: {
     label: "Leave Conversation",
@@ -21,11 +22,10 @@ export const leaveConversation = action({
     const data = await client.conversations.leave({
       channel: channelName,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: leaveConversationExamplePayload,
   }),
   examplePayload: {

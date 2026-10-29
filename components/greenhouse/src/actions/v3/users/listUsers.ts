@@ -4,6 +4,7 @@ import { listUsersV3ExamplePayload } from "../../../examplePayloads/v3/users";
 import { listUsersV3Inputs } from "../../../inputs/v3/users";
 import type { V3User } from "../../../types";
 import { generatePayload, paginateV3 } from "../../../util";
+
 export const listUsersV3 = action({
   display: {
     label: "List Users",
@@ -33,6 +34,7 @@ export const listUsersV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const filterParams = generatePayload({
       ids: idsVal,
       office_ids: officeIdsVal,
@@ -45,6 +47,7 @@ export const listUsersV3 = action({
       "updated_at[gte]": updatedAtGteVal,
       "updated_at[lte]": updatedAtLteVal,
     });
+
     const data = await paginateV3<V3User>(client, "/users", shouldFetchAll, {
       perPage: perPageVal,
       cursor: cursorVal,

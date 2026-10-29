@@ -4,6 +4,7 @@ import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./datasources";
 import triggers from "./triggers";
+
 export default component({
   key: "amazon-seller-central",
   public: true,

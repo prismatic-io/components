@@ -3,6 +3,7 @@ import { createSalesforceHttpClient } from "../../client";
 import { mapRecordTypeFieldsInputs } from "../../inputs";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import type { NestedRecord, SupplementalData } from "../../types";
+
 export const mapRecordTypeFields = dataSource({
   display: {
     label: "Map Record Type Fields",
@@ -37,10 +38,8 @@ export const mapRecordTypeFields = dataSource({
       prev[recordType] = data;
       return prev;
     }, {});
-    type Fields = {
-      name: string;
-      label: string;
-    }[];
+
+    type Fields = { name: string; label: string }[];
     const options = objectSelection.map(
       ({ object: { key: recordType, label } }) => ({
         object: { key: recordType, label },
@@ -49,10 +48,12 @@ export const mapRecordTypeFields = dataSource({
         ).map(({ name, label }) => ({ key: name, label })),
       }),
     );
+
     const result: ObjectFieldMap = {
       ...mappingFields,
       options,
     };
+
     let supplementalData: SupplementalData;
     if (includeSupplementalMetadata) {
       supplementalData = {
@@ -60,6 +61,7 @@ export const mapRecordTypeFields = dataSource({
         contentType: "application/json",
       };
     }
+
     return {
       result,
       supplementalData,

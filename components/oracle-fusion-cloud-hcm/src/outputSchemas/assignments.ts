@@ -34,6 +34,7 @@ export const assignmentOutputSchema = {
     "StartDate",
   ],
 };
+
 export const listAssignmentsOutputSchema = {
   type: "object" as const,
   properties: {

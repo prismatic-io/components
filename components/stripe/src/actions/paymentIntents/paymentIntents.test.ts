@@ -19,16 +19,22 @@ import { getPaymentIntent } from "./getPaymentIntent";
 import { listPaymentIntents } from "./listPaymentIntents";
 import { searchPaymentIntent } from "./searchPaymentIntent";
 import { updatePaymentIntent } from "./updatePaymentIntent";
+
 const BASE = "https://api.stripe.com";
 const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
+
 const params = (values: Record<string, unknown>) => values as never;
+
 const PI_ID = "pi_3MmlLrLkdIwHu7ix01zsk9pV";
+
 afterEach(() => nock.cleanAll());
+
 describe("createPaymentIntent", () => {
   it("creates the payment intent and returns it", async () => {
     const scope = nock(BASE)
       .post("/v1/payment_intents")
       .reply(200, createPaymentIntentExamplePayload.data);
+
     const { result } = await invoke(
       createPaymentIntent,
       params({
@@ -40,9 +46,11 @@ describe("createPaymentIntent", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(createPaymentIntentExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_intents")
@@ -52,6 +60,7 @@ describe("createPaymentIntent", () => {
           message: "Invalid currency: xyz",
         },
       });
+
     await expect(
       invoke(
         createPaymentIntent,
@@ -67,18 +76,22 @@ describe("createPaymentIntent", () => {
     ).rejects.toThrow("Invalid currency");
   });
 });
+
 describe("getPaymentIntent", () => {
   it("returns the payment intent for the supplied ID", async () => {
     const scope = nock(BASE)
       .get(`/v1/payment_intents/${PI_ID}`)
       .reply(200, getPaymentIntentExamplePayload.data);
+
     const { result } = await invoke(
       getPaymentIntent,
       params({ paymentIntent: PI_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(getPaymentIntentExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_intents/pi_missing")
@@ -88,6 +101,7 @@ describe("getPaymentIntent", () => {
           message: "No such payment_intent",
         },
       });
+
     await expect(
       invoke(
         getPaymentIntent,
@@ -96,19 +110,23 @@ describe("getPaymentIntent", () => {
     ).rejects.toThrow("No such payment_intent");
   });
 });
+
 describe("listPaymentIntents", () => {
   it("returns the payment intent list", async () => {
     const scope = nock(BASE)
       .get("/v1/payment_intents")
       .query({ limit: "10" })
       .reply(200, listPaymentIntentsExamplePayload.data);
+
     const { result } = await invoke(
       listPaymentIntents,
       params({ pagination: { limit: 10 }, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(listPaymentIntentsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_intents")
@@ -116,6 +134,7 @@ describe("listPaymentIntents", () => {
       .reply(400, {
         error: { type: "invalid_request_error", message: "No such customer" },
       });
+
     await expect(
       invoke(
         listPaymentIntents,
@@ -128,12 +147,14 @@ describe("listPaymentIntents", () => {
     ).rejects.toThrow("No such customer");
   });
 });
+
 describe("searchPaymentIntent", () => {
   it("returns the search result for the supplied query", async () => {
     const scope = nock(BASE)
       .get("/v1/payment_intents/search")
       .query({ query: "status:'succeeded'", limit: "10" })
       .reply(200, searchPaymentIntentsExamplePayload.data);
+
     const { result } = await invoke(
       searchPaymentIntent,
       params({
@@ -142,9 +163,11 @@ describe("searchPaymentIntent", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(searchPaymentIntentsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_intents/search")
@@ -155,6 +178,7 @@ describe("searchPaymentIntent", () => {
           message: "Invalid search query",
         },
       });
+
     await expect(
       invoke(
         searchPaymentIntent,
@@ -163,11 +187,13 @@ describe("searchPaymentIntent", () => {
     ).rejects.toThrow("Invalid search query");
   });
 });
+
 describe("updatePaymentIntent", () => {
   it("updates the payment intent and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/payment_intents/${PI_ID}`)
       .reply(200, updatePaymentIntentExamplePayload.data);
+
     const { result } = await invoke(
       updatePaymentIntent,
       params({
@@ -180,9 +206,11 @@ describe("updatePaymentIntent", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(updatePaymentIntentExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_intents/pi_missing")
@@ -192,6 +220,7 @@ describe("updatePaymentIntent", () => {
           message: "No such payment_intent",
         },
       });
+
     await expect(
       invoke(
         updatePaymentIntent,
@@ -206,11 +235,13 @@ describe("updatePaymentIntent", () => {
     ).rejects.toThrow("No such payment_intent");
   });
 });
+
 describe("confirmPaymentIntent", () => {
   it("confirms the payment intent and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/payment_intents/${PI_ID}/confirm`)
       .reply(200, confirmPaymentIntentExamplePayload.data);
+
     const { result } = await invoke(
       confirmPaymentIntent,
       params({
@@ -220,15 +251,18 @@ describe("confirmPaymentIntent", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(confirmPaymentIntentExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_intents/pi_missing/confirm")
       .reply(402, {
         error: { type: "card_error", message: "Your card was declined." },
       });
+
     await expect(
       invoke(
         confirmPaymentIntent,
@@ -241,11 +275,13 @@ describe("confirmPaymentIntent", () => {
     ).rejects.toThrow("Your card was declined.");
   });
 });
+
 describe("capturePaymentIntent", () => {
   it("captures the payment intent and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/payment_intents/${PI_ID}/capture`)
       .reply(200, capturePaymentIntentExamplePayload.data);
+
     const { result } = await invoke(
       capturePaymentIntent,
       params({
@@ -256,9 +292,11 @@ describe("capturePaymentIntent", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(capturePaymentIntentExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_intents/pi_missing/capture")
@@ -269,6 +307,7 @@ describe("capturePaymentIntent", () => {
             "This PaymentIntent could not be captured because it has already been captured.",
         },
       });
+
     await expect(
       invoke(
         capturePaymentIntent,
@@ -282,11 +321,13 @@ describe("capturePaymentIntent", () => {
     ).rejects.toThrow("already been captured");
   });
 });
+
 describe("cancelPaymentIntent", () => {
   it("cancels the payment intent and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/payment_intents/${PI_ID}/cancel`)
       .reply(200, cancelPaymentIntentExamplePayload.data);
+
     const { result } = await invoke(
       cancelPaymentIntent,
       params({
@@ -295,9 +336,11 @@ describe("cancelPaymentIntent", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(cancelPaymentIntentExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_intents/pi_missing/cancel")
@@ -308,6 +351,7 @@ describe("cancelPaymentIntent", () => {
             "You cannot cancel this PaymentIntent because it has a status of succeeded.",
         },
       });
+
     await expect(
       invoke(
         cancelPaymentIntent,

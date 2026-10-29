@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getDisputeExamplePayload } from "../../examplePayloads/disputes";
 import { getDisputeInputs } from "../../inputs";
 import { disputeOutputSchema } from "../../outputSchemas";
+
 export const getDispute = action({
   display: {
     label: "Get Dispute",
@@ -23,5 +24,6 @@ export const getDispute = action({
     type: "actionOutput",
     schema: disputeOutputSchema,
   }),
+
   examplePayload: getDisputeExamplePayload,
 });

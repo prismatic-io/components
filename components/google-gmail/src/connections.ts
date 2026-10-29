@@ -3,6 +3,7 @@ import {
   oauth2Connection,
   OAuth2Type,
 } from "@prismatic-io/spectral";
+
 export const gmailOauth = oauth2Connection({
   key: "oauth2",
   display: {
@@ -68,6 +69,7 @@ export const gmailOauth = oauth2Connection({
     },
   },
 });
+
 export const gmailServiceAccountAuth = connection({
   key: "gmailServiceAccount",
   display: {

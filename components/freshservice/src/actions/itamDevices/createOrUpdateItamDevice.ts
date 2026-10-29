@@ -4,6 +4,7 @@ import { createOrUpdateItamDeviceExamplePayload as examplePayload } from "../../
 import { createOrUpdateItamDeviceInputs as inputs } from "../../inputs";
 import { itamDeviceWriteOutputSchema } from "../../outputSchemas";
 import { itamPath, normalizeItamWrite } from "../../util";
+
 export const createOrUpdateItamDevice = action({
   display: {
     label: "Create or Update Device (ITAM)",
@@ -33,11 +34,13 @@ export const createOrUpdateItamDevice = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     if (!name && !deviceId && !serialNo && !uuid) {
       throw new Error(
         "Supply Name to create a device, or one of Device ID, Serial Number or UUID to update an existing one.",
       );
     }
+
     const payload = {
       name,
       device_id: deviceId,
@@ -53,10 +56,12 @@ export const createOrUpdateItamDevice = action({
       customers,
       ...itamDevicesAdditionalFields,
     };
+
     const { data } = await client.post(
       itamPath("devices", { op: "create" }),
       payload,
     );
+
     return { data: normalizeItamWrite(data) };
   },
   outputSchema: outputSchema({

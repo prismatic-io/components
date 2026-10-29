@@ -17,6 +17,7 @@ export const retrieveUserExamplePayload = {
     userID: "1234",
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     hasNextPage: true,
@@ -44,7 +45,9 @@ export const listUsersExamplePayload = {
     ],
   },
 };
+
 export const createOrUpdateUserExamplePayload = {
   data: { id: "553c3ef8b8cdcd1501ba9999" },
 };
+
 export const deleteUserExamplePayload = { data: "success" };

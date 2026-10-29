@@ -1,4 +1,5 @@
 import { deleteResponseSchema, pageSchema } from "./shared";
+
 const customAccountingFieldSchema = {
   type: "object" as const,
   properties: {
@@ -67,9 +68,12 @@ const customAccountingFieldSchema = {
     "provider_name",
   ],
 };
+
 export const createCustomAccountingFieldOutputSchema =
   customAccountingFieldSchema;
+
 export const getCustomAccountingFieldOutputSchema = customAccountingFieldSchema;
+
 export const listCustomAccountingFieldOutputSchema = {
   type: "object" as const,
   properties: {
@@ -81,6 +85,8 @@ export const listCustomAccountingFieldOutputSchema = {
   },
   required: ["data", "page"],
 };
+
 export const updateCustomAccountingFieldOutputSchema =
   customAccountingFieldSchema;
+
 export const deleteCustomAccountingFieldOutputSchema = deleteResponseSchema;

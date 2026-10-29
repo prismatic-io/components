@@ -4,6 +4,7 @@ import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createRecordInputs } from "../../inputs";
 import { createRecordOutputSchema } from "../../outputSchemas";
 import { parseLocationData } from "../../utils";
+
 export const createRecord = action({
   display: {
     label: "Create Record",
@@ -37,9 +38,7 @@ export const createRecord = action({
   examplePerform: async (
     _context,
     { recordType },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createCustomerExamplePayload.data,
       data: {

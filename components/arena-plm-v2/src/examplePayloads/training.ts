@@ -7,16 +7,19 @@ import type {
   UserCompactVo,
   UserCompactVoResultRep,
 } from "../types";
+
 const sampleManager: UserCompactVo = {
   guid: "MGR123ABC456DEF789GHI012",
   fullName: "Dana Whitfield",
   email: "dana.whitfield@example.com",
 };
+
 const sampleUser: UserCompactVo = {
   guid: "USR456DEF789GHI012JKL345",
   fullName: "Marco Alvarez",
   email: "marco.alvarez@example.com",
 };
+
 const sampleTrainingPlan: TrainingShortVo = {
   guid: "TRN123ABC456DEF789GHI012",
   number: "TRN-000042",
@@ -29,11 +32,13 @@ const sampleTrainingPlan: TrainingShortVo = {
   status: "OPEN",
   statusName: "Open",
 };
+
 const sampleTrainingRef = {
   guid: "TRN123ABC456DEF789GHI012",
   number: "TRN-000042",
   name: "Assembly Line Safety Training",
 };
+
 export const addFileToTrainingPlanExamplePayload = {
   data: {
     guid: "TFA789GHI012JKL345MNO678",
@@ -47,6 +52,7 @@ export const addFileToTrainingPlanExamplePayload = {
     latestEditionAssociation: true,
   },
 };
+
 export const addItemToTrainingPlanExamplePayload = {
   data: {
     guid: "TIA345MNO678PQR901STU234",
@@ -58,6 +64,7 @@ export const addItemToTrainingPlanExamplePayload = {
     },
   },
 };
+
 export const addQualityToTrainingPlanExamplePayload = {
   data: {
     guid: "TQA901STU234VWX567YZA890",
@@ -69,9 +76,8 @@ export const addQualityToTrainingPlanExamplePayload = {
     },
   },
 };
-export const addUserToTrainingPlanExamplePayload: {
-  data: TrainingUserVo;
-} = {
+
+export const addUserToTrainingPlanExamplePayload: { data: TrainingUserVo } = {
   data: {
     guid: "USR456DEF789GHI012JKL345",
     fullName: "Marco Alvarez",
@@ -82,15 +88,16 @@ export const addUserToTrainingPlanExamplePayload: {
     dueDateTime: "2026-06-11T14:30:00Z",
   },
 };
-export const changeTrainingPlanStatusExamplePayload: {
-  data: TrainingShortVo;
-} = {
-  data: {
-    ...sampleTrainingPlan,
-    status: "CLOSED",
-    statusName: "Closed",
-  },
-};
+
+export const changeTrainingPlanStatusExamplePayload: { data: TrainingShortVo } =
+  {
+    data: {
+      ...sampleTrainingPlan,
+      status: "CLOSED",
+      statusName: "Closed",
+    },
+  };
+
 export const listTrainingManagersExamplePayload: {
   data: UserCompactVoResultRep;
 } = {
@@ -110,6 +117,7 @@ export const listTrainingManagersExamplePayload: {
     count: 2,
   },
 };
+
 export const listTrainingPlanFilesExamplePayload = {
   data: {
     results: [
@@ -127,6 +135,7 @@ export const listTrainingPlanFilesExamplePayload = {
     count: 1,
   },
 };
+
 export const listTrainingPlanItemsExamplePayload = {
   data: {
     results: [
@@ -143,6 +152,7 @@ export const listTrainingPlanItemsExamplePayload = {
     count: 1,
   },
 };
+
 export const listTrainingPlanQualityExamplePayload = {
   data: {
     results: [
@@ -159,6 +169,7 @@ export const listTrainingPlanQualityExamplePayload = {
     count: 1,
   },
 };
+
 export const listTrainingPlanRecordsExamplePayload: {
   data: TrainingRecordVoResultRep;
 } = {
@@ -182,6 +193,7 @@ export const listTrainingPlanRecordsExamplePayload: {
     count: 2,
   },
 };
+
 export const listTrainingPlansExamplePayload: {
   data: TrainingShortVoResultRep;
 } = {
@@ -204,6 +216,7 @@ export const listTrainingPlansExamplePayload: {
     count: 2,
   },
 };
+
 export const listTrainingPlanUsersExamplePayload: {
   data: TrainingUserVoResultRep;
 } = {
@@ -232,27 +245,29 @@ export const listTrainingPlanUsersExamplePayload: {
     count: 2,
   },
 };
+
 export const removeFileFromTrainingPlanExamplePayload = {
   data: {
     success: true,
     message: "File removed from training plan successfully",
   },
 };
+
 export const removeItemFromTrainingPlanExamplePayload = {
   data: {
     success: true,
     message: "Item removed from training plan successfully",
   },
 };
+
 export const removeQualityFromTrainingPlanExamplePayload = {
   data: {
     success: true,
     message: "Quality process removed from training plan successfully",
   },
 };
-export const updateTrainingPlanExamplePayload: {
-  data: TrainingShortVo;
-} = {
+
+export const updateTrainingPlanExamplePayload: { data: TrainingShortVo } = {
   data: {
     ...sampleTrainingPlan,
     name: "Assembly Line Safety Training (Revised)",

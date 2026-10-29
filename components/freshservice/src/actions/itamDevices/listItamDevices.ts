@@ -4,6 +4,7 @@ import { listItamDevicesExamplePayload as examplePayload } from "../../examplePa
 import { listItamDevicesInputs as inputs } from "../../inputs";
 import { itamDevicesListOutputSchema } from "../../outputSchemas";
 import { getItamListData } from "../../util";
+
 export const listItamDevices = action({
   display: {
     label: "List Devices (ITAM)",
@@ -17,6 +18,7 @@ export const listItamDevices = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data, meta } = await getItamListData(client, "devices", "devices", {
       fetchAll,
       params: {
@@ -25,6 +27,7 @@ export const listItamDevices = action({
         page: pagination.page,
       },
     });
+
     return { data: { meta, ...data } };
   },
   outputSchema: outputSchema({

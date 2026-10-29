@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { createAccountInputs } from "../../inputs";
 import { createAccountExamplePayload } from "../../examplePayloads";
+
 export const createAccount = action({
   display: {
     label: "Create Account",
@@ -27,5 +28,6 @@ export const createAccount = action({
     return { data };
   },
   inputs: createAccountInputs,
+
   examplePayload: createAccountExamplePayload,
 });

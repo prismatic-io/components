@@ -8,6 +8,7 @@ import {
   fileName,
   json,
 } from "../../inputs";
+
 export const updateDataFile = action({
   display: {
     label: "Update Data File",
@@ -19,6 +20,7 @@ export const updateDataFile = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data: fileData, contentType } = fileInput;
+
     const formData = new FormData();
     formData.append("File", fileData, {
       contentType,
@@ -26,6 +28,7 @@ export const updateDataFile = action({
     });
     json.name = fileName;
     formData.append("Json", JSON.stringify(json));
+
     const { data } = await client.put(
       `/data-files/${dataFileId}`,
       formData.getBuffer(),
@@ -33,6 +36,7 @@ export const updateDataFile = action({
         headers: formData.getHeaders(),
       },
     );
+
     return {
       data,
     };

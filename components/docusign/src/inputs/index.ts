@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { jsonCheck, getDocumentIds, getUserIds } from "../utils";
 import { WEBHOOK_EVENTS } from "../constants";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -15,6 +17,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const accountId = input({
   label: "Account ID",
   type: "string",
@@ -24,6 +27,7 @@ export const accountId = input({
   placeholder: "Enter Account ID",
   clean: util.types.toString,
 });
+
 export const accountName = input({
   label: "Account Name",
   type: "string",

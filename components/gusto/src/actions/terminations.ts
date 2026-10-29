@@ -7,6 +7,7 @@ import {
   runTerminationPayrollInput,
 } from "../inputs";
 import { terminateEmployeeExamplePayload } from "../examplePayloads";
+
 const terminateEmployee = action({
   display: {
     label: "Terminate Employee",
@@ -31,4 +32,5 @@ const terminateEmployee = action({
   },
   examplePayload: terminateEmployeeExamplePayload,
 });
+
 export default { terminateEmployee };

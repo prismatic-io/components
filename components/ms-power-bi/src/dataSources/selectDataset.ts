@@ -4,6 +4,7 @@ import { connection } from "../inputs";
 import { TResponse } from "../interfaces/TResponse";
 import type { Dataset } from "../interfaces/Dataset";
 import { paginateResults } from "../utils";
+
 export const selectDataset = dataSource({
   display: {
     label: "Select Dataset",
@@ -24,6 +25,7 @@ export const selectDataset = dataSource({
       true,
       parameters,
     );
+
     const result = datasets
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map(
@@ -32,6 +34,7 @@ export const selectDataset = dataSource({
           label,
         }),
       );
+
     return {
       result,
     };

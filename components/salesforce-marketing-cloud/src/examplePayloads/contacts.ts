@@ -7,6 +7,7 @@ export const getContactExamplePayload = {
     modifiedDate: "2024-02-08T06:35:03.6",
   },
 };
+
 export const createContactExamplePayload = {
   data: {
     operationStatus: "OK",
@@ -21,7 +22,9 @@ export const createContactExamplePayload = {
     serviceMessageID: "80676c59-ceb9-48aa-ad35-81e150094a17",
   },
 };
+
 export const updateContactExamplePayload = getContactExamplePayload;
+
 export const searchContactsExamplePayload = {
   data: {
     count: 1,
@@ -35,6 +38,7 @@ export const searchContactsExamplePayload = {
     ],
   },
 };
+
 export const searchContactsByEmailExamplePayload = {
   data: {
     channelAddressResponseEntities: [
@@ -54,12 +58,14 @@ export const searchContactsByEmailExamplePayload = {
     serviceMessageID: "cba1b474-6868-4611-99c3-ea0211e7bc36",
   },
 };
+
 export const deleteContactExamplePayload = {
   data: {
     operationID: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     operationInitiated: true,
   },
 };
+
 export const getContactSchemaExamplePayload = {
   data: {
     item: {

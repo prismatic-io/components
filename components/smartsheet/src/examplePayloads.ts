@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const listWorkspacesExamplePayload = {
   data: [
     {
@@ -10,6 +11,7 @@ export const listWorkspacesExamplePayload = {
     },
   ],
 };
+
 export const createWorkspaceExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -22,6 +24,7 @@ export const createWorkspaceExamplePayload = {
     },
   },
 };
+
 export const getWorkspaceExamplePayload = {
   data: {
     sheets: [
@@ -41,12 +44,14 @@ export const getWorkspaceExamplePayload = {
     permalink: "https://app.smartsheet.com/b/home?lx=8Z0XuFUEAkxmHCSsMw4Zgg",
   },
 };
+
 export const deleteWorkspaceExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const updateWorkspaceExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -59,6 +64,7 @@ export const updateWorkspaceExamplePayload = {
     },
   },
 };
+
 export const copyRowsExamplePayload = {
   data: {
     destinationSheetId: 6166656104851332,
@@ -68,6 +74,7 @@ export const copyRowsExamplePayload = {
     ],
   },
 };
+
 export const moveRowsExamplePayload = {
   data: {
     destinationSheetId: 2258256056870788,
@@ -83,6 +90,7 @@ export const moveRowsExamplePayload = {
     ],
   },
 };
+
 export const rowGetExamplePayload = {
   data: {
     id: 1490138716891012,
@@ -128,6 +136,7 @@ export const rowGetExamplePayload = {
     ],
   },
 };
+
 export const deleteRowExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -135,6 +144,7 @@ export const deleteRowExamplePayload = {
     result: [207098194749316],
   },
 };
+
 export const rowsAddToSheetExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -159,6 +169,7 @@ export const rowsAddToSheetExamplePayload = {
     version: 3,
   },
 };
+
 export const attachmentsListOnRowExamplePayload = {
   data: {
     pageNumber: 1,
@@ -185,6 +196,7 @@ export const attachmentsListOnRowExamplePayload = {
     ],
   },
 };
+
 export const getFolderExamplePayload = {
   data: {
     id: 4739830128109444,
@@ -221,12 +233,14 @@ export const getFolderExamplePayload = {
     ],
   },
 };
+
 export const deleteFolderExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const updateFolderExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -239,6 +253,7 @@ export const updateFolderExamplePayload = {
     },
   },
 };
+
 export const listFoldersExamplePayload = {
   data: [
     {
@@ -255,6 +270,7 @@ export const listFoldersExamplePayload = {
     },
   ],
 };
+
 export const createFolderExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -267,6 +283,7 @@ export const createFolderExamplePayload = {
     },
   },
 };
+
 export const moveFolderExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -279,6 +296,7 @@ export const moveFolderExamplePayload = {
     },
   },
 };
+
 export const listWebhooksExamplePayload = {
   data: [
     {
@@ -300,6 +318,7 @@ export const listWebhooksExamplePayload = {
     },
   ],
 };
+
 export const createWebhookExamplePayload = {
   data: {
     message: "UNCHANGED",
@@ -323,6 +342,7 @@ export const createWebhookExamplePayload = {
     },
   },
 };
+
 export const getWebhookExamplePayload = {
   data: {
     id: 8951687911106436,
@@ -342,15 +362,18 @@ export const getWebhookExamplePayload = {
     modifiedAt: "2022-06-27T21:34:24Z",
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const deleteInstanceWebhooksExamplePayload = {
   data: null,
 };
+
 export const searchSheetExamplePayload = {
   data: {
     results: [
@@ -376,6 +399,7 @@ export const searchSheetExamplePayload = {
     totalCount: 2,
   },
 };
+
 export const getReportsExamplePayload = {
   data: {
     pageNumber: 1,
@@ -394,6 +418,7 @@ export const getReportsExamplePayload = {
     ],
   },
 };
+
 export const getReportExamplePayload = {
   data: {
     id: 2536865426368388,
@@ -461,6 +486,7 @@ export const getReportExamplePayload = {
     effectiveAttachmentOptions: ["FILE", "GOOGLE_DRIVE", "ONEDRIVE", "DROPBOX"],
   },
 };
+
 export const getFavoritesExamplePayload = {
   data: {
     pageNumber: 1,
@@ -479,6 +505,7 @@ export const getFavoritesExamplePayload = {
     ],
   },
 };
+
 export const templatesListExamplePayload = {
   data: [
     {
@@ -497,6 +524,7 @@ export const templatesListExamplePayload = {
     },
   ],
 };
+
 export const templatesListPublicExamplePayload = {
   data: {
     pageNumber: 1,
@@ -525,6 +553,7 @@ export const templatesListPublicExamplePayload = {
     ],
   },
 };
+
 export const listGroupsExamplePayload = {
   data: {
     pageNumber: 1,
@@ -544,6 +573,7 @@ export const listGroupsExamplePayload = {
     ],
   },
 };
+
 export const getGroupExamplePayload = {
   data: {
     id: 2295323772118916,
@@ -555,6 +585,7 @@ export const getGroupExamplePayload = {
     modifiedAt: "2022-06-27T18:31:44Z",
   },
 };
+
 export const listEventsExamplePayload = {
   data: {
     nextStreamPosition: "XyzAb1234cdefghijklmnofpq",
@@ -574,6 +605,7 @@ export const listEventsExamplePayload = {
     ],
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     pageNumber: 1,
@@ -604,6 +636,7 @@ export const listUsersExamplePayload = {
     ],
   },
 };
+
 export const getUserExamplePayload = {
   data: {
     id: 48569348493401200,
@@ -653,6 +686,7 @@ export const getUserExamplePayload = {
     ],
   },
 };
+
 export const listSheetsExamplePayload = {
   data: {
     pageNumber: 1,
@@ -683,6 +717,7 @@ export const listSheetsExamplePayload = {
     ],
   },
 };
+
 export const createSheetExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -718,6 +753,7 @@ export const createSheetExamplePayload = {
     },
   },
 };
+
 export const getSheetExamplePayload = {
   data: {
     id: 4583173393803140,
@@ -790,12 +826,14 @@ export const getSheetExamplePayload = {
     rows: [],
   },
 };
+
 export const deleteSheetExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const updateSheetExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -816,6 +854,7 @@ export const updateSheetExamplePayload = {
     },
   },
 };
+
 export const attachmentsListOnSheetExamplePayload = {
   data: {
     pageNumber: 1,
@@ -842,6 +881,7 @@ export const attachmentsListOnSheetExamplePayload = {
     ],
   },
 };
+
 export const attachmentsGetExamplePayload = {
   data: {
     name: "expense_report_sample.png",
@@ -852,6 +892,7 @@ export const attachmentsGetExamplePayload = {
     urlExpiresInMillis: 120000,
   },
 };
+
 export const columnsListOnSheetExamplePayload = {
   data: {
     pageNumber: 1,
@@ -885,6 +926,7 @@ export const columnsListOnSheetExamplePayload = {
     ],
   },
 };
+
 export const columnsAddToSheetExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -902,6 +944,7 @@ export const columnsAddToSheetExamplePayload = {
     ],
   },
 };
+
 export const columnGetExamplePayload = {
   data: {
     id: 7960873114331012,
@@ -912,12 +955,14 @@ export const columnGetExamplePayload = {
     validation: false,
   },
 };
+
 export const columnDeleteExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const commentGetExamplePayload = {
   data: {
     text: "This is a comment",
@@ -928,6 +973,7 @@ export const commentGetExamplePayload = {
     id: 48569348493401200,
   },
 };
+
 export const commentEditExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -946,6 +992,7 @@ export const commentEditExamplePayload = {
     version: 18,
   },
 };
+
 export const commentDeleteExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -953,6 +1000,7 @@ export const commentDeleteExamplePayload = {
     version: 12,
   },
 };
+
 export const copySheetExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -965,6 +1013,7 @@ export const copySheetExamplePayload = {
     },
   },
 };
+
 export const discussionsListExamplePayload = {
   data: {
     pageNumber: 1,
@@ -1005,6 +1054,7 @@ export const discussionsListExamplePayload = {
     ],
   },
 };
+
 export const discussionsCreateExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -1029,6 +1079,7 @@ export const discussionsCreateExamplePayload = {
     version: 24,
   },
 };
+
 export const discussionGetExamplePayload = {
   data: {
     id: 1587586573592452,
@@ -1051,12 +1102,14 @@ export const discussionGetExamplePayload = {
     createdBy: { email: "example@example.com" },
   },
 };
+
 export const discussionDeleteExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const discussionListAttachmentsExamplePayload = {
   data: {
     pageNumber: 1,
@@ -1083,6 +1136,7 @@ export const discussionListAttachmentsExamplePayload = {
     ],
   },
 };
+
 export const commentsCreateExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -1099,12 +1153,14 @@ export const commentsCreateExamplePayload = {
     resultCode: 0,
   },
 };
+
 export const sheetSendExamplePayload = {
   data: {
     message: "SUCCESS",
     resultCode: 0,
   },
 };
+
 export const moveSheetExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -1117,6 +1173,7 @@ export const moveSheetExamplePayload = {
     },
   },
 };
+
 export const getSheetPublishExamplePayload = {
   data: {
     readOnlyLiteEnabled: false,
@@ -1128,6 +1185,7 @@ export const getSheetPublishExamplePayload = {
       "https://publish.smartsheet.com/6d35fa6c99334d4892f9591cf6065",
   },
 };
+
 export const setSheetPublishExamplePayload = {
   data: {
     message: "SUCCESS",
@@ -1142,11 +1200,13 @@ export const setSheetPublishExamplePayload = {
     },
   },
 };
+
 export const getSheetVersionExamplePayload = {
   data: {
     version: 4,
   },
 };
+
 export const listHomeContentsExamplePayload = {
   data: {
     sheets: [
@@ -1278,6 +1338,7 @@ export const listHomeContentsExamplePayload = {
     ],
   },
 };
+
 export const listContactsExamplePayload = {
   data: {
     pageNumber: 1,
@@ -1292,6 +1353,7 @@ export const listContactsExamplePayload = {
     ],
   },
 };
+
 export const getContactExamplePayload = {
   data: {
     id: "AAeDyHYU54QAB4PIdhTnhA",
@@ -1299,6 +1361,7 @@ export const getContactExamplePayload = {
     email: "john.doe@example.com",
   },
 };
+
 export const smartsheetWebhookExamplePayload = {
   payload: {
     headers: {
@@ -1357,6 +1420,7 @@ export const smartsheetWebhookExamplePayload = {
   } as unknown as TriggerPayload,
   branch: "Event",
 };
+
 export const pollChangesExamplePayload = {
   payload: {
     headers: {},

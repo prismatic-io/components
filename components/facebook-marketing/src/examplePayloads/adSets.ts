@@ -8,11 +8,13 @@ export const getAdSetResponse = {
     id: "23849551358310668",
   },
 };
+
 export const updateAdSetResponse = {
   data: {
     success: true,
   },
 };
+
 export const listAdSetsInAccountResponse = {
   data: {
     data: [

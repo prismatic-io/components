@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createStreamExamplePayload } from "../../examplePayloads";
 import { createStreamInputs } from "../../inputs";
 import type { CreateStreamBody } from "../types/CreateStreamBody";
+
 export const createStream = action({
   display: {
     label: "Create Stream",
@@ -27,6 +28,7 @@ export const createStream = action({
       if (index > 0) dataSetParams += "&";
       dataSetParams += `dataSet=${param}`;
     });
+
     const columnsArray = JSON.parse(columns);
     const hasBodyDataSet =
       name.length ||
@@ -58,4 +60,5 @@ export const createStream = action({
   },
   inputs: createStreamInputs,
 });
+
 export default { createStream };

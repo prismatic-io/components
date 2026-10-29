@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createReportExamplePayload } from "../../examplePayloads";
 import { connectionInput, reportInput } from "../../inputs";
+
 export const createReport = action({
   display: {
     label: "Create Report",
@@ -13,6 +14,7 @@ export const createReport = action({
     const { data } = await client.post(`/reports`, {
       ...reportInput,
     });
+
     return {
       data,
     };

@@ -27,18 +27,21 @@ import {
   title,
   website,
 } from "./fields";
+
 const address = structuredObjectInput({
   label: "Address",
   required: false,
   comments: "Street, city, state, postal code, and country for the address.",
   inputs: { street, city, state, postalCode, country },
 });
+
 const nameAndContact = structuredObjectInput({
   label: "Name & Contact Information",
   required: false,
   comments: "First and last name, phone, and website.",
   inputs: { firstName, lastName, phone, website },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -53,6 +56,7 @@ const additionalFields = structuredObjectInput({
     revenue,
   },
 });
+
 export const createLeadInputs = {
   company,
   leadStatus,
@@ -65,6 +69,7 @@ export const createLeadInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const updateLeadInputs = {
   version,
   recordId: {
@@ -81,6 +86,7 @@ export const updateLeadInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const deleteLeadInputs = {
   version,
   recordId: {
@@ -89,4 +95,5 @@ export const deleteLeadInputs = {
   },
   connection: connectionInput,
 };
+
 export const listLeadsInputs = { ...listInputs };

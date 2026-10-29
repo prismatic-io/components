@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
 import { fetchAll, oneDriveConnection, pageLimit, pageToken } from "./common";
+
 export const siteId = input({
   label: "Site",
   type: "string",
@@ -12,10 +13,12 @@ export const siteId = input({
   dataSource: "selectSite",
   clean: cleanString,
 });
+
 export const getSiteInputs = {
   connection: oneDriveConnection,
   siteId,
 };
+
 export const listSitesInputs = {
   connection: oneDriveConnection,
   fetchAll,

@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connection } from "../inputs";
 import type { Transaction } from "../interfaces/transactions";
 import { fetchAllData } from "../util";
+
 export const selectTransaction = dataSource({
   display: {
     label: "Select Transaction",
@@ -19,12 +20,14 @@ export const selectTransaction = dataSource({
       {},
       true,
     );
+
     const objects = data
       .sort((a, b) => (a.id < b.id ? -1 : 1))
       .map<Element>((transaction) => ({
         key: transaction.id,
         label: `${transaction.merchant_name} - $${transaction.amount / 100}`,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

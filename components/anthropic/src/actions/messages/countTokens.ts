@@ -4,6 +4,7 @@ import { countTokensExamplePayload } from "../../examplePayloads";
 import { countTokensInputs } from "../../inputs";
 import { countTokensOutputSchema } from "../../outputSchemas";
 import type { CountTokensResponse, Message } from "../../types";
+
 export const countTokens = action({
   display: {
     label: "Count Tokens",
@@ -18,6 +19,7 @@ export const countTokens = action({
   perform: async (context, { connection, model, message }) => {
     const client = createAnthropicClient(connection, context.debug.enabled);
     const messages: Message[] = [{ role: "user", content: message }];
+
     const { data } = await client.post<CountTokensResponse>(
       "/messages/count_tokens",
       {
@@ -25,6 +27,7 @@ export const countTokens = action({
         messages,
       },
     );
+
     return { data };
   },
   examplePayload: countTokensExamplePayload,

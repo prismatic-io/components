@@ -4,6 +4,7 @@ import { listCustomersExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "ms-utils";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput, fetchAll, odataParams } from "../../inputs/general";
+
 export const listCustomers = action({
   display: {
     label: "List Customers",
@@ -44,6 +45,7 @@ export const listCustomers = action({
       $orderBy,
       $select,
     };
+
     return await paginateResults<
       (typeof listCustomersExamplePayload)["data"]["value"][number]
     >({

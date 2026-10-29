@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { getWebhookExamplePayload } from "../../examplePayloads";
 import { getWebhookInputs } from "../../inputs";
 import { getWebhookOutputSchema } from "../../outputSchemas";
+
 export const getWebhook = action({
   display: {
     label: "Get Webhook",
@@ -12,11 +13,14 @@ export const getWebhook = action({
   performSafety: "safe",
   perform: async (_context, { sendGridConnection, webhookId }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const url = `/v3/user/webhooks/event/settings/${webhookId}`;
+
     const [_response, body] = await client.request({
       url,
       method: "GET",
     });
+
     return {
       data: body,
     };

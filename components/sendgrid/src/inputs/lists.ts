@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, fetchAll, pagination } from "./common";
+
 const listName = input({
   label: "List Name",
   type: "string",
@@ -9,6 +10,7 @@ const listName = input({
   comments: "The display name for the new contact list.",
   clean: util.types.toString,
 });
+
 const listId = input({
   label: "List ID",
   type: "string",
@@ -19,6 +21,7 @@ const listId = input({
   dataSource: "sendGridListsDataSource",
   clean: util.types.toString,
 });
+
 const includeSampleContacts = input({
   label: "Include Sample Contacts",
   type: "boolean",
@@ -27,15 +30,18 @@ const includeSampleContacts = input({
   comments: "When true, includes a sample of contacts in the response.",
   clean: util.types.toBool,
 });
+
 export const createListInputs = {
   sendGridConnection: connectionInput,
   name: listName,
 };
+
 export const getAllListsInputs = {
   sendGridConnection: connectionInput,
   fetchAll,
   pagination,
 };
+
 export const getListByIdInputs = {
   sendGridConnection: connectionInput,
   list_id: listId,

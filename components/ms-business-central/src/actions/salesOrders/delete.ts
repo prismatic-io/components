@@ -4,6 +4,7 @@ import { SUCCESS_PAYLOAD } from "../../examplePayloads";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import { salesOrderId } from "../../inputs/salesOrders/updateSalesOrderInputs";
+
 export const deleteSalesOrder = action({
   display: {
     label: "Delete Sales Order",
@@ -19,6 +20,7 @@ export const deleteSalesOrder = action({
     await client.delete(
       `/companies(${companyId})/salesOrders(${salesOrderId})`,
     );
+
     return SUCCESS_PAYLOAD;
   },
   inputs: {

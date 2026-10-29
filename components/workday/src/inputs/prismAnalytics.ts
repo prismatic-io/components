@@ -8,6 +8,7 @@ import {
   extraParameters,
   tenant,
 } from "./common";
+
 const tableId = input({
   label: "Table ID",
   comments: "Identifies the Prism Analytics table.",
@@ -18,6 +19,7 @@ const tableId = input({
   clean: util.types.toString,
   dataSource: "selectTable",
 });
+
 const dataChangeId = input({
   label: "Data Change ID",
   comments: "Identifies the Prism Analytics data change transaction.",
@@ -28,6 +30,7 @@ const dataChangeId = input({
   clean: util.types.toString,
   dataSource: "selectDataChange",
 });
+
 const fileContainerId = input({
   label: "File Container ID",
   comments: "Identifies the file container whose files will be retrieved.",
@@ -37,6 +40,7 @@ const fileContainerId = input({
   placeholder: "Enter file container ID",
   clean: util.types.toString,
 });
+
 const file = input({
   label: "File",
   placeholder: "Output data from previous step",
@@ -47,6 +51,7 @@ const file = input({
   example: Buffer.from("example").toString("base64"),
   clean: util.types.toData,
 });
+
 const displayName = input({
   label: "Display Name",
   comments: "User-facing display name shown in Prism Analytics.",
@@ -56,6 +61,7 @@ const displayName = input({
   placeholder: "Enter display name",
   clean: util.types.toString,
 });
+
 const description = input({
   label: "Description",
   comments: "Short description shown alongside the table.",
@@ -65,6 +71,7 @@ const description = input({
   placeholder: "Enter description",
   clean: cleanStringInput,
 });
+
 const documentation = input({
   label: "Documentation",
   comments: "Long-form documentation describing how the table is used.",
@@ -74,6 +81,7 @@ const documentation = input({
   placeholder: "Enter documentation",
   clean: cleanStringInput,
 });
+
 const enableForAnalysis = input({
   label: "Enable for Analysis",
   comments: "When true, enables the table for Prism Analytics.",
@@ -82,6 +90,7 @@ const enableForAnalysis = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const name = input({
   label: "Name",
   comments: "Internal name used to reference the table via API.",
@@ -91,6 +100,7 @@ const name = input({
   placeholder: "Enter name",
   clean: util.types.toString,
 });
+
 const tags = structuredObjectInput({
   label: "Tags",
   comments:
@@ -118,6 +128,7 @@ const tags = structuredObjectInput({
     }),
   },
 });
+
 const fields = input({
   label: "Fields",
   comments: `The fields of the table. An array of objects. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#prismAnalytics/v3/post-/tables) for more information.`,
@@ -158,6 +169,7 @@ const fields = input({
   ),
   clean: (value: unknown) => cleanArrayCodeInput(value, "Fields"),
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -169,6 +181,7 @@ const additionalFields = structuredObjectInput({
     enableForAnalysis,
   },
 });
+
 const updateTableAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -184,6 +197,7 @@ const updateTableAdditionalFields = structuredObjectInput({
     },
   },
 });
+
 const getTableByIdParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#prismAnalytics/v3/get-/tables/-id-).`;
 const dataChangeType = input({
   label: "Data Change Type",
@@ -199,6 +213,7 @@ const dataChangeType = input({
   placeholder: "Select data change type",
   clean: cleanStringInput,
 });
+
 const dataChangeName = input({
   label: "Data Change Name",
   comments:
@@ -209,24 +224,29 @@ const dataChangeName = input({
   placeholder: "Enter data change name",
   clean: cleanStringInput,
 });
+
 const listDataChangesParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#prismAnalytics/v3/get-/dataChanges).`;
 const listTablesParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#prismAnalytics/v3/get-/tables).`;
+
 export const getDataChangesByIdInputs = {
   connection,
   tenant,
   dataChangeId,
 };
+
 export const getFilesByContainerIdInputs = {
   connection,
   tenant,
   fileContainerId,
 };
+
 export const getTableByIdInputs = {
   connection,
   tenant,
   tableId,
   extraParameters: { ...extraParameters, comments: getTableByIdParamsComments },
 };
+
 export const listDataChangesInputs = {
   connection,
   tenant,
@@ -238,22 +258,26 @@ export const listDataChangesInputs = {
     comments: listDataChangesParamsComments,
   },
 };
+
 export const listTablesInputs = {
   connection,
   tenant,
   ...paginationQueryStringInputs,
   extraParameters: { ...extraParameters, comments: listTablesParamsComments },
 };
+
 export const postFileContainersInputs = {
   connection,
   tenant,
 };
+
 export const postFilesByContainerIdInputs = {
   connection,
   tenant,
   fileContainerId,
   file,
 };
+
 export const postTableInputs = {
   connection,
   tenant,
@@ -263,6 +287,7 @@ export const postTableInputs = {
   tags,
   additionalFields,
 };
+
 export const updateTableByIdInputs = {
   connection,
   tenant,

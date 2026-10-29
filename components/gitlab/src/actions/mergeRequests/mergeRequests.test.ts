@@ -10,10 +10,13 @@ import { createMergeRequest } from "./createMergeRequest";
 import { getMergeRequest } from "./getMergeRequest";
 import { listMergeRequests } from "./listMergeRequests";
 import { updateMergeRequest } from "./updateMergeRequest";
+
 const exampleMergeRequest = getMergeRequestExamplePayload.data;
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
 const project = "278964";
+
 test("List Merge Requests maps state and branch filters", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/merge_requests`)
@@ -33,6 +36,7 @@ test("List Merge Requests maps state and branch filters", async () => {
   });
   expect(result?.data).toEqual([exampleMergeRequest]);
 });
+
 test("Get Merge Request uses the IID route", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/merge_requests/17`)
@@ -44,6 +48,7 @@ test("Get Merge Request uses the IID route", async () => {
   });
   expect(result?.data).toEqual(exampleMergeRequest);
 });
+
 test("Create Merge Request sends branches and title", async () => {
   nock(GITLAB_URL)
     .post(`/api/v4/projects/${project}/merge_requests`, {
@@ -69,6 +74,7 @@ test("Create Merge Request sends branches and title", async () => {
   });
   expect(result?.data).toEqual(exampleMergeRequest);
 });
+
 test("Update Merge Request sends only provided fields", async () => {
   nock(GITLAB_URL)
     .put(`/api/v4/projects/${project}/merge_requests/17`, {
@@ -88,14 +94,9 @@ test("Update Merge Request sends only provided fields", async () => {
       stateEvent: "close",
     },
   });
-  expect(
-    (
-      result?.data as {
-        state: string;
-      }
-    ).state,
-  ).toBe("closed");
+  expect((result?.data as { state: string }).state).toBe("closed");
 });
+
 test("Update Merge Request maps every field to the GitLab body and returns the updated merge request", async () => {
   const scope = nock(GITLAB_URL)
     .put(`/api/v4/projects/${project}/merge_requests/17`, {
@@ -123,6 +124,7 @@ test("Update Merge Request maps every field to the GitLab body and returns the u
   expect(scope.isDone()).toBe(true);
   expect(result).toEqual(updateMergeRequestExamplePayload);
 });
+
 test("Update Merge Request rejects an update with every field empty", async () => {
   await expect(
     invoke(updateMergeRequest, {
@@ -136,6 +138,7 @@ test("Update Merge Request rejects an update with every field empty", async () =
     }),
   ).rejects.toThrow(/at least one field to update/);
 });
+
 test("Accept Merge Request calls the merge route with the guard SHA", async () => {
   nock(GITLAB_URL)
     .put(`/api/v4/projects/${project}/merge_requests/17/merge`, {
@@ -154,17 +157,13 @@ test("Accept Merge Request calls the merge route with the guard SHA", async () =
       sha: "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
     },
   });
-  expect(
-    (
-      result?.data as {
-        state: string;
-      }
-    ).state,
-  ).toBe("merged");
+  expect((result?.data as { state: string }).state).toBe("merged");
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Not Found" };
+
   test("List Merge Requests rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/merge_requests`)
@@ -185,6 +184,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Get Merge Request rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/merge_requests/999`)
@@ -193,6 +193,7 @@ describe("error paths", () => {
       invoke(getMergeRequest, { connection, project, mergeRequestIid: 999 }),
     ).rejects.toThrow();
   });
+
   test("Create Merge Request rejects on 409", async () => {
     nock(GITLAB_URL)
       .post(`/api/v4/projects/${project}/merge_requests`)
@@ -214,6 +215,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Update Merge Request rejects on 422", async () => {
     nock(GITLAB_URL)
       .put(`/api/v4/projects/${project}/merge_requests/17`)
@@ -230,6 +232,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Accept Merge Request rejects on 409 SHA mismatch", async () => {
     nock(GITLAB_URL)
       .put(`/api/v4/projects/${project}/merge_requests/17/merge`)

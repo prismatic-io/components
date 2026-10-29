@@ -13,11 +13,13 @@ import {
   workspaceMemberUserSchema,
   workspaceTeamProperties,
 } from "./shared";
+
 const guestPermissionProperties = {
   can_see_time_spent: { type: "boolean" },
   can_see_time_estimated: { type: "boolean" },
   can_edit_tags: { type: "boolean" },
 };
+
 const guestRequired = [
   "user",
   "invited_by",
@@ -26,6 +28,7 @@ const guestRequired = [
   "can_edit_tags",
   "shared",
 ];
+
 const removedGuestSchema = {
   type: "object" as const,
   properties: {
@@ -42,6 +45,7 @@ const removedGuestSchema = {
   },
   required: ["guest"],
 };
+
 export const addGuestToFolderOutputSchema = {
   type: "object" as const,
   properties: {
@@ -66,6 +70,7 @@ export const addGuestToFolderOutputSchema = {
   },
   required: ["guest"],
 };
+
 export const addGuestToListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -90,6 +95,7 @@ export const addGuestToListOutputSchema = {
   },
   required: ["guest"],
 };
+
 export const addGuestToTaskOutputSchema = {
   type: "object" as const,
   properties: {
@@ -114,6 +120,7 @@ export const addGuestToTaskOutputSchema = {
   },
   required: ["guest"],
 };
+
 export const editGuestOnWorkspaceOutputSchema = {
   type: "object" as const,
   properties: {
@@ -131,6 +138,7 @@ export const editGuestOnWorkspaceOutputSchema = {
   },
   required: ["guest"],
 };
+
 export const inviteGuestToWorkspaceOutputSchema = {
   type: "object" as const,
   properties: {
@@ -146,9 +154,13 @@ export const inviteGuestToWorkspaceOutputSchema = {
   },
   required: ["team"],
 };
+
 export const removeGuestFromFolderOutputSchema = removedGuestSchema;
+
 export const removeGuestFromListOutputSchema = removedGuestSchema;
+
 export const removeGuestFromTaskOutputSchema = removedGuestSchema;
+
 export const removeGuestFromWorkspaceOutputSchema = {
   type: "object" as const,
   properties: {

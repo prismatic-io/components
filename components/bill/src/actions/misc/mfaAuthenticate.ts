@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { mfaAuthenticateInputs } from "../../inputs/misc";
 import { mfaAuthenticateExamplePayload } from "../../examplePayloads";
+
 export const mfaAuthenticate = action({
   display: {
     label: "Authenticate MFA Session",
@@ -28,17 +29,17 @@ export const mfaAuthenticate = action({
       devKey: loginData.devKey,
       sessionId,
     });
+
     const { data } = await client.post(
       "/MFAAuthenticate.json",
       stringifiedData,
     );
+
     return {
       data: { ...cleanReturnData(data), deviceId },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: mfaAuthenticateExamplePayload.data,
   }),
   inputs: mfaAuthenticateInputs,

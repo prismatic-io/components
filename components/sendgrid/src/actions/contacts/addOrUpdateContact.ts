@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { addOrUpdateContactExamplePayload } from "../../examplePayloads";
 import { addOrUpdateContactInputs } from "../../inputs";
 import { addOrUpdateContactOutputSchema } from "../../outputSchemas";
+
 export const addOrUpdateContact = action({
   display: {
     label: "Add or Update Contact",
@@ -14,18 +15,18 @@ export const addOrUpdateContact = action({
   performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, list_ids, contacts }) => {
     const client = createAuthorizedClient(sendGridConnection);
-    const payload: {
-      list_ids?: string[];
-      contacts: unknown[];
-    } = {
+
+    const payload: { list_ids?: string[]; contacts: unknown[] } = {
       contacts: contacts as unknown[],
     };
+
     if (list_ids && typeof list_ids === "string") {
       payload.list_ids = list_ids
         .split(",")
         .map((id) => id.trim())
         .filter((id) => id);
     }
+
     const [_response, body] = await client.request({
       method: "PUT",
       url: `/${API_VERSION}/marketing/contacts`,
@@ -37,9 +38,7 @@ export const addOrUpdateContact = action({
     type: "actionOutput",
     schema: addOrUpdateContactOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: addOrUpdateContactExamplePayload.data,
   }),
   examplePayload: addOrUpdateContactExamplePayload,

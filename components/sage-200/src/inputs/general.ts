@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanDate, cleanOptionalBoolean, cleanStringInput } from "../util";
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -9,11 +10,13 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const site = input({
   label: "Site",
   type: "string",
@@ -34,6 +37,7 @@ export const company = input({
   placeholder: "14123",
   clean: cleanStringInput,
 });
+
 export const filterDataAfterDate = input({
   label: "Filter Data After Date",
   type: "string",
@@ -44,6 +48,7 @@ export const filterDataAfterDate = input({
   placeholder: "2021-01-01T00:00:00Z",
   clean: cleanDate,
 });
+
 export const optionalUpdateBoolean = input({
   label: "",
   type: "string",

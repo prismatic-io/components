@@ -1,4 +1,5 @@
 import { SUCCESS_MESSAGE } from "../constants";
+
 export const listWebhooksExamplePayload = {
   data: {
     results: [
@@ -20,6 +21,7 @@ export const listWebhooksExamplePayload = {
     ],
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     createdAt: "2024-01-15T20:53:52.517Z",
@@ -30,7 +32,9 @@ export const createWebhookExamplePayload = {
     updatedAt: "2024-01-15T20:53:52.517Z",
   },
 };
+
 export const deleteWebhookExamplePayload = { data: "" };
+
 export const deleteAllWebhooksExamplePayload = {
   data: {
     message: SUCCESS_MESSAGE,

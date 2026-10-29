@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSsvClient } from "../../client";
 import { scheduleReportExamplePayload } from "../../examplePayloads/reports";
 import { scheduleReportInputs } from "../../inputs";
+
 export const scheduleReport = action({
   display: {
     label: "Schedule Report",
@@ -30,7 +31,9 @@ export const scheduleReport = action({
       report_name: reportName,
       survey_ids: surveyIds,
     };
+
     const { data } = await client.post("/v3/report", requestData);
+
     return { data };
   },
   examplePayload: scheduleReportExamplePayload,

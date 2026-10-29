@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { addNoteToInvoiceInputs } from "../../inputs";
 import { addNoteToInvoiceExamplePayload } from "../../examplePayloads";
+
 export const addNoteToInvoice = action({
   display: {
     label: "Add Note to Invoice",

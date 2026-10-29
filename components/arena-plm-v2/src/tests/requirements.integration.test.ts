@@ -6,12 +6,16 @@ import axios from "axios";
 import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage } from "../util";
+
 jest.setTimeout(30000);
+
 const DEFAULT_URL = "";
 const DEFAULT_EMAIL = "";
 const DEFAULT_PASSWORD = "";
 const DEFAULT_WORKSPACE_ID = 0;
+
 const harness = createHarness(component);
+
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
   customBaseUrl: process.env.ARENA_BASE_URL || DEFAULT_URL,
@@ -19,28 +23,33 @@ const testConnection = createConnection(arenaUsernamePassword, {
   password: process.env.ARENA_PASSWORD || DEFAULT_PASSWORD,
   workspaceId: process.env.ARENA_WORKSPACE_ID || String(DEFAULT_WORKSPACE_ID),
 });
+
 const BASE_URL = process.env.ARENA_BASE_URL || DEFAULT_URL;
+
 let featureAvailable = true;
 let arenaSessionId: string;
+
 let requirementTemplateGuid: string;
 let requirementNumberSequencePrefix: string;
-let additionalAttributesPayload: Array<{
-  guid: string;
-  value: unknown;
-}> = [];
+let additionalAttributesPayload: Array<{ guid: string; value: unknown }> = [];
+
 let createdRequirementGuid: string | undefined;
 let createdChildRequirementGuid: string | undefined;
+
 let sharedTicketGuid: string;
 let sharedFileGuid: string;
 let sharedQualityGuid: string;
 let _sharedItemGuid: string;
 let sharedRelationshipTypeGuid: string;
+
 let requirementFileAssocGuid: string | undefined;
 let requirementQualityAssocGuid: string | undefined;
 let requirementTicketAssocGuid: string | undefined;
 let requirementTraceGuid: string | undefined;
 let childAssocGuid: string | undefined;
+
 let requirementPriorityValue: string | undefined;
+
 async function getSession(): Promise<string> {
   const resp = await axios.post(`${BASE_URL}/v1/login`, {
     email: process.env.ARENA_EMAIL || DEFAULT_EMAIL,
@@ -52,6 +61,7 @@ async function getSession(): Promise<string> {
   });
   return (resp.data.arena_session_id ?? resp.data.arenaSessionId) as string;
 }
+
 async function directDelete(path: string): Promise<void> {
   await axios
     .delete(`${BASE_URL}/v1${path}`, {
@@ -59,13 +69,10 @@ async function directDelete(path: string): Promise<void> {
     })
     .catch(() => undefined);
 }
+
 function buildAttributeValue(
   fieldType: string,
-  possibleValues:
-    | Array<{
-        value: unknown;
-      }>
-    | undefined,
+  possibleValues: Array<{ value: unknown }> | undefined,
 ): unknown {
   switch (fieldType) {
     case "BOOLEAN":
@@ -97,6 +104,7 @@ function buildAttributeValue(
       return "Integration test value";
   }
 }
+
 beforeAll(async () => {
   try {
     await harness.action("listRequirements", {
@@ -111,6 +119,7 @@ beforeAll(async () => {
     );
   }
 }, 30000);
+
 beforeAll(async () => {
   if (!featureAvailable) return;
   try {
@@ -123,73 +132,60 @@ beforeAll(async () => {
     );
     return;
   }
+
   try {
     const filesResp = await axios.get(`${BASE_URL}/v1/files?limit=1`, {
       headers: { arena_session_id: arenaSessionId },
     });
     sharedFileGuid =
-      (
-        filesResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0]?.guid ?? "";
+      (filesResp.data.results as Array<{ guid: string }>)[0]?.guid ?? "";
   } catch {
     console.warn(
       "[Setup] Could not discover shared file GUID — file tests will be skipped.",
     );
   }
+
   try {
     const ticketsResp = await axios.get(`${BASE_URL}/v1/tickets?limit=1`, {
       headers: { arena_session_id: arenaSessionId },
     });
     sharedTicketGuid =
-      (
-        ticketsResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0]?.guid ?? "";
+      (ticketsResp.data.results as Array<{ guid: string }>)[0]?.guid ?? "";
   } catch {
     console.warn(
       "[Setup] Could not discover shared ticket GUID — ticket tests will be skipped.",
     );
   }
+
   try {
     const qualResp = await axios.get(`${BASE_URL}/v1/quality?limit=1`, {
       headers: { arena_session_id: arenaSessionId },
     });
     sharedQualityGuid =
-      (
-        qualResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0]?.guid ?? "";
+      (qualResp.data.results as Array<{ guid: string }>)[0]?.guid ?? "";
   } catch {
     console.warn(
       "[Setup] Could not discover shared quality GUID — quality tests will be skipped.",
     );
   }
+
   try {
     const itemsResp = await axios.get(`${BASE_URL}/v1/items?limit=1`, {
       headers: { arena_session_id: arenaSessionId },
     });
     _sharedItemGuid =
-      (
-        itemsResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0]?.guid ?? "";
+      (itemsResp.data.results as Array<{ guid: string }>)[0]?.guid ?? "";
   } catch {
     console.warn("[Setup] Could not discover shared item GUID.");
   }
+
   try {
     const templatesResp = await axios.get(
       `${BASE_URL}/v1/settings/requirements/templates?active=true&limit=1`,
       { headers: { arena_session_id: arenaSessionId } },
     );
     const firstTemplate = (
-      templatesResp.data.results as Array<{
-        guid: string;
-      }>
+      templatesResp.data.results as Array<{ guid: string }>
     )[0];
     if (!firstTemplate) {
       console.warn(
@@ -198,6 +194,7 @@ beforeAll(async () => {
       requirementTemplateGuid = "";
     } else {
       requirementTemplateGuid = firstTemplate.guid;
+
       try {
         const tmplDetail = await axios.get(
           `${BASE_URL}/v1/settings/requirements/templates/${requirementTemplateGuid}`,
@@ -205,11 +202,7 @@ beforeAll(async () => {
         );
         const defaultSeq = (
           tmplDetail.data as {
-            defaultNumberSequence?: {
-              prefixes?: Array<{
-                value: string;
-              }>;
-            };
+            defaultNumberSequence?: { prefixes?: Array<{ value: string }> };
           }
         ).defaultNumberSequence;
         requirementNumberSequencePrefix =
@@ -222,6 +215,7 @@ beforeAll(async () => {
       String(getErrorMessage(err)).slice(0, 200),
     );
   }
+
   if (requirementTemplateGuid) {
     try {
       const attrsResp = await axios.get(
@@ -235,11 +229,11 @@ beforeAll(async () => {
           fieldType: string;
           required: boolean;
           custom: boolean;
-          possibleValues?: Array<{
-            value: unknown;
-          }>;
+          possibleValues?: Array<{ value: unknown }>;
         }>) ?? [];
+
       const templateGuidPrefix = requirementTemplateGuid.substring(0, 8);
+
       additionalAttributesPayload = attrs
         .map((attr) => {
           if (!attr.guid || attr.custom === false) {
@@ -275,10 +269,7 @@ beforeAll(async () => {
           );
           return { guid: attr.guid, value };
         })
-        .filter(Boolean) as Array<{
-        guid: string;
-        value: unknown;
-      }>;
+        .filter(Boolean) as Array<{ guid: string; value: unknown }>;
       console.info(
         `[Setup] additionalAttributesPayload count: ${additionalAttributesPayload.length}`,
       );
@@ -289,25 +280,24 @@ beforeAll(async () => {
       );
     }
   }
+
   try {
     const relTypesResp = await axios.get(
       `${BASE_URL}/v1/settings/requirements/relationshipTypes`,
       { headers: { arena_session_id: arenaSessionId } },
     );
     sharedRelationshipTypeGuid =
-      (
-        relTypesResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0]?.guid ?? "";
+      (relTypesResp.data.results as Array<{ guid: string }>)[0]?.guid ?? "";
   } catch {
     console.warn(
       "[Setup] Could not discover relationship types — trace tests will be skipped.",
     );
   }
 }, 60000);
+
 afterAll(async () => {
   if (!arenaSessionId) return;
+
   if (requirementFileAssocGuid && createdRequirementGuid) {
     await directDelete(
       `/requirements/${createdRequirementGuid}/files/${requirementFileAssocGuid}`,
@@ -340,6 +330,7 @@ afterAll(async () => {
     await directDelete(`/requirements/${createdRequirementGuid}`);
   }
 }, 60000);
+
 describe("Action: listRequirementTemplates", () => {
   test("returns a list of requirement templates", async () => {
     if (!featureAvailable) {
@@ -351,14 +342,12 @@ describe("Action: listRequirementTemplates", () => {
       active: true,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: getRequirementTemplate", () => {
   test("returns a specific requirement template", async () => {
     if (!featureAvailable || !requirementTemplateGuid) {
@@ -370,14 +359,12 @@ describe("Action: getRequirementTemplate", () => {
       requirementTemplateGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-      name: string;
-    };
+    const data = result?.data as { guid: string; name: string };
     expect(data.guid).toBe(requirementTemplateGuid);
     expect(typeof data.name).toBe("string");
   }, 30000);
 });
+
 describe("Action: listRequirementRelationshipTypes", () => {
   test("returns a list of relationship types", async () => {
     if (!featureAvailable) {
@@ -388,14 +375,12 @@ describe("Action: listRequirementRelationshipTypes", () => {
       connection: testConnection,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: listRequirementTemplateAttributes", () => {
   test("returns attributes for a requirement template", async () => {
     if (!featureAvailable || !requirementTemplateGuid) {
@@ -411,14 +396,12 @@ describe("Action: listRequirementTemplateAttributes", () => {
       searchableOnly: false,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: listRequirements", () => {
   test("returns a paginated list of requirements", async () => {
     if (!featureAvailable) {
@@ -431,13 +414,11 @@ describe("Action: listRequirements", () => {
       offset: "0",
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("filters by template GUID", async () => {
     if (!featureAvailable || !requirementTemplateGuid) {
       console.warn("Skipping — feature not available or no template found");
@@ -450,14 +431,12 @@ describe("Action: listRequirements", () => {
       offset: "0",
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: createRequirement", () => {
   test("creates a new requirement with all attributes", async () => {
     if (!featureAvailable || !requirementTemplateGuid) {
@@ -483,15 +462,13 @@ describe("Action: createRequirement", () => {
           : undefined,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result?.data as { guid: string; title: string };
     expect(typeof data.guid).toBe("string");
     expect(data.title).toBe("Integration Test Requirement");
     createdRequirementGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: getRequirement", () => {
   test("retrieves the created requirement by GUID", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -505,13 +482,11 @@ describe("Action: getRequirement", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result?.data as { guid: string; title: string };
     expect(data.guid).toBe(createdRequirementGuid);
   }, 30000);
 });
+
 describe("Action: updateRequirement", () => {
   test("updates title and description of the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -532,13 +507,11 @@ describe("Action: updateRequirement", () => {
           : undefined,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result?.data as { guid: string; title: string };
     expect(data.guid).toBe(createdRequirementGuid);
   }, 30000);
 });
+
 describe("Action: listRequirementHistory", () => {
   test("returns history for the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -552,14 +525,12 @@ describe("Action: listRequirementHistory", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: getRequirementParent", () => {
   test("returns parent requirements (may be empty for a root requirement)", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -573,14 +544,12 @@ describe("Action: getRequirementParent", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: listRequirementFiles", () => {
   test("returns file associations for the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -594,14 +563,12 @@ describe("Action: listRequirementFiles", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addRequirementFile", () => {
   test("attaches a file to the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid || !sharedFileGuid) {
@@ -616,12 +583,7 @@ describe("Action: addRequirementFile", () => {
     });
     const existing = (
       existingResult?.data as {
-        results: Array<{
-          guid: string;
-          file: {
-            guid: string;
-          };
-        }>;
+        results: Array<{ guid: string; file: { guid: string } }>;
       }
     ).results.find((a) => a.file.guid === sharedFileGuid);
     if (existing) {
@@ -629,19 +591,19 @@ describe("Action: addRequirementFile", () => {
         `/requirements/${createdRequirementGuid}/files/${existing.guid}`,
       );
     }
+
     const result = await harness.action("addRequirementFile", {
       connection: testConnection,
       requirementGuid: createdRequirementGuid,
       fileGuid: sharedFileGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     requirementFileAssocGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: getRequirementFileAssociation", () => {
   test("retrieves a specific file association", async () => {
     if (
@@ -658,12 +620,11 @@ describe("Action: getRequirementFileAssociation", () => {
       fileAssociationGuid: requirementFileAssocGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(data.guid).toBe(requirementFileAssocGuid);
   }, 30000);
 });
+
 describe("Action: removeRequirementFileAssociation", () => {
   test("removes the file association", async () => {
     if (
@@ -683,6 +644,7 @@ describe("Action: removeRequirementFileAssociation", () => {
     requirementFileAssocGuid = undefined;
   }, 30000);
 });
+
 describe("Action: listRequirementQuality", () => {
   test("returns quality associations for the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -696,14 +658,12 @@ describe("Action: listRequirementQuality", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addRequirementQuality", () => {
   test("links a quality process to the requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid || !sharedQualityGuid) {
@@ -719,9 +679,7 @@ describe("Action: addRequirementQuality", () => {
     const existing = (
       existingResp.data.results as Array<{
         guid: string;
-        quality: {
-          guid: string;
-        };
+        quality: { guid: string };
       }>
     ).find((a) => a.quality.guid === sharedQualityGuid);
     if (existing) {
@@ -729,19 +687,19 @@ describe("Action: addRequirementQuality", () => {
         `/requirements/${createdRequirementGuid}/quality/${existing.guid}`,
       );
     }
+
     const result = await harness.action("addRequirementQuality", {
       connection: testConnection,
       requirementGuid: createdRequirementGuid,
       qualityGuid: sharedQualityGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     requirementQualityAssocGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: getRequirementQualityAssociation", () => {
   test("retrieves a specific quality association", async () => {
     if (
@@ -760,12 +718,11 @@ describe("Action: getRequirementQualityAssociation", () => {
       associationGuid: requirementQualityAssocGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(data.guid).toBe(requirementQualityAssocGuid);
   }, 30000);
 });
+
 describe("Action: removeRequirementQualityAssociation", () => {
   test("removes the quality association", async () => {
     if (
@@ -787,6 +744,7 @@ describe("Action: removeRequirementQualityAssociation", () => {
     requirementQualityAssocGuid = undefined;
   }, 30000);
 });
+
 describe("Action: listRequirementTickets", () => {
   test("returns ticket associations for the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -800,14 +758,12 @@ describe("Action: listRequirementTickets", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addRequirementTicket", () => {
   test("links a ticket to the requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid || !sharedTicketGuid) {
@@ -823,9 +779,7 @@ describe("Action: addRequirementTicket", () => {
     const existing = (
       existingResp.data.results as Array<{
         guid: string;
-        ticket: {
-          guid: string;
-        };
+        ticket: { guid: string };
       }>
     ).find((a) => a.ticket.guid === sharedTicketGuid);
     if (existing) {
@@ -833,19 +787,19 @@ describe("Action: addRequirementTicket", () => {
         `/requirements/${createdRequirementGuid}/tickets/${existing.guid}`,
       );
     }
+
     const result = await harness.action("addRequirementTicket", {
       connection: testConnection,
       requirementGuid: createdRequirementGuid,
       ticketGuid: sharedTicketGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     requirementTicketAssocGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: getRequirementTicketAssociation", () => {
   test("retrieves a specific ticket association", async () => {
     if (
@@ -862,12 +816,11 @@ describe("Action: getRequirementTicketAssociation", () => {
       associationGuid: requirementTicketAssocGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(data.guid).toBe(requirementTicketAssocGuid);
   }, 30000);
 });
+
 describe("Action: removeRequirementTicketAssociation", () => {
   test("removes the ticket association", async () => {
     if (
@@ -887,6 +840,7 @@ describe("Action: removeRequirementTicketAssociation", () => {
     requirementTicketAssocGuid = undefined;
   }, 30000);
 });
+
 describe("Action: listRequirementTraces", () => {
   test("returns traces for the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -900,14 +854,12 @@ describe("Action: listRequirementTraces", () => {
       requirementGuid: createdRequirementGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addRequirementTrace", () => {
   test("adds a trace link to another requirement", async () => {
     if (
@@ -925,18 +877,16 @@ describe("Action: addRequirementTrace", () => {
       limit: "5",
     });
     const targetReq = (
-      reqsResult?.data as {
-        results: Array<{
-          guid: string;
-        }>;
-      }
+      reqsResult?.data as { results: Array<{ guid: string }> }
     ).results.find((r) => r.guid !== createdRequirementGuid);
+
     if (!targetReq) {
       console.warn(
         "[Trace] No second requirement available to trace to — skipping",
       );
       return;
     }
+
     const result = await harness.action("addRequirementTrace", {
       connection: testConnection,
       requirementGuid: createdRequirementGuid,
@@ -946,13 +896,12 @@ describe("Action: addRequirementTrace", () => {
       targetRequirementGuid: targetReq.guid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     requirementTraceGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: getRequirementTrace", () => {
   test("retrieves a specific trace link", async () => {
     if (!featureAvailable || !createdRequirementGuid || !requirementTraceGuid) {
@@ -965,12 +914,11 @@ describe("Action: getRequirementTrace", () => {
       traceLinkGuid: requirementTraceGuid,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(data.guid).toBe(requirementTraceGuid);
   }, 30000);
 });
+
 describe("Action: updateRequirementTrace", () => {
   test("updates the suspected flag on a trace link", async () => {
     if (!featureAvailable || !createdRequirementGuid || !requirementTraceGuid) {
@@ -984,12 +932,11 @@ describe("Action: updateRequirementTrace", () => {
       suspected: false,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     expect(data.guid).toBe(requirementTraceGuid);
   }, 30000);
 });
+
 describe("Action: deleteRequirementTrace", () => {
   test("deletes the trace link", async () => {
     if (!featureAvailable || !createdRequirementGuid || !requirementTraceGuid) {
@@ -1005,6 +952,7 @@ describe("Action: deleteRequirementTrace", () => {
     requirementTraceGuid = undefined;
   }, 30000);
 });
+
 describe("Action: createChildRequirement (setup)", () => {
   test("creates a second requirement to use as a child", async () => {
     if (!featureAvailable || !requirementTemplateGuid) {
@@ -1026,12 +974,11 @@ describe("Action: createChildRequirement (setup)", () => {
           : undefined,
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      guid: string;
-    };
+    const data = result?.data as { guid: string };
     createdChildRequirementGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: addRequirementChild", () => {
   test("adds a child requirement", async () => {
     if (
@@ -1053,6 +1000,7 @@ describe("Action: addRequirementChild", () => {
     childAssocGuid = createdChildRequirementGuid;
   }, 30000);
 });
+
 describe("Action: listRequirementChildren", () => {
   test("returns child requirements (tree view)", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -1065,13 +1013,11 @@ describe("Action: listRequirementChildren", () => {
       view: "tree",
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("returns child requirements (list view)", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
       console.warn("Skipping — feature not available or no requirement");
@@ -1083,14 +1029,12 @@ describe("Action: listRequirementChildren", () => {
       view: "list",
     });
     expect(result).toBeDefined();
-    const data = result?.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result?.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: removeRequirementChild", () => {
   test("removes the child requirement", async () => {
     if (
@@ -1112,6 +1056,7 @@ describe("Action: removeRequirementChild", () => {
     childAssocGuid = undefined;
   }, 30000);
 });
+
 describe("Action: changeRequirementStatus", () => {
   test("changes the status of the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {
@@ -1126,20 +1071,17 @@ describe("Action: changeRequirementStatus", () => {
         `${BASE_URL}/v1/requirements/${createdRequirementGuid}`,
         { headers: { arena_session_id: arenaSessionId } },
       );
-      availableStatus = (
-        attrsResp.data as {
-          status?: {
-            value: string;
-          };
-        }
-      ).status?.value;
+      availableStatus = (attrsResp.data as { status?: { value: string } })
+        .status?.value;
     } catch {}
+
     if (!availableStatus) {
       console.warn(
         "[Status Change] Could not determine current status — skipping",
       );
       return;
     }
+
     const result = await harness.action("changeRequirementStatus", {
       connection: testConnection,
       requirementGuid: createdRequirementGuid,
@@ -1148,6 +1090,7 @@ describe("Action: changeRequirementStatus", () => {
     expect(result).toBeDefined();
   }, 30000);
 });
+
 describe("Action: deleteRequirement", () => {
   test("deletes the created requirement", async () => {
     if (!featureAvailable || !createdRequirementGuid) {

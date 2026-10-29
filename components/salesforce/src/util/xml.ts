@@ -1,5 +1,6 @@
 import { util } from "@prismatic-io/spectral";
 import { XMLParser } from "fast-xml-parser";
+
 const parseV3TagValue = (
   _tagName: string,
   value: string,
@@ -12,6 +13,7 @@ const parseV3TagValue = (
   if (/^[+-]?Infinity$/.test(value.trim())) return Number.NaN;
   return util.types.toInt(value);
 };
+
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
   removeNSPrefix: false,
@@ -22,4 +24,5 @@ const xmlParser = new XMLParser({
   ignoreDeclaration: true,
   ignorePiTags: true,
 });
+
 export const parseXml = (xml: string): unknown => xmlParser.parse(xml) || {};

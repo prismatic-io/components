@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { resolveConnectionConfig } from "../../client";
 import { rawRequestInputs } from "../../inputs";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",

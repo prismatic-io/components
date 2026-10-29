@@ -7,6 +7,7 @@ import {
   query,
   shopifyConnection,
 } from "./common";
+
 const notifyCustomer = input({
   label: "Notify Customer",
   type: "boolean",
@@ -15,6 +16,7 @@ const notifyCustomer = input({
   comments: "Whether the customer should be notified of the cancellation.",
   clean: util.types.toBool,
 });
+
 const reason = input({
   label: "Reason",
   type: "string",
@@ -50,6 +52,7 @@ const reason = input({
   ],
   clean: util.types.toString,
 });
+
 const refund = input({
   label: "Refund",
   type: "boolean",
@@ -57,6 +60,7 @@ const refund = input({
   comments: "Whether to refund the amount paid by the customer.",
   clean: util.types.toBool,
 });
+
 const restock = input({
   label: "Restock",
   type: "boolean",
@@ -64,6 +68,7 @@ const restock = input({
   comments: "Whether to restock the inventory committed to the order.",
   clean: util.types.toBool,
 });
+
 const staffNote = input({
   label: "Staff Note",
   type: "string",
@@ -74,6 +79,7 @@ const staffNote = input({
   placeholder: "Enter staff note",
   clean: cleanStringInput,
 });
+
 const orderData = input({
   label: "Order Data",
   type: "code",
@@ -125,6 +131,7 @@ const orderData = input({
   ),
   clean: (value) => cleanCodeInputEmptyObject(value, "Order Data"),
 });
+
 export const cancelOrderInputs = {
   shopifyConnection,
   orderId,
@@ -134,6 +141,7 @@ export const cancelOrderInputs = {
   notifyCustomer,
   staffNote,
 };
+
 export const listOrdersInputs = {
   shopifyConnection,
   getAlldata,
@@ -145,21 +153,26 @@ export const listOrdersInputs = {
   }),
   pagination,
 };
+
 export const closeOrderInputs = {
   shopifyConnection,
   orderId,
 };
+
 export const countOrdersInputs = {
   shopifyConnection,
 };
+
 export const createOrderInputs = {
   shopifyConnection,
   orderData,
 };
+
 export const getOrderInputs = {
   shopifyConnection,
   orderId,
 };
+
 export const deleteOrderInputs = {
   shopifyConnection,
   orderId,

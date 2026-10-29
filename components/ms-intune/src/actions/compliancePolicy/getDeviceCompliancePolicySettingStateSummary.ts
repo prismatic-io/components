@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getDeviceCompliancePolicySettingStateSummaryExamplePayload } from "../../examplePayloads";
 import { getDeviceCompliancePolicySettingStateSummaryInputs } from "../../inputs";
+
 export const getDeviceCompliancePolicySettingStateSummary = action({
   display: {
     label: "Get Device Compliance Policy Setting State Summary",
@@ -17,6 +18,7 @@ export const getDeviceCompliancePolicySettingStateSummary = action({
     const { data } = await client.get(
       `${ENDPOINTS.DEVICE_COMPLIANCE_POLICY_SETTING_STATE_SUMMARIES}/${deviceCompliancePolicySettingStateSummaryId}`,
     );
+
     return {
       data,
     };

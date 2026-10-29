@@ -3,6 +3,7 @@ import {
   OAuth2PkceMethod,
   OAuth2Type,
 } from "@prismatic-io/spectral";
+
 export const klaviyoOAuth2Connection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   oauth2PkceMethod: OAuth2PkceMethod.S256,

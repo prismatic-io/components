@@ -4,6 +4,7 @@ import { getZendeskClient } from "../../client";
 import { listTasksExamplePayload } from "../../examplePayloads";
 import { listTasksInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listTasks = action({
   display: {
     label: "List Tasks",
@@ -38,6 +39,7 @@ export const listTasks = action({
         ...(type && { type: type }),
         ...(completed && { completed: completed }),
       };
+
       const data: unknown = await fetchAllPages(
         client,
         "/tasks",

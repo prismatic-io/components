@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
 import { connectionInput } from "./common";
+
 export const fileId = input({
   label: "File ID",
   type: "string",
@@ -10,6 +11,7 @@ export const fileId = input({
   example: "12345678-abcd-1234-efgh-567890ijklmn",
   clean: util.types.toString,
 });
+
 export const stagingId = input({
   label: "Staging ID",
   type: "string",
@@ -20,6 +22,7 @@ export const stagingId = input({
   example: "12345678-abcd-1234-efgh-567890ijklmn",
   clean: util.types.toString,
 });
+
 export const xmlTransaction = input({
   label: "XML Transaction",
   type: "code",
@@ -39,6 +42,7 @@ export const xmlTransaction = input({
 </ImportToolRequest>`,
   clean: util.types.toString,
 });
+
 export const uniqueFileName = input({
   label: "Unique File Name",
   type: "string",
@@ -49,21 +53,26 @@ export const uniqueFileName = input({
   example: "newhire-batch-2024-01-15.xml",
   clean: cleanString,
 });
+
 export const getFileStatusInputs = {
   connection: connectionInput,
   fileId,
 };
+
 export const getFileSummaryInputs = {
   connection: connectionInput,
   fileId,
 };
+
 export const getImportStatusInputs = {
   connection: connectionInput,
   stagingId,
 };
+
 export const getTransactionStatusInputs = {
   connection: connectionInput,
 };
+
 export const importXmlDataInputs = {
   connection: connectionInput,
   xmlTransaction,

@@ -5,6 +5,7 @@ import { paginateResults } from "../../util/pagination";
 import { listOrganizationsExamplePayload } from "../../examplePayloads";
 import { listOrganizationsInputs } from "../../inputs";
 import { listOrganizationsOutputSchema } from "../../outputSchemas";
+
 export const listOrganizations = action({
   display: {
     label: "List Organizations",

@@ -4,6 +4,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
 import { getCategoryTreeExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, depth, storeHash, tree_id } from "../../inputs";
+
 export const getCategoryTree = action({
   display: {
     label: "Get Category Tree",
@@ -19,11 +20,14 @@ export const getCategoryTree = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/trees/${tree_id}/categories`;
+
     const queryParams = querystring.stringify({
       depth: depth as number,
     });
+
     try {
       const response = await client.get(`${endpoint}?${queryParams}`);
+
       return {
         data: response.data,
       };
@@ -33,6 +37,7 @@ export const getCategoryTree = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

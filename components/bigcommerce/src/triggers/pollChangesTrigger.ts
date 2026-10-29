@@ -14,6 +14,7 @@ import {
   partitionOrdersByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Orders",
@@ -50,6 +51,7 @@ export const pollChangesTrigger = pollingTrigger({
     const sinceISO =
       pollState?.lastPolledAt ?? lookBackISO ?? now.toISOString();
     const sinceDate = new Date(sinceISO);
+
     const client = await createAuthorizedClient(
       bigCommerceConnection,
       context.debug.enabled,
@@ -59,19 +61,24 @@ export const pollChangesTrigger = pollingTrigger({
       util.types.toString(storeHash),
       sinceISO,
     );
+
     const { created, updated } = partitionOrdersByTimestamp(orders, sinceDate);
+
     context.polling.setState({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
+
     const result = {
       created: isBackfill || showNewOrders ? created : [],
       updated: isBackfill || showUpdatedOrders ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled BigCommerce orders since ${sinceISO}: ${orders.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

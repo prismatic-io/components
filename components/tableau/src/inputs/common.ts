@@ -1,10 +1,12 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const timeout = input({
   label: "Timeout",
   type: "string",
@@ -14,6 +16,7 @@ export const timeout = input({
   placeholder: "Enter timeout in milliseconds",
   clean: util.types.toInt,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -23,6 +26,7 @@ export const pageSize = input({
   placeholder: "Enter page size",
   clean: util.types.toNumber,
 });
+
 export const pageNumber = input({
   label: "Page Number",
   type: "string",
@@ -32,12 +36,14 @@ export const pageNumber = input({
   placeholder: "Enter page number",
   clean: util.types.toNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and page number controls for paginated results.",
   inputs: { pageSize, pageNumber },
 });
+
 export const apiVersion = input({
   label: "API Version",
   type: "string",
@@ -48,6 +54,7 @@ export const apiVersion = input({
   default: "3.6",
   clean: util.types.toString,
 });
+
 export const searchString = input({
   label: "Search",
   type: "string",
@@ -57,6 +64,7 @@ export const searchString = input({
   placeholder: "Enter search text",
   clean: util.types.toString,
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -67,6 +75,7 @@ export const projectId = input({
   dataSource: "selectProject",
   clean: util.types.toString,
 });
+
 export const workbookId = input({
   label: "Workbook ID",
   type: "string",
@@ -77,6 +86,7 @@ export const workbookId = input({
   dataSource: "selectWorkbook",
   clean: util.types.toString,
 });
+
 export const userId = input({
   label: "User ID",
   type: "string",
@@ -87,6 +97,7 @@ export const userId = input({
   dataSource: "selectUser",
   clean: toOptionalString,
 });
+
 export const webhookId = input({
   label: "Webhook ID",
   type: "string",

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { listLocationsExamplePayload } from "../../examplePayloads";
 import { listLocationsInputs } from "../../inputs";
+
 export const listLocations = action({
   display: {
     label: "List Locations",
@@ -13,7 +14,9 @@ export const listLocations = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.get("/v2/locations");
+
     return {
       data: response.data,
     };

@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { batchEntityActionsExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
+
 const {
   mockStartBatch,
   mockCreate,
@@ -14,6 +15,7 @@ const {
   mockDeleteRecord: vi.fn(),
   mockExecuteBatch: vi.fn(),
 }));
+
 vi.mock("../../client", () => ({
   createCrmClient: vi.fn().mockResolvedValue({
     startBatch: mockStartBatch,
@@ -23,15 +25,20 @@ vi.mock("../../client", () => ({
     executeBatch: mockExecuteBatch,
   }),
 }));
+
 import { batchEntityActions } from "./batchEntityActions";
+
 const conn = createMockConnection();
 const ctx = createMockContext();
+
 describe("batchEntityActions", () => {
   afterEach(() => vi.clearAllMocks());
+
   test("happy path executes batch and returns results", async () => {
     mockExecuteBatch.mockResolvedValueOnce(
       batchEntityActionsExamplePayload.data,
     );
+
     const actions = [
       {
         collection: "accounts",
@@ -48,10 +55,12 @@ describe("batchEntityActions", () => {
       },
       { collection: "accounts", action: "delete" as const, key: "def" },
     ];
+
     const result = await batchEntityActions.perform(ctx, {
       connection: conn,
       actions,
     } as any);
+
     expect(mockStartBatch).toHaveBeenCalledOnce();
     expect(mockCreate).toHaveBeenCalledOnce();
     expect(mockUpdate).toHaveBeenCalledOnce();
@@ -59,6 +68,7 @@ describe("batchEntityActions", () => {
     expect(mockExecuteBatch).toHaveBeenCalledOnce();
     expect(result.data).toEqual(batchEntityActionsExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     mockExecuteBatch.mockRejectedValueOnce(new Error("Batch failed"));
     await expect(

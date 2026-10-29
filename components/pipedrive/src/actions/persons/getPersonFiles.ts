@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPersonFilesInputs } from "../../inputs";
 import { getPersonFilesExamplePayload } from "../../examplePayloads";
 import { getPersonFilesOutputSchema } from "../../outputSchemas";
+
 export const getPersonFiles = action({
   display: {
     label: "Get Person Files",

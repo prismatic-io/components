@@ -10,6 +10,7 @@ export const plannerBucketSchema = {
   },
   required: ["id"],
 };
+
 export const plannerBucketCollectionSchema = {
   type: "object" as const,
   properties: {
@@ -19,8 +20,13 @@ export const plannerBucketCollectionSchema = {
   },
   required: ["value", "truncated"],
 };
+
 export const listBucketsInPlanOutputSchema = plannerBucketCollectionSchema;
+
 export const getBucketOutputSchema = plannerBucketSchema;
+
 export const createBucketOutputSchema = plannerBucketSchema;
+
 export const updateBucketOutputSchema = plannerBucketSchema;
+
 export const deleteBucketOutputSchema = deleteResultSchema;

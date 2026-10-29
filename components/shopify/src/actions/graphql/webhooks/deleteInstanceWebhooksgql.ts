@@ -5,6 +5,7 @@ import { deleteInstanceWebhooksExamplePayload } from "../../../examplePayloads";
 import { deleteInstanceWebhooksInputs as inputs } from "../../../inputsGql";
 import { deleteInstanceWebhooksGqlOutputSchema } from "../../../outputSchemas";
 import { deleteWebhookById, listWebhooks } from "../../../util";
+
 export const deleteInstanceWebhooksgql = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -23,6 +24,7 @@ export const deleteInstanceWebhooksgql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const { webhookSubscriptions } = await listWebhooks(
       client,
       true,
@@ -31,6 +33,7 @@ export const deleteInstanceWebhooksgql = action({
       Object.values(context.webhookUrls),
       undefined,
     );
+
     const promises = webhookSubscriptions.map((webhook) =>
       deleteWebhookById(client, webhook.id),
     );

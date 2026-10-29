@@ -10,6 +10,7 @@ import { removeFlags } from "./removeFlags";
 import { renameMailbox } from "./renameMailbox";
 import { searchMailbox } from "./searchMailbox";
 import { setFlags } from "./setFlags";
+
 export default {
   listMailboxes,
   getStatus,

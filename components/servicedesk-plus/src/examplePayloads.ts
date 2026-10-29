@@ -102,6 +102,7 @@ export const listAssetsResponse = {
     row_count: 1,
   },
 };
+
 export const createAssetResponse = {
   response_status: {
     status_code: 2000,
@@ -239,12 +240,14 @@ export const createAssetResponse = {
     last_audit: null,
   },
 };
+
 export const deleteResponse = {
   response_status: {
     status_code: 2000,
     status: "success",
   },
 };
+
 export const getProductResponse = {
   product: {
     is_laptop: false,
@@ -284,6 +287,7 @@ export const getProductResponse = {
     status: "success",
   },
 };
+
 export const listProductsResponse = {
   response_status: [
     {
@@ -331,6 +335,7 @@ export const listProductsResponse = {
     },
   ],
 };
+
 export const listProductTypesResponse = {
   response_status: [
     {
@@ -361,6 +366,7 @@ export const listProductTypesResponse = {
     row_count: 1,
   },
 };
+
 export const getProductTypeResponse = {
   product_type: {
     image: "test-image",
@@ -383,6 +389,7 @@ export const getProductTypeResponse = {
     status: "success",
   },
 };
+
 export const listConfigurationItemsResponse = {
   response_status: [
     {
@@ -521,6 +528,7 @@ export const listConfigurationItemsResponse = {
     },
   ],
 };
+
 export const getConfigurationItemResponse = {
   response_status: {
     status_code: 2000,
@@ -665,24 +673,28 @@ export const getConfigurationItemResponse = {
     id: "100000000000034020",
   },
 };
+
 export const listAssetsDatasource = {
   result: [
     { label: "192.0.2.1", key: "1817089573167815" },
     { label: "192.0.2.23", key: "1817089573167315" },
   ],
 };
+
 export const listProblemsDatasource = {
   result: [
     { label: "Test Problem", key: "4149000001355051" },
     { label: "Test Problem 2", key: "4149000001355052" },
   ],
 };
+
 export const listRequestsDatasource = {
   result: [
     { label: "Test Request 1", key: "4149000001355051" },
     { label: "Test Request 2", key: "4149000001355052" },
   ],
 };
+
 export const createProblemResponse = {
   data: {
     problem: {
@@ -1051,7 +1063,9 @@ export const createProblemResponse = {
     },
   },
 };
+
 export const updateProblemResponse = createProblemResponse;
+
 export const getProblemResponse = {
   data: {
     response_status: [
@@ -1067,6 +1081,7 @@ export const getProblemResponse = {
     problem: createProblemResponse.data.problem,
   },
 };
+
 export const listProblemsResponse = {
   data: {
     response_status: [
@@ -1082,6 +1097,7 @@ export const listProblemsResponse = {
     problems: [createProblemResponse.data.problem],
   },
 };
+
 export const deleteProblemResponse = {
   data: {
     response_status: {
@@ -1090,6 +1106,7 @@ export const deleteProblemResponse = {
     },
   },
 };
+
 export const createProblemNoteResponse = {
   data: {
     note: {
@@ -1130,8 +1147,11 @@ export const createProblemNoteResponse = {
     },
   },
 };
+
 export const deleteProblemNoteResponse = deleteProblemResponse;
+
 export const getProblemNoteResponse = createProblemNoteResponse;
+
 export const listProblemNotesResponse = {
   data: {
     notes: [createProblemNoteResponse.data.note],
@@ -1145,7 +1165,9 @@ export const listProblemNotesResponse = {
     },
   },
 };
+
 export const updateProblemNoteResponse = createProblemNoteResponse;
+
 export const createProblemTaskResponse = {
   data: {
     task: {
@@ -1266,8 +1288,11 @@ export const createProblemTaskResponse = {
     },
   },
 };
+
 export const deleteProblemTaskResponse = deleteProblemResponse;
+
 export const getProblemTaskResponse = createProblemTaskResponse;
+
 export const listProblemTasksResponse = {
   data: {
     tasks: [createProblemTaskResponse.data.task],
@@ -1281,7 +1306,9 @@ export const listProblemTasksResponse = {
     },
   },
 };
+
 export const updateProblemTaskResponse = createProblemTaskResponse;
+
 export const createRequestResponse = {
   data: {
     request: {
@@ -1589,8 +1616,11 @@ export const createRequestResponse = {
     },
   },
 };
+
 export const deleteRequestResponse = deleteProblemNoteResponse;
+
 export const getRequestResponse = createRequestResponse;
+
 export const listRequestsResponse = {
   data: {
     requests: [createRequestResponse.data.request],
@@ -1604,7 +1634,9 @@ export const listRequestsResponse = {
     },
   },
 };
+
 export const updateRequestResponse = createRequestResponse;
+
 export const createRequestTaskResponse = {
   data: {
     task: {
@@ -1710,8 +1742,11 @@ export const createRequestTaskResponse = {
     },
   },
 };
+
 export const deleteRequestTaskResponse = deleteProblemNoteResponse;
+
 export const getRequestTaskResponse = createRequestTaskResponse;
+
 export const listRequestTasksResponse = {
   data: {
     tasks: [createRequestTaskResponse.data.task],
@@ -1725,4 +1760,5 @@ export const listRequestTasksResponse = {
     },
   },
 };
+
 export const updateRequestTaskResponse = createRequestTaskResponse;

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getCustomFieldMetaExamplePayload } from "../../examplePayloads";
 import { getCustomFieldMetaInputs } from "../../inputs";
+
 export const getCustomFieldMeta = action({
   display: {
     label: "Get Custom Field Meta",
@@ -25,8 +26,7 @@ export const getCustomFieldMeta = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getCustomFieldMetaExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getCustomFieldMetaExamplePayload,
   examplePayload: getCustomFieldMetaExamplePayload,
 });

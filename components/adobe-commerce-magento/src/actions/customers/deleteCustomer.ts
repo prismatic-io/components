@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { deleteCustomerExamplePayload } from "../../examplePayloads";
 import { deleteCustomerInputs } from "../../inputs";
+
 export const deleteCustomer = action({
   display: {
     label: "Delete Customer",

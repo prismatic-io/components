@@ -3,6 +3,7 @@ import { connectionInput, type } from "../inputs";
 import { createClient } from "../client";
 import { generatePayload } from "../util";
 import type { Policies } from "../interfaces";
+
 export const listPolicies = dataSource({
   display: {
     label: "List Policies",
@@ -21,7 +22,9 @@ export const listPolicies = dataSource({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post<Policies>("", generatedJson);
+
     if (data?.policyList?.length > 0) {
       const { policyList } = data;
       const result = policyList.map<Element>(({ name, id }) => ({
@@ -32,6 +35,7 @@ export const listPolicies = dataSource({
         result,
       };
     }
+
     return { result: [] };
   },
   dataSourceType: "picklist",

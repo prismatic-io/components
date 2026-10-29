@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { templatesListPublicExamplePayload } from "../../examplePayloads";
 import { templatesListPublicInputs } from "../../inputs";
+
 export const templatesListPublic = action({
   display: {
     label: "List Public Templates (Deprecated)",

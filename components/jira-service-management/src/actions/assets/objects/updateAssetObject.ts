@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAssetsClient } from "../../../client";
 import { updateAssetObjectExamplePayload } from "../../../examplePayloads";
 import { updateAssetObjectInputs } from "../../../inputs";
+
 export const updateAssetObject = action({
   display: {
     label: "Update Asset Object",
@@ -28,6 +29,7 @@ export const updateAssetObject = action({
       objectTypeId: assetObjectTypeId,
       attributes: assetAttributes,
     };
+
     const { data } = await client.put(`/object/${assetObjectId}`, body);
     return { data };
   },

@@ -14,6 +14,7 @@ import {
   termNameInput,
   vendorIdInput,
 } from "./common";
+
 const apBillItemsInput = input({
   label: "AP Bill Items",
   type: "code",
@@ -39,6 +40,7 @@ const apBillItemsInput = input({
     "https://developer.intacct.com/api/accounts-payable/bills/#create-bill",
   clean: cleanFunctionForXml,
 });
+
 const billTransactionDateInput = input({
   label: "Bill Transaction Date",
   type: "string",
@@ -48,6 +50,7 @@ const billTransactionDateInput = input({
   placeholder: "Enter date (MM/DD/YYYY)",
   clean: util.types.toString,
 });
+
 const billTransactionGlPostingDateInput = input({
   label: "Bill GL Posting Date",
   type: "string",
@@ -57,6 +60,7 @@ const billTransactionGlPostingDateInput = input({
   placeholder: "Enter date (MM/DD/YYYY)",
   clean: util.types.toString,
 });
+
 const billNumberInput = input({
   label: "Bill Number",
   type: "string",
@@ -66,6 +70,7 @@ const billNumberInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 const docNumberInput = input({
   label: "Reference Number",
   type: "string",
@@ -75,6 +80,7 @@ const docNumberInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const recPaymentDateInput = input({
   label: "Recommended to pay on",
   type: "string",
@@ -84,6 +90,7 @@ const recPaymentDateInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const createBillInputs = {
   connection,
   billTransactionDateInput,
@@ -115,6 +122,7 @@ export const createBillInputs = {
   baseCurrencyInput,
   apBillItemsInput,
 };
+
 export const getBillInputs = {
   connection,
   fieldsInput,

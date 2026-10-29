@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
 import { defaultInputs } from "./general";
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -10,6 +11,7 @@ export const email = input({
   placeholder: "test@test.com",
   clean: util.types.toString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -19,6 +21,7 @@ export const name = input({
   placeholder: "John Doe",
   clean: util.types.toString,
 });
+
 export const password = input({
   label: "Password",
   type: "password",
@@ -28,6 +31,7 @@ export const password = input({
   placeholder: "password",
   clean: util.types.toString,
 });
+
 export const language = input({
   label: "Language",
   type: "string",
@@ -37,6 +41,7 @@ export const language = input({
   placeholder: "en",
   clean: util.types.toString,
 });
+
 export const clientId = input({
   label: "Client ID",
   type: "string",
@@ -46,6 +51,7 @@ export const clientId = input({
   placeholder: "123456",
   clean: util.types.toString,
 });
+
 export const clientSecret = input({
   label: "Client Secret",
   type: "password",
@@ -55,6 +61,7 @@ export const clientSecret = input({
   placeholder: "yourclientsecret",
   clean: util.types.toString,
 });
+
 export const createAccountInputs = {
   email,
   name,
@@ -64,6 +71,7 @@ export const createAccountInputs = {
   client_secret: clientSecret,
   ...defaultInputs,
 };
+
 export const oldPassword = input({
   label: "Old Password",
   type: "password",
@@ -73,6 +81,7 @@ export const oldPassword = input({
   placeholder: "password",
   clean: cleanString,
 });
+
 export const emailLanguage = input({
   label: "Email Language",
   type: "string",
@@ -82,6 +91,7 @@ export const emailLanguage = input({
   placeholder: "en",
   clean: cleanString,
 });
+
 export const updateAccountInputs = {
   email: {
     ...email,

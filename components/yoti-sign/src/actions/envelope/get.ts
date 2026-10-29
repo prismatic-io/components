@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getEnvelopeResponse } from "../../examplePayloads";
 import { connectionInput, envelopeId } from "../../inputs";
+
 export const getEnvelope = action({
   display: {
     label: `Get Envelope`,
@@ -18,6 +19,7 @@ export const getEnvelope = action({
         "Content-Type": "multipart/form-data",
       },
     });
+
     return { data };
   },
   examplePayload: {

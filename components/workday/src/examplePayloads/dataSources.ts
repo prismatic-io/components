@@ -6,6 +6,7 @@ export const selectDataChangeExamplePayload = {
     },
   ],
 };
+
 export const selectEventExamplePayload = {
   result: [
     {
@@ -14,6 +15,7 @@ export const selectEventExamplePayload = {
     },
   ],
 };
+
 export const selectInvoiceExamplePayload = {
   result: [
     {
@@ -22,6 +24,7 @@ export const selectInvoiceExamplePayload = {
     },
   ],
 };
+
 export const selectMessageTemplateExamplePayload = {
   result: [
     {
@@ -30,6 +33,7 @@ export const selectMessageTemplateExamplePayload = {
     },
   ],
 };
+
 export const selectOrganizationExamplePayload = {
   result: [
     {
@@ -38,6 +42,7 @@ export const selectOrganizationExamplePayload = {
     },
   ],
 };
+
 export const selectPersonExamplePayload = {
   result: [
     {
@@ -46,6 +51,7 @@ export const selectPersonExamplePayload = {
     },
   ],
 };
+
 export const selectSupplierInvoiceRequestExamplePayload = {
   result: [
     {
@@ -54,6 +60,7 @@ export const selectSupplierInvoiceRequestExamplePayload = {
     },
   ],
 };
+
 export const selectTableExamplePayload = {
   result: [
     {
@@ -62,6 +69,7 @@ export const selectTableExamplePayload = {
     },
   ],
 };
+
 export const selectWorkerExamplePayload = {
   result: [
     {

@@ -9,12 +9,14 @@ import type {
   PollingChangesObject,
   PollResourceConfig,
 } from "../types";
+
 describe("formatPipedriveTimestamp", () => {
   it("converts ISO to Pipedrive v1 format (space-separated, no millis)", () => {
     const date = new Date("2024-06-15T10:30:45.123Z");
     expect(formatPipedriveTimestamp(date)).toBe("2024-06-15 10:30:45");
   });
 });
+
 describe("partitionByTimestamp", () => {
   const config: PollResourceConfig = {
     createdAtField: "add_time",
@@ -28,6 +30,7 @@ describe("partitionByTimestamp", () => {
     id,
     data,
   });
+
   it("classifies as created when add_time is after sinceDate", () => {
     const result = partitionByTimestamp(
       [
@@ -42,6 +45,7 @@ describe("partitionByTimestamp", () => {
     expect(result.created).toHaveLength(1);
     expect(result.updated).toHaveLength(0);
   });
+
   it("classifies as updated when only update_time is after sinceDate", () => {
     const result = partitionByTimestamp(
       [
@@ -56,6 +60,7 @@ describe("partitionByTimestamp", () => {
     expect(result.created).toHaveLength(0);
     expect(result.updated).toHaveLength(1);
   });
+
   it("excludes records where both timestamps are before sinceDate", () => {
     const result = partitionByTimestamp(
       [
@@ -70,6 +75,7 @@ describe("partitionByTimestamp", () => {
     expect(result.created).toHaveLength(0);
     expect(result.updated).toHaveLength(0);
   });
+
   it("falls back to updated when neither timestamp field exists on the record", () => {
     const result = partitionByTimestamp(
       [makeRecord(4, { name: "No timestamps" })],
@@ -78,6 +84,7 @@ describe("partitionByTimestamp", () => {
     );
     expect(result.updated).toHaveLength(1);
   });
+
   it("falls back to updated when config has null timestamp fields", () => {
     const noFieldsConfig: PollResourceConfig = {
       createdAtField: null,
@@ -91,11 +98,13 @@ describe("partitionByTimestamp", () => {
     expect(result.updated).toHaveLength(1);
   });
 });
+
 describe("resolvePollingRecordChanges", () => {
   const makeRecord = (id: number): PipedriveRecentItem => ({
     id,
     data: { name: `Record ${id}` },
   });
+
   it("flattens created and updated into tagged records", () => {
     const data: PollingChangesObject = {
       created: [makeRecord(1)],
@@ -106,6 +115,7 @@ describe("resolvePollingRecordChanges", () => {
     expect(result[0]).toEqual({ changeType: "created", record: makeRecord(1) });
     expect(result[1].changeType).toBe("updated");
   });
+
   it("returns empty array for undefined input", () => {
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });

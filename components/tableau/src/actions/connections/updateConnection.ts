@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { updateConnectionExamplePayload } from "../../examplePayloads";
 import { updateConnectionInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const updateConnection = action({
   display: {
     label: "Update Connection",
@@ -33,5 +34,6 @@ export const updateConnection = action({
       data: response.data,
     };
   },
+
   inputs: updateConnectionInputs,
 });

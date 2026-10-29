@@ -1,5 +1,6 @@
 import { connection } from "@prismatic-io/spectral";
 import { apiKeyInputs } from "../inputs/connections";
+
 export const apiKey = connection({
   key: "gorgias-api-key",
   display: {

@@ -4,6 +4,7 @@ import { deleteCollectionExamplePayload as examplePayload } from "../../../examp
 import { deleteCollectionInputs as inputs } from "../../../inputsGql";
 import { deleteCollectionGqlOutputSchema } from "../../../outputSchemas";
 import deleteCollectionQuery from "../queries/collections/DeleteCollection.gql";
+
 export const deleteCollectionGql = action({
   display: {
     label: "Delete Collection",
@@ -24,6 +25,7 @@ export const deleteCollectionGql = action({
         id: collectionId,
       },
     });
+
     return {
       data: data.collectionDelete,
     };

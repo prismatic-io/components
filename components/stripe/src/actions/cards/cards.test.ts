@@ -15,9 +15,12 @@ import { detachCard } from "./detachCard";
 import { getCard } from "./getCard";
 import { listCards } from "./listCards";
 import { updateCard } from "./updateCard";
+
 const BASE = "https://api.stripe.com";
 const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
+
 const params = (values: Record<string, unknown>) => values as never;
+
 const billingAddress = {
   billingCity: "San Francisco",
   billingCountry: "US",
@@ -26,17 +29,21 @@ const billingAddress = {
   postalCode: "94080",
   state: "CA",
 };
+
 const contactInfo = {
   billingEmail: "jenny.rosen@example.com",
   billingName: "Jenny Rosen",
   phone: undefined,
 };
+
 afterEach(() => nock.cleanAll());
+
 describe("getCard", () => {
   it("returns the payment method for the supplied ID", async () => {
     const scope = nock(BASE)
       .get("/v1/payment_methods/pm_1MqM05LkdIwHu7ixlDxxO6Mc")
       .reply(200, getCardExamplePayload.data);
+
     const { result } = await invoke(
       getCard,
       params({
@@ -44,9 +51,11 @@ describe("getCard", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(getCardExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_methods/pm_missing")
@@ -56,6 +65,7 @@ describe("getCard", () => {
           message: "No such PaymentMethod",
         },
       });
+
     await expect(
       invoke(
         getCard,
@@ -64,12 +74,14 @@ describe("getCard", () => {
     ).rejects.toThrow("No such PaymentMethod");
   });
 });
+
 describe("listCards", () => {
   it("returns the customer's card payment methods", async () => {
     const scope = nock(BASE)
       .get("/v1/payment_methods")
       .query({ customer: "cus_NffrFeUfNV2Hib", type: "card", limit: "10" })
       .reply(200, listCardsExamplePayload.data);
+
     const { result } = await invoke(
       listCards,
       params({
@@ -78,9 +90,11 @@ describe("listCards", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(listCardsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/payment_methods")
@@ -88,6 +102,7 @@ describe("listCards", () => {
       .reply(400, {
         error: { type: "invalid_request_error", message: "No such customer" },
       });
+
     await expect(
       invoke(
         listCards,
@@ -100,6 +115,7 @@ describe("listCards", () => {
     ).rejects.toThrow("No such customer");
   });
 });
+
 describe("createCard", () => {
   it("creates the payment method and attaches it when a customer is supplied", async () => {
     const created = nock(BASE)
@@ -108,6 +124,7 @@ describe("createCard", () => {
     const attached = nock(BASE)
       .post("/v1/payment_methods/pm_1MqM05LkdIwHu7ixlDxxO6Mc/attach")
       .reply(200, attachCardExamplePayload.data);
+
     const { result } = await invoke(
       createCard,
       params({
@@ -122,10 +139,12 @@ describe("createCard", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(attachCardExamplePayload.data);
     expect(created.isDone()).toBe(true);
     expect(attached.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_methods")
@@ -135,6 +154,7 @@ describe("createCard", () => {
           message: "Your card number is incorrect.",
         },
       });
+
     await expect(
       invoke(
         createCard,
@@ -153,11 +173,13 @@ describe("createCard", () => {
     ).rejects.toThrow("Your card number is incorrect.");
   });
 });
+
 describe("updateCard", () => {
   it("updates the payment method and returns it", async () => {
     const scope = nock(BASE)
       .post("/v1/payment_methods/pm_1MqM05LkdIwHu7ixlDxxO6Mc")
       .reply(200, updateCardExamplePayload.data);
+
     const { result } = await invoke(
       updateCard,
       params({
@@ -170,9 +192,11 @@ describe("updateCard", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(updateCardExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_methods/pm_missing")
@@ -182,6 +206,7 @@ describe("updateCard", () => {
           message: "No such PaymentMethod",
         },
       });
+
     await expect(
       invoke(
         updateCard,
@@ -198,11 +223,13 @@ describe("updateCard", () => {
     ).rejects.toThrow("No such PaymentMethod");
   });
 });
+
 describe("attachCard", () => {
   it("attaches the payment method to the customer", async () => {
     const scope = nock(BASE)
       .post("/v1/payment_methods/pm_1MqM05LkdIwHu7ixlDxxO6Mc/attach")
       .reply(200, attachCardExamplePayload.data);
+
     const { result } = await invoke(
       attachCard,
       params({
@@ -211,9 +238,11 @@ describe("attachCard", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(attachCardExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_methods/pm_1/attach")
@@ -223,6 +252,7 @@ describe("attachCard", () => {
           message: "No such customer: 'cus_missing'",
         },
       });
+
     await expect(
       invoke(
         attachCard,
@@ -235,11 +265,13 @@ describe("attachCard", () => {
     ).rejects.toThrow("No such customer");
   });
 });
+
 describe("detachCard", () => {
   it("detaches the payment method and returns it with no customer", async () => {
     const scope = nock(BASE)
       .post("/v1/payment_methods/pm_1MqM05LkdIwHu7ixlDxxO6Mc/detach")
       .reply(200, detachCardExamplePayload.data);
+
     const { result } = await invoke(
       detachCard,
       params({
@@ -247,9 +279,11 @@ describe("detachCard", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(detachCardExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/payment_methods/pm_1/detach")
@@ -260,6 +294,7 @@ describe("detachCard", () => {
             "The payment method you provided is not attached to a customer.",
         },
       });
+
     await expect(
       invoke(detachCard, params({ paymentId: "pm_1", stripeConnection: conn })),
     ).rejects.toThrow("not attached to a customer");

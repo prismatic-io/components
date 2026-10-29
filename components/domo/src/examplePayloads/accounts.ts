@@ -11,6 +11,7 @@ export const getAccountsExamplePayload = {
     ],
   },
 };
+
 export const listAccountsExamplePayload = {
   data: [
     {
@@ -35,6 +36,7 @@ export const listAccountsExamplePayload = {
     },
   ],
 };
+
 export const createAccountExamplePayload = {
   data: {
     id: 10047,
@@ -52,11 +54,14 @@ export const createAccountExamplePayload = {
     userId: 87264918,
   },
 };
+
 export const updateAccountExamplePayload = {
   data: {
     ...createAccountExamplePayload.data,
     name: "HubSpot Marketing (Updated)",
   },
 };
+
 export const deleteAccountExamplePayload = { data: null };
+
 export const shareAccountExamplePayload = { data: null };

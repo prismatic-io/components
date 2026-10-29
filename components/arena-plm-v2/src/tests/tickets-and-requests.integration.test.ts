@@ -6,36 +6,46 @@ import axios from "axios";
 import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage } from "../util";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
+
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
   customBaseUrl: process.env.ARENA_BASE_URL || "",
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 const BASE_URL = process.env.ARENA_BASE_URL || "";
+
 let featureAvailable = true;
 let arenaSessionId: string;
+
 let ticketGuid: string;
 let ticketTemplateGuid: string;
 let ticketNumberSequencePrefix: string;
 let createdTicketGuid: string | undefined;
 let createdTicketGuid2: string | undefined;
+
 let ticketFileAssocGuid: string | undefined;
 let ticketReferenceAssocGuid: string | undefined;
 let ticketQualityAssocGuid: string | undefined;
 let ticketItemAssocGuid: string | undefined;
 let ticketChangeAssocGuid: string | undefined;
+
 let requestGuid: string;
 let createdRequestGuid: string | undefined;
 let requestFileAssocGuid: string | undefined;
 let requestItemAssocGuid: string | undefined;
 let requestEvaluationIssueGuid: string | undefined;
+
 let sharedItemGuid: string;
 let sharedChangeGuid: string;
 let sharedQualityGuid: string;
 let sharedFileGuid: string;
+
 async function getSession(): Promise<string> {
   const resp = await axios.post(`${BASE_URL}/v1/login`, {
     email: process.env.ARENA_EMAIL || "",
@@ -43,6 +53,7 @@ async function getSession(): Promise<string> {
   });
   return resp.data.arenaSessionId as string;
 }
+
 async function directDelete(path: string): Promise<void> {
   await axios
     .delete(`${BASE_URL}/v1${path}`, {
@@ -50,6 +61,7 @@ async function directDelete(path: string): Promise<void> {
     })
     .catch(() => undefined);
 }
+
 beforeAll(async () => {
   try {
     await harness.action("listTickets", {
@@ -64,6 +76,7 @@ beforeAll(async () => {
     );
   }
 }, 30000);
+
 beforeAll(async () => {
   if (!featureAvailable) return;
   try {
@@ -76,6 +89,7 @@ beforeAll(async () => {
     );
     return;
   }
+
   try {
     if (process.env.TEST_ITEM_GUID) {
       sharedItemGuid = process.env.TEST_ITEM_GUID;
@@ -83,13 +97,10 @@ beforeAll(async () => {
       const itemsResp = await axios.get(`${BASE_URL}/v1/items?limit=1`, {
         headers: { arena_session_id: arenaSessionId },
       });
-      const firstItem = (
-        itemsResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0];
+      const firstItem = (itemsResp.data.results as Array<{ guid: string }>)[0];
       sharedItemGuid = firstItem?.guid ?? "PLACEHOLDER_ITEM_GUID";
     }
+
     if (process.env.TEST_CHANGE_GUID) {
       sharedChangeGuid = process.env.TEST_CHANGE_GUID;
     } else {
@@ -97,38 +108,31 @@ beforeAll(async () => {
         headers: { arena_session_id: arenaSessionId },
       });
       const firstChange = (
-        changesResp.data.results as Array<{
-          guid: string;
-        }>
+        changesResp.data.results as Array<{ guid: string }>
       )[0];
       sharedChangeGuid = firstChange?.guid ?? "PLACEHOLDER_CHANGE_GUID";
     }
+
     if (process.env.TEST_QUALITY_GUID) {
       sharedQualityGuid = process.env.TEST_QUALITY_GUID;
     } else {
       const qualResp = await axios.get(`${BASE_URL}/v1/quality?limit=1`, {
         headers: { arena_session_id: arenaSessionId },
       });
-      const firstQual = (
-        qualResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0];
+      const firstQual = (qualResp.data.results as Array<{ guid: string }>)[0];
       sharedQualityGuid = firstQual?.guid ?? "PLACEHOLDER_QUALITY_GUID";
     }
+
     if (process.env.TEST_FILE_GUID) {
       sharedFileGuid = process.env.TEST_FILE_GUID;
     } else {
       const filesResp = await axios.get(`${BASE_URL}/v1/files?limit=1`, {
         headers: { arena_session_id: arenaSessionId },
       });
-      const firstFile = (
-        filesResp.data.results as Array<{
-          guid: string;
-        }>
-      )[0];
+      const firstFile = (filesResp.data.results as Array<{ guid: string }>)[0];
       sharedFileGuid = firstFile?.guid ?? "PLACEHOLDER_FILE_GUID";
     }
+
     if (process.env.TEST_TICKET_GUID) {
       ticketGuid = process.env.TEST_TICKET_GUID;
     } else {
@@ -136,34 +140,31 @@ beforeAll(async () => {
         headers: { arena_session_id: arenaSessionId },
       });
       const firstTicket = (
-        ticketsResp.data.results as Array<{
-          guid: string;
-        }>
+        ticketsResp.data.results as Array<{ guid: string }>
       )[0];
       ticketGuid = firstTicket?.guid ?? "PLACEHOLDER_TICKET_GUID";
     }
+
     const templatesResp = await axios.get(
       `${BASE_URL}/v1/settings/tickets/templates?active=true&limit=1`,
       { headers: { arena_session_id: arenaSessionId } },
     );
     const firstTemplate = (
-      templatesResp.data.results as Array<{
-        guid: string;
-      }>
+      templatesResp.data.results as Array<{ guid: string }>
     )[0];
     ticketTemplateGuid = firstTemplate?.guid ?? "PLACEHOLDER_TEMPLATE_GUID";
+
     const ticketSeqResp = await axios.get(
       `${BASE_URL}/v1/settings/tickets/numbersequences?limit=1`,
       { headers: { arena_session_id: arenaSessionId } },
     );
     const firstTicketSeq = (
       ticketSeqResp.data.results as Array<{
-        prefixes: Array<{
-          value: string;
-        }>;
+        prefixes: Array<{ value: string }>;
       }>
     )[0];
     ticketNumberSequencePrefix = firstTicketSeq?.prefixes?.[0]?.value ?? "TKT-";
+
     if (process.env.TEST_REQUEST_GUID) {
       requestGuid = process.env.TEST_REQUEST_GUID;
     } else {
@@ -171,9 +172,7 @@ beforeAll(async () => {
         headers: { arena_session_id: arenaSessionId },
       });
       const firstRequest = (
-        requestsResp.data.results as Array<{
-          guid: string;
-        }>
+        requestsResp.data.results as Array<{ guid: string }>
       )[0];
       requestGuid = firstRequest?.guid ?? "PLACEHOLDER_REQUEST_GUID";
     }
@@ -185,8 +184,10 @@ beforeAll(async () => {
     );
   }
 }, 60000);
+
 afterAll(async () => {
   if (!arenaSessionId) return;
+
   if (ticketFileAssocGuid && createdTicketGuid) {
     await directDelete(
       `/tickets/${createdTicketGuid}/files/${ticketFileAssocGuid}`,
@@ -212,12 +213,14 @@ afterAll(async () => {
       `/tickets/${createdTicketGuid}/changes/${ticketChangeAssocGuid}`,
     );
   }
+
   if (createdTicketGuid2) {
     await directDelete(`/tickets/${createdTicketGuid2}`);
   }
   if (createdTicketGuid) {
     await directDelete(`/tickets/${createdTicketGuid}`);
   }
+
   if (requestFileAssocGuid && createdRequestGuid) {
     await directDelete(
       `/requests/${createdRequestGuid}/files/${requestFileAssocGuid}`,
@@ -228,10 +231,12 @@ afterAll(async () => {
       `/requests/${createdRequestGuid}/items/${requestItemAssocGuid}`,
     );
   }
+
   if (createdRequestGuid) {
     await directDelete(`/requests/${createdRequestGuid}`);
   }
 }, 60000);
+
 describe("Action: listTicketTemplates", () => {
   test("returns a list of ticket templates", async () => {
     if (!featureAvailable) {
@@ -245,13 +250,11 @@ describe("Action: listTicketTemplates", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("filters templates by active=true", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -267,6 +270,7 @@ describe("Action: listTicketTemplates", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: listTicketTemplateAttributes", () => {
   test("returns attributes for the first available template", async () => {
     if (!featureAvailable) {
@@ -285,6 +289,7 @@ describe("Action: listTicketTemplateAttributes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on invalid template GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -299,6 +304,7 @@ describe("Action: listTicketTemplateAttributes", () => {
       }),
     ).rejects.toThrow();
   }, 30000);
+
   test("returns only creatable attributes when creatableOnly=true", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -319,6 +325,7 @@ describe("Action: listTicketTemplateAttributes", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: listTickets", () => {
   test("returns a paginated list of tickets", async () => {
     if (!featureAvailable) {
@@ -334,13 +341,11 @@ describe("Action: listTickets", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("filters tickets by status NOT_STARTED", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -357,6 +362,7 @@ describe("Action: listTickets", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: getTicketByGuid", () => {
   test("returns ticket details for a valid GUID", async () => {
     if (!featureAvailable) {
@@ -373,11 +379,10 @@ describe("Action: getTicketByGuid", () => {
       ticketGuid,
     });
     expect(result).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(data.guid).toBe(ticketGuid);
   }, 30000);
+
   test("throws on an invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -393,6 +398,7 @@ describe("Action: getTicketByGuid", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: createTicket", () => {
   test("creates a new ticket using templateGuid and numberSequencePrefix", async () => {
     if (!featureAvailable) {
@@ -412,14 +418,12 @@ describe("Action: createTicket", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result!.data as { guid: string; title: string };
     expect(typeof data.guid).toBe("string");
     expect(data.guid.length).toBeGreaterThan(0);
     createdTicketGuid = data.guid;
   }, 30000);
+
   test("throws on invalid template GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -436,6 +440,7 @@ describe("Action: createTicket", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: createTicket (second ticket for reference link tests)", () => {
   test("creates a second ticket to use as a reference target", async () => {
     if (!featureAvailable) {
@@ -454,12 +459,11 @@ describe("Action: createTicket (second ticket for reference link tests)", () => 
       numberSequencePrefix: ticketNumberSequencePrefix,
     });
     expect(result).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     createdTicketGuid2 = data.guid;
   }, 30000);
 });
+
 describe("Action: updateTicket", () => {
   test("updates the title of a created ticket", async () => {
     if (!featureAvailable) {
@@ -478,13 +482,11 @@ describe("Action: updateTicket", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result!.data as { guid: string; title: string };
     expect(data.guid).toBe(createdTicketGuid);
     expect(data.title).toBe("Integration Test Ticket — updated title");
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -501,6 +503,7 @@ describe("Action: updateTicket", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: changeTicketStatus", () => {
   test("changes ticket status to IN_PROGRESS", async () => {
     if (!featureAvailable) {
@@ -520,6 +523,7 @@ describe("Action: changeTicketStatus", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("changes ticket status to COMPLETED", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -538,6 +542,7 @@ describe("Action: changeTicketStatus", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on invalid ticket GUID with COMPLETED status", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -553,6 +558,7 @@ describe("Action: changeTicketStatus", () => {
       }),
     ).rejects.toThrow();
   }, 30000);
+
   test("throws on invalid ticket GUID with IN_PROGRESS status and notes", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -570,6 +576,7 @@ describe("Action: changeTicketStatus", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listTicketFiles", () => {
   test("returns files for a valid ticket", async () => {
     if (!featureAvailable) {
@@ -587,13 +594,11 @@ describe("Action: listTicketFiles", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -609,6 +614,7 @@ describe("Action: listTicketFiles", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: addTicketFile", () => {
   test("links a file to a ticket and returns association with guid", async () => {
     if (!featureAvailable) {
@@ -627,12 +633,11 @@ describe("Action: addTicketFile", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     ticketFileAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -649,6 +654,7 @@ describe("Action: addTicketFile", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: removeTicketFile", () => {
   test("removes a ticket file association", async () => {
     if (!featureAvailable) {
@@ -668,6 +674,7 @@ describe("Action: removeTicketFile", () => {
     expect(result).toBeDefined();
     ticketFileAssocGuid = undefined;
   }, 30000);
+
   test("throws on invalid association GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -687,6 +694,7 @@ describe("Action: removeTicketFile", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listTicketReferences", () => {
   test("returns ticket references for a valid ticket", async () => {
     if (!featureAvailable) {
@@ -704,14 +712,12 @@ describe("Action: listTicketReferences", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addTicketReference", () => {
   test("links another ticket as a reference and returns association", async () => {
     if (!featureAvailable) {
@@ -734,12 +740,11 @@ describe("Action: addTicketReference", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     ticketReferenceAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -756,6 +761,7 @@ describe("Action: addTicketReference", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: removeTicketReference", () => {
   test("removes a ticket-to-ticket reference association", async () => {
     if (!featureAvailable) {
@@ -775,6 +781,7 @@ describe("Action: removeTicketReference", () => {
     expect(result).toBeDefined();
     ticketReferenceAssocGuid = undefined;
   }, 30000);
+
   test("throws on invalid association GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -794,6 +801,7 @@ describe("Action: removeTicketReference", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listTicketQualityProcesses", () => {
   test("returns quality processes for a valid ticket", async () => {
     if (!featureAvailable) {
@@ -811,14 +819,12 @@ describe("Action: listTicketQualityProcesses", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addTicketQualityProcess", () => {
   test("links a quality process to a ticket without a step (root-level body)", async () => {
     if (!featureAvailable) {
@@ -839,12 +845,7 @@ describe("Action: addTicketQualityProcess", () => {
       })
       .then((r) =>
         (
-          r.data.results as Array<{
-            guid: string;
-            quality: {
-              guid: string;
-            };
-          }>
+          r.data.results as Array<{ guid: string; quality: { guid: string } }>
         ).find((e) => e.quality.guid === sharedQualityGuid),
       )
       .catch(() => undefined);
@@ -853,6 +854,7 @@ describe("Action: addTicketQualityProcess", () => {
         `/tickets/${createdTicketGuid}/quality/${existing.guid}`,
       );
     }
+
     const result = await harness.action("addTicketQualityProcess", {
       connection: testConnection,
       ticketGuid: createdTicketGuid,
@@ -860,15 +862,11 @@ describe("Action: addTicketQualityProcess", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      quality: {
-        guid: string;
-      };
-    };
+    const data = result!.data as { guid: string; quality: { guid: string } };
     expect(data.quality.guid).toBe(sharedQualityGuid);
     ticketQualityAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -885,6 +883,7 @@ describe("Action: addTicketQualityProcess", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: removeTicketQualityProcess", () => {
   test("removes a ticket quality process association", async () => {
     if (!featureAvailable) {
@@ -904,6 +903,7 @@ describe("Action: removeTicketQualityProcess", () => {
     expect(result).toBeDefined();
     ticketQualityAssocGuid = undefined;
   }, 30000);
+
   test("throws on invalid association GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -923,6 +923,7 @@ describe("Action: removeTicketQualityProcess", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listTicketItems", () => {
   test("returns items for a valid ticket", async () => {
     if (!featureAvailable) {
@@ -940,14 +941,12 @@ describe("Action: listTicketItems", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addTicketItem", () => {
   test("links an item to a ticket and returns an association guid", async () => {
     if (!featureAvailable) {
@@ -965,12 +964,7 @@ describe("Action: addTicketItem", () => {
       })
       .then((r) =>
         (
-          r.data.results as Array<{
-            guid: string;
-            item: {
-              guid: string;
-            };
-          }>
+          r.data.results as Array<{ guid: string; item: { guid: string } }>
         ).find((e) => e.item.guid === sharedItemGuid),
       )
       .catch(() => undefined);
@@ -979,6 +973,7 @@ describe("Action: addTicketItem", () => {
         `/tickets/${createdTicketGuid}/items/${existing.guid}`,
       );
     }
+
     const result = await harness.action("addTicketItem", {
       connection: testConnection,
       ticketGuid: createdTicketGuid,
@@ -987,15 +982,11 @@ describe("Action: addTicketItem", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      item: {
-        guid: string;
-      };
-    };
+    const data = result!.data as { guid: string; item: { guid: string } };
     expect(typeof data.guid).toBe("string");
     ticketItemAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1012,6 +1003,7 @@ describe("Action: addTicketItem", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: removeTicketItem", () => {
   test("removes a ticket item association", async () => {
     if (!featureAvailable) {
@@ -1031,6 +1023,7 @@ describe("Action: removeTicketItem", () => {
     expect(result).toBeDefined();
     ticketItemAssocGuid = undefined;
   }, 30000);
+
   test("throws on invalid association GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1050,6 +1043,7 @@ describe("Action: removeTicketItem", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listTicketChanges", () => {
   test("returns changes for a valid ticket", async () => {
     if (!featureAvailable) {
@@ -1067,14 +1061,12 @@ describe("Action: listTicketChanges", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addTicketChange", () => {
   test("links a change to a ticket and returns an association guid", async () => {
     if (!featureAvailable) {
@@ -1092,12 +1084,7 @@ describe("Action: addTicketChange", () => {
       })
       .then((r) =>
         (
-          r.data.results as Array<{
-            guid: string;
-            change: {
-              guid: string;
-            };
-          }>
+          r.data.results as Array<{ guid: string; change: { guid: string } }>
         ).find((e) => e.change.guid === sharedChangeGuid),
       )
       .catch(() => undefined);
@@ -1106,6 +1093,7 @@ describe("Action: addTicketChange", () => {
         `/tickets/${createdTicketGuid}/changes/${existing.guid}`,
       );
     }
+
     const result = await harness.action("addTicketChange", {
       connection: testConnection,
       ticketGuid: createdTicketGuid,
@@ -1113,12 +1101,11 @@ describe("Action: addTicketChange", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     ticketChangeAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1135,6 +1122,7 @@ describe("Action: addTicketChange", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: removeTicketChange", () => {
   test("removes a ticket change association", async () => {
     if (!featureAvailable) {
@@ -1154,6 +1142,7 @@ describe("Action: removeTicketChange", () => {
     expect(result).toBeDefined();
     ticketChangeAssocGuid = undefined;
   }, 30000);
+
   test("throws on invalid association GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1173,6 +1162,7 @@ describe("Action: removeTicketChange", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: deleteTicket", () => {
   test("deletes the second (reference target) ticket", async () => {
     if (!featureAvailable) {
@@ -1191,6 +1181,7 @@ describe("Action: deleteTicket", () => {
     expect(result).toBeDefined();
     createdTicketGuid2 = undefined;
   }, 30000);
+
   test("throws on invalid ticket GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1206,6 +1197,7 @@ describe("Action: deleteTicket", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestNumberSequences", () => {
   test("returns request number sequences with objectType=requests", async () => {
     if (!featureAvailable) {
@@ -1220,13 +1212,11 @@ describe("Action: listRequestNumberSequences", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("returns ticket number sequences with objectType=tickets", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1242,6 +1232,7 @@ describe("Action: listRequestNumberSequences", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: listRequestStatusChangeAttributes", () => {
   test("returns request status change attributes", async () => {
     if (!featureAvailable) {
@@ -1257,6 +1248,7 @@ describe("Action: listRequestStatusChangeAttributes", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: listRequestEvaluatorGroups", () => {
   test("returns evaluator groups", async () => {
     if (!featureAvailable) {
@@ -1270,14 +1262,12 @@ describe("Action: listRequestEvaluatorGroups", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: listRequestItemAttributes", () => {
   test("returns request item attributes without filters", async () => {
     if (!featureAvailable) {
@@ -1292,6 +1282,7 @@ describe("Action: listRequestItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("returns creatable-only request item attributes", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1307,6 +1298,7 @@ describe("Action: listRequestItemAttributes", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: listRequests", () => {
   test("returns a paginated list of requests", async () => {
     if (!featureAvailable) {
@@ -1322,13 +1314,11 @@ describe("Action: listRequests", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("filters requests by lifecycleStatus UNSUBMITTED", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1345,6 +1335,7 @@ describe("Action: listRequests", () => {
     expect(result!.data).toBeDefined();
   }, 30000);
 });
+
 describe("Action: getRequestByGuid", () => {
   test("returns request detail for a valid GUID", async () => {
     if (!featureAvailable) {
@@ -1361,11 +1352,10 @@ describe("Action: getRequestByGuid", () => {
       requestGuid,
     });
     expect(result).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(data.guid).toBe(requestGuid);
   }, 30000);
+
   test("returns request with empty additional attributes included", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1384,6 +1374,7 @@ describe("Action: getRequestByGuid", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1399,6 +1390,7 @@ describe("Action: getRequestByGuid", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: createRequest", () => {
   test("creates a new UNSUBMITTED request", async () => {
     if (!featureAvailable) {
@@ -1415,15 +1407,13 @@ describe("Action: createRequest", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result!.data as { guid: string; title: string };
     expect(typeof data.guid).toBe("string");
     expect(data.guid.length).toBeGreaterThan(0);
     createdRequestGuid = data.guid;
   }, 30000);
 });
+
 describe("Action: updateRequest", () => {
   test("updates the title of a created request", async () => {
     if (!featureAvailable) {
@@ -1443,13 +1433,11 @@ describe("Action: updateRequest", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      title: string;
-    };
+    const data = result!.data as { guid: string; title: string };
     expect(data.guid).toBe(createdRequestGuid);
     expect(data.title).toBe("Integration Test Request — updated title");
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1466,6 +1454,7 @@ describe("Action: updateRequest", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: changeRequestStatus", () => {
   test("submits the created request (UNSUBMITTED -> SUBMITTED)", async () => {
     if (!featureAvailable) {
@@ -1486,6 +1475,7 @@ describe("Action: changeRequestStatus", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1502,6 +1492,7 @@ describe("Action: changeRequestStatus", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestMarkupFiles", () => {
   test("returns markup files for a valid request", async () => {
     if (!featureAvailable) {
@@ -1519,13 +1510,11 @@ describe("Action: listRequestMarkupFiles", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1541,6 +1530,7 @@ describe("Action: listRequestMarkupFiles", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: createRequestMarkupFile", () => {
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
@@ -1558,6 +1548,7 @@ describe("Action: createRequestMarkupFile", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: deleteRequestMarkupFile", () => {
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
@@ -1575,6 +1566,7 @@ describe("Action: deleteRequestMarkupFile", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestFiles", () => {
   test("returns files for a valid request", async () => {
     if (!featureAvailable) {
@@ -1592,13 +1584,11 @@ describe("Action: listRequestFiles", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1614,6 +1604,7 @@ describe("Action: listRequestFiles", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: attachFileToRequest", () => {
   test("attaches a file to a request and returns an association guid", async () => {
     if (!featureAvailable) {
@@ -1632,12 +1623,11 @@ describe("Action: attachFileToRequest", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     requestFileAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1654,6 +1644,7 @@ describe("Action: attachFileToRequest", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: removeFileFromRequest", () => {
   test("removes a file association from a request", async () => {
     if (!featureAvailable) {
@@ -1671,12 +1662,11 @@ describe("Action: removeFileFromRequest", () => {
       requestFileAssociationGuid: requestFileAssocGuid,
     });
     expect(result).toBeDefined();
-    const data = result!.data as {
-      success: boolean;
-    };
+    const data = result!.data as { success: boolean };
     expect(data.success).toBe(true);
     requestFileAssocGuid = undefined;
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1693,6 +1683,7 @@ describe("Action: removeFileFromRequest", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestItems", () => {
   test("returns items for a valid request", async () => {
     if (!featureAvailable) {
@@ -1710,14 +1701,12 @@ describe("Action: listRequestItems", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
 });
+
 describe("Action: addItemToRequest", () => {
   test("adds an item to a request and returns an association guid", async () => {
     if (!featureAvailable) {
@@ -1737,12 +1726,11 @@ describe("Action: addItemToRequest", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(typeof data.guid).toBe("string");
     requestItemAssocGuid = data.guid;
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1759,6 +1747,7 @@ describe("Action: addItemToRequest", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestQualityProcesses", () => {
   test("returns quality processes for a valid request", async () => {
     if (!featureAvailable) {
@@ -1776,13 +1765,11 @@ describe("Action: listRequestQualityProcesses", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1798,6 +1785,7 @@ describe("Action: listRequestQualityProcesses", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestChanges", () => {
   test("returns changes for a valid request", async () => {
     if (!featureAvailable) {
@@ -1815,13 +1803,11 @@ describe("Action: listRequestChanges", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1837,6 +1823,7 @@ describe("Action: listRequestChanges", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listRequestEvaluationIssues", () => {
   test("returns evaluation issues for a valid request", async () => {
     if (!featureAvailable) {
@@ -1854,13 +1841,11 @@ describe("Action: listRequestEvaluationIssues", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1876,6 +1861,7 @@ describe("Action: listRequestEvaluationIssues", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: createRequestEvaluationIssue", () => {
   test("creates an evaluation issue for the request", async () => {
     if (!featureAvailable) {
@@ -1895,13 +1881,11 @@ describe("Action: createRequestEvaluationIssue", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-      issue: string;
-    };
+    const data = result!.data as { guid: string; issue: string };
     expect(typeof data.guid).toBe("string");
     requestEvaluationIssueGuid = data.guid;
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1918,6 +1902,7 @@ describe("Action: createRequestEvaluationIssue", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: addEvaluationIssueResponse", () => {
   test("adds a response to the evaluation issue", async () => {
     if (!featureAvailable) {
@@ -1937,11 +1922,10 @@ describe("Action: addEvaluationIssueResponse", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      guid: string;
-    };
+    const data = result!.data as { guid: string };
     expect(typeof data.guid).toBe("string");
   }, 30000);
+
   test("throws on invalid issue GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -1962,6 +1946,7 @@ describe("Action: addEvaluationIssueResponse", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: listEvaluationIssueResponses", () => {
   test("returns responses for the evaluation issue", async () => {
     if (!featureAvailable) {
@@ -1980,14 +1965,12 @@ describe("Action: listEvaluationIssueResponses", () => {
     });
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
-    const data = result!.data as {
-      count: number;
-      results: unknown[];
-    };
+    const data = result!.data as { count: number; results: unknown[] };
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
     expect(data.count).toBeGreaterThanOrEqual(1);
   }, 30000);
+
   test("throws on invalid issue GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -2007,6 +1990,7 @@ describe("Action: listEvaluationIssueResponses", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: changeEvaluationIssueStatus", () => {
   test("closes the evaluation issue", async () => {
     if (!featureAvailable) {
@@ -2028,6 +2012,7 @@ describe("Action: changeEvaluationIssueStatus", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("re-opens the evaluation issue", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -2047,6 +2032,7 @@ describe("Action: changeEvaluationIssueStatus", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   }, 30000);
+
   test("throws on invalid issue GUID", async () => {
     if (!featureAvailable) {
       console.warn(
@@ -2067,6 +2053,7 @@ describe("Action: changeEvaluationIssueStatus", () => {
     ).rejects.toThrow();
   }, 30000);
 });
+
 describe("Action: deleteRequest", () => {
   test("deletes the created request", async () => {
     if (!featureAvailable) {
@@ -2083,13 +2070,11 @@ describe("Action: deleteRequest", () => {
       requestGuid: createdRequestGuid,
     });
     expect(result).toBeDefined();
-    const data = result!.data as {
-      success: boolean;
-      message: string;
-    };
+    const data = result!.data as { success: boolean; message: string };
     expect(data.success).toBe(true);
     createdRequestGuid = undefined;
   }, 30000);
+
   test("throws on invalid request GUID", async () => {
     if (!featureAvailable) {
       console.warn(

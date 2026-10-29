@@ -2,6 +2,7 @@ import { ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient as createRedisClient } from "redis";
 import { redisConnection as connectionType } from "./connections";
 import type { CreateClientProps, RedisOptions } from "./interfaces";
+
 export const getClientOptions = ({ redisConnection }: CreateClientProps) => {
   if (redisConnection.key !== connectionType.key) {
     throw new ConnectionError(
@@ -26,13 +27,16 @@ export const getClientOptions = ({ redisConnection }: CreateClientProps) => {
   if (redisConnection.fields.db) {
     redisObject.database = util.types.toNumber(redisConnection.fields.db);
   }
+
   return redisObject;
 };
+
 export const createClient = async (
   { redisConnection }: CreateClientProps,
   debug: boolean,
 ) => {
   const clientOptions = getClientOptions({ redisConnection });
+
   const socket: Record<string, unknown> = {
     host: clientOptions.host,
     port: clientOptions.port,
@@ -46,6 +50,7 @@ export const createClient = async (
       }
     },
   };
+
   if (clientOptions.useTls) {
     socket.tls = true;
     if (clientOptions.key) {
@@ -58,18 +63,22 @@ export const createClient = async (
       socket.ca = clientOptions.ca;
     }
   }
+
   const client = createRedisClient({
     username: clientOptions.user,
     password: clientOptions.password,
     database: clientOptions.database,
     socket,
   });
+
   client.on("error", (err) => console.log("Redis Cluster Error", err));
   client.on("connect", () => console.log("Redis Cluster Connected"));
+
   if (debug) {
     client.on("ready", () => console.log("Redis client ready"));
     client.on("reconnecting", () => console.log("Redis client reconnecting"));
     client.on("end", () => console.log("Redis client connection closed"));
   }
+
   return await client.connect();
 };

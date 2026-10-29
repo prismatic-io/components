@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
 import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
+
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -15,11 +16,13 @@ export const deleteInstanceWebhooks = action({
     const {
       data: { webhooks },
     } = await client.get("/v1/webhooks");
+
     const instanceWebhookUrls = Object.values(context.webhookUrls);
     const instanceBambooWebhooks = webhooks.filter(
       (webhook: { url: string; id: string }) =>
         instanceWebhookUrls.includes(webhook.url),
     );
+
     for (const webhook of instanceBambooWebhooks) {
       context.logger.info(`Deleting webhook ${webhook.id}...`);
       await client.delete(`/v1/webhooks/${webhook.id}/`);

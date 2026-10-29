@@ -10,6 +10,7 @@ import {
 } from "../../inputs/shipmentMethods/createShipmentMethodInputs";
 import type { ShipmentMethod } from "../../interfaces";
 import { cleanStringInput } from "../../utils";
+
 export const updateShipmentMethod = action({
   display: {
     label: "Update Shipment Method",
@@ -35,6 +36,7 @@ export const updateShipmentMethod = action({
       code: shipmentCode,
       displayName: shipmentMethodName,
     };
+
     const { data } = await client.patch<ShipmentMethod>(
       `/companies(${companyId})/shipmentMethods(${shipmentMethodId})`,
       payload,
@@ -44,6 +46,7 @@ export const updateShipmentMethod = action({
         },
       },
     );
+
     return { data };
   },
   inputs: {

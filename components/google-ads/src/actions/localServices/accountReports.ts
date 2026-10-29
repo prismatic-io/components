@@ -3,6 +3,7 @@ import { createLocalServicesClient } from "../../client";
 import { accountReportsExamplePayload } from "../../examplePayloads";
 import { accountReportsInputs } from "../../inputs";
 import { accountReportsOutputSchema } from "../../outputSchemas";
+
 export const accountReports = action({
   display: {
     label: "Get Account Reports",
@@ -32,7 +33,10 @@ export const accountReports = action({
     });
     const startDate = startDateInput ? new Date(startDateInput) : undefined;
     const endDate = endDateInput ? new Date(endDateInput) : undefined;
-    const query = `manager_customer_id:${managerCustomerIdInput}${customerIds && customerIds !== "" ? `;${customerIds}` : ""}`;
+
+    const query = `manager_customer_id:${managerCustomerIdInput}${
+      customerIds && customerIds !== "" ? `;${customerIds}` : ""
+    }`;
     const { data } = await client.get("/accountReports:search", {
       params: {
         query,
@@ -52,8 +56,7 @@ export const accountReports = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => accountReportsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    accountReportsExamplePayload,
   examplePayload: accountReportsExamplePayload,
 });

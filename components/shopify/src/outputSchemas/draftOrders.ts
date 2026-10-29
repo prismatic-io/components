@@ -1,4 +1,5 @@
 import { countSchema, moneyV2Schema, userErrorsArraySchema } from "./shared";
+
 const gqlAddressSchema = {
   type: "object" as const,
   properties: {
@@ -19,12 +20,14 @@ const gqlAddressSchema = {
     provinceCode: { type: ["string", "null"] },
   },
 };
+
 const shopMoneySchema = {
   type: "object" as const,
   properties: {
     shopMoney: moneyV2Schema,
   },
 };
+
 const gqlDraftOrderSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +101,7 @@ const gqlDraftOrderSchema = {
     customer: { type: ["object", "null"] },
   },
 };
+
 const restDraftOrderSchema = {
   type: "object" as const,
   properties: {
@@ -130,6 +134,7 @@ const restDraftOrderSchema = {
     admin_graphql_api_id: { type: "string" as const },
   },
 };
+
 export const completeDraftOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -137,6 +142,7 @@ export const completeDraftOrderGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const createDraftOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -144,6 +150,7 @@ export const createDraftOrderGqlOutputSchema = {
     draftOrder: gqlDraftOrderSchema,
   },
 };
+
 export const deleteDraftOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -151,13 +158,16 @@ export const deleteDraftOrderGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const getDraftOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
     draftOrder: gqlDraftOrderSchema,
   },
 };
+
 export const countDraftOrdersGqlOutputSchema = countSchema;
+
 export const listDraftOrdersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -183,4 +193,5 @@ export const listDraftOrdersOutputSchema = {
     rel: { type: ["string", "null"] },
   },
 };
+
 export const listDraftOrdersGqlOutputSchema = listDraftOrdersOutputSchema;

@@ -10,6 +10,7 @@ import {
   connectionInputs,
 } from "../inputs";
 import { sendMessageExample } from "../examplePayloads";
+
 const sendMessage = action({
   display: {
     label: "Send Message",
@@ -32,6 +33,7 @@ const sendMessage = action({
       MessageGroupId: params.messageGroupId || undefined,
       MessageDeduplicationId: params.messageDeduplicationId || undefined,
     });
+
     return {
       data: result,
     };
@@ -47,4 +49,5 @@ const sendMessage = action({
   },
   examplePayload: sendMessageExample,
 });
+
 export default sendMessage;

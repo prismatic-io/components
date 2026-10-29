@@ -1,4 +1,5 @@
 import { onPremConnection } from "@prismatic-io/spectral";
+
 export const oracledbConnection = onPremConnection({
   key: "oracledbConnection",
   display: {
@@ -61,4 +62,5 @@ export const oracledbConnection = onPremConnection({
     },
   },
 });
+
 export default [oracledbConnection];

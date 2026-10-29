@@ -10,17 +10,16 @@ import type {
   PollResourceType,
 } from "../types";
 import { expectArray } from "./pagination";
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({ label, value }),
 );
+
 export const resolvePollWindow = (
   lastState: PollingState | undefined,
   lookBackDate: string | undefined,
   now: Date,
-): {
-  sinceDate: Date;
-  isBackfill: boolean;
-} => ({
+): { sinceDate: Date; isBackfill: boolean } => ({
   sinceDate: lastState?.lastPolledAt
     ? new Date(lastState.lastPolledAt)
     : lookBackDate
@@ -32,6 +31,7 @@ export const resolvePollWindow = (
       lookBackDate !== undefined &&
       lookBackDate !== ""),
 });
+
 export const fetchRecordsSince = async (
   client: HttpClient,
   project: string,
@@ -93,6 +93,7 @@ export const fetchRecordsSince = async (
   }
   return records;
 };
+
 const hasFetchedBound = (
   records: GitlabRecord[],
   sinceDate: Date,
@@ -114,10 +115,12 @@ const hasFetchedBound = (
   );
   return latest > boundTime;
 };
+
 const recordTime = (record: GitlabRecord): number | undefined => {
   const value = record.updated_at ?? record.created_at;
   return value ? new Date(value).getTime() : undefined;
 };
+
 const isAfterCursor = (
   time: number,
   id: string,
@@ -126,6 +129,7 @@ const isAfterCursor = (
 ): boolean =>
   time > since ||
   (seenIds !== undefined && time === since && !seenIds.includes(id));
+
 const windowRecords = (
   records: GitlabRecord[],
   since: number,
@@ -143,6 +147,7 @@ const windowRecords = (
       (a, b) =>
         (recordTime(a) ?? since) - (recordTime(b) ?? since) || a.id - b.id,
     );
+
 const deliveryLimit = (
   records: GitlabRecord[],
   maxRecords: number,
@@ -161,6 +166,7 @@ const deliveryLimit = (
   }
   return count;
 };
+
 export const planPoll = (
   records: GitlabRecord[],
   sinceDate: Date,
@@ -170,6 +176,7 @@ export const planPoll = (
 ): PlannedPoll => {
   const since = sinceDate.getTime();
   const inWindow = windowRecords(records, since, seenIds);
+
   const limit = deliveryLimit(inWindow, maxRecords, maxBytes);
   let delivered = inWindow.slice(0, limit);
   const complete = inWindow.length <= limit;
@@ -187,6 +194,7 @@ export const planPoll = (
       }
     }
   }
+
   const cursor = delivered.reduce(
     (max, r) => Math.max(max, recordTime(r) ?? since),
     since,
@@ -199,6 +207,7 @@ export const planPoll = (
     seenIds === undefined && atCursor.length === 0
       ? undefined
       : [...new Set([...carried, ...atCursor])];
+
   const created: GitlabRecord[] = [];
   const updated: GitlabRecord[] = [];
   for (const record of delivered) {
@@ -214,6 +223,7 @@ export const planPoll = (
       updated.push(record);
     }
   }
+
   return {
     created,
     updated,
@@ -224,6 +234,7 @@ export const planPoll = (
     complete,
   };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => [

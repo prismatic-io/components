@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, version } from "./common";
+
 const messageKey = input({
   label: "Message Key",
   placeholder: "Enter message key",
@@ -10,6 +11,7 @@ const messageKey = input({
   example: "welcome_message",
   clean: util.types.toString,
 });
+
 const definitionKey = input({
   label: "Definition Key",
   placeholder: "Enter definition key",
@@ -20,6 +22,7 @@ const definitionKey = input({
   example: "welcome_message",
   clean: util.types.toString,
 });
+
 const recipientContactKey = input({
   label: "Recipient Contact Key",
   placeholder: "Enter recipient contact key",
@@ -30,6 +33,7 @@ const recipientContactKey = input({
   example: "sf_contact_0034R00002abcDEF",
   clean: util.types.toString,
 });
+
 const recipientEmail = input({
   label: "Recipient Email",
   placeholder: "Enter recipient email address",
@@ -39,6 +43,7 @@ const recipientEmail = input({
   example: "john@doe.com",
   clean: util.types.toString,
 });
+
 const recipientAttributes = input({
   label: "Recipient Attributes",
   placeholder: "Enter attribute name and value",
@@ -47,6 +52,7 @@ const recipientAttributes = input({
   required: false,
   comments: "Key-value pairs to personalize the message.",
 });
+
 export const sendTransactionalEmailInputs = {
   messageKey,
   definitionKey,

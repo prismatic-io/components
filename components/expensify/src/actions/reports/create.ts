@@ -10,6 +10,7 @@ import {
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
 import { createReportExamplePayload } from "../../examplePayloads";
+
 export const createReport = action({
   display: {
     description: "Creates a report, with transactions, in a user’s account.",
@@ -43,6 +44,7 @@ export const createReport = action({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

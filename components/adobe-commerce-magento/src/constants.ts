@@ -1,12 +1,19 @@
 export const sandboxUrl = "https://commercedeveloper-sandbox-api.adobe.com";
+
 export const productionUrl = "https://commercedeveloper-api.adobe.com";
+
 export const DEFAULT_STORE_CODE = "default";
+
 export const MAX_PAGES = 100;
 export const DEFAULT_PAGE_SIZE = "100";
+
 export const DEFAULT_BATCH_SIZE = 50;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const POLL_PAGE_SIZE = 100;
 export const MAX_POLL_PAGES = 50;
+
 export const ENDPOINTS = {
   orders: "/orders",
   orderItems: "/orders/items",
@@ -20,24 +27,26 @@ export const ENDPOINTS = {
   customerSearch: "/customers/search",
   transactions: "/transactions",
 } as const;
+
 export const POLL_RESOURCE_TYPES = ["orders", "customers", "products"] as const;
+
 export type PollResourceType = (typeof POLL_RESOURCE_TYPES)[number];
+
 export const POLL_RESOURCE_CONFIG: Record<
   PollResourceType,
-  {
-    endpoint: string;
-    idField: string;
-  }
+  { endpoint: string; idField: string }
 > = {
   orders: { endpoint: ENDPOINTS.orders, idField: "entity_id" },
   customers: { endpoint: ENDPOINTS.customerSearch, idField: "id" },
   products: { endpoint: ENDPOINTS.products, idField: "id" },
 };
+
 export const POLL_RESOURCE_LABELS: Record<PollResourceType, string> = {
   orders: "Orders",
   customers: "Customers",
   products: "Products",
 };
+
 export const productJson = {
   product: {
     id: 0,
@@ -283,6 +292,7 @@ export const productJson = {
   },
   saveOptions: true,
 };
+
 export const attributeJson = {
   attribute: {
     extension_attributes: {
@@ -354,6 +364,7 @@ export const attributeJson = {
     ],
   },
 };
+
 export const optionJson = {
   option: {
     product_sku: "string",
@@ -382,6 +393,7 @@ export const optionJson = {
     extension_attributes: {},
   },
 };
+
 export const entityJson = {
   entity: {
     adjustment_negative: 0,
@@ -1116,6 +1128,7 @@ export const entityJson = {
     },
   },
 };
+
 export const customerJson = {
   customer: {
     id: 0,
@@ -1193,5 +1206,6 @@ export const customerJson = {
     ],
   },
 };
+
 export const OAUTH1_SIGNATURE_METHOD = "HMAC-SHA256";
 export const OAUTH1_VERSION = "1.0";

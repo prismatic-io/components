@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listOrganizationInvitationsInputs } from "../../inputs";
 import { listOrganizationInvitationsExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
+
 export const listOrganizationInvitations = action({
   display: {
     label: "List Organization Invitations",
@@ -18,11 +19,10 @@ export const listOrganizationInvitations = action({
       sort: sort,
       status: status,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listOrganizationInvitationsExamplePayload.data,
   }),
   inputs: listOrganizationInvitationsInputs,

@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createEngagementExamplePayload } from "../../examplePayloads";
 import { createEngagementInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createEngagement = action({
   display: {
     label: "Create Engagement",
@@ -28,11 +29,14 @@ export const createEngagement = action({
       debugRequest,
       headers: { "Content-Type": "application/json" },
     });
+
     const payload = { associations: associationsJson, properties };
+
     const { data } = await client.post(
       hubspotPaths.objects(engagementObject),
       payload,
     );
+
     return {
       data,
     };

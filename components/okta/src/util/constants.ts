@@ -36,6 +36,7 @@ export const TYPE_MODEL = [
     value: "ENTITY_RISK",
   },
 ];
+
 export const EVENT_LIST_MODEL = [
   { label: "User Created", value: "user.lifecycle.create" },
   {
@@ -98,11 +99,17 @@ export const EVENT_LIST_MODEL = [
     value: "application.user_membership.update",
   },
 ];
+
 export const EVENT_WEBHOOK_VERSION = "1.0.0";
 export const EVENT_WEBHOOK_CHANNEL_TYPE = "HTTP";
 export const EVENT_WEBHOOK_TYPE = "EVENT_TYPE";
+
 export const TRIGGER_BATCH_SIZE = 50;
+
 export const POLL_PAGE_SIZE = 50;
+
 export const POLL_UNBATCHED_PAGE_SIZE = 1000;
+
 export const POLL_UNBATCHED_MAX_PAGES = 20;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

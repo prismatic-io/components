@@ -4,6 +4,7 @@ import type { DocumentNode } from "graphql";
 import type { GraphQLClient, Variables } from "graphql-request";
 import parseLinkHeader from "parse-link-header";
 import type { ObjectNodes, PageInfo, PaginationResponse } from "../types";
+
 export const computePageInformation = async (
   client: HttpClient,
   url: string,
@@ -13,12 +14,14 @@ export const computePageInformation = async (
   const toReturnData: Record<string, unknown[]> = {};
   let toReturnHeaders: unknown;
   let pagination: PaginationResponse;
+
   do {
     const { data, headers } = await client.get(url, {
       params,
     });
     toReturnHeaders = headers;
     const attributeName = Object.keys(data)[0];
+
     if (!toReturnData[attributeName]) {
       toReturnData[attributeName] = [];
     }
@@ -37,6 +40,7 @@ export const computePageInformation = async (
       params.page_info = undefined;
     }
   } while (getAlldata && params.page_info);
+
   return {
     data: toReturnData,
     pagination,
@@ -45,6 +49,7 @@ export const computePageInformation = async (
     headers: toReturnHeaders,
   };
 };
+
 const getPaginatedObject = <T>(attributePath: string[], data) => {
   const object: ObjectNodes<T> = attributePath.reduce((acc, attribute) => {
     if (!acc[attribute]) {
@@ -54,6 +59,7 @@ const getPaginatedObject = <T>(attributePath: string[], data) => {
   }, data);
   return object;
 };
+
 export const fetchData = async <T>(
   client: GraphQLClient,
   attributePath: string[],
@@ -64,15 +70,16 @@ export const fetchData = async <T>(
 ) => {
   const data = await client.request(query, variables);
   const object = getPaginatedObject<T>(attributePath, data);
+
   const allData = {
     [listKey]: object.nodes,
     pageInfo: object.pageInfo,
-  } as Record<string, T[]> & {
-    pageInfo: PageInfo;
-  };
+  } as Record<string, T[]> & { pageInfo: PageInfo };
+
   if (!getAlldata) {
     return allData;
   }
+
   let hasNextPage = object.pageInfo.hasNextPage;
   let cursor = object.pageInfo.endCursor;
   while (hasNextPage) {
@@ -80,11 +87,15 @@ export const fetchData = async <T>(
       ...variables,
       cursor,
     });
+
     const newObject = getPaginatedObject<T>(attributePath, newData);
+
     allData[listKey] = allData[listKey].concat(newObject.nodes);
     allData.pageInfo = newObject.pageInfo;
+
     hasNextPage = newObject.pageInfo.hasNextPage;
     cursor = newObject.pageInfo.endCursor;
   }
+
   return allData;
 };

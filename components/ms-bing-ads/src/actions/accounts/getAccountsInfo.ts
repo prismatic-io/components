@@ -5,6 +5,7 @@ import { getAccountsInfoExamplePayload } from "../../examplePayloads";
 import { getAccountsInfoInputs } from "../../inputs/accounts";
 import type { AccountInfo, GetAccountsInfoResponse } from "../../types";
 import { toArray } from "../../util";
+
 export const getAccountsInfo = action({
   display: {
     label: "Get Accounts Info",
@@ -19,6 +20,7 @@ export const getAccountsInfo = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<GetAccountsInfoResponse>({
       debug,
       args: {
@@ -28,6 +30,7 @@ export const getAccountsInfo = action({
       soapAction: SOAP_ACTION.GetAccountsInfo,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data: response?.AccountsInfo?.AccountInfo
         ? {

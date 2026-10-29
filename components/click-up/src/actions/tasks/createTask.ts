@@ -8,6 +8,7 @@ import type {
   CreateTaskQueryParams,
   CustomFieldValue as CustomField,
 } from "../../types";
+
 export const createTask = action({
   display: {
     label: "Create Task",
@@ -79,6 +80,7 @@ export const createTask = action({
     const { data } = await client.post(`/list/${listId}/task`, body, {
       params,
     });
+
     return {
       data,
     };

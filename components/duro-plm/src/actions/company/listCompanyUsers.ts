@@ -3,6 +3,7 @@ import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { listCompanyUsersInputs } from "../../inputs/company";
 import { listCompanyUsersExamplePayload } from "../../examplePayloads";
+
 export const listCompanyUsers = action({
   display: {
     label: "List Company Users",

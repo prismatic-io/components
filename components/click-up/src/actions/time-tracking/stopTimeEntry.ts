@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { stopTimeEntryExamplePayload } from "../../examplePayloads";
 import { stopTimeEntryInputs } from "../../inputs";
 import { stopTimeEntryOutputSchema } from "../../outputSchemas";
+
 export const stopTimeEntry = action({
   display: {
     label: "Stop Time Entry",
@@ -20,7 +21,9 @@ export const stopTimeEntry = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/team/${teamId}/time_entries/stop`);
+
     return {
       data,
     };

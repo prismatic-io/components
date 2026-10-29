@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getStaffingWorkerByIdExamplePayload } from "../../examplePayloads";
 import { getStaffingWorkerByIdInputs } from "../../inputs";
 import { getStaffingWorkerByIdOutputSchema } from "../../outputSchemas";
+
 export const getStaffingWorkerById = action({
   display: {
     label: "Get Staffing Worker by ID",

@@ -5,6 +5,7 @@ import { updateBomSettingsInputs } from "../../inputs";
 import { bomSettingSchema } from "../../outputSchemas";
 import type { BomSettingVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateBomSettings = action({
   display: {
     label: "Update BOM Settings",
@@ -27,20 +28,25 @@ export const updateBomSettings = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const settingsPayload: BomSettingVo = {
         automaticallyGenerateLineNumbers,
         checkReferenceDesignators,
       };
+
       context.logger.info(`Updating BOM settings for item ${itemGuid}`, {
         itemGuid,
         automaticallyGenerateLineNumbers,
         checkReferenceDesignators,
       });
+
       const { data } = await client.put(
         `/items/${itemGuid}/bom/settings`,
         settingsPayload,
       );
+
       context.logger.info("Successfully updated BOM settings");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update BOM Settings");

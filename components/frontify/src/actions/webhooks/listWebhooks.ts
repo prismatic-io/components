@@ -5,6 +5,7 @@ import { listWebhooksExamplePayload as examplePayload } from "../../examplePaylo
 import { listWebhooksInputs as inputs } from "../../inputs/webhooks";
 import { graphqlFetchAll } from "../../utils/graphqlFetchAll";
 import type ListWebhooksResponse from "../types/listWebhooks";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -13,9 +14,7 @@ export const listWebhooks = action({
   perform: async (
     context,
     { connection, pagination, fetchAll },
-  ): Promise<{
-    data: ListWebhooksResponse;
-  }> => {
+  ): Promise<{ data: ListWebhooksResponse }> => {
     const query = gql`
       query listWebhooks($limit: Int, $page: Int) {
         webhooks(limit: $limit, page: $page) {
@@ -58,7 +57,9 @@ export const listWebhooks = action({
         }
       }
     `;
+
     const client = createClient({ connection, debug: context.debug.enabled });
+
     if (fetchAll) {
       const hasNextPath = ["webhooks", "hasNextPage"];
       const responses: ListWebhooksResponse[] = await graphqlFetchAll({
@@ -66,16 +67,17 @@ export const listWebhooks = action({
         query,
         hasNextPath,
       });
+
       if (responses.length === 1) {
         return { data: responses[0] };
       }
+
       const baseResponse = responses.slice(-1)[0];
       const combinedWebhooks = responses.flatMap(
         (response) => response.webhooks.items,
       );
-      const formattedResponse: {
-        data: ListWebhooksResponse;
-      } = {
+
+      const formattedResponse: { data: ListWebhooksResponse } = {
         data: {
           webhooks: {
             ...baseResponse.webhooks,
@@ -83,12 +85,15 @@ export const listWebhooks = action({
           },
         },
       };
+
       return formattedResponse;
     }
+
     const response: ListWebhooksResponse = await client.request(query, {
       page: pagination.page,
       limit: pagination.limit,
     });
+
     return {
       data: response,
     };

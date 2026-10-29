@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { validateId } from "../util";
 import { connectionInput, optFields, pagination } from "./common";
+
 const statusId = input({
   label: "Status ID",
   type: "string",
@@ -10,6 +11,7 @@ const statusId = input({
   required: true,
   clean: validateId,
 });
+
 const statusParentIdInput = input({
   label: "Project, Portfolio, or Goal ID",
   comments:
@@ -20,6 +22,7 @@ const statusParentIdInput = input({
   required: true,
   clean: validateId,
 });
+
 const statusUpdateTitle = input({
   label: "Status Title",
   type: "string",
@@ -28,6 +31,7 @@ const statusUpdateTitle = input({
   required: true,
   clean: util.types.toString,
 });
+
 const statusUpdateText = input({
   label: "Status Text",
   type: "string",
@@ -36,6 +40,7 @@ const statusUpdateText = input({
   required: true,
   clean: util.types.toString,
 });
+
 const statusType = input({
   label: "Status Type",
   comments:
@@ -52,6 +57,7 @@ const statusType = input({
   ],
   clean: util.types.toString,
 });
+
 export const createStatusUpdateInputs = {
   asanaConnection: connectionInput,
   parent: statusParentIdInput,
@@ -60,14 +66,17 @@ export const createStatusUpdateInputs = {
   statusType,
   pagination,
 };
+
 export const getStatusUpdateInputs = {
   asanaConnection: connectionInput,
   statusId,
 };
+
 export const deleteStatusInputs = {
   asanaConnection: connectionInput,
   statusId,
 };
+
 export const getStatusesForObjectInputs = {
   asanaConnection: connectionInput,
   optFields: {

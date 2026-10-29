@@ -4,6 +4,7 @@ import { listItemTrainingRecordsExamplePayload } from "../../examplePayloads";
 import { listItemTrainingRecordsInputs } from "../../inputs";
 import { listItemTrainingRecordsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listItemTrainingRecords = action({
   display: {
     label: "List Item Training Records",

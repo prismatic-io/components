@@ -11,6 +11,7 @@ import { listPlansInGroupOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { fetchAllPlanner } from "../../utils";
 import { listPlansInGroupInputs } from "../../inputs";
+
 export const listPlansInGroup = action({
   display: {
     label: "List Plans in Group",
@@ -33,9 +34,7 @@ export const listPlansInGroup = action({
   examplePerform: async (
     _context,
     { groupId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listPlansInGroupExamplePayload.data,
       value: listPlansInGroupExamplePayload.data.value.map((plan) => ({

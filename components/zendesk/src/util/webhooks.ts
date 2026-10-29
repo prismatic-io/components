@@ -1,4 +1,5 @@
 import type { FetchWebhooksInput, ZendeskWebhook } from "../types";
+
 export const fetchWebhooks = async ({
   client,
   showOnlyInstanceWebhooks,

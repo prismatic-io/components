@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createBatchEngagementExamplePayload } from "../../examplePayloads";
 import { createBatchEngagementInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createBatchEngagement = action({
   display: {
     label: "Create Batch Engagement",
@@ -23,13 +24,16 @@ export const createBatchEngagement = action({
         "Content-Type": "application/json",
       },
     });
+
     const payload = {
       inputs: batchInputs,
     };
+
     const { data } = await client.post(
       hubspotPaths.objects(engagementObject, "/batch/create"),
       payload,
     );
+
     return {
       data,
     };

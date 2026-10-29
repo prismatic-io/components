@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection } from "./common";
+
 const contactKey = input({
   label: "Contact Key",
   type: "string",
@@ -11,6 +12,7 @@ const contactKey = input({
   placeholder: "Enter contact key",
   clean: util.types.toString,
 });
+
 const emailAddress = input({
   label: "Email Address",
   type: "string",
@@ -20,6 +22,7 @@ const emailAddress = input({
   placeholder: "Enter email address",
   clean: toOptionalString,
 });
+
 const attributeSets = input({
   label: "Attribute Sets",
   type: "code",
@@ -46,6 +49,7 @@ const attributeSets = input({
   ),
   clean: util.types.toObject,
 });
+
 const searchFilter = input({
   label: "Search Filter",
   type: "code",
@@ -64,6 +68,7 @@ const searchFilter = input({
   ),
   clean: util.types.toObject,
 });
+
 const deleteContactKeys = input({
   label: "Contact Keys",
   type: "string",
@@ -75,28 +80,34 @@ const deleteContactKeys = input({
   placeholder: "Enter contact key",
   clean: (value: unknown) => value as string[],
 });
+
 export const deleteContactInputs = {
   connection,
   deleteContactKeys,
 };
+
 export const getContactInputs = {
   connection,
   contactKey,
 };
+
 export const createContactInputs = {
   connection,
   contactKey,
   attributeSets,
 };
+
 export const updateContactInputs = {
   connection,
   contactKey,
   attributeSets,
 };
+
 export const searchContactsInputs = {
   connection,
   searchFilter,
 };
+
 export const searchContactsByEmailInputs = {
   connection,
   emailAddress: {
@@ -105,6 +116,7 @@ export const searchContactsByEmailInputs = {
     clean: util.types.toString,
   },
 };
+
 export const getContactSchemaInputs = {
   connection,
 };

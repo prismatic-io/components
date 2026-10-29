@@ -5,6 +5,7 @@ import { getChangeFileAssociationInputs } from "../../inputs";
 import { fileAssociationSchema } from "../../outputSchemas";
 import type { FileAssociationVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const getChangeFileAssociation = action({
   display: {
     label: "Get Change File Association",
@@ -23,14 +24,17 @@ export const getChangeFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Retrieving change file association details", {
         changeGuid,
         changeFileAssociationGuid,
       });
+
       const response = await client.get(
         `/changes/${changeGuid}/files/${changeFileAssociationGuid}`,
       );
       const fileAssociation: FileAssociationVo = response.data;
+
       context.logger.info("Change file association retrieved successfully", {
         changeGuid,
         changeFileAssociationGuid,
@@ -38,6 +42,7 @@ export const getChangeFileAssociation = action({
         fileName: fileAssociation.file?.name,
         fileGuid: fileAssociation.file?.guid,
       });
+
       return { data: fileAssociation };
     } catch (error) {
       handleArenaError(

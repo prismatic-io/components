@@ -3,6 +3,7 @@ import { createSalesforceClient } from "../../client";
 import { listOpportunitiesInputs } from "../../inputs";
 import { listOpportunitiesExamplePayload } from "../../examplePayloads";
 import { executeSFAction, getFindQuery } from "../../util";
+
 export const listOpportunities = action({
   display: {
     label: "List Opportunities",
@@ -23,6 +24,7 @@ export const listOpportunities = action({
     },
   ) => {
     const maxRecordsToFetch = pagination.maxRecordsToFetch;
+
     if (context.debug.enabled) {
       context.logger.debug({
         version,
@@ -53,9 +55,8 @@ export const listOpportunities = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listOpportunitiesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listOpportunitiesExamplePayload,
   inputs: listOpportunitiesInputs,
   examplePayload: listOpportunitiesExamplePayload as unknown,
 });

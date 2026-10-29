@@ -7,6 +7,7 @@ import {
 import { oauth, oauthClientCredentials } from "./connections";
 import { ACCOUNT_REGEX } from "./constants";
 import { createDynamicJWTToken } from "./utils";
+
 export const baseUrl = (
   connection: Connection,
   restAPIServiceType: string,
@@ -19,6 +20,7 @@ export const baseUrl = (
   }
   throw new Error("Unable to extract account ID from the Token URL.");
 };
+
 export const authorizationHeaders = async (connection: Connection) => {
   if (oauthClientCredentials.key === connection.key) {
     const token = createDynamicJWTToken(connection);
@@ -41,6 +43,7 @@ export const authorizationHeaders = async (connection: Connection) => {
     const {
       data: { access_token },
     } = await client.post("/services/rest/auth/oauth2/v1/token", params);
+
     return { Authorization: `Bearer ${util.types.toString(access_token)}` };
   }
   const token = util.types.toString(connection.token?.access_token);
@@ -49,6 +52,7 @@ export const authorizationHeaders = async (connection: Connection) => {
   }
   return { Authorization: `Bearer ${token}` };
 };
+
 export const createClient = async (
   connection: Connection,
   restAPIServiceType: string,
@@ -68,6 +72,7 @@ export const createClient = async (
     "X-NetSuite-PropertyNameValidation": "Warning",
     "X-NetSuite-PropertyValueValidation": "Warning",
   };
+
   return createHttpClient({
     baseUrl: baseUrl(connection, restAPIServiceType),
     headers:

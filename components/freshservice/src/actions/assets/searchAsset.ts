@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { searchAssetExamplePayload as examplePayload } from "../../examplePayloads";
 import { searchAssetInputs as inputs } from "../../inputs";
 import { assetsListOutputSchema } from "../../outputSchemas";
+
 export const searchAsset = action({
   display: {
     label: "Search Asset (Deprecated)",
@@ -20,6 +21,7 @@ export const searchAsset = action({
     const { data } = await client.get(`/assets`, {
       params: { ...additionalQueryParams, search: searchQuery },
     });
+
     return {
       data,
     };

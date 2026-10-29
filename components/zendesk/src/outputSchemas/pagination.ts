@@ -6,6 +6,7 @@ export const cursorMetaSchema = {
     before_cursor: { type: "string" },
   },
 };
+
 export const cursorLinksSchema = {
   type: "object" as const,
   properties: {
@@ -15,6 +16,7 @@ export const cursorLinksSchema = {
     prev: { type: "string" },
   },
 };
+
 export const offsetPaginationProperties = {
   count: { type: "integer" },
   next_page: { type: ["string", "null"] },

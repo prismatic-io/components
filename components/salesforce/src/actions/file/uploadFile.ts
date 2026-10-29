@@ -3,6 +3,7 @@ import { createRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { uploadFileInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -19,6 +20,7 @@ export const uploadFile = action({
       });
     }
     const { data } = file;
+
     const response = await salesforceClient.sobject("ContentVersion").create({
       PathOnClient: pathOnClient,
       VersionData: data.toString("base64"),
@@ -27,9 +29,8 @@ export const uploadFile = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createRecordOutputSchema,

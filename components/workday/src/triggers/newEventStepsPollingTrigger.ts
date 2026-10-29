@@ -18,6 +18,7 @@ import {
   resolveEventStepChanges,
   selectNewEventSteps,
 } from "../util";
+
 export const newEventStepsPollingTrigger = pollingTrigger({
   display: {
     label: "New Event Steps",
@@ -36,6 +37,7 @@ export const newEventStepsPollingTrigger = pollingTrigger({
     const now = new Date().toISOString();
     const state = (context.polling.getState() ?? {}) as PollingState;
     const window = getEventStepsWindow(state, params.lookBackDate, now);
+
     const client = getClient(params.connection, context.debug.enabled);
     const steps = await fetchEventStepsSince(
       client,
@@ -55,11 +57,13 @@ export const newEventStepsPollingTrigger = pollingTrigger({
       context.logger,
     );
     context.polling.setState({ lastPolledAt: now, seen });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled event steps created on or after ${window.since.slice(0, ISO_DATE_LENGTH)}: ${steps.length} steps, ${created.length} new`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created } } },
       polledNoChanges: created.length === 0,

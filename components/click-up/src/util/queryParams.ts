@@ -1,6 +1,8 @@
 import { util } from "@prismatic-io/spectral";
+
 export const booleanToString = (value: boolean): string =>
   value ? "true" : "false";
+
 export const addToObjectIfContent = (
   object: Record<string, unknown>,
 ): Record<string, string> => {
@@ -14,5 +16,6 @@ export const addToObjectIfContent = (
       newObject[key] = util.types.toString(object[key]);
     }
   }
+
   return newObject;
 };

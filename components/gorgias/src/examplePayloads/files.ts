@@ -2,14 +2,12 @@ import type {
   DownloadFileResponse,
   UploadFilesResponse,
 } from "../interfaces/files";
-export const downloadFileExamplePayload: {
-  data: DownloadFileResponse;
-} = {
+
+export const downloadFileExamplePayload: { data: DownloadFileResponse } = {
   data: "https://www.example.com/attachments/12345",
 };
-export const uploadFilesExamplePayload: {
-  data: UploadFilesResponse;
-} = {
+
+export const uploadFilesExamplePayload: { data: UploadFilesResponse } = {
   data: [
     {
       content_type: "image/jpeg",

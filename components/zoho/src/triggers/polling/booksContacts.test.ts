@@ -8,6 +8,7 @@ import { zohoTemplatedConnection } from "../../connections";
 import type { BookRecord, PollingState } from "../../types";
 import { toZohoTimestamp } from "../../util/general";
 import { bookContactsPollingTrigger } from "./booksContacts";
+
 const conn = {
   ...createConnection(
     zohoTemplatedConnection,
@@ -16,8 +17,10 @@ const conn = {
   ),
   context: { "accounts-server": "https://accounts.zoho.com" },
 };
+
 const BASE = "https://www.zohoapis.com";
 const T0 = "2026-03-01T10:00:00.000Z";
+
 const contact = (
   id: string,
   created: string,
@@ -27,8 +30,10 @@ const contact = (
   last_modified_time: modified,
   contact_id: id,
 });
+
 type Perform = typeof bookContactsPollingTrigger.perform;
 let store: PollingState;
+
 const run = (lookBackDate = "") =>
   bookContactsPollingTrigger.perform(
     {
@@ -44,17 +49,21 @@ const run = (lookBackDate = "") =>
     defaultTriggerPayload() as unknown as Parameters<Perform>[1],
     { connection: conn, lookBackDate } as never,
   );
+
 const sinceQuery = (since: string) => (q: Record<string, unknown>) =>
   q.last_modified_time === toZohoTimestamp(since);
+
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(new Date(T0));
   store = {};
 });
+
 afterEach(() => {
   vi.useRealTimers();
   nock.cleanAll();
 });
+
 describe("bookContactsPollingTrigger declaration", () => {
   test("is opt-in batchable with a default batch size and no pagination cursor", () => {
     expect(bookContactsPollingTrigger.triggerResolverSupport).toBe("valid");
@@ -66,12 +75,14 @@ describe("bookContactsPollingTrigger declaration", () => {
       bookContactsPollingTrigger.triggerResolver?.getNextPaginationState,
     ).toBeUndefined();
   });
+
   test("places Look-back Date directly below the connection", () => {
     expect(Object.keys(bookContactsPollingTrigger.inputs ?? {})).toEqual([
       "connection",
       "lookBackDate",
     ]);
   });
+
   test("resolveItems flattens the payload shape perform returns", () => {
     const updated = contact("1", "2020-01-01T00:00:00Z", T0);
     const payload = {
@@ -85,6 +96,7 @@ describe("bookContactsPollingTrigger declaration", () => {
     ).toEqual([{ changeType: "updated", record: updated }]);
   });
 });
+
 describe("bookContactsPollingTrigger polling", () => {
   test("first poll without a Look-back Date starts at now", async () => {
     const scope = nock(BASE)
@@ -96,6 +108,7 @@ describe("bookContactsPollingTrigger polling", () => {
     expect(store).toEqual({ lastPolledAt: T0 });
     expect(r.polledNoChanges).toBe(true);
   });
+
   test("first poll with a Look-back Date seeds last_modified_time and the classification", async () => {
     const lb = "2026-01-01T00:00:00.000Z";
     const fresh = contact("n", "2026-02-01T00:00:00Z", "2026-02-01T00:00:00Z");
@@ -124,6 +137,7 @@ describe("bookContactsPollingTrigger polling", () => {
     });
     expect(store).toEqual({ lastPolledAt: T0 });
   });
+
   test("later polls ignore the Look-back Date and honor the pre-batching lastUpdated key", async () => {
     store = { lastUpdated: "2026-02-15T00:00:00.000Z" };
     const scope = nock(BASE)

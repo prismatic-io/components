@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getWorkersMetadataExamplePayload } from "../../examplePayloads";
 import { getWorkersMetadataInputs } from "../../inputs";
 import { getWorkersMetadataOutputSchema } from "../../outputSchemas";
+
 export const getWorkersMetadata = action({
   display: {
     label: "Get Worker Metadata",

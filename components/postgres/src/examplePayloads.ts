@@ -1,4 +1,5 @@
 import type { pollTablePerform } from "./triggers/pollTablePerform";
+
 export const queryExamplePayload = {
   data: [
     {
@@ -19,6 +20,7 @@ export const queryExamplePayload = {
     },
   ],
 };
+
 export const pollTableExamplePayload = {
   payload: {
     headers: {},

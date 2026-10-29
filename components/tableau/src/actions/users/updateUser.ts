@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { updateUserExamplePayload } from "../../examplePayloads";
 import { updateUserInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const updateUser = action({
   display: {
     label: "Update User",
@@ -14,6 +15,7 @@ export const updateUser = action({
       timeout: util.types.toInt(params.timeout),
       debug: context.debug.enabled,
     });
+
     const response = client.put(`/users/${params.userId}`, {
       user: {
         name: params.username,
@@ -21,6 +23,7 @@ export const updateUser = action({
         authSetting: params.authSetting,
       },
     });
+
     return {
       data: (await response).data,
     };

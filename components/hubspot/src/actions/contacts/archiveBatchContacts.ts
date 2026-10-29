@@ -4,6 +4,7 @@ import { archiveBatchContactsExamplePayload } from "../../examplePayloads";
 import { archiveBatchContactsInputs } from "../../inputs";
 import { getArrayOfObjectsWithKey } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const archiveBatchContacts = action({
   display: {
     label: "Archive Batch Contacts",
@@ -12,6 +13,7 @@ export const archiveBatchContacts = action({
   performSafety: "notAllowed",
   perform: async (context, { contactIds, timeout, hubspotConnection }) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,

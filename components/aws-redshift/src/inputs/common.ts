@@ -1,13 +1,16 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { awsRegion as awsRegionOriginal } from "aws-utils";
+
 export const awsRegion = input({ ...awsRegionOriginal, required: true });
+
 export const awsConnection = input({
   label: "AWS Connection",
   type: "connection",
   required: true,
   comments: "Select the AWS connection to use for Redshift Data API access.",
 });
+
 export const databaseName = input({
   label: "Database Name",
   type: "string",
@@ -18,6 +21,7 @@ export const databaseName = input({
   placeholder: "Enter the database name",
   clean: util.types.toString,
 });
+
 export const clusterIdentifier = input({
   label: "Cluster Identifier",
   type: "string",
@@ -28,6 +32,7 @@ export const clusterIdentifier = input({
   placeholder: "Enter the cluster identifier",
   clean: toOptionalString,
 });
+
 export const workgroupName = input({
   label: "Workgroup Name",
   type: "string",
@@ -38,6 +43,7 @@ export const workgroupName = input({
   placeholder: "Enter the workgroup name",
   clean: toOptionalString,
 });
+
 export const statementId = input({
   label: "Statement ID",
   type: "string",
@@ -48,6 +54,7 @@ export const statementId = input({
   placeholder: "Enter the statement ID",
   clean: util.types.toString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -57,6 +64,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const statementName = input({
   label: "Statement Name",
   type: "string",

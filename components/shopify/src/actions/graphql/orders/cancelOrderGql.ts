@@ -4,6 +4,7 @@ import { cancelOrderExamplePayload as examplePayload } from "../../../examplePay
 import { cancelOrderInputs as inputs } from "../../../inputsGql";
 import { cancelOrderGqlOutputSchema } from "../../../outputSchemas";
 import cancelOrderQuery from "../queries/orders/CancelOrder.gql";
+
 export const cancelOrderGql = action({
   display: {
     label: "Cancel Order",
@@ -28,16 +29,19 @@ export const cancelOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      orderCancel: Record<string, unknown>;
-    } = await client.request(cancelOrderQuery, {
-      notifyCustomer,
-      orderId,
-      reason,
-      refund,
-      restock,
-      staffNote,
-    });
+
+    const data: { orderCancel: Record<string, unknown> } = await client.request(
+      cancelOrderQuery,
+      {
+        notifyCustomer,
+        orderId,
+        reason,
+        refund,
+        restock,
+        staffNote,
+      },
+    );
+
     return { data: data.orderCancel };
   },
   inputs,

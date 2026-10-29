@@ -11,14 +11,18 @@ import {
   resultData,
   resultList,
 } from "./resultHelpers";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
+
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
   customBaseUrl: process.env.ARENA_BASE_URL || "",
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 const ENV_OUTBOUND_EVENT_INTEGRATION_GUID =
   process.env.TEST_OUTBOUND_EVENT_INTEGRATION_GUID;
 const ENV_OUTBOUND_EVENT_GUID = process.env.TEST_OUTBOUND_EVENT_GUID;
@@ -26,45 +30,56 @@ const ENV_OUTBOUND_EVENT_RESOURCE_TYPE =
   process.env.TEST_OUTBOUND_EVENT_RESOURCE_TYPE || "items";
 const ENV_OUTBOUND_EVENT_RESOURCE_GUID =
   process.env.TEST_OUTBOUND_EVENT_RESOURCE_GUID;
+
 const ENV_OUTBOUND_INTEGRATION_GUID =
   process.env.TEST_OUTBOUND_INTEGRATION_GUID;
 const ENV_OUTBOUND_INTEGRATION_EVENT_GUID =
   process.env.TEST_OUTBOUND_INTEGRATION_EVENT_GUID;
 const ENV_OUTBOUND_EVENT_ITEM_GUID = process.env.TEST_OUTBOUND_EVENT_ITEM_GUID;
+
 const ENV_CHANGE_GUID = process.env.TEST_CHANGE_GUID;
 const ENV_CATEGORY_GUID_CHANGES =
   process.env.TEST_CATEGORY_GUID_CHANGES || "PLACEHOLDER_CATEGORY_GUID";
+
 let discoveredOutboundEventIntegrationGuid: string | undefined;
 let discoveredOutboundEventGuid: string | undefined;
 let discoveredOutboundEventResourceType: string | undefined;
 let discoveredOutboundEventResourceGuid: string | undefined;
+
 let discoveredOutboundIntegrationGuid: string | undefined;
 let discoveredOutboundIntegrationEventGuid: string | undefined;
 let discoveredOutboundIntegrationEventItemGuid: string | undefined;
+
 const INVALID_GUID = "INVALIDGUID00000000000";
+
 function resolvedEventIntegrationGuid(): string | undefined {
   return (
     ENV_OUTBOUND_EVENT_INTEGRATION_GUID ||
     discoveredOutboundEventIntegrationGuid
   );
 }
+
 function resolvedEventGuid(): string | undefined {
   return ENV_OUTBOUND_EVENT_GUID || discoveredOutboundEventGuid;
 }
+
 function resolvedIntegrationGuid(): string | undefined {
   return ENV_OUTBOUND_INTEGRATION_GUID || discoveredOutboundIntegrationGuid;
 }
+
 function resolvedIntegrationEventGuid(): string | undefined {
   return (
     ENV_OUTBOUND_INTEGRATION_EVENT_GUID ||
     discoveredOutboundIntegrationEventGuid
   );
 }
+
 function resolvedIntegrationEventItemGuid(): string | undefined {
   return (
     ENV_OUTBOUND_EVENT_ITEM_GUID || discoveredOutboundIntegrationEventItemGuid
   );
 }
+
 beforeAll(async () => {
   try {
     const result = await harness.action("listOutboundEventIntegrations", {
@@ -77,9 +92,11 @@ beforeAll(async () => {
     }
   } catch {}
 }, 30000);
+
 beforeAll(async () => {
   const integrationGuid = resolvedEventIntegrationGuid();
   if (!integrationGuid) return;
+
   try {
     const result = await harness.action("listOutboundEventIntegrationEvents", {
       connection: testConnection,
@@ -92,10 +109,12 @@ beforeAll(async () => {
     }
   } catch {}
 }, 30000);
+
 beforeAll(async () => {
   const integrationGuid = resolvedEventIntegrationGuid();
   const eventGuid = resolvedEventGuid();
   if (!integrationGuid || !eventGuid) return;
+
   const objectTypes = ["items", "changes", "requests", "qualityprocesses"];
   for (const objectType of objectTypes) {
     try {
@@ -115,6 +134,7 @@ beforeAll(async () => {
     } catch {}
   }
 }, 30000);
+
 beforeAll(async () => {
   try {
     const result = await harness.action("listIntegrations", {
@@ -127,9 +147,11 @@ beforeAll(async () => {
     }
   } catch {}
 }, 30000);
+
 beforeAll(async () => {
   const integrationGuid = resolvedIntegrationGuid();
   if (!integrationGuid) return;
+
   try {
     const result = await harness.action("listEventAssociations", {
       connection: testConnection,
@@ -142,10 +164,12 @@ beforeAll(async () => {
     }
   } catch {}
 }, 30000);
+
 beforeAll(async () => {
   const integrationGuid = resolvedIntegrationGuid();
   const eventGuid = resolvedIntegrationEventGuid();
   if (!integrationGuid || !eventGuid) return;
+
   try {
     const result = await harness.action("listEventItems", {
       connection: testConnection,
@@ -159,6 +183,7 @@ beforeAll(async () => {
     }
   } catch {}
 }, 30000);
+
 describe("Action: listOutboundEventIntegrations", () => {
   test("returns a paginated list of outbound event integrations", async () => {
     const result = await harness.action("listOutboundEventIntegrations", {
@@ -172,6 +197,7 @@ describe("Action: listOutboundEventIntegrations", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts enable filter without error", async () => {
     try {
       const result = await harness.action("listOutboundEventIntegrations", {
@@ -185,6 +211,7 @@ describe("Action: listOutboundEventIntegrations", () => {
       expect(err).toBeDefined();
     }
   });
+
   test("throws on invalid connection credentials", async () => {
     const badConnection = createConnection(arenaUsernamePassword, {
       baseUrl: "custom",
@@ -200,6 +227,7 @@ describe("Action: listOutboundEventIntegrations", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listOutboundEventIntegrationTriggers", () => {
   test("returns triggers when a valid integration GUID is discovered", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
@@ -219,6 +247,7 @@ describe("Action: listOutboundEventIntegrationTriggers", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listOutboundEventIntegrationTriggers", {
@@ -228,6 +257,7 @@ describe("Action: listOutboundEventIntegrationTriggers", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listOutboundEventIntegrationEvents", () => {
   test("returns events when a valid integration GUID is discovered", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
@@ -249,9 +279,11 @@ describe("Action: listOutboundEventIntegrationEvents", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts resourcesReconciled filter", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
     if (!integrationGuid) return;
+
     const result = await harness.action("listOutboundEventIntegrationEvents", {
       connection: testConnection,
       integrationGuid,
@@ -261,9 +293,11 @@ describe("Action: listOutboundEventIntegrationEvents", () => {
     expect(result).toBeDefined();
     expect(resultList(result)).toBeDefined();
   });
+
   test("accepts order parameter", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
     if (!integrationGuid) return;
+
     const result = await harness.action("listOutboundEventIntegrationEvents", {
       connection: testConnection,
       integrationGuid,
@@ -273,6 +307,7 @@ describe("Action: listOutboundEventIntegrationEvents", () => {
     expect(result).toBeDefined();
     expect(resultList(result)).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listOutboundEventIntegrationEvents", {
@@ -282,6 +317,7 @@ describe("Action: listOutboundEventIntegrationEvents", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listOutboundEventResources", () => {
   test("returns resources when valid integration and event GUIDs are discovered", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
@@ -311,6 +347,7 @@ describe("Action: listOutboundEventResources", () => {
       } catch {}
     }
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listOutboundEventResources", {
@@ -322,6 +359,7 @@ describe("Action: listOutboundEventResources", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listOutboundEventIntegrationAdministrators", () => {
   test("returns administrators when a valid integration GUID is discovered", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
@@ -341,6 +379,7 @@ describe("Action: listOutboundEventIntegrationAdministrators", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listOutboundEventIntegrationAdministrators", {
@@ -350,6 +389,7 @@ describe("Action: listOutboundEventIntegrationAdministrators", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: updateOutboundEventReconciliation (PUT)", () => {
   test("throws on invalid integration GUID", async () => {
     await expect(
@@ -361,9 +401,11 @@ describe("Action: updateOutboundEventReconciliation (PUT)", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("throws on invalid event GUID even when integration GUID is valid", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
     if (!integrationGuid) return;
+
     await expect(
       harness.action("updateOutboundEventReconciliation", {
         connection: testConnection,
@@ -373,6 +415,7 @@ describe("Action: updateOutboundEventReconciliation (PUT)", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("successfully updates reconciliation when real GUIDs are available", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
     const eventGuid = resolvedEventGuid();
@@ -406,6 +449,7 @@ describe("Action: updateOutboundEventReconciliation (PUT)", () => {
     }
   });
 });
+
 describe("Action: updateOutboundEventResourceReconciliation (PUT)", () => {
   test("throws on invalid integration GUID", async () => {
     await expect(
@@ -419,10 +463,12 @@ describe("Action: updateOutboundEventResourceReconciliation (PUT)", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("throws on invalid resource GUID even when integration and event GUIDs are valid", async () => {
     const integrationGuid = resolvedEventIntegrationGuid();
     const eventGuid = resolvedEventGuid();
     if (!integrationGuid || !eventGuid) return;
+
     await expect(
       harness.action("updateOutboundEventResourceReconciliation", {
         connection: testConnection,
@@ -434,6 +480,7 @@ describe("Action: updateOutboundEventResourceReconciliation (PUT)", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("successfully updates resource reconciliation when real GUIDs are available", async () => {
     const integrationGuid =
       ENV_OUTBOUND_EVENT_INTEGRATION_GUID ||
@@ -443,6 +490,7 @@ describe("Action: updateOutboundEventResourceReconciliation (PUT)", () => {
       ENV_OUTBOUND_EVENT_RESOURCE_TYPE || discoveredOutboundEventResourceType;
     const resourceGuid =
       ENV_OUTBOUND_EVENT_RESOURCE_GUID || discoveredOutboundEventResourceGuid;
+
     if (!integrationGuid || !eventGuid || !objectType || !resourceGuid) {
       console.warn(
         "Skipping updateOutboundEventResourceReconciliation success test: real resource GUID not available",
@@ -478,6 +526,7 @@ describe("Action: updateOutboundEventResourceReconciliation (PUT)", () => {
     }
   });
 });
+
 describe("Action: listIntegrations", () => {
   test("returns a paginated list of outbound integrations", async () => {
     const result = await harness.action("listIntegrations", {
@@ -491,6 +540,7 @@ describe("Action: listIntegrations", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts name filter without error", async () => {
     const result = await harness.action("listIntegrations", {
       connection: testConnection,
@@ -501,6 +551,7 @@ describe("Action: listIntegrations", () => {
     expect(resultData(result).count).toBe(0);
   });
 });
+
 describe("Action: getIntegration", () => {
   test("returns integration details for a discovered GUID", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -519,6 +570,7 @@ describe("Action: getIntegration", () => {
     const data = resultData(result);
     expect(data.guid).toBe(integrationGuid);
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("getIntegration", {
@@ -528,6 +580,7 @@ describe("Action: getIntegration", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listIntegrationFilters", () => {
   test("returns filters for a discovered integration GUID", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -544,6 +597,7 @@ describe("Action: listIntegrationFilters", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listIntegrationFilters", {
@@ -553,6 +607,7 @@ describe("Action: listIntegrationFilters", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listEventAssociations", () => {
   test("returns event associations for a discovered integration GUID", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -574,6 +629,7 @@ describe("Action: listEventAssociations", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listEventAssociations", {
@@ -583,6 +639,7 @@ describe("Action: listEventAssociations", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: getEvent", () => {
   test("returns event detail for discovered integration and event GUIDs", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -603,6 +660,7 @@ describe("Action: getEvent", () => {
     const data = resultData(result);
     expect(data.guid).toBe(eventGuid);
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("getEvent", {
@@ -613,6 +671,7 @@ describe("Action: getEvent", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listEventItems", () => {
   test("returns event items for discovered integration and event GUIDs", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -635,10 +694,12 @@ describe("Action: listEventItems", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts reconciled filter", async () => {
     const integrationGuid = resolvedIntegrationGuid();
     const eventGuid = resolvedIntegrationEventGuid();
     if (!integrationGuid || !eventGuid) return;
+
     const result = await harness.action("listEventItems", {
       connection: testConnection,
       integrationGuid,
@@ -649,6 +710,7 @@ describe("Action: listEventItems", () => {
     expect(result).toBeDefined();
     expect(resultList(result)).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listEventItems", {
@@ -659,6 +721,7 @@ describe("Action: listEventItems", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listEventItemGuids", () => {
   test("returns event item GUIDs for discovered integration and event GUIDs", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -677,6 +740,7 @@ describe("Action: listEventItemGuids", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listEventItemGuids", {
@@ -687,6 +751,7 @@ describe("Action: listEventItemGuids", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: getEventItem", () => {
   test("returns a single event item when all GUIDs are discovered", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -709,6 +774,7 @@ describe("Action: getEventItem", () => {
     const data = resultData(result);
     expect(data.guid).toBe(eventItemGuid);
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("getEventItem", {
@@ -720,6 +786,7 @@ describe("Action: getEventItem", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: listIntegrationAdministrators", () => {
   test("returns administrators for a discovered integration GUID", async () => {
     const integrationGuid = resolvedIntegrationGuid();
@@ -736,6 +803,7 @@ describe("Action: listIntegrationAdministrators", () => {
     expect(result).toBeDefined();
     expect(result!.data).toBeDefined();
   });
+
   test("throws on invalid integration GUID", async () => {
     await expect(
       harness.action("listIntegrationAdministrators", {
@@ -745,6 +813,7 @@ describe("Action: listIntegrationAdministrators", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("Action: updateEventItemReconciled (PUT)", () => {
   test("throws on invalid integration GUID", async () => {
     await expect(
@@ -757,10 +826,12 @@ describe("Action: updateEventItemReconciled (PUT)", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("throws on invalid event item GUID even when integration GUID is valid", async () => {
     const integrationGuid = resolvedIntegrationGuid();
     const eventGuid = resolvedIntegrationEventGuid();
     if (!integrationGuid || !eventGuid) return;
+
     await expect(
       harness.action("updateEventItemReconciled", {
         connection: testConnection,
@@ -771,6 +842,7 @@ describe("Action: updateEventItemReconciled (PUT)", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("successfully marks event item as reconciled when real GUIDs are available", async () => {
     const integrationGuid = resolvedIntegrationGuid();
     const eventGuid = resolvedIntegrationEventGuid();
@@ -792,6 +864,7 @@ describe("Action: updateEventItemReconciled (PUT)", () => {
     expect(result!.data).toBeDefined();
   });
 });
+
 describe("Action: listRecentActivityUserAccesses", () => {
   test("returns user access activity list", async () => {
     const result = await harness.action("listRecentActivityUserAccesses", {
@@ -805,6 +878,7 @@ describe("Action: listRecentActivityUserAccesses", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts dateTimeFrom and dateTimeTo filters", async () => {
     const result = await harness.action("listRecentActivityUserAccesses", {
       connection: testConnection,
@@ -816,6 +890,7 @@ describe("Action: listRecentActivityUserAccesses", () => {
     expect(result!.data).toBeDefined();
   });
 });
+
 describe("Action: listRecentActivityReportRuns", () => {
   test("returns report run activity list", async () => {
     const result = await harness.action("listRecentActivityReportRuns", {
@@ -829,6 +904,7 @@ describe("Action: listRecentActivityReportRuns", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts dateTimeFrom filter", async () => {
     const result = await harness.action("listRecentActivityReportRuns", {
       connection: testConnection,
@@ -839,6 +915,7 @@ describe("Action: listRecentActivityReportRuns", () => {
     expect(result!.data).toBeDefined();
   });
 });
+
 describe("Action: listRecentActivityFileAccesses", () => {
   test("returns file access activity list", async () => {
     const result = await harness.action("listRecentActivityFileAccesses", {
@@ -852,6 +929,7 @@ describe("Action: listRecentActivityFileAccesses", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("accepts dateTimeTo filter", async () => {
     const result = await harness.action("listRecentActivityFileAccesses", {
       connection: testConnection,
@@ -862,6 +940,7 @@ describe("Action: listRecentActivityFileAccesses", () => {
     expect(result!.data).toBeDefined();
   });
 });
+
 describe("Action: listRecentActivityExports", () => {
   test("returns export activity list", async () => {
     const result = await harness.action("listRecentActivityExports", {
@@ -875,6 +954,7 @@ describe("Action: listRecentActivityExports", () => {
     expect(typeof data.count).toBe("number");
     expect(Array.isArray(data.results)).toBe(true);
   });
+
   test("returns fewer results when smaller limit is specified", async () => {
     const fullResult = await harness.action("listRecentActivityExports", {
       connection: testConnection,
@@ -889,6 +969,7 @@ describe("Action: listRecentActivityExports", () => {
     );
   });
 });
+
 describe("Action: listApiUsages", () => {
   test("returns API usage list", async () => {
     const result = await harness.action("listApiUsages", {
@@ -901,6 +982,7 @@ describe("Action: listApiUsages", () => {
     const data = resultData(result);
     expect(data).not.toBeNull();
   });
+
   test("accepts dateTimeFrom and dateTimeTo without error", async () => {
     const result = await harness.action("listApiUsages", {
       connection: testConnection,
@@ -912,6 +994,7 @@ describe("Action: listApiUsages", () => {
     expect(result!.data).toBeDefined();
   });
 });
+
 describe("Action: changeLifecycleStatus", () => {
   test("throws on invalid change GUID", async () => {
     await expect(
@@ -922,6 +1005,7 @@ describe("Action: changeLifecycleStatus", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("throws when status transition is invalid for the given change state", async () => {
     const changeGuid = ENV_CHANGE_GUID ?? INVALID_GUID;
     await expect(
@@ -932,6 +1016,7 @@ describe("Action: changeLifecycleStatus", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("successfully submits a change for approval when ENV_CHANGE_GUID is configured", async () => {
     if (!ENV_CHANGE_GUID) {
       console.warn(
@@ -949,6 +1034,7 @@ describe("Action: changeLifecycleStatus", () => {
     const data = resultData(result);
     expect(getRecordString(data.change, "guid")).toBe(ENV_CHANGE_GUID);
   });
+
   test("accepts optional comment, fromStatus, and adminNeedConfig fields", async () => {
     await expect(
       harness.action("changeLifecycleStatus", {
@@ -962,6 +1048,7 @@ describe("Action: changeLifecycleStatus", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("DataSource: categoriesPicklist", () => {
   test("returns an array of picklist items for objectType=items", async () => {
     const result = await harness.dataSource("categoriesPicklist", {
@@ -977,6 +1064,7 @@ describe("DataSource: categoriesPicklist", () => {
       expect(first).toHaveProperty("key");
     }
   });
+
   test("returns an array of picklist items for objectType=changes", async () => {
     const result = await harness.dataSource("categoriesPicklist", {
       connection: testConnection,
@@ -985,6 +1073,7 @@ describe("DataSource: categoriesPicklist", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(result.result)).toBe(true);
   });
+
   test("returns an array of picklist items for objectType=files", async () => {
     const result = await harness.dataSource("categoriesPicklist", {
       connection: testConnection,
@@ -993,6 +1082,7 @@ describe("DataSource: categoriesPicklist", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(result.result)).toBe(true);
   });
+
   test("returns an array of picklist items for objectType=requests", async () => {
     const result = await harness.dataSource("categoriesPicklist", {
       connection: testConnection,
@@ -1001,6 +1091,7 @@ describe("DataSource: categoriesPicklist", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(result.result)).toBe(true);
   });
+
   test("accepts assignable filter", async () => {
     const result = await harness.dataSource("categoriesPicklist", {
       connection: testConnection,
@@ -1011,6 +1102,7 @@ describe("DataSource: categoriesPicklist", () => {
     expect(Array.isArray(result.result)).toBe(true);
   });
 });
+
 describe("DataSource: numberSequencePrefixesPicklist", () => {
   test("returns picklist items for objectType=changes", async () => {
     const result = await harness.dataSource("numberSequencePrefixesPicklist", {
@@ -1025,6 +1117,7 @@ describe("DataSource: numberSequencePrefixesPicklist", () => {
       expect(first).toHaveProperty("key");
     }
   });
+
   test("returns picklist items for objectType=requests", async () => {
     const result = await harness.dataSource("numberSequencePrefixesPicklist", {
       connection: testConnection,
@@ -1033,6 +1126,7 @@ describe("DataSource: numberSequencePrefixesPicklist", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(result.result)).toBe(true);
   });
+
   test("returns picklist items for objectType=qualityprocesses", async () => {
     const result = await harness.dataSource("numberSequencePrefixesPicklist", {
       connection: testConnection,
@@ -1041,6 +1135,7 @@ describe("DataSource: numberSequencePrefixesPicklist", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(result.result)).toBe(true);
   });
+
   test("returns picklist items for objectType=tickets", async () => {
     const result = await harness.dataSource("numberSequencePrefixesPicklist", {
       connection: testConnection,
@@ -1049,6 +1144,7 @@ describe("DataSource: numberSequencePrefixesPicklist", () => {
     expect(result).toBeDefined();
     expect(Array.isArray(result.result)).toBe(true);
   });
+
   test("returns picklist items for objectType=trainingplans", async () => {
     const result = await harness.dataSource("numberSequencePrefixesPicklist", {
       connection: testConnection,
@@ -1058,6 +1154,7 @@ describe("DataSource: numberSequencePrefixesPicklist", () => {
     expect(Array.isArray(result.result)).toBe(true);
   });
 });
+
 describe("DataSource: changeCategoryRoutingsPicklist", () => {
   test("handles invalid category GUID gracefully", async () => {
     try {
@@ -1074,6 +1171,7 @@ describe("DataSource: changeCategoryRoutingsPicklist", () => {
       expect(err).toBeDefined();
     }
   });
+
   test("returns routing picklist items when a valid category GUID is provided", async () => {
     let categoryGuid: string | undefined;
     try {
@@ -1086,18 +1184,21 @@ describe("DataSource: changeCategoryRoutingsPicklist", () => {
         categoryGuid = getRecordString(categories[0], "key");
       }
     } catch {}
+
     if (!categoryGuid) {
       categoryGuid =
         ENV_CATEGORY_GUID_CHANGES !== "PLACEHOLDER_CATEGORY_GUID"
           ? ENV_CATEGORY_GUID_CHANGES
           : undefined;
     }
+
     if (!categoryGuid) {
       console.warn(
         "Skipping changeCategoryRoutingsPicklist routing test: no valid category GUID available",
       );
       return;
     }
+
     const result = await harness.dataSource("changeCategoryRoutingsPicklist", {
       connection: testConnection,
       categoryGuid,
@@ -1111,6 +1212,7 @@ describe("DataSource: changeCategoryRoutingsPicklist", () => {
     }
   });
 });
+
 describe("DataSource: outboundEventIntegrationsPicklist", () => {
   test("returns a picklist of outbound event integrations", async () => {
     const result = await harness.dataSource(
@@ -1128,6 +1230,7 @@ describe("DataSource: outboundEventIntegrationsPicklist", () => {
       expect(first).toHaveProperty("key");
     }
   });
+
   test("accepts enabled=true filter", async () => {
     try {
       const result = await harness.dataSource(
@@ -1146,6 +1249,7 @@ describe("DataSource: outboundEventIntegrationsPicklist", () => {
       );
     }
   });
+
   test("accepts name filter", async () => {
     const result = await harness.dataSource(
       "outboundEventIntegrationsPicklist",
@@ -1158,6 +1262,7 @@ describe("DataSource: outboundEventIntegrationsPicklist", () => {
     expect(dataSourceResultList(result).length).toBe(0);
   });
 });
+
 describe("DataSource: categoryAttributesObjectSelection", () => {
   test("returns gracefully for an invalid category GUID (throws or returns empty)", async () => {
     await expect(
@@ -1168,6 +1273,7 @@ describe("DataSource: categoryAttributesObjectSelection", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("returns object selection entries when a real category GUID is available", async () => {
     let categoryGuid: string | undefined;
     try {
@@ -1180,18 +1286,21 @@ describe("DataSource: categoryAttributesObjectSelection", () => {
         categoryGuid = getRecordString(categories[0], "key");
       }
     } catch {}
+
     if (!categoryGuid) {
       categoryGuid =
         ENV_CATEGORY_GUID_CHANGES !== "PLACEHOLDER_CATEGORY_GUID"
           ? ENV_CATEGORY_GUID_CHANGES
           : undefined;
     }
+
     if (!categoryGuid) {
       console.warn(
         "Skipping categoryAttributesObjectSelection success test: no valid category GUID available",
       );
       return;
     }
+
     const result = await harness.dataSource(
       "categoryAttributesObjectSelection",
       {
@@ -1212,6 +1321,7 @@ describe("DataSource: categoryAttributesObjectSelection", () => {
       expect(Array.isArray(first.fields)).toBe(true);
     }
   });
+
   test("includeInactive=true includes all attributes", async () => {
     let categoryGuid: string | undefined;
     try {
@@ -1224,12 +1334,14 @@ describe("DataSource: categoryAttributesObjectSelection", () => {
         categoryGuid = getRecordString(categories[0], "key");
       }
     } catch {}
+
     if (!categoryGuid) {
       console.warn(
         "Skipping categoryAttributesObjectSelection includeInactive test: no valid category GUID available",
       );
       return;
     }
+
     const activeOnly = await harness.dataSource(
       "categoryAttributesObjectSelection",
       {
@@ -1239,6 +1351,7 @@ describe("DataSource: categoryAttributesObjectSelection", () => {
         includeInactive: false,
       },
     );
+
     const withInactive = await harness.dataSource(
       "categoryAttributesObjectSelection",
       {
@@ -1248,6 +1361,7 @@ describe("DataSource: categoryAttributesObjectSelection", () => {
         includeInactive: true,
       },
     );
+
     expect(dataSourceResultList(withInactive).length).toBeGreaterThanOrEqual(
       dataSourceResultList(activeOnly).length,
     );

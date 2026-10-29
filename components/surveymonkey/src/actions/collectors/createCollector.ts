@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createCollectorInputs } from "../../inputs";
 import { createCollectorExamplePayload } from "../../examplePayloads";
 import type { Collector, CreateCollectorInput } from "../../types";
+
 export const createCollector = action({
   display: {
     label: "Create Collector",
@@ -15,6 +16,7 @@ export const createCollector = action({
     { connection, surveyId, type, name, collectorSettings = {}, extraBody },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body: CreateCollectorInput = {
       type: type as CreateCollectorInput["type"],
       name,
@@ -24,10 +26,12 @@ export const createCollector = action({
       allow_multiple_responses: collectorSettings.allowMultipleResponses,
       ...extraBody,
     };
+
     const { data } = await client.post<Collector>(
       `/surveys/${surveyId}/collectors`,
       body,
     );
+
     return { data };
   },
   examplePayload: createCollectorExamplePayload,

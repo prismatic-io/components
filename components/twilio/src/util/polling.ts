@@ -6,8 +6,10 @@ import type {
   TwilioMessage,
   TwilioRecordChange,
 } from "../types";
+
 const MAX_POLL_LIMIT = 10000;
 const POLL_PAGE_SIZE = 100;
+
 export const fetchMessagesSince = async (
   connection: Connection,
   dateSentAfter: Date,
@@ -15,10 +17,7 @@ export const fetchMessagesSince = async (
   from?: string,
   to?: string,
   dateSentBefore?: Date,
-): Promise<{
-  messages: TwilioMessage[];
-  truncated: boolean;
-}> => {
+): Promise<{ messages: TwilioMessage[]; truncated: boolean }> => {
   const client = createAuthorizedClient(connection, debug);
   const messages = await client.messages.list({
     dateSentAfter,
@@ -33,26 +32,22 @@ export const fetchMessagesSince = async (
     truncated: messages.length >= MAX_POLL_LIMIT,
   };
 };
+
 const toSecond = (date: Date): number => Math.floor(date.getTime() / 1000);
+
 export const nextPollingState = (
   fetched: TwilioMessage[],
   truncated: boolean,
   pollState: PollingState,
-  opts: {
-    lastPolledAt: string;
-    now: string;
-    isBackfill: boolean;
-  },
-): {
-  state: PollingState;
-  warnings: string[];
-} => {
+  opts: { lastPolledAt: string; now: string; isBackfill: boolean },
+): { state: PollingState; warnings: string[] } => {
   if (!truncated) {
     return {
       state: { lastPolledAt: pollState.highWater ?? opts.now },
       warnings: [],
     };
   }
+
   const oldest = fetched
     .map((m) => m.dateSent)
     .filter((d): d is Date => d instanceof Date)
@@ -65,6 +60,7 @@ export const nextPollingState = (
       ],
     };
   }
+
   const warnings: string[] = [];
   const oldestSecond = toSecond(oldest);
   let drainUntil = oldest;
@@ -74,6 +70,7 @@ export const nextPollingState = (
         m.dateSent instanceof Date && toSecond(m.dateSent) === oldestSecond,
     )
     .map((m) => m.sid);
+
   if (
     pollState.drainUntil &&
     toSecond(new Date(pollState.drainUntil)) === oldestSecond
@@ -87,6 +84,7 @@ export const nextPollingState = (
   warnings.push(
     `Polling truncated at the message limit for Twilio. Draining messages sent before ${drainUntil.toISOString()} on the next recurrence.`,
   );
+
   return {
     state: {
       lastPolledAt: opts.lastPolledAt,
@@ -98,6 +96,7 @@ export const nextPollingState = (
     warnings,
   };
 };
+
 export const resolvePollingRecordChanges = (
   data: TwilioChangesObject | undefined,
 ): TwilioRecordChange[] => {

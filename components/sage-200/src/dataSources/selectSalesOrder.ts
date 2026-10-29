@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getClient } from "../client";
 import { company, connection, site } from "../inputs/general";
+
 export const selectSalesOrder = dataSource({
   display: {
     label: "Select Sales Order",
@@ -9,16 +10,13 @@ export const selectSalesOrder = dataSource({
   perform: async (_context, { connection, site, company }) => {
     const client = getClient(connection, false, site, company);
     const { data } =
-      await client.get<
-        {
-          id: number;
-          document_no: string;
-        }[]
-      >("/sop_orders");
+      await client.get<{ id: number; document_no: string }[]>("/sop_orders");
+
     const objects = data.map<Element>((order) => ({
       key: util.types.toString(order.id),
       label: order.document_no,
     }));
+
     return {
       result: objects.sort((a, b) =>
         (a.label ?? "").localeCompare(b.label ?? ""),

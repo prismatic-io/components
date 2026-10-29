@@ -13,6 +13,7 @@ import {
   team_id,
   userId,
 } from "./common";
+
 export const message = input({
   label: "Message",
   placeholder: "Enter message",
@@ -22,6 +23,7 @@ export const message = input({
   example: "Hello from Acme!",
   clean: util.types.toString,
 });
+
 export const messageId = input({
   label: "Message ID",
   placeholder: "Enter message ID",
@@ -32,6 +34,7 @@ export const messageId = input({
   example: "1503435956.000247",
   clean: util.types.toString,
 });
+
 export const username = input({
   label: "Bot Username",
   placeholder: "Enter bot username",
@@ -42,6 +45,7 @@ export const username = input({
   example: "exampleUser",
   clean: cleanString,
 });
+
 export const blocks = input({
   label: "Blocks",
   type: "code",
@@ -68,9 +72,11 @@ export const blocks = input({
     const value = util.types.isJSON(util.types.toString(block))
       ? JSON.parse(util.types.toString(block))
       : block;
+
     return "blocks" in value ? value : { blocks: value };
   },
 });
+
 export const postMessageInputs = {
   connection: connectionInput,
   channelName,
@@ -78,22 +84,26 @@ export const postMessageInputs = {
   username,
   messageId: { ...messageId, required: false },
 };
+
 export const updateMessageInputs = {
   connection: connectionInput,
   channelId,
   messageId,
   message,
 };
+
 export const deletePendingMessageInputs = {
   connection: connectionInput,
   channelId,
   messageId,
 };
+
 export const deleteMessageInputs = {
   connection: connectionInput,
   channelId,
   messageId,
 };
+
 export const postEphemeralMessageInputs = {
   connection: connectionInput,
   channelName,
@@ -101,10 +111,12 @@ export const postEphemeralMessageInputs = {
   message,
   username,
 };
+
 export const postSlackMessageInputs = {
   connection: connectionInput,
   message,
 };
+
 export const postWebhookBlockMessageInputs = {
   connection: connectionInput,
   message: {
@@ -116,6 +128,7 @@ export const postWebhookBlockMessageInputs = {
   },
   blocks,
 };
+
 export const postBlockMessageInputs = {
   connection: connectionInput,
   channelName,
@@ -129,9 +142,11 @@ export const postBlockMessageInputs = {
   username,
   messageId: { ...messageId, required: false },
 };
+
 export const listScheduledMessagesInputs = {
   connection: connectionInput,
 };
+
 const searchMessagesPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -145,6 +160,7 @@ const searchMessagesPagination = structuredObjectInput({
     page,
   },
 });
+
 export const searchMessagesInputs = {
   connection: connectionInput,
   query,

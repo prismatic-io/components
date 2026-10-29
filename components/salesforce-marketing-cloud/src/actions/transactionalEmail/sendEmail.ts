@@ -4,6 +4,7 @@ import { EMAIL_MESSAGES_PATH } from "../../constants";
 import { sendEmailExamplePayload } from "../../examplePayloads";
 import { sendEmailInputs } from "../../inputs";
 import { sendEmailOutputSchema } from "../../outputSchemas";
+
 export const sendEmail = action({
   examplePayload: sendEmailExamplePayload,
   display: {
@@ -29,6 +30,7 @@ export const sendEmail = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       definitionKey: emailDefinitionKey,
       recipient: {
@@ -37,18 +39,18 @@ export const sendEmail = action({
         attributes: recipientAttributes || {},
       },
     };
+
     const { data } = await client.post(
       `${EMAIL_MESSAGES_PATH}/${encodeURIComponent(messageKey)}`,
       body,
     );
+
     return { data };
   },
   examplePerform: async (
     _context,
     { messageKey },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...sendEmailExamplePayload.data,
       responses: [

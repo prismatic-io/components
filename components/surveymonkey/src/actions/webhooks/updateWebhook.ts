@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import type { Webhook } from "../../types";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
@@ -22,6 +23,7 @@ export const updateWebhook = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body: Record<string, unknown> = {
       name,
       event_type: eventType,
@@ -29,10 +31,12 @@ export const updateWebhook = action({
       ...(objectIds && objectIds.length > 0 && { object_ids: objectIds }),
       subscription_url: subscriptionUrl,
     };
+
     const { data } = await client.patch<Webhook>(
       `/webhooks/${webhookId}`,
       body,
     );
+
     return { data };
   },
   examplePayload: updateWebhookExamplePayload,

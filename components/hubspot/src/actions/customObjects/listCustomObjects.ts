@@ -5,6 +5,7 @@ import { listCustomObjectsExamplePayload } from "../../examplePayloads";
 import { listCustomObjectsInputs } from "../../inputs";
 import { getProps } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const listCustomObjects = action({
   display: {
     label: "List Custom Objects",
@@ -21,6 +22,7 @@ export const listCustomObjects = action({
       timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       ["name"],
       additionalProperties || [],
@@ -31,6 +33,7 @@ export const listCustomObjects = action({
         archived: archived,
       },
     });
+
     return { data };
   },
   inputs: listCustomObjectsInputs,

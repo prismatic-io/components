@@ -4,6 +4,7 @@ import { Service } from "../../constants";
 import { sendEventDataExamplePayload } from "../../examplePayloads";
 import { sendEventDataInputs } from "../../inputs";
 import { sendEventDataOutputSchema } from "../../outputSchemas";
+
 export const sendEventData = action({
   display: {
     label: "Send Event Data",
@@ -16,19 +17,19 @@ export const sendEventData = action({
       context.debug.enabled,
       Service.INSIGHTS,
     );
+
     const { data } = await client.post(`/accounts/${params.accountId}/events`, [
       {
         ...params.additionalAttributes,
         eventType: params.eventType,
       },
     ]);
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...sendEventDataExamplePayload,
   }),
   outputSchema: outputSchema({
@@ -38,4 +39,5 @@ export const sendEventData = action({
   examplePayload: sendEventDataExamplePayload,
   inputs: sendEventDataInputs,
 });
+
 export default sendEventData;

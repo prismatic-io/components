@@ -1,6 +1,7 @@
 import FormData from "form-data";
 import { type Connection, util } from "@prismatic-io/spectral";
 import { URLSearchParams } from "url";
+
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {
     if (value !== null && value.trim() !== "") {
@@ -9,6 +10,7 @@ export const jsonInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 export const valueListInputClean = (value: unknown) => {
   const IS_ARRAY_WITH_NO_DEFAULT_VALUE =
     Array.isArray(value) && value.length >= 1 && value[0].trim() !== "";
@@ -17,6 +19,7 @@ export const valueListInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 export const valueListInputToStringClean = (value: unknown) => {
   const IS_ARRAY_WITH_NO_DEFAULT_VALUE =
     Array.isArray(value) && value.length >= 1 && value[0].trim() !== "";
@@ -25,8 +28,10 @@ export const valueListInputToStringClean = (value: unknown) => {
   }
   return undefined;
 };
+
 const validateDataType = (value: unknown) => {
   const type = typeof value;
+
   switch (type) {
     case "string":
       if (value === "" || value === null) {
@@ -54,15 +59,19 @@ const validateDataType = (value: unknown) => {
       return false;
   }
 };
+
 export const generateForm = (data: unknown) => {
   const formData = new FormData();
+
   for (const [key, value] of Object.entries(data)) {
     if (validateDataType(value)) {
       formData.append(key, value);
     }
   }
+
   return formData;
 };
+
 export const generatePayload = (
   data: Record<string, unknown>,
   connection: Connection,

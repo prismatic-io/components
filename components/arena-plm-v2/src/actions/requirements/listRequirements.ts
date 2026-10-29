@@ -5,6 +5,7 @@ import { listRequirementsInputs } from "../../inputs";
 import { requirementListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listRequirements = action({
   display: {
     label: "List Requirements",

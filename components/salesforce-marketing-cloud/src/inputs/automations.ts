@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection, fetchAll, pagination } from "./common";
+
 const automationId = input({
   label: "Automation ID",
   type: "string",
@@ -11,15 +12,18 @@ const automationId = input({
   dataSource: "selectAutomation",
   clean: util.types.toString,
 });
+
 export const listAutomationsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getAutomationInputs = {
   connection,
   automationId,
 };
+
 export const createAutomationInputs = {
   connection,
   automationName: input({
@@ -59,6 +63,7 @@ export const createAutomationInputs = {
     clean: util.types.toObject,
   }),
 };
+
 export const updateAutomationInputs = {
   connection,
   automationId,
@@ -80,6 +85,7 @@ export const updateAutomationInputs = {
     clean: util.types.toObject,
   }),
 };
+
 export const executeAutomationActivitiesInputs = {
   connection,
   automationId,

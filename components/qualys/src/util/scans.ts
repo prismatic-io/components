@@ -1,4 +1,5 @@
 import type { ClassicScan, NormalizedScan } from "../types";
+
 export const normalizeScan = (scan: ClassicScan): NormalizedScan => ({
   ref: scan.REF,
   title: scan.TITLE,

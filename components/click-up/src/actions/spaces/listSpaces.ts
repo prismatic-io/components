@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { listSpacesExamplePayload } from "../../examplePayloads";
 import { listSpacesInputs } from "../../inputs";
 import { listSpacesOutputSchema } from "../../outputSchemas";
+
 export const listSpaces = action({
   display: {
     label: "List Spaces",
@@ -19,7 +20,9 @@ export const listSpaces = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/team/${teamId}/space`);
+
     return {
       data,
     };

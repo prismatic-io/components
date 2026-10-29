@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../utils";
+
 export const companyDisplayName = input({
   label: "Display Name",
   comments: "The name of the company as it should be displayed to users.",
@@ -9,6 +10,7 @@ export const companyDisplayName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const companyAddressLine1 = input({
   label: "Address Line 1",
   comments: "The first line of the company's address.",
@@ -18,6 +20,7 @@ export const companyAddressLine1 = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyAddressLine2 = input({
   label: "Address Line 2",
   comments: "The second line of the company's address.",
@@ -27,6 +30,7 @@ export const companyAddressLine2 = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyCity = input({
   label: "City",
   comments: "The city where the company is located.",
@@ -36,6 +40,7 @@ export const companyCity = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyState = input({
   label: "State",
   comments: "The state where the company is located.",
@@ -45,6 +50,7 @@ export const companyState = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyCountry = input({
   label: "Country",
   comments: "The country where the company is located.",
@@ -54,6 +60,7 @@ export const companyCountry = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyPostalCode = input({
   label: "Postal Code",
   comments: "The postal code of the company's address.",
@@ -63,6 +70,7 @@ export const companyPostalCode = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyPhoneNumber = input({
   label: "Phone Number",
   comments: "The company's phone number.",
@@ -72,6 +80,7 @@ export const companyPhoneNumber = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyFaxNumber = input({
   label: "Fax Number",
   example: "+1 425 555 0101",
@@ -81,6 +90,7 @@ export const companyFaxNumber = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyEmail = input({
   label: "Email",
   example: "example@gmail.com",
@@ -90,6 +100,7 @@ export const companyEmail = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyWebsite = input({
   label: "Website",
   comments: "The company's website URL.",
@@ -99,6 +110,7 @@ export const companyWebsite = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyTaxRegistrationNumber = input({
   label: "Tax Registration Number",
   example: "f80b7995-6869-4958-ac60-25e4fcdeeada",
@@ -108,6 +120,7 @@ export const companyTaxRegistrationNumber = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyCurrencyCode = input({
   label: "Currency Code",
   comments: "The currency code used by the company.",
@@ -117,6 +130,7 @@ export const companyCurrencyCode = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyCurrentFiscalYearStartDate = input({
   label: "Current Fiscal Year Start Date",
   comments: "The start date of the company's current fiscal year.",
@@ -126,6 +140,7 @@ export const companyCurrentFiscalYearStartDate = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const companyIndustry = input({
   label: "Industry",
   example: "yourIndustryHere",
@@ -135,6 +150,7 @@ export const companyIndustry = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const address = structuredObjectInput({
   label: "Address",
   required: false,
@@ -148,6 +164,7 @@ export const address = structuredObjectInput({
     companyPostalCode,
   },
 });
+
 export const contactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
@@ -159,6 +176,7 @@ export const contactInfo = structuredObjectInput({
     companyWebsite,
   },
 });
+
 export const companyInformationId = input({
   label: "Company Information ID",
   comments: "The unique identifier of the company information object.",

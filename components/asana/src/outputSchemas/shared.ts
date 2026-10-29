@@ -8,6 +8,7 @@ export const userCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const workspaceCompactSchema = {
   type: "object" as const,
   properties: {
@@ -18,6 +19,7 @@ export const workspaceCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const projectCompactSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +34,7 @@ export const projectCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const teamCompactSchema = {
   type: "object" as const,
   properties: {
@@ -42,6 +45,7 @@ export const teamCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const tagCompactSchema = {
   type: "object" as const,
   properties: {
@@ -52,6 +56,7 @@ export const tagCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const sectionCompactSchema = {
   type: "object" as const,
   properties: {
@@ -62,6 +67,7 @@ export const sectionCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const taskCompactSchema = {
   type: "object" as const,
   properties: {
@@ -84,6 +90,7 @@ export const taskCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const asanaResourceSchema = {
   type: "object" as const,
   properties: {
@@ -93,6 +100,7 @@ export const asanaResourceSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const enumOptionSchema = {
   type: "object" as const,
   properties: {
@@ -105,6 +113,7 @@ export const enumOptionSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const likeSchema = {
   type: "object" as const,
   properties: {
@@ -114,6 +123,7 @@ export const likeSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const statusUpdateCompactSchema = {
   type: "object" as const,
   properties: {
@@ -132,6 +142,7 @@ export const statusUpdateCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const customFieldCompactSchema = {
   type: "object" as const,
   properties: {
@@ -202,6 +213,7 @@ export const customFieldCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const attachmentCompactSchema = {
   type: "object" as const,
   properties: {
@@ -224,6 +236,7 @@ export const attachmentCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const portfolioCompactSchema = {
   type: "object" as const,
   properties: {
@@ -238,6 +251,7 @@ export const portfolioCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const projectTemplateCompactSchema = {
   type: "object" as const,
   properties: {
@@ -248,6 +262,7 @@ export const projectTemplateCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const customTypeCompactSchema = {
   type: "object" as const,
   properties: {
@@ -259,6 +274,7 @@ export const customTypeCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const projectBriefCompactSchema = {
   type: "object" as const,
   properties: {
@@ -268,6 +284,7 @@ export const projectBriefCompactSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const customFieldSettingSchema = {
   type: "object" as const,
   properties: {
@@ -281,6 +298,7 @@ export const customFieldSettingSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const taskMembershipSchema = {
   type: "object" as const,
   properties: {
@@ -290,6 +308,7 @@ export const taskMembershipSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const webhookFilterSchema = {
   type: "object" as const,
   properties: {
@@ -304,6 +323,7 @@ export const webhookFilterSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const nextPageSchema = {
   type: ["object", "null"],
   properties: {
@@ -313,6 +333,7 @@ export const nextPageSchema = {
   },
   additionalProperties: true,
 };
+
 export const emptyResponseOutputSchema = {
   type: "object" as const,
   properties: {
@@ -325,6 +346,7 @@ export const emptyResponseOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const deleteInstanceWebhooksOutputSchema = {
   type: "object" as const,
   properties: {},

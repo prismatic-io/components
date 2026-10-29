@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const projectSchema = {
   type: "object" as const,
   properties: {
@@ -135,7 +136,11 @@ const projectSchema = {
     "jobIds",
   ],
 };
+
 export const createProjectOutputSchema = projectSchema;
+
 export const getProjectOutputSchema = projectSchema;
+
 export const updateProjectOutputSchema = projectSchema;
+
 export const listProjectsOutputSchema = listEnvelope(projectSchema);

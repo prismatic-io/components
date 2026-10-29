@@ -8,8 +8,10 @@ import { util, type KeyValuePair } from "@prismatic-io/spectral";
 import type { DynamoDBValue } from "./interfaces/Types";
 // biome-ignore lint/suspicious/useIsArray: for backwards compatibility
 const toSet = (input: unknown) => (input instanceof Array ? input : []);
+
 const S = (input: unknown) => util.types.toString(input);
 const B = (input: unknown) => Buffer.from(util.types.toString(input));
+
 export const coerceValue = (
   key: string,
   value: unknown,
@@ -38,6 +40,7 @@ export const coerceValue = (
       throw new Error(`You must specify a value type for key "${key}"`);
   }
 };
+
 export const convertDataType = (
   items: KeyValuePair<unknown>[],
   itemTypes: KeyValuePair<unknown>[],
@@ -61,12 +64,14 @@ export const convertDataType = (
   }
   return itemsResult;
 };
+
 interface GetItemKeySearchParams {
   client: DynamoDBClient;
   tableName: string;
   hashKeyValue: unknown;
   rangeKeyValue?: unknown;
 }
+
 export const getItemKeySearch = async ({
   client,
   tableName,
@@ -74,8 +79,10 @@ export const getItemKeySearch = async ({
   rangeKeyValue,
 }: GetItemKeySearchParams): Promise<Record<string, AttributeValue>> => {
   const keys: Record<string, AttributeValue> = {};
+
   const describeCommand = new DescribeTableCommand({ TableName: tableName });
   const { Table } = await client.send(describeCommand);
+
   const hashKey = util.types.toString(
     Table?.KeySchema?.filter((key) => key.KeyType === "HASH")[0].AttributeName,
   );
@@ -84,21 +91,26 @@ export const getItemKeySearch = async ({
       (attribute) => attribute.AttributeName === hashKey,
     )[0].AttributeType,
   );
+
   keys[hashKey] = coerceValue(hashKey, hashKeyValue, hashKeyType);
+
   const rangeKey = util.types.toString(
     Table?.KeySchema?.filter((key) => key.KeyType === "RANGE")?.[0]
       ?.AttributeName,
   );
+
   if (rangeKey && !rangeKeyValue) {
     throw new Error(
       "Your table has a range key, but you did not provide a range key value",
     );
   }
+
   if (!rangeKey && rangeKeyValue) {
     throw new Error(
       "Your table does not have a range key, but you provided one",
     );
   }
+
   if (rangeKey) {
     const rangeKeyType = util.types.toString(
       Table?.AttributeDefinitions?.filter(
@@ -107,10 +119,13 @@ export const getItemKeySearch = async ({
     );
     keys[rangeKey] = coerceValue(rangeKey, rangeKeyValue, rangeKeyType);
   }
+
   return keys;
 };
+
 export const cleanObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const cleanKeyValueListInput = (value: unknown) =>
   value
     ? util.types.keyValPairListToObject(
@@ -118,12 +133,14 @@ export const cleanKeyValueListInput = (value: unknown) =>
         util.types.toObject,
       )
     : undefined;
+
 // biome-ignore lint/style/useConst: previously disabled for eslint
 let transformDynamoDBValue: (value: DynamoDBValue) => unknown;
 // biome-ignore lint/style/useConst: previously disabled for eslint
 let transformDynamoDBObject: (
   item: Record<string, DynamoDBValue>,
 ) => Record<string, unknown>;
+
 transformDynamoDBObject = (
   item: Record<string, DynamoDBValue>,
 ): Record<string, unknown> => {
@@ -135,6 +152,7 @@ transformDynamoDBObject = (
     {},
   );
 };
+
 transformDynamoDBValue = (value: DynamoDBValue): unknown => {
   if ("S" in value) {
     return value.S;
@@ -153,6 +171,8 @@ transformDynamoDBValue = (value: DynamoDBValue): unknown => {
   }
   return null;
 };
+
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+
 export { transformDynamoDBObject };

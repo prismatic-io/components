@@ -31,21 +31,26 @@ import {
   resolveChangeHistoryItems,
   searchGoogleAds,
 } from "../util";
+
 const changeHistoryPerform = async (
   context: PollingContext,
   payload: TriggerPayload,
   params: ActionInputParameters<typeof changeHistoryTriggerInputs>,
 ) => {
   const { client, timezone } = await createTriggerClient(context, params);
+
   const nowTime = getGAQLDateTime(timezone);
+
   const initialLastChangeTime = params.lookBackDate
     ? `${params.lookBackDate} ${LOOK_BACK_DATE_START_TIME}`
     : getGAQLDateTime(timezone, DEFAULT_INITIAL_LOOK_BACK_HOURS);
+
   const pollState = getPollingState<ChangeEventPollingState>(context, {
     lastChangeTime: initialLastChangeTime,
     errorCount: 0,
     consecutiveErrors: 0,
   });
+
   try {
     const incoming = payload.paginationState as ChangeEventCursor | undefined;
     const isContinuation = Boolean(incoming ?? pollState.inFlightCursor);
@@ -55,7 +60,9 @@ const changeHistoryPerform = async (
       nowTime,
       timeZone: timezone,
     });
+
     const pageSize = resolveChangeEventPageSize(context.batch?.enabled);
+
     let rows: ChangeEventResponse[] = [];
     if (cursor.sinceTime < cursor.toTime) {
       const data = await searchGoogleAds<ChangeEventResponse>(client, {
@@ -73,13 +80,16 @@ const changeHistoryPerform = async (
       });
       rows = data.results ?? [];
     }
+
     const { emit, nextCursor } = advanceChangeEventCursor(
       rows,
       cursor,
       pageSize,
       context.logger,
     );
+
     const results = [...emit].reverse();
+
     context.polling.setState({
       lastChangeTime: nextCursor ? pollState.lastChangeTime : cursor.toTime,
       ...(nextCursor ? { inFlightCursor: nextCursor } : {}),
@@ -87,6 +97,7 @@ const changeHistoryPerform = async (
       errorCount: 0,
       consecutiveErrors: 0,
     } satisfies ChangeEventPollingState);
+
     return Promise.resolve({
       payload: {
         ...buildTriggerPayload(payload, {
@@ -111,6 +122,7 @@ const changeHistoryPerform = async (
     );
   }
 };
+
 export const changeHistoryTrigger = pollingTrigger({
   display: {
     label: "Account Change History",
@@ -131,4 +143,5 @@ export const changeHistoryTrigger = pollingTrigger({
   perform: changeHistoryPerform,
   examplePayload: changeHistoryTriggerExamplePayload,
 });
+
 export default changeHistoryTrigger;

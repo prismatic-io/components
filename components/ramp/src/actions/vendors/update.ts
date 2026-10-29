@@ -10,6 +10,7 @@ import {
   vendorId,
 } from "../../inputs";
 import { updateVendorOutputSchema } from "../../outputSchemas";
+
 export const updateVendor = action({
   display: {
     label: "Update Vendor",
@@ -36,6 +37,7 @@ export const updateVendor = action({
     { connection, vendorId, code, name, reactivate, subsidiaries },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.patch(`/accounting/vendors/${vendorId}`, {
       code,
       name,
@@ -49,9 +51,7 @@ export const updateVendor = action({
   examplePerform: async (
     _context,
     { code, name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateVendorResponse,
       code: code ?? updateVendorResponse.code,

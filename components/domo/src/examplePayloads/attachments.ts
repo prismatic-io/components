@@ -10,10 +10,13 @@ export const addAttachmentExamplePayload = {
     uploadedAt: "2024-03-22T11:00:00.000Z",
   },
 };
+
 export const deleteAttachmentExamplePayload = { data: null };
+
 export const downloadAttachmentExamplePayload = {
   data: "<binary file content>",
 };
+
 export const getListOfAttachmentsExamplePayload = {
   data: [
     addAttachmentExamplePayload.data,

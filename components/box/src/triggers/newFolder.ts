@@ -10,6 +10,7 @@ import {
   normalizeDatesBetweenEntries,
   resolveFolderChanges,
 } from "../util";
+
 export const newFolder = pollingTrigger({
   display: {
     label: "New Folders",
@@ -28,6 +29,7 @@ export const newFolder = pollingTrigger({
     const client = createAuthorizedClient({ boxConnection: connection });
     const lastPolledAt = getLastPolledAt(context, lookBackDate || now);
     const fields = "name,created_at,id,type";
+
     context.logger.debug(`Polling for changes from: ${lastPolledAt} to ${now}`);
     const entries = await getFolderEntries({
       client,
@@ -35,15 +37,18 @@ export const newFolder = pollingTrigger({
       fields,
       limit: MAX_PAGE_SIZE,
     });
+
     context.logger.info("Polled entries: ", JSON.stringify(entries, null, 2));
     context.logger.info("Normalizing entry dates...");
     const normalizedEntries = normalizeDatesBetweenEntries(
       entries.filter(({ type }) => type === FOLDER_TYPE),
     );
+
     context.logger.info("Computing new folders...");
     const newFolders = normalizedEntries.filter(
       (entry) => entry.created_at > lastPolledAt,
     );
+
     context.logger.info("Setting polling state...");
     context.polling.setState({ lastPolledAt: now });
     return buildPollingResult(payload, {

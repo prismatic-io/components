@@ -8,6 +8,7 @@ import {
   recordType,
 } from "../inputs";
 import { UPDATE_PURCHASE_REQUISITION_DEFAULT_VALUE } from "../constants";
+
 export const updateRecord = action({
   display: {
     label: "Update Record",

@@ -20,6 +20,7 @@ import {
   uploadToStorage,
 } from "../../inputs";
 import { convertToBase64 } from "../../utils";
+
 export const convertPdfToDoc = action({
   display: {
     label: "Convert PDF to DOC",
@@ -112,12 +113,14 @@ export const convertPdfToDoc = action({
         ? convertToBase64(documentPassword)
         : undefined,
     };
+
     if (!fileContent) {
       if (!documentName) {
         throw new Error(
           "Document Name input is required whenever pre-conversion file is located in an Aspose storage.",
         );
       }
+
       if (!uploadToStorage) {
         const { data } = await client.get(`/pdf/${documentName}/convert/doc`, {
           headers: {
@@ -128,13 +131,16 @@ export const convertPdfToDoc = action({
             folder: folderPath || undefined,
           },
         });
+
         response = data;
       }
+
       if (!outPath) {
         throw new Error(
           "Out Path input is required whenever trying to save post-conversion file into an aspose storage.",
         );
       }
+
       const { data } = await client.put(
         `/pdf/${documentName}/convert/doc`,
         null,
@@ -146,6 +152,7 @@ export const convertPdfToDoc = action({
           },
         },
       );
+
       response = data;
     } else {
       if (!uploadToStorage)
@@ -154,19 +161,23 @@ export const convertPdfToDoc = action({
             "input and wanting the converted file to be returned in response body)" +
             " is not supported by Aspose's API.",
         );
+
       if (!outPath) {
         throw new Error(
           "Out Path input is required whenever trying to save post-conversion file into an Aspose storage.",
         );
       }
+
       const { data } = await client.put("/pdf/convert/doc", fileContent.data, {
         params: {
           ...commonParams,
           outPath,
         },
       });
+
       response = data;
     }
+
     return { data: response };
   },
   examplePayload: convertPdfToDocExamplePayload,

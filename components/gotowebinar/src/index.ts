@@ -4,6 +4,7 @@ import dataSources from "./dataSources";
 import connections from "./connections";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import triggers from "./triggers";
+
 export default component({
   key: "gotowebinar",
   public: true,

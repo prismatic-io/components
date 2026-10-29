@@ -4,6 +4,7 @@ import { deleteDraftOrderExamplePayload as examplePayload } from "../../../examp
 import { deleteDraftOrderInputs as inputs } from "../../../inputsGql";
 import { deleteDraftOrderGqlOutputSchema } from "../../../outputSchemas";
 import deleteDraftOrderQuery from "../queries/draftOrders/DeleteDraftOrder.gql";
+
 export const deleteDraftOrderGql = action({
   display: {
     label: "Delete Draft Order",
@@ -17,13 +18,14 @@ export const deleteDraftOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      draftOrderDelete: Record<string, unknown>;
-    } = await client.request(deleteDraftOrderQuery, {
-      input: {
-        id: draftOrderId,
-      },
-    });
+
+    const data: { draftOrderDelete: Record<string, unknown> } =
+      await client.request(deleteDraftOrderQuery, {
+        input: {
+          id: draftOrderId,
+        },
+      });
+
     return {
       data: data.draftOrderDelete,
     };

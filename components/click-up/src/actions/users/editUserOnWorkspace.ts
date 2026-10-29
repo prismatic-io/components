@@ -4,6 +4,7 @@ import { editUserOnWorkspaceExamplePayload } from "../../examplePayloads";
 import { editUserOnWorkspaceInputs } from "../../inputs";
 import { editUserOnWorkspaceOutputSchema } from "../../outputSchemas";
 import type { GetUserResponse } from "../../types";
+
 export const editUserOnWorkspace = action({
   display: {
     label: "Edit User on Workspace",
@@ -32,6 +33,7 @@ export const editUserOnWorkspace = action({
       admin,
       custom_role_id: customRoleId,
     };
+
     const { data } = await client.put(`/team/${teamId}/user/${userId}`, body);
     return { data };
   },

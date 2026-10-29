@@ -2,8 +2,10 @@ import { GoogleGenAI } from "@google/genai";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { apiKeyConnection, vertexAIConnection } from "./connections";
 import { getAuthToken, validateConnection } from "./util";
+
 export const createGeminiClient = (connection: Connection): GoogleGenAI => {
   validateConnection(connection);
+
   if (connection.key === apiKeyConnection.key) {
     const apiKey = getAuthToken(connection);
     return new GoogleGenAI({

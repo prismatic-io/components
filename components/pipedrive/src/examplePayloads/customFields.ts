@@ -29,6 +29,7 @@ export const getPersonFieldDetailsExamplePayload = {
     },
   },
 };
+
 export const setFieldValueForPersonExamplePayload = {
   data: {
     success: true,

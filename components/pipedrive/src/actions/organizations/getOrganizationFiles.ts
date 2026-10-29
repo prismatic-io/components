@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getOrganizationFilesInputs } from "../../inputs";
 import { getOrganizationFilesExamplePayload } from "../../examplePayloads";
 import { getOrganizationFilesOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationFiles = action({
   display: {
     label: "Get Organization Files",

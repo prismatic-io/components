@@ -4,6 +4,7 @@ import { updateCustomerExamplePayload } from "../../examplePayloads";
 import { updateRecordInputs } from "../../inputs";
 import { updateRecordOutputSchema } from "../../outputSchemas";
 import { parseLocationData } from "../../utils";
+
 export const updateRecord = action({
   display: {
     label: "Update Record",
@@ -43,9 +44,7 @@ export const updateRecord = action({
   examplePerform: async (
     _context,
     { recordType, id },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateCustomerExamplePayload.data,
       data: {

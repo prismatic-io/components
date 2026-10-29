@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, $select } from "../../inputs/general";
 import { defaultRecordInputs } from "../../inputs/records/general";
+
 export const getRecord = action({
   display: {
     label: "Get Record",
@@ -14,6 +15,7 @@ export const getRecord = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/${recordType}(${recordId})`, {
       params: {
         $select,

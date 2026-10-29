@@ -3,6 +3,7 @@ import { ClientType, createClient } from "../../client";
 import { getNotificationDetailsExamplePayload } from "../../examplePayloads/notifications";
 import { notificationGetDetailsInputs } from "../../inputs";
 import { fetchAllPages } from "../../util/pagination";
+
 export const crmGetNotificationDetails = action({
   display: {
     label: "CRM - Get Notification Details",
@@ -19,6 +20,7 @@ export const crmGetNotificationDetails = action({
       ClientType.CRM,
       context.debug.enabled,
     );
+
     const data = await fetchAllPages(
       crmClient,
       "/actions/watch",
@@ -31,6 +33,7 @@ export const crmGetNotificationDetails = action({
       "watch",
       fetchAll,
     );
+
     return {
       data,
     };

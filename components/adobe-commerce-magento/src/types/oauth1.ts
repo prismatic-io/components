@@ -4,6 +4,7 @@ export interface Oauth1Credentials {
   accessToken: string;
   accessTokenSecret: string;
 }
+
 export interface Oauth1Request {
   method: string;
   url: string;

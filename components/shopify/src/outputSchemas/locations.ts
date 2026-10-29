@@ -1,4 +1,5 @@
 import { countSchema, pageInfoSchema } from "./shared";
+
 const locationSchema = {
   type: "object" as const,
   properties: {
@@ -23,13 +24,16 @@ const locationSchema = {
     isActive: { type: "boolean" as const },
   },
 };
+
 export const countLocationsGqlOutputSchema = countSchema;
+
 export const getLocationsGqlOutputSchema = {
   type: "object" as const,
   properties: {
     location: locationSchema,
   },
 };
+
 export const listLocationsGqlOutputSchema = {
   type: "object" as const,
   properties: {

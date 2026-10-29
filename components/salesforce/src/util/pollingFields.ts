@@ -5,6 +5,7 @@ import {
   SHORT_TEXT_AREA_MAX_LENGTH,
 } from "../constants";
 import type { PollingFieldLogger } from "../types";
+
 export const resolvePollingFields = async (
   client: Connection,
   recordType: string,
@@ -15,11 +16,14 @@ export const resolvePollingFields = async (
   if (returnIdsOnly) {
     return [...REQUIRED_POLL_FIELDS];
   }
+
   if (selectedFields.length > 0) {
     return [...new Set([...REQUIRED_POLL_FIELDS, ...selectedFields])];
   }
+
   const described = await client.describe(recordType);
   const allFields = described.fields.map((field) => field.name);
+
   const longTextCount = described.fields.filter(
     (field) =>
       (field.type === "textarea" &&
@@ -31,6 +35,7 @@ export const resolvePollingFields = async (
       `Record type ${recordType} has ${longTextCount} long-text fields and no Selected Fields set. Salesforce clamps this query to 200 records per page, requiring more API traffic.`,
     );
   }
+
   logger.debug(`Selecting ${allFields.length} fields for ${recordType}.`);
   return [...new Set([...REQUIRED_POLL_FIELDS, ...allFields])];
 };

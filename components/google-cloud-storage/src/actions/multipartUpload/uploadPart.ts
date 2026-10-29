@@ -9,6 +9,7 @@ import {
   partNumber,
   uploadId,
 } from "../../inputs";
+
 export const uploadPartOfAMultipartUpload = action({
   display: {
     label: "Upload Part of a Multipart Upload",
@@ -48,7 +49,9 @@ export const uploadPartOfAMultipartUpload = action({
         partNumber,
       },
     });
+
     const etag = headers.etag;
+
     return {
       data: {
         PartNumber: partNumber,

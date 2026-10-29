@@ -1,4 +1,5 @@
 import { $filter, aoid, connection } from "./common";
+
 export const selectPersonalContactInputs = {
   aoid: {
     ...aoid,
@@ -6,6 +7,7 @@ export const selectPersonalContactInputs = {
   },
   connection,
 };
+
 export const selectWorkerInputs = {
   $filter: {
     ...$filter,

@@ -13,6 +13,7 @@ import {
   portfolioId,
   workspaceId,
 } from "./common";
+
 const portfolioName = input({
   label: "Portfolio Name",
   type: "string",
@@ -22,6 +23,7 @@ const portfolioName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const isPublic = input({
   label: "Public",
   type: "boolean",
@@ -30,6 +32,7 @@ const isPublic = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const createPortfolioInputs = {
   asanaConnection: connectionInput,
   color,
@@ -38,6 +41,7 @@ export const createPortfolioInputs = {
   portfolioName,
   workspaceId,
 };
+
 export const updatePortfolioInputs = {
   asanaConnection: connectionInput,
   color: { ...color, required: false, clean: toOptionalString },
@@ -46,24 +50,29 @@ export const updatePortfolioInputs = {
   portfolioName: { ...portfolioName, required: false, clean: toOptionalString },
   workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
+
 export const getPortfolioInputs = {
   asanaConnection: connectionInput,
   portfolioId,
 };
+
 export const deletePortfolioInputs = {
   asanaConnection: connectionInput,
   portfolioId,
 };
+
 export const listPortfoliosInputs = {
   asanaConnection: connectionInput,
   pagination,
   workspaceId,
 };
+
 export const addUserToPortfolioInputs = {
   asanaConnection: connectionInput,
   members,
   portfolioId,
 };
+
 export const removeUserFromPortfolioInputs = {
   asanaConnection: connectionInput,
   members,
@@ -74,6 +83,7 @@ export const removeUserFromPortfolioInputs = {
   },
   portfolioId,
 };
+
 export const addCustomFieldToPortfolioInputs = {
   asanaConnection: connectionInput,
   fieldId,
@@ -82,6 +92,7 @@ export const addCustomFieldToPortfolioInputs = {
   isImportant,
   portfolioId,
 };
+
 export const removeCustomFieldFromPortfolioInputs = {
   asanaConnection: connectionInput,
   fieldId,

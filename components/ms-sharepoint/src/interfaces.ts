@@ -2,6 +2,7 @@ export interface Drive {
   id: string;
   name: string;
 }
+
 export interface DriveItem {
   id: string;
   name: string;
@@ -15,71 +16,81 @@ export interface DriveItem {
   webUrl?: string;
   lastModifiedDateTime?: string;
   createdDateTime?: string;
-  deleted?: {
-    state: string;
-  };
+  deleted?: { state: string };
   parentReference: {
     driveId: string;
     id: string;
     path: string;
   };
 }
+
 export interface DriveResponse {
   value: DriveItem[];
   "@odata.nextLink"?: string;
   "@odata.context": string;
 }
+
 export interface DriveDeltaResponse extends DriveResponse {
   "@odata.deltaLink": string;
 }
+
 export interface DriveDeltaPage extends DriveResponse {
   "@odata.deltaLink"?: string;
 }
+
 export interface DeltaCursor extends Record<string, unknown> {
   nextLink: string;
 }
+
 export interface SiteDeltaCursor extends Record<string, unknown> {
   remaining: string[];
   nextLink?: string;
 }
+
 export interface PaginateOptions {
   returnFullData?: boolean;
   useTop?: boolean;
   excludeParents?: boolean;
 }
+
 export interface ListItem {
   id: string;
-  fields: {
-    Title: string;
-  };
+  fields: { Title: string };
 }
+
 export interface Subscription {
   id: string;
   resource: string;
   changeType: string;
   notificationUrl: string;
 }
+
 export interface PollSiteChangesSeparatedChanges {
   deleted?: DriveItem[];
   added?: DriveItem[];
   updated?: DriveItem[];
   moved?: DriveItem[];
 }
+
 export interface PollSiteChangesResult {
   [key: string]: PollSiteChangesSeparatedChanges;
 }
+
 export interface PollingRecordChange {
   changeType: "deleted" | "added" | "updated" | "moved";
   record: DriveItem;
 }
+
 export interface PollingState {
   [key: string]: string;
 }
+
 export interface DriveTriggerItem {
   isDeleted: boolean;
   separatedChanges: PollSiteChangesSeparatedChanges;
   change: DriveItem;
 }
+
 export interface WebhookNotification {
   subscriptionId: string;
   clientState?: string;
@@ -93,6 +104,7 @@ export interface WebhookNotification {
   subscriptionExpirationDateTime?: string;
   tenantId?: string;
 }
+
 export interface WebhookNotificationPayload {
   value: WebhookNotification[];
 }

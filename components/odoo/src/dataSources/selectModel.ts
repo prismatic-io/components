@@ -10,6 +10,7 @@ import {
 } from "../legacy";
 import type { Model } from "../types";
 import { getFilters, paginateSearch, sortByLabelASC } from "../util";
+
 export const selectModel = dataSource({
   display: {
     label: "Select Model",

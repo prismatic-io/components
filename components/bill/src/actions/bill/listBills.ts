@@ -5,6 +5,7 @@ import { getClient } from "../../client";
 import { listBillsInputs } from "../../inputs/bill";
 import { listBillsExamplePayload } from "../../examplePayloads";
 import { RESOURCE_CONFIG } from "../../constants";
+
 export const listBills = action({
   display: {
     label: "List Bills",
@@ -19,6 +20,7 @@ export const listBills = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       start,
       max,
@@ -31,17 +33,17 @@ export const listBills = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       RESOURCE_CONFIG.bills.endpoint,
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listBillsExamplePayload.data,
   }),
   inputs: listBillsInputs,

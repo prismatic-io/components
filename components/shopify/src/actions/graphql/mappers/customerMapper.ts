@@ -1,5 +1,6 @@
 import type { Customer } from "../../../types";
 import { getNumericId } from "../../../util";
+
 export const customerMapper = (customer: Customer) => {
   const customerId = customer.id ? getNumericId(customer.id) : null;
   return {
@@ -40,6 +41,7 @@ export const customerMapper = (customer: Customer) => {
           country_name: address.country,
         }))
       : null,
+
     tax_exemptions: customer.taxExemptions,
     email_marketing_consent: customer.emailMarketingConsent
       ? {

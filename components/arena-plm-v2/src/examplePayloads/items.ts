@@ -8,11 +8,13 @@ import type {
   NumberFormatCompactResultRep,
   NumberFormatFullVo,
 } from "../types";
+
 const sampleItemUser = {
   guid: "9ZY87XW65VU43TS21RQ09PO8",
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleItemFull: ItemFullVo = {
   guid: "IT111ABC222DEF333GHI4445",
   url: {
@@ -54,6 +56,7 @@ const sampleItemFull: ItemFullVo = {
     },
   ],
 };
+
 const sampleFileDetail: FileDetailVo = {
   guid: "7GG88HH99II00JJ11KK22LL3",
   name: "controller-board-spec.pdf",
@@ -72,12 +75,14 @@ const sampleFileDetail: FileDetailVo = {
   latest: true,
   private: false,
 };
+
 const sampleItemFile: ItemFileVo = {
   guid: "IF100AAA200BBB300CCC4001",
   file: sampleFileDetail,
   latestEditionAssociation: true,
   primary: true,
 };
+
 export const changeItemLifecyclePhaseExamplePayload: {
   data: ItemLifecycleChangeResponseVo;
 } = {
@@ -105,21 +110,19 @@ export const changeItemLifecyclePhaseExamplePayload: {
     },
   },
 };
-export const createItemExamplePayload: {
-  data: ItemFullVo;
-} = {
+
+export const createItemExamplePayload: { data: ItemFullVo } = {
   data: sampleItemFull,
 };
-export const createItemFileAssociationExamplePayload: {
-  data: ItemFileVo;
-} = {
+
+export const createItemFileAssociationExamplePayload: { data: ItemFileVo } = {
   data: sampleItemFile,
 };
-export const createItemFromJsonExamplePayload: {
-  data: ItemFullVo;
-} = {
+
+export const createItemFromJsonExamplePayload: { data: ItemFullVo } = {
   data: sampleItemFull,
 };
+
 export const createItemImageExamplePayload = {
   data: {
     guid: "IM100AAA200BBB300CCC4001",
@@ -129,6 +132,7 @@ export const createItemImageExamplePayload = {
     creationDateTime: "2026-03-18T14:35:00Z",
   },
 };
+
 export const createItemNumberFormatFieldExamplePayload = {
   data: {
     guid: "NF100AAA200BBB300CCC4001",
@@ -140,6 +144,7 @@ export const createItemNumberFormatFieldExamplePayload = {
     zeroPadding: true,
   },
 };
+
 export const createItemNumberReservationExamplePayload = {
   data: {
     guid: "NR100AAA200BBB300CCC4001",
@@ -150,12 +155,14 @@ export const createItemNumberReservationExamplePayload = {
     creator: sampleItemUser,
   },
 };
+
 export const deleteItemImageExamplePayload = {
   data: {
     success: true,
     message: "Image deleted successfully",
   },
 };
+
 export const deleteItemExamplePayload = {
   data: {
     success: true,
@@ -164,6 +171,7 @@ export const deleteItemExamplePayload = {
     statusCode: 204,
   },
 };
+
 export const deleteItemFileAssociationExamplePayload = {
   data: {
     success: true,
@@ -172,16 +180,15 @@ export const deleteItemFileAssociationExamplePayload = {
     itemFileAssociationGuid: "IF100AAA200BBB300CCC4001",
   },
 };
-export const getItemByGuidExamplePayload: {
-  data: ItemFullVo;
-} = {
+
+export const getItemByGuidExamplePayload: { data: ItemFullVo } = {
   data: sampleItemFull,
 };
-export const getItemFileAssociationExamplePayload: {
-  data: ItemFileVo;
-} = {
+
+export const getItemFileAssociationExamplePayload: { data: ItemFileVo } = {
   data: sampleItemFile,
 };
+
 export const listItemFileAssociationsExamplePayload: {
   data: ItemFileVoResultRep;
 } = {
@@ -190,6 +197,7 @@ export const listItemFileAssociationsExamplePayload: {
     count: 1,
   },
 };
+
 export const listItemFutureChangesExamplePayload = {
   data: {
     results: [
@@ -205,6 +213,7 @@ export const listItemFutureChangesExamplePayload = {
     count: 1,
   },
 };
+
 export const listItemHistoryExamplePayload = {
   data: {
     results: [
@@ -226,6 +235,7 @@ export const listItemHistoryExamplePayload = {
     count: 2,
   },
 };
+
 export const getItemImageContentExamplePayload = {
   data: {
     content: "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA==",
@@ -233,6 +243,7 @@ export const getItemImageContentExamplePayload = {
     size: 48210,
   },
 };
+
 export const listItemLifecyclePhasesExamplePayload = {
   data: [
     { guid: "LP100AAA200BBB300CCC4001", name: "Design", stage: "DESIGN" },
@@ -243,6 +254,7 @@ export const listItemLifecyclePhasesExamplePayload = {
     },
   ],
 };
+
 export const getItemNumberFormatByGuidExamplePayload: {
   data: NumberFormatFullVo;
 } = {
@@ -273,6 +285,7 @@ export const getItemNumberFormatByGuidExamplePayload: {
     ],
   },
 };
+
 export const getItemNumberFormatFieldExamplePayload = {
   data: {
     apiName: "sequence",
@@ -284,6 +297,7 @@ export const getItemNumberFormatFieldExamplePayload = {
     zeroPadding: true,
   },
 };
+
 export const listItemNumberFormatFieldsExamplePayload = {
   data: {
     results: [
@@ -308,6 +322,7 @@ export const listItemNumberFormatFieldsExamplePayload = {
     count: 2,
   },
 };
+
 export const listItemNumberFormatsExamplePayload: {
   data: NumberFormatCompactResultRep;
 } = {
@@ -331,6 +346,7 @@ export const listItemNumberFormatsExamplePayload: {
     count: 2,
   },
 };
+
 export const listItemNumberReservationsExamplePayload = {
   data: {
     results: [
@@ -346,6 +362,7 @@ export const listItemNumberReservationsExamplePayload = {
     count: 1,
   },
 };
+
 export const listItemRequirementsExamplePayload = {
   data: {
     results: [
@@ -365,6 +382,7 @@ export const listItemRequirementsExamplePayload = {
     count: 2,
   },
 };
+
 export const getItemRevisionsExamplePayload = {
   data: {
     workingRev: {
@@ -393,6 +411,7 @@ export const getItemRevisionsExamplePayload = {
     ],
   },
 };
+
 export const listItemTrainingPlansExamplePayload = {
   data: {
     results: [
@@ -413,6 +432,7 @@ export const listItemTrainingPlansExamplePayload = {
     count: 1,
   },
 };
+
 export const listItemTrainingRecordsExamplePayload = {
   data: {
     results: [
@@ -428,6 +448,7 @@ export const listItemTrainingRecordsExamplePayload = {
     count: 1,
   },
 };
+
 export const listItemWhereUsedExamplePayload = {
   data: {
     results: [
@@ -447,9 +468,8 @@ export const listItemWhereUsedExamplePayload = {
     count: 1,
   },
 };
-export const listItemsExamplePayload: {
-  data: ItemFullVoResultRep;
-} = {
+
+export const listItemsExamplePayload: { data: ItemFullVoResultRep } = {
   data: {
     results: [
       sampleItemFull,
@@ -485,9 +505,8 @@ export const listItemsExamplePayload: {
     count: 2,
   },
 };
-export const updateItemExamplePayload: {
-  data: ItemFullVo;
-} = {
+
+export const updateItemExamplePayload: { data: ItemFullVo } = {
   data: {
     ...sampleItemFull,
     name: "Main Controller Board (Rev C)",
@@ -495,9 +514,8 @@ export const updateItemExamplePayload: {
     modifiedDateTime: "2026-03-20T11:15:00Z",
   },
 };
-export const updateItemFileAssociationExamplePayload: {
-  data: ItemFileVo;
-} = {
+
+export const updateItemFileAssociationExamplePayload: { data: ItemFileVo } = {
   data: {
     ...sampleItemFile,
     primary: false,

@@ -9,6 +9,7 @@ import {
   resourceGroupName,
   subscriptionId,
 } from "../inputs";
+
 export const deleteQueue = action({
   display: {
     label: "Delete Queue",
@@ -40,4 +41,5 @@ export const deleteQueue = action({
     queueName,
   },
 });
+
 export default { deleteQueue };

@@ -4,6 +4,7 @@ import { getActivityLogEntriesExamplePayload } from "../../examplePayloads";
 import { getActivityLogEntriesInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 import type { GetActivityLogEntriesQueryParams } from "../types/GetActivityLogEntriesQueryParams";
+
 export const getActivityLogEntries = action({
   display: {
     label: "Get Activity Log Entries",
@@ -31,4 +32,5 @@ export const getActivityLogEntries = action({
   },
   inputs: getActivityLogEntriesInputs,
 });
+
 export default { getActivityLogEntries };

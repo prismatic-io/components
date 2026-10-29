@@ -3,9 +3,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { getGroupExamplePayload } from "../../examplePayloads";
 import { createGroup } from "./createGroup";
+
 const HOST = "https://graph.microsoft.com";
 const PATH = "/v1.0/groups";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -17,14 +19,18 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const groupReply = getGroupExamplePayload.data;
+
 const emptyAdditionalFields = {
   description: undefined,
   assignedLabels: undefined,
   visibility: undefined,
 };
+
 describe("createGroup", () => {
   afterEach(() => nock.cleanAll());
+
   test("posts the flattened group body and returns the created group", async () => {
     const scope = nock(HOST)
       .post(PATH, {
@@ -35,6 +41,7 @@ describe("createGroup", () => {
         description: "Welcome to the HR Taskforce team.",
       })
       .reply(201, groupReply);
+
     const { result } = await invoke(createGroup, {
       connection,
       displayName: "HR Taskforce",
@@ -47,13 +54,16 @@ describe("createGroup", () => {
       },
       bodyFields: {},
     });
+
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(groupReply);
   });
+
   test("surfaces the failure when the API rejects the request", async () => {
     nock(HOST)
       .post(PATH)
       .reply(400, { error: { code: "Request_BadRequest" } });
+
     await expect(
       invoke(createGroup, {
         connection,

@@ -4,6 +4,7 @@ import { listMilestonesExamplePayload } from "../../examplePayloads";
 import { listMilestonesInputs } from "../../inputs";
 import { listMilestonesOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listMilestones = action({
   display: {
     label: "List Milestones",
@@ -27,9 +28,8 @@ export const listMilestones = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listMilestonesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listMilestonesExamplePayload,
   examplePayload: listMilestonesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

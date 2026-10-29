@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getAccessibleCustomFieldsExamplePayload } from "../../examplePayloads";
 import { getAccessibleCustomFieldsInputs } from "../../inputs";
 import { getAccessibleCustomFieldsOutputSchema } from "../../outputSchemas";
+
 export const getAccessibleCustomFields = action({
   display: {
     label: "Get Accessible Custom Fields",
@@ -17,7 +18,9 @@ export const getAccessibleCustomFields = action({
   performSafety: "safe",
   perform: async (context, { connection, listId }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/list/${listId}/field`);
+
     return {
       data,
     };

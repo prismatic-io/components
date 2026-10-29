@@ -4,6 +4,7 @@ import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { checkDeveloperApiKeyAndAppId } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -22,12 +23,14 @@ export const deleteWebhook = action({
     );
     const { developerApiKey, appId } =
       checkDeveloperApiKeyAndAppId(hubspotConnection);
+
     const { data } = await client.delete(
       hubspotPaths.appWebhooks(appId, `/subscriptions/${subscriptionId}`),
       {
         params: { hapikey: developerApiKey },
       },
     );
+
     return { data };
   },
   examplePerform: async () => ({

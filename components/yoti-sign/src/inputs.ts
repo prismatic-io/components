@@ -8,12 +8,14 @@ import {
   cleanStringInput,
   lookBackDateClean,
 } from "./util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   example: "A connection used for Yoti Sign",
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -24,6 +26,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const environment = input({
   label: "Environment",
   type: "string",
@@ -36,6 +39,7 @@ export const environment = input({
   default: "",
   clean: cleanStringInput,
 });
+
 export const notificationDestination = input({
   label: "Notification Destination",
   type: "string",
@@ -45,6 +49,7 @@ export const notificationDestination = input({
   placeholder: "https://example.com/callback",
   clean: cleanStringInput,
 });
+
 export const envelopName = input({
   label: "Envelope Name",
   type: "string",
@@ -54,6 +59,7 @@ export const envelopName = input({
   placeholder: "Envelope name",
   clean: cleanStringInput,
 });
+
 export const fileList = input({
   label: "Files",
   type: "data",
@@ -62,6 +68,7 @@ export const fileList = input({
   comments: "The files to be used for the envelope",
   clean: cleanArrayListFileInput,
 });
+
 export const fileName = input({
   label: "PDF File Name",
   type: "string",
@@ -72,6 +79,7 @@ export const fileName = input({
   placeholder: "example.pdf",
   clean: cleanStringArrayInput,
 });
+
 export const envelopeId = input({
   label: "Envelope ID",
   type: "string",
@@ -82,6 +90,7 @@ export const envelopeId = input({
   dataSource: "selectEnvelope",
   clean: cleanStringInput,
 });
+
 export const recipientId = input({
   label: "Recipient ID",
   type: "string",
@@ -91,6 +100,7 @@ export const recipientId = input({
   placeholder: "recipient-id",
   clean: cleanStringInput,
 });
+
 export const mediaId = input({
   label: "Media ID",
   type: "string",
@@ -100,6 +110,7 @@ export const mediaId = input({
   placeholder: "media-id",
   clean: cleanStringInput,
 });
+
 export const hasEnvelopeOtps = input({
   label: "Has Envelope OTPs",
   type: "string",
@@ -113,6 +124,7 @@ export const hasEnvelopeOtps = input({
   ],
   clean: cleanBooleanInput,
 });
+
 export const emails = input({
   label: "Emails",
   type: "code",
@@ -135,6 +147,7 @@ export const emails = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const recipients = input({
   label: "Recipients",
   type: "code",
@@ -186,6 +199,7 @@ export const recipients = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const notificationsSubscriptions = input({
   label: "Notifications Subscriptions",
   type: "string",
@@ -207,6 +221,7 @@ export const notificationsSubscriptions = input({
   ],
   clean: cleanStringArrayInput,
 });
+
 export const branding = input({
   label: "Branding",
   type: "code",
@@ -230,6 +245,7 @@ export const branding = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const parent_redirect_urls = input({
   label: "Parent Redirect URLs",
   type: "code",
@@ -246,6 +262,7 @@ export const parent_redirect_urls = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const offset = input({
   label: "Offset",
   type: "string",
@@ -255,6 +272,7 @@ export const offset = input({
   placeholder: "0",
   clean: cleanStringInput,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -264,6 +282,7 @@ export const limit = input({
   placeholder: "50",
   clean: cleanStringInput,
 });
+
 export const keyValueParams = input({
   label: "Key Value Params",
   type: "string",
@@ -274,6 +293,7 @@ export const keyValueParams = input({
   placeholder: "key1=value1",
   clean: cleanKeyValueListInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -281,6 +301,7 @@ export const fetchAll = input({
   comments: "Boolean to determine if all records should be fetched",
   clean: util.types.toBool,
 });
+
 export const recipientInfo = input({
   label: "Recipient Info",
   type: "code",
@@ -299,6 +320,7 @@ export const recipientInfo = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const envelopeIds = input({
   label: "Envelope IDs",
   type: "string",
@@ -307,6 +329,7 @@ export const envelopeIds = input({
   comments: "The IDs of the envelopes",
   clean: cleanStringArrayInput,
 });
+
 export const autotagging = input({
   label: "Autotagging",
   type: "string",

@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getZendeskClient } from "../../client";
 import { listCustomFieldsExamplePayload } from "../../examplePayloads";
 import { connection } from "../../inputs";
+
 export const listCustomFields = action({
   display: {
     label: "List Custom Fields",
@@ -15,6 +16,7 @@ export const listCustomFields = action({
       const { data } = await client.get(`/${resourceType}/custom_fields`, {
         headers: { Accept: "application/json" },
       });
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);
@@ -41,4 +43,5 @@ export const listCustomFields = action({
   },
   examplePayload: listCustomFieldsExamplePayload,
 });
+
 export default { listCustomFields };

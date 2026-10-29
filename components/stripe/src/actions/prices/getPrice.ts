@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getPriceExamplePayload } from "../../examplePayloads/prices";
 import { getPriceInputs } from "../../inputs";
 import { priceOutputSchema } from "../../outputSchemas";
+
 export const getPrice = action({
   display: {
     label: "Get Price",
@@ -23,5 +24,6 @@ export const getPrice = action({
     type: "actionOutput",
     schema: priceOutputSchema,
   }),
+
   examplePayload: getPriceExamplePayload,
 });

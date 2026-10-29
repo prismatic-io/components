@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { closeConversationExamplePayload } from "../../examplePayloads";
 import { closeConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const closeConversation = action({
   display: {
     label: "Close Conversation",
@@ -21,11 +22,10 @@ export const closeConversation = action({
     const data = await client.conversations.close({
       channel: conversationName,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: closeConversationExamplePayload,
   }),
   examplePayload: {

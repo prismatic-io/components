@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { putObjectRetentionExamplePayload } from "../../examplePayloads";
 import { putObjectRetentionInputs } from "../../inputs";
 import { putObjectRetentionOutputSchema } from "../../outputSchemas";
+
 export const putObjectRetention = action({
   display: {
     label: "Put Object Retention",
@@ -34,8 +35,10 @@ export const putObjectRetention = action({
       logger: context.logger,
       debug: context.debug.enabled,
     });
+
     const retentionModePresent = retentionMode.length > 0;
     const retainUntilDatePresent = retainUntilDate.length > 0;
+
     if (
       (retentionModePresent && !retainUntilDatePresent) ||
       (!retentionModePresent && retainUntilDatePresent)
@@ -44,6 +47,7 @@ export const putObjectRetention = action({
         "Both Retention Mode and Retain Until Date must be set when either is set.",
       );
     }
+
     const command = new PutObjectRetentionCommand({
       Bucket: bucket,
       Key: objectKey,
@@ -55,7 +59,9 @@ export const putObjectRetention = action({
         : {},
       VersionId: versionId,
     });
+
     const data = await s3.send(command);
+
     return {
       data,
     };

@@ -5,6 +5,7 @@ import { selectTaskExamplePayload } from "../examplePayloads";
 import { PLANNER_ENDPOINTS } from "../constants";
 import { fetchAllPlanner } from "../utils";
 import { selectTaskInputs } from "../inputs";
+
 export const selectTask = dataSource({
   display: {
     label: "Select Task",
@@ -17,6 +18,7 @@ export const selectTask = dataSource({
       client,
       PLANNER_ENDPOINTS.PLAN_TASKS(planId),
     );
+
     const result = value.map<Element>((task) => ({
       label: util.types.toString(task.title),
       key: util.types.toString(task.id),

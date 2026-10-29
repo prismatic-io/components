@@ -1,6 +1,7 @@
 import type { GoogleGenAI } from "@google/genai";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "../connections";
+
 export const validateConnection = (
   connection: Connection,
 ): connection is Connection => {
@@ -9,25 +10,33 @@ export const validateConnection = (
   }
   return true;
 };
+
 export const getAuthToken = (connection: Connection) => {
   const apiKey = util.types.toString(connection.fields?.apiKey);
+
   if (!apiKey) {
     throw new ConnectionError(connection, "API Key is required");
   }
+
   return apiKey;
 };
+
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanNumber = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanCode = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const cleanKeyValueList = (value: unknown) => {
   if (Array.isArray(value) && value.length > 0) {
     return util.types.keyValPairListToObject(value);
   }
   return {};
 };
+
 export const listModelsFN = async (
   client: GoogleGenAI,
   fetchAll: boolean,
@@ -36,6 +45,7 @@ export const listModelsFN = async (
   const listedModels = await client.models.list({
     config,
   });
+
   let modelArray = listedModels.page;
   const models = [];
   if (fetchAll) {

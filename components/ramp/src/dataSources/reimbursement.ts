@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connection } from "../inputs";
 import type { Reimbursement } from "../interfaces/reimbursements";
 import { fetchAllData } from "../util";
+
 export const selectReimbursement = dataSource({
   display: {
     label: "Select Reimbursement",
@@ -19,12 +20,14 @@ export const selectReimbursement = dataSource({
       {},
       true,
     );
+
     const objects = data
       .sort((a, b) => (a.id < b.id ? -1 : 1))
       .map<Element>((reimbursement) => ({
         key: reimbursement.id,
         label: `${reimbursement.merchant} - $${reimbursement.amount / 100}`,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

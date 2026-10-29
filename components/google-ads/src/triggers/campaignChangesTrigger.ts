@@ -32,21 +32,26 @@ import {
   resolveChangeEventPageSize,
   searchGoogleAds,
 } from "../util";
+
 const campaignChangesPerform = async (
   context: PollingContext,
   payload: TriggerPayload,
   params: ActionInputParameters<typeof campaignChangesTriggerInputs>,
 ) => {
   const { client, timezone } = await createTriggerClient(context, params);
+
   const nowTime = getGAQLDateTime(timezone);
+
   const initialLastChangeTime = params.lookBackDate
     ? `${params.lookBackDate} ${LOOK_BACK_DATE_START_TIME}`
     : getGAQLDateTime(timezone, DEFAULT_INITIAL_LOOK_BACK_HOURS);
+
   const pollState = getPollingState<ChangeEventPollingState>(context, {
     lastChangeTime: initialLastChangeTime,
     errorCount: 0,
     consecutiveErrors: 0,
   });
+
   try {
     const incoming = payload.paginationState as ChangeEventCursor | undefined;
     const isContinuation = Boolean(incoming ?? pollState.inFlightCursor);
@@ -56,7 +61,9 @@ const campaignChangesPerform = async (
       nowTime,
       timeZone: timezone,
     });
+
     const pageSize = resolveChangeEventPageSize(context.batch?.enabled);
+
     let rows: CampaignChangeEventRow[] = [];
     if (cursor.sinceTime < cursor.toTime) {
       const data = await searchGoogleAds<CampaignChangeEventRow>(client, {
@@ -73,19 +80,23 @@ const campaignChangesPerform = async (
       });
       rows = data.results ?? [];
     }
+
     const { emit, nextCursor } = advanceChangeEventCursor(
       rows,
       cursor,
       pageSize,
       context.logger,
     );
+
     const changes = mapChangeEventsToCampaignChanges(emit, params.changeTypes);
+
     context.polling.setState({
       lastChangeTime: nextCursor ? pollState.lastChangeTime : cursor.toTime,
       ...(nextCursor ? { inFlightCursor: nextCursor } : {}),
       errorCount: pollState.errorCount,
       consecutiveErrors: 0,
     } satisfies ChangeEventPollingState);
+
     return Promise.resolve({
       payload: {
         ...buildTriggerPayload(payload, {
@@ -106,6 +117,7 @@ const campaignChangesPerform = async (
     handlePollingError(e as Error, pollState, context, "Google Ads");
   }
 };
+
 export const campaignChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Campaigns",
@@ -124,4 +136,5 @@ export const campaignChangesTrigger = pollingTrigger({
   perform: campaignChangesPerform,
   examplePayload: campaignChangesTriggerExamplePayload,
 });
+
 export default campaignChangesTrigger;

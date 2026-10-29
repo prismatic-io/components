@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection, fetchAll, model, pagination } from "./common";
+
 const recordId = input({
   label: "Record ID",
   comments: "The numeric identifier of the target record assigned by Odoo.",
@@ -11,6 +12,7 @@ const recordId = input({
   dataSource: "selectRecordById",
   clean: util.types.toNumber,
 });
+
 const parameters = input({
   label: "Parameters",
   type: "code",
@@ -32,6 +34,7 @@ const parameters = input({
     2,
   ),
 });
+
 const externalId = input({
   label: "External ID",
   comments:
@@ -42,38 +45,45 @@ const externalId = input({
   placeholder: "Enter an external ID (module.name)",
   clean: toOptionalString,
 });
+
 export const listRecordsInputs = {
   connection,
   model,
   fetchAll,
   pagination,
 };
+
 export const getRecordByIdInputs = {
   connection,
   model,
   id: recordId,
 };
+
 export const getRecordByExternalIdInputs = {
   connection,
   externalId: { ...externalId, required: true, clean: util.types.toString },
 };
+
 export const deleteRecordByIdInputs = {
   connection,
   model,
   id: recordId,
 };
+
 export const createRecordInputs = {
   connection,
   model,
   parameters,
   externalId,
 };
+
 export const updateRecordInputs = {
   connection,
   model,
   id: recordId,
   parameters,
 };
+
 export const setExternalIdInputs = {
   connection,
   model,

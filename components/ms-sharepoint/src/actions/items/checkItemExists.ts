@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { checkItemExistsInputs } from "../../inputs";
 import { checkItemExistsExamplePayload } from "../../examplePayloads/items/checkItemExistsExamplePayload";
+
 export const checkItemExists = action({
   display: {
     label: "Check Item Exists",
@@ -10,10 +11,12 @@ export const checkItemExists = action({
   inputs: checkItemExistsInputs,
   perform: async (context, { connection, siteId, driveId, itemPath }) => {
     const client = await createClient(connection, context.debug.enabled);
+
     try {
       const { data } = await client.get(
         `/sites/${siteId}/drives/${driveId}/root:/${itemPath}`,
       );
+
       return {
         data: {
           exists: true,
@@ -22,10 +25,10 @@ export const checkItemExists = action({
         },
       };
     } catch (error) {
-      const err = error as {
-        status: number;
-      };
+      const err = error as { status: number };
+
       const status = err.status;
+
       if (status === 404) {
         return {
           data: {
@@ -34,6 +37,7 @@ export const checkItemExists = action({
           },
         };
       }
+
       throw error;
     }
   },

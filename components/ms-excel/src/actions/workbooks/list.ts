@@ -5,6 +5,7 @@ import { listWorkbooksInputs } from "../../inputs/workbooks/list";
 import { listWorkbooksExamplePayload } from "../../examplePayloads/workbooks";
 import { getPathUrl, isExcelWorkbook, paginateResults } from "../../helpers";
 import type { DriveItem } from "../../interfaces";
+
 export const listWorkbooks = action({
   display: {
     label: "List Workbooks",
@@ -27,6 +28,7 @@ export const listWorkbooks = action({
     },
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
+
     const params = {
       $skipToken,
       $expand,
@@ -34,7 +36,9 @@ export const listWorkbooks = action({
       $select,
       $top,
     };
+
     const url = getPathUrl(source, path, driveOrSiteId, listOrItemId);
+
     const data = await paginateResults<DriveItem>(
       client,
       url,

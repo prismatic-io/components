@@ -5,6 +5,7 @@ import { MAX_LIMIT } from "../constants";
 import { selectProductsInputs } from "../inputs";
 import type { DataSourceRecord } from "../types";
 import { fetchData, getNumericId } from "../util";
+
 export const listProducts = dataSource({
   display: {
     label: "Select Product",
@@ -27,6 +28,7 @@ export const listProducts = dataSource({
         first: MAX_LIMIT,
       },
     );
+
     const result = products.map((product) => {
       const numericId = getNumericId(product.id);
       return {
@@ -34,6 +36,7 @@ export const listProducts = dataSource({
         key: util.types.toString(numericId),
       };
     });
+
     return { result };
   },
   inputs: selectProductsInputs,

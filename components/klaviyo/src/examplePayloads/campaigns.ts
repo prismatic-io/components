@@ -6,6 +6,7 @@ import type {
 } from "klaviyo-api";
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { KlaviyoRecord } from "../types";
+
 const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
   headers: {},
   queryParameters: {},
@@ -37,11 +38,9 @@ const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
   startedAt: "2024-01-15T00:00:00.000Z",
   globalDebug: false,
 };
+
 const pollCampaignChangesTriggerBody: {
-  data: {
-    created: KlaviyoRecord[];
-    updated: KlaviyoRecord[];
-  };
+  data: { created: KlaviyoRecord[]; updated: KlaviyoRecord[] };
 } = {
   data: {
     created: [
@@ -165,6 +164,7 @@ const pollCampaignChangesTriggerBody: {
     ],
   },
 };
+
 export const pollCampaignChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -173,9 +173,8 @@ export const pollCampaignChangesTriggerExamplePayload: {
     body: pollCampaignChangesTriggerBody,
   },
 };
-export const createCampaignExamplePayload: {
-  data: PostCampaignResponse;
-} = {
+
+export const createCampaignExamplePayload: { data: PostCampaignResponse } = {
   data: {
     data: {
       type: "campaign",
@@ -248,11 +247,11 @@ export const createCampaignExamplePayload: {
     },
   },
 };
-export const deleteCampaignExamplePayload: {
-  data: string;
-} = {
+
+export const deleteCampaignExamplePayload: { data: string } = {
   data: "Campaign deleted successfully.",
 };
+
 export const getCampaignExamplePayload: {
   data: GetCampaignResponseCompoundDocument;
 } = {
@@ -370,6 +369,7 @@ export const getCampaignExamplePayload: {
     ],
   },
 };
+
 export const listCampaignsExamplePayload: {
   data: GetCampaignResponseCollectionCompoundDocument;
 } = {
@@ -494,9 +494,8 @@ export const listCampaignsExamplePayload: {
     ],
   },
 };
-export const updateCampaignExamplePayload: {
-  data: PatchCampaignResponse;
-} = {
+
+export const updateCampaignExamplePayload: { data: PatchCampaignResponse } = {
   data: {
     data: {
       type: "campaign",
@@ -569,6 +568,7 @@ export const updateCampaignExamplePayload: {
     },
   },
 };
+
 export const selectCampaignExamplePayload = {
   result: [{ label: "Spring Sale Email", key: "01HABCDEF0123456789CAMPAIGN" }],
 };

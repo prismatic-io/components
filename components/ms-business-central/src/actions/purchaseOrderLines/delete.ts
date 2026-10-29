@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getMsBusinessCentralClient } from "../../client";
 import { SUCCESS_PAYLOAD } from "../../examplePayloads";
 import { deletePurchaseOrderLineInputs as inputs } from "../../inputs/purchaseOrderLines/deletePurchaseOrderLineInputs";
+
 export const deletePurchaseOrderLine = action({
   display: {
     label: "Delete Purchase Order Line",
@@ -17,6 +18,7 @@ export const deletePurchaseOrderLine = action({
     await client.delete(
       `/companies(${companyId})/purchaseOrderLines(${purchaseOrderLineId})`,
     );
+
     return SUCCESS_PAYLOAD;
   },
   inputs,

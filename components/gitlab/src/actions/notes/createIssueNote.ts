@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { createIssueNoteExamplePayload } from "../../examplePayloads";
 import { createIssueNoteInputs } from "../../inputs";
 import { createIssueNoteOutputSchema } from "../../outputSchemas";
+
 export const createIssueNote = action({
   display: {
     label: "Create Issue Note",
@@ -27,9 +28,8 @@ export const createIssueNote = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createIssueNoteExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createIssueNoteExamplePayload,
   examplePayload: createIssueNoteExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

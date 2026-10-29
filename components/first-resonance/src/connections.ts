@@ -4,6 +4,7 @@ import {
   OAuth2Type,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 export const oauthClientCredentials = oauth2Connection({
   key: "firstResonanceOauthClientCredentials",
   display: {
@@ -60,12 +61,7 @@ export const oauthClientCredentials = oauth2Connection({
             value: "auth-dev-pub.buildwithion.com",
           },
         ],
-      } as ConnectionInput & {
-        model: {
-          label: string;
-          value: string;
-        }[];
-      },
+      } as ConnectionInput & { model: { label: string; value: string }[] },
       clientId: {
         label: "Client ID",
         placeholder: "Enter Client ID",
@@ -100,4 +96,5 @@ export const oauthClientCredentials = oauth2Connection({
     OAuth2Type.ClientCredentials,
   ),
 });
+
 export default [oauthClientCredentials];

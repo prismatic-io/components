@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { getCustomerExamplePayload } from "../../examplePayloads";
 import { getCustomerInputs } from "../../inputs";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",
@@ -13,6 +14,7 @@ export const getCustomer = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/customers/${customerId}`);
     return { data };
   },

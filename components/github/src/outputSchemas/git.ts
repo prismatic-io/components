@@ -6,6 +6,7 @@ export const gitCreateBlobOutputSchema = {
   },
   required: ["url", "sha"],
 };
+
 export const gitRefOutputSchema = {
   type: "object" as const,
   properties: {
@@ -24,6 +25,7 @@ export const gitRefOutputSchema = {
   },
   required: ["ref", "node_id", "url", "object"],
 };
+
 export const gitCreateTreeOutputSchema = {
   type: "object" as const,
   properties: {

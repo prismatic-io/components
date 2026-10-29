@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getIssueExamplePayload } from "../../examplePayloads";
 import { getIssueInputs } from "../../inputs";
 import { getIssueOutputSchema } from "../../outputSchemas";
+
 export const getIssue = action({
   display: {
     label: "Get Issue",

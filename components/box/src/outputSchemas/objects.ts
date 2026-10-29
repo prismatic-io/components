@@ -1,4 +1,5 @@
 import { folderFullSchema } from "./common";
+
 const copiedOrMovedObjectSchema = {
   type: "object" as const,
   properties: {
@@ -8,8 +9,11 @@ const copiedOrMovedObjectSchema = {
   required: ["id", "type", "name"],
   additionalProperties: true,
 };
+
 export const copyObjectOutputSchema = copiedOrMovedObjectSchema;
+
 export const moveObjectOutputSchema = copiedOrMovedObjectSchema;
+
 export const pathDetailsOutputSchema = {
   type: "array" as const,
   items: {

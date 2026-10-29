@@ -9,6 +9,7 @@ import {
   per_page,
   recordId,
 } from "./common";
+
 export const crmRecordType = input({
   label: "Record Type",
   placeholder: "Select record type",
@@ -37,6 +38,7 @@ export const crmRecordType = input({
     "The type of CRM record to operate on. See [Zoho CRM Modules](https://www.zoho.com/crm/developer/docs/api/v8/modules-api.html) for details.",
   clean: util.types.toString,
 });
+
 export const fields = input({
   label: "Fields",
   placeholder: "Enter field names",
@@ -50,6 +52,7 @@ export const fields = input({
       util.types.toString(value),
     ),
 });
+
 export const crmPollingAdditionalFields = {
   ...fields,
   label: "Additional Fields",
@@ -57,6 +60,7 @@ export const crmPollingAdditionalFields = {
   comments:
     "Additional CRM field names to include in the trigger results. `Created_Time`, `Modified_Time`, and `Full_Name` are always requested because the trigger uses them to detect new and updated records.",
 };
+
 export const sort_order = input({
   label: "Sort Order",
   placeholder: "Select sort order",
@@ -69,6 +73,7 @@ export const sort_order = input({
   comments: "The direction to sort results (ascending or descending).",
   clean: toOptionalString,
 });
+
 export const sort_by = input({
   label: "Sort By",
   placeholder: "Select field to sort by",
@@ -82,11 +87,13 @@ export const sort_by = input({
   comments: "The field to sort results by.",
   clean: toOptionalString,
 });
+
 export const crmGetRecordInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
   recordId: { ...recordId, dataSource: "selectCrmRecord" },
 };
+
 export const crmGetRecordsInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
@@ -98,24 +105,29 @@ export const crmGetRecordsInputs = {
   sort_by,
   fetchAll,
 };
+
 export const crmCreateRecordInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
 };
+
 export const crmUpdateRecordInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
   recordId: { ...recordId, dataSource: "selectCrmRecord" },
 };
+
 export const crmRemoveRecordInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
   recordId: { ...recordId, dataSource: "selectCrmRecord" },
 };
+
 export const selectCrmRecordInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
 };
+
 export const crmPollingTriggerInputs = {
   connection: connectionInput,
   lookBackDate,

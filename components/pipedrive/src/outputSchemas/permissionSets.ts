@@ -8,6 +8,7 @@ const permissionSetListSchema = {
     assignment_count: { type: "integer" },
   },
 };
+
 const permissionsContentsSchema = {
   type: "object",
   properties: {
@@ -38,6 +39,7 @@ const permissionsContentsSchema = {
     can_use_email_tracking: { type: "boolean" },
   },
 };
+
 export const getPermissionSetsOutputSchema = {
   type: "object",
   properties: {
@@ -50,6 +52,7 @@ export const getPermissionSetsOutputSchema = {
     },
   },
 };
+
 export const getPermissionSetOutputSchema = {
   type: "object",
   properties: {
@@ -71,6 +74,7 @@ export const getPermissionSetOutputSchema = {
     },
   },
 };
+
 export const getPermissionSetAssignmentsOutputSchema = {
   type: "object",
   properties: {

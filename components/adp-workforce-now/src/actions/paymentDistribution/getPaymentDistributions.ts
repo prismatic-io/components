@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPaymentDistributionsExamplePayload } from "../../examplePayloads";
 import { getPaymentDistributionsInputs } from "../../inputs";
 import { getPaymentDistributionsOutputSchema } from "../../outputSchemas";
+
 export const getPaymentDistributions = action({
   display: {
     label: "Get Worker Payment Distributions",

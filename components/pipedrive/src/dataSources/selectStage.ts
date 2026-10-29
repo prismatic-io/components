@@ -4,11 +4,13 @@ import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { WebhookVersion } from "../constants";
 import { selectStageExamplePayload } from "../examplePayloads";
+
 interface Stage {
   id: number;
   name: string;
   pipeline_name: string;
 }
+
 export const selectStage = dataSource({
   display: {
     label: "Select Stage",
@@ -25,12 +27,14 @@ export const selectStage = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "name").map<Element>((stage) => ({
       key: stage.id.toString(),
       label: stage.pipeline_name
         ? `${stage.name} (${stage.pipeline_name})`
         : stage.name,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

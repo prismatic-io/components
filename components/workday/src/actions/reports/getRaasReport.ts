@@ -4,6 +4,7 @@ import { getClient } from "../../client";
 import { getRaasReportExamplePayload } from "../../examplePayloads";
 import { getRaasReportInputs } from "../../inputs";
 import { getRaasReportOutputSchema } from "../../outputSchemas";
+
 export const getRaasReport = action({
   display: {
     label: "Get RaaS Report",
@@ -17,6 +18,7 @@ export const getRaasReport = action({
       url.searchParams.set(key, String(value));
     }
     url.searchParams.set("format", format);
+
     const client = getClient(connection, context.debug.enabled, url.origin);
     const { data } = await client.get(
       url.href,

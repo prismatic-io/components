@@ -6,6 +6,7 @@ import type { PollingState } from "../interfaces/PollingState";
 import type { KarbonChangesObject, KarbonRecordChange } from "../util/polling";
 import { resolvePollingRecordChanges } from "../util/polling";
 import { filterRecordsModifiedAfter, getPaginatedData } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "Updated Records",
@@ -24,29 +25,38 @@ export const pollChangesTrigger = pollingTrigger({
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
+
     const lastPolledAt =
       pollState?.lastPolledAt ??
       (params.lookBackDate ? new Date(params.lookBackDate).toISOString() : now);
     const client = createKarbonClient(params.connection, context.debug.enabled);
+
     const response = await getPaginatedData<Record<string, unknown>>({
       client,
       endpoint: config.endpoint,
       getAllData: true,
       pagination: {},
     });
+
     const records = filterRecordsModifiedAfter(
       response.value ?? [],
       config.timestampField,
       lastPolledAt,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled Karbon ${params.pollResourceType}: ${(response.value ?? []).length} fetched, ${records.length} changed`,
+        `Polled Karbon ${params.pollResourceType}: ${
+          (response.value ?? []).length
+        } fetched, ${records.length} changed`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { updated: records } } },
       polledNoChanges: records.length === 0,

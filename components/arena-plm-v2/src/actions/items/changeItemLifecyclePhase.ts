@@ -8,6 +8,7 @@ import type {
   LifecycleChangeVo,
 } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const changeItemLifecyclePhase = action({
   display: {
     label: "Change Item Lifecycle Phase",
@@ -33,12 +34,14 @@ export const changeItemLifecyclePhase = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Changing item lifecycle phase", {
         itemGuid,
         toLifecyclePhaseGuid,
         revisionNumber,
         proceedOnNotice,
       });
+
       const requestBody: LifecycleChangeVo = {
         item: {
           guid: itemGuid,
@@ -47,26 +50,32 @@ export const changeItemLifecyclePhase = action({
           guid: toLifecyclePhaseGuid,
         },
       };
+
       if (revisionNumber) {
         requestBody.revisionNumber = revisionNumber;
       }
+
       if (notes) {
         requestBody.notes = notes;
       }
+
       if (proceedOnNotice !== undefined) {
         requestBody.proceedOnNotice = proceedOnNotice;
       }
+
       const response = await client.post(
         "/items/lifecyclephasechanges",
         requestBody,
       );
       const result: ItemLifecycleChangeResponseVo = response.data;
+
       context.logger.info("Item lifecycle phase changed successfully", {
         itemGuid,
         effectiveRevisionGuid: result.effectiveRevItem?.guid,
         supersededRevisionGuid: result.supersededRevItem?.guid,
         workingRevisionGuid: result.workingRevItem?.guid,
       });
+
       return { data: result };
     } catch (error) {
       handleArenaError(error, context.logger, "Change Item Lifecycle Phase");

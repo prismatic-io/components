@@ -6,6 +6,7 @@ import { getEngagementExamplePayload } from "../../examplePayloads";
 import { getEngagementInputs } from "../../inputs";
 import { addUrlSearchParamsFromStringArray } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const getEngagement = action({
   display: {
     label: "Get Engagement",
@@ -28,11 +29,13 @@ export const getEngagement = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const urlSearchParams = new URLSearchParams();
     if (propertiesToReturn)
       addUrlSearchParamsFromStringArray(
@@ -40,28 +43,34 @@ export const getEngagement = action({
         propertiesToReturn,
         "properties",
       );
+
     if (propertiesWithHistoryToReturn)
       addUrlSearchParamsFromStringArray(
         urlSearchParams,
         propertiesWithHistoryToReturn,
         "propertiesWithHistory",
       );
+
     if (associations)
       addUrlSearchParamsFromStringArray(
         urlSearchParams,
         associations,
         "associations",
       );
+
     if (idProperty) urlSearchParams.append("idProperty", idProperty);
+
     urlSearchParams.append("archived", archived.toString());
     if (debugRequest)
       context.logger.debug(`Params: ${urlSearchParams.toString()}`);
+
     const { data } = await client.get(
       hubspotPaths.objects(engagementObject, `/${engagementId}`),
       {
         params: urlSearchParams,
       },
     );
+
     return {
       data,
     };

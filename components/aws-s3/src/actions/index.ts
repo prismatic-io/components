@@ -6,6 +6,7 @@ import objectLockActions from "./objectLock";
 import objectsActions from "./objects";
 import snsActions from "./sns";
 import uploadStreamsActions from "./uploadStreams";
+
 export default {
   ...bucketNotificationsActions,
   ...bucketsActions,

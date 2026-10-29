@@ -4,6 +4,7 @@ import { createVariantExamplePayload as examplePayload } from "../../../exampleP
 import { createVariantInputs as inputs } from "../../../inputsGql";
 import { createVariantGqlOutputSchema } from "../../../outputSchemas";
 import createVariantQuery from "../queries/variants/CreateVariant.gql";
+
 export const createVariantGql = action({
   display: {
     label: "Create Variant",
@@ -17,12 +18,14 @@ export const createVariantGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
       productVariantsBulkCreate: Record<string, unknown>;
     } = await client.request(createVariantQuery, {
       productId,
       variants: [variant],
     });
+
     return {
       data: data.productVariantsBulkCreate,
     };

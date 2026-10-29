@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { updateAccountExamplePayload } from "../../examplePayloads";
 import { updateAccountInputs } from "../../inputs";
 import type { UpdateAccountBody } from "../types/UpdateAccountBody";
+
 export const updateAccount = action({
   display: {
     label: "Update Account",
@@ -23,4 +24,5 @@ export const updateAccount = action({
   },
   inputs: updateAccountInputs,
 });
+
 export default { updateAccount };

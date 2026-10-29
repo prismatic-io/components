@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../helper";
 import { connection } from "../inputs";
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -10,6 +11,7 @@ const showNewRecords = input({
     "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -19,6 +21,7 @@ const showUpdatedRecords = input({
     "When true, records updated after the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -29,6 +32,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = {
   connection,
   lookBackDate,

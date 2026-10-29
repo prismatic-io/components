@@ -18,6 +18,7 @@ import {
   resolvePollingStart,
   resolvePollingStream,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Issues",
@@ -59,6 +60,7 @@ export const pollChangesTrigger = pollingTrigger({
       lookBackDate,
       now,
     );
+
     const skipFetch = !isBackfill && !showNewIssues && !showUpdatedIssues;
     const { timeZone, ...window } = await fetchStreamWindow(
       () => createV3Client(jiraConnection, context.debug.enabled),
@@ -72,6 +74,7 @@ export const pollChangesTrigger = pollingTrigger({
         logger: context.logger,
       },
     );
+
     const { created, updated } = partitionIssuesByTimestamp(
       window.issues,
       sinceDate,
@@ -86,14 +89,17 @@ export const pollChangesTrigger = pollingTrigger({
       timeZone,
       pollJqlFilter,
     );
+
     context.polling.setState(
       buildPollingState(next, streamStartedAt, sinceDate, isBackfill),
     );
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Jira issues since ${sinceDate.toISOString()}: ${window.issues.length} read → ${created.length} new, ${updated.length} updated, ${next === null ? "stream drained" : "more pending"}`,
       );
     }
+
     return {
       payload: {
         ...payload,

@@ -3,6 +3,7 @@ import { listEventTypeAvailableTimesOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { listEventTypeAvailableTimesInputs } from "../../inputs";
 import { listEventTypeAvailableTimesExamplePayload } from "../../examplePayloads";
+
 export const listEventTypeAvailableTimes = action({
   display: {
     label: "List Event Type Available Times",
@@ -12,6 +13,7 @@ export const listEventTypeAvailableTimes = action({
   performSafety: "safe",
   perform: async (context, { connection, endTime, eventType, startTime }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.get("/event_type_available_times", {
       params: {
         end_time: endTime,

@@ -17,6 +17,7 @@ import {
   fetchRecordsForResource,
   resolveBynderRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -51,6 +52,7 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const isInitialSync = !pollState?.lastPolledAt && Boolean(lookBackDate);
     const since = pollState?.lastPolledAt ?? (lookBackDate || now);
+
     const records = await fetchRecordsForResource(
       connection,
       resourceType,
@@ -62,14 +64,17 @@ export const pollChangesTrigger = pollingTrigger({
       POLL_RESOURCE_CONFIG[resourceType],
       { isInitialSync, showNewRecords, showUpdatedRecords },
     );
+
     context.polling.setState({
       lastPolledAt: now,
     } as unknown as Record<string, unknown>);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${records.length} total, ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created, updated } } },
       polledNoChanges: created.length + updated.length === 0,

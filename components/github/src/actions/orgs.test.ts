@@ -3,10 +3,14 @@ import nock from "nock";
 import { oauth2 } from "../connections";
 import { reposListForOrgExamplePayload } from "../examplePayloads";
 import actions from "./index";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 const { reposListForOrg } = actions;
+
 afterEach(() => nock.cleanAll());
+
 describe("reposListForOrg", () => {
   test("happy path returns organization repositories", async () => {
     nock(BASE)
@@ -23,6 +27,7 @@ describe("reposListForOrg", () => {
     });
     expect(result.data).toEqual(reposListForOrgExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/orgs/octocat-org/repos")

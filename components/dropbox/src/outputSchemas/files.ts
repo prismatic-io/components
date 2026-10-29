@@ -5,6 +5,7 @@ import {
   openTaggedUnionSchema,
   withDropboxEnvelope,
 } from "./shared";
+
 export const lockFileBatchResultSchema = {
   type: "object" as const,
   properties: {
@@ -76,6 +77,7 @@ export const lockFileBatchResultSchema = {
   },
   required: ["entries"],
 };
+
 export const saveUrlJobStatusSchema = {
   oneOf: [
     enumTagSchema(["in_progress"]),
@@ -97,6 +99,7 @@ export const saveUrlJobStatusSchema = {
     },
   ],
 };
+
 export const searchV2ResultSchema = {
   type: "object" as const,
   properties: {
@@ -146,23 +149,29 @@ export const searchV2ResultSchema = {
   },
   required: ["matches", "has_more"],
 };
+
 export const copyObjectOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: { metadata: metadataSchema },
   required: ["metadata"],
 });
+
 export const moveObjectOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: { metadata: metadataSchema },
   required: ["metadata"],
 });
+
 export const deleteObjectOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: { metadata: metadataSchema },
   required: ["metadata"],
 });
+
 export const getMetadataOutputSchema = withDropboxEnvelope(metadataSchema);
+
 export const uploadFileOutputSchema = withDropboxEnvelope(fileMetadataSchema);
+
 export const exportFileOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: {
@@ -180,20 +189,26 @@ export const exportFileOutputSchema = withDropboxEnvelope({
   },
   required: ["export_metadata", "file_metadata"],
 });
+
 export const searchFilesOutputSchema =
   withDropboxEnvelope(searchV2ResultSchema);
+
 export const getFileLockOutputSchema = withDropboxEnvelope(
   lockFileBatchResultSchema,
 );
+
 export const lockFileOutputSchema = withDropboxEnvelope(
   lockFileBatchResultSchema,
 );
+
 export const unlockFileOutputSchema = withDropboxEnvelope(
   lockFileBatchResultSchema,
 );
+
 export const getDownloadStatusOutputSchema = withDropboxEnvelope(
   saveUrlJobStatusSchema,
 );
+
 export const saveFromUrlOutputSchema = withDropboxEnvelope({
   oneOf: [
     {

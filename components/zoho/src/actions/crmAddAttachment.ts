@@ -3,6 +3,7 @@ import FormData from "form-data";
 import { ClientType, createClient } from "../client";
 import { crmAddAttachmentExamplePayload } from "../examplePayloads/crm";
 import { connectionInput, recordId } from "../inputs";
+
 const supportedModules = [
   "Accounts",
   "Campaigns",
@@ -23,6 +24,7 @@ const supportedModules = [
   "Tasks",
   "Vendors",
 ];
+
 const crmAddAttachment = action({
   display: {
     label: "CRM - Add Attachment",
@@ -78,4 +80,5 @@ const crmAddAttachment = action({
   },
   examplePayload: crmAddAttachmentExamplePayload,
 });
+
 export default crmAddAttachment;

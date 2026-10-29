@@ -7,6 +7,7 @@ import {
   eventTimeClean,
 } from "../util/clean";
 import { myConnectionField, version } from "./common";
+
 const pixelId = input({
   label: "Pixel Id",
   type: "string",
@@ -16,6 +17,7 @@ const pixelId = input({
   placeholder: "587490763",
   clean: util.types.toString,
 });
+
 const eventName = input({
   label: "Event Name",
   type: "string",
@@ -25,6 +27,7 @@ const eventName = input({
   placeholder: "Purchase",
   clean: util.types.toString,
 });
+
 const eventTime = input({
   label: "Event Time",
   type: "string",
@@ -35,6 +38,7 @@ const eventTime = input({
   placeholder: "1633552688",
   clean: eventTimeClean,
 });
+
 const userData = input({
   label: "User Data",
   type: "code",
@@ -59,6 +63,7 @@ const userData = input({
     "A map that contains customer information data. See [Facebook Marketing API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/customer-information-parameters) for details.",
   clean: (value) => cleanCodeInput(value, "User Data"),
 });
+
 const customData = input({
   label: "Custom Data",
   type: "code",
@@ -83,6 +88,7 @@ const customData = input({
     "A map that includes additional business data about the event. See [Facebook Marketing API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/custom-data) for details.",
   clean: (value) => cleanCodeInput(value, "Custom Data"),
 });
+
 const eventSourceUrl = input({
   label: "Event Source Url",
   type: "string",
@@ -92,6 +98,7 @@ const eventSourceUrl = input({
   placeholder: "http://jaspers-market.com/product/123",
   clean: cleanString,
 });
+
 const actionSource = input({
   label: "Action Source",
   type: "string",
@@ -133,10 +140,12 @@ const actionSource = input({
       value: "other",
     },
   ],
+
   example: "website",
   placeholder: "website",
   clean: util.types.toString,
 });
+
 const moreData = input({
   label: "More Data",
   type: "code",
@@ -155,6 +164,7 @@ const moreData = input({
     "Additional data to include with the event. See [Facebook Marketing API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/server-event) for details.",
   clean: cleanMoreData,
 });
+
 const events = input({
   label: "Events",
   type: "code",
@@ -210,6 +220,7 @@ const events = input({
     "An array of server event objects. See [Facebook Marketing API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/server-event) for more information.",
   clean: (value) => cleanArrayCodeInput(value, "Events"),
 });
+
 export const createConversionInputs = {
   connection: myConnectionField,
   pixelId,
@@ -222,6 +233,7 @@ export const createConversionInputs = {
   moreData,
   version,
 };
+
 export const createMultipleConversionsInputs = {
   connection: myConnectionField,
   pixelId,

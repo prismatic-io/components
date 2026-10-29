@@ -5,6 +5,7 @@ import { archiveAssociationsExamplePayload } from "../../examplePayloads";
 import { archiveAssociationsInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
 import { resolveAssociationSpec } from "../../util";
+
 export const archiveAssociations = action({
   display: {
     label: "Archive Association",
@@ -30,12 +31,14 @@ export const archiveAssociations = action({
       timeout,
       debugRequest,
     });
+
     const spec = await resolveAssociationSpec(
       client,
       fromObjectType,
       toObjectType,
       associateType,
     );
+
     const { data } = await client.post(
       hubspotPaths.associations(
         fromObjectType,
@@ -56,6 +59,7 @@ export const archiveAssociations = action({
         ],
       },
     );
+
     return { data };
   },
   examplePerform: async () => ({

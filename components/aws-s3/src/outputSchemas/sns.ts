@@ -5,6 +5,7 @@ export const createTopicOutputSchema = {
   },
   required: [],
 };
+
 export const subscribeToTopicOutputSchema = {
   type: "object" as const,
   properties: {

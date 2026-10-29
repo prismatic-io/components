@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createJobExamplePayload } from "../../examplePayloads";
 import { createJobInputs } from "../../inputs";
+
 export const createJob = action({
   display: {
     label: "Create Job",
@@ -16,15 +17,18 @@ export const createJob = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       idempotency_key: idempotencyKey,
       job: {
         title: jobTitle,
       } as Record<string, unknown>,
     };
+
     if (isTipEligible) {
       requestBody.job.is_tip_eligible = isTipEligible;
     }
+
     const { data } = await client.post("/v2/team-members/jobs", requestBody);
     return {
       data,

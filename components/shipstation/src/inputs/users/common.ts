@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const showInactiveUsersInput = input({
   label: "Show Inactive Users",
   type: "boolean",

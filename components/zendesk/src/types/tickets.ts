@@ -1,4 +1,5 @@
 import type { TicketPriority, TicketStatus, TicketType } from "./common";
+
 export interface Ticket {
   assignee_id: number;
   collaborator_ids: number[];
@@ -30,26 +31,32 @@ export interface Ticket {
   url: string;
   via: Via;
 }
+
 export interface CustomField {
   id: number;
   value: string;
 }
+
 export interface SatisfactionRating {
   comment: string;
   id: number;
   score: string;
 }
+
 export interface Via {
   channel: string;
 }
+
 export interface TicketChange {
   changeType: "created" | "updated";
   record: Ticket;
 }
+
 export interface TicketChangesObject {
   created?: Ticket[];
   updated?: Ticket[];
 }
+
 export interface IncrementalTicketsResponse {
   tickets: Ticket[];
   after_cursor: string;

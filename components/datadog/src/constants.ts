@@ -10,14 +10,18 @@ export const DATADOG_SITES = [
     value: "https://api.ddog-gov.com",
   },
 ];
+
 export const DEFAULT_DATADOG_SITE = DATADOG_SITES[0].value;
+
 export const METRIC_TYPE_OPTIONS = [
   { label: "Unspecified", value: "0" },
   { label: "Count", value: "1" },
   { label: "Rate", value: "2" },
   { label: "Gauge", value: "3" },
 ];
+
 import type { WebhookEncodeAs } from "./types";
+
 export const WEBHOOK_ENCODE_AS_OPTIONS: {
   label: string;
   value: WebhookEncodeAs;
@@ -25,10 +29,16 @@ export const WEBHOOK_ENCODE_AS_OPTIONS: {
   { label: "JSON", value: "json" },
   { label: "Form", value: "form" },
 ];
+
 export const DEFAULT_WEBHOOK_ENCODE_AS: WebhookEncodeAs = "json";
+
 export const WEBHOOK_STATE_KEY_PREFIX = "datadogWebhook";
+
 export const WEBHOOKS_CONFIGURATION_PATH =
   "/api/v1/integration/webhooks/configuration/webhooks";
+
 export const SUBMIT_METRICS_PATH = "/api/v2/series";
+
 export const SEARCH_METRICS_PATH = "/api/v1/search";
+
 export const METRICS_QUERY_PREFIX = "metrics:";

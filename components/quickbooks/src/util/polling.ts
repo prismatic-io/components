@@ -6,20 +6,20 @@ import {
   POLL_RESOURCE_CONFIG,
 } from "../constants";
 import type { QuickBooksRecord } from "../types";
+
 export const MAX_POLL_PAGES = 100;
 export const MAX_BATCHED_POLL_PAGES = 1;
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({ value, label }),
 );
+
 export const fetchQuickBooksRecordsSince = async (
   connection: Connection,
   entityName: string,
   lastPolledAtIso: string,
   debug: boolean,
-  options?: {
-    maxPages?: number;
-    resumePosition?: number;
-  },
+  options?: { maxPages?: number; resumePosition?: number },
 ): Promise<{
   records: QuickBooksRecord[];
   truncated: boolean;
@@ -45,14 +45,17 @@ export const fetchQuickBooksRecordsSince = async (
   }
   return { records, truncated: lastPageFull, nextPosition: startPosition };
 };
+
 export interface QuickBooksChangesObject {
   created: unknown[];
   updated: unknown[];
 }
+
 export interface QuickBooksRecordChange {
   changeType: "created" | "updated";
   record: unknown;
 }
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
@@ -76,6 +79,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return str;
 };
+
 export const resolvePollingRecordChanges = (
   data: QuickBooksChangesObject | undefined,
 ): QuickBooksRecordChange[] => {

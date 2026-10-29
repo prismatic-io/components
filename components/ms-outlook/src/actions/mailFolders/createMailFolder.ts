@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { createMailFolderExamplePayload } from "../../examplePayloads";
 import { createMailFolderInputs } from "../../inputs";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const createMailFolder = action({
   display: {
     label: "Create Mail Folder",

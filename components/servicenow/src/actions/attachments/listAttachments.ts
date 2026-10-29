@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { listAttachmentsExamplePayload } from "../../examplePayloads";
 import { listAttachmentsInputs } from "../../inputs";
 import { createNowApiClient, fetchAllTableRecords } from "../../util";
+
 export const listAttachments = action({
   display: {
     label: "List Attachments",
@@ -25,12 +26,14 @@ export const listAttachments = action({
       apiVersionInput,
       context.debug.enabled,
     );
+
     if (fetchAll) {
       const data = await fetchAllTableRecords(client, "/attachment", {
         sysparm_query: sysparmQuery,
       });
       return { data };
     }
+
     const { data } = await client.get("/attachment", {
       params: {
         sysparm_limit: pagination.sysparmLimit,
@@ -40,9 +43,7 @@ export const listAttachments = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listAttachmentsExamplePayload.data,
   }),
   inputs: listAttachmentsInputs,

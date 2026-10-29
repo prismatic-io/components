@@ -3,6 +3,7 @@ import { cleanString } from "../util/clean";
 import { fetchAll, oneDriveConnection, pageLimit, pageToken } from "./common";
 import { siteId } from "./sites";
 import { userId } from "./users";
+
 export const driveId = input({
   label: "Drive",
   type: "string",
@@ -13,6 +14,7 @@ export const driveId = input({
   dataSource: "listDrives",
   clean: cleanString,
 });
+
 const groupId = input({
   label: "Group",
   type: "string",
@@ -23,12 +25,14 @@ const groupId = input({
   dataSource: "listGroups",
   clean: cleanString,
 });
+
 export const listDrivesInputs = {
   connection: oneDriveConnection,
   fetchAll,
   pageLimit,
   pageToken,
 };
+
 export const listDrivesByUserInputs = {
   connection: oneDriveConnection,
   userId,
@@ -36,6 +40,7 @@ export const listDrivesByUserInputs = {
   pageLimit,
   pageToken,
 };
+
 export const listDrivesByGroupInputs = {
   connection: oneDriveConnection,
   groupId,
@@ -43,6 +48,7 @@ export const listDrivesByGroupInputs = {
   pageLimit,
   pageToken,
 };
+
 export const listDrivesBySiteInputs = {
   connection: oneDriveConnection,
   siteId,
@@ -50,6 +56,7 @@ export const listDrivesBySiteInputs = {
   pageLimit,
   pageToken,
 };
+
 export const getDriveInputs = {
   connection: oneDriveConnection,
   driveId,

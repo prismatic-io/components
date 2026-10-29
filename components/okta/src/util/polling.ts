@@ -15,35 +15,28 @@ import {
   POLL_UNBATCHED_MAX_PAGES,
   POLL_UNBATCHED_PAGE_SIZE,
 } from "./constants";
+
 export const resolveUserChanges = (
   changeType: UserChange["changeType"],
   data: User[] | undefined,
 ): UserChange[] =>
   (data ?? []).map((record): UserChange => ({ changeType, record }));
+
 export const resolveSystemLogChanges = (
   data: SystemLogEvent[] | undefined,
 ): SystemLogChange[] =>
   (data ?? []).map(
     (record): SystemLogChange => ({ changeType: "created", record }),
   );
+
 export const usersPollParams = (
   connection: Connection,
   filter: string | undefined,
 ): {
   connection: Connection;
-  pagination: {
-    after: undefined;
-    limit: undefined;
-  };
-  sorting: {
-    sortBy: undefined;
-    sortOrder: undefined;
-  };
-  filters: {
-    search: undefined;
-    filter: string | undefined;
-    q: undefined;
-  };
+  pagination: { after: undefined; limit: undefined };
+  sorting: { sortBy: undefined; sortOrder: undefined };
+  filters: { search: undefined; filter: string | undefined; q: undefined };
   fetchAll: true;
   extraParameters: Record<string, never>;
 } => ({
@@ -54,6 +47,7 @@ export const usersPollParams = (
   fetchAll: true,
   extraParameters: {},
 });
+
 export const resolveSystemLogsLink = (
   held: SystemLogsCursor | SystemLogsPollingState,
   filter: string | undefined,
@@ -68,6 +62,7 @@ export const resolveSystemLogsLink = (
     return undefined;
   }
 };
+
 export const resolveSystemLogsSince = (
   state: SystemLogsPollingState,
   lookBackDate: string | undefined,
@@ -76,15 +71,14 @@ export const resolveSystemLogsSince = (
   state.lastUpdated ||
   (state.seeded || state.next ? undefined : lookBackDate) ||
   now.toISOString();
+
 export const systemLogsWindowBounds = (
   batching: boolean,
-): {
-  pageSize: number;
-  maxPages: number;
-} => ({
+): { pageSize: number; maxPages: number } => ({
   pageSize: batching ? POLL_PAGE_SIZE : POLL_UNBATCHED_PAGE_SIZE,
   maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
 });
+
 export const fetchSystemLogsWindow = async (
   client: HttpClient,
   { pageSize, maxPages, link, since, filter }: SystemLogsWindowParams,
@@ -105,6 +99,7 @@ export const fetchSystemLogsWindow = async (
   }
   return { events, hasMore: true, next };
 };
+
 export const getNextLinkUrl = (
   linkHeader: string | string[] | undefined,
 ): string | undefined => {

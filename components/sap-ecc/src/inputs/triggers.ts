@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { ENDPOINTS } from "../constants";
 import { toOptionalInt, toOptionalString } from "../util/cleanInput";
 import { connection } from "./common";
+
 const endpoint = input({
   label: "Endpoint",
   type: "string",
@@ -12,6 +13,7 @@ const endpoint = input({
   placeholder: "Enter endpoint path",
   clean: util.types.toString,
 });
+
 const rowCount = input({
   label: "Row Count",
   type: "string",
@@ -22,6 +24,7 @@ const rowCount = input({
   placeholder: "Enter row count",
   clean: toOptionalInt,
 });
+
 const messageType = input({
   label: "Message Type",
   type: "string",
@@ -32,6 +35,7 @@ const messageType = input({
   placeholder: "Enter message type (e.g., ORDERS)",
   clean: toOptionalString,
 });
+
 const direction = input({
   label: "Direction",
   type: "string",
@@ -43,6 +47,7 @@ const direction = input({
   ],
   clean: toOptionalString,
 });
+
 const startingDocnum = input({
   label: "Starting DOCNUM",
   type: "string",
@@ -53,6 +58,7 @@ const startingDocnum = input({
   placeholder: "Enter starting DOCNUM",
   clean: toOptionalString,
 });
+
 export const pollIdocInputs = {
   connection,
   endpoint,

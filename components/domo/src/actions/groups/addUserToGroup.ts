@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { addUserToGroupExamplePayload } from "../../examplePayloads";
 import { addUserToGroupInputs } from "../../inputs";
+
 export const addUserToGroup = action({
   display: {
     label: "Add User To Group",
@@ -19,4 +20,5 @@ export const addUserToGroup = action({
   },
   inputs: addUserToGroupInputs,
 });
+
 export default { addUserToGroup };

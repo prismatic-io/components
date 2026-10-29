@@ -5,6 +5,7 @@ import { createSupplierItemFileExamplePayload } from "../../examplePayloads";
 import { createSupplierItemFileInputs } from "../../inputs";
 import { supplierItemFileSchema } from "../../outputSchemas";
 import { getFilenameFromContentType, handleArenaError } from "../../util";
+
 export const createSupplierItemFile = action({
   display: {
     label: "Create Supplier Item File",
@@ -41,8 +42,11 @@ export const createSupplierItemFile = action({
         title,
         format,
       });
+
       const client = await createArenaClient(context, connection);
+
       const formData = new FormData();
+
       if (file.data) {
         const filename =
           getFilenameFromContentType(file.contentType, format) || "upload";
@@ -51,6 +55,7 @@ export const createSupplierItemFile = action({
           contentType: file.contentType,
         });
       }
+
       if (title) formData.append("file.title", title);
       if (description) formData.append("file.description", description);
       if (format) formData.append("file.format", format);
@@ -62,12 +67,14 @@ export const createSupplierItemFile = action({
       if (edition) formData.append("file.edition", edition);
       if (isPrivate !== undefined)
         formData.append("file.private", isPrivate.toString());
+
       if (latestEditionAssociation !== undefined)
         formData.append(
           "latestEditionAssociation",
           latestEditionAssociation.toString(),
         );
       if (primary !== undefined) formData.append("primary", primary.toString());
+
       const { data } = await client.post(
         `/supplieritems/${supplierItemGuid}/files`,
         formData,
@@ -77,10 +84,12 @@ export const createSupplierItemFile = action({
           },
         },
       );
+
       context.logger.info("Successfully created supplier item file", {
         supplierItemGuid,
         fileGuid: data.guid,
       });
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Supplier Item File");

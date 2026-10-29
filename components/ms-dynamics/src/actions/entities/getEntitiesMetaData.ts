@@ -3,6 +3,7 @@ import { createCrmClient } from "../../client";
 import { getEntitiesMetaDataExamplePayload } from "../../examplePayloads";
 import { getEntitiesMetaDataInputs } from "../../inputs";
 import { getEntitiesMetaDataOutputSchema } from "../../outputSchemas";
+
 export const getEntitiesMetaData = action({
   display: {
     label: "Get Entities Metadata",
@@ -24,7 +25,9 @@ export const getEntitiesMetaData = action({
   ) => {
     const defaultSelectedSet = new Set(defaultSelectedRecordTypes);
     const includedTypesSet = new Set(recordTypeFilter);
+
     const client = await createCrmClient(connection, context.debug.enabled);
+
     const { value } = await client.retrieveEntities();
     const objects = value.filter(
       ({ SchemaName, IsCustomEntity, IsChildEntity }) => {
@@ -33,12 +36,15 @@ export const getEntitiesMetaData = action({
             (SchemaName as string).trim().toLowerCase(),
           );
         }
+
         if (includeAllCustomRecordTypes && IsCustomEntity) {
           return true;
         }
+
         if (includeOnlyTopLevelRecordTypes && IsChildEntity) {
           return false;
         }
+
         return true;
       },
     );
@@ -49,10 +55,12 @@ export const getEntitiesMetaData = action({
           select: ["LogicalName", "DisplayName"],
         })
       ).value;
+
       const remappedAttrs = attributes.map((attribute) => ({
         key: attribute.LogicalName,
         label: attribute.DisplayName?.UserLocalizedLabel?.Label,
       }));
+
       const fullObject = {
         object: { key: record.MetadataId, label: record?.SchemaName },
         defaultSelected: defaultSelectedSet.has(record.SchemaName),

@@ -12,7 +12,10 @@ export {
   selectTicketExamplePayload,
 } from "./dataSources";
 export { getEventExamplePayload, listEventsExamplePayload } from "./events";
-export { downloadFileExamplePayload, uploadFilesExamplePayload } from "./files";
+export {
+  downloadFileExamplePayload,
+  uploadFilesExamplePayload,
+} from "./files";
 export { searchExamplePayload } from "./search";
 export { successEmptyExamplePayload } from "./shared";
 export {

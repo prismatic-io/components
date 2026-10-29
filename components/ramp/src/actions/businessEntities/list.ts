@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { BusinessEntity } from "../../interfaces/businessEntities";
 import { listBusinessEntitiesOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listBusinessEntities = action({
   display: {
     label: "List Business Entities",
@@ -23,6 +24,7 @@ export const listBusinessEntities = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<BusinessEntity>(
       client,
       "entities",
@@ -40,9 +42,7 @@ export const listBusinessEntities = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listBusinessEntitiesResponse,
       page: fetchAll ? null : listBusinessEntitiesResponse.page,

@@ -5,6 +5,7 @@ import { RESOURCE_CONFIG } from "../constants";
 import type { PollingState } from "../types";
 import { fetchAllRecords, filterByTimestamp } from "../util";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -18,9 +19,11 @@ export const pollChangesTrigger = pollingTrigger({
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
     const lastPolledAt = state?.lastPolledAt ?? now;
+
     if (!params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -28,16 +31,19 @@ export const pollChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const { client, loginData } = await getClient(
       params.connection,
       context.debug.enabled,
     );
+
     const allRecords = await fetchAllRecords(
       client,
       loginData,
       config.endpoint,
       [{ field: "updatedTime", op: ">", value: lastPolledAt }],
     );
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
@@ -46,11 +52,15 @@ export const pollChangesTrigger = pollingTrigger({
       params.showNewRecords,
       params.showUpdatedRecords,
     );
+
     const totalMatched = created.length + updated.length;
+
     context.logger.debug(
       `Polled ${allRecords.length} ${params.pollResourceType} records, ${created.length} created and ${updated.length} updated since last poll.`,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

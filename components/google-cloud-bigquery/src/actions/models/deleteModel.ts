@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteModelInputs } from "../../inputs";
+
 export const deleteModel = action({
   display: {
     description: "Deletes the model specified by model ID from the dataset.",

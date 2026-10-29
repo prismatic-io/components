@@ -4,6 +4,7 @@ import { DRIVES_PAGE_SIZE, MY_DRIVE, MY_DRIVE_LABEL } from "../constants";
 import { selectDriveInputs } from "../inputs";
 import { fetchAllPages } from "../util/pagination";
 import { selectDriveExamplePayload } from "../examplePayloads";
+
 export const selectDrive = dataSource({
   display: {
     label: "Select Drive",
@@ -13,11 +14,13 @@ export const selectDrive = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, params) => {
     const client = createClient(params.connection);
+
     const drives = await fetchAllPages(
       (pageToken) =>
         client.drives.list({ pageSize: DRIVES_PAGE_SIZE, pageToken }),
       (data) => data.drives,
     );
+
     return {
       result: [
         { key: MY_DRIVE, label: MY_DRIVE_LABEL },

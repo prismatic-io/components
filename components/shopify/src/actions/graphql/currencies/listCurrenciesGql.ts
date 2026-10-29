@@ -7,6 +7,7 @@ import { listCurrenciesGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listCurrenciesQuery from "../queries/currencies/ListCurrencies.gql";
+
 export const listCurrenciesGql = action({
   display: {
     label: "List Currencies",
@@ -23,6 +24,7 @@ export const listCurrenciesGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = (await fetchData(
       client,
       ["shop", "currencySettings"],
@@ -33,9 +35,8 @@ export const listCurrenciesGql = action({
         first: getAlldata ? MAX_LIMIT : pagination.limit,
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
-    )) as Record<"currencies", unknown[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"currencies", unknown[]> & { pageInfo: PageInfo };
+
     return {
       data,
     };

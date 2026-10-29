@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectUserExamplePayload } from "../examplePayloads";
 import { selectUserInputs } from "../inputs";
 import type { SelectableResource } from "../types";
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -15,12 +16,14 @@ export const selectUser = dataSource({
     const {
       data: { value },
     } = await client.get(ENDPOINTS.USERS);
+
     const result = (value as SelectableResource[])
       .map<Element>((user) => ({
         label: user.displayName,
         key: user.id.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

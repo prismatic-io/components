@@ -8,6 +8,7 @@ import {
   sorting,
   squareConnection,
 } from "./common";
+
 const address = input({
   label: "Address",
   type: "code",
@@ -36,6 +37,7 @@ const address = input({
     return JSON.parse(util.types.toString(addressInput));
   },
 });
+
 const birthday = input({
   label: "Birthday",
   type: "string",
@@ -45,6 +47,7 @@ const birthday = input({
   comments: "The customer's date of birth. Format: YYYY-MM-DD.",
   clean: toOptionalString,
 });
+
 const companyName = input({
   label: "Company Name",
   type: "string",
@@ -54,6 +57,7 @@ const companyName = input({
   comments: "The name of the company associated with the customer.",
   clean: toOptionalString,
 });
+
 const emailAddress = input({
   label: "Email Address",
   type: "string",
@@ -63,6 +67,7 @@ const emailAddress = input({
   comments: "The email address of the customer.",
   clean: toOptionalString,
 });
+
 const familyName = input({
   label: "Family Name",
   type: "string",
@@ -72,6 +77,7 @@ const familyName = input({
   comments: "The last name of the customer.",
   clean: toOptionalString,
 });
+
 const givenName = input({
   label: "Given Name",
   type: "string",
@@ -81,6 +87,7 @@ const givenName = input({
   comments: "The first name of the customer.",
   clean: toOptionalString,
 });
+
 const nickname = input({
   label: "Nickname",
   type: "string",
@@ -90,6 +97,7 @@ const nickname = input({
   comments: "An informal name to associate with the customer.",
   clean: toOptionalString,
 });
+
 const note = input({
   label: "Note",
   type: "string",
@@ -99,6 +107,7 @@ const note = input({
   comments: "A free-form note to associate with the customer.",
   clean: toOptionalString,
 });
+
 const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -109,6 +118,7 @@ const phoneNumber = input({
     "The phone number of the customer in E.164 format (e.g., +14155552671).",
   clean: toOptionalString,
 });
+
 const referenceId = input({
   label: "Reference ID",
   type: "string",
@@ -118,6 +128,7 @@ const referenceId = input({
   comments: "An optional external reference ID to associate with the customer.",
   clean: toOptionalString,
 });
+
 const taxIds = input({
   label: "Tax IDs",
   type: "code",
@@ -139,6 +150,7 @@ const taxIds = input({
     return JSON.parse(util.types.toString(taxIdsInput));
   },
 });
+
 const query = input({
   label: "Query",
   type: "code",
@@ -181,16 +193,19 @@ const query = input({
     return JSON.parse(util.types.toString(queryInput));
   },
 });
+
 export const listCustomersInputs = {
   squareConnection,
   fetchAll,
   pagination,
   sorting,
 };
+
 export const retrieveCustomerInputs = {
   squareConnection,
   customerId,
 };
+
 export const updateCustomerInputs = {
   squareConnection,
   customerId,
@@ -206,6 +221,7 @@ export const updateCustomerInputs = {
   referenceId,
   taxIds,
 };
+
 export const createCustomerInputs = {
   squareConnection,
   address,
@@ -221,11 +237,13 @@ export const createCustomerInputs = {
   taxIds,
   idempotencyKey,
 };
+
 export const searchCustomersInputs = {
   squareConnection,
   query,
   pagination,
 };
+
 export const deleteCustomerInputs = {
   squareConnection,
   customerId,

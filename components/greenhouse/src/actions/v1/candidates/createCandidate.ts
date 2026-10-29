@@ -21,6 +21,7 @@ import {
   website_addresses,
 } from "../../../inputs";
 import { generatePayload } from "../../../util";
+
 export const createCandidate = action({
   display: {
     label: "Create Candidate (Harvest v1/v2)",

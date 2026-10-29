@@ -10,6 +10,7 @@ import type {
   SingleValueVo,
 } from "../../types";
 import { getRecordString, handleArenaError, isRecord } from "../../util";
+
 export const changeLifecycleStatus = action({
   display: {
     label: "Change Lifecycle Status",
@@ -37,6 +38,7 @@ export const changeLifecycleStatus = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const isValidValue = (value: unknown): boolean => {
         if (value === null || value === undefined || value === "") {
           return false;
@@ -46,6 +48,7 @@ export const changeLifecycleStatus = action({
         }
         return true;
       };
+
       const transitionPayload: ChangeLifecycleTransitionCreateVo = {
         change: { guid: changeGuid },
         status: status as ChangeLifecycleStatusType,
@@ -53,6 +56,7 @@ export const changeLifecycleStatus = action({
         comment,
         adminNeedConfig,
       };
+
       if (isValidValue(administrators) && Array.isArray(administrators)) {
         transitionPayload.administrators = (administrators as unknown[]).map(
           (admin) => ({
@@ -60,6 +64,7 @@ export const changeLifecycleStatus = action({
           }),
         );
       }
+
       if (
         isRecord(implementationStatus) &&
         Object.keys(implementationStatus).length > 0
@@ -67,20 +72,24 @@ export const changeLifecycleStatus = action({
         transitionPayload.implementationStatus =
           implementationStatus as SingleValueVo;
       }
+
       if (context.debug.enabled) {
         context.logger.debug("Change lifecycle transition request payload", {
           payloadKeys: Object.keys(transitionPayload),
         });
       }
+
       const { data } = await client.post<ChangeLifecycleTransitionFullVo>(
         "/changes/statuschanges",
         transitionPayload,
       );
+
       context.logger.info("Successfully changed change lifecycle status", {
         changeGuid,
         newStatus: status,
         changeNumber: data.change?.number,
       });
+
       return {
         data,
       };

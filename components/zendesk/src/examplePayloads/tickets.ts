@@ -1,4 +1,5 @@
 import { SUCCESS_MESSAGE } from "../constants";
+
 export const listTicketsRaw = [
   {
     assignee_id: 235323,
@@ -47,19 +48,29 @@ export const listTicketsRaw = [
     },
   },
 ];
+
 const createTicketRaw = listTicketsRaw[0];
+
 const getByExternalIdRaw = listTicketsRaw;
+
 export const createTicketExamplePayload = { data: createTicketRaw };
+
 export const deleteTicketExamplePayload = { data: SUCCESS_MESSAGE };
+
 export const getByExternalIdExamplePayload = {
   data: getByExternalIdRaw as unknown,
 };
+
 export const listTicketsExamplePayload = { data: listTicketsRaw as unknown };
+
 export const listTicketsByUserExamplePayload = {
   data: listTicketsRaw as unknown,
 };
+
 export const listTicketsToUserExamplePayload = {
   data: listTicketsRaw as unknown,
 };
+
 export const showTicketExamplePayload = { data: createTicketRaw as unknown };
+
 export const updateTicketExamplePayload = { data: createTicketRaw };

@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { createWebhookSubscriptionInputs } from "../../inputs";
 import { createWebhookSubscriptionExamplePayload } from "../../examplePayloads";
 import { postWebhookSubscription } from "../../util";
+
 export const createWebhookSubscription = action({
   display: {
     label: "Create Webhook Subscription",
@@ -26,9 +27,7 @@ export const createWebhookSubscription = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createWebhookSubscriptionExamplePayload.data,
   }),
   inputs: createWebhookSubscriptionInputs,

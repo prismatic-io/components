@@ -4,6 +4,7 @@ import { deleteRequestExamplePayload } from "../../examplePayloads";
 import { deleteRequestInputs } from "../../inputs";
 import { deleteRequestOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteRequest = action({
   display: {
     label: "Delete Request",
@@ -18,9 +19,13 @@ export const deleteRequest = action({
   perform: async (context, { connection, requestGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(`Deleting request with GUID: ${requestGuid}`);
+
       await client.delete(`/requests/${requestGuid}`);
+
       context.logger.info(`Successfully deleted request: ${requestGuid}`);
+
       return {
         data: { success: true, message: "Request deleted successfully" },
       };

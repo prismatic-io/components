@@ -9,6 +9,7 @@ import {
   id,
   name,
 } from "../../inputs";
+
 export const updateAsset = action({
   display: {
     label: "Update Asset",

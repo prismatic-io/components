@@ -5,6 +5,7 @@ import { getSegmentInputs as inputs } from "../../inputs";
 import { getSegmentExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 import type { FieldsSegment } from "../../types";
+
 export const getSegment = action({
   display: {
     label: "Get Segment",
@@ -17,6 +18,7 @@ export const getSegment = action({
     if (debug) {
       context.logger.debug({ connection, segmentId, fieldsSegment, debug });
     }
+
     const { body } = await segmentsApi.getSegment(segmentId, {
       fieldsSegment: fieldsSegment as FieldsSegment[],
     });

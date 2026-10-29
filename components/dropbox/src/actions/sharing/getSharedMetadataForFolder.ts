@@ -7,6 +7,7 @@ import {
 } from "../../inputs";
 import { getSharedMetadataForFolderOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const getSharedMetadataForFolder = action({
   display: {
     label: "Get Shared Metadata for Folder",

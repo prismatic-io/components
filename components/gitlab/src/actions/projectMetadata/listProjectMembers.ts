@@ -4,6 +4,7 @@ import { listProjectMembersExamplePayload } from "../../examplePayloads";
 import { listProjectMembersInputs } from "../../inputs";
 import { listProjectMembersOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listProjectMembers = action({
   display: {
     label: "List Project Members",
@@ -28,9 +29,8 @@ export const listProjectMembers = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listProjectMembersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listProjectMembersExamplePayload,
   examplePayload: listProjectMembersExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

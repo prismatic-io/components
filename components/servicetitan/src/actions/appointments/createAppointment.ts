@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createAppointmentExamplePayload } from "../../examplePayloads";
 import { createAppointmentInputs } from "../../inputs";
 import { createAppointmentOutputSchema } from "../../outputSchemas";
+
 export const createAppointment = action({
   display: {
     label: "Create Appointment",

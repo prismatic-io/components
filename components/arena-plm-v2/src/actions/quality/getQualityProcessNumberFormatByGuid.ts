@@ -4,6 +4,7 @@ import { getQualityProcessNumberFormatByGuidExamplePayload } from "../../example
 import { getQualityProcessNumberFormatByGuidInputs } from "../../inputs";
 import { numberSequenceCompactSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getQualityProcessNumberFormatByGuid = action({
   display: {
     label: "Get Quality Process Number Format by GUID",
@@ -19,9 +20,11 @@ export const getQualityProcessNumberFormatByGuid = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/settings/qualityprocesses/numberformats/${params.guid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

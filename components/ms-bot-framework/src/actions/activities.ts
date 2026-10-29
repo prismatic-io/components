@@ -15,6 +15,7 @@ import {
   sendMessageExamplePayload,
   sendAdaptiveCardMessageExamplePayload,
 } from "../examplePayloads";
+
 const sendMessage = action({
   display: {
     label: "Send Message",
@@ -50,6 +51,7 @@ const sendMessage = action({
   },
   examplePayload: sendMessageExamplePayload,
 });
+
 const sendAdaptiveCardMessage = action({
   display: {
     label: "Send Adaptive Card Message",
@@ -89,6 +91,7 @@ const sendAdaptiveCardMessage = action({
   },
   examplePayload: sendAdaptiveCardMessageExamplePayload,
 });
+
 export default {
   sendMessage,
   sendAdaptiveCardMessage,

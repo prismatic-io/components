@@ -5,6 +5,7 @@ import { countProductsInputs as inputs } from "../../../inputsGql";
 import { countProductsGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";
 import countProductsQuery from "../queries/products/CountProducts.gql";
+
 export const countProductsGql = action({
   display: {
     label: "Count Products",
@@ -18,9 +19,8 @@ export const countProductsGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      productsCount: Count;
-    } = await client.request(countProductsQuery);
+    const data: { productsCount: Count } =
+      await client.request(countProductsQuery);
     return { data: { data: data.productsCount } };
   },
   inputs,

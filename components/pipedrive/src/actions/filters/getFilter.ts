@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getFilterInputs } from "../../inputs";
 import { getFilterExamplePayload } from "../../examplePayloads";
 import { getFilterOutputSchema } from "../../outputSchemas";
+
 export const getFilter = action({
   display: {
     label: "Get Filter",

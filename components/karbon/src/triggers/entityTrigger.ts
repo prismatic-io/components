@@ -1,6 +1,7 @@
 import { trigger } from "@prismatic-io/spectral";
 import entityTriggerInputs from "../inputs/triggers/entityTrigger";
 import { createWebhook, deleteWebhook } from "../utils";
+
 export const entityTrigger = trigger({
   display: {
     label: "Entity Trigger",

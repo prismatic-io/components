@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createCompanyExamplePayload } from "../../examplePayloads";
 import { createCompanyInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createCompany = action({
   display: {
     label: "Create Company",
@@ -27,11 +28,13 @@ export const createCompany = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const { data } = await client.post(hubspotPaths.objects("companies"), {
       properties: {
         city,
@@ -45,6 +48,7 @@ export const createCompany = action({
         ...dynamicValues,
       },
     });
+
     return { data };
   },
   inputs: createCompanyInputs,

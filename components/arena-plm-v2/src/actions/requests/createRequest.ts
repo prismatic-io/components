@@ -5,6 +5,7 @@ import { createRequestInputs } from "../../inputs";
 import { requestShortSchema } from "../../outputSchemas";
 import type { RequestCreateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createRequest = action({
   display: {
     label: "Create Request",
@@ -19,6 +20,7 @@ export const createRequest = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: RequestCreateVo = {
         title: params.title,
         problem: params.problem,
@@ -37,11 +39,15 @@ export const createRequest = action({
         supplierVisibility: params.supplierVisibility,
         additionalAttributes: resolveAdditionalAttributes(params, context),
       };
+
       context.logger.info("Creating new request in Arena");
+
       const { data } = await client.post("/requests", requestPayload);
+
       context.logger.info(
         `Successfully created request with GUID: ${data?.guid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create Request");

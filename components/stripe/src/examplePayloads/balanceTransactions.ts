@@ -25,6 +25,7 @@ export const getBalanceTransactionExamplePayload = {
     type: "charge",
   } as unknown,
 };
+
 export const listBalanceTransactionsExamplePayload = {
   data: {
     object: "list",

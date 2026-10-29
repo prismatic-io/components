@@ -7,6 +7,7 @@ import {
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import { createWebhookGql } from "../graphql/webhooks/createWebhookGql";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -23,6 +24,7 @@ export const createWebhook = action({
       callbackWebhookUrl: util.types.toString(postUrl),
       webhookFormat: webhookFormat.toUpperCase(),
     });
+
     return {
       data,
     };

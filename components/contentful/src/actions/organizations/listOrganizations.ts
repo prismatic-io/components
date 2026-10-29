@@ -5,6 +5,7 @@ import { listOrganizationsExamplePayload } from "../../examplePayloads";
 import { listOrganizationsInputs } from "../../inputs";
 import { listOrganizationsOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems } from "../../util";
+
 export const listOrganizations = action({
   display: {
     label: "List Organizations",
@@ -13,17 +14,18 @@ export const listOrganizations = action({
   performSafety: "notAllowed",
   perform: async (context, { connection }) => {
     const client = createClient(connection, context);
+
     const allItems: OrganizationProp[] = await getAllPaginatedItems<
       Organization,
       OrganizationProp
     >(client.getOrganizations.bind(client));
+
     return {
       data: allItems,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listOrganizationsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listOrganizationsExamplePayload,
   inputs: listOrganizationsInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -9,6 +9,7 @@ export const retrieveBoardExamplePayload = {
     url: "https://your-company.canny.io/admin/board/feature-requests",
   },
 };
+
 export const listBoardsExamplePayload = {
   data: {
     boards: [

@@ -6,6 +6,7 @@ import { listItemsOutputSchema } from "../../outputSchemas";
 import type { ItemFullVo } from "../../types";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listItems = action({
   display: {
     label: "List Items",
@@ -49,6 +50,7 @@ export const listItems = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         number,
         name,
@@ -74,6 +76,7 @@ export const listItems = action({
         offset: pagination.offset,
         includeChildCategories,
       };
+
       context.logger.info("Searching for items in Arena", {
         searchCriteria: {
           byNumber: !!number,
@@ -85,17 +88,20 @@ export const listItems = action({
           byLifecycle: !!(lifecyclePhaseGuid || lifecyclePhaseStage),
         },
       });
+
       const itemsResult = await fetchArenaList<ItemFullVo>(
         client,
         "/items",
         queryParams,
         fetchAll,
       );
+
       context.logger.info("Items retrieved successfully", {
         itemCount: itemsResult.results?.length || 0,
         totalCount: itemsResult.count,
         hasMore: itemsResult.count > (itemsResult.results?.length || 0),
       });
+
       return { data: itemsResult };
     } catch (error) {
       handleArenaError(error, context.logger, "List Items");

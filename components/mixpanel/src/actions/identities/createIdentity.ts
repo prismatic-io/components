@@ -3,6 +3,7 @@ import { createNoAuthClient } from "../../client";
 import { createIdentityInputs } from "../../inputs";
 import { createIdentityExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
+
 export const createIdentity = action({
   display: {
     label: "Create Identity",
@@ -54,8 +55,7 @@ export const createIdentity = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createIdentityExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createIdentityExamplePayload,
   examplePayload: createIdentityExamplePayload,
 });

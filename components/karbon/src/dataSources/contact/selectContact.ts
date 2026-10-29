@@ -3,6 +3,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import type { Contact } from "../../interfaces/Contact";
 import { connection } from "../../inputs/shared";
 import { getPaginatedData } from "../../utils";
+
 export const selectContact = dataSource({
   display: {
     label: "Select Contact",
@@ -23,6 +24,7 @@ export const selectContact = dataSource({
       key: contact.ContactKey,
       label: `${contact.FullName || "No Name"} ${contact.EmailAddress || ""}`,
     }));
+
     return { result: objects };
   },
 });

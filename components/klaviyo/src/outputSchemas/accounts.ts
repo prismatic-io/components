@@ -1,4 +1,5 @@
 import { collectionLinksSchema, resourceLinksSchema } from "./shared";
+
 const accountResourceObject = {
   type: "object" as const,
   properties: {
@@ -39,6 +40,7 @@ const accountResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const getAccountOutputSchema = {
   type: "object" as const,
   properties: {
@@ -47,6 +49,7 @@ export const getAccountOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listAccountsOutputSchema = {
   type: "object" as const,
   properties: {

@@ -1,4 +1,5 @@
 import type { users } from "dropbox";
+
 export const getCurrentAccountExamplePayload: users.FullAccount = {
   account_id: "dbid:AABv9tGtGYhIC5xkYMSNJfSTGDCyPzYqQGE",
   name: {

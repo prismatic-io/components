@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export interface Webhook {
   created_at: string;
   enabled: boolean;
@@ -10,10 +11,12 @@ export interface Webhook {
   url: string;
   verify_ssl: boolean;
 }
+
 export interface EventTypes {
   form_response: boolean;
   form_response_partial: boolean;
 }
+
 export interface CreateWebhook {
   client: HttpClient;
   formId: string;
@@ -24,6 +27,7 @@ export interface CreateWebhook {
   enabled: boolean;
   url: string | undefined;
 }
+
 export interface DeleteWebhook {
   client: HttpClient;
   formId: string;

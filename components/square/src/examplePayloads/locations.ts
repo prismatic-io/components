@@ -27,6 +27,7 @@ export const listLocationsExamplePayload = {
     ],
   },
 };
+
 export const retrieveLocationExamplePayload = {
   data: {
     location: {
@@ -64,6 +65,7 @@ export const retrieveLocationExamplePayload = {
     },
   },
 };
+
 export const updateLocationExamplePayload = {
   data: {
     location: {

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const postUrl = input({
   label: "Post URL",
   type: "string",
@@ -9,6 +10,7 @@ export const postUrl = input({
     "The URL where the newly created webhook will post to. Used to configure the Shopify trigger.",
   clean: util.types.toString,
 });
+
 export const webhookFormat = input({
   label: "Webhook Format",
   type: "string",
@@ -23,6 +25,7 @@ export const webhookFormat = input({
     "Specifies whether the webhook payload is delivered as JSON or XML.",
   clean: util.types.toString,
 });
+
 export const webhookId = input({
   label: "Webhook ID",
   type: "string",

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { deleteCatalogObjectExamplePayload } from "../../examplePayloads";
 import { deleteCatalogObjectInputs } from "../../inputs";
+
 export const deleteCatalogObject = action({
   display: {
     label: "Delete Catalog Object",
@@ -13,7 +14,9 @@ export const deleteCatalogObject = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.delete(`/v2/catalog/object/${objectId}`);
+
     return {
       data: response.data,
     };

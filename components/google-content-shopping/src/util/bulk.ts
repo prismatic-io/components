@@ -1,4 +1,5 @@
 import type { BulkResult } from "../types";
+
 export const runBulk = async <I, O>(
   items: I[],
   worker: (item: I, index: number) => Promise<O>,
@@ -6,6 +7,7 @@ export const runBulk = async <I, O>(
 ): Promise<BulkResult<O>[]> => {
   const results: BulkResult<O>[] = new Array(items.length);
   let next = 0;
+
   const runWorker = async (): Promise<void> => {
     while (next < items.length) {
       const index = next++;
@@ -22,10 +24,12 @@ export const runBulk = async <I, O>(
       }
     }
   };
+
   const pool = Array.from(
     { length: Math.min(concurrency, items.length) },
     runWorker,
   );
   await Promise.all(pool);
+
   return results;
 };

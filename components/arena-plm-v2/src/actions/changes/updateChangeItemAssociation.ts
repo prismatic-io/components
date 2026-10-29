@@ -5,6 +5,7 @@ import { updateChangeItemAssociationInputs } from "../../inputs";
 import { changeItemAssociationSchema } from "../../outputSchemas";
 import type { ChangeItemAssociationViewVo } from "../../types";
 import { handleArenaError, toOptionalString } from "../../util";
+
 export const updateChangeItemAssociation = action({
   display: {
     label: "Update Change Item Association",
@@ -40,6 +41,7 @@ export const updateChangeItemAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const createViewObject = (
         included?: boolean,
         notes?: string,
@@ -54,6 +56,7 @@ export const updateChangeItemAssociation = action({
           ? undefined
           : view;
       };
+
       const filesView = createViewObject(filesViewIncluded, filesViewNotes);
       const sourcingView = createViewObject(
         sourcingViewIncluded,
@@ -61,6 +64,7 @@ export const updateChangeItemAssociation = action({
       );
       const specsView = createViewObject(specsViewIncluded, specsViewNotes);
       const bomView = createViewObject(bomViewIncluded, bomViewNotes);
+
       const requestPayload = {
         filesView,
         sourcingView,
@@ -79,6 +83,7 @@ export const updateChangeItemAssociation = action({
             ? [dispositionAttributeJson]
             : undefined,
       };
+
       context.logger.info("Updating change item association in Arena", {
         changeGuid: changeGuid,
         changeItemAssociationGuid: changeItemAssociationGuid,
@@ -94,16 +99,19 @@ export const updateChangeItemAssociation = action({
           requestPayload.dispositionAttributes?.length || 0,
         hasDispositionAttributeJson: !!dispositionAttributeJson,
       });
+
       const { data, status } = await client.put(
         `/changes/${changeGuid}/items/${changeItemAssociationGuid}`,
         requestPayload,
       );
+
       context.logger.info("Change item association updated successfully", {
         changeGuid: changeGuid,
         changeItemAssociationGuid: changeItemAssociationGuid,
         responseGuid: data.guid,
         statusCode: status,
       });
+
       return {
         data,
       };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { identifyInputs } from "../../inputs";
 import { createCustomerClient } from "../../client";
 import { identifyExamplePayload } from "../../examplePayloads";
+
 export const identify = action({
   display: {
     label: "Identify",
@@ -9,6 +10,7 @@ export const identify = action({
   },
   perform: async (context, { id, region, customerData, cioConnection }) => {
     const client = createCustomerClient(cioConnection, region);
+
     return {
       data: await client.identify(id, customerData),
     };
@@ -16,4 +18,5 @@ export const identify = action({
   inputs: identifyInputs,
   examplePayload: identifyExamplePayload,
 });
+
 export default identify;

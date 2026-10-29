@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { deleteUserInputs } from "../../inputs/users";
 import { createClient } from "../../client";
 import { NO_CONTENT_RESPONSE } from "../../constants";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",
@@ -14,6 +15,7 @@ export const deleteUser = action({
         isPermanentDelete,
       },
     });
+
     return {
       data: NO_CONTENT_RESPONSE,
     };

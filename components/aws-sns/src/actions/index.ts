@@ -9,6 +9,7 @@ import { subscribe } from "./subscribe";
 import { unsubscribe } from "./unsubscribe";
 import { publishSms } from "./publishSms";
 import { listOptOutNumbers } from "./listOptOutNumbers";
+
 export default {
   createTopic,
   deleteTopic,

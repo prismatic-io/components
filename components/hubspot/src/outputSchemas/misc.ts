@@ -24,9 +24,11 @@ export const getCurrentUserOutputSchema = {
   },
   required: ["portalId", "timeZone", "accountType"],
 };
+
 export const validateConnectionOutputSchema = {
   type: "boolean" as const,
 };
+
 export const deleteAllWebhooksOutputSchema = {
   type: "object" as const,
   properties: {

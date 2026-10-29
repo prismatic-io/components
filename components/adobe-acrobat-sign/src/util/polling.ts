@@ -12,30 +12,27 @@ import type {
   PartitionedRecords,
   SearchResponse,
 } from "../types";
+
 export const MAX_BATCHED_POLL_PAGES = 1;
+
 export async function fetchAgreementsModifiedSince(
   client: HttpClient,
   lastPolledAt: string,
-  options?: {
-    maxPages?: number;
-    resumeStartIndex?: number;
-  },
-): Promise<
-  FetchAgreementsResult & {
-    nextStartIndex: number;
-  }
-> {
+  options?: { maxPages?: number; resumeStartIndex?: number },
+): Promise<FetchAgreementsResult & { nextStartIndex: number }> {
   const records: AdobeSignAgreementRecord[] = [];
   const maxPages = options?.maxPages ?? MAX_POLL_PAGES;
   let startIndex = options?.resumeStartIndex ?? 0;
   let pages = 0;
   let truncated = false;
   let exhausted = false;
+
   while (pages < maxPages) {
     if (startIndex + POLL_PAGE_SIZE >= 10000) {
       truncated = true;
       break;
     }
+
     const body = {
       scope: ["AGREEMENT_ASSETS"],
       agreementAssetsCriteria: {
@@ -50,24 +47,31 @@ export async function fetchAgreementsModifiedSince(
         sortOrder: "ASC",
       },
     };
+
     const { data } = await client.post<SearchResponse>("/search", body, {
       headers: { "x-ownership-scope": POLL_OWNERSHIP_SCOPE },
     });
+
     const pageItems =
       data.agreementAssetEvents ??
       data.agreementAssetsResults?.agreementAssetsList ??
       [];
+
     records.push(...pageItems);
     pages += 1;
+
     if (pageItems.length < POLL_PAGE_SIZE) {
       exhausted = true;
       break;
     }
+
     startIndex += POLL_PAGE_SIZE;
   }
+
   if (!exhausted && !truncated) {
     truncated = true;
   }
+
   const latestModifiedDate = records.reduce<string | undefined>(
     (acc, record) => {
       const modified = record.modifiedDate;
@@ -77,14 +81,17 @@ export async function fetchAgreementsModifiedSince(
     },
     undefined,
   );
+
   return { records, truncated, latestModifiedDate, nextStartIndex: startIndex };
 }
+
 export function partitionAgreementsByTimestamp(
   records: AdobeSignAgreementRecord[],
   sinceDate: Date,
 ): PartitionedRecords {
   const created: AdobeSignAgreementRecord[] = [];
   const updated: AdobeSignAgreementRecord[] = [];
+
   for (const record of records) {
     const createdValue = record.createdDate;
     const modifiedValue = record.modifiedDate;
@@ -92,9 +99,11 @@ export function partitionAgreementsByTimestamp(
       typeof createdValue === "string" ? new Date(createdValue) : null;
     const modifiedAtDate =
       typeof modifiedValue === "string" ? new Date(modifiedValue) : null;
+
     const isNew = createdAtDate !== null && createdAtDate > sinceDate;
     const isUpdated =
       !isNew && modifiedAtDate !== null && modifiedAtDate > sinceDate;
+
     if (isNew) {
       created.push(record);
     } else if (isUpdated) {
@@ -103,16 +112,20 @@ export function partitionAgreementsByTimestamp(
       updated.push(record);
     }
   }
+
   return { created, updated };
 }
+
 export interface AdobeSignChangesObject {
   created: unknown[];
   updated: unknown[];
 }
+
 export interface AdobeSignRecordChange {
   changeType: "created" | "updated";
   record: unknown;
 }
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
@@ -136,6 +149,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return str;
 };
+
 export const resolvePollingRecordChanges = (
   data: AdobeSignChangesObject | undefined,
 ): AdobeSignRecordChange[] => {

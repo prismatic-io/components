@@ -7,6 +7,7 @@ import { listPortfolios } from "./listPortfolios";
 import { removeCustomFieldFromPortfolio } from "./removeCustomFieldFromPortfolio";
 import { removeUserFromPortfolio } from "./removeUserFromPortfolio";
 import { updatePortfolio } from "./updatePortfolio";
+
 export default {
   addCustomFieldToPortfolio,
   addUserToPortfolio,

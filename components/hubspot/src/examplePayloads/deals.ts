@@ -1,4 +1,5 @@
 import { BASE_URL } from "../constants";
+
 export const listDealsExamplePayload = {
   data: {
     results: [
@@ -27,6 +28,7 @@ export const listDealsExamplePayload = {
     },
   },
 };
+
 export const getDealByIdExamplePayload = {
   data: {
     id: "87654321098",
@@ -45,7 +47,9 @@ export const getDealByIdExamplePayload = {
     archived: false,
   },
 };
+
 export const deleteDealExamplePayload = { data: "" };
+
 export const searchDealsExamplePayload = {
   data: {
     total: 1,
@@ -85,6 +89,7 @@ export const searchDealsExamplePayload = {
     ],
   },
 };
+
 export const createDealExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:24:54.526Z",
@@ -123,6 +128,7 @@ export const createDealExamplePayload = {
     updatedAt: "2024-01-15T00:24:54.526Z",
   },
 };
+
 export const updateDealExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:24:54.543Z",

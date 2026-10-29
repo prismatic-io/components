@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { getProjectMembersExamplePayload } from "../../examplePayloads";
 import { getProjectMembersInputs } from "../../inputs";
+
 export const getProjectMembers = action({
   display: {
     label: "Get Project Members",
@@ -17,4 +18,5 @@ export const getProjectMembers = action({
   },
   inputs: getProjectMembersInputs,
 });
+
 export default { getProjectMembers };

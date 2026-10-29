@@ -2,6 +2,7 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanOptionalArrayInput, cleanStringInput } from "../util";
 import { connection, fetchAll, odataParams } from "./common";
 import { groupId } from "./mobileApps";
+
 const memberIdsString = input({
   label: "Member IDs",
   comments:
@@ -13,6 +14,7 @@ const memberIdsString = input({
   placeholder: "Enter comma-separated member IDs",
   clean: cleanStringInput,
 });
+
 const memberIds = input({
   label: "Dynamic Member IDs",
   comments:
@@ -30,6 +32,7 @@ const memberIds = input({
   ),
   clean: cleanOptionalArrayInput,
 });
+
 const memberId = input({
   label: "Member ID",
   comments: "The unique identifier of a member (UUID format).",
@@ -40,27 +43,32 @@ const memberId = input({
   clean: util.types.toString,
   dataSource: "selectMember",
 });
+
 export const groupIdForMembers = input({
   ...groupId,
   comments: "The unique identifier of a MS365 or Security group.",
   dataSource: "selectGroup",
 });
+
 export const addMembersToGroupInputs = {
   connection,
   groupId: groupIdForMembers,
   memberIdsString,
   memberIds,
 };
+
 export const addMemberToGroupInputs = {
   connection,
   groupId: groupIdForMembers,
   memberId,
 };
+
 export const deleteMemberInputs = {
   connection,
   groupId,
   memberId,
 };
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -73,6 +81,7 @@ const listFilters = structuredObjectInput({
     $expand: odataParams.$expand,
   },
 });
+
 export const listMembersInputs = {
   connection,
   fetchAll,

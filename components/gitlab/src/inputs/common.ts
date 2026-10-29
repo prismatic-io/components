@@ -10,12 +10,14 @@ import {
   toPathOrIdList,
   toRequiredString,
 } from "../utils";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The GitLab connection to use.",
 });
+
 export const project = input({
   label: "Project",
   placeholder: "Enter project ID or path",
@@ -27,6 +29,7 @@ export const project = input({
   dataSource: "selectProject",
   clean: toPathOrId,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -36,6 +39,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination. The API returns up to 100 results per page.",
   clean: util.types.toBool,
 });
+
 export const perPage = input({
   label: "Per Page",
   type: "string",
@@ -45,6 +49,7 @@ export const perPage = input({
   placeholder: "Enter results per page",
   clean: util.types.toNumber,
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -55,12 +60,14 @@ export const page = input({
   example: "2",
   clean: util.types.toNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { perPage, page },
 });
+
 export const search = input({
   label: "Search",
   type: "string",
@@ -70,6 +77,7 @@ export const search = input({
   example: "payments",
   clean: cleanString,
 });
+
 export const updatedAfter = input({
   label: "Updated After",
   type: "string",
@@ -80,6 +88,7 @@ export const updatedAfter = input({
   example: "2026-09-01T00:00:00Z",
   clean: toOptionalTimestamp,
 });
+
 export const issueIid = input({
   label: "Issue IID",
   placeholder: "Enter issue IID",
@@ -90,6 +99,7 @@ export const issueIid = input({
   example: "42",
   clean: toIid,
 });
+
 export const mergeRequestIid = input({
   label: "Merge Request IID",
   placeholder: "Enter merge request IID",
@@ -100,6 +110,7 @@ export const mergeRequestIid = input({
   example: "17",
   clean: toIid,
 });
+
 export const title = input({
   label: "Title",
   placeholder: "Enter title",
@@ -110,6 +121,7 @@ export const title = input({
   example: "Retry failed ACH settlements",
   clean: toRequiredString,
 });
+
 export const optionalTitle = input({
   label: "Title",
   placeholder: "Enter title",
@@ -119,6 +131,7 @@ export const optionalTitle = input({
   example: "Retry failed ACH settlements",
   clean: cleanString,
 });
+
 export const description = input({
   label: "Description",
   placeholder: "Enter description",
@@ -128,10 +141,12 @@ export const description = input({
   example: "Settlements that fail with a transient error are never retried.",
   clean: cleanString,
 });
+
 export const createDescription = {
   ...description,
   comments: "The description, in Markdown.",
 };
+
 export const labels = input({
   label: "Labels",
   placeholder: "Enter label name",
@@ -144,6 +159,7 @@ export const labels = input({
   dataSource: "selectLabel",
   clean: toOptionalLabelList,
 });
+
 export const assigneeIds = input({
   label: "Assignee IDs",
   placeholder: "Enter user ID",
@@ -156,6 +172,7 @@ export const assigneeIds = input({
   dataSource: "selectUser",
   clean: toOptionalIdList,
 });
+
 export const stateEvent = input({
   label: "State Event",
   type: "string",
@@ -164,6 +181,7 @@ export const stateEvent = input({
   model: STATE_EVENT_OPTIONS,
   clean: cleanString,
 });
+
 export const ref = input({
   label: "Ref",
   placeholder: "Enter branch, tag, or commit SHA",
@@ -174,6 +192,7 @@ export const ref = input({
   dataSource: "selectBranch",
   clean: toRequiredString,
 });
+
 export const refName = input({
   label: "Ref Name",
   placeholder: "Enter branch or tag",
@@ -184,6 +203,7 @@ export const refName = input({
   example: "main",
   clean: cleanString,
 });
+
 export const projects = input({
   label: "Projects",
   placeholder: "Enter project ID or path",

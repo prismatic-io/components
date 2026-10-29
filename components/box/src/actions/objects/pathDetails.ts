@@ -5,6 +5,7 @@ import { pathDetailsExamplePayload } from "../../examplePayloads";
 import { pathDetailsInputs } from "../../inputs";
 import { pathDetailsOutputSchema } from "../../outputSchemas";
 import { getPathEntries, pathLeafName } from "../../util";
+
 export const pathDetails = action({
   display: {
     label: "Get Path Details",
@@ -15,17 +16,14 @@ export const pathDetails = action({
   perform: async (_context, { path, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
+
     return {
       data: pathEntries,
     };
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => {
     const name = pathLeafName(path);
+
     return {
       data: [
         {

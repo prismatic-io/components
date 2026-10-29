@@ -17,6 +17,7 @@ import {
   countryCode,
   connectionInput,
 } from "./../../../inputs";
+
 export const updateCustomer = action({
   display: {
     label: "Update Customer",
@@ -64,4 +65,5 @@ export const updateCustomer = action({
     connection: connectionInput,
   },
 });
+
 export default updateCustomer;

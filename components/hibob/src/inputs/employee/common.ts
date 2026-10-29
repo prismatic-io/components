@@ -5,6 +5,7 @@ import {
   cleanStringInput,
   validateDate,
 } from "../../util";
+
 export const identifier = input({
   label: "Employee Identifier",
   type: "string",
@@ -14,6 +15,7 @@ export const identifier = input({
   placeholder: "Enter employee ID or email",
   clean: util.types.toString,
 });
+
 export const firstName = input({
   label: "First Name",
   type: "string",
@@ -23,6 +25,7 @@ export const firstName = input({
   placeholder: "Enter employee's first name",
   clean: util.types.toString,
 });
+
 export const surname = input({
   label: "Surname",
   type: "string",
@@ -32,6 +35,7 @@ export const surname = input({
   placeholder: "Enter employee's surname",
   clean: util.types.toString,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -41,6 +45,7 @@ export const email = input({
   placeholder: "Enter employee's email address",
   clean: util.types.toString,
 });
+
 export const site = input({
   label: "Site",
   type: "string",
@@ -50,6 +55,7 @@ export const site = input({
   placeholder: "Enter employee's site",
   clean: util.types.toString,
 });
+
 export const startDate = input({
   label: "Start Date",
   type: "string",
@@ -59,6 +65,7 @@ export const startDate = input({
   placeholder: "Enter start date (YYYY-MM-DD)",
   clean: (value) => validateDate(value, "Start Date"),
 });
+
 export const fieldsSearch = input({
   label: "Fields",
   type: "code",
@@ -69,6 +76,7 @@ export const fieldsSearch = input({
   example: JSON.stringify(["root.fullName", "root.id"], null, 2),
   clean: (value) => cleanArrayCodeInput(value, "Fields"),
 });
+
 export const fieldsRead = input({
   label: "Fields",
   type: "code",
@@ -79,6 +87,7 @@ export const fieldsRead = input({
   example: JSON.stringify(["root.name", "root.email"], null, 2),
   clean: (value) => cleanArrayCodeInput(value, "Fields"),
 });
+
 export const fieldsUpdate = input({
   label: "Fields",
   type: "code",
@@ -98,6 +107,7 @@ export const fieldsUpdate = input({
   ),
   clean: (value: unknown) => cleanCodeInput(value, "Fields"),
 });
+
 export const filters = input({
   label: "Filters",
   type: "code",
@@ -118,6 +128,7 @@ export const filters = input({
   ),
   clean: (value) => cleanArrayCodeInput(value, "Filters"),
 });
+
 export const showInactive = input({
   label: "Show Inactive",
   type: "boolean",
@@ -126,6 +137,7 @@ export const showInactive = input({
   comments: "When true, includes inactive employees in the response.",
   clean: util.types.toBool,
 });
+
 export const humanReadable = input({
   label: "Human Readable",
   type: "string",
@@ -145,6 +157,7 @@ export const humanReadable = input({
   placeholder: "Select data format",
   clean: cleanStringInput,
 });
+
 export const taskStatus = input({
   label: "Task Status",
   type: "string",
@@ -158,6 +171,7 @@ export const taskStatus = input({
   placeholder: "Select task status",
   clean: cleanStringInput,
 });
+
 export const terminationDate = input({
   label: "Termination Date",
   type: "string",
@@ -168,6 +182,7 @@ export const terminationDate = input({
   placeholder: "Enter termination date (YYYY-MM-DD)",
   clean: (value) => validateDate(value, "Termination Date"),
 });
+
 export const terminationReason = input({
   label: "Termination Reason",
   type: "string",
@@ -177,6 +192,7 @@ export const terminationReason = input({
   placeholder: "Enter termination reason ID",
   clean: cleanStringInput,
 });
+
 export const reason = input({
   label: "Reason",
   type: "string",
@@ -186,6 +202,7 @@ export const reason = input({
   placeholder: "Enter lifecycle reason ID",
   clean: cleanStringInput,
 });
+
 export const noticePeriod = input({
   label: "Notice Period",
   type: "code",
@@ -203,6 +220,7 @@ export const noticePeriod = input({
   ),
   clean: (value) => cleanCodeInput(value, "Notice Period"),
 });
+
 export const lastDayOfWork = input({
   label: "Last Day of Work",
   type: "string",

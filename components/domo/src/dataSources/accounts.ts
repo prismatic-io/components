@@ -3,6 +3,7 @@ import type { ListAccountsQueryParams } from "../actions/types/ListAccountsQuery
 import type { ListAccountTypesQueryParams } from "../actions/types/ListAccountTypesQueryParams";
 import { getDomoClient } from "../client";
 import { connection, limit, offset } from "../inputs";
+
 const accounts = dataSource({
   display: {
     label: "Select Account",
@@ -14,6 +15,7 @@ const accounts = dataSource({
     const queryParams: ListAccountsQueryParams = {};
     if (limit.length) queryParams.limit = limit;
     if (offset.length) queryParams.offset = offset;
+
     const { data } = await client.get(`/accounts`, {
       params: queryParams,
       headers: { Accept: "application/json" },
@@ -41,6 +43,7 @@ const accounts = dataSource({
     }),
   },
 });
+
 const accountTypes = dataSource({
   display: {
     label: "Select Account Type",
@@ -52,6 +55,7 @@ const accountTypes = dataSource({
     const queryParams: ListAccountTypesQueryParams = {};
     if (limit.length) queryParams.limit = limit;
     if (offset.length) queryParams.offset = offset;
+
     const { data } = await client.get(`/account-types`, {
       params: queryParams,
       headers: { Accept: "application/json" },
@@ -79,4 +83,5 @@ const accountTypes = dataSource({
     }),
   },
 });
+
 export default { accounts, accountTypes };

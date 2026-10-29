@@ -4,6 +4,7 @@ import { createArticleAttachmentExamplePayload } from "../../examplePayloads";
 import { createArticleAttachmentInputs } from "../../inputs";
 import { createArticleAttachmentOutputSchema } from "../../outputSchemas";
 import type { ArticleAttachment } from "../../types";
+
 export const createArticleAttachment = action({
   display: {
     label: "Create Article Attachment",
@@ -15,9 +16,11 @@ export const createArticleAttachment = action({
     { zendeskConnection, file, articleId, inline, fileName },
   ) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
+
     const formData = new FormData();
     formData.append("inline", inline.toString());
     formData.append("file", file?.data, fileName);
+
     const { data } = await client.post<{
       article_attachment: ArticleAttachment;
     }>(`/help_center/articles/${articleId}/attachments`, formData, {
@@ -25,6 +28,7 @@ export const createArticleAttachment = action({
         "Content-Type": "multipart/form-data",
       },
     });
+
     return {
       data,
     };

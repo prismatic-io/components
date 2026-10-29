@@ -19,6 +19,7 @@ import {
   getItemFromSiteListExamplePayload,
   createItemInSiteListExamplePayload,
 } from "../examplePayloads/actions";
+
 const listSiteLists = action({
   display: {
     label: "List Site Lists",
@@ -32,17 +33,20 @@ const listSiteLists = action({
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = await createClient(params.connection, debug);
     const endpoint = `/sites/${params.siteId}/lists`;
+
     if (params.fetchAll) {
       const results = await paginateResults(client, endpoint, {
         returnFullData: true,
       });
       return { data: results };
     }
+
     const { data } = await client.get(endpoint);
     return { data };
   },
   examplePayload: listSiteListsExamplePayload,
 });
+
 const getList = action({
   display: {
     label: "Get Site List",
@@ -63,6 +67,7 @@ const getList = action({
   },
   examplePayload: getSiteListExamplePayload,
 });
+
 const getListItemsInSite = action({
   display: {
     label: "List Items in Site List",
@@ -95,6 +100,7 @@ const getListItemsInSite = action({
   },
   examplePayload: listItemsInSiteListExamplePayload,
 });
+
 const getItemInSite = action({
   display: {
     label: "Get Item from Site List",
@@ -123,6 +129,7 @@ const getItemInSite = action({
   },
   examplePayload: getItemFromSiteListExamplePayload,
 });
+
 const createItemInSite = action({
   display: {
     label: "Create Item in Site List",
@@ -146,6 +153,7 @@ const createItemInSite = action({
   },
   examplePayload: createItemInSiteListExamplePayload,
 });
+
 export default {
   listSiteLists,
   getListItemsInSite,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPersonUpdatesInputs } from "../../inputs";
 import { getPersonUpdatesExamplePayload } from "../../examplePayloads";
 import { getPersonUpdatesOutputSchema } from "../../outputSchemas";
+
 export const getPersonUpdates = action({
   display: {
     label: "Get Person Updates",

@@ -4,6 +4,7 @@ import { getRequirementTemplateExamplePayload } from "../../examplePayloads";
 import { getRequirementTemplateInputs } from "../../inputs";
 import { verifyTemplateSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirementTemplate = action({
   display: {
     label: "Get Requirement Template",

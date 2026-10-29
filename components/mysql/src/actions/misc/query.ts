@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { queryExamplePayload } from "../../examplePayloads";
 import { queryInputs } from "../../inputs";
+
 export const query = action({
   display: {
     label: "Query Database",

@@ -1,4 +1,5 @@
 import type { Address, ExternalData } from "./common";
+
 interface Tenant {
   id: number;
   name: string;
@@ -7,6 +8,7 @@ interface Tenant {
   conceptCode: string | null;
   modifiedOn: string;
 }
+
 export interface BusinessUnits {
   id: number;
   active: boolean;
@@ -32,6 +34,7 @@ export interface BusinessUnits {
   modifiedOn: string;
   externalData: ExternalData[] | null;
 }
+
 export interface UserRoles {
   id: number;
   active: boolean;

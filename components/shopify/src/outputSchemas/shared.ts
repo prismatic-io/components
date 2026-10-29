@@ -5,6 +5,7 @@ export const pageInfoSchema = {
     endCursor: { type: "string" as const },
   },
 };
+
 export const userErrorSchema = {
   type: "object" as const,
   properties: {
@@ -12,10 +13,12 @@ export const userErrorSchema = {
     message: { type: "string" as const },
   },
 };
+
 export const userErrorsArraySchema = {
   type: "array" as const,
   items: userErrorSchema,
 };
+
 export const moneyV2Schema = {
   type: "object" as const,
   properties: {
@@ -23,6 +26,7 @@ export const moneyV2Schema = {
     currencyCode: { type: "string" as const },
   },
 };
+
 export const moneyBagSchema = {
   type: "object" as const,
   properties: {
@@ -30,12 +34,14 @@ export const moneyBagSchema = {
     presentmentMoney: moneyV2Schema,
   },
 };
+
 export const countSchema = {
   type: "object" as const,
   properties: {
     count: { type: "number" as const },
   },
 };
+
 export const restPaginationSchema = {
   type: "object" as const,
   properties: {
@@ -45,6 +51,7 @@ export const restPaginationSchema = {
     url: { type: "string" as const },
   },
 };
+
 export const restPaginationEnvelopeProperties = {
   pagination: {
     type: "object" as const,

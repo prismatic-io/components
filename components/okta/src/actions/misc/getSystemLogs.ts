@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getSystemLogsExamplePayload } from "../../examplePayloads/general";
 import { getSystemLogInputs } from "../../inputs/general";
 import { paginateRecordsWithLink } from "../../util/util";
+
 export const getSystemLogs = action({
   display: {
     label: "Get System Logs",
@@ -24,6 +25,7 @@ export const getSystemLogs = action({
       sortOrder: sortOrder || "ASCENDING",
       until: filters.until,
     });
+
     return { data };
   },
   examplePayload: getSystemLogsExamplePayload,

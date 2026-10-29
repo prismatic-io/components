@@ -14,6 +14,7 @@ export const isValidHmacSignature = (
     .createHmac("sha256", secret)
     .update(payload)
     .digest("hex");
+
   try {
     return crypto.timingSafeEqual(
       Buffer.from(signature),
@@ -23,12 +24,14 @@ export const isValidHmacSignature = (
     return false;
   }
 };
+
 export const resolveEmployeeChangeRecords = (
   data: EmployeeChange[] | undefined,
 ): EmployeeChangeRecordChange[] =>
   (data ?? []).map(
     (record): EmployeeChangeRecordChange => ({ changeType: "changed", record }),
   );
+
 export const resolveNewHireStatusChanges = (
   data: NewHireStatusChange[] | undefined,
 ): NewHireStatusRecordChange[] =>

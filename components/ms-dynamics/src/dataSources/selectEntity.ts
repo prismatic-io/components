@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createCrmClient } from "../client";
 import { selectEntityExamplePayload } from "../examplePayloads";
 import { selectEntityInputs } from "../inputs";
+
 export const selectEntity = dataSource({
   display: {
     label: "Select Entity",
@@ -16,7 +17,9 @@ export const selectEntity = dataSource({
     { connection, includeCustom, includeOnlyTopLevel },
   ) => {
     const client = await createCrmClient(connection, false);
+
     const { value } = await client.retrieveEntities();
+
     const filteredEntities = value.filter((entity) => {
       if (!includeCustom && entity.IsCustomEntity) {
         return false;
@@ -26,6 +29,7 @@ export const selectEntity = dataSource({
       }
       return true;
     });
+
     const result = filteredEntities
       .sort((a, b) => (a.SchemaName || "").localeCompare(b.SchemaName || ""))
       .map(
@@ -35,6 +39,7 @@ export const selectEntity = dataSource({
           key: entity.MetadataId,
         }),
       );
+
     return { result };
   },
 });

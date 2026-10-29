@@ -10,6 +10,7 @@ import {
   sourceId,
 } from "../../inputs";
 import { getDestinationExamplePayload } from "../../examplePayloads";
+
 export const createDestination = action({
   display: {
     label: "Create Destination",

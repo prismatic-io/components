@@ -16,6 +16,7 @@ import {
   projectId,
 } from "./common";
 import { paginationFields } from "./pagination";
+
 export const modelId = input({
   label: "Model ID",
   type: "string",
@@ -26,6 +27,7 @@ export const modelId = input({
   required: true,
   dataSource: "selectModel",
 });
+
 export const defaultTrialId = input({
   label: "Default Trial ID",
   type: "string",
@@ -34,6 +36,7 @@ export const defaultTrialId = input({
     "Output only. The default trialId to use in TVFs when the trialId is not passed in. For single-objective hyperparameter tuning models, this is the best trial ID. For multi-objective hyperparameter tuning models, this is the smallest trial ID among all Pareto optimal trials.",
   required: false,
 });
+
 export const modelType = input({
   label: "Model Type",
   type: "string",
@@ -72,6 +75,7 @@ export const modelType = input({
     { label: "ONNX", value: "ONNX" },
   ],
 });
+
 export const optimalTrialIds = input({
   label: "Optimal Trial IDs",
   type: "string",
@@ -83,6 +87,7 @@ export const optimalTrialIds = input({
   placeholder: "Enter trial IDs",
   clean: valueListInputClean,
 });
+
 export const modelReference = input({
   label: "Model Reference",
   type: "code",
@@ -96,6 +101,7 @@ export const modelReference = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const trainingRuns = input({
   label: "Training Runs",
   type: "code",
@@ -107,6 +113,7 @@ export const trainingRuns = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const featureColumns = input({
   label: "Feature Columns",
   type: "code",
@@ -118,6 +125,7 @@ export const featureColumns = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const labelColumns = input({
   label: "Label Columns",
   type: "code",
@@ -129,6 +137,7 @@ export const labelColumns = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const transformColumns = input({
   label: "Transform Columns",
   type: "code",
@@ -140,6 +149,7 @@ export const transformColumns = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const hparamSearchSpaces = input({
   label: "Hparam Search Spaces",
   type: "code",
@@ -151,6 +161,7 @@ export const hparamSearchSpaces = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const hparamTrials = input({
   label: "Hparam Trials",
   type: "code",
@@ -162,6 +173,7 @@ export const hparamTrials = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const remoteModelInfo = input({
   label: "Remote Model Info",
   type: "code",
@@ -177,6 +189,7 @@ export const remoteModelInfo = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const updateModelAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -201,18 +214,21 @@ export const updateModelAdditionalFields = structuredObjectInput({
     optimalTrialIds,
   },
 });
+
 export const deleteModelInputs = {
   connectionInput,
   projectId,
   datasetId,
   modelId,
 };
+
 export const getModelInputs = {
   connectionInput,
   projectId,
   datasetId,
   modelId,
 };
+
 export const listModelsInputs = {
   connectionInput,
   projectId,
@@ -220,6 +236,7 @@ export const listModelsInputs = {
   fetchAll,
   pagination: paginationFields,
 };
+
 export const updateModelInputs = {
   connectionInput,
   projectId,

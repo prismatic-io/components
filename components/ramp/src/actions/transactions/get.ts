@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getTransactionResponse } from "../../examplePayloads/transactions";
 import { connection, transactionId } from "../../inputs";
 import { getTransactionOutputSchema } from "../../outputSchemas";
+
 export const getTransaction = action({
   display: {
     label: "Get Transaction",
@@ -19,6 +20,7 @@ export const getTransaction = action({
   performSafety: "safe",
   perform: async (context, { connection, transactionId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/transactions/${transactionId}`);
     return {
       data,

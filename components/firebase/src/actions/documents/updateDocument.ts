@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { withFirestore } from "../../client";
 import { updateDocumentExamplePayload } from "../../examplePayloads";
 import { updateDocumentInputs } from "../../inputs";
+
 export const updateDocument = action({
   display: {
     label: "Update Document",
@@ -15,13 +16,13 @@ export const updateDocument = action({
     const result = await withFirestore({ firebaseConnection }, (db) =>
       db.collection(collection).doc(document).update(data),
     );
+
     return {
       data: result,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateDocumentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateDocumentExamplePayload,
   inputs: updateDocumentInputs,
   examplePayload: updateDocumentExamplePayload,
 });

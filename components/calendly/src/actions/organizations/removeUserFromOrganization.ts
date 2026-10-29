@@ -3,6 +3,7 @@ import { removeUserFromOrganizationOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { removeUserFromOrganizationInputs } from "../../inputs";
 import { removeUserFromOrganizationExamplePayload } from "../../examplePayloads";
+
 export const removeUserFromOrganization = action({
   display: {
     label: "Remove User from Organization",
@@ -11,12 +12,11 @@ export const removeUserFromOrganization = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, uuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(`/organization_memberships/${uuid}`);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: removeUserFromOrganizationExamplePayload.data,
   }),
   inputs: removeUserFromOrganizationInputs,

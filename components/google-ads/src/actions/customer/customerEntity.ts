@@ -13,38 +13,35 @@ import {
   getCustomerOutputSchema,
 } from "../../outputSchemas";
 import { cleanCustomerId } from "../../util";
+
 const customerEntities = {
   customer: ["id", "descriptive_name", "status", "test_account", "manager"],
   conversion_action: ["id", "name", "resource_name"],
 };
-const entityExamplePayloads: Record<
-  string,
-  {
-    data: unknown;
-  }
-> = {
+
+const entityExamplePayloads: Record<string, { data: unknown }> = {
   customer: getCustomerExamplePayload,
   conversion_action: getConversionActionExamplePayload,
 };
+
 const entityOutputSchemas: Record<string, ActionOutputSchema["schema"]> = {
   customer: getCustomerOutputSchema,
   conversion_action: getConversionActionOutputSchema,
 };
+
 const entityPerformSafety: Record<string, PerformSafety> = {
   customer: "safe",
   conversion_action: "notAllowed",
 };
+
 const entityExamplePerforms: Record<
   string,
-  | (() => Promise<{
-      data: unknown;
-    }>)
-  | undefined
+  (() => Promise<{ data: unknown }>) | undefined
 > = {
-  conversion_action: async (): Promise<{
-    data: unknown;
-  }> => getConversionActionExamplePayload,
+  conversion_action: async (): Promise<{ data: unknown }> =>
+    getConversionActionExamplePayload,
 };
+
 export const customerEntityActions = Object.entries(customerEntities).reduce(
   (result, [entityName, fieldsList]) => {
     const key = camelCase(`get ${entityName}`);
@@ -52,6 +49,7 @@ export const customerEntityActions = Object.entries(customerEntities).reduce(
     const querySelect = fieldsList
       .map((field) => `${entityName}.${field}`)
       .join(", ");
+
     const entityAction = action({
       display: {
         label: `Get ${name}`,

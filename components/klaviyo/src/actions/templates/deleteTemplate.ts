@@ -4,6 +4,7 @@ import { getApi } from "../../api";
 import { deleteTemplateInputs as inputs } from "../../inputs";
 import { deleteTemplateExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const deleteTemplate = action({
   display: {
     label: "Delete Template",

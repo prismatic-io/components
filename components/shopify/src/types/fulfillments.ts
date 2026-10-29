@@ -19,11 +19,13 @@ export interface Fulfillment {
   } | null;
   name: string | null;
 }
+
 interface TrackingInfo {
   company: string | null;
   number: string | null;
   url: string | null;
 }
+
 interface Address {
   address1: string | null;
   address2: string | null;
@@ -32,10 +34,12 @@ interface Address {
   countryCode: string | null;
   provinceCode: string | null;
 }
+
 interface FulfillmentLineItem {
   id: string | null;
   lineItem: LineItem | null;
 }
+
 interface LineItem {
   title: string | null;
   quantity: number | null;
@@ -55,31 +59,37 @@ interface LineItem {
   isGiftCard: boolean | null;
   name: string | null;
 }
+
 interface MoneySet {
   shopMoney: Money | null;
   presentmentMoney: Money | null;
 }
+
 interface Money {
   amount: string | null;
   currencyCode: string | null;
 }
+
 interface DiscountAllocation {
   allocatedAmountSet: MoneySet | null;
   discountApplication: {
     index: number | null;
   } | null;
 }
+
 interface Duty {
   id: string | null;
   price: MoneySet | null;
   taxLines: TaxLine[] | null;
 }
+
 interface TaxLine {
   rate: number | null;
   title: string | null;
   priceSet: MoneySet | null;
   channelLiable: boolean | null;
 }
+
 interface Variant {
   title: string | null;
   id: string | null;
@@ -88,6 +98,7 @@ interface Variant {
     id: string | null;
   } | null;
 }
+
 export interface FulfillmentOrder {
   id: string | null;
   orderId: string | null;
@@ -106,9 +117,11 @@ export interface FulfillmentOrder {
   assignedLocation: AssignedLocation | null;
   merchantRequests: MerchantRequests | null;
 }
+
 interface SupportedAction {
   action: string | null;
 }
+
 interface Destination {
   id: string | null;
   address1: string | null;
@@ -123,9 +136,11 @@ interface Destination {
   province: string | null;
   zip: string | null;
 }
+
 interface FulfillmentOrderLineItems {
   nodes: FulfillmentOrderLineItemNode[] | null;
 }
+
 interface FulfillmentOrderLineItemNode {
   id: string | null;
   totalQuantity: number | null;
@@ -133,15 +148,19 @@ interface FulfillmentOrderLineItemNode {
   inventoryItemId: string | null;
   variant: FulfillmentOrderVariant | null;
 }
+
 interface FulfillmentOrderLineItem {
   id: string | null;
 }
+
 interface FulfillmentOrderVariant {
   id: string | null;
 }
+
 interface InternationalDuties {
   incoterm: string | null;
 }
+
 interface FulfillmentHold {
   id: string | null;
   reason: string | null;
@@ -149,6 +168,7 @@ interface FulfillmentHold {
   displayReason: string | null;
   heldByRequestingApp: boolean | null;
 }
+
 interface DeliveryMethod {
   id: string | null;
   methodType: string | null;
@@ -160,14 +180,17 @@ interface DeliveryMethod {
   minDeliveryDateTime: string | null;
   additionalInformation: AdditionalInformation | null;
 }
+
 interface BrandedPromise {
   name: string | null;
   handle: string | null;
 }
+
 interface AdditionalInformation {
   instructions: string | null;
   phone: string | null;
 }
+
 interface AssignedLocation {
   address1: string | null;
   address2: string | null;
@@ -179,12 +202,15 @@ interface AssignedLocation {
   province: string | null;
   zip: string | null;
 }
+
 interface FulfillmentOrderLocation {
   id: string | null;
 }
+
 interface MerchantRequests {
   nodes: MerchantRequestNode[] | null;
 }
+
 interface MerchantRequestNode {
   message: string | null;
   requestOptions: string | null;

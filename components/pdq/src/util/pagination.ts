@@ -1,6 +1,7 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { DEFAULT_PAGE_SIZE } from "../constants";
 import type { ListResponse } from "../types";
+
 export const fetchAllData = async (
   client: HttpClient,
   path: string,
@@ -30,6 +31,7 @@ export const fetchAllData = async (
   } while (keepFetching);
   return { data: records, ...lastResponse };
 };
+
 export const fetchData = async (
   client: HttpClient,
   path: string,

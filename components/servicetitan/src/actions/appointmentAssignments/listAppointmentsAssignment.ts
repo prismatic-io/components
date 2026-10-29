@@ -5,6 +5,7 @@ import { listAppointmentsAssignmentInputs } from "../../inputs";
 import { listAppointmentsAssignmentOutputSchema } from "../../outputSchemas";
 import type { AppointmentAssignment } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listAppointmentsAssignment = action({
   display: {
     label: "List Appointment Assignments",

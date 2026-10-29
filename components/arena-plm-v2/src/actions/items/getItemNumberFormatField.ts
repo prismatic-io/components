@@ -4,6 +4,7 @@ import { getItemNumberFormatFieldExamplePayload } from "../../examplePayloads";
 import { getItemNumberFormatFieldInputs } from "../../inputs";
 import { numberFormatFieldFullSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getItemNumberFormatField = action({
   display: {
     label: "Get Item Number Format Field",
@@ -25,14 +26,18 @@ export const getItemNumberFormatField = action({
           fieldGuid,
         },
       );
+
       const client = await createArenaClient(context, connection);
+
       const { data } = await client.get(
         `/settings/items/numberformats/${formatGuid}/fields/${fieldGuid}`,
       );
+
       context.logger.info(`Retrieved item number format field ${fieldGuid}`, {
         formatGuid,
         fieldGuid,
       });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

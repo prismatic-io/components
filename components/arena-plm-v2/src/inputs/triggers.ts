@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connectionInput } from "./common";
+
 const pollIntegrationGuidInput = input({
   label: "Integration",
   type: "string",
@@ -12,6 +13,7 @@ const pollIntegrationGuidInput = input({
   dataSource: "integrationsPicklist",
   clean: toOptionalString,
 });
+
 const pollItemsReconciledInput = input({
   label: "Reconciliation Status",
   type: "string",
@@ -27,6 +29,7 @@ const pollItemsReconciledInput = input({
   example: "false",
   clean: toOptionalString,
 });
+
 const pollLookBackDateInput = input({
   label: "Look-back Date",
   type: "string",
@@ -37,6 +40,7 @@ const pollLookBackDateInput = input({
   example: "2026-01-01T00:00:00Z",
   clean: toOptionalString,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   integrationGuid: pollIntegrationGuidInput,

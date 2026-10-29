@@ -1,10 +1,13 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export * from "./dataSources";
+
 export const deleteApplicationExamplePayload = {
   data: {
     message: "Application 29622362 has been deleted.",
   },
 };
+
 export const editApplicationExamplePayload = {
   data: {
     id: 69306314,
@@ -78,6 +81,7 @@ export const editApplicationExamplePayload = {
     ],
   },
 };
+
 export const getApplicationExamplePayload = {
   data: {
     id: 69306314,
@@ -151,6 +155,7 @@ export const getApplicationExamplePayload = {
     ],
   },
 };
+
 export const listApplicationsExamplePayload = {
   data: [
     {
@@ -321,6 +326,7 @@ export const listApplicationsExamplePayload = {
     },
   ],
 };
+
 export const createCandidateExamplePayload = {
   data: {
     id: 53883401,
@@ -425,11 +431,13 @@ export const createCandidateExamplePayload = {
     ],
   },
 };
+
 export const deleteCandidateExamplePayload = {
   data: {
     message: "Person 29622362 has been deleted.",
   },
 };
+
 export const editCandidateExamplePayload = {
   data: {
     first_name: "John",
@@ -501,6 +509,7 @@ export const editCandidateExamplePayload = {
     ],
   },
 };
+
 export const getCandidateExamplePayload = {
   data: {
     id: 53883394,
@@ -745,6 +754,7 @@ export const getCandidateExamplePayload = {
     },
   },
 };
+
 export const listCandidatesExamplePayload = {
   data: [
     {
@@ -949,6 +959,7 @@ export const listCandidatesExamplePayload = {
     },
   ],
 };
+
 export const createJobExamplePayload = {
   data: {
     id: 112746,
@@ -1103,6 +1114,7 @@ export const createJobExamplePayload = {
     ],
   },
 };
+
 export const editJobExamplePayload = {
   data: {
     id: 6404,
@@ -1341,6 +1353,7 @@ export const editJobExamplePayload = {
     ],
   },
 };
+
 export const getJobExamplePayload = {
   data: {
     id: 6404,
@@ -1515,6 +1528,7 @@ export const getJobExamplePayload = {
     ],
   },
 };
+
 export const listJobsExamplePayload = {
   data: [
     {
@@ -1691,6 +1705,7 @@ export const listJobsExamplePayload = {
     },
   ],
 };
+
 export const enableUserExamplePayload = {
   data: {
     id: 253528,
@@ -1775,6 +1790,7 @@ export const enableUserExamplePayload = {
     },
   },
 };
+
 export const getUserExamplePayload = {
   data: {
     id: 112,
@@ -1817,6 +1833,7 @@ export const getUserExamplePayload = {
     ],
   },
 };
+
 export const listUsersExamplePayload = {
   data: [
     {
@@ -1901,6 +1918,7 @@ export const listUsersExamplePayload = {
     },
   ],
 };
+
 export const createUserExamplePayload = {
   data: {
     id: 253528,
@@ -1959,6 +1977,7 @@ export const createUserExamplePayload = {
     },
   },
 };
+
 export const editUserExamplePayload = {
   data: {
     id: 253528,
@@ -2017,6 +2036,7 @@ export const editUserExamplePayload = {
     },
   },
 };
+
 export const disableUserExamplePayload = {
   data: {
     id: 253528,
@@ -2059,6 +2079,7 @@ export const disableUserExamplePayload = {
     ],
   },
 };
+
 export const rawRequestExamplePayload = {
   data: [
     {
@@ -2073,6 +2094,7 @@ export const rawRequestExamplePayload = {
     },
   ],
 };
+
 export const webhookExamplePayload = {
   payload: {
     headers: {
@@ -2153,6 +2175,7 @@ export const webhookExamplePayload = {
     }),
   },
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

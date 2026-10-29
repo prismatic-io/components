@@ -10,6 +10,7 @@ import {
 } from "../inputs";
 import { paginateResults } from "../utils";
 import { listChangesExamplePayload } from "../examplePayloads/actions";
+
 export const listChanges = action({
   display: {
     label: "List Changes",
@@ -28,14 +29,17 @@ export const listChanges = action({
     { connection, deltaURL, $expand, $select, $top, fetchAll },
   ) => {
     const client = await createClient(connection, debug);
+
     if (fetchAll) {
       const results = await paginateResults(client, deltaURL, {
         returnFullData: true,
         useTop: false,
         excludeParents: true,
       });
+
       return { data: results };
     }
+
     const { data } = await client.get(deltaURL, {
       params: {
         $expand: $expand || undefined,

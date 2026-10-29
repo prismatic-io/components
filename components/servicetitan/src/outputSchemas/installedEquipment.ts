@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const installedEquipmentDetailedSchema = {
   type: "object" as const,
   properties: {
@@ -224,6 +225,7 @@ const installedEquipmentDetailedSchema = {
     "status",
   ],
 };
+
 const installedEquipmentSchema = {
   type: "object" as const,
   properties: {
@@ -404,6 +406,7 @@ const installedEquipmentSchema = {
     "status",
   ],
 };
+
 const attachmentUploadSchema = {
   type: "object" as const,
   properties: {
@@ -413,14 +416,19 @@ const attachmentUploadSchema = {
   },
   required: ["path"],
 };
+
 export const createInstalledEquipmentOutputSchema =
   installedEquipmentDetailedSchema;
+
 export const getInstalledEquipmentOutputSchema =
   installedEquipmentDetailedSchema;
+
 export const updateInstalledEquipmentOutputSchema =
   installedEquipmentDetailedSchema;
+
 export const listInstalledEquipmentOutputSchema = listEnvelope(
   installedEquipmentSchema,
 );
+
 export const createInstalledEquipmentAttachmentOutputSchema =
   attachmentUploadSchema;

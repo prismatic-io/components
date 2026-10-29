@@ -3,6 +3,7 @@ import {
   columnDelimiterSchema,
   lineEndingSchema,
 } from "./bulkShared";
+
 const queryJobInfoSchema = {
   type: "object" as const,
   properties: {
@@ -34,7 +35,11 @@ const queryJobInfoSchema = {
     isPkChunkingSupported: { type: "boolean" },
   },
 };
+
 export const createBulkQueryJobOutputSchema = queryJobInfoSchema;
+
 export const getQueryJobInformationOutputSchema = queryJobInfoSchema;
+
 export const abortBulkQueryJobOutputSchema = queryJobInfoSchema;
+
 export const getQueryJobResultsOutputSchema = { type: "string" as const };

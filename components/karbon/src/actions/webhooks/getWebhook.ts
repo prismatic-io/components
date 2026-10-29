@@ -3,6 +3,7 @@ import { createKarbonClient } from "../../client";
 import getWebhookInputs from "../../inputs/webhooks/getWebhook";
 import { cleanOdata } from "../../utils";
 import { getWebhookExamplePayload } from "../../examplePayloads";
+
 export const getWebhook = action({
   display: {
     label: "Get Webhook",
@@ -17,6 +18,7 @@ export const getWebhook = action({
     const { data } = await client.get(
       `/v3/WebhookSubscriptions/${webhookType}`,
     );
+
     return { data: cleanOdata(data) };
   },
   examplePayload: getWebhookExamplePayload,

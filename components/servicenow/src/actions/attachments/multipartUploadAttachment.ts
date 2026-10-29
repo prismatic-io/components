@@ -3,6 +3,7 @@ import FormData from "form-data";
 import { multipartUploadAttachmentExamplePayload } from "../../examplePayloads";
 import { multipartUploadAttachmentInputs } from "../../inputs";
 import { createNowApiClient } from "../../util";
+
 export const multipartUploadAttachment = action({
   display: {
     label: "Multipart Upload Attachment",
@@ -44,9 +45,7 @@ export const multipartUploadAttachment = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: multipartUploadAttachmentExamplePayload.data,
   }),
   inputs: multipartUploadAttachmentInputs,

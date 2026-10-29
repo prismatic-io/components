@@ -5,6 +5,7 @@ import { createMailClient } from "../../client";
 import { sendEmailExamplePayload } from "../../examplePayloads";
 import { sendEmailInputs } from "../../inputs";
 import { createPayload } from "../../util";
+
 export const sendEmail = action({
   display: {
     label: "Send Email",
@@ -42,17 +43,22 @@ export const sendEmail = action({
     const fileData = content?.data
       ? content.data.toString("base64")
       : undefined;
+
     if ((fileData && !fileName) || (!fileData && fileName)) {
       throw new Error(
         "Missing required field. Please provide a File Name and Attachment Content.",
       );
     }
+
     const trackingSettings: TrackingSettings = {};
     trackingSettings.subscriptionTracking = {
       enable: subscriptionTracking,
     };
+
     const sendGrid = createMailClient(sendGridConnection);
+
     const attachments = [];
+
     if (fileData)
       attachments.push({
         content: fileData,
@@ -61,7 +67,9 @@ export const sendEmail = action({
         type: fileType,
         content_id: contentId,
       });
+
     if (multipleAttachments) attachments.push(...multipleAttachments);
+
     const payload = createPayload({
       to,
       cc,
@@ -94,9 +102,7 @@ export const sendEmail = action({
     }
   },
   inputs: sendEmailInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: sendEmailExamplePayload.data,
   }),
   examplePayload: sendEmailExamplePayload,

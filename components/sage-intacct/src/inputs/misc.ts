@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { ALL_DELETE_OBJECTS_MODEL } from "../constants";
 import { connection, fieldsInput } from "./common";
+
 const objectNameInput = input({
   label: "Object Name",
   type: "string",
@@ -11,6 +12,7 @@ const objectNameInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 const queryInput = input({
   label: "Query",
   type: "string",
@@ -20,6 +22,7 @@ const queryInput = input({
   placeholder: "Enter query filter",
   clean: util.types.toString,
 });
+
 const object = input({
   label: "Object",
   type: "string",
@@ -28,6 +31,7 @@ const object = input({
   required: true,
   clean: util.types.toString,
 });
+
 const keys = input({
   label: "Keys",
   type: "string",
@@ -38,11 +42,13 @@ const keys = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const deleteObjectInputs = {
   connection,
   object,
   keys,
 };
+
 export const queryAndListInputs = {
   connection,
   fieldsInput,

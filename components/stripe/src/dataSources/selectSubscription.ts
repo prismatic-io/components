@@ -2,6 +2,7 @@ import { dataSource, util } from "@prismatic-io/spectral";
 import { createStripeClient } from "../client";
 import { selectSubscriptionInputs } from "../inputs";
 import type { StripeResponse, Subscription } from "../types";
+
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
@@ -17,7 +18,9 @@ export const selectSubscription = dataSource({
     return {
       result: data.map(({ id, collection_method, description }) => ({
         key: util.types.toString(id),
-        label: `${collection_method || "No collection method"} - ${description || "No description"}`,
+        label: `${collection_method || "No collection method"} - ${
+          description || "No description"
+        }`,
       })),
     };
   },

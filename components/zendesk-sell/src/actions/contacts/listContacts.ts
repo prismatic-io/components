@@ -4,6 +4,7 @@ import { getZendeskClient } from "../../client";
 import { listContactsExamplePayload } from "../../examplePayloads";
 import { listContactsInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listContacts = action({
   display: {
     label: "List Contacts",
@@ -33,6 +34,7 @@ export const listContacts = action({
       customFields.forEach((pair) => {
         customFieldsObject[`custom_fields[${pair.key}]`] = pair.value;
       });
+
       const params = {
         ...(pagination.page.length && { page: pagination.page }),
         ...(pagination.perPage.length && { per_page: pagination.perPage }),
@@ -91,6 +93,7 @@ export const listContacts = action({
           inclusive: additionalFields.inclusive,
         }),
       };
+
       const data: unknown = await fetchAllPages(
         client,
         "/contacts",

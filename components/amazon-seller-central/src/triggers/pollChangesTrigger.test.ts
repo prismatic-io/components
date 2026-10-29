@@ -8,8 +8,11 @@ import {
   resolvePollingRecordChanges,
 } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 vi.mock("../client", () => ({ createClient: vi.fn() }));
+
 const NOW = new Date("2026-03-01T12:00:00.000Z");
+
 const created: AmazonRecord = {
   AmazonOrderId: "111-1",
   PurchaseDate: "2026-02-20T00:00:00Z",
@@ -18,6 +21,7 @@ const updated: AmazonRecord = {
   AmazonOrderId: "111-2",
   PurchaseDate: "2025-12-01T00:00:00Z",
 };
+
 describe("batching declaration", () => {
   test("New and Updated Records is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -26,6 +30,7 @@ describe("batching declaration", () => {
       Function,
     );
   });
+
   test("resolvePollingRecordChanges tags every record with how it changed", () => {
     expect(
       resolvePollingRecordChanges({ created: [created], updated: [updated] }),
@@ -34,6 +39,7 @@ describe("batching declaration", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({})).toEqual([]);
     expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual(
@@ -41,6 +47,7 @@ describe("batching declaration", () => {
     );
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolvePollingRecordChanges tolerates an absent array", () => {
     expect(resolvePollingRecordChanges({ created: [created] })).toEqual([
       { changeType: "created", record: created },
@@ -49,6 +56,7 @@ describe("batching declaration", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const payload = {
       ...defaultTriggerPayload(),
@@ -61,6 +69,7 @@ describe("batching declaration", () => {
     ).toEqual([{ changeType: "created", record: created }]);
   });
 });
+
 describe("lookBackDateClean", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -69,23 +78,28 @@ describe("lookBackDateClean", () => {
   afterEach(() => {
     vi.useRealTimers();
   });
+
   test("returns an empty string for empty values", () => {
     expect(lookBackDateClean(undefined)).toBe("");
     expect(lookBackDateClean(null)).toBe("");
     expect(lookBackDateClean("  ")).toBe("");
   });
+
   test("returns the date as an ISO string", () => {
     expect(lookBackDateClean("2026-01-01")).toBe("2026-01-01T00:00:00.000Z");
   });
+
   test("rejects a wrong format, a non-calendar date, and a future date", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(/YYYY-MM-DD/);
     expect(() => lookBackDateClean("2026-02-31")).toThrow(/YYYY-MM-DD/);
     expect(() => lookBackDateClean("2026-03-02")).toThrow(/future/);
   });
 });
+
 describe("perform initial sync seed", () => {
   const get = vi.fn();
   let store: PollingState | undefined;
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(NOW);
@@ -96,6 +110,7 @@ describe("perform initial sync seed", () => {
   afterEach(() => {
     vi.useRealTimers();
   });
+
   const poll = async (params: {
     resourceType?: string;
     lookBackDate?: string;
@@ -130,6 +145,7 @@ describe("perform initial sync seed", () => {
       updated: AmazonRecord[];
     };
   };
+
   const ordersParams = (lastUpdatedAfter: string) => ({
     params: {
       LastUpdatedAfter: lastUpdatedAfter,
@@ -137,6 +153,7 @@ describe("perform initial sync seed", () => {
       NextToken: undefined,
     },
   });
+
   test("orders without a Look-back Date start the window at now", async () => {
     get.mockResolvedValue({ data: { payload: { Orders: [] } } });
     await poll({});
@@ -146,6 +163,7 @@ describe("perform initial sync seed", () => {
     );
     expect(store?.lastPolledAt).toBe(NOW.toISOString());
   });
+
   test("a Look-back Date seeds the first orders window and ignores both visibility filters", async () => {
     get.mockResolvedValue({
       data: { payload: { Orders: [created, updated] } },
@@ -163,6 +181,7 @@ describe("perform initial sync seed", () => {
     expect(data.updated).toEqual([updated]);
     expect(store?.lastPolledAt).toBe(NOW.toISOString());
   });
+
   test("a Look-back Date seeds the first feeds window as createdSince", async () => {
     const feed = { feedId: "1", createdTime: "2026-02-01T00:00:00Z" };
     get.mockResolvedValue({ data: { feeds: [feed] } });
@@ -179,6 +198,7 @@ describe("perform initial sync seed", () => {
     });
     expect(data.created).toEqual([feed]);
   });
+
   test("once a cursor exists the Look-back Date is ignored and the visibility filters apply", async () => {
     store = { lastPolledAt: "2026-02-01T00:00:00.000Z" };
     get.mockResolvedValue({
@@ -196,12 +216,15 @@ describe("perform initial sync seed", () => {
     expect(data.updated).toEqual([updated]);
   });
 });
+
 describe("fetchPollingChanges", () => {
   const get = vi.fn();
   const client = { get } as never;
+
   beforeEach(() => {
     get.mockReset();
   });
+
   test("splits orders by PurchaseDate against the window start", async () => {
     get.mockResolvedValue({
       data: { payload: { Orders: [created, updated] } },
@@ -214,6 +237,7 @@ describe("fetchPollingChanges", () => {
     );
     expect(changes).toEqual({ created: [created], updated: [updated] });
   });
+
   test("treats an order without a PurchaseDate as updated", async () => {
     const noDate = { AmazonOrderId: "111-3" };
     get.mockResolvedValue({ data: { payload: { Orders: [noDate] } } });
@@ -225,6 +249,7 @@ describe("fetchPollingChanges", () => {
     );
     expect(changes).toEqual({ created: [], updated: [noDate] });
   });
+
   test("follows the NextToken nested under payload across order pages", async () => {
     get
       .mockResolvedValueOnce({
@@ -247,6 +272,7 @@ describe("fetchPollingChanges", () => {
     });
     expect(changes).toEqual({ created: [created], updated: [updated] });
   });
+
   test("returns every feed as created", async () => {
     const feed = { feedId: "1", createdTime: "2026-02-01T00:00:00Z" };
     get.mockResolvedValue({ data: { feeds: [feed] } });
@@ -259,6 +285,7 @@ describe("fetchPollingChanges", () => {
     expect(changes).toEqual({ created: [feed], updated: [] });
   });
 });
+
 describe("input order", () => {
   test("Look-back Date leads the optional tier, directly below the required inputs", () => {
     const inputs = pollChangesTrigger.inputs as unknown;

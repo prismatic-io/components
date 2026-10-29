@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const pipedriveTriggerExamplePayload = {
   payload: {
     headers: {
@@ -72,6 +73,7 @@ export const pipedriveTriggerExamplePayload = {
     },
   } as unknown as TriggerPayload,
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

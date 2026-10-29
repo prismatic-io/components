@@ -45,7 +45,9 @@ export const getEventHookExamplePayload = {
     },
   },
 };
+
 export const createEventHookExamplePayload = getEventHookExamplePayload;
+
 export const listEventHooksExamplePayload = {
   data: [
     getEventHookExamplePayload.data,
@@ -108,15 +110,20 @@ export const listEventHooksExamplePayload = {
     },
   ],
 };
+
 export const deleteEventHookExamplePayload = {
   data: {
     id: "who8tsqyrhCdmetzx135",
     deleted: true,
   },
 };
+
 export const deleteAllEventHooksExamplePayload = {
   data: [deleteEventHookExamplePayload.data],
 };
+
 export const activateEventHookExamplePayload = getEventHookExamplePayload;
+
 export const deactivateEventHookExamplePayload = getEventHookExamplePayload;
+
 export const verifyEventHookExamplePayload = getEventHookExamplePayload;

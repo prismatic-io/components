@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { updateCompanyExamplePayload } from "../../examplePayloads";
 import { updateCompanyInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const updateCompany = action({
   display: {
     label: "Update Company",
@@ -32,6 +33,7 @@ export const updateCompany = action({
       timeout,
       debugRequest: context.debug.enabled,
     });
+
     const { data } = await client.patch(
       hubspotPaths.objects("companies", `/${companyId}`),
       {
@@ -48,6 +50,7 @@ export const updateCompany = action({
         },
       },
     );
+
     return { data };
   },
   inputs: updateCompanyInputs,

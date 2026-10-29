@@ -5,6 +5,7 @@ import { getCustomerExamplePayload } from "../../examplePayloads";
 import { OBJECT_CUSTOMER } from "../../constants";
 import { getCustomerInputs } from "../../inputs";
 import { getCustomerOutputSchema } from "../../outputSchemas";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",

@@ -3,6 +3,7 @@ import { getAudiencesByIdsExamplePayload } from "../../examplePayloads";
 import { getAudiencesByIdsInputs } from "../../inputs/audiences";
 import { getRestClient } from "../../restClient";
 import type { QueryRestResponse } from "../../types";
+
 export const getAudiencesByIds = action({
   display: {
     label: "Get Audiences By IDs",
@@ -21,6 +22,7 @@ export const getAudiencesByIds = action({
     },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<QueryRestResponse>(
       "/Audiences/QueryByIds",
       {
@@ -29,6 +31,7 @@ export const getAudiencesByIds = action({
         ReturnAdditionalFields: returnAdditionalFields,
       },
     );
+
     return { data };
   },
   inputs: getAudiencesByIdsInputs,

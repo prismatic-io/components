@@ -1,5 +1,6 @@
 import type { KeySource } from "./KeySource";
 import type { ManagedServiceIdentityType } from "./ManagedServiceIdentityType";
+
 export interface CreateOrUpdateNamespacesBody {
   location: string;
   identity?: {

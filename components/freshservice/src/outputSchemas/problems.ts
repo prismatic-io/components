@@ -1,4 +1,5 @@
 import { customFieldsSchema } from "./common";
+
 const problemBaseProperties = {
   id: { type: "number" },
   workspace_id: { type: "number" },
@@ -23,6 +24,7 @@ const problemBaseProperties = {
   associated_change: {},
   custom_fields: customFieldsSchema,
 };
+
 const analysisFieldSchema = {
   type: "object" as const,
   properties: {
@@ -30,6 +32,7 @@ const analysisFieldSchema = {
     description_text: { type: "string" },
   },
 };
+
 export const problemOutputSchema = {
   type: "object" as const,
   properties: {
@@ -53,6 +56,7 @@ export const problemOutputSchema = {
   required: ["problem"],
   additionalProperties: false,
 };
+
 export const listProblemsOutputSchema = {
   type: "object" as const,
   properties: {

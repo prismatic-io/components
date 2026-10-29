@@ -3,6 +3,7 @@ import { CUSTOM_FIELD_TYPES } from "../constants";
 import { customFieldGroupPayload } from "../exampleInputs";
 import { cleanObject, cleanString } from "../util";
 import { $filter, aoid, connection } from "./common";
+
 const customFieldTypes = input({
   label: "Custom Field Types",
   type: "string",
@@ -13,6 +14,7 @@ const customFieldTypes = input({
   placeholder: "Select custom field type",
   clean: cleanString,
 });
+
 const customFieldGroup = input({
   label: "Custom Field Group",
   type: "code",
@@ -24,6 +26,7 @@ const customFieldGroup = input({
   example: JSON.stringify(customFieldGroupPayload, null, 2),
   clean: cleanObject,
 });
+
 const itemId = input({
   label: "Item ID",
   type: "string",
@@ -33,6 +36,7 @@ const itemId = input({
   example: "33646745_1",
   clean: cleanString,
 });
+
 export const createCustomFieldInputs = {
   aoid,
   itemId,
@@ -40,6 +44,7 @@ export const createCustomFieldInputs = {
   customFieldGroup,
   connection,
 };
+
 export const getCustomFieldMetaInputs = {
   customFieldTypes: {
     ...customFieldTypes,

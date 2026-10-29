@@ -5,6 +5,7 @@ export interface CompanyProperties {
   hs_object_id: number;
   name: string;
 }
+
 export interface Company {
   id: number;
   properties: CompanyProperties;

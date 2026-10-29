@@ -30,6 +30,7 @@ export const addressSchema = {
   },
   required: ["street", "city", "state", "zip", "country"],
 };
+
 export const listEnvelope = <T>(items: T) => ({
   type: "object" as const,
   properties: {

@@ -3,6 +3,7 @@ import {
   oauth2Connection,
   OAuth2Type,
 } from "@prismatic-io/spectral";
+
 export const surveyMonkeyOAuth = oauth2Connection({
   key: "surveyMonkeyOAuth",
   display: {
@@ -71,6 +72,7 @@ export const surveyMonkeyOAuth = oauth2Connection({
     },
   },
 });
+
 export const surveyMonkeyAccessToken = connection({
   key: "surveyMonkeyAccessToken",
   display: {
@@ -123,4 +125,5 @@ export const surveyMonkeyAccessToken = connection({
     },
   },
 });
+
 export default [surveyMonkeyOAuth, surveyMonkeyAccessToken];

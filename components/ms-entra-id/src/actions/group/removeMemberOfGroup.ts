@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
 import { emptyExamplePayload as examplePayload } from "../../examplePayloads";
 import { removeMemberOfGroupInputs as inputs } from "../../inputs/group";
+
 export const removeMemberOfGroup = action({
   display: {
     label: "Remove Member From Group",

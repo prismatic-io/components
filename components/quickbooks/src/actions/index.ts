@@ -8,6 +8,7 @@ import purchaseOrderActions from "./purchase";
 import receiptActions from "./receipt";
 import refundActions from "./refund";
 import resourceActions from "./resource";
+
 export default {
   ...genericActions,
   ...customerActions,

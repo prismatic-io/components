@@ -28,29 +28,30 @@ import {
   resolveListChangeItems,
   resolveListChangesPageToken,
 } from "../util";
+
 interface PollRound {
   data: ListChangesResponse | drive_v3.Schema$ChangeList;
   cursor?: string;
   nextState?: ChangesPaginationState;
   noChanges: boolean;
 }
+
 interface PollResult {
   payload: Omit<TriggerPayload, "body" | "paginationState"> & {
-    body: {
-      data: PollRound["data"];
-      contentType?: string;
-    };
+    body: { data: PollRound["data"]; contentType?: string };
     paginationState?: ChangesPaginationState;
   };
   crossFlowState?: Record<string, string>;
   instanceState?: Record<string, unknown>;
   polledNoChanges: boolean;
 }
+
 interface OnDeployParams {
   connection?: Connection;
   driveId?: unknown;
   lookBackDate?: string;
 }
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Files",
@@ -79,6 +80,7 @@ export const pollChangesTrigger = pollingTrigger({
       | ChangesPaginationState
       | undefined;
     const scopedDriveId = util.types.toString(driveId);
+
     const nothingToDo = () => ({
       payload: {
         ...payload,
@@ -87,23 +89,28 @@ export const pollChangesTrigger = pollingTrigger({
       },
       polledNoChanges: true,
     });
+
     if (!incoming && isInitialSyncCompleted(context)) {
       return nothingToDo();
     }
+
     if (!lookBackDate || !connection) {
       return nothingToDo();
     }
+
     const client = createClient(connection);
     const backfill: BackfillCursor = incoming?.backfill ?? {
       modifiedAfter: lookBackDate,
       startPageToken: await fetchStartPageToken(client, scopedDriveId),
     };
+
     const { changes, nextPageToken } = await fetchBackfillPage(client, {
       modifiedAfter: backfill.modifiedAfter,
       driveId: scopedDriveId,
       pageToken: incoming?.pageToken,
     });
     const done = !nextPageToken;
+
     return {
       payload: {
         ...payload,
@@ -155,8 +162,10 @@ export const pollChangesTrigger = pollingTrigger({
     const state = context.polling.getState() as ChangesPollingState;
     const isPlatformDrivenRound = Boolean(incoming);
     const isBatching = context.batch?.enabled === true;
+
     const { value: storedToken, isLegacy } =
       resolveListChangesPageToken(context);
+
     const backfillRound = async (
       backfill: BackfillCursor,
       pageToken?: string,
@@ -167,6 +176,7 @@ export const pollChangesTrigger = pollingTrigger({
         pageToken,
       });
       const done = !nextPageToken;
+
       context.polling.setState(
         done
           ? {}
@@ -175,6 +185,7 @@ export const pollChangesTrigger = pollingTrigger({
               backfillPageToken: nextPageToken,
             } satisfies ChangesPollingState),
       );
+
       return {
         data: {
           kind: CHANGE_LIST_KIND,
@@ -190,12 +201,15 @@ export const pollChangesTrigger = pollingTrigger({
         noChanges: changes.length === 0 && done,
       };
     };
+
     const changesRound = async (pageToken: string): Promise<PollRound> => {
       const data = await fetchChangesPage(client, {
         pageToken,
         driveId: params.driveId,
       });
+
       const moreToRead = Boolean(data.nextPageToken);
+
       return {
         data,
         cursor: moreToRead
@@ -209,14 +223,17 @@ export const pollChangesTrigger = pollingTrigger({
         noChanges: (data.changes?.length ?? 0) === 0 && !moreToRead,
       };
     };
+
     const firstRun = async (): Promise<PollRound> => {
       const startPageToken = await fetchStartPageToken(client, params.driveId);
+
       if (params.lookBackDate) {
         return await backfillRound({
           modifiedAfter: params.lookBackDate,
           startPageToken: startPageToken as string,
         });
       }
+
       context.logger.info(
         "First time running. Subsequent runs will show changes that occurred since the previous run.",
       );
@@ -230,6 +247,7 @@ export const pollChangesTrigger = pollingTrigger({
         noChanges: true,
       };
     };
+
     const round = incoming
       ? incoming.backfill
         ? await backfillRound(incoming.backfill, incoming.pageToken)
@@ -239,12 +257,10 @@ export const pollChangesTrigger = pollingTrigger({
         : storedToken
           ? await changesRound(storedToken)
           : await firstRun();
-    const cursorWrite: {
-      crossFlowState?: Record<string, string>;
-    } = round.cursor ? { crossFlowState: { [stateKey]: round.cursor } } : {};
-    const legacyCleanup: {
-      instanceState?: Record<string, unknown>;
-    } = isLegacy
+
+    const cursorWrite: { crossFlowState?: Record<string, string> } =
+      round.cursor ? { crossFlowState: { [stateKey]: round.cursor } } : {};
+    const legacyCleanup: { instanceState?: Record<string, unknown> } = isLegacy
       ? {
           instanceState: {
             ...context.instanceState,
@@ -252,6 +268,7 @@ export const pollChangesTrigger = pollingTrigger({
           },
         }
       : {};
+
     return {
       payload: {
         ...payload,

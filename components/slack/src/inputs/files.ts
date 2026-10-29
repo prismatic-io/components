@@ -12,6 +12,7 @@ import {
   sortSearch,
   team_id,
 } from "./common";
+
 export const fileContent = input({
   label: "File Content",
   type: "data",
@@ -19,6 +20,7 @@ export const fileContent = input({
   required: true,
   clean: util.types.toData,
 });
+
 export const fileName = input({
   label: "File Name",
   placeholder: "Enter file name",
@@ -28,6 +30,7 @@ export const fileName = input({
   example: "reports.csv",
   clean: util.types.toString,
 });
+
 export const fileTitle = input({
   label: "File Title",
   placeholder: "Enter file title",
@@ -37,6 +40,7 @@ export const fileTitle = input({
   comments: "The title of the file as it will appear in the channel.",
   clean: cleanString,
 });
+
 export const channels = input({
   label: "Channels",
   placeholder: "Enter channel IDs",
@@ -47,6 +51,7 @@ export const channels = input({
     "A comma-separated list of channel IDs that the file will be shared in.",
   clean: cleanString,
 });
+
 export const initialComment = input({
   label: "Initial Comment",
   placeholder: "Enter initial comment",
@@ -57,6 +62,7 @@ export const initialComment = input({
     "The message text introducing the file in the specified channels when uploaded.",
   clean: cleanString,
 });
+
 export const thread = input({
   label: "Thread Reply",
   placeholder: "Enter thread timestamp",
@@ -67,11 +73,13 @@ export const thread = input({
     "Another message's ts value to upload this file as a reply. Never use a reply's ts value — use the parent instead.",
   clean: cleanString,
 });
+
 export const listFilesInputs = {
   connection: connectionInput,
   fetchAll,
   cursor,
 };
+
 export const uploadFileInputs = {
   connection: connectionInput,
   fileContent,
@@ -81,6 +89,7 @@ export const uploadFileInputs = {
   initialComment,
   thread,
 };
+
 const searchFilesPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -94,6 +103,7 @@ const searchFilesPagination = structuredObjectInput({
     page,
   },
 });
+
 export const searchFilesInputs = {
   connection: connectionInput,
   query,

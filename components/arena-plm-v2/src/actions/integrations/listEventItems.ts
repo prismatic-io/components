@@ -5,6 +5,7 @@ import { listEventItemsInputs } from "../../inputs";
 import { listEventItemsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listEventItems = action({
   display: {
     label: "List Event Items",
@@ -32,6 +33,7 @@ export const listEventItems = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const params = {
         reconciled,
         reconciledDateTimeFrom,
@@ -39,8 +41,11 @@ export const listEventItems = action({
         offset: pagination.offset,
         limit: pagination.limit,
       };
+
       const path = `/outboundintegrations/${integrationGuid}/events/${eventGuid}/items`;
+
       const data = await fetchArenaList(client, path, params, fetchAll);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Event Items");

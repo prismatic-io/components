@@ -13,6 +13,7 @@ import {
   strArray,
   userSchema,
 } from "./shared";
+
 export const mergeRequestSchema = obj({
   id: num,
   iid: num,
@@ -95,9 +96,15 @@ export const mergeRequestSchema = obj({
   web_url: str,
   references: referencesSchema,
 });
+
 export const mergeRequestListSchema = list(mergeRequestSchema);
+
 export const acceptMergeRequestOutputSchema = mergeRequestSchema;
+
 export const createMergeRequestOutputSchema = mergeRequestSchema;
+
 export const getMergeRequestOutputSchema = mergeRequestSchema;
+
 export const listMergeRequestsOutputSchema = mergeRequestListSchema;
+
 export const updateMergeRequestOutputSchema = mergeRequestSchema;

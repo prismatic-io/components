@@ -4,6 +4,7 @@ import { listUsers } from "./listUsers";
 import { searchUsers } from "./searchUsers";
 import { showUser } from "./showUser";
 import { updateUser } from "./updateUser";
+
 export default {
   createUser,
   deleteUser,

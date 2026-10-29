@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getCustomerExamplePayload } from "../../examplePayloads/customers";
 import { getCustomerInputs } from "../../inputs";
 import { getCustomerOutputSchema } from "../../outputSchemas";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",
@@ -23,5 +24,6 @@ export const getCustomer = action({
     type: "actionOutput",
     schema: getCustomerOutputSchema,
   }),
+
   examplePayload: getCustomerExamplePayload,
 });

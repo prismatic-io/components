@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const mongoConnection = connection({
   key: "mongo",
   display: {
@@ -46,4 +47,5 @@ export const mongoConnection = connection({
     },
   },
 });
+
 export default [mongoConnection];

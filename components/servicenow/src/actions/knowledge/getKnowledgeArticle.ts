@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getKnowledgeArticleInputs } from "../../inputs";
 import { getKnowledgeManagementApiClient } from "../../util";
+
 export const getKnowledgeArticle = action({
   display: {
     label: "Get Knowledge Article",
@@ -28,6 +29,7 @@ export const getKnowledgeArticle = action({
       apiVersionInput,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/knowledge/articles/${articleId}`, {
       params: {
         fields,

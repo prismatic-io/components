@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrieveUserExamplePayload } from "../../examplePayloads";
 import { retrieveUserInputs } from "../../inputs";
 import { retrieveUserOutputSchema } from "../../outputSchemas";
+
 export const retrieveUser = action({
   display: {
     label: "Retrieve User",

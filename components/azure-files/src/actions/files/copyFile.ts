@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { copyFileInputs } from "../../inputs";
 import { copyFileExamplePayload } from "../../examplePayloads";
+
 export const copyFile = action({
   display: {
     label: "Copy File",

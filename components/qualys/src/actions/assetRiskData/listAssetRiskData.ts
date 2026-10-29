@@ -4,6 +4,7 @@ import { listAssetRiskDataExamplePayload } from "../../examplePayloads";
 import { listAssetRiskDataInputs } from "../../inputs";
 import { listAssetRiskDataOutputSchema } from "../../outputSchemas";
 import { fetchClassicHostRiskData } from "../../util";
+
 export const listAssetRiskData = action({
   display: {
     label: "List Asset Risk Data",
@@ -23,6 +24,7 @@ export const listAssetRiskData = action({
       fetchAll,
       pageSize,
     });
+
     return { data };
   },
   examplePerform: async () => listAssetRiskDataExamplePayload,

@@ -4,6 +4,7 @@ import { listSupplierItemFilesExamplePayload } from "../../examplePayloads";
 import { listSupplierItemFilesInputs } from "../../inputs";
 import { listSupplierItemFilesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listSupplierItemFiles = action({
   display: {
     label: "List Supplier Item Files",
@@ -19,13 +20,16 @@ export const listSupplierItemFiles = action({
   perform: async (context, { connection, supplierItemGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Getting supplier item files", {
         supplierItemGuid,
         endpoint: `/supplieritems/${supplierItemGuid}/files`,
       });
+
       const { data } = await client.get(
         `/supplieritems/${supplierItemGuid}/files`,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} supplier item files`,
         {
@@ -34,6 +38,7 @@ export const listSupplierItemFiles = action({
           returnedCount: data?.results?.length || 0,
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Supplier Item Files");

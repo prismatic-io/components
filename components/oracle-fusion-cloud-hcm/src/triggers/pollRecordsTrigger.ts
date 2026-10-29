@@ -9,6 +9,7 @@ import type {
   PollingState,
 } from "../types";
 import { fetchRecordsSince, resolveRestPollingRecordChanges } from "../util";
+
 export const pollRecordsTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -31,10 +32,12 @@ export const pollRecordsTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const lastPolledAt =
       pollState?.lastPolledAt ?? (params.lookBackDate || now);
+
     const resourceConfig = REST_RESOURCE_CONFIG[params.resourceType];
     if (!resourceConfig) {
       throw new Error(`Unknown resource type: ${params.resourceType}`);
     }
+
     const client = createClient(params.connection, context.debug.enabled);
     const records = await fetchRecordsSince(
       client,
@@ -42,12 +45,15 @@ export const pollRecordsTrigger = pollingTrigger({
       lastPolledAt,
       params.pageSize,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled '${params.resourceType}': ${records.length} records updated since ${lastPolledAt}`,
       );
     }
+
     return {
       payload: {
         ...payload,

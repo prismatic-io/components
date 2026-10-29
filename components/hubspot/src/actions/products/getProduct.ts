@@ -5,6 +5,7 @@ import { getHubspotClient } from "../../client";
 import { getProductInputs } from "../../inputs";
 import { getProps } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const getProduct = action({
   display: {
     label: "Get Product",
@@ -29,40 +30,49 @@ export const getProduct = action({
         "You must supply an Id or name to retrieve a product record",
       );
     }
+
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       ["name"],
       additionalProperties || [],
     );
+
     const params = {
       ...parameterizedProperties,
       associations: associationsList,
       archived: archived,
     };
+
     if (productName) {
       const result = await client.get(hubspotPaths.objects("products"), {
         params,
       });
       const { results: products } = result.data;
+
       const filteredProducts = (products || []).filter((product) => {
         return product?.properties?.name === productName;
       });
+
       if (filteredProducts.length === 0) {
         throw new Error(`No products found matching ${productName}`);
       }
       return { data: filteredProducts };
     }
+
     const { data } = await client.get(
       hubspotPaths.objects("products", `/${productId}`),
       {
         params,
       },
     );
+
     return { data };
   },
   inputs: getProductInputs,

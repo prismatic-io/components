@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { uploadFileInputs } from "../../inputs";
 import { uploadFileExamplePayload } from "../../examplePayloads";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -13,7 +14,9 @@ export const uploadFile = action({
   ) => {
     const client = createAuthorizedClient(azureConnection);
     const shareClient = client.getShareClient(shareName);
+
     context.logger.info({ contentType: fileContents.contentType });
+
     const { fileClient, fileCreateResponse } = await shareClient.createFile(
       path,
       Buffer.byteLength(fileContents.data),

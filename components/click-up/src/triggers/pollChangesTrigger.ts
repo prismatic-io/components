@@ -16,6 +16,7 @@ import {
   resolveClickUpTaskChanges,
   resolvePollingWindowStart,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Tasks",
@@ -49,6 +50,7 @@ export const pollChangesTrigger = pollingTrigger({
       lookBackDate,
       now,
     );
+
     const client = createClickUpClient(connection, context.debug.enabled);
     const tasks = await fetchTasksSince(
       client,
@@ -56,20 +58,25 @@ export const pollChangesTrigger = pollingTrigger({
       scopeId,
       formatClickUpTimestamp(new Date(sinceMs)),
     );
+
     const { created, updated } = partitionTasksByTimestamp(tasks, sinceMs);
+
     context.polling.setState({ lastPolledAt: now.toISOString() } as Record<
       string,
       unknown
     >);
+
     const result: ClickUpTaskChangesObject = {
       created: showNewRecords || isInitialSync ? created : [],
       updated: showUpdatedRecords || isInitialSync ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${scopeType} ${scopeId}${isInitialSync ? " (initial sync)" : ""}: ${tasks.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

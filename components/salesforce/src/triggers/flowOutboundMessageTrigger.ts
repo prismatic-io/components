@@ -6,6 +6,7 @@ import {
 import { flowOutboundMessageTriggerExamplePayload } from "../examplePayloads";
 import { flowOutboundMessageTriggerInputs } from "../inputs";
 import { performFlowOutboundMessageTriggerFunction } from "../util";
+
 export const flowOutboundMessageTrigger = trigger({
   display: {
     label: "Flow Outbound Message Webhook",

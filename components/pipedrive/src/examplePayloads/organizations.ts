@@ -78,6 +78,7 @@ export const getOrganizationExamplePayload = {
     },
   },
 };
+
 const singleOrganizationV2 = {
   id: 3,
   name: "Acme Corporation",
@@ -119,21 +120,25 @@ const singleOrganizationV2 = {
   cc_email: "test-sandbox+org3@pipedrivemail.com",
   custom_fields: {},
 };
+
 export const addOrganizationExamplePayload = {
   data: {
     data: singleOrganizationV2,
   },
 };
+
 export const getOrganizationSingleExamplePayload = {
   data: {
     data: singleOrganizationV2,
   },
 };
+
 export const updateOrganizationExamplePayload = {
   data: {
     data: singleOrganizationV2,
   },
 };
+
 export const deleteOrganizationExamplePayload = {
   data: {
     data: {
@@ -141,6 +146,7 @@ export const deleteOrganizationExamplePayload = {
     },
   },
 };
+
 export const searchOrganizationExamplePayload = {
   data: {
     data: {
@@ -172,6 +178,7 @@ export const searchOrganizationExamplePayload = {
     },
   },
 };
+
 export const mergeOrganizationsExamplePayload = {
   data: {
     success: true,
@@ -233,6 +240,7 @@ export const mergeOrganizationsExamplePayload = {
     },
   },
 };
+
 export const getOrganizationActivitiesExamplePayload = {
   data: {
     data: [
@@ -267,6 +275,7 @@ export const getOrganizationActivitiesExamplePayload = {
     },
   },
 };
+
 export const getOrganizationDealsExamplePayload = {
   data: {
     data: [
@@ -301,6 +310,7 @@ export const getOrganizationDealsExamplePayload = {
     },
   },
 };
+
 export const getOrganizationFilesExamplePayload = {
   data: {
     success: true,
@@ -340,6 +350,7 @@ export const getOrganizationFilesExamplePayload = {
     },
   },
 };
+
 export const getOrganizationFollowersExamplePayload = {
   data: {
     data: [
@@ -355,6 +366,7 @@ export const getOrganizationFollowersExamplePayload = {
     },
   },
 };
+
 export const addOrganizationFollowerExamplePayload = {
   data: {
     data: {
@@ -365,6 +377,7 @@ export const addOrganizationFollowerExamplePayload = {
     },
   },
 };
+
 export const deleteOrganizationFollowerExamplePayload = {
   data: {
     data: {
@@ -372,6 +385,7 @@ export const deleteOrganizationFollowerExamplePayload = {
     },
   },
 };
+
 export const getOrganizationMailMessagesExamplePayload = {
   data: {
     success: true,
@@ -423,6 +437,7 @@ export const getOrganizationMailMessagesExamplePayload = {
     },
   },
 };
+
 export const getOrganizationUpdatesExamplePayload = {
   data: {
     success: true,
@@ -459,12 +474,14 @@ export const getOrganizationUpdatesExamplePayload = {
     },
   },
 };
+
 export const getOrganizationUsersExamplePayload = {
   data: {
     success: true,
     data: [18487521],
   },
 };
+
 export const getOrganizationPersonsExamplePayload = {
   data: {
     data: [

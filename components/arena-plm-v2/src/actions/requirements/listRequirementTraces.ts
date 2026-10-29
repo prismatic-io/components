@@ -4,6 +4,7 @@ import { listRequirementTracesExamplePayload } from "../../examplePayloads";
 import { listRequirementTracesInputs } from "../../inputs";
 import { listRequirementTracesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listRequirementTraces = action({
   display: {
     label: "List Requirement Traces",

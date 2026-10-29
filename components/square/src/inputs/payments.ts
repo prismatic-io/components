@@ -10,6 +10,7 @@ import {
   squareConnection,
   validateJSON,
 } from "./common";
+
 const endTime = input({
   type: "string",
   label: "End Time",
@@ -20,6 +21,7 @@ const endTime = input({
   required: false,
   clean: toOptionalString,
 });
+
 const total = input({
   type: "string",
   label: "Total",
@@ -30,6 +32,7 @@ const total = input({
   required: false,
   clean: toOptionalNumber,
 });
+
 const last4 = input({
   type: "string",
   label: "Last 4 Digits of Card",
@@ -39,6 +42,7 @@ const last4 = input({
   required: false,
   clean: toOptionalString,
 });
+
 const cardBrand = input({
   type: "string",
   label: "Card Brand",
@@ -49,6 +53,7 @@ const cardBrand = input({
   required: false,
   clean: toOptionalString,
 });
+
 const paymentId = input({
   type: "string",
   label: "Payment ID",
@@ -59,6 +64,7 @@ const paymentId = input({
   dataSource: "selectPayment",
   clean: util.types.toString,
 });
+
 const payment = input({
   type: "code",
   label: "Payment",
@@ -82,6 +88,7 @@ const payment = input({
     "Payment data in JSON format. Amounts are in cents (smallest currency unit). See [Square Payment Object](https://developer.squareup.com/reference/square/objects/Payment) for field details.",
   clean: (input) => validateJSON(input),
 });
+
 const paymentData = input({
   type: "code",
   label: "Payment Data",
@@ -104,6 +111,7 @@ const paymentData = input({
     "Payment data in JSON format. Amounts are in cents (smallest currency unit). See [Square Create Payment](https://developer.squareup.com/docs/payments-api/take-payments) for field details.",
   clean: (input) => validateJSON(input),
 });
+
 const versionToken = input({
   type: "string",
   label: "Version Token",
@@ -114,6 +122,7 @@ const versionToken = input({
   required: false,
   clean: toOptionalString,
 });
+
 const refundAmount = input({
   type: "code",
   label: "Refund Amount",
@@ -131,6 +140,7 @@ const refundAmount = input({
     "The refund amount in JSON format. Amount is in cents (smallest currency unit). Cannot exceed the payment total minus previous refunds.",
   clean: (input) => validateJSON(input),
 });
+
 const reason = input({
   type: "string",
   label: "Reason",
@@ -140,6 +150,7 @@ const reason = input({
   comments: "A description of the reason for the refund.",
   clean: toOptionalString,
 });
+
 const refundId = input({
   type: "string",
   label: "Refund ID",
@@ -150,6 +161,7 @@ const refundId = input({
   dataSource: "selectRefund",
   clean: util.types.toString,
 });
+
 const status = input({
   type: "string",
   label: "Status",
@@ -159,6 +171,7 @@ const status = input({
   comments: "When provided, only refunds with the given status are returned.",
   clean: toOptionalString,
 });
+
 const sourceType = input({
   type: "string",
   label: "Source Type",
@@ -169,6 +182,7 @@ const sourceType = input({
     "When provided, only refunds whose payments have the indicated source type are returned.",
   clean: toOptionalString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -178,6 +192,7 @@ const showNewRecords = input({
     "When true, newly created payments are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -187,6 +202,7 @@ const showUpdatedRecords = input({
     "When true, payments updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const listPaymentsInputs = {
   squareConnection,
   beginTime,
@@ -199,28 +215,34 @@ export const listPaymentsInputs = {
   last4,
   cardBrand,
 };
+
 export const getPaymentInputs = {
   squareConnection,
   paymentId,
 };
+
 export const updatePaymentInputs = {
   squareConnection,
   paymentId,
   payment,
 };
+
 export const createPaymentInputs = {
   squareConnection,
   paymentData,
 };
+
 export const completePaymentInputs = {
   squareConnection,
   paymentId,
   versionToken,
 };
+
 export const cancelPaymentInputs = {
   squareConnection,
   paymentId,
 };
+
 export const refundPaymentInputs = {
   squareConnection,
   paymentId,
@@ -228,10 +250,12 @@ export const refundPaymentInputs = {
   refundAmount,
   reason,
 };
+
 export const getPaymentRefundInputs = {
   squareConnection,
   refundId,
 };
+
 export const listPaymentRefundsInputs = {
   squareConnection,
   beginTime,
@@ -243,4 +267,5 @@ export const listPaymentRefundsInputs = {
   status,
   sourceType,
 };
+
 export { showNewRecords, showUpdatedRecords };

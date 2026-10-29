@@ -1,6 +1,7 @@
 const path = require("node:path");
 const _webpack = require("webpack");
 const CopyPlugin = require("copy-webpack-plugin");
+
 const baseConfig = {
   mode: "production",
   target: "node",
@@ -24,6 +25,7 @@ const baseConfig = {
     usedExports: true,
   },
 };
+
 const componentConfig = {
   ...baseConfig,
   plugins: [
@@ -42,4 +44,5 @@ const componentConfig = {
     },
   },
 };
+
 module.exports = [componentConfig];

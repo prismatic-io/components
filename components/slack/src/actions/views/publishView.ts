@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { publishViewExamplePayload } from "../../examplePayloads";
 import { publishViewInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const publishView = action({
   display: {
     label: "Publish View",
@@ -22,14 +23,10 @@ export const publishView = action({
       user_id: userId,
       view,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { view },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { view }): Promise<{ data: unknown }> => ({
     data: {
       ...publishViewExamplePayload,
       view: { ...publishViewExamplePayload.view, ...view },

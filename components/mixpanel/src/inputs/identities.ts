@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connectionInput, verbose, redirect, region } from "./common";
+
 export const strict = input({
   label: "Strict",
   type: "string",
@@ -11,6 +12,7 @@ export const strict = input({
   required: false,
   example: "1",
 });
+
 export const distinct_id = input({
   label: "Distinct ID",
   type: "string",
@@ -21,6 +23,7 @@ export const distinct_id = input({
   required: false,
   example: "user-12345",
 });
+
 export const identified_id = input({
   label: "Identified ID",
   type: "string",
@@ -30,6 +33,7 @@ export const identified_id = input({
   required: true,
   example: "user-12345",
 });
+
 export const anon_id = input({
   label: "Anon ID",
   type: "string",
@@ -40,6 +44,7 @@ export const anon_id = input({
   required: true,
   example: "3e2a0d22-7465-4dc3-a2ab-56f8762e1a29",
 });
+
 export const project_token = input({
   label: "Project Token",
   type: "string",
@@ -50,6 +55,7 @@ export const project_token = input({
   required: true,
   example: "725a93138a7d12e00f16912848590ae7",
 });
+
 export const alias = input({
   label: "Alias",
   type: "string",
@@ -60,6 +66,7 @@ export const alias = input({
   required: true,
   example: "user-alias-67890",
 });
+
 export const createIdentityDeliveryOptions = structuredObjectInput({
   label: "Delivery Options",
   required: false,
@@ -67,6 +74,7 @@ export const createIdentityDeliveryOptions = structuredObjectInput({
     "Optional request delivery controls: strict record validation, verbose responses, and redirect URL.",
   inputs: { strict, verbose, redirect },
 });
+
 export const createAliasDeliveryOptions = structuredObjectInput({
   label: "Delivery Options",
   required: false,
@@ -74,6 +82,7 @@ export const createAliasDeliveryOptions = structuredObjectInput({
     "Optional request delivery controls: strict record validation, verbose responses, and redirect URL.",
   inputs: { strict, verbose, redirect },
 });
+
 export const createIdentityInputs = {
   connection: connectionInput,
   region,
@@ -82,6 +91,7 @@ export const createIdentityInputs = {
   project_token,
   deliveryOptions: createIdentityDeliveryOptions,
 };
+
 export const createAliasInputs = {
   connection: connectionInput,
   region,

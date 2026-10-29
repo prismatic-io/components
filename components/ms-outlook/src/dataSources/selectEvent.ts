@@ -4,6 +4,7 @@ import type { Event } from "@microsoft/microsoft-graph-types";
 import type { ODataAttrs } from "../types";
 import { createClient } from "../client";
 import { connectionInput } from "../inputs";
+
 export const selectEvent = dataSource({
   display: {
     label: "Select Event",
@@ -20,6 +21,7 @@ export const selectEvent = dataSource({
       true,
       {},
     );
+
     const result = value.map<Element>((event) => ({
       label: util.types.toString(event.subject),
       key: util.types.toString(event.id),

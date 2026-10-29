@@ -10,16 +10,19 @@ import type {
   Webhook,
   WebhookInfo,
 } from "./types";
+
 export const createGroupExamplePayload = {
   data: {
     id: "CBJCHBCAABAAIYEoZ3VPDavcqvJm3ni7ATNn-O9N3OPf",
   },
 };
+
 export const updateGroupExamplePayload = {
   data: {
     id: "CBJCHBCAABAAIYEoZ3VPDavcqvJm3ni7ATNn-O9N3OPf",
   },
 };
+
 export const getGroupExamplePayload = {
   data: {
     groupId: "CBJCHBCAABAAIYEoZ3VPDavcqvJm3ni7ATNn-O9N3OPf",
@@ -28,6 +31,7 @@ export const getGroupExamplePayload = {
     isDefaultGroup: true,
   },
 };
+
 export const getGroupUserExamplePayload = {
   data: {
     email: "example@acme.io",
@@ -38,6 +42,7 @@ export const getGroupUserExamplePayload = {
     isGroupAdmin: false,
   },
 };
+
 export const getGroupEventExamplePayload = {
   data: {
     groupEventId: "CBJCHBCAABAA82chKH_73ytJxSou5uTTrIh7rRelwSro",
@@ -47,17 +52,15 @@ export const getGroupEventExamplePayload = {
     groupId: "CBJCHBCAABAAIYEoZ3VPDavcqvJm3ni7ATNn-O9N3OPf",
   },
 };
-export const listGroupsExamplePayload: {
-  data: ListGroup;
-} = {
+
+export const listGroupsExamplePayload: { data: ListGroup } = {
   data: {
     groupInfoList: [getGroupExamplePayload.data, getGroupExamplePayload.data],
     page: { nextCursor: "" },
   },
 };
-export const listGroupUsersExamplePayload: {
-  data: ListGroupUsers;
-} = {
+
+export const listGroupUsersExamplePayload: { data: ListGroupUsers } = {
   data: {
     userInfoList: [
       getGroupUserExamplePayload.data,
@@ -66,9 +69,8 @@ export const listGroupUsersExamplePayload: {
     page: { nextCursor: "" },
   },
 };
-export const listGroupEventsExamplePayload: {
-  data: ListGroupEvents;
-} = {
+
+export const listGroupEventsExamplePayload: { data: ListGroupEvents } = {
   data: {
     groupEvents: [
       getGroupEventExamplePayload.data,
@@ -77,6 +79,7 @@ export const listGroupEventsExamplePayload: {
     page: { nextCursor: "" },
   },
 };
+
 export const getAccountExamplePayload = {
   data: {
     id: "CBJCHBCAABAAd4TPldfK4H2cTTDlWxJ6i4JDiVDoOC2C",
@@ -88,6 +91,7 @@ export const getAccountExamplePayload = {
     modified: "2024-04-10T14:22:00Z",
   },
 };
+
 export const createAccountExamplePayload = {
   data: {
     accountId: "CBJCHBCAABAAd4TPldfK4H2cTTDlWxJ6i4JDiVDoOC2C",
@@ -98,15 +102,19 @@ export const createAccountExamplePayload = {
     },
   },
 };
+
 export const createAgreementExamplePayload = {
   data: "CBJCHBCAABAAQ8h3W7QwzG8Xq6t9R5p4N2K",
 };
+
 export const deleteAgreementDocumentsExamplePayload = {
   data: null,
 };
+
 export const downloadAgreementFileExamplePayload = {
   data: Buffer.from("<binary PDF content>"),
 };
+
 export const updateAgreementExamplePayload = {
   data: {
     name: "Service Agreement 2024 (updated)",
@@ -125,9 +133,8 @@ export const updateAgreementExamplePayload = {
     ],
   },
 };
-export const listAgreementsExamplePayload: {
-  data: Agreement[];
-} = {
+
+export const listAgreementsExamplePayload: { data: Agreement[] } = {
   data: [
     {
       id: "CBJCHBCAABAAQ8h3W7QwzG8Xq6t9R5p4N2K",
@@ -179,9 +186,8 @@ export const listAgreementsExamplePayload: {
     },
   ],
 };
-export const getAgreementExamplePayload: {
-  data: AgreementInfo;
-} = {
+
+export const getAgreementExamplePayload: { data: AgreementInfo } = {
   data: {
     id: "CBJCHBCAABAAQ8h3W7QwzG8Xq6t9R5p4N2K",
     name: "Service Agreement 2024",
@@ -252,9 +258,8 @@ export const getAgreementExamplePayload: {
     ],
   },
 };
-export const listUsersExamplePayload: {
-  data: User[];
-} = {
+
+export const listUsersExamplePayload: { data: User[] } = {
   data: [
     {
       id: "CBJCHBCAABAApRvVMBVyo0bIo4jdPROKiKWR9xRhRugJ",
@@ -276,6 +281,7 @@ export const listUsersExamplePayload: {
     },
   ],
 };
+
 export const getUserExamplePayload = {
   data: {
     id: "CBJCHBCAABAApRvVMBVyo0bIo4jdPROKiKWR9xRhRugJ",
@@ -295,6 +301,7 @@ export const getUserExamplePayload = {
     createdDate: "2024-03-15T10:30:00Z",
   },
 };
+
 export const createUserExamplePayload = {
   data: {
     id: "CBJCHBCAABAApRvVMBVyo0bIo4jdPROKiKWR9xRhRugJ",
@@ -314,6 +321,7 @@ export const createUserExamplePayload = {
     createdDate: "2024-03-15T10:30:00Z",
   },
 };
+
 export const updateUserExamplePayload = {
   data: {
     id: "CBJCHBCAABAApRvVMBVyo0bIo4jdPROKiKWR9xRhRugJ",
@@ -333,14 +341,14 @@ export const updateUserExamplePayload = {
     createdDate: "2024-03-15T10:30:00Z",
   },
 };
+
 export const createTransientDocumentExamplePayload = {
   data: {
     transientDocumentId: "3AAABLblqZhBf0aJb0XZqz5vXy8g3V9R3qQx6",
   },
 };
-export const listWebhooksExamplePayload: {
-  data: Webhook[];
-} = {
+
+export const listWebhooksExamplePayload: { data: Webhook[] } = {
   data: [
     {
       id: "CBJCHBCAABAA82chKH_73ytJxSou5uTTrIh7rRelwSro",
@@ -375,12 +383,12 @@ export const listWebhooksExamplePayload: {
     },
   ],
 };
+
 export const deleteWebhookExamplePayload = {
   data: null,
 };
-export const getWebhookExamplePayload: {
-  data: WebhookInfo;
-} = {
+
+export const getWebhookExamplePayload: { data: WebhookInfo } = {
   data: {
     id: "CBJCHBCAABAA82chKH_73ytJxSou5uTTrIh7rRelwSro",
     name: "Agreement Notifications",
@@ -411,6 +419,7 @@ export const getWebhookExamplePayload: {
     },
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     id: "CBJCHBCAABAA82chKH_73ytJxSou5uTTrIh7rRelwSro",
@@ -442,6 +451,7 @@ export const createWebhookExamplePayload = {
     },
   },
 };
+
 export const updateWebhookExamplePayload = {
   data: {
     id: "CBJCHBCAABAA82chKH_73ytJxSou5uTTrIh7rRelwSro",
@@ -474,6 +484,7 @@ export const updateWebhookExamplePayload = {
     },
   },
 };
+
 export const searchResourcesExamplePayload = {
   data: {
     scope: ["AGREEMENT_ASSETS"],
@@ -487,6 +498,7 @@ export const searchResourcesExamplePayload = {
     },
   },
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

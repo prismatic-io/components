@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { selectUserInputs } from "../inputs";
 import { getTableauClient } from "../util";
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -13,21 +14,20 @@ export const selectUser = dataSource({
       timeout: 10000,
       debug: false,
     });
+
     const { data } = await client.get("/users", {
       params: { pageSize: 1000 },
     });
+
     const users = data?.users?.user ?? [];
-    const result: Element[] = (
-      users as {
-        name: string;
-        id: string;
-      }[]
-    )
+
+    const result: Element[] = (users as { name: string; id: string }[])
       .map((user) => ({
         label: user.name,
         key: user.id.toString(),
       }))
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

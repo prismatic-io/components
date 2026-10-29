@@ -1,4 +1,5 @@
 import type { AdobeChangesObject, AdobeRecordChange } from "./types/triggers";
+
 export const resolvePollingRecordChanges = (
   data: AdobeChangesObject | undefined,
 ): AdobeRecordChange[] => {

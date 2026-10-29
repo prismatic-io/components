@@ -8,10 +8,12 @@ import {
   retentionModeSchema,
   serverSideEncryptionProperties,
 } from "./shared";
+
 export const generatePresignedUrlOutputSchema = {
   type: "string" as const,
   format: "uri",
 };
+
 export const copyObjectOutputSchema = {
   type: "object" as const,
   properties: {
@@ -34,6 +36,7 @@ export const copyObjectOutputSchema = {
   },
   required: ["CopyObjectResult"],
 };
+
 export const putObjectOutputSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +52,7 @@ export const putObjectOutputSchema = {
   },
   required: [],
 };
+
 export const headObjectOutputSchema = {
   type: "object" as const,
   properties: {
@@ -89,6 +93,7 @@ export const headObjectOutputSchema = {
   },
   required: [],
 };
+
 export const deleteObjectOutputSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +103,7 @@ export const deleteObjectOutputSchema = {
   },
   required: [],
 };
+
 export const deleteObjectsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -131,6 +137,7 @@ export const deleteObjectsOutputSchema = {
   },
   required: [],
 };
+
 export const listObjectsOutputSchema = {
   type: ["array", "object"],
   items: { type: "string" },
@@ -176,6 +183,7 @@ export const listObjectsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getObjectAttributesOutputSchema = {
   type: "object" as const,
   properties: {

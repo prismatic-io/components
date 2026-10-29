@@ -3,6 +3,7 @@ import { getWebhookSubscriptionOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { getWebhookSubscriptionInputs } from "../../inputs";
 import { getWebhookSubscriptionExamplePayload } from "../../examplePayloads";
+
 export const getWebhookSubscription = action({
   display: {
     label: "Get Webhook Subscription",
@@ -11,6 +12,7 @@ export const getWebhookSubscription = action({
   performSafety: "safe",
   perform: async (context, { connection, webhookUuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/webhook_subscriptions/${webhookUuid}`);
     return { data };
   },

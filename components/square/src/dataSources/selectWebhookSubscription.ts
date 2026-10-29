@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { selectWebhookSubscriptionInputs } from "../inputs";
 import { fetchAllPages, sortByLabel } from "../util";
+
 export const selectWebhookSubscription = dataSource({
   display: {
     label: "Select Webhook Subscription",
@@ -10,11 +11,13 @@ export const selectWebhookSubscription = dataSource({
   inputs: selectWebhookSubscriptionInputs,
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
+
     const allSubscriptions = await fetchAllPages(
       client,
       "/v2/webhooks/subscriptions",
       "subscriptions",
     );
+
     const result = (allSubscriptions.subscriptions as Record<string, unknown>[])
       .map((subscription: Record<string, unknown>) => {
         const eventTypesArray = subscription.event_types as
@@ -24,12 +27,14 @@ export const selectWebhookSubscription = dataSource({
         const label = subscription.name
           ? `${subscription.name as string} (${eventTypes})`
           : `${(subscription.id as string).substring(0, 12)}... (${eventTypes})`;
+
         return {
           label,
           key: subscription.id as string,
         };
       })
       .sort(sortByLabel);
+
     return {
       result,
     };

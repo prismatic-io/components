@@ -5,6 +5,7 @@ import { updateRecordInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
 import { json2Path } from "../../util";
 import { updateRecordOutputSchema } from "../../outputSchemas";
+
 export const updateRecord = action({
   display: {
     label: "Update Record",
@@ -36,8 +37,7 @@ export const updateRecord = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateRecordExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateRecordExamplePayload,
   examplePayload: updateRecordExamplePayload,
 });

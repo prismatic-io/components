@@ -9,14 +9,17 @@ import type {
   AsposeTokenProps,
   TokenResponse,
 } from "./types";
+
 const getClientProps = (connection: Connection): AsposeClientProps => {
   const { clientId, clientSecret, baseUrl } = connection.fields;
+
   return {
     clientId: util.types.toString(clientId),
     clientSecret: util.types.toString(clientSecret),
     baseUrl: util.types.toString(baseUrl),
   };
 };
+
 const getAsposeToken = async (
   clientId: string,
   clientSecret: string,
@@ -28,13 +31,16 @@ const getAsposeToken = async (
       "Content-Type": "application/x-www-form-urlencoded",
     },
   });
+
   const { data } = await tokenClient.post<TokenResponse>("/connect/token", {
     grant_type: "client_credentials",
     client_id: clientId,
     client_secret: clientSecret,
   });
+
   return { token: data.access_token };
 };
+
 export const getAsposeClient = async (
   connection: Connection,
   debugRequest?: boolean,
@@ -43,8 +49,10 @@ export const getAsposeClient = async (
   if (connection.key !== asposeConnection.key) {
     throw new ConnectionError(connection, "Aspose connection not found");
   }
+
   const { clientId, clientSecret, baseUrl } = getClientProps(connection);
   const { token } = await getAsposeToken(clientId, clientSecret, baseUrl);
+
   return createClient({
     debug: debugRequest,
     baseUrl: `${baseUrl}/${apiVersion}`,

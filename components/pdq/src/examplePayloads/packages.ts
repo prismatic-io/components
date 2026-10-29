@@ -6,11 +6,13 @@ const packageExampleRecord = {
   publisher: "Mozilla",
   source: "pdq",
 };
+
 export const getPackageExamplePayload = {
   data: {
     data: packageExampleRecord,
   },
 };
+
 export const listPackagesExamplePayload = {
   data: {
     data: [packageExampleRecord],

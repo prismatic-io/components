@@ -5,6 +5,7 @@ import { getSupplierQualityProcessAssociationInputs } from "../../inputs";
 import { qualityAssociationSchema } from "../../outputSchemas";
 import type { QualityAssociationVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const getSupplierQualityProcessAssociation = action({
   display: {
     label: "Get Supplier Quality Process Association",
@@ -23,16 +24,20 @@ export const getSupplierQualityProcessAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Getting supplier quality process association", {
         supplierGuid,
         supplierQualityAssociationGuid,
       });
+
       const { data } = await client.get<QualityAssociationVo>(
         `/suppliers/${supplierGuid}/quality/${supplierQualityAssociationGuid}`,
       );
+
       context.logger.info(
         `Successfully retrieved quality process association: ${supplierQualityAssociationGuid} for supplier: ${supplierGuid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

@@ -1,4 +1,5 @@
 import type { DynamicsChangesObject, DynamicsRecordChange } from "../types";
+
 export const resolvePollingRecordChanges = (
   data: DynamicsChangesObject | undefined,
 ): DynamicsRecordChange[] => {

@@ -1,5 +1,6 @@
 import { connection } from "@prismatic-io/spectral";
 import { apiServer, protocol } from "./inputs";
+
 export const basicAuthentication = connection({
   key: "sap-successfactors-basic-authentication",
   display: {

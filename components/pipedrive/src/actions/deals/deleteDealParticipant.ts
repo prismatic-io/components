@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteDealParticipantInputs } from "../../inputs";
 import { deleteDealParticipantExamplePayload } from "../../examplePayloads";
 import { deleteDealParticipantOutputSchema } from "../../outputSchemas";
+
 export const deleteDealParticipant = action({
   display: {
     label: "Delete Deal Participant",

@@ -11,6 +11,7 @@ import {
   pageSize,
   processingStatuses,
 } from "../../inputs";
+
 export const listFeeds = action({
   display: {
     label: "List Feeds",
@@ -20,6 +21,7 @@ export const listFeeds = action({
   examplePayload: listFeedsExamplePayload,
   inputs: {
     connectionInput,
+
     feedTypes,
     marketplaceIds: { ...MarketplaceIds, required: false },
     pageSize,

@@ -5,6 +5,7 @@ import { listPublicWorkersInputs } from "../../inputs";
 import { listPublicWorkersOutputSchema } from "../../outputSchemas";
 import type { Worker } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listPublicWorkers = action({
   display: {
     label: "List Public Workers",

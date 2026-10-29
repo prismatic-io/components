@@ -1,4 +1,5 @@
 import type { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
+
 export const messagePayload: ReturnType<MessageInstance["toJSON"]> = {
   body: "Your appointment is confirmed for tomorrow at 2:00 PM.",
   numSegments: "1",
@@ -24,8 +25,11 @@ export const messagePayload: ReturnType<MessageInstance["toJSON"]> = {
       "/2010-04-01/Accounts/ACa1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6/Messages/SM1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d/Media.json",
   },
 };
+
 export const sendSMSExamplePayload = { data: messagePayload };
+
 export const getSMSExamplePayload = { data: messagePayload };
+
 export const listMessagesExamplePayload = {
   data: [messagePayload],
 };

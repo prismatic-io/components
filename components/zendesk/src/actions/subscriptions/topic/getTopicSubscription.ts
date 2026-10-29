@@ -4,6 +4,7 @@ import { getTopicSubscriptionInputs } from "../../../inputs";
 import { getTopicSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
 import { getTopicSubscriptionExamplePayload } from "../../../examplePayloads";
+
 export const getTopicSubscription = action({
   display: {
     label: "Get Topic Subscription",
@@ -15,6 +16,7 @@ export const getTopicSubscription = action({
     const { data } = await client.get<SubscriptionResponse>(
       `/community/topics/${topicId}/subscriptions/${subscriptionId}`,
     );
+
     return {
       data,
     };

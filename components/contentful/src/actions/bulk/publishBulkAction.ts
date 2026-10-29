@@ -9,6 +9,7 @@ import { publishBulkActionExamplePayload } from "../../examplePayloads";
 import { publishBulkActionInputs } from "../../inputs";
 import { publishBulkActionOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const publishBulkAction = action({
   display: {
     label: "Publish Bulk Action",
@@ -29,14 +30,15 @@ export const publishBulkAction = action({
           items: items as BulkActionPublishPayload["entities"]["items"],
         },
       });
+
     const bulkActionCompleted = await bulkActionInProgress.waitProcessing();
+
     return {
       data: bulkActionCompleted.toPlainObject() as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => publishBulkActionExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    publishBulkActionExamplePayload,
   inputs: publishBulkActionInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

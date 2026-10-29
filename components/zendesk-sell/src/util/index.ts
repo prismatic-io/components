@@ -7,6 +7,7 @@ import type {
   ZendeskSellRecordChanges,
   ZendeskSellResponse,
 } from "../types";
+
 export const fetchAllPages = async (
   client: HttpClient,
   endpoint: string,
@@ -20,9 +21,11 @@ export const fetchAllPages = async (
     });
     return data;
   }
+
   const allItems: unknown[] = [];
   let currentPage = 1;
   let hasMore = true;
+
   do {
     const { data } = await client.get<ZendeskSellResponse>(endpoint, {
       params: { ...params, page: currentPage, per_page: 100 },
@@ -30,14 +33,17 @@ export const fetchAllPages = async (
     });
     const items = data?.items || [];
     allItems.push(...items);
+
     hasMore = !!data?.meta?.links?.next_page;
     currentPage += 1;
   } while (hasMore);
+
   return {
     items: allItems,
     meta: { links: {} },
   };
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -46,6 +52,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -54,6 +61,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -68,11 +76,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolvePollWindow = (
   state: PollingState | null | undefined,
   params: {
@@ -96,6 +107,7 @@ export const resolvePollWindow = (
     includeUpdated: true,
   };
 };
+
 export const resolveZendeskSellRecordChanges = (
   data: ZendeskSellRecordChanges | undefined,
 ): ZendeskSellRecordChange[] => {

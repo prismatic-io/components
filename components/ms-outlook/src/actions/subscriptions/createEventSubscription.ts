@@ -3,6 +3,7 @@ import { createSubscriptionTrigger } from "ms-utils";
 import { createClient } from "../../client";
 import { createEventSubscriptionExamplePayload } from "../../examplePayloads";
 import { createEventSubscriptionInputs } from "../../inputs";
+
 export const createEventSubscription = action({
   display: {
     label: "Create Event Subscription",
@@ -11,6 +12,7 @@ export const createEventSubscription = action({
   inputs: createEventSubscriptionInputs,
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     const data = await createSubscriptionTrigger(
       client,
       {

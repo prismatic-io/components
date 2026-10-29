@@ -5,6 +5,7 @@ import { listFilesOutputSchema } from "../../outputSchemas";
 import { getDriveQueryParams } from "../../util";
 import { fetchFiles } from "../../util/pagination";
 import { listFilesExamplePayload } from "../../examplePayloads";
+
 export const listFiles = action({
   display: {
     label: "List Files",
@@ -24,6 +25,7 @@ export const listFiles = action({
       },
       fetchAll: params.fetchAll,
     });
+
     return {
       data,
     };
@@ -33,9 +35,9 @@ export const listFiles = action({
     type: "actionOutput",
     schema: listFilesOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listFilesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listFilesExamplePayload,
   examplePayload: listFilesExamplePayload,
 });
+
 export default listFiles;

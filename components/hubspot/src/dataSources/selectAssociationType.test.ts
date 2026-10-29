@@ -5,10 +5,13 @@ import { hubspotPaths } from "../constants";
 import { selectAssociationTypeExamplePayload } from "../examplePayloads";
 import { fromObjectType, toObjectType } from "../inputs/associations";
 import { selectAssociationType } from "./selectAssociationType";
+
 vi.mock("../client");
+
 const mockedGetHubspotClient = getHubspotClient as MockedFunction<
   typeof getHubspotClient
 >;
+
 const context = {} as never;
 const connection = { key: privateAppAccessToken.key, fields: {} };
 const params = {
@@ -17,14 +20,18 @@ const params = {
   toObjectType: "companies",
 };
 const LABELS_PATH = "/crm/associations/2026-09/contacts/companies/labels";
+
 const mockGet = (data: unknown) => {
   const get = vi.fn().mockResolvedValue({ data });
   mockedGetHubspotClient.mockReturnValue({ get } as never);
   return get;
 };
+
 const run = (overrides: Record<string, unknown> = {}) =>
   selectAssociationType.perform(context, { ...params, ...overrides } as never);
+
 beforeEach(() => vi.clearAllMocks());
+
 describe("selectAssociationType", () => {
   test("reads the dated labels path for the object pair and maps typeId and label", async () => {
     const get = mockGet({
@@ -40,6 +47,7 @@ describe("selectAssociationType", () => {
     );
     expect(result).toEqual({ result: [{ label: "Decision Maker", key: "8" }] });
   });
+
   test("uses the given fromObjectType and toObjectType in the path", async () => {
     const get = mockGet({ results: [] });
     await run({ fromObjectType: "deals", toObjectType: "line_items" });
@@ -47,6 +55,7 @@ describe("selectAssociationType", () => {
       "/crm/associations/2026-09/deals/line_items/labels",
     );
   });
+
   test("an unlabeled type gets the label Type <typeId>", async () => {
     mockGet({
       results: [
@@ -66,6 +75,7 @@ describe("selectAssociationType", () => {
       ],
     });
   });
+
   test("sorts results by label", async () => {
     mockGet({
       results: [
@@ -83,6 +93,7 @@ describe("selectAssociationType", () => {
       { label: "Type 279", key: "279" },
     ]);
   });
+
   test("a response shaped like the example payload source produces the example payload", async () => {
     mockGet({
       results: [
@@ -92,11 +103,13 @@ describe("selectAssociationType", () => {
     });
     expect(await run()).toEqual(selectAssociationTypeExamplePayload);
   });
+
   test("an empty results array returns an empty list", async () => {
     mockGet({ results: [] });
     expect(await run()).toEqual({ result: [] });
   });
 });
+
 describe("selectAssociationType inputs", () => {
   test("object type inputs drop the selectObjectType data source to avoid a circular reference", () => {
     expect(

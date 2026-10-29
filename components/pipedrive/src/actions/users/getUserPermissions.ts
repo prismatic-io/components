@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUserPermissionsInputs } from "../../inputs";
 import { getUserPermissionsExamplePayload } from "../../examplePayloads";
 import { getUserPermissionsOutputSchema } from "../../outputSchemas";
+
 export const getUserPermissions = action({
   display: {
     label: "Get User Permissions",

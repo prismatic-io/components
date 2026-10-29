@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { createUserExamplePayload } from "../../examplePayloads";
 import { createUserInputs } from "../../inputs";
+
 export const createUser = action({
   display: {
     label: "Create User",

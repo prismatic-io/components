@@ -23,6 +23,7 @@ export interface InProgressNewHire {
   createdAt: string;
   updatedAt: string;
 }
+
 export interface Compensation {
   isFullTime: boolean;
   isSalaried: boolean;
@@ -33,13 +34,16 @@ export interface Compensation {
   payRate: number;
   ratePer: Currency;
 }
+
 export interface Currency {
   code: string;
   name: CurrencyName;
 }
+
 export interface CurrencyName {
   enUS: string;
 }
+
 export interface ContactInformation {
   name: ContactInformationName;
   emailAddress: string;
@@ -47,6 +51,7 @@ export interface ContactInformation {
   secondaryPhone: string;
   address: Address;
 }
+
 export interface Address {
   line1: string;
   line2: string;
@@ -57,6 +62,7 @@ export interface Address {
   countryCode: string;
   country: Currency;
 }
+
 export interface ContactInformationName {
   prefix: EmployeeType;
   first: string;
@@ -66,10 +72,12 @@ export interface ContactInformationName {
   suffix: EmployeeType;
   preferredFirst: string;
 }
+
 export interface EmployeeType {
   id: string;
   name: CurrencyName;
 }
+
 export interface Job {
   id: string;
   code: string;
@@ -81,14 +89,17 @@ export interface Job {
   workLocation: ComponentCompany;
   employeeType: EmployeeType;
 }
+
 export interface ComponentCompany {
   id: string;
   name: string;
 }
+
 export interface JobName {
   enUS: string;
   esES: string;
 }
+
 export interface Mentor {
   id: string;
   name: ContactInformationName;
@@ -96,20 +107,24 @@ export interface Mentor {
   externalUserId: string;
   description?: string;
 }
+
 export interface LaunchedOn {
   utcInstant: string;
   offset: string;
 }
+
 export interface OrganizationLevel {
   id: string;
   level: number;
   code: string;
   description: string;
 }
+
 export interface Provisioning {
   provisioningItems: ProvisioningItem[];
   summaryEmailRecipients: string[];
 }
+
 export interface ProvisioningItem {
   id: string;
   name: string;
@@ -117,6 +132,7 @@ export interface ProvisioningItem {
   selectedOption: SelectedOption;
   comments: string;
 }
+
 export interface SelectedOption {
   id: string;
   description: string;

@@ -8,6 +8,7 @@ export const categoriesPicklistExamplePayload = {
     { label: "Design Change", key: "CT1AB2CD3EF4GH5IJ6KL7MN3" },
   ],
 };
+
 export const categoryAttributesObjectSelectionExamplePayload = {
   result: [
     {
@@ -40,6 +41,7 @@ export const categoryAttributesObjectSelectionExamplePayload = {
     },
   ],
 };
+
 export const changeCategoryRoutingsPicklistExamplePayload = {
   result: [
     {
@@ -56,6 +58,7 @@ export const changeCategoryRoutingsPicklistExamplePayload = {
     },
   ],
 };
+
 export const numberSequencePrefixesPicklistExamplePayload = {
   result: [
     {
@@ -72,6 +75,7 @@ export const numberSequencePrefixesPicklistExamplePayload = {
     },
   ],
 };
+
 export const outboundEventIntegrationsPicklistExamplePayload = {
   result: [
     {
@@ -88,6 +92,7 @@ export const outboundEventIntegrationsPicklistExamplePayload = {
     },
   ],
 };
+
 export const qualityProcessTemplatesPicklistExamplePayload = {
   result: [
     {
@@ -100,6 +105,7 @@ export const qualityProcessTemplatesPicklistExamplePayload = {
     },
   ],
 };
+
 export const integrationsPicklistExamplePayload = {
   result: [
     {

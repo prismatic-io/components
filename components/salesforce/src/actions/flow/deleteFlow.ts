@@ -5,6 +5,7 @@ import { deleteFlowInputs } from "../../inputs";
 import { deleteFlowFunction, processMetadataResult } from "../../util";
 import { generateApiName } from "../../util";
 import { deleteFlowExamplePayload } from "../../examplePayloads";
+
 export const deleteFlow = action({
   display: {
     label: "Delete Flow",
@@ -18,9 +19,8 @@ export const deleteFlow = action({
     const result = await deleteFlowFunction(client, fullName);
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deleteMetadataComponentOutputSchema,

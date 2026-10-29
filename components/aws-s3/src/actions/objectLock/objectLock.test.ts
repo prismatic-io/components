@@ -1,4 +1,5 @@
 const { sendMock } = vi.hoisted(() => ({ sendMock: vi.fn() }));
+
 vi.mock("aws-utils", async () => {
   const { input } = await import("@prismatic-io/spectral");
   return {
@@ -7,9 +8,11 @@ vi.mock("aws-utils", async () => {
     dynamicAccessAllInputs: {},
   };
 });
+
 vi.mock("../../client", () => ({
   createS3Client: vi.fn(async () => ({ send: sendMock })),
 }));
+
 import {
   GetObjectLockConfigurationCommand,
   GetObjectRetentionCommand,
@@ -29,10 +32,12 @@ import { getObjectLockConfiguration } from "./getObjectLockConfiguration";
 import { getObjectRetention } from "./getObjectRetention";
 import { putObjectLockConfiguration } from "./putObjectLockConfiguration";
 import { putObjectRetention } from "./putObjectRetention";
+
 const connection = createConnection(accessKeySecretPair, {
   accessKeyId: "fakeKey",
   secretAccessKey: "fakeSecret",
 });
+
 const baseInputs = {
   awsRegion: "us-east-2",
   accessKey: connection,
@@ -41,6 +46,7 @@ const baseInputs = {
   dynamicSecretAccessKey: "",
   dynamicSessionToken: "",
 };
+
 const serviceError = (name: string, httpStatusCode: number) =>
   new S3ServiceException({
     name,
@@ -48,6 +54,7 @@ const serviceError = (name: string, httpStatusCode: number) =>
     $metadata: { httpStatusCode },
     message: `${name} error`,
   });
+
 const expectServiceError = async (
   promise: Promise<unknown>,
   name: string,
@@ -58,19 +65,24 @@ const expectServiceError = async (
     $metadata: { httpStatusCode: status },
   });
 };
+
 describe("object lock actions", () => {
   beforeEach(() => {
     sendMock.mockReset();
   });
+
   describe("getObjectLockConfiguration", () => {
     test("sends GetObjectLockConfigurationCommand and returns the response", async () => {
       sendMock.mockResolvedValue(getObjectLockConfigurationExamplePayload.data);
+
       const { result } = await invoke(getObjectLockConfiguration, baseInputs);
+
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(GetObjectLockConfigurationCommand);
       expect(command.input).toEqual({ Bucket: "example-bucket" });
       expect(result).toEqual(getObjectLockConfigurationExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(
         serviceError("ObjectLockConfigurationNotFoundError", 404),
@@ -82,15 +94,19 @@ describe("object lock actions", () => {
       );
     });
   });
+
   describe("getObjectRetention", () => {
     const inputs = {
       ...baseInputs,
       objectKey: "example/object.txt",
       versionId: "AMn71WZYnWqbvfy0unBOdtaBC.DRiN_r",
     };
+
     test("sends key and version ID and returns the response", async () => {
       sendMock.mockResolvedValue(getObjectRetentionExamplePayload.data);
+
       const { result } = await invoke(getObjectRetention, inputs);
+
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(GetObjectRetentionCommand);
       expect(command.input).toEqual({
@@ -100,6 +116,7 @@ describe("object lock actions", () => {
       });
       expect(result).toEqual(getObjectRetentionExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("NoSuchKey", 404));
       await expectServiceError(
@@ -109,6 +126,7 @@ describe("object lock actions", () => {
       );
     });
   });
+
   describe("putObjectLockConfiguration", () => {
     const inputs = {
       ...baseInputs,
@@ -116,9 +134,12 @@ describe("object lock actions", () => {
       defaultRetentionYears: 0,
       defaultRetentionMode: "GOVERNANCE" as const,
     };
+
     test("sends an enabled configuration with a days-based default retention", async () => {
       sendMock.mockResolvedValue(putObjectLockConfigurationExamplePayload.data);
+
       const { result } = await invoke(putObjectLockConfiguration, inputs);
+
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(PutObjectLockConfigurationCommand);
       expect(command.input).toEqual({
@@ -136,6 +157,7 @@ describe("object lock actions", () => {
       });
       expect(result).toEqual(putObjectLockConfigurationExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("InvalidBucketState", 409));
       await expectServiceError(
@@ -145,6 +167,7 @@ describe("object lock actions", () => {
       );
     });
   });
+
   describe("putObjectRetention", () => {
     const inputs = {
       ...baseInputs,
@@ -153,9 +176,12 @@ describe("object lock actions", () => {
       retainUntilDate: "2030-01-01T00:00:00.000Z",
       versionId: undefined,
     };
+
     test("sends the retention with a Date and omits an unset version ID", async () => {
       sendMock.mockResolvedValue(putObjectRetentionExamplePayload.data);
+
       const { result } = await invoke(putObjectRetention, inputs);
+
       const command = sendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(PutObjectRetentionCommand);
       expect(command.input).toEqual({
@@ -169,6 +195,7 @@ describe("object lock actions", () => {
       });
       expect(result).toEqual(putObjectRetentionExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       sendMock.mockRejectedValue(serviceError("AccessDenied", 403));
       await expectServiceError(

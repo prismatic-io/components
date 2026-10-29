@@ -1,17 +1,21 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export interface PaginatedParams {
   limit: number;
   offset: number;
 }
+
 export interface FetchAllWithPaginationProps {
   client: HttpClient;
   configVars: Record<string, unknown>;
   endpoint: string;
   objectKey: string;
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+
 export interface PagerDutyIncident {
   id: string;
   type: string;
@@ -25,10 +29,12 @@ export interface PagerDutyIncident {
   last_status_change_at?: string;
   [key: string]: unknown;
 }
+
 export interface PagerDutyChangesObject {
   created?: PagerDutyIncident[];
   updated?: PagerDutyIncident[];
 }
+
 export interface PagerDutyRecordChange {
   changeType: "created" | "updated";
   record: PagerDutyIncident;

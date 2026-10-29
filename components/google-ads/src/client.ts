@@ -22,6 +22,7 @@ import {
   validateDataManagerApiVersion,
 } from "./util/apiVersion";
 import { cleanCustomerId } from "./util/clean";
+
 const extractAccessToken = (connection: Connection): string => {
   const accessToken = util.types.toString(connection.token?.access_token);
   if (!accessToken) {
@@ -32,6 +33,7 @@ const extractAccessToken = (connection: Connection): string => {
   }
   return accessToken;
 };
+
 export const validateConnection = (
   connection: Connection,
 ): GoogleAdsConnectionValues => {
@@ -41,9 +43,12 @@ export const validateConnection = (
       `Unexpected connection type received: ${connection.key}`,
     );
   }
+
   const accessToken = extractAccessToken(connection);
+
   return { accessToken };
 };
+
 export const createClient = ({
   connection,
   debugEnabled,
@@ -53,13 +58,16 @@ export const createClient = ({
   const { accessToken } = validateConnection(connection);
   const parsedVersion = util.types.toString(connection.fields?.apiVersion);
   const apiVersion = validateApiVersion(parsedVersion, logger);
+
   const headers: Record<string, string> = {
     Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
+
   if (loginCustomerId) {
     headers["login-customer-id"] = cleanCustomerId(loginCustomerId);
   }
+
   return createHttpClient({
     baseUrl: `${GOOGLE_ADS_BASE_URL}/${apiVersion}`,
     headers,
@@ -67,11 +75,10 @@ export const createClient = ({
     debug: debugEnabled,
   });
 };
+
 export const validateDataManagerConnection = (
   connection: Connection,
-): {
-  accessToken: string;
-} => {
+): { accessToken: string } => {
   if (
     connection.key !== dataManagerOAuth.key &&
     connection.key !== adsConnection.key
@@ -81,8 +88,10 @@ export const validateDataManagerConnection = (
       `Unexpected connection type received: ${connection.key}.`,
     );
   }
+
   return { accessToken: extractAccessToken(connection) };
 };
+
 export const createDataManagerClient = ({
   connection,
   debugEnabled,
@@ -96,6 +105,7 @@ export const createDataManagerClient = ({
           util.types.toString(connection.fields?.apiVersion),
           logger,
         );
+
   return createHttpClient({
     baseUrl: `${GOOGLE_DATA_MANAGER_BASE_URL}/${apiVersion}`,
     headers: {
@@ -106,19 +116,23 @@ export const createDataManagerClient = ({
     debug: debugEnabled,
   });
 };
+
 export const createLocalServicesClient = ({
   connection,
   debugEnabled,
   loginCustomerId,
 }: CreateLocalServicesClientProps): HttpClient => {
   const { accessToken } = validateConnection(connection);
+
   const headers: Record<string, string> = {
     Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
+
   if (loginCustomerId) {
     headers["login-customer-id"] = cleanCustomerId(loginCustomerId);
   }
+
   return createHttpClient({
     baseUrl: `${GOOGLE_LOCAL_SERVICES_BASE_URL}/${GOOGLE_LOCAL_SERVICES_API_VERSION}`,
     headers,

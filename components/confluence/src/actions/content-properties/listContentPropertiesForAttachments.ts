@@ -6,6 +6,7 @@ import { listContentPropertiesForAttachmentsInputs } from "../../inputs";
 import type { ContentProperty } from "../../types";
 import { listContentPropertiesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util";
+
 export const listContentPropertiesForAttachments = action({
   display: {
     label: "List Content Properties for Attachments",
@@ -31,6 +32,7 @@ export const listContentPropertiesForAttachments = action({
   ) => {
     const client = await createClient(connectionInput, context.debug.enabled);
     const url = `/attachments/${attachmentId}/properties`;
+
     if (fetchAll) {
       const results = await paginateResults<ContentProperty>(
         client,
@@ -39,6 +41,7 @@ export const listContentPropertiesForAttachments = action({
       );
       return { data: { results } };
     }
+
     const { data } = await client.get(url, {
       params: {
         cursor: pagination.cursor,
@@ -51,9 +54,7 @@ export const listContentPropertiesForAttachments = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listContentPropertiesExamplePayload,
   }),
   examplePayload: {

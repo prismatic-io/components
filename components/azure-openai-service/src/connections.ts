@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const apiKey = connection({
   key: "apiKey",
   display: {
@@ -47,4 +48,5 @@ export const apiKey = connection({
     },
   },
 });
+
 export default [apiKey];

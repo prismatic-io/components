@@ -16,6 +16,7 @@ import {
   teamId,
   userId,
 } from "./common";
+
 export const isPrivate = input({
   label: "Is Private",
   type: "boolean",
@@ -23,6 +24,7 @@ export const isPrivate = input({
   comments: "When true, the Slack conversation will be private.",
   clean: util.types.toBool,
 });
+
 export const conversationName = input({
   label: "Conversation Name",
   placeholder: "Enter conversation name",
@@ -32,6 +34,7 @@ export const conversationName = input({
   example: "Book Club",
   clean: util.types.toString,
 });
+
 export const excludeArchived = input({
   label: "Exclude Archived",
   type: "boolean",
@@ -39,12 +42,14 @@ export const excludeArchived = input({
   comments: "When true, archived results will be excluded from the result set.",
   clean: util.types.toBool,
 });
+
 export const includeAllMetadata = input({
   label: "Include All Metadata",
   type: "boolean",
   comments: "When true, includes all metadata in results.",
   clean: util.types.toBool,
 });
+
 export const inclusive = input({
   label: "Inclusive",
   comments:
@@ -53,6 +58,7 @@ export const inclusive = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const latest = input({
   label: "Latest",
   placeholder: "Enter Unix timestamp",
@@ -62,6 +68,7 @@ export const latest = input({
     "Only messages before this Unix timestamp will be included in results. Default is current time.",
   clean: cleanString,
 });
+
 export const oldest = input({
   label: "Oldest",
   placeholder: "Enter Unix timestamp",
@@ -71,6 +78,7 @@ export const oldest = input({
     "Only messages after this Unix timestamp will be included in results.",
   clean: cleanString,
 });
+
 export const conversationPurpose = input({
   label: "Conversation Purpose",
   placeholder: "Enter conversation purpose",
@@ -80,6 +88,7 @@ export const conversationPurpose = input({
   example: "Engineering",
   clean: util.types.toString,
 });
+
 export const conversationTopic = input({
   label: "Conversation Topic",
   placeholder: "Enter conversation topic",
@@ -89,6 +98,7 @@ export const conversationTopic = input({
   example: "Engineering",
   clean: util.types.toString,
 });
+
 export const connected_team_ids = input({
   label: "Connected Team IDs",
   type: "string",
@@ -99,6 +109,7 @@ export const connected_team_ids = input({
   example: "T00000000",
   clean: valueListInputClean,
 });
+
 export const team_ids = input({
   label: "Team IDs",
   type: "string",
@@ -109,6 +120,7 @@ export const team_ids = input({
   example: "T00000000",
   clean: valueListInputClean,
 });
+
 export const search_channel_types = input({
   label: "Search Channel Types",
   type: "string",
@@ -132,6 +144,7 @@ export const search_channel_types = input({
     "The type of channel to include or exclude in the search. For example, private will search private channels, while private_exclude will exclude them.",
   clean: valueListInputClean,
 });
+
 export const sort = input({
   label: "Sort",
   placeholder: "Select sort method",
@@ -146,6 +159,7 @@ export const sort = input({
     "The method to sort the results. For example, member_count will sort by the number of members in the channel.",
   clean: (value: unknown) => util.types.toString(value, "member_count") as Sort,
 });
+
 export const total_count_only = input({
   label: "Total Count Only",
   type: "boolean",
@@ -154,16 +168,19 @@ export const total_count_only = input({
     "When true, returns only the total_count of channels. Omits channel data and allows access for admins without channel manager permissions.",
   clean: util.types.toBool,
 });
+
 export const createConversationInputs = {
   connection: connectionInput,
   conversationName,
   isPrivate,
   teamId,
 };
+
 export const closeConversationInputs = {
   connection: connectionInput,
   conversationName,
 };
+
 export const renameConversationInputs = {
   connection: connectionInput,
   conversationName,
@@ -172,12 +189,14 @@ export const renameConversationInputs = {
     label: "New Conversation Name",
   },
 };
+
 const getConversationsHistoryPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { limit, cursor },
 });
+
 const getConversationsHistoryTimeRange = structuredObjectInput({
   label: "Time Range",
   required: false,
@@ -185,6 +204,7 @@ const getConversationsHistoryTimeRange = structuredObjectInput({
     "Timestamp bounds and inclusivity for the messages returned in results.",
   inputs: { oldest, latest, inclusive },
 });
+
 export const getConversationsHistoryInputs = {
   connection: connectionInput,
   channelName,
@@ -193,12 +213,14 @@ export const getConversationsHistoryInputs = {
   includeAllMetadata,
   timeRange: getConversationsHistoryTimeRange,
 };
+
 const listConversationsPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { limit, cursor },
 });
+
 const listConversationsChannelTypes = structuredObjectInput({
   label: "Channel Types",
   required: false,
@@ -211,6 +233,7 @@ const listConversationsChannelTypes = structuredObjectInput({
     includeImChannels,
   },
 });
+
 export const listConversationsInputs = {
   connection: connectionInput,
   fetchAll,
@@ -219,52 +242,62 @@ export const listConversationsInputs = {
   excludeArchived,
   channelTypes: listConversationsChannelTypes,
 };
+
 export const leaveConversationInputs = {
   connection: connectionInput,
   channelName,
 };
+
 const listConversationMembersPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { limit, cursor },
 });
+
 export const listConversationMembersInputs = {
   connection: connectionInput,
   channelName,
   fetchAll,
   pagination: listConversationMembersPagination,
 };
+
 export const archiveConversationInputs = {
   connection: connectionInput,
   channelName,
 };
+
 export const conversationExistsInputs = {
   connection: connectionInput,
   channelName,
 };
+
 export const inviteUserToConversationInputs = {
   connection: connectionInput,
   channelName,
   userId,
 };
+
 export const setConversationPurposeInputs = {
   connection: connectionInput,
   channelName,
   purpose: conversationPurpose,
 };
+
 export const setConversationTopicInputs = {
   connection: connectionInput,
   channelName,
   userId,
   topic: conversationTopic,
 };
+
 const searchConversationPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { limit, cursor },
 });
+
 export const searchConversationInputs = {
   connection: connectionInput,
   query: channelName,

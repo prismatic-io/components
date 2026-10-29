@@ -17,6 +17,7 @@ import {
   sasPermissions,
   sasStartsOnDate,
 } from "./inputs";
+
 const fakeAzureResponse = {
   _response: {
     parsedHeaders: {},
@@ -35,9 +36,11 @@ const fakeAzureResponse = {
     },
   },
 };
+
 const exampleAzure = {
   data: fakeAzureResponse,
 };
+
 const listContainers = action({
   display: {
     label: "List Containers",
@@ -66,6 +69,7 @@ const listContainers = action({
     ],
   },
 });
+
 const createContainer = action({
   display: {
     label: "Create Container",
@@ -82,6 +86,7 @@ const createContainer = action({
   inputs: { containerName, azureConnection: connectionInput },
   examplePayload: exampleAzure,
 });
+
 const deleteContainer = action({
   display: {
     label: "Delete Container",
@@ -96,6 +101,7 @@ const deleteContainer = action({
   inputs: { containerName, azureConnection: connectionInput },
   examplePayload: exampleAzure,
 });
+
 const listBlobs = action({
   display: {
     label: "List Blobs",
@@ -129,6 +135,7 @@ const listBlobs = action({
     ],
   },
 });
+
 const createAppendBlob = action({
   display: {
     label: "Create Append Blob",
@@ -149,6 +156,7 @@ const createAppendBlob = action({
   inputs: { containerName, blobName, azureConnection: connectionInput },
   examplePayload: exampleAzure,
 });
+
 const appendToAppendBlob = action({
   display: {
     label: "Append to Append Blob",
@@ -163,6 +171,7 @@ const appendToAppendBlob = action({
     const blobClient = containerClient.getAppendBlobClient(
       util.types.toString(blobName),
     );
+
     const { data } = util.types.toData(fileContents);
     const result = await blobClient.appendBlock(data, Buffer.byteLength(data));
     return {
@@ -177,6 +186,7 @@ const appendToAppendBlob = action({
   },
   examplePayload: exampleAzure,
 });
+
 const createPageBlob = action({
   display: {
     label: "Create Page Blob",
@@ -205,6 +215,7 @@ const createPageBlob = action({
   },
   examplePayload: exampleAzure,
 });
+
 const resizePageBlob = action({
   display: {
     label: "Resize Page Blob",
@@ -233,6 +244,7 @@ const resizePageBlob = action({
   },
   examplePayload: exampleAzure,
 });
+
 const uploadToPageBlob = action({
   display: {
     label: "Upload to Page Blob",
@@ -248,6 +260,7 @@ const uploadToPageBlob = action({
     const blobClient = containerClient.getPageBlobClient(
       util.types.toString(blobName),
     );
+
     const { data } = util.types.toData(fileContents);
     const result = await blobClient.uploadPages(
       data,
@@ -267,6 +280,7 @@ const uploadToPageBlob = action({
   },
   examplePayload: exampleAzure,
 });
+
 const uploadBlockBlob = action({
   display: {
     label: "Upload Block Blob",
@@ -281,6 +295,7 @@ const uploadBlockBlob = action({
     const blobClient = containerClient.getBlockBlobClient(
       util.types.toString(blobName),
     );
+
     const { data } = util.types.toData(fileContents);
     const result = await blobClient.upload(data, Buffer.byteLength(data));
     return {
@@ -295,6 +310,7 @@ const uploadBlockBlob = action({
   },
   examplePayload: exampleAzure,
 });
+
 const downloadBlob = action({
   display: {
     label: "Download Blob",
@@ -318,6 +334,7 @@ const downloadBlob = action({
     contentType: "application/octet",
   },
 });
+
 const deleteBlob = action({
   display: {
     label: "Delete Blob",
@@ -336,6 +353,7 @@ const deleteBlob = action({
   inputs: { containerName, blobName, azureConnection: connectionInput },
   examplePayload: exampleAzure,
 });
+
 const generateSasUrl = action({
   display: {
     label: "Generate Shared Access Signature URL",
@@ -368,10 +386,12 @@ const generateSasUrl = action({
     const client = createAuthorizedClient(azureConnection);
     const parsedBlobName = util.types.toString(blobName);
     const containerClient = client.getContainerClient(containerName);
+
     const sharedKeyCredential = new StorageSharedKeyCredential(
       util.types.toString(azureConnection.fields.accountName),
       util.types.toString(azureConnection.fields.accountKey),
     );
+
     const sasOptions = {
       containerName: containerClient.containerName,
       blobName: parsedBlobName,
@@ -381,15 +401,18 @@ const generateSasUrl = action({
         util.types.toString(sasPermissions),
       ),
     };
+
     const sasToken = generateBlobSASQueryParameters(
       sasOptions,
       sharedKeyCredential,
     ).toString();
+
     return Promise.resolve({
       data: `${containerClient.getBlockBlobClient(parsedBlobName).url}?${sasToken}`,
     });
   },
 });
+
 export default {
   listContainers,
   createContainer,

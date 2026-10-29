@@ -9,6 +9,7 @@ import type {
   PaginatedResponse,
 } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listArticleAttachments = action({
   display: {
     label: "List Article Attachments",
@@ -35,9 +36,11 @@ export const listArticleAttachments = action({
         },
       };
     }
+
     const { data } = await client.get<
       PaginatedResponse<ArticleAttachments> | ArticleAttachments
     >(url);
+
     return {
       data,
     };

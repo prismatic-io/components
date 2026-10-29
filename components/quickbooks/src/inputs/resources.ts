@@ -1,4 +1,5 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+
 export const resourceType = input({
   label: "Resource Type",
   type: "string",
@@ -19,12 +20,14 @@ export const resourceType = input({
   ],
   clean: util.types.toString,
 });
+
 export const resourceData = input({
   label: "Resource Data",
   type: "data",
   required: false,
   comments: "A full map of the resource data to create or update.",
 });
+
 export const resourceAttributes = input({
   label: "Resource Attributes",
   type: "data",
@@ -47,6 +50,7 @@ export const resourceAttributes = input({
     );
   },
 });
+
 export const syncToken = input({
   label: "Sync Token",
   placeholder: "Enter sync token",
@@ -56,6 +60,7 @@ export const syncToken = input({
     "The sync token of the resource, used for optimistic locking to prevent concurrent update conflicts.",
   clean: util.types.toString,
 });
+
 export const resourceId = input({
   label: "Resource ID",
   placeholder: "Enter resource ID",

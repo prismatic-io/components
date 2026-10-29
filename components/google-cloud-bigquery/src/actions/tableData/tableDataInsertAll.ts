@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { tableDataInsertAllInputs } from "../../inputs";
+
 export const tableDataInsertAll = action({
   display: {
     description:

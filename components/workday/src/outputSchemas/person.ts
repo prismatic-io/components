@@ -85,7 +85,9 @@ export const personRepresentationSchema = {
     },
   },
 };
+
 export const getPersonByIdOutputSchema = personRepresentationSchema;
+
 export const listPeopleOutputSchema = {
   type: ["object", "array"],
   properties: {

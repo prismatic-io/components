@@ -16,26 +16,31 @@ export interface Bill {
   user: User;
   vendor: Vendor;
 }
+
 interface Amount {
   amount: number;
   currency_code: string;
 }
+
 interface LineItem {
   accounting_field_selections: Record<string, unknown>[];
   amount: Amount;
   memo: string;
 }
+
 interface Payment {
   amount: Amount;
   effective_date: string;
   payment_date: string;
   payment_method: string;
 }
+
 interface User {
   first_name: string;
   id: string;
   last_name: string;
 }
+
 interface Vendor {
   remote_id: string;
   remote_name: string;

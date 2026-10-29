@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { connection, skipToken, top } from ".././inputs";
 import { createClient } from "../client";
 import { listGroupsExamplePayload } from "../examplePayloads";
+
 export const listGroups = action({
   display: {
     label: "List Groups",
@@ -15,6 +16,7 @@ export const listGroups = action({
     const { data } = await client.get("/groups", {
       params: { $top: params.top, $skipToken: params.skipToken },
     });
+
     return {
       data,
     };
@@ -22,4 +24,5 @@ export const listGroups = action({
   inputs: { connection, skipToken, top },
   examplePayload: listGroupsExamplePayload,
 });
+
 export default listGroups;

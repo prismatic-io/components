@@ -10,6 +10,7 @@ import type {
   PollingState,
 } from "../types";
 import { pollPaymentsCycle, resolvePaymentChanges } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Payments",
@@ -43,16 +44,20 @@ export const pollChangesTrigger = pollingTrigger({
       hasLookBackDate: Boolean(lookBackDate),
       batching: context.batch?.enabled === true,
     });
+
     context.polling.setState(cycle.state);
+
     const result: PaymentChangesObject = {
       created: cycle.backfill || showNewRecords ? cycle.created : [],
       updated: cycle.backfill || showUpdatedRecords ? cycle.updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled payments: ${cycle.read} read → ${cycle.created.length} new, ${cycle.updated.length} updated, ${cycle.next ? "more pending" : "stream drained"}`,
       );
     }
+
     return {
       payload: {
         ...payload,

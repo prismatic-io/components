@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listDepartmentsV2ExamplePayload } from "../../../examplePayloads";
 import { listDepartmentsInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listDepartments = action({
   display: {
     label: "List Departments (V2)",

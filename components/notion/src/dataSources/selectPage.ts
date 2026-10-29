@@ -5,6 +5,7 @@ import { getPageTitle, getPaginatedData, sortArray } from "../utils";
 import { HttpMethod } from "../constants";
 import type { InlineDSPage } from "../types";
 import { selectPageExamplePayload } from "../examplePayloads";
+
 export const selectPage = dataSource({
   display: {
     label: "Select Page",
@@ -13,6 +14,7 @@ export const selectPage = dataSource({
   inputs: selectPageInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const { data } = await getPaginatedData(
       client,
       HttpMethod.POST,

@@ -15,6 +15,7 @@ import {
   total,
 } from "../../inputs";
 import { fetchAllWithPagination } from "../../util/fetchAllWithPagination";
+
 export const listIncidentAlerts = action({
   display: {
     label: "List Incident Alerts",
@@ -46,6 +47,7 @@ export const listIncidentAlerts = action({
       sort_by: sortBy,
       "include[]": include,
     };
+
     if (fetchAll) {
       return {
         data: await fetchAllWithPagination({
@@ -56,6 +58,7 @@ export const listIncidentAlerts = action({
         }),
       };
     }
+
     const { data } = await client.get(endpoint, {
       params,
     });

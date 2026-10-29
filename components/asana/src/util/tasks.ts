@@ -1,11 +1,10 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { Task } from "../types/resources";
+
 export async function getSubtasks(
   client: HttpClient,
   taskId: string,
-  params: {
-    [key: string]: string | number | undefined;
-  },
+  params: { [key: string]: string | number | undefined },
 ): Promise<Task[]> {
   const { data: subtaskData } = await client.get(`/tasks/${taskId}/subtasks`, {
     params,

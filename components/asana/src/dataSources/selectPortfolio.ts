@@ -8,6 +8,7 @@ import {
   handleMultipleWorkspacesError,
   mapToLabelKey,
 } from "../util";
+
 const selectPortfolio = dataSource({
   display: {
     label: "Select Portfolio",
@@ -17,11 +18,13 @@ const selectPortfolio = dataSource({
   perform: async (_context, { connection, workspaceId }) => {
     try {
       const client = await createAsanaClient(connection, false);
+
       const {
         data: {
           data: { gid: userGid },
         },
       } = await client.get("/users/me");
+
       const data = await fetchMoreData<DataSource>(
         client,
         "/portfolios",
@@ -32,6 +35,7 @@ const selectPortfolio = dataSource({
           owner: userGid,
         },
       );
+
       const result = mapToLabelKey(data);
       return { result };
     } catch (err) {
@@ -42,6 +46,7 @@ const selectPortfolio = dataSource({
   dataSourceType: "picklist",
   examplePayload: selectPortfolioExamplePayload,
 });
+
 export default {
   selectPortfolio,
 };

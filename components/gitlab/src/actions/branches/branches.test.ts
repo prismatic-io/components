@@ -14,12 +14,15 @@ import { createBranch } from "./createBranch";
 import { deleteBranch } from "./deleteBranch";
 import { getBranch } from "./getBranch";
 import { listBranches } from "./listBranches";
+
 const exampleBranch = getBranchExamplePayload.data;
 const exampleCommit = listCommitsExamplePayload.data[0];
 const exampleCommitDetail = getCommitExamplePayload.data;
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
 const project = "278964";
+
 test("Get Branch encodes slashes and dots so .json-like names are not format suffixes", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/repository/branches/release%2F1%2E2`)
@@ -31,6 +34,7 @@ test("Get Branch encodes slashes and dots so .json-like names are not format suf
   });
   expect(result?.data).toEqual(exampleBranch);
 });
+
 test("Create Branch sends branch and ref as query parameters", async () => {
   nock(GITLAB_URL)
     .post(`/api/v4/projects/${project}/repository/branches`)
@@ -44,6 +48,7 @@ test("Create Branch sends branch and ref as query parameters", async () => {
   });
   expect(result?.data).toEqual(exampleBranch);
 });
+
 test("List Branches and Delete Branch", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/repository/branches`)
@@ -74,6 +79,7 @@ test("List Branches and Delete Branch", async () => {
     ).result?.data,
   ).toEqual({ success: true, message: BRANCH_DELETED_MESSAGE });
 });
+
 test("List Commits and Get Commit", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/repository/commits`)
@@ -101,6 +107,7 @@ test("List Commits and Get Commit", async () => {
       .result?.data,
   ).toEqual(exampleCommitDetail);
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Not Found" };
@@ -108,6 +115,7 @@ describe("error paths", () => {
     fetchAll: false,
     pagination: { perPage: 0, page: undefined },
   };
+
   test("Get Branch rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/repository/branches/missing`)
@@ -116,6 +124,7 @@ describe("error paths", () => {
       invoke(getBranch, { connection, project, branch: "missing" }),
     ).rejects.toThrow();
   });
+
   test("Create Branch rejects on 400", async () => {
     nock(GITLAB_URL)
       .post(`/api/v4/projects/${project}/repository/branches`)
@@ -130,6 +139,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("List Branches rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/repository/branches`)
@@ -144,6 +154,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Delete Branch rejects on 400", async () => {
     nock(GITLAB_URL)
       .delete(`/api/v4/projects/${project}/repository/branches/main`)
@@ -152,6 +163,7 @@ describe("error paths", () => {
       invoke(deleteBranch, { connection, project, branch: "main" }),
     ).rejects.toThrow();
   });
+
   test("List Commits rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/repository/commits`)
@@ -169,6 +181,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Get Commit rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/repository/commits/deadbeef`)

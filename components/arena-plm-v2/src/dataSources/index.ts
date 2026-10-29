@@ -7,6 +7,7 @@ import { notificationJsonForm } from "./notificationJsonForm";
 import { numberSequencePrefixesPicklist } from "./numberSequencePrefixesPicklist";
 import { outboundEventIntegrationsPicklist } from "./outboundEventIntegrationsPicklist";
 import { qualityProcessTemplatesPicklist } from "./qualityProcessTemplatesPicklist";
+
 export {
   categoriesPicklist,
   categoryAttributesObjectSelection,

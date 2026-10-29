@@ -4,6 +4,7 @@ import { awsRegion } from "aws-utils";
 import { nextToken, connectionInput, fetchAllTopics } from "../inputs";
 import { fetchTopics } from "../utils";
 import { listTopicsExamplePayload } from "../examplePayloads";
+
 export const listTopics = action({
   display: {
     label: "List Topics",
@@ -20,6 +21,7 @@ export const listTopics = action({
       logger,
     });
     const response = await fetchTopics(sns, fetchAllTopics, nextToken);
+
     return {
       data: response,
     };
@@ -32,4 +34,5 @@ export const listTopics = action({
   },
   examplePayload: listTopicsExamplePayload,
 });
+
 export default listTopics;

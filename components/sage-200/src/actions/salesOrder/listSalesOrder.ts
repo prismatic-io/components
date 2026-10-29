@@ -10,6 +10,7 @@ import {
   site,
 } from "../../inputs/general";
 import { filterDataChangedAfter } from "../../util";
+
 export const listSalesOrder = action({
   display: {
     label: "List Sales Order",
@@ -25,6 +26,7 @@ export const listSalesOrder = action({
       endpoint: "/sop_orders",
       fetchAll,
     });
+
     return {
       data: filterDataAfterDate
         ? filterDataChangedAfter(data, filterDataAfterDate)

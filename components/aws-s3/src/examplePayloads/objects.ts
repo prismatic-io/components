@@ -6,9 +6,8 @@ import type {
   HeadObjectCommandOutput,
   PutObjectCommandOutput,
 } from "@aws-sdk/client-s3";
-export const headObjectExamplePayload: {
-  data: HeadObjectCommandOutput;
-} = {
+
+export const headObjectExamplePayload: { data: HeadObjectCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,
@@ -29,28 +28,29 @@ export const headObjectExamplePayload: {
     Metadata: {},
   },
 };
-export const deleteObjectsExamplePayload: {
-  data: DeleteObjectsCommandOutput;
-} = {
-  data: {
-    $metadata: {
-      httpStatusCode: 200,
-      requestId: "FAQAVT",
-      extendedRequestId: "T/nk6UtPuVs11K6ji59C8phr==",
-      cfId: null,
-      attempts: 1,
-      totalRetryDelay: 0,
+
+export const deleteObjectsExamplePayload: { data: DeleteObjectsCommandOutput } =
+  {
+    data: {
+      $metadata: {
+        httpStatusCode: 200,
+        requestId: "FAQAVT",
+        extendedRequestId: "T/nk6UtPuVs11K6ji59C8phr==",
+        cfId: null,
+        attempts: 1,
+        totalRetryDelay: 0,
+      },
+      Deleted: [
+        {
+          Key: "file.csv",
+        },
+        {
+          Key: "audio.mp3",
+        },
+      ],
     },
-    Deleted: [
-      {
-        Key: "file.csv",
-      },
-      {
-        Key: "audio.mp3",
-      },
-    ],
-  },
-};
+  };
+
 export const getObjectAttributesExamplePayload: {
   data: GetObjectAttributesCommandOutput;
 } = {
@@ -69,9 +69,8 @@ export const getObjectAttributesExamplePayload: {
     ObjectSize: 515400,
   },
 };
-export const copyObjectExamplePayload: {
-  data: CopyObjectCommandOutput;
-} = {
+
+export const copyObjectExamplePayload: { data: CopyObjectCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,
@@ -88,9 +87,8 @@ export const copyObjectExamplePayload: {
     },
   },
 };
-export const deleteObjectExamplePayload: {
-  data: DeleteObjectCommandOutput;
-} = {
+
+export const deleteObjectExamplePayload: { data: DeleteObjectCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 204,
@@ -107,22 +105,21 @@ export const deleteObjectExamplePayload: {
     RequestCharged: "requester",
   },
 };
+
 export const getObjectExamplePayload = {
   data: Buffer.from("Example File Contents"),
   contentType: "application/octet",
 };
-export const listObjectsExamplePayload: {
-  data: string[];
-} = {
+
+export const listObjectsExamplePayload: { data: string[] } = {
   data: [
     "invoices/2024-01-15.pdf",
     "images/logo.png",
     "backups/database-dump.sql",
   ],
 };
-export const putObjectExamplePayload: {
-  data: PutObjectCommandOutput;
-} = {
+
+export const putObjectExamplePayload: { data: PutObjectCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,
@@ -138,8 +135,7 @@ export const putObjectExamplePayload: {
       "3sL4kqtJlcpXroDTDmJ+rmSpXd3dIbrHY+MTRCxf3vjVBH40Nr8X8gdRQBpUMLUo",
   },
 };
-export const generatePresignedUrlExamplePayload: {
-  data: string;
-} = {
+
+export const generatePresignedUrlExamplePayload: { data: string } = {
   data: "https://my-bucket.s3.us-east-2.amazonaws.com/my-file.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256...",
 };

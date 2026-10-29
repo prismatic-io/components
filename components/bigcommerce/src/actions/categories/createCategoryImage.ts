@@ -9,6 +9,7 @@ import {
   imageFile,
   storeHash,
 } from "../../inputs";
+
 export const createCategoryImage = action({
   display: {
     label: "Create Category Image",
@@ -24,14 +25,17 @@ export const createCategoryImage = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/categories/${categoryId}/image`;
+
     const formData = new FormData();
     formData.append("image_file", imageFile);
+
     try {
       const response = await client.post(endpoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
       return {
         data: response.data,
       };
@@ -41,6 +45,7 @@ export const createCategoryImage = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

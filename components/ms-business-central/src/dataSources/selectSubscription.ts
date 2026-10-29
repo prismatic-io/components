@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../client";
 import { connectionInput } from "../inputs/general";
 import type { Subscription } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
@@ -15,6 +16,7 @@ export const selectSubscription = dataSource({
   perform: async (context, { connection }) => {
     const client = getMsBusinessCentralClient(connection, context, false);
     const { data } = await client.get<Subscription>("/subscriptions");
+
     return {
       result: toSortedPicklist(data.value, (sub) => ({
         key: sub.subscriptionId,

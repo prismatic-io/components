@@ -5,6 +5,7 @@ import { selectCustomerIdExamplePayload } from "../examplePayloads";
 import { selectCustomerIdInputs } from "../inputs/customers";
 import type { CustomerInfo, GetCustomersInfoResponse } from "../types";
 import { toArray } from "../util";
+
 export const selectCustomerId = dataSource({
   display: {
     label: "Select Customer ID",
@@ -16,12 +17,14 @@ export const selectCustomerId = dataSource({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<GetCustomersInfoResponse>({
       args: { CustomerNameFilter: "", TopN: PAGE_SIZE.customers },
       client,
       soapAction: SOAP_ACTION.GetCustomersInfo,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     const standardizedResponse = response?.CustomersInfo?.CustomerInfo
       ? {
           CustomersInfo: {
@@ -31,6 +34,7 @@ export const selectCustomerId = dataSource({
           },
         }
       : response;
+
     const customerIds = (
       Array.isArray(standardizedResponse?.CustomersInfo?.CustomerInfo)
         ? standardizedResponse.CustomersInfo.CustomerInfo
@@ -41,6 +45,7 @@ export const selectCustomerId = dataSource({
         key: util.types.toString(customer.Id),
         label: `${customer.Name} (id: ${customer.Id})`,
       }));
+
     return {
       result: customerIds,
     };

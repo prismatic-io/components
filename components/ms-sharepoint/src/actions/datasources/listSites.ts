@@ -2,6 +2,7 @@ import { type Element, dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection } from "../../inputs";
 import { sortArray } from "../../utils";
+
 interface Site {
   createdDateTime: string;
   id: string;
@@ -16,10 +17,12 @@ interface GetSitesResponse {
   "@odata.nextLink"?: string;
   value: Site[];
 }
+
 const mapToElement = (site: Site): Element => ({
   key: site.id,
   label: site.displayName,
 });
+
 export const listSites = dataSource({
   display: {
     label: "List Sites from Sharepoint",
@@ -37,6 +40,7 @@ export const listSites = dataSource({
       mapToElement(site),
     );
     let nextLink = data?.["@odata.nextLink"];
+
     while (nextLink) {
       const { data } = await client.get<GetSitesResponse>(nextLink);
       sites.push(...(data.value || []).map((site) => mapToElement(site)));

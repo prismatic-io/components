@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createDataBricksClient } from "../client";
 import { connectionInput } from "../inputs";
 import type { Cluster, NodeType } from "../types";
+
 const selectCluster = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -15,9 +16,7 @@ const selectCluster = dataSource({
     const client = createDataBricksClient(params.connection, "2.0", false);
     const {
       data: { clusters },
-    } = await client.get<{
-      clusters: Cluster[];
-    }>("clusters/list");
+    } = await client.get<{ clusters: Cluster[] }>("clusters/list");
     if (!clusters) {
       throw new Error("No Databricks clusters found in workspace");
     }
@@ -29,6 +28,7 @@ const selectCluster = dataSource({
     };
   },
 });
+
 const selectNodeType = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -40,9 +40,9 @@ const selectNodeType = dataSource({
   },
   perform: async (_context, params) => {
     const client = createDataBricksClient(params.connection, "2.0", false);
-    const response = await client.get<{
-      node_types: NodeType[];
-    }>("clusters/list-node-types");
+    const response = await client.get<{ node_types: NodeType[] }>(
+      "clusters/list-node-types",
+    );
     return {
       result: response.data.node_types.map((nodeType) => ({
         key: nodeType.node_type_id,
@@ -51,4 +51,5 @@ const selectNodeType = dataSource({
     };
   },
 });
+
 export default { selectCluster, selectNodeType };

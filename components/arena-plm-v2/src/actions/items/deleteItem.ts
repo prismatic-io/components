@@ -4,6 +4,7 @@ import { deleteItemExamplePayload } from "../../examplePayloads";
 import { deleteItemInputs } from "../../inputs";
 import { deleteItemOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteItem = action({
   display: {
     label: "Delete Item",
@@ -19,14 +20,18 @@ export const deleteItem = action({
   perform: async (context, { connection, itemGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting item from Arena", {
         itemGuid: itemGuid,
       });
+
       const { status } = await client.delete(`/items/${itemGuid}`);
+
       context.logger.info("Item deleted successfully", {
         itemGuid: itemGuid,
         statusCode: status,
       });
+
       return {
         data: {
           success: true,

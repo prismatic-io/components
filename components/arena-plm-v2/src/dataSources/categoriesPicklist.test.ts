@@ -7,9 +7,11 @@ import { arenaApiKey } from "../connections";
 import { listCategoriesExamplePayload } from "../examplePayloads";
 import { createTestContext } from "../tests/testContext";
 import { categoriesPicklist } from "./categoriesPicklist";
+
 const ARENA_HOST = "https://arena.example.com";
 const API = "/v1";
 const OBJECT_TYPE = "items";
+
 const params = () => ({
   connection: createConnection(arenaApiKey, {
     baseUrl: "custom",
@@ -22,22 +24,27 @@ const params = () => ({
   includeDeleted: undefined,
   assignable: undefined,
 });
+
 describe("categoriesPicklist", () => {
   afterEach(() => {
     nock.cleanAll();
   });
+
   afterAll(() => {
     nock.restore();
   });
+
   it("maps every category to a label and key pair", async () => {
     nock(ARENA_HOST)
       .get(`${API}/settings/${OBJECT_TYPE}/categories`)
       .reply(200, listCategoriesExamplePayload.data);
+
     const { result } = await invokeDataSource(
       categoriesPicklist,
       params(),
       createTestContext(),
     );
+
     const expected = listCategoriesExamplePayload.data.results ?? [];
     expect(result).toHaveLength(expected.length);
     for (const option of result) {
@@ -53,21 +60,26 @@ describe("categoriesPicklist", () => {
       key: expected[0].guid,
     });
   });
+
   it("returns an empty option list when Arena has no categories", async () => {
     nock(ARENA_HOST)
       .get(`${API}/settings/${OBJECT_TYPE}/categories`)
       .reply(200, { results: [], count: 0 });
+
     const { result } = await invokeDataSource(
       categoriesPicklist,
       params(),
       createTestContext(),
     );
+
     expect(result).toEqual([]);
   });
+
   it("propagates an HTTP failure instead of returning an empty option list", async () => {
     nock(ARENA_HOST)
       .get(`${API}/settings/${OBJECT_TYPE}/categories`)
       .reply(403, { errors: [{ message: "Insufficient permissions" }] });
+
     await expect(
       invokeDataSource(categoriesPicklist, params(), createTestContext()),
     ).rejects.toThrow(

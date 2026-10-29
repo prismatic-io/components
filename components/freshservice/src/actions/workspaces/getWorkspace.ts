@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { getWorkspaceExamplePayload as examplePayload } from "../../examplePayloads";
 import { getWorkspaceInputs as inputs } from "../../inputs";
 import { getWorkspaceOutputSchema } from "../../outputSchemas";
+
 export const getWorkspace = action({
   display: {
     label: "Get Workspace",
@@ -18,12 +19,15 @@ export const getWorkspace = action({
         "Workspace ID is required. Select a workspace, or use the List Workspaces action to find one.",
       );
     }
+
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await client.get(`/workspaces/${workspaceId}`, {
       params: additionalQueryParams,
     });
+
     return {
       data,
     };

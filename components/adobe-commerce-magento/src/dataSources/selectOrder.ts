@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_SIZE, ENDPOINTS } from "../constants";
 import { selectOrderExamplePayload } from "../examplePayloads";
 import { selectOrderInputs } from "../inputs";
 import { toSortedElements } from "../utils";
+
 export const selectOrder = dataSource({
   display: {
     label: "Select Order",
@@ -24,6 +25,7 @@ export const selectOrder = dataSource({
         "searchCriteria[pageSize]": DEFAULT_PAGE_SIZE,
       },
     });
+
     return {
       result: toSortedElements(data?.items, (item) => ({
         label: `#${item.increment_id} - ${item.status} ($${item.grand_total})`,

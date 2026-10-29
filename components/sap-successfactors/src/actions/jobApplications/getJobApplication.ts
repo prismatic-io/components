@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createJobApplicationExamplePayload as getJobApplicationExamplePayload } from "../../examplePayloads";
 import { getJobApplicationInputs } from "../../inputs";
 import { cleanResultFromResponse } from "../../util";
+
 export const getJobApplication = action({
   display: {
     label: "Get Job Application",

@@ -18,9 +18,11 @@ import { getWorker } from "./getWorker";
 import { getWorkersMetadata } from "./getWorkersMetadata";
 import { listWorkers } from "./listWorkers";
 import { modifyTimeEntries } from "./modifyTimeEntries";
+
 const BASE = "https://api.adp.com";
 const TOKEN = "test-token";
 const AOID = "G3R47DSRZK5TRCFJ";
+
 const connection = createConnection(adpOauth2, {
   endpoint: API_ENDPOINT,
   tokenEndpoint: TOKEN_ENDPOINT,
@@ -29,6 +31,7 @@ const connection = createConnection(adpOauth2, {
   sslCert: "-----BEGIN CERTIFICATE-----\nCERT\n-----END CERTIFICATE-----",
   sslKey: "-----BEGIN PRIVATE KEY-----\nKEY\n-----END PRIVATE KEY-----",
 });
+
 const context = () => ({
   executionState: {
     [`ADP - ${connection.configVarKey}`]: {
@@ -37,11 +40,14 @@ const context = () => ({
     },
   },
 });
+
 const api = () =>
   nock(BASE, { reqheaders: { authorization: `Bearer ${TOKEN}` } });
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
+
 describe("createScanPunch", () => {
   test("happy path posts the punch and returns the response", async () => {
     api()
@@ -60,6 +66,7 @@ describe("createScanPunch", () => {
     expect(result).toEqual(createScanPunchExamplePayload);
     expect(nock.isDone()).toBe(true);
   });
+
   test("error path rejects", async () => {
     api()
       .post("/events/time/v1/data-collection-entries.process")
@@ -73,6 +80,7 @@ describe("createScanPunch", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("getClockingTransaction", () => {
   test("happy path returns the transaction", async () => {
     api()
@@ -85,6 +93,7 @@ describe("getClockingTransaction", () => {
     );
     expect(result).toEqual(getClockingTransactionExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get("/events/time/v1/data-collection-entries.process/evt-1")
@@ -98,6 +107,7 @@ describe("getClockingTransaction", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("getTimeCards", () => {
   const params = {
     connection,
@@ -106,6 +116,7 @@ describe("getTimeCards", () => {
     $expand: "dayEntries",
     pagination: { $skip: 0, $top: 10 },
   };
+
   test("happy path forwards pagination and returns time cards", async () => {
     api()
       .get(`/time/v2/workers/${AOID}/team-time-cards`)
@@ -119,6 +130,7 @@ describe("getTimeCards", () => {
     const { result } = await invoke(getTimeCards, params, context());
     expect(result).toEqual(getTimeCardsExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/time/v2/workers/${AOID}/team-time-cards`)
@@ -127,6 +139,7 @@ describe("getTimeCards", () => {
     await expect(invoke(getTimeCards, params, context())).rejects.toThrow();
   });
 });
+
 describe("getWorker", () => {
   test("happy path returns the worker", async () => {
     api()
@@ -140,6 +153,7 @@ describe("getWorker", () => {
     );
     expect(result).toEqual(getWorkerExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/hr/v2/workers/${AOID}`)
@@ -150,6 +164,7 @@ describe("getWorker", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("getWorkersMetadata", () => {
   test("happy path returns the metadata", async () => {
     api()
@@ -163,6 +178,7 @@ describe("getWorkersMetadata", () => {
     );
     expect(result).toEqual(getWorkersMetadataExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get("/hr/v2/workers/meta")
@@ -173,6 +189,7 @@ describe("getWorkersMetadata", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("listWorkers", () => {
   const params = {
     connection,
@@ -183,6 +200,7 @@ describe("listWorkers", () => {
     queryParams: {},
     pagination: { $skip: 5, $top: 10 },
   };
+
   test("happy path returns one page wrapped in workers/meta/confirmMessage", async () => {
     api()
       .get("/hr/v2/workers")
@@ -197,13 +215,16 @@ describe("listWorkers", () => {
     const { result } = await invoke(listWorkers, params, context());
     expect(result).toEqual(listWorkersExamplePayload);
   });
+
   test("error path rejects", async () => {
     api().get("/hr/v2/workers").query(true).reply(500, { error: "boom" });
     await expect(invoke(listWorkers, params, context())).rejects.toThrow();
   });
 });
+
 describe("modifyTimeEntries", () => {
   const events = [{ data: { eventContext: {}, transform: {} } }];
+
   test("happy path posts the events and returns the response", async () => {
     api()
       .post("/events/time/v2/time-entries.modify", { events })
@@ -215,6 +236,7 @@ describe("modifyTimeEntries", () => {
     );
     expect(result).toEqual(modifyTimeEntriesExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .post("/events/time/v2/time-entries.modify")

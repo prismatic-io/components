@@ -2,6 +2,7 @@ const { s3SendMock, snsSendMock } = vi.hoisted(() => ({
   s3SendMock: vi.fn(),
   snsSendMock: vi.fn(),
 }));
+
 vi.mock("aws-utils", async () => {
   const { input } = await import("@prismatic-io/spectral");
   return {
@@ -10,10 +11,12 @@ vi.mock("aws-utils", async () => {
     dynamicAccessAllInputs: {},
   };
 });
+
 vi.mock("../../client", () => ({
   createS3Client: vi.fn(async () => ({ send: s3SendMock })),
   createSNSClient: vi.fn(async () => ({ send: snsSendMock })),
 }));
+
 import {
   GetBucketNotificationConfigurationCommand,
   PutBucketNotificationConfigurationCommand,
@@ -40,10 +43,12 @@ import { createTopic } from "./createTopic";
 import { subscribeToTopic } from "./subscribeToTopic";
 import { unsubscribeFromTopic } from "./unsubscribeFromTopic";
 import { updateTopicPolicy } from "./updateTopicPolicy";
+
 const connection = createConnection(accessKeySecretPair, {
   accessKeyId: "fakeKey",
   secretAccessKey: "fakeSecret",
 });
+
 const credentialInputs = {
   awsRegion: "us-east-2",
   awsConnection: connection,
@@ -51,7 +56,9 @@ const credentialInputs = {
   dynamicSecretAccessKey: "",
   dynamicSessionToken: "",
 };
+
 const TOPIC_ARN = "arn:aws:sns:us-east-2:123456789012:example-topic";
+
 const snsError = (name: string, httpStatusCode: number) =>
   new SNSServiceException({
     name,
@@ -59,6 +66,7 @@ const snsError = (name: string, httpStatusCode: number) =>
     $metadata: { httpStatusCode },
     message: `${name} error`,
   });
+
 const expectServiceError = async (
   promise: Promise<unknown>,
   name: string,
@@ -69,11 +77,13 @@ const expectServiceError = async (
     $metadata: { httpStatusCode: status },
   });
 };
+
 describe("SNS actions", () => {
   beforeEach(() => {
     s3SendMock.mockReset();
     snsSendMock.mockReset();
   });
+
   describe("bucketEventTriggerConfiguration", () => {
     const inputs = {
       ...credentialInputs,
@@ -88,13 +98,16 @@ describe("SNS actions", () => {
       TopicArn: TOPIC_ARN,
       Events: ["s3:ObjectCreated:*"],
     };
+
     test("appends the topic configuration when the bucket has none", async () => {
       s3SendMock
         .mockResolvedValueOnce({ $metadata: { httpStatusCode: 200 } })
         .mockResolvedValueOnce(
           bucketEventTriggerConfigurationExamplePayload.data,
         );
+
       const { result } = await invoke(bucketEventTriggerConfiguration, inputs);
+
       const [[getCommand], [putCommand]] = s3SendMock.mock.calls;
       expect(getCommand).toBeInstanceOf(
         GetBucketNotificationConfigurationCommand,
@@ -116,6 +129,7 @@ describe("SNS actions", () => {
       });
       expect(result).toEqual(bucketEventTriggerConfigurationExamplePayload);
     });
+
     test("replaces an existing topic configuration with the same Id and keeps the others", async () => {
       const otherQueue = {
         Id: "queue-1",
@@ -142,7 +156,9 @@ describe("SNS actions", () => {
         .mockResolvedValueOnce(
           bucketEventTriggerConfigurationExamplePayload.data,
         );
+
       await invoke(bucketEventTriggerConfiguration, inputs);
+
       const putCommand = s3SendMock.mock.calls[1][0];
       expect(putCommand.input.NotificationConfiguration).toEqual({
         $metadata: undefined,
@@ -150,6 +166,7 @@ describe("SNS actions", () => {
         TopicConfigurations: [otherTopic, newTopicConfiguration],
       });
     });
+
     test("propagates an SDK service error from the read and never writes", async () => {
       s3SendMock.mockRejectedValue(
         new S3ServiceException({
@@ -159,6 +176,7 @@ describe("SNS actions", () => {
           message: "AccessDenied error",
         }),
       );
+
       await expectServiceError(
         invoke(bucketEventTriggerConfiguration, inputs),
         "AccessDenied",
@@ -167,11 +185,15 @@ describe("SNS actions", () => {
       expect(s3SendMock).toHaveBeenCalledTimes(1);
     });
   });
+
   describe("createTopic", () => {
     const inputs = { ...credentialInputs, name: "example-topic" };
+
     test("sends a standard (non-FIFO) topic and returns the response", async () => {
       snsSendMock.mockResolvedValue(createTopicExamplePayload.data);
+
       const { result } = await invoke(createTopic, inputs);
+
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(CreateTopicCommand);
       expect(command.input).toEqual({
@@ -180,6 +202,7 @@ describe("SNS actions", () => {
       });
       expect(result).toEqual(createTopicExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("InvalidParameter", 400));
       await expectServiceError(
@@ -189,15 +212,19 @@ describe("SNS actions", () => {
       );
     });
   });
+
   describe("subscribeToTopic", () => {
     const inputs = {
       ...credentialInputs,
       snsTopicArn: TOPIC_ARN,
       endpoint: "https://hooks.example.com/sns",
     };
+
     test("subscribes the endpoint over https and returns the response", async () => {
       snsSendMock.mockResolvedValue(subscribeToTopicExamplePayload.data);
+
       const { result } = await invoke(subscribeToTopic, inputs);
+
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(SubscribeCommand);
       expect(command.input).toEqual({
@@ -207,6 +234,7 @@ describe("SNS actions", () => {
       });
       expect(result).toEqual(subscribeToTopicExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("NotFound", 404));
       await expectServiceError(
@@ -216,14 +244,18 @@ describe("SNS actions", () => {
       );
     });
   });
+
   describe("unsubscribeFromTopic", () => {
     const inputs = {
       ...credentialInputs,
       subscriptionArn: `${TOPIC_ARN}:subscription-id`,
     };
+
     test("sends UnsubscribeCommand and returns the response", async () => {
       snsSendMock.mockResolvedValue(unsubscribeFromTopicExamplePayload.data);
+
       const { result } = await invoke(unsubscribeFromTopic, inputs);
+
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(UnsubscribeCommand);
       expect(command.input).toEqual({
@@ -231,6 +263,7 @@ describe("SNS actions", () => {
       });
       expect(result).toEqual(unsubscribeFromTopicExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("AuthorizationError", 403));
       await expectServiceError(
@@ -240,6 +273,7 @@ describe("SNS actions", () => {
       );
     });
   });
+
   describe("updateTopicPolicy", () => {
     const inputs = {
       ...credentialInputs,
@@ -247,9 +281,12 @@ describe("SNS actions", () => {
       snsTopicArn: TOPIC_ARN,
       bucketOwnerAccountid: "123456789012",
     };
+
     test("sets a policy letting the bucket publish to the topic", async () => {
       snsSendMock.mockResolvedValue(updateTopicPolicyExamplePayload.data);
+
       const { result } = await invoke(updateTopicPolicy, inputs);
+
       const command = snsSendMock.mock.calls[0][0];
       expect(command).toBeInstanceOf(SetTopicAttributesCommand);
       expect(command.input).toMatchObject({
@@ -275,6 +312,7 @@ describe("SNS actions", () => {
       });
       expect(result).toEqual(updateTopicPolicyExamplePayload);
     });
+
     test("propagates an SDK service error", async () => {
       snsSendMock.mockRejectedValue(snsError("NotFound", 404));
       await expectServiceError(

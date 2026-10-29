@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { listFoldersExamplePayload } from "../../examplePayloads";
 import { listFoldersInputs } from "../../inputs";
+
 export const listFolders = action({
   display: {
     label: "List Folders",
@@ -9,6 +10,7 @@ export const listFolders = action({
   },
   perform: async (context, { connection }) => {
     const client = getClient(connection, context.debug.enabled);
+
     const { data } = await client.get("/docs/folders/metadata");
     return {
       data,

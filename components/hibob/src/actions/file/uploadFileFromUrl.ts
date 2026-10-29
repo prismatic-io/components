@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { uploadFileFromUrlExamplePayload } from "../../examplePayloads";
 import { uploadFileFromUrlInputs } from "../../inputs";
 import { FolderType } from "../../types/folderTypes";
+
 export const uploadFileFromUrl = action({
   display: {
     label: "Upload File From URL",
@@ -21,6 +22,7 @@ export const uploadFileFromUrl = action({
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     let endpoint: string;
     switch (folderType) {
       case FolderType.SHARED:
@@ -38,6 +40,7 @@ export const uploadFileFromUrl = action({
       default:
         throw new Error(`Invalid folder type: ${folderType}`);
     }
+
     const { data } = await client.post(endpoint, {
       documentUrl,
       documentName,

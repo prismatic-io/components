@@ -10,6 +10,7 @@ import {
   verbose,
   redirect,
 } from "./common";
+
 export const properties = input({
   label: "Properties",
   type: "code",
@@ -34,6 +35,7 @@ export const properties = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const propertiesToUpdate = input({
   label: "Properties To Update",
   type: "code",
@@ -59,6 +61,7 @@ export const propertiesToUpdate = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const deleteProfiles = input({
   label: "Delete Profiles",
   type: "code",
@@ -80,6 +83,7 @@ export const deleteProfiles = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const distinct_ids = input({
   label: "Distinct IDs",
   type: "string",
@@ -91,6 +95,7 @@ export const distinct_ids = input({
   clean: valueListInputClean,
   example: "user-12345, user-67890",
 });
+
 export const output_properties = input({
   label: "Output Properties",
   type: "string",
@@ -102,6 +107,7 @@ export const output_properties = input({
   clean: valueListInputClean,
   example: "$last_name, $email, Total Spent",
 });
+
 export const session_id = input({
   label: "Session ID",
   type: "string",
@@ -112,6 +118,7 @@ export const session_id = input({
   required: false,
   example: "1234567890-EXAMPL",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -122,6 +129,7 @@ export const page = input({
   required: false,
   example: "0",
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -129,6 +137,7 @@ export const pagination = structuredObjectInput({
     "Session ID from a prior query result and the zero-indexed page to retrieve against it. Provide the session ID when paging.",
   inputs: { session_id, page },
 });
+
 export const behaviors = input({
   label: "Behaviors",
   type: "string",
@@ -139,6 +148,7 @@ export const behaviors = input({
   required: false,
   example: 'event("Purchase").count() > 5',
 });
+
 export const as_of_timestamp = input({
   label: "As Of Timestamp",
   type: "string",
@@ -149,6 +159,7 @@ export const as_of_timestamp = input({
   required: false,
   example: "1609459200",
 });
+
 export const filter_by_cohort = input({
   label: "Filter By Cohort",
   type: "string",
@@ -159,6 +170,7 @@ export const filter_by_cohort = input({
   required: false,
   example: '{"id":12345}',
 });
+
 export const include_all_users = input({
   label: "Include All Users",
   type: "boolean",
@@ -169,6 +181,7 @@ export const include_all_users = input({
   example: "false",
   default: "true",
 });
+
 export const cohortFilters = structuredObjectInput({
   label: "Cohort & Behavior Filters",
   required: false,
@@ -176,6 +189,7 @@ export const cohortFilters = structuredObjectInput({
     "Behavior-based event selector, cohort filter, and whether to include all users. Behaviors and cohort filter are mutually exclusive; including all users only applies with a cohort filter.",
   inputs: { behaviors, filter_by_cohort, include_all_users },
 });
+
 export const queryProfilesInputs = {
   connection: connectionInput,
   regionAndDomain,
@@ -192,6 +206,7 @@ export const queryProfilesInputs = {
   cohortFilters,
   as_of_timestamp,
 };
+
 export const createProfileInputs = {
   connection: connectionInput,
   properties,
@@ -199,6 +214,7 @@ export const createProfileInputs = {
   redirect,
   region,
 };
+
 export const updateMultipleProfilesInputs = {
   connection: connectionInput,
   propertiesToUpdate,
@@ -206,6 +222,7 @@ export const updateMultipleProfilesInputs = {
   redirect,
   region,
 };
+
 export const deleteProfileInputs = {
   connection: connectionInput,
   deleteProfiles,

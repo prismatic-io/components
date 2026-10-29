@@ -4,6 +4,7 @@ import {
   resourceLinksSchema,
   toManyRelationshipSchema,
 } from "./shared";
+
 const segmentResourceObject = {
   type: "object" as const,
   properties: {
@@ -41,6 +42,7 @@ const segmentResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const createSegmentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +51,7 @@ export const createSegmentOutputSchema = {
   },
   required: ["data"],
 };
+
 export const getSegmentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -61,6 +64,7 @@ export const getSegmentOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listSegmentsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -76,7 +80,9 @@ export const listSegmentsOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const updateSegmentOutputSchema = createSegmentOutputSchema;
+
 export const deleteSegmentOutputSchema = {
   type: "string" as const,
 };

@@ -15,14 +15,17 @@ import { selectLabel } from "./selectLabel";
 import { selectMilestone } from "./selectMilestone";
 import { selectProject } from "./selectProject";
 import { selectUser } from "./selectUser";
+
 const exampleBranch = getBranchExamplePayload.data;
 const exampleGroup = getGroupExamplePayload.data;
 const exampleLabel = listLabelsExamplePayload.data[0];
 const exampleMember = listProjectMembersExamplePayload.data[0];
 const exampleMilestone = listMilestonesExamplePayload.data[0];
 const exampleProject = getProjectExamplePayload.data;
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
+
 test("Select Project walks keyset pages and sorts by path", async () => {
   const second = {
     ...exampleProject,
@@ -59,11 +62,13 @@ test("Select Project walks keyset pages and sorts by path", async () => {
     { label: "acme/payments-service", key: "278964" },
   ]);
 });
+
 test("Select Group lists groups by full path", async () => {
   nock(GITLAB_URL).get("/api/v4/groups").query(true).reply(200, [exampleGroup]);
   const { result } = await invokeDataSource(selectGroup, { connection });
   expect(result).toEqual([{ label: "acme", key: "7412" }]);
 });
+
 test("Select Label keys by name", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/278964/labels")
@@ -75,6 +80,7 @@ test("Select Label keys by name", async () => {
   });
   expect(result).toEqual([{ label: "bug", key: "bug" }]);
 });
+
 test("Select Milestone lists active milestones keyed by global ID", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/278964/milestones")
@@ -86,6 +92,7 @@ test("Select Milestone lists active milestones keyed by global ID", async () => 
   });
   expect(result).toEqual([{ label: "Q4 Release", key: "55120" }]);
 });
+
 test("Select User lists project members including inherited", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/278964/members/all")
@@ -97,6 +104,7 @@ test("Select User lists project members including inherited", async () => {
   });
   expect(result).toEqual([{ label: "Jane Doe (@jdoe)", key: "1001" }]);
 });
+
 test("Select Branch keys by branch name", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/278964/repository/branches")
@@ -110,6 +118,7 @@ test("Select Branch keys by branch name", async () => {
     { label: "feature/ach-retry", key: "feature/ach-retry" },
   ]);
 });
+
 describe("empty results", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   test.each([

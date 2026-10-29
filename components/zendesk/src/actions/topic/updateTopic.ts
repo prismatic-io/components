@@ -4,6 +4,7 @@ import { updateTopicExamplePayload } from "../../examplePayloads";
 import { updateTopicInputs } from "../../inputs";
 import { updateTopicOutputSchema } from "../../outputSchemas";
 import type { Topic } from "../../types";
+
 export const updateTopic = action({
   display: {
     label: "Update Topic",
@@ -32,9 +33,12 @@ export const updateTopic = action({
         user_segment_id: userSegmentId,
       },
     };
-    const { data } = await client.put<{
-      topic: Topic;
-    }>(`/community/topics/${topicId}`, payload);
+
+    const { data } = await client.put<{ topic: Topic }>(
+      `/community/topics/${topicId}`,
+      payload,
+    );
+
     return {
       data,
     };

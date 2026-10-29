@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { attachCardExamplePayload } from "../../examplePayloads/cards";
 import { attachCardInputs } from "../../inputs";
 import { paymentMethodOutputSchema } from "../../outputSchemas";
+
 export const attachCard = action({
   display: {
     label: "Attach Card",
@@ -17,6 +18,7 @@ export const attachCard = action({
       stripeConnection,
       timeout,
     });
+
     return {
       data: await client.paymentMethods.attach(util.types.toString(paymentId), {
         customer: util.types.toString(customerId),
@@ -26,10 +28,9 @@ export const attachCard = action({
   examplePerform: async (
     _context,
     { paymentId, customerId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const card = attachCardExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...card,
@@ -43,5 +44,6 @@ export const attachCard = action({
     type: "actionOutput",
     schema: paymentMethodOutputSchema,
   }),
+
   examplePayload: attachCardExamplePayload,
 });

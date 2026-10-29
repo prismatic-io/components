@@ -1,4 +1,5 @@
 import { userErrorsArraySchema } from "./shared";
+
 const restProductSchema = {
   type: "object" as const,
   properties: {
@@ -22,6 +23,7 @@ const restProductSchema = {
     image: { type: ["object", "null"] },
   },
 };
+
 const restMappedProductSchema = {
   type: "object" as const,
   properties: {
@@ -44,12 +46,14 @@ const restMappedProductSchema = {
     image: { type: ["object", "null"] },
   },
 };
+
 export const getProductOutputSchema = {
   type: "object" as const,
   properties: {
     product: restProductSchema,
   },
 };
+
 export const listProductsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -84,6 +88,7 @@ export const listProductsOutputSchema = {
     rel: { type: ["string", "null"] },
   },
 };
+
 export const countProductsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -95,12 +100,14 @@ export const countProductsOutputSchema = {
     },
   },
 };
+
 export const createProductGqlOutputSchema = {
   type: "object" as const,
   properties: {
     product: restMappedProductSchema,
   },
 };
+
 export const countProductsGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -112,6 +119,7 @@ export const countProductsGqlOutputSchema = {
     },
   },
 };
+
 export const deleteProductGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -119,7 +127,9 @@ export const deleteProductGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const getProductGqlOutputSchema = createProductGqlOutputSchema;
+
 export const listProductsGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -145,6 +155,7 @@ export const listProductsGqlOutputSchema = {
     rel: { type: ["string", "null"] },
   },
 };
+
 export const updateProductGqlOutputSchema = {
   type: "object" as const,
   properties: {

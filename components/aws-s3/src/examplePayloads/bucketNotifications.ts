@@ -2,6 +2,7 @@ import type {
   GetBucketNotificationConfigurationCommandOutput,
   PutBucketNotificationConfigurationCommandOutput,
 } from "@aws-sdk/client-s3";
+
 export const putBucketNotificationConfigurationExamplePayload: {
   data: PutBucketNotificationConfigurationCommandOutput;
 } = {
@@ -17,6 +18,7 @@ export const putBucketNotificationConfigurationExamplePayload: {
     },
   },
 };
+
 export const getBucketNotificationConfigurationExamplePayload: {
   data: GetBucketNotificationConfigurationCommandOutput;
 } = {

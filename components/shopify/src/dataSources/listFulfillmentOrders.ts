@@ -5,6 +5,7 @@ import { MAX_LIMIT } from "../constants";
 import { selectFulfillmentOrdersInputs } from "../inputs";
 import type { DataSourceRecord } from "../types";
 import { fetchData, getNumericId } from "../util";
+
 export const listFulfillmentOrders = dataSource({
   display: {
     label: "Select Fulfillment Order",
@@ -29,6 +30,7 @@ export const listFulfillmentOrders = dataSource({
         first: MAX_LIMIT,
       },
     );
+
     const result = fulfillmentOrders.map((order) => {
       const numericId = getNumericId(order.id);
       return {

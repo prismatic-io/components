@@ -4,6 +4,7 @@ import { shareFolderExamplePayload } from "../../examplePayloads";
 import { shareFolderInputs } from "../../inputs";
 import { shareFolderOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError, pathBasename } from "../../util";
+
 export const shareFolder = action({
   display: {
     label: "Share Folder",
@@ -18,6 +19,7 @@ export const shareFolder = action({
       params.userType,
       params.teamMemberId,
     );
+
     try {
       const data = await dbx.sharingShareFolder({
         path: params.path,
@@ -29,6 +31,7 @@ export const shareFolder = action({
         viewer_info_policy: params.sharingPolicies.viewer_info_policy as any,
         actions: params.actions as any,
       });
+
       return {
         data,
       };
@@ -36,12 +39,7 @@ export const shareFolder = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...shareFolderExamplePayload,
       result: {

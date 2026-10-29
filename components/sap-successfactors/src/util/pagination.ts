@@ -1,6 +1,7 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { PAGINATION_DEFAULT_LIMIT } from "../constants";
 import type { ActionResults, ListActionResults } from "../types";
+
 export const paginateData = async (
   client: HttpClient,
   url: string,
@@ -40,6 +41,7 @@ export const paginateData = async (
   } while (keepPaginating);
   return records;
 };
+
 export const cleanResultFromResponse = (response: ActionResults) => {
   return response.d;
 };

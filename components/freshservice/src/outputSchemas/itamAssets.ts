@@ -12,6 +12,7 @@ const itamAssetBaseProperties = {
   preferred_alias: { type: ["string", "null"] },
   custom_fields: { type: ["array", "object"] },
   device_external_links: { type: "array" },
+
   in_service: { type: ["string", "boolean", "null"] },
   service_level: { type: ["string", "null"] },
   type: { type: ["string", "null"] },
@@ -22,6 +23,7 @@ const itamAssetBaseProperties = {
   state: { type: ["string", "null"] },
   category: { type: ["string", "null"] },
   last_updated: { type: ["string", "null"] },
+
   hw_model: { type: ["string", "null"] },
   hw_size: { type: ["number", "string", "null"] },
   hw_depth: { type: ["string", "null"] },
@@ -35,6 +37,7 @@ const itamAssetBaseProperties = {
   hddraid: { type: ["string", "null"] },
   hddraid_type: { type: ["string", "null"] },
   hdd_details: { type: ["string", "null"] },
+
   building: { type: ["string", "null"] },
   room: { type: ["string", "null"] },
   row: { type: ["string", "null"] },
@@ -49,10 +52,12 @@ const itamAssetBaseProperties = {
   reversed: { type: ["string", "boolean", "null"] },
   slot_number: { type: ["number", "null"] },
   xpos: { type: ["number", "null"] },
+
   ip_addresses: { type: "array" },
   mac_addresses: { type: "array" },
   pdu_mapping_url: { type: ["string", "null"] },
   ucs_manager: { type: ["string", "null"] },
+
   blade_host_name: { type: ["string", "null"] },
   blade_host_id: { type: ["number", "null"] },
   virtual_host_name: { type: ["string", "null"] },
@@ -60,6 +65,7 @@ const itamAssetBaseProperties = {
   vms: { type: "array" },
   devices: { type: "array" },
   device_purchase_line_items: { type: "array" },
+
   customer_id: { type: ["number", "null"] },
   customer: { type: ["string", "null"] },
   workspace_id: { type: ["number", "null"] },
@@ -73,6 +79,7 @@ const itamAssetBaseProperties = {
   functional_owner_user_id: { type: ["number", "null"] },
   vendor_id: { type: ["number", "null"] },
   vendor: { type: ["string", "null"] },
+
   asset_purchases: { type: ["array", "string"] },
   discovery_sources: {
     type: ["array", "object"],
@@ -85,11 +92,13 @@ const itamAssetBaseProperties = {
     },
   },
 };
+
 export const itamAssetOutputSchema = {
   type: "object" as const,
   properties: { ...itamAssetBaseProperties },
   required: [],
 };
+
 export const itamAssetsListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -113,6 +122,7 @@ export const itamAssetsListOutputSchema = {
   },
   required: ["meta", "assets"],
 };
+
 export const itamAssetWriteOutputSchema = {
   type: "object" as const,
   properties: {

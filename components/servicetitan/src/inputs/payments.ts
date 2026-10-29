@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringInput, mapStatusModelInput } from "../util";
 import {
   connection,
@@ -12,6 +13,7 @@ import {
   sort,
   typeId,
 } from "./common";
+
 const paymentId = input({
   label: "Payment ID",
   type: "string",
@@ -22,6 +24,7 @@ const paymentId = input({
   clean: util.types.toString,
   dataSource: "selectPayment",
 });
+
 const paidOn = input({
   label: "Paid On",
   type: "string",
@@ -31,6 +34,7 @@ const paidOn = input({
   placeholder: "Enter the payment date and time in UTC",
   clean: cleanStringInput,
 });
+
 const authCode = input({
   label: "Auth Code",
   type: "string",
@@ -40,6 +44,7 @@ const authCode = input({
   placeholder: "Enter an authorization code",
   clean: cleanStringInput,
 });
+
 const checkNumber = input({
   label: "Check Number",
   type: "string",
@@ -49,6 +54,7 @@ const checkNumber = input({
   placeholder: "Enter a check number",
   clean: cleanStringInput,
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -58,6 +64,7 @@ const status = input({
   comments: "The status of the payment.",
   clean: cleanStringInput,
 });
+
 const splits = input({
   label: "Splits",
   type: "code",
@@ -76,6 +83,7 @@ const splits = input({
   comments: "The splits of the payment.",
   clean: util.types.toObject,
 });
+
 export const createPaymentInputs = {
   connection,
   typeId,
@@ -87,6 +95,7 @@ export const createPaymentInputs = {
   exportId,
   status,
 };
+
 export const listPaymentsInputs = {
   connection,
   fetchAll,
@@ -95,6 +104,7 @@ export const listPaymentsInputs = {
   sort,
   customQueryParams,
 };
+
 export const updatePaymentInputs = {
   connection,
   paymentId,
@@ -107,6 +117,7 @@ export const updatePaymentInputs = {
   exportId,
   status,
 };
+
 export const updatePaymentCustomFieldsInputs = {
   connection,
   operations,

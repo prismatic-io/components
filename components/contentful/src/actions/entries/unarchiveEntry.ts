@@ -10,6 +10,7 @@ import { unarchiveEntryExamplePayload } from "../../examplePayloads";
 import { unarchiveEntryInputs } from "../../inputs";
 import { unarchiveEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const unarchiveEntry = action({
   display: {
     label: "Unarchive Entry",
@@ -31,9 +32,8 @@ export const unarchiveEntry = action({
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => unarchiveEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    unarchiveEntryExamplePayload,
   inputs: unarchiveEntryInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

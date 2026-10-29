@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { getPubSubNotificationExamplePayload } from "../../../examplePayloads/v2_1";
 import { getPubSubNotificationInputs } from "../../../inputs/v2_1";
+
 export const getPubSubNotification = action({
   display: {
     description:

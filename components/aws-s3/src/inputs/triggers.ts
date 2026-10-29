@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { awsRegion, dynamicAccessAllInputs } from "aws-utils";
 import { cleanString, lookBackDateClean } from "../utils";
 import { accessKeyInput, bucket } from "./common";
+
 const filesLookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -12,6 +13,7 @@ const filesLookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const bucketsLookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -22,6 +24,7 @@ const bucketsLookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesFilesTriggerInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -29,12 +32,14 @@ export const pollChangesFilesTriggerInputs = {
   lookBackDate: filesLookBackDate,
   awsRegion,
 };
+
 export const pollNewBucketsTriggerInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
   lookBackDate: bucketsLookBackDate,
   awsRegion,
 };
+
 const expectedTopicArn = input({
   label: "Topic ARN",
   placeholder: "Enter the expected Amazon SNS Topic ARN",
@@ -45,4 +50,5 @@ const expectedTopicArn = input({
   example: "arn:aws:sns:us-west-2:123456789012:MyTopic",
   clean: cleanString,
 });
+
 export const snsS3NotificationWebhookInputs = { expectedTopicArn };

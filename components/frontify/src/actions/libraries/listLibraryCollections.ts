@@ -5,6 +5,7 @@ import { listLibraryCollectionsExamplePayload as examplePayload } from "../../ex
 import { listLibraryCollectionsInputs as inputs } from "../../inputs/libraries";
 import { graphqlFetchAll } from "../../utils/graphqlFetchAll";
 import type ListLibraryCollectionsResponse from "../types/listLibraryCollectionts";
+
 export const listLibraryCollections = action({
   display: {
     label: "List Library Collections",
@@ -13,9 +14,7 @@ export const listLibraryCollections = action({
   perform: async (
     context,
     { connection, libraryId, pagination, fetchAll },
-  ): Promise<{
-    data: ListLibraryCollectionsResponse;
-  }> => {
+  ): Promise<{ data: ListLibraryCollectionsResponse }> => {
     const client = createClient({ connection, debug: context.debug.enabled });
     const query = gql`
       query listLibraryCollections(
@@ -64,16 +63,17 @@ export const listLibraryCollections = action({
           hasNextPath,
         },
       );
+
       if (responses.length === 1) {
         return { data: responses[0] };
       }
+
       const baseResponse = responses.slice(-1)[0];
       const combinedCollections = responses.flatMap(
         (response) => response.library.collections.items,
       );
-      const formattedResponse: {
-        data: ListLibraryCollectionsResponse;
-      } = {
+
+      const formattedResponse: { data: ListLibraryCollectionsResponse } = {
         data: {
           library: {
             ...baseResponse.library,
@@ -84,12 +84,15 @@ export const listLibraryCollections = action({
           },
         },
       };
+
       return formattedResponse;
     }
+
     const response: ListLibraryCollectionsResponse = await client.request(
       query,
       { libraryId, page: pagination.page, limit: pagination.limit },
     );
+
     return {
       data: response,
     };

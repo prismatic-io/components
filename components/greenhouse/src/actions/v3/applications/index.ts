@@ -4,6 +4,7 @@ import { getApplicationV3 } from "./getApplication";
 import { listApplicationsV3 } from "./listApplications";
 import { rejectApplicationV3 } from "./rejectApplication";
 import { unrejectApplicationV3 } from "./unrejectApplication";
+
 export {
   deleteApplicationV3,
   editApplicationV3,
@@ -12,6 +13,7 @@ export {
   rejectApplicationV3,
   unrejectApplicationV3,
 };
+
 export default {
   listApplicationsV3,
   getApplicationV3,

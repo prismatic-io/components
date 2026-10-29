@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Jamf Pro connection to use.",
 });
+
 export const resourceId = input({
   label: "ID",
   type: "string",
@@ -15,6 +17,7 @@ export const resourceId = input({
   placeholder: "Enter resource ID",
   example: "1",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -26,6 +29,7 @@ export const page = input({
   placeholder: "Enter page number",
   example: "0",
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -36,6 +40,7 @@ export const pageSize = input({
   example: "100",
   default: "100",
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -46,6 +51,7 @@ export const filter = input({
   placeholder: "Enter filter expression",
   example: 'name=="Acme*"',
 });
+
 export const sort = input({
   label: "Sort",
   type: "string",
@@ -56,6 +62,7 @@ export const sort = input({
   placeholder: "Enter sort criteria",
   example: "name:asc,id:desc",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",

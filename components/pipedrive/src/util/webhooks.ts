@@ -4,6 +4,7 @@ import { ConnectionError } from "@prismatic-io/spectral";
 import type { CreateWebhookParams, Webhook, WebhookParams } from "../types";
 import connections from "../connections";
 import { createClient } from "../client";
+
 export const createWebhook = async (
   client: HttpClient,
   params: CreateWebhookParams,
@@ -18,13 +19,16 @@ export const createWebhook = async (
     version: params.version || "2.0",
   });
 };
+
 export const deleteWebhook = async (client: HttpClient, webhookId: string) => {
   return await client.delete(`/webhooks/${webhookId}`);
 };
+
 export const listWebhooks = async (client: HttpClient) => {
   const { data } = await client.get("/webhooks");
   return data;
 };
+
 export const validateConnection = (connection: Connection) => {
   const connectionsMap = connections.map(({ key }) => key);
   if (!connectionsMap.includes(connection.key)) {
@@ -34,12 +38,15 @@ export const validateConnection = (connection: Connection) => {
     );
   }
 };
+
 const getWebhookClient = (connection: Connection) => {
   return createClient(connection, false);
 };
+
 const getWebhookEndpoint = (context: ActionContext) => {
   return context.webhookUrls[context.flow.name];
 };
+
 export const onInstanceDeploy = async (
   context: ActionContext,
   params: WebhookParams,
@@ -66,6 +73,7 @@ export const onInstanceDeploy = async (
   });
   return data;
 };
+
 export const onInstanceDelete = async (
   context: ActionContext,
   params: WebhookParams,
@@ -77,6 +85,7 @@ export const onInstanceDelete = async (
   const webhookIds = data
     .filter((webhook: Webhook) => webhook.subscription_url === endpoint)
     .map((webhook: Webhook) => webhook.id);
+
   const webhookDeletions = await Promise.all(
     webhookIds.map((webhookId: string) => deleteWebhook(client, webhookId)),
   );

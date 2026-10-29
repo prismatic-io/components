@@ -3,6 +3,7 @@ import { getComponentByIdInputs } from "../../inputs/components";
 import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { getComponentByIdExamplePayload } from "../../examplePayloads";
+
 export const getComponentById = action({
   display: {
     label: "Get Component by ID",
@@ -106,7 +107,9 @@ export const getComponentById = action({
     const variables = {
       ids: [componentId],
     };
+
     const data = await client.request(query, variables);
+
     return { data };
   },
   examplePayload: getComponentByIdExamplePayload,

@@ -5,6 +5,7 @@ import {
 import type { AuthorizationType } from "./types";
 import { getAuthorization, validateConnection } from "./util";
 import type { Connection } from "@prismatic-io/spectral";
+
 export const createClient = (
   region: string,
   connection: Connection,
@@ -38,6 +39,7 @@ export const createNoAuthClient = (
   });
   return client;
 };
+
 export const createMixpanelClient = (
   regionAndDomain: string,
   connection: Connection,
@@ -56,6 +58,7 @@ export const createMixpanelClient = (
   });
   return client;
 };
+
 export const createDataClient = (
   dataAndDomain: string,
   connection: Connection,

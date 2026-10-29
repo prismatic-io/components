@@ -5,6 +5,7 @@ import {
 import nock from "nock";
 import { connection as connectionDefinition } from "../connections";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const connection = createConnection(
   connectionDefinition,
   {},
@@ -15,7 +16,9 @@ const STATE_KEY =
   "google-drive-list-changes-page-token:flowStableId:mockStepId";
 const COMPLETED_KEY =
   "google-drive-initial-sync-completed:flowStableId:mockStepId";
+
 type Perform = typeof pollChangesTrigger.perform;
+
 interface PollOptions {
   storedToken?: string;
   legacyToken?: string;
@@ -26,6 +29,7 @@ interface PollOptions {
   lookBackDate?: string;
   driveId?: string;
 }
+
 const runPoll = async (options: PollOptions = {}) => {
   const setStateCalls: Record<string, unknown>[] = [];
   const context = {
@@ -45,12 +49,14 @@ const runPoll = async (options: PollOptions = {}) => {
       setState: (next: Record<string, unknown>) => setStateCalls.push(next),
     },
   };
+
   const payload = {
     ...defaultTriggerPayload(),
     ...(options.paginationState
       ? { paginationState: options.paginationState }
       : {}),
   };
+
   const result = await pollChangesTrigger.perform(
     context as unknown as Parameters<Perform>[0],
     payload as unknown as Parameters<Perform>[1],
@@ -60,8 +66,10 @@ const runPoll = async (options: PollOptions = {}) => {
       lookBackDate: options.lookBackDate ?? "",
     } as unknown as Parameters<Perform>[2],
   );
+
   return { result, setStateCalls };
 };
+
 describe("pollChangesTrigger definition", () => {
   test("advertises batching as an opt-in capability", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -70,14 +78,17 @@ describe("pollChangesTrigger definition", () => {
       concurrentBatchLimit: 1,
     });
   });
+
   test("resolveItems dispatches the change list", () => {
     const changes = [{ fileId: "file-a" }, { fileId: "file-b" }];
     const items = pollChangesTrigger.triggerResolver?.resolveItems?.(
       {} as never,
       { payload: { body: { data: { changes } } } } as never,
     );
+
     expect(items).toEqual(changes);
   });
+
   test("resolveItems yields nothing when the page carried no changes", () => {
     expect(
       pollChangesTrigger.triggerResolver?.resolveItems?.(
@@ -86,6 +97,7 @@ describe("pollChangesTrigger definition", () => {
       ),
     ).toEqual([]);
   });
+
   test("getNextPaginationState forwards a cursor the perform left on the payload", () => {
     expect(
       pollChangesTrigger.triggerResolver?.getNextPaginationState?.(
@@ -94,6 +106,7 @@ describe("pollChangesTrigger definition", () => {
       ),
     ).toEqual({ pageToken: "page-2" });
   });
+
   test("getNextPaginationState returns null to end the drain", () => {
     expect(
       pollChangesTrigger.triggerResolver?.getNextPaginationState?.(
@@ -103,17 +116,22 @@ describe("pollChangesTrigger definition", () => {
     ).toBeNull();
   });
 });
+
 describe("pollChangesTrigger incremental polling", () => {
   afterEach(() => nock.cleanAll());
+
   test("with no stored cursor and no look-back date, seeds the cursor and reports no changes", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes/startPageToken")
       .query(true)
       .reply(200, { startPageToken: "100" });
+
     const { result } = await runPoll();
+
     expect(result.polledNoChanges).toBe(true);
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
   });
+
   test("on the last page, commits the new start page token", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -123,11 +141,14 @@ describe("pollChangesTrigger incremental polling", () => {
         newStartPageToken: "150",
         changes: [{ fileId: "file-a", changeType: "file" }],
       });
+
     const { result } = await runPoll({ storedToken: "100" });
+
     expect(result.polledNoChanges).toBe(false);
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "150" });
     expect(result.payload.paginationState).toBeUndefined();
   });
+
   test("with more pages and batching off, advances the cursor instead of storing undefined", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -137,12 +158,15 @@ describe("pollChangesTrigger incremental polling", () => {
         nextPageToken: "page-2",
         changes: [{ fileId: "file-a", changeType: "file" }],
       });
+
     const { result } = await runPoll({ storedToken: "100" });
+
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "page-2" });
     expect(
       (result.crossFlowState as Record<string, unknown>)[STATE_KEY],
     ).toBeDefined();
   });
+
   test("with more pages and batching on, holds the cursor and hands the next page to the drain", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -152,10 +176,13 @@ describe("pollChangesTrigger incremental polling", () => {
         nextPageToken: "page-2",
         changes: [{ fileId: "file-a", changeType: "file" }],
       });
+
     const { result } = await runPoll({ storedToken: "100", batching: true });
+
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
     expect(result.payload.paginationState).toEqual({ pageToken: "page-2" });
   });
+
   test("a drain round reads the page the platform handed back", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -165,14 +192,17 @@ describe("pollChangesTrigger incremental polling", () => {
         newStartPageToken: "150",
         changes: [],
       });
+
     const { result } = await runPoll({
       storedToken: "100",
       batching: true,
       paginationState: { pageToken: "page-2" },
     });
+
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "150" });
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("clears the cursor when the drain reaches the last page", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -182,11 +212,13 @@ describe("pollChangesTrigger incremental polling", () => {
         newStartPageToken: "150",
         changes: [],
       });
+
     const { result } = await runPoll({
       storedToken: "100",
       batching: true,
       paginationState: { pageToken: "page-2" },
     });
+
     expect(result.payload.paginationState).toBeUndefined();
     expect(
       pollChangesTrigger.triggerResolver?.getNextPaginationState?.(
@@ -197,6 +229,7 @@ describe("pollChangesTrigger incremental polling", () => {
       ),
     ).toBeNull();
   });
+
   test("carries the legacy instanceState cleanup when the cursor came from the old key", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -206,9 +239,12 @@ describe("pollChangesTrigger incremental polling", () => {
         newStartPageToken: "150",
         changes: [],
       });
+
     const { result } = await runPoll({ legacyToken: "100" });
+
     expect(result.instanceState).toEqual({ mockStepId: null });
   });
+
   test("the legacy cleanup leaves the initial sync marker alone", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes")
@@ -218,18 +254,22 @@ describe("pollChangesTrigger incremental polling", () => {
         newStartPageToken: "150",
         changes: [],
       });
+
     const { result } = await runPoll({
       legacyToken: "100",
       instanceState: { [COMPLETED_KEY]: true },
     });
+
     expect(result.instanceState).toEqual({
       mockStepId: null,
       [COMPLETED_KEY]: true,
     });
   });
 });
+
 describe("pollChangesTrigger look-back backfill", () => {
   afterEach(() => nock.cleanAll());
+
   test("captures the change cursor before reading any history", async () => {
     const callOrder: string[] = [];
     nock(DRIVE)
@@ -246,9 +286,12 @@ describe("pollChangesTrigger look-back backfill", () => {
         callOrder.push("files");
         return { files: [] };
       });
+
     await runPoll({ lookBackDate: "2026-01-01T00:00:00.000Z" });
+
     expect(callOrder).toEqual(["startPageToken", "files"]);
   });
+
   test("emits historical files as changes and commits the pre-backfill cursor when done", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes/startPageToken")
@@ -268,10 +311,12 @@ describe("pollChangesTrigger look-back backfill", () => {
           },
         ],
       });
+
     const { result } = await runPoll({
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
     const data = result.payload.body.data as Record<string, unknown>;
+
     expect(data.changes).toEqual([
       {
         kind: "drive#change",
@@ -289,6 +334,7 @@ describe("pollChangesTrigger look-back backfill", () => {
     ]);
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
   });
+
   test("withholds the cursor while history is still draining", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes/startPageToken")
@@ -298,9 +344,11 @@ describe("pollChangesTrigger look-back backfill", () => {
       .get("/drive/v3/files")
       .query(true)
       .reply(200, { nextPageToken: "files-2", files: [{ id: "file-a" }] });
+
     const { result, setStateCalls } = await runPoll({
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
+
     expect(result).not.toHaveProperty("crossFlowState");
     expect(result.payload.paginationState).toEqual({
       pageToken: "files-2",
@@ -319,6 +367,7 @@ describe("pollChangesTrigger look-back backfill", () => {
       },
     ]);
   });
+
   test("resumes an unfinished backfill on the next cycle without batching", async () => {
     nock(DRIVE)
       .get("/drive/v3/files")
@@ -326,6 +375,7 @@ describe("pollChangesTrigger look-back backfill", () => {
       .reply(200, {
         files: [{ id: "file-b", modifiedTime: "2026-03-01T00:00:00.000Z" }],
       });
+
     const { result } = await runPoll({
       pollingState: {
         backfill: {
@@ -335,12 +385,14 @@ describe("pollChangesTrigger look-back backfill", () => {
         backfillPageToken: "files-2",
       },
     });
+
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
     expect(
       (result.payload.body.data as Record<string, unknown>).changes,
     ).toHaveLength(1);
   });
 });
+
 describe("pollChangesTrigger resolver envelope guard", () => {
   test("resolveItems yields nothing when the round carried no envelope at all", () => {
     expect(
@@ -350,6 +402,7 @@ describe("pollChangesTrigger resolver envelope guard", () => {
       ),
     ).toEqual([]);
   });
+
   test("onDeployResolver.resolveItems yields nothing when the round carried no envelope", () => {
     expect(
       pollChangesTrigger.onDeployResolver?.resolveItems?.(
@@ -359,6 +412,7 @@ describe("pollChangesTrigger resolver envelope guard", () => {
     ).toEqual([]);
   });
 });
+
 describe("pollChangesTrigger on-deploy resolver", () => {
   test("batches the initial sync off the same config as the scheduled poll", () => {
     expect(pollChangesTrigger.onDeployPerform).toBeInstanceOf(Function);
@@ -369,6 +423,7 @@ describe("pollChangesTrigger on-deploy resolver", () => {
       pollChangesTrigger.onDeployResolver?.getNextPaginationState,
     ).toBeInstanceOf(Function);
   });
+
   test("resolveItems dispatches the change list the initial sync produced", () => {
     const changes = [{ fileId: "file-a" }, { fileId: "file-b" }];
     expect(
@@ -378,6 +433,7 @@ describe("pollChangesTrigger on-deploy resolver", () => {
       ),
     ).toEqual(changes);
   });
+
   test("getNextPaginationState forwards the cursor that drains the initial sync", () => {
     const cursor = {
       pageToken: "files-2",
@@ -393,6 +449,7 @@ describe("pollChangesTrigger on-deploy resolver", () => {
       ),
     ).toEqual(cursor);
   });
+
   test("getNextPaginationState returns null once the initial sync is exhausted", () => {
     expect(
       pollChangesTrigger.onDeployResolver?.getNextPaginationState?.(
@@ -402,7 +459,9 @@ describe("pollChangesTrigger on-deploy resolver", () => {
     ).toBeNull();
   });
 });
+
 type OnDeployPerform = NonNullable<typeof pollChangesTrigger.onDeployPerform>;
+
 interface DeployOptions {
   lookBackDate?: string;
   driveId?: string;
@@ -410,6 +469,7 @@ interface DeployOptions {
   withoutConnection?: boolean;
   instanceState?: Record<string, unknown>;
 }
+
 const runDeploy = async (options: DeployOptions = {}) => {
   const setStateCalls: Record<string, unknown>[] = [];
   const context = {
@@ -423,12 +483,14 @@ const runDeploy = async (options: DeployOptions = {}) => {
       setState: (next: Record<string, unknown>) => setStateCalls.push(next),
     },
   };
+
   const payload = {
     ...defaultTriggerPayload(),
     ...(options.paginationState
       ? { paginationState: options.paginationState }
       : {}),
   };
+
   const onDeployPerform = pollChangesTrigger.onDeployPerform as OnDeployPerform;
   const result = await onDeployPerform(
     context as unknown as Parameters<OnDeployPerform>[0],
@@ -439,10 +501,13 @@ const runDeploy = async (options: DeployOptions = {}) => {
       lookBackDate: options.lookBackDate ?? "",
     } as unknown as Parameters<OnDeployPerform>[2],
   );
+
   return { result, setStateCalls };
 };
+
 describe("pollChangesTrigger initial sync on deploy", () => {
   afterEach(() => nock.cleanAll());
+
   test("seeds history and commits the pre-sync cursor once the last page is read", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes/startPageToken")
@@ -460,16 +525,19 @@ describe("pollChangesTrigger initial sync on deploy", () => {
           },
         ],
       });
+
     const { result } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
     const data = result.payload.body.data as Record<string, unknown>;
+
     expect((data.changes as unknown[]).length).toBe(1);
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
     expect(result.instanceState).toEqual({ [COMPLETED_KEY]: true });
     expect(result.payload.paginationState).toBeUndefined();
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("writes no polling state, which is the state it has no way to reach", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes/startPageToken")
@@ -479,11 +547,14 @@ describe("pollChangesTrigger initial sync on deploy", () => {
       .get("/drive/v3/files")
       .query(true)
       .reply(200, { nextPageToken: "files-2", files: [{ id: "file-a" }] });
+
     const { setStateCalls } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
+
     expect(setStateCalls).toEqual([]);
   });
+
   test("withholds the cursor while history is still draining", async () => {
     nock(DRIVE)
       .get("/drive/v3/changes/startPageToken")
@@ -493,9 +564,11 @@ describe("pollChangesTrigger initial sync on deploy", () => {
       .get("/drive/v3/files")
       .query(true)
       .reply(200, { nextPageToken: "files-2", files: [{ id: "file-a" }] });
+
     const { result } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
+
     expect(result).not.toHaveProperty("crossFlowState");
     expect(result).not.toHaveProperty("instanceState");
     expect(result.payload.paginationState).toEqual({
@@ -506,6 +579,7 @@ describe("pollChangesTrigger initial sync on deploy", () => {
       },
     });
   });
+
   test("resumes a drain without re-capturing the cursor", async () => {
     nock(DRIVE)
       .get("/drive/v3/files")
@@ -513,6 +587,7 @@ describe("pollChangesTrigger initial sync on deploy", () => {
       .reply(200, {
         files: [{ id: "file-b", modifiedTime: "2026-03-01T00:00:00.000Z" }],
       });
+
     const { result } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
       paginationState: {
@@ -523,10 +598,13 @@ describe("pollChangesTrigger initial sync on deploy", () => {
         },
       },
     });
+
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
   });
+
   test("does nothing when no look-back date is configured", async () => {
     const { result, setStateCalls } = await runDeploy();
+
     expect(result.payload.body.data).toEqual({
       kind: "drive#changeList",
       changes: [],
@@ -535,11 +613,13 @@ describe("pollChangesTrigger initial sync on deploy", () => {
     expect(result.polledNoChanges).toBe(true);
     expect(setStateCalls).toEqual([]);
   });
+
   test("does nothing when the poll action connection does not reach the deploy fire", async () => {
     const { result } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
       withoutConnection: true,
     });
+
     expect(result.payload.body.data).toEqual({
       kind: "drive#changeList",
       changes: [],
@@ -547,11 +627,13 @@ describe("pollChangesTrigger initial sync on deploy", () => {
     expect(result).not.toHaveProperty("crossFlowState");
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("does not walk the look-back window again on a redeploy", async () => {
     const { result } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
       instanceState: { [COMPLETED_KEY]: true },
     });
+
     expect(result.payload.body.data).toEqual({
       kind: "drive#changeList",
       changes: [],
@@ -560,6 +642,7 @@ describe("pollChangesTrigger initial sync on deploy", () => {
     expect(result).not.toHaveProperty("instanceState");
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("still drains a resuming round once the marker is set", async () => {
     nock(DRIVE)
       .get("/drive/v3/files")
@@ -567,6 +650,7 @@ describe("pollChangesTrigger initial sync on deploy", () => {
       .reply(200, {
         files: [{ id: "file-b", modifiedTime: "2026-03-01T00:00:00.000Z" }],
       });
+
     const { result } = await runDeploy({
       lookBackDate: "2026-01-01T00:00:00.000Z",
       instanceState: { [COMPLETED_KEY]: true },
@@ -578,6 +662,7 @@ describe("pollChangesTrigger initial sync on deploy", () => {
         },
       },
     });
+
     expect(result.crossFlowState).toEqual({ [STATE_KEY]: "100" });
   });
 });

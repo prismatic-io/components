@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { callId, connection } from "../../inputs";
+
 export const getCallUsingGet = action({
   display: {
     label: "Get Call",

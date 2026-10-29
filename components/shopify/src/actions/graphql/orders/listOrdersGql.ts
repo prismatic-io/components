@@ -7,6 +7,7 @@ import { listOrdersGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listOrdersQuery from "../queries/orders/ListOrders.gql";
+
 export const listOrdersGql = action({
   display: {
     label: "List Orders",
@@ -23,6 +24,7 @@ export const listOrdersGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = (await fetchData(
       client,
       ["orders"],
@@ -34,9 +36,8 @@ export const listOrdersGql = action({
         cursor: getAlldata ? undefined : pagination.endCursor,
         query,
       },
-    )) as Record<"orders", unknown[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"orders", unknown[]> & { pageInfo: PageInfo };
+
     return {
       data,
     };

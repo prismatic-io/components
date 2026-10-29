@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDealFilesInputs } from "../../inputs";
 import { getDealFilesExamplePayload } from "../../examplePayloads";
 import { getDealFilesOutputSchema } from "../../outputSchemas";
+
 export const getDealFiles = action({
   display: {
     label: "Get Deal Files",

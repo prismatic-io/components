@@ -12,6 +12,7 @@ import {
   userSchema,
   visibilityEnum,
 } from "./shared";
+
 export const projectSchema = obj({
   id: num,
   name: str,
@@ -236,6 +237,9 @@ export const projectSchema = obj({
   duo_sast_fp_detection_enabled: bool,
   duo_sast_vr_workflow_enabled: bool,
 });
+
 export const projectListSchema = list(projectSchema);
+
 export const getProjectOutputSchema = projectSchema;
+
 export const listProjectsOutputSchema = projectListSchema;

@@ -4,6 +4,7 @@ import { findTeamByNameExamplePayload } from "../../examplePayloads";
 import { findTeamByNameInputs } from "../../inputs";
 import { findTeamByNameOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Team } from "../../types";
+
 export const findTeamByName = action({
   display: {
     label: "Find Team by Name",

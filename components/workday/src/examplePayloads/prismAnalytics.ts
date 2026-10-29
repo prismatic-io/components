@@ -79,6 +79,7 @@ export const listTablesExamplePayload = {
     ],
   },
 };
+
 export const postTableExamplePayload = {
   data: {
     displayName: "Employee Compensation",
@@ -155,6 +156,7 @@ export const postTableExamplePayload = {
     },
   },
 };
+
 export const getTableByIdExamplePayload = {
   data: {
     displayName: "Employee Compensation",
@@ -231,7 +233,9 @@ export const getTableByIdExamplePayload = {
     },
   },
 };
+
 export const updateTableByIdExamplePayload = postTableExamplePayload;
+
 export const listDataChangesExamplePayload = {
   data: {
     total: 1,
@@ -269,6 +273,7 @@ export const listDataChangesExamplePayload = {
     ],
   },
 };
+
 export const getDataChangesByIdExamplePayload = {
   data: {
     id: "0e44c92412d34b01ace61e80a47aaf6e",
@@ -409,11 +414,13 @@ export const getDataChangesByIdExamplePayload = {
     updatedMoment: "2024-06-10T07:00:00.000Z",
   },
 };
+
 export const postFileContainersExamplePayload = {
   data: {
     id: "5a6b7c8d9e0f102132435465768798aa",
   },
 };
+
 export const getFilesByContainerIdExamplePayload = {
   data: {
     total: 1,
@@ -432,6 +439,7 @@ export const getFilesByContainerIdExamplePayload = {
     ],
   },
 };
+
 export const postFilesByContainerIdExamplePayload = {
   data: {
     id: "7f8e9d0c1b2a3948576615243342f1e1",

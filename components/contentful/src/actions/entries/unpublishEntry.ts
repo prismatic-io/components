@@ -10,6 +10,7 @@ import { unpublishEntryExamplePayload } from "../../examplePayloads";
 import { unpublishEntryInputs } from "../../inputs";
 import { unpublishEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const unpublishEntry = action({
   display: {
     label: "Unpublish Entry",
@@ -31,9 +32,8 @@ export const unpublishEntry = action({
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => unpublishEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    unpublishEntryExamplePayload,
   inputs: unpublishEntryInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

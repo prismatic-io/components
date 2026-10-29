@@ -6,21 +6,25 @@ import {
   basic,
   clientCredentials,
 } from "./connections";
+
 export const getAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
   if (!connection) return {};
+
   if (connection.key === apiKey.key) {
     return {
       "x-sn-apikey": util.types.toString(connection.fields.apiKey),
     };
   }
+
   if (connection.key === basic.key) {
     const username = util.types.toString(connection.fields.username);
     const password = util.types.toString(connection.fields.password);
     const hash = Buffer.from(`${username}:${password}`).toString("base64");
     return { Authorization: `Basic ${hash}` };
   }
+
   if (
     connection.key === authorizationCode.key ||
     connection.key === clientCredentials.key
@@ -28,8 +32,10 @@ export const getAuthHeaders = (
     const token = util.types.toString(connection.token?.access_token);
     return { Authorization: `Bearer ${token}` };
   }
+
   throw new ConnectionError(connection, "Unknown Connection type provided.");
 };
+
 export const createClient = (
   connection: Connection,
   url: string,

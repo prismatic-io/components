@@ -1,4 +1,5 @@
 import { BASE_URL } from "../constants";
+
 export const listContactsExamplePayload = {
   data: {
     results: [
@@ -28,6 +29,7 @@ export const listContactsExamplePayload = {
     },
   },
 };
+
 export const getContactExamplePayload = {
   data: {
     id: "65059681027",
@@ -47,7 +49,9 @@ export const getContactExamplePayload = {
     archived: false,
   },
 };
+
 export const deleteContactExamplePayload = { data: "" };
+
 export const createContactExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:20:24.825Z",
@@ -98,6 +102,7 @@ export const createContactExamplePayload = {
     updatedAt: "2024-01-15T00:20:24.825Z",
   },
 };
+
 export const updateContactExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:20:24.840Z",
@@ -138,7 +143,9 @@ export const updateContactExamplePayload = {
     updatedAt: "2024-01-16T09:30:15.234Z",
   },
 };
+
 export const archiveBatchContactsExamplePayload = { data: "" };
+
 export const createBatchContactsExamplePayload = {
   data: {
     completedAt: "2024-01-15T08:27:09.446Z",
@@ -176,6 +183,7 @@ export const createBatchContactsExamplePayload = {
     status: "COMPLETE",
   },
 };
+
 export const getBatchContactsExamplePayload = {
   data: {
     completedAt: "2024-01-15T08:27:09.454Z",
@@ -213,6 +221,7 @@ export const getBatchContactsExamplePayload = {
     status: "COMPLETE",
   },
 };
+
 export const updateBatchContactsExamplePayload = {
   data: {
     completedAt: "2024-01-15T08:27:09.462Z",

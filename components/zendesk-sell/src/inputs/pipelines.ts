@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of IDs to be returned in request.",
@@ -9,6 +10,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments:
@@ -19,6 +21,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const name = input({
   label: "Name",
   placeholder: "Enter name",
@@ -29,6 +32,7 @@ const name = input({
   required: false,
   clean: util.types.toString,
 });
+
 const disabled = input({
   label: "Disabled",
   comments:
@@ -38,6 +42,7 @@ const disabled = input({
   required: false,
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -48,6 +53,7 @@ const page = input({
   example: "2",
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -58,12 +64,14 @@ const perPage = input({
   example: "20",
   clean: util.types.toString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, perPage },
 });
+
 export const listPipelinesInputs = {
   connection,
   fetchAll,

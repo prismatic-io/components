@@ -1,4 +1,5 @@
 import type { Batch, CustomField } from "./common";
+
 interface AppliedTo {
   appliedId: number;
   appliedTo: number;
@@ -7,10 +8,12 @@ interface AppliedTo {
   appliedBy: string | null;
   appliedToReferenceNumber: string | null;
 }
+
 interface BusinessUnit {
   id: number;
   name: string | null;
 }
+
 interface GeneralLedgerAccount {
   id: number;
   name: string | null;
@@ -18,6 +21,7 @@ interface GeneralLedgerAccount {
   type: string | null;
   detailType: string | null;
 }
+
 export interface Payment {
   id: number;
   syncStatus: string | null;

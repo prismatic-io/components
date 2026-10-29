@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { deleteMessageExamplePayload } from "../../examplePayloads";
 import { deleteMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const deleteMessage = action({
   display: {
     label: "Delete Message",
@@ -22,14 +23,13 @@ export const deleteMessage = action({
       channel: channelId,
       ts: messageId,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { messageId, channelId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...deleteMessageExamplePayload,
       channel: channelId,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { deleteEnvironmentTemplateExamplePayload } from "../../examplePayloads";
 import { deleteEnvironmentTemplateInputs } from "../../inputs";
+
 export const deleteEnvironmentTemplate = action({
   display: {
     label: "Delete Environment Template",
@@ -18,8 +19,7 @@ export const deleteEnvironmentTemplate = action({
     };
   },
   inputs: deleteEnvironmentTemplateInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteEnvironmentTemplateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteEnvironmentTemplateExamplePayload,
   examplePayload: deleteEnvironmentTemplateExamplePayload,
 });

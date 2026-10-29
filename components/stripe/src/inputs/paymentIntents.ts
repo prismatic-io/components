@@ -24,6 +24,7 @@ import {
   timeout,
   transferGroup,
 } from "./common";
+
 export const clientSecret = input({
   label: "Client Secret",
   type: "string",
@@ -34,6 +35,7 @@ export const clientSecret = input({
   placeholder: "Enter client secret",
   clean: cleanStringInput,
 });
+
 export const amount = input({
   label: "Amount",
   type: "string",
@@ -44,6 +46,7 @@ export const amount = input({
   placeholder: "Enter amount in whole number (exclude decimals)",
   clean: cleanRequiredAmountInput,
 });
+
 export const automaticPaymentMethods = input({
   label: "Automatic Payment Methods",
   type: "code",
@@ -55,6 +58,7 @@ export const automaticPaymentMethods = input({
   example: JSON.stringify({ enabled: true }),
   clean: cleanObjectInput,
 });
+
 export const confirm = input({
   label: "Confirm",
   type: "boolean",
@@ -62,6 +66,7 @@ export const confirm = input({
   comments: "When true, attempts to confirm this PaymentIntent immediately.",
   clean: util.types.toBool,
 });
+
 export const offSession = input({
   label: "Off Session",
   type: "string",
@@ -76,6 +81,7 @@ export const offSession = input({
   default: "",
   clean: cleanTriStateBoolInput,
 });
+
 export const paymentMethod = input({
   label: "Payment Method",
   type: "string",
@@ -86,6 +92,7 @@ export const paymentMethod = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const setupFutureUsage = input({
   label: "Setup Future Usage",
   type: "string",
@@ -100,6 +107,7 @@ export const setupFutureUsage = input({
   default: "",
   clean: cleanStringInput,
 });
+
 export const captureMethod = input({
   label: "Capture Method",
   type: "string",
@@ -115,6 +123,7 @@ export const captureMethod = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const confirmationMethod = input({
   label: "Confirmation Method",
   type: "string",
@@ -129,6 +138,7 @@ export const confirmationMethod = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const errorOnRequiresAction = input({
   label: "Error On Requires Action",
   type: "string",
@@ -143,6 +153,7 @@ export const errorOnRequiresAction = input({
   required: false,
   clean: cleanTriStateBoolInput,
 });
+
 export const mandate = input({
   label: "Mandate",
   type: "string",
@@ -152,6 +163,7 @@ export const mandate = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const mandateData = input({
   label: "Mandate Data",
   type: "code",
@@ -162,6 +174,7 @@ export const mandateData = input({
   required: false,
   clean: cleanObjectInput,
 });
+
 export const onBehalfOf = input({
   label: "On Behalf Of",
   type: "string",
@@ -171,6 +184,7 @@ export const onBehalfOf = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const paymentMethodData = input({
   label: "Payment Method Data",
   type: "code",
@@ -181,6 +195,7 @@ export const paymentMethodData = input({
   required: false,
   clean: cleanObjectInput,
 });
+
 export const paymentMethodOptions = input({
   label: "Payment Method Options",
   type: "code",
@@ -191,6 +206,7 @@ export const paymentMethodOptions = input({
   required: false,
   clean: cleanObjectInput,
 });
+
 export const paymentMethodTypes = input({
   label: "Payment Method Types",
   type: "string",
@@ -202,6 +218,7 @@ export const paymentMethodTypes = input({
   required: false,
   clean: cleanStringListInput,
 });
+
 export const radarOptions = input({
   label: "Radar Options",
   type: "code",
@@ -212,6 +229,7 @@ export const radarOptions = input({
   required: false,
   clean: cleanObjectInput,
 });
+
 export const returnUrl = input({
   label: "Return URL",
   type: "string",
@@ -222,6 +240,7 @@ export const returnUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const useStripeSdk = input({
   label: "Use Stripe SDK",
   type: "string",
@@ -236,6 +255,7 @@ export const useStripeSdk = input({
   default: "",
   clean: cleanTriStateBoolInput,
 });
+
 export const cancellationReason = input({
   label: "Cancellation Reason",
   type: "string",
@@ -251,6 +271,7 @@ export const cancellationReason = input({
   default: "",
   clean: cleanStringInput,
 });
+
 export const amountToCapture = input({
   label: "Amount to Capture",
   type: "string",
@@ -261,6 +282,7 @@ export const amountToCapture = input({
   required: false,
   clean: cleanAmountInput,
 });
+
 export const paymentIntentId = input({
   label: "Payment Intent ID",
   type: "string",
@@ -271,6 +293,7 @@ export const paymentIntentId = input({
   clean: util.types.toString,
   dataSource: "selectPaymentIntent",
 });
+
 export const statementDescriptor = input({
   label: "Statement Descriptor",
   type: "string",
@@ -281,6 +304,7 @@ export const statementDescriptor = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const statementDescriptorSuffix = input({
   label: "Statement Descriptor Suffix",
   type: "string",
@@ -291,6 +315,7 @@ export const statementDescriptorSuffix = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const transferData = input({
   label: "Transfer Data",
   type: "code",
@@ -302,26 +327,31 @@ export const transferData = input({
   required: false,
   clean: cleanObjectInput,
 });
+
 const paymentApplicationFeeAmount = {
   ...applicationFeeAmount,
   comments:
     "The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner’s Stripe account. Enter a whole number in the currency's smallest unit (500 is $5.00 in USD, ¥500 in JPY).",
 };
+
 const paymentTransferGroup = {
   ...transferGroup,
   comments:
     "A string that identifies the resulting payment as part of a group.",
 };
+
 const paymentIntentShipping = {
   ...shipping,
   comments: "Shipping information for this PaymentIntent.",
 };
+
 export const cancelPaymentIntentInputs = {
   timeout,
   stripeConnection: connectionInput,
   paymentIntentId,
   cancellationReason,
 };
+
 export const capturePaymentIntentAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -338,6 +368,7 @@ export const capturePaymentIntentAdditionalFields = structuredObjectInput({
     },
   },
 });
+
 export const capturePaymentIntentInputs = {
   timeout,
   stripeConnection: connectionInput,
@@ -346,6 +377,7 @@ export const capturePaymentIntentInputs = {
   metadata,
   additionalFields: capturePaymentIntentAdditionalFields,
 };
+
 export const confirmPaymentIntentAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -363,6 +395,7 @@ export const confirmPaymentIntentAdditionalFields = structuredObjectInput({
     useStripeSdk,
   },
 });
+
 export const confirmPaymentIntentInputs = {
   timeout,
   stripeConnection: connectionInput,
@@ -372,6 +405,7 @@ export const confirmPaymentIntentInputs = {
   captureMethod,
   additionalFields: confirmPaymentIntentAdditionalFields,
 };
+
 export const createPaymentIntentTransferOptions = structuredObjectInput({
   label: "Transfer Options",
   comments:
@@ -383,6 +417,7 @@ export const createPaymentIntentTransferOptions = structuredObjectInput({
     transferGroup: paymentTransferGroup,
   },
 });
+
 export const createPaymentIntentAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -405,6 +440,7 @@ export const createPaymentIntentAdditionalFields = structuredObjectInput({
     useStripeSdk,
   },
 });
+
 export const createPaymentIntentInputs = {
   timeout,
   stripeConnection: connectionInput,
@@ -440,6 +476,7 @@ export const createPaymentIntentInputs = {
   transferOptions: createPaymentIntentTransferOptions,
   additionalFields: createPaymentIntentAdditionalFields,
 };
+
 export const getPaymentIntentInputs = {
   timeout,
   stripeConnection: connectionInput,
@@ -452,6 +489,7 @@ export const getPaymentIntentInputs = {
   },
   clientSecret,
 };
+
 export const listPaymentIntentsInputs = {
   timeout,
   stripeConnection: connectionInput,
@@ -465,12 +503,14 @@ export const listPaymentIntentsInputs = {
   created,
   pagination: cursorPagination,
 };
+
 export const searchPaymentIntentInputs = {
   timeout,
   stripeConnection: connectionInput,
   query,
   pagination: searchPagination,
 };
+
 export const updatePaymentIntentTransferOptions = structuredObjectInput({
   label: "Transfer Options",
   comments:
@@ -481,6 +521,7 @@ export const updatePaymentIntentTransferOptions = structuredObjectInput({
     transferGroup: paymentTransferGroup,
   },
 });
+
 export const updatePaymentIntentAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -495,6 +536,7 @@ export const updatePaymentIntentAdditionalFields = structuredObjectInput({
     paymentMethodOptions,
   },
 });
+
 export const updatePaymentIntentInputs = {
   paymentIntentId,
   timeout,

@@ -4,6 +4,7 @@ import { updateItamDeviceExamplePayload as examplePayload } from "../../exampleP
 import { updateItamDeviceInputs as inputs } from "../../inputs";
 import { itamDeviceWriteOutputSchema } from "../../outputSchemas";
 import { itamPath, normalizeItamWrite } from "../../util";
+
 export const updateItamDevice = action({
   display: {
     label: "Update Device (ITAM)",
@@ -30,6 +31,7 @@ export const updateItamDevice = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       name,
       asset_no: assetNo,
@@ -42,10 +44,12 @@ export const updateItamDevice = action({
       customers,
       ...itamDevicesAdditionalFields,
     };
+
     const { data } = await client.put(
       itamPath("devices", { op: "update", id: deviceId }),
       payload,
     );
+
     return { data: normalizeItamWrite(data) };
   },
   outputSchema: outputSchema({

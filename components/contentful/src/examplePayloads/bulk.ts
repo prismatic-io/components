@@ -46,9 +46,11 @@ export const publishBulkActionExamplePayload = {
     error: null,
   },
 };
+
 export const unpublishBulkActionExamplePayload = {
   data: publishBulkActionExamplePayload.data,
 };
+
 export const getBulkActionExamplePayload = {
   data: {
     sys: {

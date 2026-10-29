@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { listPurchaseInvoicesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "ms-utils";
 import { listPurchaseInvoicesInputs } from "../../inputs/purchaseInvoices";
+
 export const listPurchaseInvoices = action({
   display: {
     label: "List Purchase Invoices",
@@ -30,6 +31,7 @@ export const listPurchaseInvoices = action({
       $orderBy: odataQueryParams.$orderBy,
       $select: odataQueryParams.$select,
     };
+
     return await paginateResults<
       (typeof listPurchaseInvoicesExamplePayload)["data"]["value"][number]
     >({

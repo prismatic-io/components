@@ -5,6 +5,7 @@ import { createFileCorrectionExamplePayload } from "../../examplePayloads";
 import { createFileCorrectionInputs } from "../../inputs";
 import { fileCorrectionSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const createFileCorrection = action({
   display: {
     label: "Create File Correction",
@@ -30,7 +31,9 @@ export const createFileCorrection = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const formData = new FormData();
+
       if (content?.data) {
         formData.append("content", content.data, {
           filename: "correction",
@@ -44,13 +47,17 @@ export const createFileCorrection = action({
         formData.append("removeOriginalContent", String(removeOriginalContent));
       if (haveContent !== undefined)
         formData.append("haveContent", String(haveContent));
+
       context.logger.info("Creating file correction", { fileGuid });
+
       const { data } = await client.post(
         `/files/${fileGuid}/corrections`,
         formData,
         { headers: { ...formData.getHeaders() } },
       );
+
       context.logger.info("File correction created successfully", { fileGuid });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create File Correction");

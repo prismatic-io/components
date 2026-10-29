@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { getListExamplePayload } from "../../examplePayloads";
 import { getListInputs } from "../../inputs";
+
 export const getList = action({
   display: {
     label: "Get List",
@@ -21,4 +22,5 @@ export const getList = action({
   },
   inputs: getListInputs,
 });
+
 export default { getList };

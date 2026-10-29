@@ -1,8 +1,10 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export interface WorkdayListResponse<T = unknown> {
   total: number;
   data: T[];
 }
+
 export interface PaginateOptions {
   client: HttpClient;
   endpoint: string;

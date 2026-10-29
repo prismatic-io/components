@@ -6,6 +6,7 @@ import {
 } from "../constants";
 import { toOptionalObject } from "../util";
 import { connection, contentTypeId, environmentId, spaceId } from "./common";
+
 const entryId = input({
   label: "Entry ID",
   type: "string",
@@ -16,6 +17,7 @@ const entryId = input({
   clean: util.types.toString,
   dataSource: "selectEntry",
 });
+
 const entryData = input({
   label: "Entry Data",
   type: "code",
@@ -27,6 +29,7 @@ const entryData = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const entryTitle = input({
   label: "Title",
   type: "code",
@@ -38,6 +41,7 @@ const entryTitle = input({
   required: false,
   clean: toOptionalObject,
 });
+
 const entryBody = input({
   label: "Body",
   type: "code",
@@ -49,6 +53,7 @@ const entryBody = input({
   required: false,
   clean: toOptionalObject,
 });
+
 const patchOperations = input({
   label: "Patch Operations",
   type: "code",
@@ -69,6 +74,7 @@ const patchOperations = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const entryVersion = input({
   label: "Entry Version",
   type: "string",
@@ -79,12 +85,14 @@ const entryVersion = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const archiveEntryInputs = {
   connection,
   spaceId,
   environmentId,
   entryId,
 };
+
 export const createEntryInputs = {
   connection,
   spaceId,
@@ -92,28 +100,33 @@ export const createEntryInputs = {
   contentTypeId,
   entryData,
 };
+
 export const deleteEntryInputs = {
   connection,
   spaceId,
   environmentId,
   entryId,
 };
+
 export const getEntryInputs = {
   connection,
   spaceId,
   environmentId,
   entryId,
 };
+
 export const listEntriesInputs = {
   connection,
   spaceId,
   environmentId,
 };
+
 export const listPublishedEntriesInputs = {
   connection,
   spaceId,
   environmentId,
 };
+
 export const patchEntryInputs = {
   connection,
   spaceId,
@@ -122,12 +135,14 @@ export const patchEntryInputs = {
   patchOperations,
   entryVersion,
 };
+
 export const publishEntryInputs = {
   connection,
   spaceId,
   environmentId,
   entryId,
 };
+
 export const putEntryInputs = {
   connection,
   spaceId,
@@ -139,18 +154,21 @@ export const putEntryInputs = {
       "The full entry data as a JSON object. All existing fields will be replaced with the provided data.",
   },
 };
+
 export const unarchiveEntryInputs = {
   connection,
   spaceId,
   environmentId,
   entryId,
 };
+
 export const unpublishEntryInputs = {
   connection,
   spaceId,
   environmentId,
   entryId,
 };
+
 export const updateEntryInputs = {
   connection,
   spaceId,

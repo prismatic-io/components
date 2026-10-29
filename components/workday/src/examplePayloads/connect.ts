@@ -42,6 +42,7 @@ export const listMessageTemplatesExamplePayload = {
     total: 1,
   },
 };
+
 export const postMessageTemplatesExamplePayload = {
   data: {
     createdBy: {
@@ -81,8 +82,10 @@ export const postMessageTemplatesExamplePayload = {
     id: "ace61e80a47aaf6d0e44c92412d34b01",
   },
 };
+
 export const updateMessageTemplateByIdExamplePayload =
   postMessageTemplatesExamplePayload;
+
 export const getMessageTemplateByIdExamplePayload = {
   data: {
     createdBy: {
@@ -122,6 +125,7 @@ export const getMessageTemplateByIdExamplePayload = {
     id: "293a4b5c6d7e8f90a1b2c3d4e5f60718",
   },
 };
+
 export const sendMessageExamplePayload = {
   data: {
     senderOverride: {

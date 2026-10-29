@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { listConnectionsExamplePayload } from "../../examplePayloads";
 import { listConnectionsInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const listConnections = action({
   display: {
     label: "List Connections",
@@ -25,6 +26,7 @@ export const listConnections = action({
         },
       },
     );
+
     return {
       data: response.data,
     };

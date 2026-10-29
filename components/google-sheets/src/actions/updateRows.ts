@@ -8,6 +8,7 @@ import {
 } from "../inputs";
 import { createClient } from "../client";
 import { worksheetWithTitle, ensureRowMap, worksheetProperties } from "../util";
+
 export const updateRows = action({
   display: {
     label: "Update Rows",
@@ -18,7 +19,9 @@ export const updateRows = action({
     { spreadsheetId, title, values, storeRawValues, connection },
   ) => {
     const client = await createClient(spreadsheetId, connection);
+
     const sheet = worksheetWithTitle(client, title);
+
     const rows = await sheet.getRows();
     const headers = sheet.headerValues.reduce(
       (prev, header) => {
@@ -34,6 +37,7 @@ export const updateRows = action({
       if (rowNumber <= 0) {
         throw new Error(`Row number must be 1 or greater: ${rowNumber}.`);
       }
+
       const rowToUpdate = rowNumber - 1;
       for (const [colHeading, value] of Object.entries(cellValues)) {
         if (!(colHeading in headers)) {
@@ -47,6 +51,7 @@ export const updateRows = action({
         raw: util.types.toBool(storeRawValues, false),
       });
     }
+
     return {
       data: worksheetProperties(client, sheet),
     };
@@ -59,4 +64,5 @@ export const updateRows = action({
     connection: connectionInput,
   },
 });
+
 export default updateRows;

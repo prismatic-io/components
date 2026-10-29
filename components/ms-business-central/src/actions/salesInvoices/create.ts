@@ -14,6 +14,7 @@ import {
   shipToName,
 } from "../../inputs/salesInvoice/createSalesInvoicesInputs";
 import type { SalesInvoice } from "../../interfaces";
+
 export const createSalesInvoice = action({
   display: {
     label: "Create Sales Invoice",
@@ -24,6 +25,7 @@ export const createSalesInvoice = action({
     context,
     {
       additionalProperties,
+
       email,
       sellToAddressLine1,
       shipToAddressLine1,
@@ -52,10 +54,12 @@ export const createSalesInvoice = action({
       currencyCode,
       customerId,
     };
+
     const { data } = await client.post<SalesInvoice>(
       `/companies(${companyId})/salesInvoices`,
       payload,
     );
+
     return { data };
   },
   inputs: {

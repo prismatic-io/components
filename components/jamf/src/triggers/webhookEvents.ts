@@ -8,6 +8,7 @@ import {
   deleteManagedWebhooks,
   getStoreKey,
 } from "../util";
+
 export const webhookEvents = trigger({
   display: {
     label: "Webhook Events",
@@ -20,7 +21,9 @@ export const webhookEvents = trigger({
       const state = context.crossFlowState[
         getStoreKey(context.flow.stableId)
       ] as ManagedWebhookState | undefined;
+
       const headers = util.types.lowerCaseHeaders(payload.headers);
+
       if (
         !state?.webhookAuthValue ||
         headers[WEBHOOK_AUTH_HEADER.toLowerCase()] !== state.webhookAuthValue

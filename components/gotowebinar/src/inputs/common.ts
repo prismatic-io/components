@@ -5,11 +5,13 @@ import {
   WEBINAR_TYPE_MODEL,
 } from "../constants";
 import { toOptionalNumber, toOptionalString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const pageNumber = input({
   label: "Page Number",
   comments: "The zero-based index of the page to return. The first page is 0.",
@@ -19,6 +21,7 @@ export const pageNumber = input({
   placeholder: "Enter a page number",
   clean: toOptionalNumber,
 });
+
 export const pageSize = input({
   label: "Page Size",
   comments:
@@ -32,9 +35,11 @@ export const pageSize = input({
     if (!size) {
       return size;
     }
+
     return size > MAX_PAGE_SIZE ? MAX_PAGE_SIZE : size;
   },
 });
+
 export const fromTime = input({
   label: "From Time",
   comments:
@@ -45,6 +50,7 @@ export const fromTime = input({
   placeholder: "Enter a start date/time",
   clean: util.types.toString,
 });
+
 export const toTime = input({
   label: "To Time",
   comments:
@@ -55,6 +61,7 @@ export const toTime = input({
   placeholder: "Enter an end date/time",
   clean: util.types.toString,
 });
+
 export const accountKey = input({
   label: "Account Key",
   comments: "The unique identifier for the account.",
@@ -64,6 +71,7 @@ export const accountKey = input({
   placeholder: "Enter an account key",
   clean: util.types.toString,
 });
+
 export const webinarKey = input({
   label: "Webinar Key",
   comments: "The unique identifier for the webinar.",
@@ -74,6 +82,7 @@ export const webinarKey = input({
   clean: util.types.toString,
   dataSource: "selectWebinar",
 });
+
 export const timezone = input({
   label: "Timezone",
   comments:
@@ -86,6 +95,7 @@ export const timezone = input({
   placeholder: "Enter a time zone ID",
   clean: toOptionalString,
 });
+
 export const webinarType = input({
   label: "Webinar Type",
   comments:
@@ -97,6 +107,7 @@ export const webinarType = input({
   model: WEBINAR_TYPE_MODEL,
   clean: util.types.toString,
 });
+
 export const locale = input({
   label: "Locale",
   comments: "The language and region used for the webinar's display text.",
@@ -107,6 +118,7 @@ export const locale = input({
   placeholder: "Enter a locale",
   clean: toOptionalString,
 });
+
 export const registrantKey = input({
   label: "Registrant Key",
   comments: "The unique identifier for the registrant.",
@@ -117,6 +129,7 @@ export const registrantKey = input({
   clean: util.types.toString,
   dataSource: "selectRegistrant",
 });
+
 export const sessionKey = input({
   label: "Session Key",
   comments: "The unique identifier for the webinar session.",
@@ -126,6 +139,7 @@ export const sessionKey = input({
   placeholder: "Enter a session key",
   clean: util.types.toString,
 });
+
 export const userSubscriptionKey = input({
   label: "User Subscription Key",
   comments: "The unique identifier for the user subscription.",
@@ -136,6 +150,7 @@ export const userSubscriptionKey = input({
   clean: util.types.toString,
   dataSource: "selectWebhook",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   comments:

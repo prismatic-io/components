@@ -8,6 +8,7 @@ import {
   properties,
   timeout,
 } from "./common";
+
 const engagementObject = input({
   label: "Engagement Object",
   type: "string",
@@ -16,6 +17,7 @@ const engagementObject = input({
   comments: "Select an engagement object.",
   clean: util.types.toString,
 });
+
 const propertiesToReturn = input({
   label: "Properties To Return",
   type: "string",
@@ -26,6 +28,7 @@ const propertiesToReturn = input({
     "Properties to be returned in the response. If the specified property is not present on the requested object, it will be ignored.",
   clean: valueListInputClean,
 });
+
 const engagementId = input({
   label: "Engagement ID",
   type: "string",
@@ -37,6 +40,7 @@ const engagementId = input({
   dataSource: "selectEngagement",
   clean: util.types.toString,
 });
+
 const associationsJson = input({
   label: "Associations",
   type: "code",
@@ -62,6 +66,7 @@ const associationsJson = input({
   ),
   clean: util.types.toObject,
 });
+
 export const batchInputs = input({
   label: "Batch Engagements",
   type: "code",
@@ -71,6 +76,7 @@ export const batchInputs = input({
   clean: util.types.toObject,
   example: JSON.stringify([]),
 });
+
 const engagementIds = input({
   label: "Engagement Ids",
   type: "string",
@@ -80,6 +86,7 @@ const engagementIds = input({
   dataSource: "selectEngagement",
   clean: valueListInputClean,
 });
+
 const associations = input({
   label: "Associations",
   type: "string",
@@ -90,6 +97,7 @@ const associations = input({
   example: "contact",
   clean: valueListInputClean,
 });
+
 export const createEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
@@ -114,6 +122,7 @@ export const createEngagementInputs = {
   },
   timeout,
 };
+
 export const updateEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
@@ -139,6 +148,7 @@ export const updateEngagementInputs = {
   idProperty,
   timeout,
 };
+
 export const getEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
@@ -155,24 +165,28 @@ export const getEngagementInputs = {
   idProperty,
   timeout,
 };
+
 export const deleteEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
   engagementId,
   timeout,
 };
+
 export const listEngagementsInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
   propertiesToReturn,
   timeout,
 };
+
 export const createBatchEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
   batchInputs,
   timeout,
 };
+
 export const updateBatchEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
@@ -200,6 +214,7 @@ export const updateBatchEngagementInputs = {
   },
   timeout,
 };
+
 export const archiveBatchEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,

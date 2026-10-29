@@ -7,8 +7,10 @@ import {
   testConnection,
 } from "../../testHelpers";
 import { rawRequest } from "./rawRequest";
+
 describe("rawRequest", () => {
   afterEach(() => nock.cleanAll());
+
   test("forwards the request, injects the API key, and forces a JSON content type", async () => {
     const { captured, matcher } = captureBody();
     let sentHeaders: Record<string, string> = {};
@@ -19,6 +21,7 @@ describe("rawRequest", () => {
         sentHeaders = this.req.headers as unknown as Record<string, string>;
         return { posts: [], hasMore: false };
       });
+
     const { result } = await invoke(rawRequest, {
       connection: testConnection,
       url: "/v1/posts/list",
@@ -36,6 +39,7 @@ describe("rawRequest", () => {
       maxRetries: 0,
       useExponentialBackoff: false,
     });
+
     expect(scope.isDone()).toBe(true);
     expect(captured.body).toStrictEqual({
       apiKey: "test-api-key",

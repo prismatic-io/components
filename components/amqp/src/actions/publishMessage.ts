@@ -8,6 +8,7 @@ import {
   routingKey,
   exchange,
 } from "../inputs";
+
 export const publishMessage = action({
   display: {
     label: "Publish Message",
@@ -23,12 +24,14 @@ export const publishMessage = action({
       context.logger,
     );
     const channel = await client.createConfirmChannel();
+
     let result: boolean;
     if (!routeMessage) {
       result = channel.sendToQueue(queueName, message);
     } else {
       result = channel.publish(exchange, routingKey, message);
     }
+
     await channel.waitForConfirms();
     await channel.close();
     await client.close();

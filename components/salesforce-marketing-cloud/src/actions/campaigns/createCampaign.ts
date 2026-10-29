@@ -4,6 +4,7 @@ import { CAMPAIGNS_PATH } from "../../constants";
 import { createCampaignExamplePayload } from "../../examplePayloads";
 import { createCampaignInputs } from "../../inputs";
 import { campaignOutputSchema } from "../../outputSchemas";
+
 export const createCampaign = action({
   examplePayload: createCampaignExamplePayload,
   display: {
@@ -18,6 +19,7 @@ export const createCampaign = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, campaignName, additionalFields }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       name: campaignName,
       description: additionalFields.campaignDescription,
@@ -25,15 +27,15 @@ export const createCampaign = action({
       color: additionalFields.campaignColor,
       ...additionalFields.campaignExtraBody,
     };
+
     const { data } = await client.post(CAMPAIGNS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { campaignName, additionalFields },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createCampaignExamplePayload.data,
       name: campaignName,

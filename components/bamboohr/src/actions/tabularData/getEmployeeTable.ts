@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
 import { getEmployeeTableExamplePayload } from "../../examplePayloads";
 import { getEmployeeTableInputs } from "../../inputs";
+
 export const getEmployeeTable = action({
   display: {
     label: "Get Employee Table",

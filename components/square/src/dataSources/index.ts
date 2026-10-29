@@ -16,6 +16,7 @@ import { selectPayment } from "./selectPayment";
 import { selectRefund } from "./selectRefund";
 import { selectTeamMember } from "./selectTeamMember";
 import { selectWebhookSubscription } from "./selectWebhookSubscription";
+
 export const selectLocations = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -25,7 +26,9 @@ export const selectLocations = dataSource({
   inputs: selectLocationsInputs,
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
+
     const response = await client.get("/v2/locations");
+
     return {
       result: response.data.locations.map(
         (location: { id: string; name: string }) => ({
@@ -36,6 +39,7 @@ export const selectLocations = dataSource({
     };
   },
 });
+
 export const selectMerchants = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -45,7 +49,9 @@ export const selectMerchants = dataSource({
   inputs: selectMerchantsInputs,
   perform: async (_context, { squareConnection }) => {
     const client = await createAuthorizedClient(squareConnection);
+
     const response = await client.get("/v2/merchants");
+
     return {
       result: response.data.merchants.map(
         (merchant: { id: string; name: string }) => ({
@@ -56,6 +62,7 @@ export const selectMerchants = dataSource({
     };
   },
 });
+
 export const selectBankAccounts = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -66,14 +73,17 @@ export const selectBankAccounts = dataSource({
   inputs: selectBankAccountsInputs,
   perform: async (_context, params) => {
     const client = await createAuthorizedClient(params.squareConnection);
+
     const queryParamsObj = {
       cursor: params.cursor,
       limit: params.limit,
       location_id: params.location_id,
     };
+
     const response = await client.get("/v2/bank-accounts", {
       params: queryParamsObj,
     });
+
     return {
       result: response.data.bank_accounts.map(
         (account: { id: string; name: string }) => ({
@@ -84,6 +94,7 @@ export const selectBankAccounts = dataSource({
     };
   },
 });
+
 export const selectCatalog = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -94,14 +105,17 @@ export const selectCatalog = dataSource({
   inputs: selectCatalogInputs,
   perform: async (_context, params) => {
     const client = await createAuthorizedClient(params.squareConnection);
+
     const queryParameters = {
       cursor: params.cursor,
       types: params.types,
       catalog_version: params.catalogVersion,
     };
+
     const response = await client.get("/v2/catalog/list", {
       params: queryParameters,
     });
+
     return {
       result: response.data.objects.map(
         (object: { id: string; name: string }) => ({
@@ -112,6 +126,7 @@ export const selectCatalog = dataSource({
     };
   },
 });
+
 export const selectCustomers = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -122,14 +137,17 @@ export const selectCustomers = dataSource({
   inputs: selectCustomersInputs,
   perform: async (_context, params) => {
     const client = await createAuthorizedClient(params.squareConnection);
+
     const queryParameters: Record<string, unknown> = {};
     if (params.cursor) queryParameters.cursor = params.cursor;
     if (params.limit) queryParameters.limit = params.limit;
     if (params.sortField) queryParameters.sort_field = params.sortField;
     if (params.sortOrder) queryParameters.sort_order = params.sortOrder;
+
     const response = await client.get("/v2/customers", {
       params: queryParameters,
     });
+
     return {
       result: response.data.customers.map(
         (customer: { id: string; name: string }) => ({
@@ -140,6 +158,7 @@ export const selectCustomers = dataSource({
     };
   },
 });
+
 export const selectWebhookEventTypes = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -149,11 +168,13 @@ export const selectWebhookEventTypes = dataSource({
   inputs: selectWebhookEventTypesInputs,
   perform: async (_context, params) => {
     const client = await createAuthorizedClient(params.squareConnection);
+
     const response = await client.get("/v2/webhooks/event-types", {
       params: {
         api_version: SQUARE_API_VERSION,
       },
     });
+
     return {
       result: response.data.event_types.map((eventType: { name: string }) => ({
         key: eventType.name,
@@ -162,6 +183,7 @@ export const selectWebhookEventTypes = dataSource({
     };
   },
 });
+
 export default {
   selectLocations,
   selectMerchants,

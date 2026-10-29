@@ -5,6 +5,7 @@ import { paginateResults } from "../../util/pagination";
 import { listInvoicesExamplePayload } from "../../examplePayloads";
 import { listInvoicesInputs } from "../../inputs";
 import { listInvoicesOutputSchema } from "../../outputSchemas";
+
 export const listInvoices = action({
   display: {
     label: "List Invoices",

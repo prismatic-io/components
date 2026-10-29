@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+
 export const paymentMethodId = input({
   label: "Payment Method ID",
   placeholder: "Enter payment method ID",
@@ -9,6 +10,7 @@ export const paymentMethodId = input({
   comments: "The ID of the payment method associated with this transaction.",
   clean: cleanStringInput,
 });
+
 export const paymentMethodName = input({
   label: "Payment Method Name",
   placeholder: "Enter payment method name",
@@ -18,6 +20,7 @@ export const paymentMethodName = input({
   comments: "The name of the payment method associated with this transaction.",
   clean: cleanStringInput,
 });
+
 export const totalAmount = input({
   label: "Total Amount",
   placeholder: "Enter total amount",

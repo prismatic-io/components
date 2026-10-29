@@ -7,6 +7,7 @@ export const identitySchema = {
     thumbnails: { type: "object" },
   },
 };
+
 export const identitySetSchema = {
   type: "object" as const,
   properties: {
@@ -22,6 +23,7 @@ export const identitySetSchema = {
     user: identitySchema,
   },
 };
+
 export const deleteResultSchema = {
   type: "object" as const,
   properties: {

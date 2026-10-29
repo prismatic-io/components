@@ -9,11 +9,13 @@ import { LIVE_API_URL } from "../constants";
 import type { CalendlyEvent } from "../types";
 import { resolvePollingRecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const BASE = LIVE_API_URL;
 const conn = createConnection(calendlyOauth2Connection, {
   useLiveServer: true,
   token: { access_token: "test-token" },
 });
+
 const createPollingContext = (state: Record<string, unknown> | null) => {
   let pollingState = state;
   return {
@@ -35,6 +37,7 @@ const createPollingContext = (state: Record<string, unknown> | null) => {
     },
   };
 };
+
 const params = {
   connection: conn,
   organization: "https://api.calendly.com/organizations/ORG1",
@@ -43,19 +46,20 @@ const params = {
   showNewRecords: true,
   showUpdatedRecords: true,
 };
+
 describe("pollChangesTrigger", () => {
   afterEach(() => nock.cleanAll());
+
   test("first poll bootstraps cursor and returns empty created/updated", async () => {
     const ctx = createPollingContext(null);
     const payload = defaultTriggerPayload();
+
     const result = (await pollChangesTrigger.perform(
       ctx as unknown as Parameters<typeof pollChangesTrigger.perform>[0],
       payload,
       params as Parameters<typeof pollChangesTrigger.perform>[2],
-    )) as {
-      payload: typeof payload;
-      polledNoChanges: boolean;
-    };
+    )) as { payload: typeof payload; polledNoChanges: boolean };
+
     const data = result.payload.body.data as {
       created: unknown[];
       updated: unknown[];
@@ -65,10 +69,12 @@ describe("pollChangesTrigger", () => {
     expect(result.polledNoChanges).toBe(true);
     expect(ctx.polling.setState).toHaveBeenCalled();
   });
+
   test("subsequent poll classifies events as created or updated", async () => {
     const now = new Date();
-    const recentDate = new Date(now.getTime() + 60000).toISOString();
+    const recentDate = new Date(now.getTime() + 60_000).toISOString();
     const oldDate = "2020-01-01T00:00:00.000Z";
+
     const events = [
       {
         uri: "https://api.calendly.com/scheduled_events/NEW1",
@@ -89,6 +95,7 @@ describe("pollChangesTrigger", () => {
         updated_at: oldDate,
       },
     ];
+
     nock(BASE)
       .get("/scheduled_events")
       .query(true)
@@ -96,23 +103,19 @@ describe("pollChangesTrigger", () => {
         collection: events,
         pagination: { next_page_token: null },
       });
+
     const ctx = createPollingContext({ lastPolledAt: now.toISOString() });
     const payload = defaultTriggerPayload();
+
     const result = (await pollChangesTrigger.perform(
       ctx as unknown as Parameters<typeof pollChangesTrigger.perform>[0],
       payload,
       params as Parameters<typeof pollChangesTrigger.perform>[2],
-    )) as {
-      payload: typeof payload;
-      polledNoChanges: boolean;
-    };
+    )) as { payload: typeof payload; polledNoChanges: boolean };
+
     const data = result.payload.body.data as {
-      created: {
-        uri: string;
-      }[];
-      updated: {
-        uri: string;
-      }[];
+      created: { uri: string }[];
+      updated: { uri: string }[];
     };
     expect(data.created).toHaveLength(1);
     expect(data.created[0].uri).toBe(
@@ -125,11 +128,13 @@ describe("pollChangesTrigger", () => {
     expect(result.polledNoChanges).toBe(false);
   });
 });
+
 describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
   test("initial sync seeds all records despite toggles=false", async () => {
     const now = new Date();
-    const recentDate = new Date(now.getTime() + 60000).toISOString();
+    const recentDate = new Date(now.getTime() + 60_000).toISOString();
     const oldDate = "2020-01-01T00:00:00.000Z";
+
     const events = [
       {
         uri: "https://api.calendly.com/scheduled_events/NEW1",
@@ -144,6 +149,7 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
         updated_at: recentDate,
       },
     ];
+
     nock(BASE)
       .get("/scheduled_events")
       .query(true)
@@ -151,8 +157,10 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
         collection: events,
         pagination: { next_page_token: null },
       });
+
     const ctx = createPollingContext(null);
     const payload = defaultTriggerPayload();
+
     const result = (await pollChangesTrigger.perform(
       ctx as unknown as Parameters<typeof pollChangesTrigger.perform>[0],
       payload,
@@ -162,26 +170,22 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
         showNewRecords: false,
         showUpdatedRecords: false,
       } as Parameters<typeof pollChangesTrigger.perform>[2],
-    )) as {
-      payload: typeof payload;
-      polledNoChanges: boolean;
-    };
+    )) as { payload: typeof payload; polledNoChanges: boolean };
+
     const data = result.payload.body.data as {
-      created: {
-        uri: string;
-      }[];
-      updated: {
-        uri: string;
-      }[];
+      created: { uri: string }[];
+      updated: { uri: string }[];
     };
     const total = data.created.length + data.updated.length;
     expect(total).toBeGreaterThan(0);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("steady-state respects toggles after initial sync", async () => {
     const now = new Date();
-    const recentDate = new Date(now.getTime() + 60000).toISOString();
+    const recentDate = new Date(now.getTime() + 60_000).toISOString();
     const oldDate = "2020-01-01T00:00:00.000Z";
+
     const events = [
       {
         uri: "https://api.calendly.com/scheduled_events/NEW1",
@@ -196,6 +200,7 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
         updated_at: recentDate,
       },
     ];
+
     nock(BASE)
       .get("/scheduled_events")
       .query(true)
@@ -203,8 +208,10 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
         collection: events,
         pagination: { next_page_token: null },
       });
+
     const ctx = createPollingContext({ lastPolledAt: now.toISOString() });
     const payload = defaultTriggerPayload();
+
     const result = (await pollChangesTrigger.perform(
       ctx as unknown as Parameters<typeof pollChangesTrigger.perform>[0],
       payload,
@@ -213,10 +220,8 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
         showNewRecords: false,
         showUpdatedRecords: false,
       } as Parameters<typeof pollChangesTrigger.perform>[2],
-    )) as {
-      payload: typeof payload;
-      polledNoChanges: boolean;
-    };
+    )) as { payload: typeof payload; polledNoChanges: boolean };
+
     const data = result.payload.body.data as {
       created: unknown[];
       updated: unknown[];
@@ -226,6 +231,7 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
     expect(result.polledNoChanges).toBe(true);
   });
 });
+
 describe("pollChangesTrigger batching", () => {
   test("New and Updated Events is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -234,6 +240,7 @@ describe("pollChangesTrigger batching", () => {
       Function,
     );
   });
+
   test("resolvePollingRecordChanges tags every record with how it changed", () => {
     const created: CalendlyEvent = {
       uri: "https://api.calendly.com/scheduled_events/NEW1",
@@ -255,10 +262,12 @@ describe("pollChangesTrigger batching", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({})).toEqual([]);
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolvePollingRecordChanges tolerates an absent array", () => {
     const created: CalendlyEvent = {
       uri: "https://api.calendly.com/scheduled_events/NEW1",
@@ -277,6 +286,7 @@ describe("pollChangesTrigger batching", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const created: CalendlyEvent = {
       uri: "https://api.calendly.com/scheduled_events/NEW1",

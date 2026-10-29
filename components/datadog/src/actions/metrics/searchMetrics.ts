@@ -5,6 +5,7 @@ import { searchMetricsExamplePayload } from "../../examplePayloads";
 import { searchMetricsInputs } from "../../inputs";
 import { searchMetricsOutputSchema } from "../../outputSchemas";
 import type { SearchMetricsResponse } from "../../types";
+
 export const searchMetrics = action({
   display: {
     label: "Search Metrics",
@@ -19,6 +20,7 @@ export const searchMetrics = action({
   performSafety: "notAllowed",
   perform: async (_context, { connection, metricsQuery }) => {
     const client = createClient(connection);
+
     const response = await client.get<SearchMetricsResponse>(
       SEARCH_METRICS_PATH,
       {
@@ -27,11 +29,10 @@ export const searchMetrics = action({
         },
       },
     );
+
     return { data: response.data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...searchMetricsExamplePayload,
   }),
   examplePayload: searchMetricsExamplePayload,

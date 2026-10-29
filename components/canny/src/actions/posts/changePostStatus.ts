@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { changePostStatusExamplePayload } from "../../examplePayloads";
 import { changePostStatusInputs } from "../../inputs";
 import { changePostStatusOutputSchema } from "../../outputSchemas";
+
 export const changePostStatus = action({
   display: {
     label: "Change Post Status",
@@ -40,9 +41,7 @@ export const changePostStatus = action({
   examplePerform: async (
     _context,
     { postId, statusRequired, postCommentValue },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...changePostStatusExamplePayload.data,
       id: postId,

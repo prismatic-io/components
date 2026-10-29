@@ -3,6 +3,7 @@ import { createToastClient } from "../../client";
 import { listTimeEntriesExamplePayload as examplePayload } from "../../examplePayloads";
 import { listTimeEntriesInputs as inputs } from "../../inputs/entry";
 import { serializeRepeatedParam } from "../../utils";
+
 export const listTimeEntries = action({
   display: {
     label: "List Time Entries",
@@ -47,6 +48,7 @@ export const listTimeEntries = action({
         },
       },
     );
+
     return {
       data,
     };

@@ -4,6 +4,7 @@ import { listRequestEvaluationIssuesExamplePayload } from "../../examplePayloads
 import { listRequestEvaluationIssuesInputs } from "../../inputs";
 import { listRequestEvaluationIssuesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listRequestEvaluationIssues = action({
   display: {
     label: "List Request Evaluation Issues",
@@ -19,15 +20,19 @@ export const listRequestEvaluationIssues = action({
   perform: async (context, { connection, requestGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Fetching evaluation issues for request: ${requestGuid}`,
       );
+
       const { data } = await client.get(
         `/requests/${requestGuid}/evaluationissues`,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} evaluation issues for request`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Request Evaluation Issues");

@@ -4,6 +4,7 @@ import { BING_API, SOAP_ACTION } from "../../constants";
 import { applyOfflineConversionsExamplePayload } from "../../examplePayloads";
 import { applyOfflineConversionsInputs } from "../../inputs/conversions";
 import type { OfflineConversion } from "../../types";
+
 export const applyOfflineConversions = action({
   display: {
     label: "Apply Offline Conversions",
@@ -22,11 +23,13 @@ export const applyOfflineConversions = action({
         CustomerAccountId: accountIdInput,
       },
     });
+
     const conversionGoal = {
       OfflineConversions: {
         ConversionGoal: offlineConversionsBody as OfflineConversion[],
       },
     };
+
     const response = await sendAsync({
       debug,
       args: conversionGoal,
@@ -34,6 +37,7 @@ export const applyOfflineConversions = action({
       soapAction: SOAP_ACTION.ApplyOfflineConversions,
       targetNamespace: BING_API.CAMPAIGN_MANAGEMENT_API.TN,
     });
+
     return {
       data: response,
     };

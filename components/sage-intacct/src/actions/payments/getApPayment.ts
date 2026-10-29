@@ -5,6 +5,7 @@ import { getApPaymentExamplePayload } from "../../examplePayloads";
 import { OBJECT_AP_PAYMENT } from "../../constants";
 import { getApPaymentInputs } from "../../inputs";
 import { getApPaymentOutputSchema } from "../../outputSchemas";
+
 export const getApPayment = action({
   display: {
     label: "Get AP Payment",

@@ -6,6 +6,7 @@ import {
   squareConnection,
   validateJSON,
 } from "./common";
+
 const orderQuery = input({
   label: "Query",
   type: "code",
@@ -44,6 +45,7 @@ const orderQuery = input({
     return JSON.parse(util.types.toString(queryInput));
   },
 });
+
 const locationIds = input({
   label: "Location IDs",
   type: "code",
@@ -54,6 +56,7 @@ const locationIds = input({
     "An array of location IDs in JSON format used to filter results to specific locations.",
   clean: (locationIdsInput) => validateJSON(locationIdsInput),
 });
+
 const returnEntries = input({
   label: "Return Entries",
   type: "boolean",
@@ -62,6 +65,7 @@ const returnEntries = input({
   comments: "When true, the entries associated with the orders are returned.",
   clean: util.types.toBool,
 });
+
 const orderId = input({
   label: "Order ID",
   type: "string",
@@ -72,6 +76,7 @@ const orderId = input({
   placeholder: "Enter Order ID",
   clean: util.types.toString,
 });
+
 const orderIds = input({
   label: "Order IDs",
   type: "code",
@@ -91,6 +96,7 @@ const orderIds = input({
     return JSON.parse(util.types.toString(orderIdsInput));
   },
 });
+
 const orderObject = input({
   label: "Order Object",
   type: "code",
@@ -125,6 +131,7 @@ const orderObject = input({
     return JSON.parse(util.types.toString(orderInput));
   },
 });
+
 const fieldsToClear = input({
   label: "Fields to Clear",
   type: "code",
@@ -140,6 +147,7 @@ const fieldsToClear = input({
     return JSON.parse(util.types.toString(fieldsToClearInput));
   },
 });
+
 export const searchOrdersInputs = {
   squareConnection,
   locationIds,
@@ -147,20 +155,24 @@ export const searchOrdersInputs = {
   returnEntries,
   pagination,
 };
+
 export const retrieveOrderInputs = {
   squareConnection,
   orderId,
 };
+
 export const batchRetrieveOrdersInputs = {
   squareConnection,
   locationId,
   orderIds,
 };
+
 export const createOrderInputs = {
   squareConnection,
   locationId,
   orderObject,
 };
+
 export const updateOrderInputs = {
   squareConnection,
   orderId,
@@ -168,6 +180,7 @@ export const updateOrderInputs = {
   fieldsToClear,
   idempotencyKey,
 };
+
 export const cloneOrderInputs = {
   squareConnection,
   orderId,

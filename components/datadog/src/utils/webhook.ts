@@ -2,16 +2,13 @@ import type { ActionLogger } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { WEBHOOKS_CONFIGURATION_PATH } from "../constants";
 import type { WebhooksIntegration } from "../types";
+
 export const webhookConfigurationPath = (webhookName: string): string =>
   `${WEBHOOKS_CONFIGURATION_PATH}/${encodeURIComponent(webhookName)}`;
+
 const isNotFoundError = (error: unknown): boolean =>
-  (
-    error as {
-      response?: {
-        status?: number;
-      };
-    }
-  )?.response?.status === 404;
+  (error as { response?: { status?: number } })?.response?.status === 404;
+
 export const findWebhook = async (
   client: HttpClient,
   webhookName: string,
@@ -26,6 +23,7 @@ export const findWebhook = async (
     throw error;
   }
 };
+
 export const deleteOwnedWebhook = async (
   client: HttpClient,
   logger: ActionLogger,

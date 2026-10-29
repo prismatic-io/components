@@ -4,6 +4,7 @@ import { selectLabelExamplePayload } from "../examplePayloads";
 import { selectLabelInputs } from "../inputs";
 import type { Label } from "../types";
 import { fetchAllPages } from "../utils";
+
 export const selectLabel = dataSource({
   display: {
     label: "Select Label",

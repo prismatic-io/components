@@ -13,8 +13,10 @@ import type {
   NotificationsBody,
   WatchConfig,
 } from "../types";
+
 export const cleanKeyValList = (values: unknown) =>
   util.types.keyValPairListToObject(values as KeyValuePair<unknown>[]);
+
 export const validateConnection = (
   connection: Connection,
 ): connection is Connection => {
@@ -26,10 +28,13 @@ export const validateConnection = (
   }
   return true;
 };
+
 export const toOptionalString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const getBooksUrl = (
   parentRecordType: string,
   parentRecordId: string,
@@ -45,6 +50,7 @@ export const getBooksUrl = (
   }
   return url;
 };
+
 export const fillNotificationsBody = (
   params: NotificationsBody,
   watchConfig: WatchConfig,
@@ -56,15 +62,19 @@ export const fillNotificationsBody = (
   ) {
     watchConfig.events = params.events;
   }
+
   if (params.notifyUrl) {
     watchConfig.notify_url = params.notifyUrl;
   }
+
   if (params.token) {
     watchConfig.token = params.token;
   }
+
   if (params.channelExpiry) {
     watchConfig.channel_expiry = params.channelExpiry;
   }
+
   if (
     params.notificationCondition &&
     Array.isArray(params.notificationCondition) &&
@@ -72,18 +82,22 @@ export const fillNotificationsBody = (
   ) {
     watchConfig.notification_condition = params.notificationCondition;
   }
+
   if (params.notifyOnRelatedAction !== undefined) {
     watchConfig.notify_on_related_action = params.notifyOnRelatedAction;
   }
+
   if (params.returnAffectedFieldValues !== undefined) {
     watchConfig.return_affected_field_values = params.returnAffectedFieldValues;
   }
 };
+
 export const getCrmRecordLabel = (record: CRMRecord): string => {
   return (
     record.Full_Name || record.Name || record.Subject || record.id || "Unknown"
   );
 };
+
 export const getBooksRecordLabel = (record: BookRecord): string => {
   return (
     record.contact_name ||
@@ -94,21 +108,26 @@ export const getBooksRecordLabel = (record: BookRecord): string => {
     "Unknown"
   );
 };
+
 export const getNotificationChannelLabel = (
   channel: NotificationChannel,
 ): string => {
   const events = channel.events?.join(", ") || "No events";
   return `Channel ${channel.channel_id} (${events})`;
 };
+
 export const getBooksRecordIdField = (
   record: BookRecord,
 ): string | undefined => {
   const idField = Object.keys(record).find((key) => key.endsWith("_id"));
+
   if (!idField && "id" in record) {
     return "id";
   }
+
   return idField;
 };
+
 export const toZohoTimestamp = (iso: string): string => {
   const date = new Date(iso);
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -120,6 +139,7 @@ export const toZohoTimestamp = (iso: string): string => {
   const ss = pad(date.getUTCSeconds());
   return `${yyyy}-${mm}-${dd}T${hh}:${min}:${ss}+00:00`;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -128,6 +148,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -136,6 +157,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -150,8 +172,10 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };

@@ -5,6 +5,7 @@ import { listAccountsInputs } from "../inputs";
 import { listAccountsOutputSchema } from "../outputSchemas";
 import type { Account } from "../types";
 import { paginateRecords } from "../util";
+
 const listAccounts = action({
   display: {
     label: "List Accounts",
@@ -34,11 +35,10 @@ const listAccounts = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...listAccountsExamplePayload,
   }),
   examplePayload: listAccountsExamplePayload,
 });
+
 export default { listAccounts };

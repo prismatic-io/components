@@ -9,6 +9,7 @@ import {
 import { awsRegion } from "aws-utils/src/inputs/awsRegion";
 import { createSNSClient } from "../client";
 import { SubscribeCommand, UnsubscribeCommand } from "@aws-sdk/client-sns";
+
 export const subscriptionTrigger = trigger({
   display: {
     label: "Manual Subscription",
@@ -26,6 +27,7 @@ export const subscriptionTrigger = trigger({
   },
   perform: webhookPerformFn,
 });
+
 export const webhookLifecycleTrigger = trigger({
   display: {
     label: "Topic Webhook",
@@ -55,9 +57,12 @@ export const webhookLifecycleTrigger = trigger({
         debug: context.debug.enabled,
         logger: context.logger,
       });
+
       const { subscriptionArn: existingSubscriptionArn, isLegacy } =
         resolveSubscriptionState(context);
+
       let legacyStateCleanup: Record<string, null> = {};
+
       if (existingSubscriptionArn) {
         context.logger.info(
           `Existing SNS subscription found for flow ${context.flow.id}, deleting before recreating`,
@@ -68,6 +73,7 @@ export const webhookLifecycleTrigger = trigger({
         );
         legacyStateCleanup = clearSubscriptionState(context, isLegacy);
       }
+
       context.logger.info(
         `Creating SNS subscription for flow ${context.flow.id} in region ${awsRegion} and topic ${topicArn}.`,
       );
@@ -86,6 +92,7 @@ export const webhookLifecycleTrigger = trigger({
         `Created SNS subscription for topic ${topicArn}. ` +
           `SubscriptionArn: ${response.SubscriptionArn} (pending confirmation)`,
       );
+
       return {
         crossFlowState: {
           ...legacyStateCleanup,
@@ -98,18 +105,21 @@ export const webhookLifecycleTrigger = trigger({
     delete: async (context, { awsConnection, awsRegion }) => {
       const { subscriptionArn: existingSubscriptionArn, isLegacy } =
         resolveSubscriptionState(context);
+
       if (!existingSubscriptionArn) {
         context.logger.warn(
           `No subscription ARN found for flow ${context.flow.name}. Skipping deletion.`,
         );
         return;
       }
+
       const sns = await createSNSClient({
         awsConnection,
         awsRegion,
         debug: context.debug.enabled,
         logger: context.logger,
       });
+
       await sns.send(
         new UnsubscribeCommand({ SubscriptionArn: existingSubscriptionArn }),
       );
@@ -117,10 +127,12 @@ export const webhookLifecycleTrigger = trigger({
         `Deleted SNS subscription for flow ${context.flow.id}. ` +
           `SubscriptionArn: ${existingSubscriptionArn}`,
       );
+
       return {
         crossFlowState: clearSubscriptionState(context, isLegacy),
       };
     },
   },
 });
+
 export default { subscriptionTrigger, webhookLifecycleTrigger };

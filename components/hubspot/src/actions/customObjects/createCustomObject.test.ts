@@ -1,11 +1,15 @@
 import type { MockedFunction } from "vitest";
 import { getHubspotClient } from "../../client";
 import { createCustomObject } from "./createCustomObject";
+
 vi.mock("../../client");
+
 const mockedGetHubspotClient = getHubspotClient as MockedFunction<
   typeof getHubspotClient
 >;
+
 const context = { debug: { enabled: false } } as never;
+
 const baseParams = (overrides: Record<string, unknown> = {}) =>
   ({
     hubspotConnection: {
@@ -27,16 +31,20 @@ const baseParams = (overrides: Record<string, unknown> = {}) =>
     dynamicValues: {},
     ...overrides,
   }) as never;
+
 const run = async (overrides: Record<string, unknown> = {}) => {
   const post = vi.fn().mockResolvedValue({ data: { id: "1" } });
   mockedGetHubspotClient.mockReturnValue({ post } as never);
   await createCustomObject.perform(context, baseParams(overrides));
   return post;
 };
+
 beforeEach(() => vi.clearAllMocks());
+
 describe("createCustomObject", () => {
   test("posts to the dated schemas path and defaults allowsSensitiveProperties to false", async () => {
     const post = await run();
+
     expect(post).toHaveBeenCalledWith(
       "/crm-object-schemas/2026-09/schemas",
       expect.objectContaining({
@@ -45,16 +53,20 @@ describe("createCustomObject", () => {
       }),
     );
   });
+
   test("lets a value supplied in fieldValues win over the default", async () => {
     const post = await run({
       fieldValues: { allowsSensitiveProperties: true },
     });
+
     expect(post.mock.calls[0][1].allowsSensitiveProperties).toBe(true);
   });
+
   test("lets a value supplied in dynamicValues win over the default", async () => {
     const post = await run({
       dynamicValues: { allowsSensitiveProperties: true },
     });
+
     expect(post.mock.calls[0][1].allowsSensitiveProperties).toBe(true);
   });
 });

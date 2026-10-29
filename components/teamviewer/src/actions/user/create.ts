@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createUserInputs } from "../../inputs/users";
 import { createClient } from "../../client";
 import { createUserExamplePayload } from "../../examplePayloads/users";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -39,6 +40,7 @@ export const createUser = action({
       sso_customer_id: ssoCustomerId,
       ignorePredefinedRole: additionalFields.ignorePredefinedRole,
     });
+
     return {
       data,
     };

@@ -4,6 +4,7 @@ import { listChangeCategoryItemAttributesExamplePayload } from "../../examplePay
 import { listChangeCategoryItemAttributesInputs } from "../../inputs";
 import { attributeDefinitionFullRepListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listChangeCategoryItemAttributes = action({
   display: {
     label: "List Change Category Item Attributes",
@@ -30,6 +31,7 @@ export const listChangeCategoryItemAttributes = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         includePossibleValues,
         creatableOnly,
@@ -37,6 +39,7 @@ export const listChangeCategoryItemAttributes = action({
         searchableOnly,
         includeDeleted,
       };
+
       context.logger.info(
         "Fetching change category item attributes from Arena",
         {
@@ -44,15 +47,18 @@ export const listChangeCategoryItemAttributes = action({
           queryParamNames: Object.keys(queryParams),
         },
       );
+
       const { data } = await client.get(
         `/settings/changes/categories/${categoryGuid}/items/attributes`,
         {
           params: queryParams,
         },
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} item attributes for change category ${categoryGuid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

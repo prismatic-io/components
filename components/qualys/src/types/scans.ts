@@ -2,17 +2,14 @@ export interface ClassicScan {
   REF?: string;
   TITLE?: string;
   TYPE?: string;
-  STATUS?: {
-    STATE?: string;
-  };
+  STATUS?: { STATE?: string };
   LAUNCH_DATETIME?: string;
   DURATION?: string;
   TARGET?: string;
   PROCESSED?: string;
-  OPTION_PROFILE?: {
-    TITLE?: string;
-  };
+  OPTION_PROFILE?: { TITLE?: string };
 }
+
 export interface ClassicScanResponse {
   SCAN_LIST_OUTPUT?: {
     RESPONSE?: {
@@ -22,6 +19,7 @@ export interface ClassicScanResponse {
     };
   };
 }
+
 export interface NormalizedScan {
   ref?: string;
   title?: string;
@@ -33,19 +31,14 @@ export interface NormalizedScan {
   processed?: string;
   optionProfile?: string | null;
 }
+
 export interface ClassicScanLaunchResponse {
   SIMPLE_RETURN?: {
     RESPONSE?: {
       ITEM_LIST?: {
         ITEM?:
-          | {
-              KEY?: string;
-              VALUE?: string;
-            }[]
-          | {
-              KEY?: string;
-              VALUE?: string;
-            };
+          | { KEY?: string; VALUE?: string }[]
+          | { KEY?: string; VALUE?: string };
       };
       TEXT?: string;
     };

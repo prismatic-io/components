@@ -8,6 +8,7 @@ export const getAdAccountResponse = {
     id: "act_123456789012345",
   },
 };
+
 export const listAdAccountsResponse = {
   data: {
     data: [

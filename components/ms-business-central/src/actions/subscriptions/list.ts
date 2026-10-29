@@ -4,6 +4,7 @@ import { listSubscriptionsExamplePayload } from "../../examplePayloads";
 import { connectionInput } from "../../inputs/general";
 import { showInstanceWebhooks } from "../../inputs/subscriptions";
 import { listSubscriptionsFn } from "../../utils";
+
 export const listSubscriptions = action({
   display: {
     label: "List Subscriptions",

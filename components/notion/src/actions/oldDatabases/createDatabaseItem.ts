@@ -3,6 +3,7 @@ import { createDatabaseItemOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { createDatabaseItemExamplePayload } from "../../examplePayloads";
 import { createDatabaseItemInputs } from "../../inputs";
+
 export const createDatabaseItem = action({
   display: {
     label: "Create Database Item",
@@ -31,9 +32,7 @@ export const createDatabaseItem = action({
   examplePerform: async (
     _context,
     { parent, icon, coverImage },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createDatabaseItemExamplePayload.data,
       ...(parent ? { parent } : {}),

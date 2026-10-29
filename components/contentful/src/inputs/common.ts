@@ -1,12 +1,14 @@
 import { input, util } from "@prismatic-io/spectral";
 import { WEBHOOK_EVENTS } from "../constants";
 import { cleanStringValueListInput } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Contentful connection to use.",
 });
+
 export const spaceId = input({
   label: "Space ID",
   type: "string",
@@ -17,6 +19,7 @@ export const spaceId = input({
   clean: util.types.toString,
   dataSource: "selectSpace",
 });
+
 export const environmentId = input({
   label: "Environment ID",
   type: "string",
@@ -27,6 +30,7 @@ export const environmentId = input({
   clean: util.types.toString,
   dataSource: "selectEnvironment",
 });
+
 export const dataSourceReturn = input({
   label: "Data Source Return",
   type: "string",
@@ -39,6 +43,7 @@ export const dataSourceReturn = input({
   default: "id",
   clean: util.types.toString,
 });
+
 export const organizationId = input({
   label: "Organization ID",
   type: "string",
@@ -49,6 +54,7 @@ export const organizationId = input({
   clean: util.types.toString,
   dataSource: "selectOrganization",
 });
+
 export const contentTypeId = input({
   label: "Content Type ID",
   type: "string",
@@ -59,6 +65,7 @@ export const contentTypeId = input({
   clean: util.types.toString,
   dataSource: "selectContentType",
 });
+
 export const webhookTopics = input({
   label: "Events",
   type: "string",

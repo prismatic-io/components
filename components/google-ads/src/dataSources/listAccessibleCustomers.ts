@@ -7,6 +7,7 @@ import {
   formatAccountNumber,
   getCustomerDescriptiveName,
 } from "../util";
+
 export const listAccessibleCustomers = dataSource({
   display: {
     label: "List Accessible Customers",
@@ -20,6 +21,7 @@ export const listAccessibleCustomers = dataSource({
       logger: context.logger,
     });
     const { data } = await client.get("customers:listAccessibleCustomers");
+
     const clientAccounts = await Promise.all(
       data.resourceNames.map(async (resourceName: string) => {
         const customerId = cleanCustomerId(resourceName);
@@ -28,6 +30,7 @@ export const listAccessibleCustomers = dataSource({
           customerId,
         );
         const label = `${descriptiveName} - ${formatAccountNumber(customerId)}`;
+
         return {
           label,
           key: customerId,

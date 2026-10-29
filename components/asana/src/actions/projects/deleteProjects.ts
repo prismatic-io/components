@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { deleteProjectsExamplePayload } from "../../examplePayloads";
 import { deleteProjectsInputs } from "../../inputs";
 import { emptyResponseOutputSchema } from "../../outputSchemas";
+
 export const deleteProjects = action({
   display: {
     label: "Delete Project",

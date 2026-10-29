@@ -16,11 +16,13 @@ import type {
   MCPServerConfigWrapper,
   ToolOutput,
 } from "../../types";
+
 export const createAgent = action({
   display: {
     label: "Agent: Create",
     description: "Create an AI agent with customizable instructions.",
   },
+
   inputs: {
     modelName: modelInput,
     name: agentNameInput,
@@ -32,6 +34,7 @@ export const createAgent = action({
     outputSchemaName: outputSchemaNameInput,
     outputSchemaStrict: outputSchemaStrictInput,
   },
+
   perform: async (_, params) => {
     interface AgentConfig {
       name: string;
@@ -47,26 +50,31 @@ export const createAgent = action({
       model: util.types.toString(params.modelName),
       handoffDescription: util.types.toString(params.handoffDescription),
     };
+
     if (params.outputSchema) {
       try {
         const schemaString = util.types.toString(params.outputSchema);
         const schema = JSON.parse(schemaString);
+
         const schemaDefinition: JsonSchemaDefinition = {
           type: "json_schema",
           name: util.types.toString(params.outputSchemaName) || "Output",
           strict: util.types.toBool(params.outputSchemaStrict, true),
           schema: schema,
         };
+
         agentConfig.outputType = schemaDefinition;
       } catch (e) {
         throw new Error(`Invalid JSON schema for outputSchema: ${e}`);
       }
     }
+
     const configData: AgentConfigData = {
       agent: agentConfig,
       tools: params.tools as ToolOutput[] | undefined,
       mcpServers: params.mcpServers as MCPServerConfigWrapper[] | undefined,
     };
+
     return { data: configData };
   },
 });

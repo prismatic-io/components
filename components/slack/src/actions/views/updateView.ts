@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { openViewExamplePayload as updateViewResponse } from "../../examplePayloads";
 import { updateViewInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const updateView = action({
   display: {
     label: "Update View",
@@ -23,14 +24,13 @@ export const updateView = action({
       external_id: external_id || undefined,
       view,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { view_id, external_id, view },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateViewResponse,
       view: {

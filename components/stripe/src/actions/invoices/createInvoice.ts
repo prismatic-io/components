@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { createInvoiceExamplePayload } from "../../examplePayloads/invoices";
 import { createInvoiceInputs } from "../../inputs";
 import { invoiceOutputSchema } from "../../outputSchemas";
+
 export const createInvoice = action({
   display: {
     label: "Create Invoice",
@@ -30,6 +31,7 @@ export const createInvoice = action({
       stripeConnection,
       timeout,
     });
+
     return {
       data: await client.invoices.create({
         ...fieldValues,
@@ -58,10 +60,9 @@ export const createInvoice = action({
       metadata,
       dueDate,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const invoice = createInvoiceExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...invoice,
@@ -81,5 +82,6 @@ export const createInvoice = action({
     type: "actionOutput",
     schema: invoiceOutputSchema,
   }),
+
   examplePayload: createInvoiceExamplePayload,
 });

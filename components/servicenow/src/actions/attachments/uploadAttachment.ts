@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { uploadAttachmentExamplePayload } from "../../examplePayloads";
 import { uploadAttachmentInputs } from "../../inputs";
 import { createNowApiClient } from "../../util";
+
 export const uploadAttachment = action({
   display: {
     label: "Upload Attachment",
@@ -42,9 +43,7 @@ export const uploadAttachment = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: uploadAttachmentExamplePayload.data,
   }),
   inputs: uploadAttachmentInputs,

@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const listAttachmentsExamplePayload = {
   data: {
     result: [
@@ -26,6 +27,7 @@ export const listAttachmentsExamplePayload = {
     ],
   },
 };
+
 export const getAttachmentExamplePayload = {
   data: {
     result: {
@@ -51,12 +53,15 @@ export const getAttachmentExamplePayload = {
     },
   },
 };
+
 export const getAttachmentFileExamplePayload = {
   data: Buffer.from("file contents"),
 };
+
 export const deleteAttachmentExamplePayload = {
   data: "",
 };
+
 export const uploadAttachmentExamplePayload = {
   data: {
     result: {
@@ -84,6 +89,7 @@ export const uploadAttachmentExamplePayload = {
     },
   },
 };
+
 export const multipartUploadAttachmentExamplePayload = {
   data: {
     result: {
@@ -109,6 +115,7 @@ export const multipartUploadAttachmentExamplePayload = {
     },
   },
 };
+
 export const listConfigurationItemsExamplePayload = {
   data: {
     result: [
@@ -119,6 +126,7 @@ export const listConfigurationItemsExamplePayload = {
     ],
   },
 };
+
 export const getConfigurationItemAttributesExamplePayload = {
   data: {
     result: {
@@ -205,9 +213,11 @@ export const getConfigurationItemAttributesExamplePayload = {
     },
   },
 };
+
 export const deleteConfigurationItemExamplePayload = {
   data: null,
 };
+
 export const getCMDBClassMetaDataExamplePayload = {
   data: {
     result: {
@@ -264,6 +274,7 @@ export const getCMDBClassMetaDataExamplePayload = {
     },
   },
 };
+
 export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -343,6 +354,7 @@ export const pollChangesTriggerExamplePayload: {
     globalDebug: false,
   },
 };
+
 export const createConfigurationItemExamplePayload = {
   data: {
     result: {

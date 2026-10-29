@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { deleteCustomTableEntryExamplePayload } from "../../examplePayloads";
 import { deleteCustomTableEntryInputs } from "../../inputs";
+
 export const deleteCustomTableEntry = action({
   display: {
     label: "Delete Custom Table Entry",
@@ -13,6 +14,7 @@ export const deleteCustomTableEntry = action({
     { connection, employeeId, customTableId, entryId },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     await client.delete(
       `/people/custom-tables/${employeeId}/${customTableId}/${entryId}`,
     );

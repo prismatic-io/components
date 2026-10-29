@@ -4,6 +4,7 @@ import { getSectionSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getSectionSubscriptionExamplePayload } from "../../../examplePayloads";
+
 export const getSectionSubscription = action({
   display: {
     label: "Get Section Subscription",
@@ -18,6 +19,7 @@ export const getSectionSubscription = action({
     const { data } = await client.get<SubscriptionResponse>(
       `/help_center/sections/${sectionId}/subscriptions/${subscriptionId}`,
     );
+
     return {
       data,
     };

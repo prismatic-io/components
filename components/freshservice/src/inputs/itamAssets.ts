@@ -2,12 +2,15 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { ITAM_CLEAR_VALUE, ITAM_YES_NO_MODEL } from "../constants";
 import { cleanNumberInput, cleanStringInput } from "../util";
 import { additionalFields, connection, fetchAll, pagination } from "./common";
+
 const itamAssetsDocumentationComments =
   "See [Freshservice IT Asset Management API documentation](https://api.freshservice.com/) for more information.";
+
 const itamAssetsAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${itamAssetsDocumentationComments}`,
 });
+
 const assetTypeOptions = [
   { label: "AC", value: "AC" },
   { label: "Block Tile", value: "Block Tile" },
@@ -30,12 +33,14 @@ const assetTypeOptions = [
   { label: "TAP Module", value: "TAP Module" },
   { label: "Speaker", value: "Speaker" },
 ];
+
 const backConnectionTypeOptions = [
   { label: "Panel", value: "panel" },
   { label: "Switch", value: "switch" },
   { label: "Circuit", value: "circuit" },
   { label: "Cable", value: "cable" },
 ];
+
 const whereOptions = [
   { label: "Above", value: "above" },
   { label: "Below", value: "below" },
@@ -44,10 +49,12 @@ const whereOptions = [
   { label: "Rack Mounted", value: "rack mounted" },
   { label: "Shelf", value: "shelf" },
 ];
+
 const depthOptions = [
   { label: "Half", value: "half" },
   { label: "Full", value: "full" },
 ];
+
 const assetId = input({
   label: "Asset ID",
   comments: "The unique identifier for the asset.",
@@ -58,6 +65,7 @@ const assetId = input({
   dataSource: "selectItamAsset",
   clean: util.types.toNumber,
 });
+
 const type = input({
   label: "Type",
   comments: "The specific type of the asset.",
@@ -68,6 +76,7 @@ const type = input({
   placeholder: "Select an asset type",
   clean: cleanStringInput,
 });
+
 const name = input({
   label: "Name",
   comments: "The name of the asset.",
@@ -77,6 +86,7 @@ const name = input({
   placeholder: "Enter asset name",
   clean: cleanStringInput,
 });
+
 const serialNo = input({
   label: "Serial Number",
   comments: `The serial number of the asset. Set to ${ITAM_CLEAR_VALUE} to clear the stored value.`,
@@ -86,6 +96,7 @@ const serialNo = input({
   placeholder: "Enter serial number",
   clean: cleanStringInput,
 });
+
 const assetNo = input({
   label: "Asset Number",
   comments: "The asset number of the asset.",
@@ -95,6 +106,7 @@ const assetNo = input({
   placeholder: "Enter asset number",
   clean: cleanStringInput,
 });
+
 const notes = input({
   label: "Notes",
   comments: "Free-text notes about the asset.",
@@ -104,6 +116,7 @@ const notes = input({
   placeholder: "Enter notes",
   clean: cleanStringInput,
 });
+
 const serviceLevel = input({
   label: "Service Level",
   comments:
@@ -114,6 +127,7 @@ const serviceLevel = input({
   placeholder: "Enter service level",
   clean: cleanStringInput,
 });
+
 const inService = input({
   label: "In Service",
   comments:
@@ -125,6 +139,7 @@ const inService = input({
   placeholder: "Select yes or no",
   clean: cleanStringInput,
 });
+
 const vendor = input({
   label: "Vendor",
   comments: "The name of the vendor that supplied the asset.",
@@ -134,6 +149,7 @@ const vendor = input({
   placeholder: "Enter vendor name",
   clean: cleanStringInput,
 });
+
 const objectCategory = input({
   label: "Object Category",
   comments:
@@ -144,6 +160,7 @@ const objectCategory = input({
   placeholder: "Enter object category",
   clean: cleanStringInput,
 });
+
 const deviceName = input({
   label: "Device Name",
   comments: "The name of the device this asset is associated with.",
@@ -153,6 +170,7 @@ const deviceName = input({
   placeholder: "Enter device name",
   clean: cleanStringInput,
 });
+
 const backConnectionType = input({
   label: "Back Connection Type",
   comments: "The type of back connection used by the asset.",
@@ -163,6 +181,7 @@ const backConnectionType = input({
   placeholder: "Select a back connection type",
   clean: cleanStringInput,
 });
+
 const tags = input({
   label: "Tags",
   comments: "A comma-separated list of tags to apply to the asset.",
@@ -172,6 +191,7 @@ const tags = input({
   placeholder: "Enter tags",
   clean: cleanStringInput,
 });
+
 const rack = input({
   label: "Rack",
   comments: "The name of the rack the asset is mounted in.",
@@ -181,6 +201,7 @@ const rack = input({
   placeholder: "Enter rack name",
   clean: cleanStringInput,
 });
+
 const rackId = input({
   label: "Rack ID",
   comments: "The unique identifier for the rack the asset is mounted in.",
@@ -190,6 +211,7 @@ const rackId = input({
   placeholder: "Enter rack ID",
   clean: cleanNumberInput,
 });
+
 const startAt = input({
   label: "Start At",
   comments:
@@ -200,6 +222,7 @@ const startAt = input({
   placeholder: "Enter starting rack unit",
   clean: cleanStringInput,
 });
+
 const size = input({
   label: "Size",
   comments:
@@ -210,6 +233,7 @@ const size = input({
   placeholder: "Enter size in rack units",
   clean: cleanNumberInput,
 });
+
 const orientation = input({
   label: "Orientation",
   comments:
@@ -220,6 +244,7 @@ const orientation = input({
   placeholder: "Enter back for rear-facing assets",
   clean: cleanStringInput,
 });
+
 const where = input({
   label: "Where",
   comments: "The specific mounting location within the rack.",
@@ -230,6 +255,7 @@ const where = input({
   placeholder: "Select a mounting location",
   clean: cleanStringInput,
 });
+
 const xPos = input({
   label: "Horizontal Position",
   comments:
@@ -240,6 +266,7 @@ const xPos = input({
   placeholder: "Enter horizontal position",
   clean: cleanNumberInput,
 });
+
 const depth = input({
   label: "Depth",
   comments: "The mounting depth of the asset. Freshservice defaults to half.",
@@ -250,6 +277,7 @@ const depth = input({
   placeholder: "Select a mounting depth",
   clean: cleanStringInput,
 });
+
 const rackPlacement = structuredObjectInput({
   label: "Rack Placement",
   required: false,
@@ -257,6 +285,7 @@ const rackPlacement = structuredObjectInput({
     "Rack, starting unit, size, orientation, horizontal position, and mounting depth. Supplying a rack makes Start At and Size mandatory.",
   inputs: { rack, rackId, startAt, size, orientation, where, xPos, depth },
 });
+
 const includeCols = input({
   label: "Include Columns",
   comments:
@@ -267,6 +296,7 @@ const includeCols = input({
   placeholder: "Enter attributes to include",
   clean: cleanStringInput,
 });
+
 export const createOrUpdateItamAssetInputs = {
   connection,
   type: input({
@@ -288,6 +318,7 @@ export const createOrUpdateItamAssetInputs = {
   rackPlacement,
   itamAssetsAdditionalFields,
 };
+
 export const deleteItamAssetInputs = {
   connection,
   assetId: input({
@@ -295,6 +326,7 @@ export const deleteItamAssetInputs = {
     comments: "The unique identifier of the asset to delete.",
   }),
 };
+
 export const getItamAssetInputs = {
   connection,
   assetId: input({
@@ -303,12 +335,14 @@ export const getItamAssetInputs = {
   }),
   includeCols,
 };
+
 export const listItamAssetsInputs = {
   connection,
   fetchAll,
   pagination,
   includeCols,
 };
+
 export const updateItamAssetInputs = {
   connection,
   assetId: input({

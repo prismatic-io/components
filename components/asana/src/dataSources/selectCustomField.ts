@@ -4,6 +4,7 @@ import { selectCustomFieldExamplePayload } from "../examplePayloads";
 import { selectCustomFieldInputs } from "../inputs";
 import type { DataSource } from "../types/resources";
 import { fetchMoreData, mapToLabelKey } from "../util";
+
 const selectCustomField = dataSource({
   display: {
     label: "Select Custom Field",
@@ -18,12 +19,14 @@ const selectCustomField = dataSource({
       [],
       true,
     );
+
     const result = mapToLabelKey(data);
     return { result };
   },
   dataSourceType: "picklist",
   examplePayload: selectCustomFieldExamplePayload,
 });
+
 export default {
   selectCustomField,
 };

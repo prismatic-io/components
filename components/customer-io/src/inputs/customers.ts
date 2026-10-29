@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanKeyValueList, cleanOptionalKeyValueList } from "../utils/clean";
 import { connectionInput, id, region } from "./common";
+
 export const customerData = input({
   label: "Customer Data",
   type: "string",
@@ -10,6 +11,7 @@ export const customerData = input({
     "The key and value pairs that make up a customer record. The key must be a string, and the value can be a string, number, array, or object.",
   clean: cleanKeyValueList,
 });
+
 export const eventData = input({
   label: "Event Data",
   type: "string",
@@ -19,6 +21,7 @@ export const eventData = input({
     "The key and value pairs that describe the event the customer performed.",
   clean: cleanOptionalKeyValueList,
 });
+
 export const eventName = input({
   label: "Event Name",
   example: "myCustomerEvent",
@@ -28,6 +31,7 @@ export const eventName = input({
   comments: "The identifier recorded for the tracked event.",
   clean: util.types.toString,
 });
+
 export const url = input({
   label: "URL",
   type: "string",
@@ -38,17 +42,20 @@ export const url = input({
     "The page path to track. Enter the full path to track a specific page, or use the asterisk '*' to track any page.",
   clean: util.types.toString,
 });
+
 export const destroyInputs = {
   id,
   region,
   cioConnection: connectionInput,
 };
+
 export const identifyInputs = {
   id,
   region,
   customerData,
   cioConnection: connectionInput,
 };
+
 export const trackInputs = {
   id,
   region,
@@ -56,6 +63,7 @@ export const trackInputs = {
   eventName,
   cioConnection: connectionInput,
 };
+
 export const trackPageViewInputs = {
   id,
   region,

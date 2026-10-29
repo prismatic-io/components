@@ -1,15 +1,12 @@
 export const getIdObject = (
   value: string | undefined,
-):
-  | {
-      id: string;
-    }
-  | undefined =>
+): { id: string } | undefined =>
   value
     ? {
         id: value,
       }
     : undefined;
+
 export const compactObject = <T extends Record<string, unknown>>(
   value: T | undefined,
 ): Partial<T> | undefined => {
@@ -21,6 +18,7 @@ export const compactObject = <T extends Record<string, unknown>>(
     ? (Object.fromEntries(entries) as Partial<T>)
     : undefined;
 };
+
 export const compactRows = <T extends Record<string, unknown>>(
   rows: T[] | undefined,
 ): Partial<T>[] | undefined => {

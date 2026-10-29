@@ -21,6 +21,7 @@ import {
   welcomeScreensInput,
 } from "../../exampleInputs/forms";
 import { formatCode, setHrefObject } from "../../util";
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -79,6 +80,7 @@ const additionalFields = structuredObjectInput({
     },
   },
 });
+
 export const createForm = action({
   display: {
     label: "Create Form",
@@ -92,6 +94,7 @@ export const createForm = action({
   },
   perform: async (context, { connection, additionalFields, title, type }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post<Form>(`/forms`, {
       cui_settings: additionalFields.cuiSettings,
       fields: additionalFields.fields,

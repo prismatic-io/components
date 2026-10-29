@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection, environmentId, spaceId } from "./common";
+
 const uploadId = input({
   label: "Upload ID",
   type: "string",
@@ -9,6 +10,7 @@ const uploadId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const fileContents = input({
   label: "File Contents",
   placeholder: "Output data from previous step",
@@ -19,18 +21,21 @@ const fileContents = input({
   example: "My File Contents",
   clean: util.types.toData,
 });
+
 export const deleteUploadInputs = {
   connection,
   spaceId,
   environmentId,
   uploadId,
 };
+
 export const getUploadInputs = {
   connection,
   spaceId,
   environmentId,
   uploadId,
 };
+
 export const uploadFileInputs = {
   connection,
   spaceId,

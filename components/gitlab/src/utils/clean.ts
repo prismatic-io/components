@@ -6,9 +6,12 @@ import {
 } from "../constants";
 import type { PollResourceType, WebhookEventFlag } from "../types";
 import { requireRelativePath } from "./validation";
+
 export const cleanString = (value: unknown): string | undefined =>
   isBlank(value) ? undefined : util.types.toString(value).trim();
+
 const REQUIRED_VALUE_MESSAGE = "A value is required for this input.";
+
 export const toRequiredString = (value: unknown): string => {
   const text = cleanString(value);
   if (text === undefined) {
@@ -16,14 +19,17 @@ export const toRequiredString = (value: unknown): string => {
   }
   return text;
 };
+
 export const toRequiredVerbatimString = (value: unknown): string => {
   if (isBlank(value)) {
     throw new Error(REQUIRED_VALUE_MESSAGE);
   }
   return util.types.toString(value);
 };
+
 export const toOptionalBoolean = (value: unknown): boolean | undefined =>
   isBlank(value) ? undefined : util.types.toBool(value);
+
 export const toOptionalId = (value: unknown): number | undefined => {
   if (!value) {
     return undefined;
@@ -31,6 +37,7 @@ export const toOptionalId = (value: unknown): number | undefined => {
   const text = util.types.toString(value).trim();
   return text === "" ? undefined : requireNumericId(text);
 };
+
 export const toRequiredId = (value: unknown): number => {
   const id = toOptionalId(value);
   if (id === undefined) {
@@ -38,6 +45,7 @@ export const toRequiredId = (value: unknown): number => {
   }
   return id;
 };
+
 export const toOptionalIdList = (value: unknown): number[] | undefined => {
   if (!Array.isArray(value) && util.types.toString(value).trim() === "") {
     return undefined;
@@ -45,6 +53,7 @@ export const toOptionalIdList = (value: unknown): number[] | undefined => {
   const ids = toList(value).map((item) => toRequiredId(item));
   return ids.length > 0 ? ids : undefined;
 };
+
 export const toOptionalLabelList = (value: unknown): string | undefined => {
   if (!Array.isArray(value) && util.types.toString(value).trim() === "") {
     return undefined;
@@ -52,6 +61,7 @@ export const toOptionalLabelList = (value: unknown): string | undefined => {
   const labels = toList(value);
   return labels.length > 0 ? labels.join(",") : undefined;
 };
+
 export const toOptionalTimestamp = (value: unknown): string | undefined => {
   if (!value) {
     return undefined;
@@ -59,6 +69,7 @@ export const toOptionalTimestamp = (value: unknown): string | undefined => {
   const text = util.types.toString(value).trim();
   return text === "" ? undefined : requireTimestamp(text);
 };
+
 export const toOptionalDate = (value: unknown): string | undefined => {
   if (!value) {
     return undefined;
@@ -66,6 +77,7 @@ export const toOptionalDate = (value: unknown): string | undefined => {
   const text = util.types.toString(value).trim();
   return text === "" ? undefined : requireCalendarDate(text);
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (raw === "") {
@@ -81,6 +93,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return raw;
 };
+
 export const toEventList = (value: unknown): WebhookEventFlag[] => {
   const flags = toList(value);
   if (flags.length === 0) {
@@ -94,6 +107,7 @@ export const toEventList = (value: unknown): WebhookEventFlag[] => {
   }
   return flags as WebhookEventFlag[];
 };
+
 export const toPollResourceType = (value: unknown): PollResourceType => {
   const text = toRequiredString(value);
   if (!Object.hasOwn(POLL_RESOURCE_CONFIG, text)) {
@@ -102,6 +116,7 @@ export const toPollResourceType = (value: unknown): PollResourceType => {
   }
   return text as PollResourceType;
 };
+
 export const toPathOrId = (value: unknown): string => {
   let raw = util.types.toString(value).trim();
   if (/^\d+$/.test(raw)) {
@@ -120,6 +135,7 @@ export const toPathOrId = (value: unknown): string => {
   }
   return encodePathSegment(path);
 };
+
 export const toPathOrIdList = (value: unknown): string[] => {
   const entries = toList(value);
   if (entries.length === 0) {
@@ -127,6 +143,7 @@ export const toPathOrIdList = (value: unknown): string[] => {
   }
   return entries.map(toPathOrId);
 };
+
 export const toIid = (value: unknown): number => {
   const raw = util.types.toString(value).trim().replace(/^[#!]/, "");
   if (!/^\d+$/.test(raw) || util.types.toNumber(raw) < 1) {
@@ -136,6 +153,7 @@ export const toIid = (value: unknown): number => {
   }
   return util.types.toNumber(raw);
 };
+
 export const toPathSegment = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (raw === "") {
@@ -143,19 +161,25 @@ export const toPathSegment = (value: unknown): string => {
   }
   return encodePathSegment(safeDecode(raw));
 };
+
 export const toFilePathSegment = (value: unknown): string =>
   toPathSegment(util.types.toString(value).trim().replace(/^\/+/, ""));
+
 export const toRelativeApiPath = (value: unknown): string =>
   requireRelativePath(toRequiredString(value));
+
 export const toKeyValueObject = (value: unknown): Record<string, unknown> =>
   util.types.keyValPairListToObject((value ?? []) as KeyValuePair[]);
+
 export const toHeaderObject = (value: unknown): Record<string, string> =>
   util.types.keyValPairListToObject(
     (value ?? []) as KeyValuePair[],
     util.types.toString,
   );
+
 export const toOptionalPositiveNumber = (value: unknown): number | undefined =>
   util.types.toNumber(value) || undefined;
+
 const isCalendarDate = (raw: string): boolean => {
   const match = raw.match(DATE_PATTERN);
   if (!match) {
@@ -169,20 +193,24 @@ const isCalendarDate = (raw: string): boolean => {
     parsed.getUTCDate() === day
   );
 };
+
 const isBlank = (value: unknown): boolean =>
   value === undefined ||
   value === null ||
   util.types.toString(value).trim() === "";
+
 const toList = (value: unknown): string[] =>
   (Array.isArray(value) ? value : [value])
     .map((item) => util.types.toString(item).trim())
     .filter((item) => item !== "");
+
 const requireNumericId = (text: string): number => {
   if (!/^\d+$/.test(text)) {
     throw new Error(`Expected a numeric ID. Received: ${text}`);
   }
   return util.types.toNumber(text);
 };
+
 const requireTimestamp = (text: string): string => {
   const ms = Date.parse(text);
   if (Number.isNaN(ms)) {
@@ -192,12 +220,14 @@ const requireTimestamp = (text: string): string => {
   }
   return new Date(ms).toISOString();
 };
+
 const requireCalendarDate = (text: string): string => {
   if (!isCalendarDate(text)) {
     throw new Error(`Expected a date in YYYY-MM-DD format. Received: ${text}`);
   }
   return text;
 };
+
 const safeDecode = (value: string): string => {
   try {
     return decodeURIComponent(value);
@@ -205,5 +235,6 @@ const safeDecode = (value: string): string => {
     return value;
   }
 };
+
 export const encodePathSegment = (value: string): string =>
   encodeURIComponent(value).replace(/\./g, "%2E");

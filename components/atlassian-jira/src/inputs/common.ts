@@ -9,6 +9,7 @@ import {
   toOptionalObject,
   toOptionalString,
 } from "../util";
+
 export const projectIds = input({
   label: "Project ID(s)",
   type: "string",
@@ -18,6 +19,7 @@ export const projectIds = input({
   comments: "One or more Jira Project IDs.",
   clean: projectIdsClean,
 });
+
 export const returnIssueTypeName = input({
   label: "Issue Type Return",
   type: "string",
@@ -28,6 +30,7 @@ export const returnIssueTypeName = input({
   example: "false",
   clean: util.types.toBool,
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -38,6 +41,7 @@ export const projectId = input({
   dataSource: "selectProject",
   clean: util.types.toString,
 });
+
 export const issueId = input({
   label: "Issue ID",
   type: "string",
@@ -48,6 +52,7 @@ export const issueId = input({
   dataSource: "selectIssue",
   clean: util.types.toString,
 });
+
 export const accountId = input({
   label: "Account ID",
   type: "string",
@@ -57,6 +62,7 @@ export const accountId = input({
   comments: "The unique Atlassian account ID of the user.",
   clean: util.types.toString,
 });
+
 export const expand = input({
   label: "Expand",
   type: "string",
@@ -67,6 +73,7 @@ export const expand = input({
     "A comma-separated list of additional fields to include in the response. Values come from the `_expandable` property of the resource.",
   clean: toOptionalString,
 });
+
 export const issueNumber = input({
   label: "Issue Number",
   type: "string",
@@ -77,6 +84,7 @@ export const issueNumber = input({
     "The numeric portion of an issue key (e.g., `201` for issue `PROJ-201`).",
   clean: util.types.toString,
 });
+
 export const comment = input({
   label: "Comment",
   type: "string",
@@ -86,6 +94,7 @@ export const comment = input({
   comments: "The plain-text body of the comment.",
   clean: util.types.toString,
 });
+
 export const commentId = input({
   label: "Comment ID",
   type: "string",
@@ -95,6 +104,7 @@ export const commentId = input({
   comments: "The unique identifier of the comment.",
   clean: util.types.toString,
 });
+
 export const summary = input({
   label: "Summary",
   type: "string",
@@ -105,6 +115,7 @@ export const summary = input({
     "A short one-line title for the issue, shown in lists and search results.",
   clean: util.types.toString,
 });
+
 export const assignee = input({
   label: "Assignee Account ID",
   type: "string",
@@ -114,6 +125,7 @@ export const assignee = input({
   comments: "The Atlassian account ID of the user to assign the issue to.",
   clean: toOptionalString,
 });
+
 export const reporter = input({
   label: "Reporter Account ID",
   type: "string",
@@ -123,6 +135,7 @@ export const reporter = input({
   comments: "The Atlassian account ID of the user reporting the issue.",
   clean: toOptionalString,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -134,6 +147,7 @@ export const filter = input({
   default: "my",
   clean: util.types.toString,
 });
+
 export const issueType = input({
   label: "Issue Type Name",
   type: "string",
@@ -149,6 +163,7 @@ export const issueType = input({
     "The human-readable name of the issue type to assign to the issue. Provide this field OR Issue Type ID — not both.",
   clean: util.types.toString,
 });
+
 export const issueTypeId = input({
   label: "Issue Type ID",
   type: "string",
@@ -160,6 +175,7 @@ export const issueTypeId = input({
   dataSource: "selectIssueTypeFromProject",
   clean: util.types.toString,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -170,6 +186,7 @@ export const description = input({
   comments: "A detailed description of the issue.",
   clean: toOptionalString,
 });
+
 export const ADFdescription = input({
   label: "ADF Description",
   type: "code",
@@ -198,12 +215,14 @@ export const ADFdescription = input({
     "The Atlassian Document Format (ADF) JSON representation of the issue description. Provide this OR Description — not both. Use the [ADF playground](https://developer.atlassian.com/cloud/jira/platform/apis/document/playground/) to generate the JSON.",
   clean: toOptionalObject,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Jira connection to use.",
 });
+
 export const emailAddress = input({
   label: "Email Address",
   type: "string",
@@ -213,6 +232,7 @@ export const emailAddress = input({
   comments: "The email address of the user.",
   clean: util.types.toString,
 });
+
 export const username = input({
   label: "Username",
   type: "string",
@@ -222,6 +242,7 @@ export const username = input({
   comments: "The username for the Jira user account.",
   clean: util.types.toString,
 });
+
 export const password = input({
   label: "Password",
   type: "password",
@@ -230,6 +251,7 @@ export const password = input({
   comments: "The password to assign to the new user account.",
   clean: util.types.toString,
 });
+
 export const notifications = input({
   label: "Notifications",
   type: "boolean",
@@ -238,6 +260,7 @@ export const notifications = input({
     "When true, the user will receive email notifications for relevant events.",
   clean: util.types.toBool,
 });
+
 export const displayName = input({
   label: "Display Name",
   type: "string",
@@ -247,6 +270,7 @@ export const displayName = input({
   comments: "The display name for the user account.",
   clean: util.types.toString,
 });
+
 export const searchString = input({
   label: "Search",
   type: "string",
@@ -256,6 +280,7 @@ export const searchString = input({
   comments: "The text to match against records when searching.",
   clean: util.types.toString,
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -265,6 +290,7 @@ export const maxResults = input({
   comments: "The maximum number of results to return per page.",
   clean: (rawValue) => util.types.toInt(rawValue, 50),
 });
+
 export const startAt = input({
   label: "Start At",
   type: "string",
@@ -276,6 +302,7 @@ export const startAt = input({
     "The index of the first item to return in the result set (0-based).",
   clean: (rawValue) => util.types.toInt(rawValue, 0),
 });
+
 export const boardId = input({
   label: "Board ID",
   type: "string",
@@ -286,6 +313,7 @@ export const boardId = input({
   dataSource: "selectBoard",
   clean: util.types.toString,
 });
+
 export const fixVersions = input({
   label: "Fix Versions",
   type: "code",
@@ -297,6 +325,7 @@ export const fixVersions = input({
   comments:
     "The fix version(s) for the issue as a JSON object containing an `id` property referencing an existing version.",
 });
+
 export const priority = input({
   label: "Priority",
   type: "string",
@@ -308,6 +337,7 @@ export const priority = input({
     "The priority to assign to the issue. Accepts the priority ID, key, or name of the desired record.",
   clean: toOptionalString,
 });
+
 export const labels = input({
   label: "Labels",
   type: "string",
@@ -319,6 +349,7 @@ export const labels = input({
     "A list of labels to attach to the issue. Each label must not contain spaces.",
   clean: labelsClean,
 });
+
 export const dueDate = input({
   label: "Due Date",
   type: "string",
@@ -328,6 +359,7 @@ export const dueDate = input({
   comments: "The date when the issue is due. Format: `YYYY-MM-DD`.",
   clean: toOptionalString,
 });
+
 export const versions = input({
   label: "Versions",
   type: "code",
@@ -341,6 +373,7 @@ export const versions = input({
   comments:
     "The affected version(s) for the issue as a JSON array of objects. Each object must contain an `id` referencing an existing version.",
 });
+
 export const file = input({
   label: "File",
   type: "string",
@@ -348,6 +381,7 @@ export const file = input({
   required: false,
   comments: "The binary contents of the file to upload as an attachment.",
 });
+
 export const versionName = input({
   label: "Version Name",
   type: "string",
@@ -357,6 +391,7 @@ export const versionName = input({
   comments: "The display name of the version (e.g., a release tag or date).",
   clean: util.types.toString,
 });
+
 export const archived = input({
   label: "Archived",
   type: "boolean",
@@ -364,6 +399,7 @@ export const archived = input({
   comments: "When true, marks the version as archived.",
   clean: util.types.toBool,
 });
+
 export const released = input({
   label: "Released",
   type: "boolean",
@@ -371,6 +407,7 @@ export const released = input({
   comments: "When true, marks the version as released.",
   clean: util.types.toBool,
 });
+
 export const startDate = input({
   label: "Start Date",
   type: "string",
@@ -380,6 +417,7 @@ export const startDate = input({
   comments: "The date when work on this version starts. Format: `YYYY-MM-DD`.",
   clean: toOptionalString,
 });
+
 export const releaseDate = input({
   label: "Release Date",
   type: "string",
@@ -389,6 +427,7 @@ export const releaseDate = input({
   comments: "The date when this version is released. Format: `YYYY-MM-DD`.",
   clean: toOptionalString,
 });
+
 export const projectKey = input({
   label: "Project Key",
   type: "string",
@@ -398,6 +437,7 @@ export const projectKey = input({
   comments: "The project key identifier (e.g., PROJ, ENG, SALES).",
   clean: util.types.toString,
 });
+
 export const transitionId = input({
   label: "Transition ID",
   type: "string",
@@ -407,6 +447,7 @@ export const transitionId = input({
   comments: "The unique identifier of the issue transition.",
   clean: util.types.toString,
 });
+
 export const versionId = input({
   label: "Version ID",
   type: "string",
@@ -417,6 +458,7 @@ export const versionId = input({
   dataSource: "selectVersion",
   clean: util.types.toString,
 });
+
 export const startAtInput = input({
   label: "Start At",
   type: "string",
@@ -427,6 +469,7 @@ export const startAtInput = input({
   comments: "Index of first record to start a page of results at.",
   clean: util.types.toNumber,
 });
+
 export const maxResultsInput = input({
   label: "Max Results",
   type: "string",
@@ -437,6 +480,7 @@ export const maxResultsInput = input({
   comments: "Specify the page size limit for pagination.",
   clean: util.types.toNumber,
 });
+
 export const fieldValues = input({
   label: "Values",
   type: "string",
@@ -448,6 +492,7 @@ export const fieldValues = input({
     "Additional field names and their values to include when creating or updating the record. Each row is merged into the request payload.",
   clean: (value) => util.types.keyValPairListToObject(value as KeyValuePair[]),
 });
+
 export const dynamicValues = input({
   label: "Dynamic Fields",
   type: "code",
@@ -471,6 +516,7 @@ export const dynamicValues = input({
     "Dynamic field key/value pairs supplied as JSON. Use a key/value config variable to configure these at deploy time. Each item must contain a `key` and a `value`.",
   clean: fieldValuesClean,
 });
+
 export const webhookDetails = input({
   label: "Webhook Details",
   type: "code",
@@ -500,6 +546,7 @@ export const webhookDetails = input({
     2,
   ),
 });
+
 export const webhookUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -510,6 +557,7 @@ export const webhookUrl = input({
     "The URL that Jira will POST webhook events to. Typically reference a flow's URL from the trigger payload.",
   clean: util.types.toString,
 });
+
 export const webhookIdInput = input({
   label: "Webhook ID",
   type: "string",
@@ -520,6 +568,7 @@ export const webhookIdInput = input({
   dataSource: "selectWebhook",
   clean: util.types.toString,
 });
+
 export const attachmentIds = input({
   label: "Attachment IDs",
   type: "code",
@@ -537,6 +586,7 @@ export const attachmentIds = input({
   ),
   clean: cleanAttachmentArray,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -546,6 +596,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const nextPageToken = input({
   label: "Next Page Token",
   type: "string",
@@ -555,6 +606,7 @@ export const nextPageToken = input({
     "The pagination cursor returned from a previous response. Use it to fetch the next page of results. Leave empty for the first page.",
   clean: toOptionalString,
 });
+
 export const fields = input({
   label: "Fields",
   type: "string",
@@ -565,6 +617,7 @@ export const fields = input({
     "A comma-separated list of fields to include in each returned issue. Defaults to common navigable fields (summary, status, assignee, reporter, priority, issuetype, project, created, updated). Use `*all` to return every field.",
   clean: util.types.toString,
 });
+
 export const eventTypes = input({
   label: "Event Types",
   type: "string",
@@ -575,6 +628,7 @@ export const eventTypes = input({
   comments: "One or more Jira issue events that will trigger this webhook.",
   example: "jira:issue_created",
 });
+
 export const jqlFilter = input({
   label: "JQL Filter",
   type: "string",
@@ -585,6 +639,7 @@ export const jqlFilter = input({
   placeholder: "Enter JQL query",
   clean: util.types.toString,
 });
+
 export const fieldIdsFilter = input({
   label: "Field IDs Filter",
   type: "string",
@@ -595,12 +650,14 @@ export const fieldIdsFilter = input({
   example: "summary",
   placeholder: "Enter field IDs",
 });
+
 export const eventsWebhookInputs = {
   jiraConnection: connectionInput,
   eventTypes,
   jqlFilter,
   fieldIdsFilter,
 };
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -611,6 +668,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const pollJqlFilter = input({
   label: "Additional JQL Filter",
   type: "string",
@@ -621,6 +679,7 @@ const pollJqlFilter = input({
   placeholder: "project = PROJ",
   clean: toOptionalString,
 });
+
 const showNewIssues = input({
   label: "Show New Issues",
   type: "boolean",
@@ -631,6 +690,7 @@ const showNewIssues = input({
     "When enabled, issues created since the last poll will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedIssues = input({
   label: "Show Updated Issues",
   type: "boolean",
@@ -641,6 +701,7 @@ const showUpdatedIssues = input({
     "When enabled, issues updated since the last poll will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   jiraConnection: connectionInput,
   lookBackDate,

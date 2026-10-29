@@ -8,6 +8,7 @@ import {
   pageTokenInput,
   startDateInput,
 } from "./common";
+
 const customerIds = input({
   label: "Customer IDs",
   placeholder: "Enter customer ID",
@@ -18,6 +19,7 @@ const customerIds = input({
   comments:
     "The Google Ads customer IDs to filter the Local Services report. Leave empty to include all accessible customers.",
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -31,6 +33,7 @@ const pagination = structuredObjectInput({
     pageTokenInput,
   },
 });
+
 export const accountReportsInputs = {
   connection: connectionInput,
   managerCustomerIdInput,
@@ -39,6 +42,7 @@ export const accountReportsInputs = {
   startDateInput,
   endDateInput,
 };
+
 export const detailedLeadReportsInputs = {
   connection: connectionInput,
   managerCustomerIdInput,

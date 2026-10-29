@@ -4,6 +4,7 @@ import { AUTOMATIONS_PATH } from "../../constants";
 import { getAutomationExamplePayload } from "../../examplePayloads";
 import { getAutomationInputs } from "../../inputs";
 import { getAutomationOutputSchema } from "../../outputSchemas";
+
 export const getAutomation = action({
   examplePayload: getAutomationExamplePayload,
   display: {
@@ -21,6 +22,7 @@ export const getAutomation = action({
     const { data } = await client.get(
       `${AUTOMATIONS_PATH}/${encodeURIComponent(automationId)}`,
     );
+
     return { data };
   },
 });

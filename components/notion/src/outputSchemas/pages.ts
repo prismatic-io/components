@@ -4,6 +4,7 @@ import {
   pagePropertyValueSchema,
   userReferenceSchema,
 } from "./shared";
+
 export const notionPageObjectSchema = {
   type: "object" as const,
   properties: {
@@ -34,9 +35,13 @@ export const notionPageObjectSchema = {
   },
   required: [],
 };
+
 export const createPageOutputSchema = notionPageObjectSchema;
+
 export const getPageOutputSchema = notionPageObjectSchema;
+
 export const createDatabaseItemOutputSchema = notionPageObjectSchema;
+
 export const listPagesOutputSchema = {
   type: "object" as const,
   properties: {

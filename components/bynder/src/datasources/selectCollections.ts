@@ -4,6 +4,7 @@ import { selectCollectionResponse } from "../examplePayloads";
 import { connection } from "../inputs";
 import type { Records } from "../types";
 import { fetchCollections, sortArray } from "../util";
+
 export const selectCollection = dataSource({
   display: {
     label: "Select Collection",
@@ -24,6 +25,7 @@ export const selectCollection = dataSource({
         key: collection.id.toString(),
         label: `${collection.name} (ID: ${collection.id})`,
       }));
+
       return { result: objects };
     }
     return { result: [] };

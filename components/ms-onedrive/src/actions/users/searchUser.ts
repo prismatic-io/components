@@ -3,6 +3,7 @@ import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
 import { findUserExamplePayload } from "../../examplePayloads";
 import { searchUserInputs } from "../../inputs";
+
 export const searchUser = action({
   display: {
     label: "Search Users",
@@ -10,6 +11,7 @@ export const searchUser = action({
   },
   perform: async (context, { connection, userId }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
+
     return {
       data: await handleErrors(client.get(`/users/${userId}`)),
     };

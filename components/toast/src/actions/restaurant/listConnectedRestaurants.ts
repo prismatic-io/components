@@ -3,6 +3,7 @@ import { createToastClient } from "../../client";
 import { listConnectedRestaurantsExamplePayload as examplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../helpers/pagination";
 import { listConnectedRestaurantsInputs as inputs } from "../../inputs/restaurant";
+
 export const listConnectedRestaurants = action({
   display: {
     label: "List Connected Restaurants",
@@ -15,6 +16,7 @@ export const listConnectedRestaurants = action({
   ) => {
     const client = await createToastClient(connection, context.debug.enabled);
     const { pageSize, pageToken } = pagination;
+
     return await paginateResults({
       client,
       endpoint: "/partners/v1/connectedRestaurants",

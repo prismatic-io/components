@@ -8,6 +8,7 @@ import type { PageInfo, ProductImage } from "../../../types";
 import { fetchData, getNumericId } from "../../../util";
 import { productImageMapper } from "../mappers/productImageMapper";
 import listProductImagesQuery from "../queries/productImage/ListProductImages.gql";
+
 export const listProductImagesGql = action({
   display: {
     label: "List Product Images",
@@ -24,6 +25,7 @@ export const listProductImagesGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const { images } = (await fetchData<ProductImage>(
       client,
       ["product", "media"],
@@ -35,9 +37,8 @@ export const listProductImagesGql = action({
         first: getAlldata ? MAX_LIMIT : pagination.limit,
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
-    )) as Record<"images", ProductImage[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"images", ProductImage[]> & { pageInfo: PageInfo };
+
     return {
       data: {
         data: {

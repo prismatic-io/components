@@ -14,6 +14,7 @@ import {
   resolvePollingRecordChanges,
 } from "../util";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Events",
@@ -32,9 +33,11 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const now = new Date().toISOString();
+
     if (!pollState?.lastPolledAt) {
       const seedDate = params.lookBackDate || now;
       context.polling.setState({ lastPolledAt: seedDate });
+
       if (!params.lookBackDate) {
         return {
           payload: {
@@ -45,8 +48,10 @@ export const pollChangesTrigger = pollingTrigger({
         };
       }
     }
+
     const lastPolledAt = pollState?.lastPolledAt ?? params.lookBackDate ?? now;
     const client = getCalendlyClient(params.connection, context.debug.enabled);
+
     const events = (await getEvents(
       client,
       undefined,
@@ -57,17 +62,21 @@ export const pollChangesTrigger = pollingTrigger({
       undefined,
       params.user,
     )) as CalendlyEvent[];
+
     const { created, updated } = classifyEventsByPollDate(events, lastPolledAt);
     const emittedCreated = isBackfill || params.showNewRecords ? created : [];
     const emittedUpdated =
       isBackfill || params.showUpdatedRecords ? updated : [];
     const totalMatched = emittedCreated.length + emittedUpdated.length;
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Calendly events: ${events.length} fetched, ${emittedCreated.length} created, ${emittedUpdated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

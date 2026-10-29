@@ -3,7 +3,9 @@ import { getShopifyGraphQlClient } from "../../../client";
 import { updateCustomerExamplePayload as examplePayload } from "../../../examplePayloads";
 import { updateCustomerInputs as inputs } from "../../../inputsGql";
 import { updateCustomerGqlOutputSchema } from "../../../outputSchemas";
+
 import updateCustomerQuery from "../queries/customers/UpdateCustomer.gql";
+
 export const updateCustomerGql = action({
   display: {
     label: "Update Customer",
@@ -33,23 +35,24 @@ export const updateCustomerGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      customerUpdate: Record<string, unknown>;
-    } = await client.request(updateCustomerQuery, {
-      input: {
-        id: customerIdGql,
-        email,
-        phone,
-        firstName,
-        lastName,
-        note: notes,
-        addresses: addressListGql,
-        tags,
-        taxExempt,
-        metafields,
-        ...additionalFields,
-      },
-    });
+
+    const data: { customerUpdate: Record<string, unknown> } =
+      await client.request(updateCustomerQuery, {
+        input: {
+          id: customerIdGql,
+          email,
+          phone,
+          firstName,
+          lastName,
+          note: notes,
+          addresses: addressListGql,
+          tags,
+          taxExempt,
+          metafields,
+          ...additionalFields,
+        },
+      });
+
     return {
       data: data.customerUpdate,
     };

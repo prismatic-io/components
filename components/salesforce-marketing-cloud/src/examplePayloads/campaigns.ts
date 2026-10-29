@@ -1,4 +1,5 @@
 import type { PaginatedResponse } from "../types";
+
 export const getCampaignExamplePayload = {
   data: {
     createdDate: "2026-02-13T18:52:46",
@@ -11,9 +12,8 @@ export const getCampaignExamplePayload = {
     favorite: false,
   },
 };
-export const listCampaignsExamplePayload: {
-  data: PaginatedResponse;
-} = {
+
+export const listCampaignsExamplePayload: { data: PaginatedResponse } = {
   data: {
     count: 12,
     page: 1,
@@ -40,7 +40,9 @@ export const listCampaignsExamplePayload: {
     ],
   },
 };
+
 export const createCampaignExamplePayload = getCampaignExamplePayload;
+
 export const deleteCampaignExamplePayload = {
   data: null,
 };

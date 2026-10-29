@@ -12,6 +12,7 @@ import {
   subscribeToResource,
   triggerPerformFunction,
 } from "../util";
+
 export const groupTrigger = trigger({
   display: {
     label: "Group Changes",
@@ -34,12 +35,14 @@ export const groupTrigger = trigger({
     ) => {
       const endpoint = context.webhookUrls[context.flow.name];
       const client = createClient(connection, true);
+
       const expirationDateTime = expirationTriggerDateTime
         ? expirationTriggerDateTime
         : addMinutesToDate(
             new Date(),
             MAX_MINUTES_EXPIRATION_USERS_GROUPS_SUBSCRIPTION,
           );
+
       await subscribeToResource(
         client,
         endpoint,
@@ -51,6 +54,7 @@ export const groupTrigger = trigger({
     delete: async (context, { connection }) => {
       const client = createClient(connection, true);
       const endpoint = context.webhookUrls[context.flow.name];
+
       await removeSubscriptions(client, new Set([endpoint]));
     },
   },

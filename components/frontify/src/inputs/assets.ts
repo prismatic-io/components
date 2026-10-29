@@ -5,6 +5,7 @@ import { cleanTagsInput } from "../utils/cleanTagsInput";
 import { cleanValueListInput } from "../utils/cleanValueListInput";
 import { fetchAll, limit, page } from "./pagination";
 import { connection } from "./sharedInputs";
+
 const description = input({
   label: "Description",
   comments: "Asset description.",
@@ -14,6 +15,7 @@ const description = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const copyrightStatus = input({
   label: "Copyright Status",
   comments: "Asset copyright status.",
@@ -37,6 +39,7 @@ const copyrightStatus = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 const copyrightNotice = input({
   label: "Copyright Notice",
   comments: "Asset copyright notice. Supports medium text length.",
@@ -46,6 +49,7 @@ const copyrightNotice = input({
   example: "© 2021 My Company",
   clean: cleanStringInput,
 });
+
 const expiresAt = input({
   label: "Expires At",
   comments: "Asset will expire once the defined date is reached.",
@@ -55,6 +59,7 @@ const expiresAt = input({
   placeholder: "2001-12-31T22:10:30.000+00:00",
   clean: cleanStringInput,
 });
+
 const author = input({
   label: "Author",
   comments: "Represents the Author of the Asset.",
@@ -64,6 +69,7 @@ const author = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const createAssetInputs = {
   connection,
   fileId: input({
@@ -145,6 +151,7 @@ export const createAssetInputs = {
     },
   }),
 };
+
 export const uploadFileInputs = {
   connection,
   filename: input({
@@ -176,6 +183,7 @@ export const uploadFileInputs = {
     clean: cleanNumberInput,
   }),
 };
+
 export const createAttachmentInputs = {
   connection,
   parentId: input({
@@ -216,6 +224,7 @@ export const createAttachmentInputs = {
     clean: cleanStringInput,
   }),
 };
+
 export const deleteAssetInputs = {
   connection,
   assetId: input({
@@ -229,6 +238,7 @@ export const deleteAssetInputs = {
     dataSource: "libraryAssetDataSource",
   }),
 };
+
 export const getAssetInputs = {
   connection,
   assetId: input({
@@ -242,6 +252,7 @@ export const getAssetInputs = {
     dataSource: "libraryAssetDataSource",
   }),
 };
+
 export const deleteAttachmentInputs = {
   connection,
   attachmentId: input({
@@ -254,6 +265,7 @@ export const deleteAttachmentInputs = {
     clean: util.types.toString,
   }),
 };
+
 export const getAssetsByIdsInputs = {
   connection,
   assetIds: input({
@@ -268,6 +280,7 @@ export const getAssetsByIdsInputs = {
     dataSource: "libraryAssetDataSource",
   }),
 };
+
 export const listAssetCommentsInputs = {
   connection,
   assetId: input({
@@ -301,6 +314,7 @@ export const listAssetCommentsInputs = {
     },
   }),
 };
+
 export const listRelatedAssetsInputs = {
   connection,
   assetId: input({
@@ -321,6 +335,7 @@ export const listRelatedAssetsInputs = {
     inputs: { page, limit },
   }),
 };
+
 export const moveAssetsInputs = {
   connection,
   assetIds: input({
@@ -344,6 +359,7 @@ export const moveAssetsInputs = {
     clean: util.types.toString,
   }),
 };
+
 export const updateAssetInputs = {
   connection,
   assetId: input({

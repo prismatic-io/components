@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { getMobileAppAssignmentExamplePayload as createMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { createMobileAppAssignmentInputs } from "../../inputs";
 import { getMobileAppObject } from "../../util";
+
 export const createMobileAppAssignment = action({
   display: {
     label: "Create Mobile App Assignment",
@@ -19,6 +20,7 @@ export const createMobileAppAssignment = action({
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments`,
       body,
     );
+
     return {
       data,
     };

@@ -4,6 +4,7 @@ import { getRequirementExamplePayload } from "../../examplePayloads";
 import { getRequirementInputs } from "../../inputs";
 import { requirementSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirement = action({
   display: {
     label: "Get Requirement",

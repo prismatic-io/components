@@ -8,6 +8,7 @@ import type {
   UpdateTaskBody,
   UpdateTaskQueryParams,
 } from "../../types";
+
 export const updateTask = action({
   display: {
     label: "Update Task",
@@ -42,6 +43,7 @@ export const updateTask = action({
       add: addAssignees?.length ? addAssignees : [],
       rem: removeAssignees?.length ? removeAssignees : [],
     };
+
     const client = createClickUpClient(connection, context.debug.enabled);
     const body: UpdateTaskBody = {
       name,
@@ -62,9 +64,11 @@ export const updateTask = action({
       custom_task_ids: customTaskIds,
       ...(teamId?.length && { team_id: teamId }),
     };
+
     const { data } = await client.put(`/task/${taskId}`, body, {
       params,
     });
+
     return {
       data,
     };

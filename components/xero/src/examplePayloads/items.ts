@@ -4,6 +4,7 @@ const itemEnvelope = {
   ProviderName: "Acme Corp",
   DateTimeUTC: "/Date(1637616068092)/",
 };
+
 const sampleItem = {
   ItemID: "19b79d12-0ae1-496e-9649-cbd04b15c7c5",
   Code: "WIDGET-001",
@@ -25,33 +26,39 @@ const sampleItem = {
   IsSold: true,
   IsPurchased: true,
 };
+
 export const listItemsExamplePayload = {
   data: {
     ...itemEnvelope,
     Items: [sampleItem],
   },
 };
+
 export const getItemExamplePayload = {
   data: {
     ...itemEnvelope,
     Items: [sampleItem],
   },
 };
+
 export const createItemExamplePayload = {
   data: {
     ...itemEnvelope,
     Items: [sampleItem],
   },
 };
+
 export const updateItemExamplePayload = {
   data: {
     ...itemEnvelope,
     Items: [sampleItem],
   },
 };
+
 export const deleteItemExamplePayload = {
   data: null,
 };
+
 export const getItemHistoryExamplePayload = {
   data: {
     ...itemEnvelope,
@@ -73,6 +80,7 @@ export const getItemHistoryExamplePayload = {
     ],
   },
 };
+
 export const addNoteToItemExamplePayload = {
   data: {
     ...itemEnvelope,

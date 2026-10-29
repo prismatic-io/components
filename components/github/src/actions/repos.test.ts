@@ -14,8 +14,10 @@ import {
   pullsListExamplePayload,
 } from "../examplePayloads";
 import actions from "./index";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 const {
   actionsCreateWorkflowDispatch,
   gitCreateBlob,
@@ -28,7 +30,9 @@ const {
   pullsCreate,
   pullsList,
 } = actions;
+
 afterEach(() => nock.cleanAll());
+
 describe("actionsCreateWorkflowDispatch", () => {
   test("happy path returns the workflow run details", async () => {
     nock(BASE)
@@ -46,6 +50,7 @@ describe("actionsCreateWorkflowDispatch", () => {
       actionsCreateWorkflowDispatchExamplePayload.data,
     );
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/actions/workflows/main.yml/dispatches")
@@ -62,6 +67,7 @@ describe("actionsCreateWorkflowDispatch", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("gitCreateBlob", () => {
   test("happy path returns the created blob", async () => {
     nock(BASE)
@@ -76,6 +82,7 @@ describe("gitCreateBlob", () => {
     });
     expect(result.data).toEqual(gitCreateBlobExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/git/blobs")
@@ -91,6 +98,7 @@ describe("gitCreateBlob", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("gitCreateRef", () => {
   test("happy path returns the created ref", async () => {
     nock(BASE)
@@ -108,6 +116,7 @@ describe("gitCreateRef", () => {
     });
     expect(result.data).toEqual(gitCreateRefExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/git/refs")
@@ -123,6 +132,7 @@ describe("gitCreateRef", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("gitCreateTree", () => {
   test("happy path returns the created tree", async () => {
     nock(BASE)
@@ -137,6 +147,7 @@ describe("gitCreateTree", () => {
     });
     expect(result.data).toEqual(gitCreateTreeExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/git/trees")
@@ -152,6 +163,7 @@ describe("gitCreateTree", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("gitGetRef", () => {
   test("happy path returns the ref", async () => {
     nock(BASE)
@@ -165,6 +177,7 @@ describe("gitGetRef", () => {
     });
     expect(result.data).toEqual(gitGetRefExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/git/ref/heads/missing")
@@ -179,6 +192,7 @@ describe("gitGetRef", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("issuesListForRepo", () => {
   test("happy path returns a single page of issues", async () => {
     nock(BASE)
@@ -203,6 +217,7 @@ describe("issuesListForRepo", () => {
     });
     expect(result.data).toEqual(issuesListForRepoExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/issues")
@@ -228,6 +243,7 @@ describe("issuesListForRepo", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("issuesListComments", () => {
   test("happy path returns comments", async () => {
     nock(BASE)
@@ -244,6 +260,7 @@ describe("issuesListComments", () => {
     });
     expect(result.data).toEqual(issuesListCommentsExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/issues/1347/comments")
@@ -261,6 +278,7 @@ describe("issuesListComments", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("issuesCreateComment", () => {
   test("happy path returns the created comment", async () => {
     nock(BASE)
@@ -275,6 +293,7 @@ describe("issuesCreateComment", () => {
     });
     expect(result.data).toEqual(issuesCreateCommentExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/issues/1347/comments")
@@ -290,6 +309,7 @@ describe("issuesCreateComment", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("pullsList", () => {
   test("happy path returns pull requests", async () => {
     nock(BASE)
@@ -309,6 +329,7 @@ describe("pullsList", () => {
     });
     expect(result.data).toEqual(pullsListExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/pulls")
@@ -329,6 +350,7 @@ describe("pullsList", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("pullsCreate", () => {
   test("happy path returns the created pull request", async () => {
     nock(BASE)
@@ -352,6 +374,7 @@ describe("pullsCreate", () => {
     });
     expect(result.data).toEqual(pullsCreateExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/pulls")

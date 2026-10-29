@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateGroupExamplePayload } from "../../examplePayloads/groups";
 import { updateGroupInputs } from "../../inputs/groups";
 import type { Group } from "../../interfaces/group";
+
 export const updateGroup = action({
   display: {
     label: "Update Group",
@@ -20,6 +21,7 @@ export const updateGroup = action({
         },
       },
     );
+
     return { data };
   },
   examplePayload: updateGroupExamplePayload,

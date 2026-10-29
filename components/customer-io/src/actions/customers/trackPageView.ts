@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { trackPageViewInputs } from "../../inputs";
 import { createCustomerClient } from "../../client";
 import { trackPageViewExamplePayload } from "../../examplePayloads";
+
 export const trackPageView = action({
   display: {
     label: "Track Page View",
@@ -9,6 +10,7 @@ export const trackPageView = action({
   },
   perform: async (context, { id, region, url, cioConnection }) => {
     const client = createCustomerClient(cioConnection, region);
+
     return {
       data: await client.trackPageView(id, url),
     };
@@ -16,4 +18,5 @@ export const trackPageView = action({
   inputs: trackPageViewInputs,
   examplePayload: trackPageViewExamplePayload,
 });
+
 export default trackPageView;

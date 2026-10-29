@@ -17,6 +17,7 @@ import {
   resolveCRMStream,
   resolvePollingStart,
 } from "../../util";
+
 export const leadsPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated CRM Leads",
@@ -42,6 +43,7 @@ export const leadsPollingTrigger = pollingTrigger({
       now,
     );
     const stream = resolveCRMStream(state, incoming, now);
+
     const window = await fetchCRMStreamWindow(context, {
       connection,
       recordType: "Leads",
@@ -61,9 +63,11 @@ export const leadsPollingTrigger = pollingTrigger({
       streamStartedAt,
       window.restarted || stream.restartedStream,
     );
+
     context.polling.setState(
       buildCRMPollingState(next, streamStartedAt, sinceDate, isBackfill),
     );
+
     return {
       payload: {
         ...payload,

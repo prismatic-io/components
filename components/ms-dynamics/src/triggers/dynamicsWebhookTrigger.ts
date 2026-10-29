@@ -1,6 +1,7 @@
 import { trigger, util } from "@prismatic-io/spectral";
 import { dynamicsWebhookTriggerExamplePayload } from "../examplePayloads";
 import { dynamicsWebhookTriggerInputs } from "../inputs";
+
 export const dynamicsWebhookTrigger = trigger({
   display: {
     label: "Webhook",
@@ -12,6 +13,7 @@ export const dynamicsWebhookTrigger = trigger({
   examplePayload: dynamicsWebhookTriggerExamplePayload,
   perform: async (context, payload, params) => {
     const headers = util.types.lowerCaseHeaders(payload.headers);
+
     if (params.webhookKey && !context.isSimulatedTestExecution) {
       const queryParameters = (payload.queryParameters ?? {}) as Record<
         string,
@@ -26,10 +28,12 @@ export const dynamicsWebhookTrigger = trigger({
         );
       }
     }
+
     const requestId = headers["x-request-id"];
     const organization = headers["x-ms-dynamics-organization"];
     const entityName = headers["x-ms-dynamics-entity-name"];
     const requestName = headers["x-ms-dynamics-request-name"];
+
     if (requestName === "URL_VALIDATION") {
       return Promise.resolve({
         payload,
@@ -37,6 +41,7 @@ export const dynamicsWebhookTrigger = trigger({
         branch: "URL Validation / Heartbeat",
       });
     }
+
     let bodyData: Record<string, unknown>;
     try {
       bodyData = JSON.parse(util.types.toString(payload.body.data));
@@ -45,9 +50,11 @@ export const dynamicsWebhookTrigger = trigger({
         `Failed to parse webhook request body as JSON: ${(error as Error).message}`,
       );
     }
+
     const inputParameters = bodyData.InputParameters;
     const initiatingUserId = bodyData.InitiatingUserId;
     const messageName = bodyData.MessageName;
+
     return Promise.resolve({
       payload: {
         ...payload,

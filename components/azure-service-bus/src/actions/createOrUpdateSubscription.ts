@@ -28,6 +28,7 @@ import {
 } from "../inputs";
 import type { CreateOrUpdateSubscriptionsBody } from "../types/CreateOrUpdateSubscriptionsBody";
 import type { EntityStatus } from "../types/EntityStatus";
+
 export const createOrUpdateSubscription = action({
   display: {
     label: "Create or Update Subscription",
@@ -127,4 +128,5 @@ export const createOrUpdateSubscription = action({
     isShared,
   },
 });
+
 export default { createOrUpdateSubscription };

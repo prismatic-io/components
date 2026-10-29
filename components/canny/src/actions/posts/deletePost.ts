@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deletePostExamplePayload } from "../../examplePayloads";
 import { deletePostInputs } from "../../inputs";
 import { deletePostOutputSchema } from "../../outputSchemas";
+
 export const deletePost = action({
   display: {
     label: "Delete Post",
@@ -19,8 +20,7 @@ export const deletePost = action({
     const data = await client.post("/posts/delete", { postID: postId });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deletePostExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deletePostExamplePayload,
   examplePayload: deletePostExamplePayload,
 });

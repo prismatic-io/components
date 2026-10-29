@@ -106,8 +106,11 @@ export const getSubscriptionExamplePayload = {
     trial_start: null,
   } as unknown,
 };
+
 export const createSubscriptionExamplePayload = getSubscriptionExamplePayload;
+
 export const updateSubscriptionExamplePayload = getSubscriptionExamplePayload;
+
 export const deleteSubscriptionExamplePayload = {
   data: {
     ...(getSubscriptionExamplePayload.data as Record<string, unknown>),
@@ -121,6 +124,7 @@ export const deleteSubscriptionExamplePayload = {
     },
   } as unknown,
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     object: "list",

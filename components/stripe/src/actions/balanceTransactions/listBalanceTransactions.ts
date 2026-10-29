@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { listBalanceTransactionsExamplePayload } from "../../examplePayloads/balanceTransactions";
 import { listBalanceTransactionsInputs } from "../../inputs";
 import { listBalanceTransactionsOutputSchema } from "../../outputSchemas";
+
 export const listBalanceTransactions = action({
   display: {
     label: "List Balance Transactions",
@@ -19,6 +20,7 @@ export const listBalanceTransactions = action({
       stripeConnection: stripeConnection,
       timeout,
     });
+
     const options: Stripe.BalanceTransactionListParams = {
       created: created,
       ...(currency && { currency }),

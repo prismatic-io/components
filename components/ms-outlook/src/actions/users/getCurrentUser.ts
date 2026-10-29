@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",

@@ -6,6 +6,7 @@ import {
 import { createRedshiftClient } from "../../client";
 import { describeStatementInputs } from "../../inputs";
 import { describeStatementExamplePayload } from "../../examplePayloads";
+
 export const describeStatement = action({
   display: {
     label: "Describe Statement",
@@ -19,11 +20,14 @@ export const describeStatement = action({
       awsRegion,
       context.debug.enabled,
     );
+
     const commandInput: DescribeStatementCommandInput = {
       Id: statementId,
     };
+
     const command = new DescribeStatementCommand(commandInput);
     const response = await client.send(command);
+
     return {
       data: response,
     };

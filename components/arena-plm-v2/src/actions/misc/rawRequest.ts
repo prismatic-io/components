@@ -14,9 +14,11 @@ import {
   isRecord,
   keyValueListToRecord,
 } from "../../util";
+
 type ArenaRequestConfig = Parameters<
   Awaited<ReturnType<typeof createArenaClient>>["request"]
 >[0];
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -61,18 +63,24 @@ export const rawRequest = action({
           responseType,
         });
       }
+
       const client = await createArenaClient(context, connection);
+
       if (/^([a-z][a-z\d+\-.]*:)?\/\//i.test(endpoint)) {
         throw new Error(
           `Endpoint must be a path relative to the Arena API base URL, received: ${endpoint}`,
         );
       }
+
       const normalizedEndpoint = endpoint.startsWith("/")
         ? endpoint
         : `/${endpoint}`;
+
       const queryParams = keyValueListToRecord(queryParameters);
       const headers = keyValueListToRecord(additionalHeaders);
+
       let requestBody: unknown;
+
       if (
         httpMethod.toUpperCase() !== "GET" &&
         httpMethod.toUpperCase() !== "DELETE"
@@ -84,6 +92,7 @@ export const rawRequest = action({
           }
         } else if (formData && Array.isArray(formData) && formData.length > 0) {
           const formDataObj = keyValueListToRecord(formData);
+
           if (Object.keys(formDataObj).length > 0) {
             requestBody = new URLSearchParams(formDataObj);
             headers[CONTENT_TYPE_HEADER] = FORM_URLENCODED_CONTENT_TYPE;
@@ -105,10 +114,12 @@ export const rawRequest = action({
               `JSON payload must be a valid JSON string or object, received: ${typeof jsonPayload}`,
             );
           }
+
           requestBody = parsedPayload;
           if (!headers[CONTENT_TYPE_HEADER]) {
             headers[CONTENT_TYPE_HEADER] = JSON_CONTENT_TYPE;
           }
+
           if (context.debug.enabled) {
             context.logger.debug("JSON payload processed", {
               originalType: typeof jsonPayload,
@@ -120,6 +131,7 @@ export const rawRequest = action({
           }
         }
       }
+
       const requestConfig: ArenaRequestConfig = {
         url: normalizedEndpoint,
         method: httpMethod.toLowerCase(),
@@ -130,6 +142,7 @@ export const rawRequest = action({
           ? { responseType: responseType as ArenaRequestConfig["responseType"] }
           : {}),
       };
+
       context.logger.info("Making raw request to Arena API", {
         endpoint: normalizedEndpoint,
         method: httpMethod,
@@ -140,7 +153,9 @@ export const rawRequest = action({
         queryParamNames: Object.keys(queryParams),
         headerNames: Object.keys(headers),
       });
+
       const response = await client.request(requestConfig);
+
       let responseData: unknown;
       switch (responseType) {
         case "text":
@@ -165,11 +180,13 @@ export const rawRequest = action({
           responseData = response.data;
           break;
       }
+
       context.logger.info("Raw request completed successfully", {
         statusCode: response.status,
         responseSize: JSON.stringify(responseData).length,
         contentType: response.headers["content-type"],
       });
+
       return {
         data: {
           responseData,

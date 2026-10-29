@@ -4,6 +4,7 @@ import { listModelFieldsExamplePayload } from "../../examplePayloads";
 import { listModelFieldsInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
 import { json2Path } from "../../util";
+
 export const listModelFields = action({
   display: {
     label: "List Model Fields",

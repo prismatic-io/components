@@ -6,10 +6,12 @@ const linkSchema = {
   },
   required: ["rel", "href"],
 };
+
 const responseHeadersSchema = {
   type: "object" as const,
   additionalProperties: { type: "string" },
 };
+
 const recordReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -18,6 +20,7 @@ const recordReferenceSchema = {
   },
   required: ["id"],
 };
+
 const recordLocationIdentitySchema = {
   type: "object" as const,
   properties: {
@@ -26,6 +29,7 @@ const recordLocationIdentitySchema = {
   },
   required: ["recordType", "id"],
 };
+
 export const listRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -52,6 +56,7 @@ export const listRecordOutputSchema = {
   },
   required: ["data", "headers"],
 };
+
 export const createRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -60,6 +65,7 @@ export const createRecordOutputSchema = {
   },
   required: ["data", "headers"],
 };
+
 export const updateRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -68,6 +74,7 @@ export const updateRecordOutputSchema = {
   },
   required: ["data", "headers"],
 };
+
 export const getRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -83,6 +90,7 @@ export const getRecordOutputSchema = {
   },
   required: ["data", "headers"],
 };
+
 export const suiteQlQueryOutputSchema = {
   type: "object" as const,
   properties: {

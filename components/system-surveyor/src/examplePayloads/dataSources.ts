@@ -5,6 +5,7 @@ export const selectElementProfileExamplePayload = {
     { label: "Standard Security Profile", key: "8120" },
   ],
 };
+
 export const selectSiteExamplePayload = {
   result: [
     {
@@ -21,6 +22,7 @@ export const selectSiteExamplePayload = {
     },
   ],
 };
+
 export const selectTeamExamplePayload = {
   result: [
     { label: "Engineering Team", key: "4955" },
@@ -28,6 +30,7 @@ export const selectTeamExamplePayload = {
     { label: "Security Team", key: "6230" },
   ],
 };
+
 export const selectSiteSurveyExamplePayload = {
   result: [
     {

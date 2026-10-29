@@ -7,7 +7,9 @@ import {
   project_id,
   workspace_id,
 } from "./common";
+
 const { debugRequest: _, ...rawRequestHttpInputs } = httpClientInputs;
+
 export const script = input({
   label: "Script",
   type: "string",
@@ -19,6 +21,7 @@ export const script = input({
   example:
     "function main(){return Events(params).groupBy(['name'],mixpanel.reducer.count())}",
 });
+
 export const params = input({
   label: "Params",
   type: "code",
@@ -37,6 +40,7 @@ export const params = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const customJQLQueryInputs = {
   connection: connectionInput,
   regionAndDomain,
@@ -45,6 +49,7 @@ export const customJQLQueryInputs = {
   project_id,
   workspace_id,
 };
+
 export const rawRequestInputs = {
   connection: connectionInput,
   baseUrl: {

@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { deleteSectionExamplePayload } from "../../examplePayloads";
 import { deleteSectionInputs } from "../../inputs";
 import { deleteSectionOutputSchema } from "../../outputSchemas";
+
 export const deleteSection = action({
   display: {
     label: "Delete Section",
@@ -15,6 +16,7 @@ export const deleteSection = action({
     const { data } = await client.delete(
       `/help_center/${locale}/sections/${sectionId}.json`,
     );
+
     return {
       data,
     };

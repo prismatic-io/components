@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { GENERIC_DELETE_RESPONSE } from "../../constants";
 import { connection, customAccountingFieldId } from "../../inputs";
 import { deleteCustomAccountingFieldOutputSchema } from "../../outputSchemas";
+
 export const deleteCustomAccountingField = action({
   display: {
     label: "Delete Custom Accounting Field",
@@ -22,14 +23,13 @@ export const deleteCustomAccountingField = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, customAccountingFieldId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     await client.delete(`/accounting/fields/${customAccountingFieldId}`);
     return {
       data: GENERIC_DELETE_RESPONSE,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: GENERIC_DELETE_RESPONSE,
   }),
   examplePayload: {

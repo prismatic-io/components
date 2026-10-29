@@ -4,6 +4,7 @@ import { selectApplicationExamplePayload } from "../examplePayloads/dataSources"
 import { connection } from "../inputs/general";
 import type { Application } from "../interfaces/application";
 import { paginateRecordsWithLink } from "../util/util";
+
 export const selectApplication = dataSource({
   display: {
     label: "Select Application",
@@ -20,10 +21,12 @@ export const selectApplication = dataSource({
       true,
       {},
     );
+
     const result = data.map<Element>((app) => ({
       label: app.label,
       key: app.id.toString(),
     }));
+
     return {
       result,
     };

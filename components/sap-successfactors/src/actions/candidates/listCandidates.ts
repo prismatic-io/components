@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listCandidatesExamplePayload } from "../../examplePayloads";
 import { defaultListInputs } from "../../inputs";
 import { paginateData } from "../../util";
+
 export const listCandidates = action({
   display: {
     label: "List Candidates",

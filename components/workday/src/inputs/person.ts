@@ -5,6 +5,7 @@ import {
   paginationQueryStringInputs,
   extraParameters,
 } from "./common";
+
 const personId = input({
   label: "Person ID",
   comments: "Unique identifier for a person in the Workday tenant.",
@@ -15,11 +16,14 @@ const personId = input({
   clean: util.types.toString,
   dataSource: "selectPerson",
 });
+
 const listPeopleParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.person.slice(1)}/get-/people).`;
+
 export const getPersonByIdInputs = {
   connection,
   personId,
 };
+
 export const listPeopleInputs = {
   connection,
   ...paginationQueryStringInputs,

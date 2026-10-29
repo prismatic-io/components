@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { refreshWebhookInputs } from "../../inputs";
 import { createClient } from "../../client";
+
 export const refreshWebhook = action({
   display: {
     label: "Refresh Webhook",
@@ -15,9 +16,7 @@ export const refreshWebhook = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { expirationDate: "2022-12-21T09:20:20.388-0900" },
   }),
   examplePayload: {

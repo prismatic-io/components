@@ -1,4 +1,5 @@
 import type { GetCallerIdentityCommandOutput } from "@aws-sdk/client-sts";
+
 export const getCurrentAccountExamplePayload: {
   data: GetCallerIdentityCommandOutput;
 } = {

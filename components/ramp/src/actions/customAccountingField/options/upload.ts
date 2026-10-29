@@ -7,6 +7,7 @@ import {
   options,
 } from "../../../inputs";
 import { uploadCustomAccountingFieldOptionOutputSchema } from "../../../outputSchemas";
+
 export const uploadCustomAccountingFieldOption = action({
   display: {
     label: "Upload Custom Accounting Field Option",
@@ -31,6 +32,7 @@ export const uploadCustomAccountingFieldOption = action({
     { connection, customAccountingFieldOptionId, options },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/accounting/field-options`, {
       field_id: customAccountingFieldOptionId,
       options,
@@ -39,9 +41,7 @@ export const uploadCustomAccountingFieldOption = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createCustomAccountingFieldOptionResponse,
   }),
   examplePayload: {

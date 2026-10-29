@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_UPDATE_RESPONSE } from "../../constants";
 import { updateInvoiceInputs } from "../../inputs/invoices/update";
+
 export const updateInvoice = action({
   display: {
     label: "Update Invoice",
@@ -21,10 +22,12 @@ export const updateInvoice = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(`/Invoices(${invoiceDocumentEntry})`, {
       Comments,
       ...bodyFields,
     });
+
     return {
       data: DEFAULT_UPDATE_RESPONSE,
     };

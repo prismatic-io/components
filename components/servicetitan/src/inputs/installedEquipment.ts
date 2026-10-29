@@ -1,4 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+
 import { cleanCodeInput, cleanNumberInput, cleanStringInput } from "../util";
 import {
   connection,
@@ -14,6 +15,7 @@ import {
   sort,
   tagTypeIds,
 } from "./common";
+
 const installedEquipmentId = input({
   label: "Installed Equipment ID",
   type: "string",
@@ -24,6 +26,7 @@ const installedEquipmentId = input({
   clean: util.types.toString,
   dataSource: "selectInstalledEquipment",
 });
+
 const serialNumber = input({
   label: "Serial Number",
   type: "string",
@@ -33,6 +36,7 @@ const serialNumber = input({
   placeholder: "Enter a serial number",
   clean: cleanStringInput,
 });
+
 const manufacturer = input({
   label: "Manufacturer",
   type: "string",
@@ -42,6 +46,7 @@ const manufacturer = input({
   placeholder: "Enter a manufacturer name",
   clean: cleanStringInput,
 });
+
 const model = input({
   label: "Model",
   type: "string",
@@ -51,6 +56,7 @@ const model = input({
   placeholder: "Enter a model name",
   clean: cleanStringInput,
 });
+
 const installedEquipmentCost = input({
   label: "Cost",
   type: "string",
@@ -60,6 +66,7 @@ const installedEquipmentCost = input({
   placeholder: "Enter a cost amount",
   clean: cleanNumberInput,
 });
+
 const manufacturerWarrantyStart = input({
   label: "Manufacturer Warranty Start",
   type: "string",
@@ -69,6 +76,7 @@ const manufacturerWarrantyStart = input({
   placeholder: "Enter the manufacturer warranty start date",
   clean: cleanStringInput,
 });
+
 const manufacturerWarrantyEnd = input({
   label: "Manufacturer Warranty End",
   type: "string",
@@ -78,6 +86,7 @@ const manufacturerWarrantyEnd = input({
   placeholder: "Enter the manufacturer warranty end date",
   clean: cleanStringInput,
 });
+
 const serviceProviderWarrantyStart = input({
   label: "Service Provider Warranty Start",
   type: "string",
@@ -87,6 +96,7 @@ const serviceProviderWarrantyStart = input({
   placeholder: "Enter the service provider warranty start date",
   clean: cleanStringInput,
 });
+
 const serviceProviderWarrantyEnd = input({
   label: "Service Provider Warranty End",
   type: "string",
@@ -96,6 +106,7 @@ const serviceProviderWarrantyEnd = input({
   placeholder: "Enter the service provider warranty end date",
   clean: cleanStringInput,
 });
+
 const attachments = input({
   label: "Attachments",
   type: "code",
@@ -116,6 +127,7 @@ const attachments = input({
   comments: "List of attachments",
   clean: cleanCodeInput,
 });
+
 const file = input({
   label: "Attachment File",
   type: "data",
@@ -123,6 +135,7 @@ const file = input({
   comments: "Reference a file from another action. Must be a file type.",
   clean: util.types.toData,
 });
+
 const fileName = input({
   label: "File Name",
   type: "string",
@@ -132,6 +145,7 @@ const fileName = input({
   placeholder: "Enter a file name",
   clean: util.types.toString,
 });
+
 const path = input({
   label: "Path",
   type: "string",
@@ -141,6 +155,7 @@ const path = input({
   placeholder: "Enter an attachment path",
   clean: cleanStringInput,
 });
+
 const warrantyDates = structuredObjectInput({
   label: "Warranty Dates",
   required: false,
@@ -152,6 +167,7 @@ const warrantyDates = structuredObjectInput({
     serviceProviderWarrantyEnd,
   },
 });
+
 export const createInstalledEquipmentInputs = {
   connection,
   locationId: {
@@ -186,15 +202,18 @@ export const createInstalledEquipmentInputs = {
   attachments,
   tagTypeIds,
 };
+
 export const createInstalledEquipmentAttachmentInputs = {
   connection,
   file,
   fileName,
 };
+
 export const getInstalledEquipmentInputs = {
   connection,
   installedEquipmentId,
 };
+
 export const listInstalledEquipmentInputs = {
   connection,
   fetchAll,
@@ -203,6 +222,7 @@ export const listInstalledEquipmentInputs = {
   sort,
   customQueryParams,
 };
+
 export const listInstalledEquipmentAttachmentsInputs = {
   connection,
   path: {
@@ -211,6 +231,7 @@ export const listInstalledEquipmentAttachmentsInputs = {
     clean: util.types.toString,
   },
 };
+
 export const updateInstalledEquipmentInputs = {
   connection,
   installedEquipmentId,

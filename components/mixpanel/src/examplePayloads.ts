@@ -5,6 +5,7 @@ export const trackEventsExamplePayload = {
     status: "OK",
   },
 };
+
 export const importEventsExamplePayload = {
   data: {
     code: 200,
@@ -12,6 +13,7 @@ export const importEventsExamplePayload = {
     status: "OK",
   },
 };
+
 export const createProfileExamplePayload = {
   data: {
     code: 200,
@@ -19,6 +21,7 @@ export const createProfileExamplePayload = {
     status: "OK",
   },
 };
+
 export const queryProfilesExamplePayload = {
   data: {
     page: 0,
@@ -40,9 +43,11 @@ export const queryProfilesExamplePayload = {
     total: 1,
   },
 };
+
 export const updateMultipleProfilesExamplePayload = {
   data: 1,
 };
+
 export const deleteProfileExamplePayload = {
   data: {
     code: 200,
@@ -50,12 +55,15 @@ export const deleteProfileExamplePayload = {
     status: "OK",
   },
 };
+
 export const createIdentityExamplePayload = {
   data: 1,
 };
+
 export const createAliasExamplePayload = {
   data: 1,
 };
+
 export const listPipelinesExamplePayload = {
   data: {
     "9876543210": [
@@ -69,6 +77,7 @@ export const listPipelinesExamplePayload = {
     ],
   },
 };
+
 export const getPipelineExamplePayload = {
   data: {
     canceled: [
@@ -106,6 +115,7 @@ export const getPipelineExamplePayload = {
     ],
   },
 };
+
 export const createGCSPipelineExamplePayload = {
   data: {
     pipeline_names: [
@@ -116,9 +126,11 @@ export const createGCSPipelineExamplePayload = {
       "https://bigquery.cloud.google.com/dataset/mixpanel-prod-1:sample_dataset_name",
   },
 };
+
 export const editGCSPipelineExamplePayload = {
   data: null,
 };
+
 export const createGenericPipelineExamplePayload = {
   data: {
     pipeline_names: [
@@ -129,12 +141,15 @@ export const createGenericPipelineExamplePayload = {
       "https://bigquery.cloud.google.com/dataset/mixpanel-prod-1:generic_dataset_name",
   },
 };
+
 export const editGenericPipelineExamplePayload = {
   data: null,
 };
+
 export const deletePipelineExamplePayload = {
   data: null,
 };
+
 export const listSavedFunnelsExamplePayload = {
   data: [
     {
@@ -147,6 +162,7 @@ export const listSavedFunnelsExamplePayload = {
     },
   ],
 };
+
 export const queryFunnelSavedReportsExamplePayload = {
   data: {
     meta: {
@@ -249,6 +265,7 @@ export const queryFunnelSavedReportsExamplePayload = {
     },
   },
 };
+
 export const queryInsightsSavedReportsExamplePayload = {
   data: {
     computed_at: "2020-09-21T16:35:41.252314+00:00",
@@ -269,6 +286,7 @@ export const queryInsightsSavedReportsExamplePayload = {
     },
   },
 };
+
 export const downloadDataExamplePayload = {
   data: [
     {
@@ -289,6 +307,7 @@ export const downloadDataExamplePayload = {
     },
   ],
 };
+
 export const customJQLQueryExamplePayload = {
   data: 1,
 };

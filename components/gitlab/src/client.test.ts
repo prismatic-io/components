@@ -12,19 +12,23 @@ import {
   onPremConnectionValue,
   onPremOauthConnectionValue,
 } from "./testHelpers";
+
 afterEach(() => nock.cleanAll());
+
 describe("getAuthHeaders", () => {
   test("access tokens use PRIVATE-TOKEN", () => {
     expect(getAuthHeaders(accessTokenConnection)).toEqual({
       "PRIVATE-TOKEN": "glpat-test-token",
     });
   });
+
   test("OAuth uses a bearer token", () => {
     expect(getAuthHeaders(oauthConnection)).toEqual({
       Authorization: "Bearer oauth-test-token",
     });
   });
 });
+
 describe("resolveRequestTarget", () => {
   test("direct connection uses the GitLab URL", () => {
     const target = resolveRequestTarget(accessTokenConnection);
@@ -32,6 +36,7 @@ describe("resolveRequestTarget", () => {
     expect(target.viaTunnel).toBe(false);
     expect(target.headers.Host).toBeUndefined();
   });
+
   test("on-prem connection with a tunnel dials host and port and keeps the real Host", () => {
     const target = resolveRequestTarget(
       onPremConnectionValue({
@@ -45,6 +50,7 @@ describe("resolveRequestTarget", () => {
     expect(target.viaTunnel).toBe(true);
     expect(target.httpsAgent).toBeDefined();
   });
+
   test("OAuth connection with the on-prem toggle on also routes through the tunnel", () => {
     const target = resolveRequestTarget(
       onPremOauthConnectionValue({ host: "10.0.0.12", port: "443" }),
@@ -56,6 +62,7 @@ describe("resolveRequestTarget", () => {
     });
     expect(target.viaTunnel).toBe(true);
   });
+
   test("a direct connection gets a TLS agent only when a CA or Ignore SSL Errors is set", () => {
     expect(
       resolveRequestTarget(accessTokenConnection).httpsAgent,
@@ -66,6 +73,7 @@ describe("resolveRequestTarget", () => {
       ).httpsAgent,
     ).toBeDefined();
   });
+
   test("rejects an http GitLab URL on a direct connection", () => {
     expect(() =>
       resolveRequestTarget(
@@ -73,6 +81,7 @@ describe("resolveRequestTarget", () => {
       ),
     ).toThrow(ConnectionError);
   });
+
   test("allows an http GitLab URL through the on-prem tunnel", () => {
     const target = resolveRequestTarget(
       onPremConnectionValue({
@@ -83,12 +92,14 @@ describe("resolveRequestTarget", () => {
     );
     expect(target.baseUrl).toBe("http://10.0.0.12:8080/api/v4");
   });
+
   test("on-prem connection without a tunnel host goes direct", () => {
     const target = resolveRequestTarget(onPremConnectionValue({ host: "" }));
     expect(target.baseUrl).toBe("https://gitlab.test/api/v4");
     expect(target.viaTunnel).toBe(false);
   });
 });
+
 describe("createGitlabClient", () => {
   test("retries a 429 honoring Retry-After", async () => {
     nock(GITLAB_URL)
@@ -100,6 +111,7 @@ describe("createGitlabClient", () => {
     const { data } = await client.get("/user");
     expect(data).toEqual({ id: 1 });
   });
+
   test("does not retry a POST that was rate limited", async () => {
     const scope = nock(GITLAB_URL)
       .post("/api/v4/projects/1/issues")
@@ -109,6 +121,7 @@ describe("createGitlabClient", () => {
     expect(scope.isDone()).toBe(true);
     expect(nock.pendingMocks()).toEqual([]);
   });
+
   test("retries a rate-limited PUT", async () => {
     nock(GITLAB_URL)
       .put("/api/v4/projects/1/issues/2")
@@ -119,6 +132,7 @@ describe("createGitlabClient", () => {
     const { data } = await client.put("/projects/1/issues/2", { title: "x" });
     expect(data).toEqual({ id: 2 });
   });
+
   test("does not retry a POST that failed with 500", async () => {
     const scope = nock(GITLAB_URL)
       .post("/api/v4/projects/1/issues")
@@ -128,6 +142,7 @@ describe("createGitlabClient", () => {
     expect(scope.isDone()).toBe(true);
     expect(nock.pendingMocks()).toEqual([]);
   });
+
   test("reports a 401 as a ConnectionError with a next step", async () => {
     nock(GITLAB_URL)
       .get("/api/v4/user")
@@ -137,6 +152,7 @@ describe("createGitlabClient", () => {
     expect(error).toBeInstanceOf(ConnectionError);
     expect((error as Error).message).toMatch(/expired or revoked/);
   });
+
   test("keeps a 403 as an HTTP error with a permissions hint", async () => {
     nock(GITLAB_URL)
       .get("/api/v4/projects/1/hooks")
@@ -149,6 +165,7 @@ describe("createGitlabClient", () => {
     expect((error as Error).message).toMatch(/Maintainer or Owner/);
   });
 });
+
 describe("redirects", () => {
   test("drops PRIVATE-TOKEN on a redirect to another host", async () => {
     nock(GITLAB_URL)
@@ -167,6 +184,7 @@ describe("redirects", () => {
     expect(data).toBe("contents");
     expect(storage.isDone()).toBe(true);
   });
+
   test("keeps PRIVATE-TOKEN on a redirect within the GitLab host", async () => {
     nock(GITLAB_URL)
       .get("/api/v4/projects/acme%2Fapp")
@@ -181,6 +199,7 @@ describe("redirects", () => {
     expect(target.isDone()).toBe(true);
   });
 });
+
 describe("debug logging", () => {
   const fakeLogger = () => {
     const debug = vi.fn();
@@ -195,6 +214,7 @@ describe("debug logging", () => {
     };
     return { logger, debug };
   };
+
   test.each([
     ["access token", accessTokenConnection, "glpat-test-token"],
     ["OAuth", oauthConnection, "oauth-test-token"],
@@ -217,6 +237,7 @@ describe("debug logging", () => {
     expect(output).toContain("confidential");
     expect(output).toContain("Retry failed ACH settlements");
   });
+
   test("never logs a webhook secret or a private_token param or query value", async () => {
     const { logger, debug } = fakeLogger();
     nock(GITLAB_URL).post("/api/v4/projects/1/hooks").query(true).reply(201, {
@@ -250,6 +271,7 @@ describe("debug logging", () => {
     expect(output).toContain("per_page=5");
     expect(output).toContain("https://hooks.example.com");
   });
+
   test("redacts a copy and sends the real secret", async () => {
     const { logger } = fakeLogger();
     const body = {
@@ -268,17 +290,19 @@ describe("debug logging", () => {
     expect(scope.isDone()).toBe(true);
     expect(body.token).toBe("hook-secret-value");
   });
+
   test("summarizes a request body over 10 KB instead of logging it", async () => {
     const { logger, debug } = fakeLogger();
     nock(GITLAB_URL).post("/api/v4/projects/1/issues").reply(201, { id: 1 });
     const client = createGitlabClient(accessTokenConnection, logger);
     await client.post("/projects/1/issues", {
-      description: "x".repeat(11000),
+      description: "x".repeat(11_000),
     });
     const output = debug.mock.calls.map((call) => call.join(" ")).join("\n");
     expect(output).toMatch(/<data \(\d+ bytes\)>/);
-    expect(output).not.toContain("x".repeat(11000));
+    expect(output).not.toContain("x".repeat(11_000));
   });
+
   test("logs nothing to the console", async () => {
     const consoleLog = vi
       .spyOn(console, "log")
@@ -289,6 +313,7 @@ describe("debug logging", () => {
     expect(consoleLog).not.toHaveBeenCalled();
     consoleLog.mockRestore();
   });
+
   test("logs nothing when debug is off", async () => {
     const consoleLog = vi
       .spyOn(console, "log")

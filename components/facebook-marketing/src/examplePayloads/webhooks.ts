@@ -5,6 +5,7 @@ export const listWebhooksResponse = {
     },
   ],
 };
+
 export const deleteWebhookResponse = {
   data: "Webhook deleted successfully",
 };

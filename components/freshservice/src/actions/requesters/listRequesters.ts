@@ -4,6 +4,7 @@ import { listRequestersExamplePayload as examplePayload } from "../../examplePay
 import { listRequestersInputs as inputs } from "../../inputs";
 import { listRequestersOutputSchema } from "../../outputSchemas";
 import { getListData } from "../../util";
+
 export const listRequesters = action({
   display: {
     label: "List Requesters",
@@ -17,6 +18,7 @@ export const listRequesters = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await getListData(client, `/requesters`, "requesters", {
       fetchAll,
       params: {
@@ -25,6 +27,7 @@ export const listRequesters = action({
         page: pagination.page,
       },
     });
+
     return {
       data,
     };

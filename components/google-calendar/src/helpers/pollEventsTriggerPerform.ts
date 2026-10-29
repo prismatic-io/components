@@ -14,6 +14,7 @@ import type {
 } from "../types";
 import { listAllEvents } from "./listAllEvents";
 import { retrieveIncrementalChanges } from "./retrieveIncrementalChanges";
+
 const classifyEvent = (
   event: calendar_v3.Schema$Event,
 ): ProcessedEvent["changeType"] => {
@@ -23,6 +24,7 @@ const classifyEvent = (
   const updatedTime = new Date(event.updated).getTime();
   return updatedTime - createdTime < 1000 ? "created" : "updated";
 };
+
 const processEvents = (
   events: calendar_v3.Schema$Event[],
 ): {
@@ -34,6 +36,7 @@ const processEvents = (
   const createdEvents: ProcessedEvent[] = [];
   const updatedEvents: ProcessedEvent[] = [];
   const deletedEvents: ProcessedEvent[] = [];
+
   const processedEvents = events.map((event) => {
     const changeType = classifyEvent(event);
     const processed: ProcessedEvent = {
@@ -56,13 +59,17 @@ const processEvents = (
       recurringEventId: event.recurringEventId,
       htmlLink: event.htmlLink,
     };
+
     if (changeType === "created") createdEvents.push(processed);
     else if (changeType === "updated") updatedEvents.push(processed);
     else if (changeType === "deleted") deletedEvents.push(processed);
+
     return processed;
   });
+
   return { processedEvents, createdEvents, updatedEvents, deletedEvents };
 };
+
 export const pollEventsTriggerPerform = async (
   context: ActionContext & PollingContext,
   payload: TriggerPayload,
@@ -72,10 +79,12 @@ export const pollEventsTriggerPerform = async (
   const isBatching = context.batch?.enabled === true;
   const incoming = payload.paginationState as PollEventsCursor | undefined;
   const newLastPolledAt = incoming?.drainStartedAt ?? new Date().toISOString();
+
   let syncToken = incoming?.syncToken ?? pollState.syncToken;
   let events: calendar_v3.Schema$Event[] = [];
   let nextPageToken: string | undefined;
   let drained = true;
+
   try {
     if (incoming?.pageToken) {
       const response = await listAllEvents({
@@ -123,9 +132,11 @@ export const pollEventsTriggerPerform = async (
       if (context.debug.enabled) {
         context.logger.info("No sync token found, performing initial sync");
       }
+
       const updatedMin = lookBackDate
         ? new Date(`${lookBackDate}T00:00:00Z`).toISOString()
         : newLastPolledAt;
+
       const response = await listAllEvents({
         googleConnection: connection,
         calendarId,
@@ -135,30 +146,30 @@ export const pollEventsTriggerPerform = async (
         singleEvents: true,
         showDeleted: true,
       });
+
       syncToken = response.data.nextSyncToken;
       nextPageToken = response.data.nextPageToken;
       events = response.data.items || [];
       drained = !nextPageToken;
+
       if (!isBatching) {
         events = lookBackDate ? events : [];
       }
     }
   } catch (e: unknown) {
-    const syncError = e as Error & {
-      response?: {
-        status: number;
-      };
-    };
+    const syncError = e as Error & { response?: { status: number } };
     if (syncError.response?.status === 410) {
       if (context.debug.enabled) {
         context.logger.warn(
           "Sync token is no longer valid, performing incremental sync from last polled date",
         );
       }
+
       const resyncTimeMin = pollState.lastPolledAt;
       if (context.debug.enabled) {
         context.logger.info(`Resyncing from ${resyncTimeMin}`);
       }
+
       const initialResponse = await listAllEvents({
         googleConnection: connection,
         calendarId,
@@ -168,10 +179,12 @@ export const pollEventsTriggerPerform = async (
         singleEvents: true,
         showDeleted: true,
       });
+
       syncToken = initialResponse.data.nextSyncToken;
       nextPageToken = initialResponse.data.nextPageToken;
       events = initialResponse.data.items || [];
       drained = !nextPageToken;
+
       if (!syncToken && drained) {
         throw new Error("No sync token found after resync");
       }
@@ -179,8 +192,10 @@ export const pollEventsTriggerPerform = async (
       throw syncError;
     }
   }
+
   const { processedEvents, createdEvents, updatedEvents, deletedEvents } =
     processEvents(events);
+
   let nextPaginationState: PollEventsCursor = null;
   if (!drained) {
     nextPaginationState = {
@@ -189,11 +204,13 @@ export const pollEventsTriggerPerform = async (
       drainStartedAt: newLastPolledAt,
     };
   }
+
   const stateUpdate: PollEventsTriggerState = {
     syncToken,
     lastPolledAt: drained ? newLastPolledAt : pollState.lastPolledAt,
   };
   context.polling.setState(stateUpdate as PollEventsTriggerState);
+
   const changes: CategorizedEventChanges = {
     summary: {
       totalChanges: processedEvents.length,
@@ -207,8 +224,10 @@ export const pollEventsTriggerPerform = async (
     deletedEvents,
     allChanges: processedEvents,
   };
+
   const polledNoChanges =
     processedEvents.length === 0 && nextPaginationState === null && !incoming;
+
   return {
     payload: {
       ...payload,

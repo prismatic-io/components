@@ -4,6 +4,7 @@ import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/cl
 import { GraphQLClient } from "graphql-request";
 import axios from "axios";
 import type { AccessibleResource } from "./types";
+
 export const buildAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
@@ -25,6 +26,7 @@ export const buildAuthHeaders = (
     }
   }
 };
+
 const searchOverridenHostId = (
   accessibleResources: AccessibleResource[],
   searchTerm: string,
@@ -35,6 +37,7 @@ const searchOverridenHostId = (
   if (matchingResource) return matchingResource.id;
   throw new Error(`No matching resource found for ${searchTerm}`);
 };
+
 export const getHost = async (connection: Connection): Promise<string> => {
   try {
     const { data: accessibleResources } = await axios.get<AccessibleResource[]>(
@@ -45,15 +48,18 @@ export const getHost = async (connection: Connection): Promise<string> => {
         },
       },
     );
+
     const apiSiteOverride = connection.fields.apiSiteOverride;
     const id = apiSiteOverride
       ? searchOverridenHostId(accessibleResources, apiSiteOverride as string)
       : accessibleResources[0].id;
+
     return `api.atlassian.com/ex/confluence/${id}`;
   } catch (error) {
     throw new Error(`Failed to retrieve accessible resources. ${error}`);
   }
 };
+
 const validateConnection = (connection: Connection): void => {
   if (
     ![confluenceOauth.key].includes(connection.key) &&
@@ -65,6 +71,7 @@ const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getBaseUrl = async (connection: Connection): Promise<string> => {
   switch (connection.key) {
     case confluenceOauth.key: {
@@ -76,6 +83,7 @@ export const getBaseUrl = async (connection: Connection): Promise<string> => {
     }
   }
 };
+
 export const getGraphBaseUrl = (connection: Connection): string => {
   switch (connection.key) {
     case confluenceOauth.key: {
@@ -86,6 +94,7 @@ export const getGraphBaseUrl = (connection: Connection): string => {
     }
   }
 };
+
 const getClient = (connection: Connection, baseUrl: string, debug = false) =>
   createHttpClient({
     baseUrl,
@@ -96,11 +105,13 @@ const getClient = (connection: Connection, baseUrl: string, debug = false) =>
     },
     responseType: "json",
   });
+
 export const createClient = async (connection: Connection, debug = false) => {
   validateConnection(connection);
   const baseUrl = await getBaseUrl(connection);
   return getClient(connection, baseUrl, debug);
 };
+
 export const createGraphClient = (connection: Connection, debug = false) => {
   validateConnection(connection);
   const headers = buildAuthHeaders(connection);
@@ -128,6 +139,7 @@ export const createGraphClient = (connection: Connection, debug = false) => {
     console.log(error);
   }
 };
+
 export const getHostBasedOnConnection = async (connection: Connection) => {
   let baseUrl: string;
   switch (connection.key) {
@@ -143,5 +155,6 @@ export const getHostBasedOnConnection = async (connection: Connection) => {
       throw new ConnectionError(connection, "Unsupported connection type");
     }
   }
+
   return baseUrl;
 };

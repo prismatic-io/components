@@ -4,6 +4,7 @@ import { getSharedLinkFileExamplePayload } from "../../examplePayloads";
 import { getSharedLinkFileInputs } from "../../inputs";
 import { getSharedLinkFileOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const getSharedLinkFile = action({
   display: {
     label: "Get Shared Link File",
@@ -17,11 +18,13 @@ export const getSharedLinkFile = action({
       params.userType,
       params.teamMemberId,
     );
+
     try {
       const data = await dbx.sharingGetSharedLinkFile({
         url: params.urlToSave,
         path: params.path || undefined,
       });
+
       return {
         data,
       };
@@ -29,9 +32,7 @@ export const getSharedLinkFile = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: getSharedLinkFileExamplePayload,
   }),
   inputs: getSharedLinkFileInputs,

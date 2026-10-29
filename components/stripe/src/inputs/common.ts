@@ -8,12 +8,14 @@ import {
   cleanObjectInput,
   cleanStringInput,
 } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Stripe connection to use.",
 });
+
 export const timeout = input({
   label: "Timeout",
   type: "string",
@@ -24,6 +26,7 @@ export const timeout = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 export const startingAfter = input({
   label: "Starting After",
   type: "string",
@@ -34,6 +37,7 @@ export const startingAfter = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -43,6 +47,7 @@ export const limit = input({
   required: false,
   clean: cleanIntegerInput,
 });
+
 export const endingBefore = input({
   label: "Ending Before",
   type: "string",
@@ -53,6 +58,7 @@ export const endingBefore = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -62,6 +68,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -71,22 +78,27 @@ export const page = input({
   placeholder: "Enter next_page cursor",
   clean: cleanStringInput,
 });
+
 const paginationGroupDisplay = {
   label: "Pagination",
   comments: "Cursor and page-size controls for paging through results.",
 };
+
 export const cursorPagination = structuredObjectInput({
   ...paginationGroupDisplay,
   inputs: { limit, startingAfter, endingBefore },
 });
+
 export const forwardCursorPagination = structuredObjectInput({
   ...paginationGroupDisplay,
   inputs: { limit, startingAfter },
 });
+
 export const searchPagination = structuredObjectInput({
   ...paginationGroupDisplay,
   inputs: { limit, page },
 });
+
 export const query = input({
   label: "Query",
   type: "string",
@@ -97,6 +109,7 @@ export const query = input({
   placeholder: "Enter search query",
   clean: util.types.toString,
 });
+
 export const created = input({
   label: "Created",
   type: "code",
@@ -107,6 +120,7 @@ export const created = input({
   example: JSON.stringify({ gt: 1620000000 }),
   clean: cleanObjectInput,
 });
+
 export const metadata = input({
   label: "Metadata",
   type: "string",
@@ -118,6 +132,7 @@ export const metadata = input({
   required: false,
   clean: cleanMetadataInput,
 });
+
 export const fieldValues = input({
   label: "Values",
   type: "string",
@@ -129,6 +144,7 @@ export const fieldValues = input({
   required: false,
   clean: cleanKeyValueListInput,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -139,6 +155,7 @@ export const description = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const currency = input({
   label: "Currency",
   type: "string",
@@ -149,6 +166,7 @@ export const currency = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerId = input({
   label: "Customer ID",
   type: "string",
@@ -159,6 +177,7 @@ export const customerId = input({
   dataSource: "selectCustomer",
   clean: cleanStringInput,
 });
+
 export const subscriptionId = input({
   label: "Subscription ID",
   type: "string",
@@ -169,6 +188,7 @@ export const subscriptionId = input({
   dataSource: "selectSubscription",
   clean: cleanStringInput,
 });
+
 export const priceId = input({
   label: "Price ID",
   type: "string",
@@ -179,6 +199,7 @@ export const priceId = input({
   dataSource: "selectPrice",
   clean: util.types.toString,
 });
+
 export const productId = input({
   label: "Product ID",
   type: "string",
@@ -189,6 +210,7 @@ export const productId = input({
   dataSource: "selectProduct",
   clean: util.types.toString,
 });
+
 export const chargeId = input({
   label: "Charge ID",
   type: "string",
@@ -198,6 +220,7 @@ export const chargeId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const paymentIntent = input({
   label: "Payment Intent",
   type: "string",
@@ -208,6 +231,7 @@ export const paymentIntent = input({
   placeholder: "Enter Payment Intent ID",
   clean: cleanStringInput,
 });
+
 export const paymentId = input({
   label: "Payment Method ID",
   type: "string",
@@ -218,6 +242,7 @@ export const paymentId = input({
   dataSource: "selectCard",
   clean: cleanStringInput,
 });
+
 export const receiptEmail = input({
   label: "Receipt Email",
   type: "string",
@@ -228,6 +253,7 @@ export const receiptEmail = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const shipping = input({
   label: "Shipping",
   type: "code",
@@ -249,6 +275,7 @@ export const shipping = input({
   }),
   clean: cleanObjectInput,
 });
+
 export const transferGroup = input({
   label: "Transfer Group",
   type: "string",
@@ -259,6 +286,7 @@ export const transferGroup = input({
   placeholder: "Enter transfer group",
   clean: cleanStringInput,
 });
+
 export const applicationFeeAmount = input({
   label: "Application Fee Amount",
   type: "string",

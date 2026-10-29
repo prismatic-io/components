@@ -5,6 +5,7 @@ import { listItemNumberReservationsInputs } from "../../inputs";
 import { listItemNumberReservationsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listItemNumberReservations = action({
   display: {
     label: "List Item Number Reservations",
@@ -36,7 +37,9 @@ export const listItemNumberReservations = action({
         offset: pagination?.offset,
         limit: pagination?.limit,
       });
+
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         name,
         "category.guid": categoryGuid,
@@ -44,18 +47,21 @@ export const listItemNumberReservations = action({
         offset: pagination?.offset,
         limit: pagination?.limit,
       };
+
       const data = await fetchArenaList(
         client,
         "/settings/items/numberreservations",
         queryParams,
         fetchAll,
       );
+
       context.logger.info(
         `Retrieved ${data?.count || 0} item number reservations`,
         {
           count: data?.count,
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Item Number Reservations");

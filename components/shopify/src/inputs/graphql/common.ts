@@ -16,7 +16,9 @@ import {
   cleanStringInput,
   cleanValueListInput,
 } from "../../util";
+
 export const shopifyConnection = connectionInput;
+
 export const getAlldata = input({
   label: "Fetch All",
   type: "boolean",
@@ -26,6 +28,7 @@ export const getAlldata = input({
     "When true, automatically fetches all pages of results using pagination. The API is limited to 250 records per page max.",
   clean: util.types.toBool,
 });
+
 export const productId = input({
   label: "Product ID",
   type: "string",
@@ -36,6 +39,7 @@ export const productId = input({
   clean: cleanProductId,
   dataSource: LIST_PRODUCTS_DATASOURCE_REFERENCE,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -45,6 +49,7 @@ export const limit = input({
   placeholder: "Enter limit",
   clean: util.types.toNumber,
 });
+
 export const endCursor = input({
   label: "Page Offset Cursor",
   type: "string",
@@ -56,6 +61,7 @@ export const endCursor = input({
   placeholder: "Enter page cursor",
   clean: cleanStringInput,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -69,6 +75,7 @@ export const pagination = structuredObjectInput({
     endCursor,
   },
 });
+
 export const orderId = input({
   label: "Order ID",
   type: "string",
@@ -79,6 +86,7 @@ export const orderId = input({
   clean: cleanOrderId,
   dataSource: LIST_ORDERS_DATASOURCE_REFERENCE,
 });
+
 export const locationId = input({
   label: "Location ID",
   type: "string",
@@ -89,6 +97,7 @@ export const locationId = input({
   clean: cleanLocationId,
   dataSource: LIST_LOCATIONS_DATASOURCE_REFERENCE,
 });
+
 export const customerIdGql = input({
   label: "Customer",
   type: "string",
@@ -99,6 +108,7 @@ export const customerIdGql = input({
   clean: cleanCustomerId,
   dataSource: LIST_CUSTOMERS_DATASOURCE_REFERENCE,
 });
+
 export const tags = input({
   label: "Tags",
   type: "string",
@@ -109,6 +119,7 @@ export const tags = input({
   comments: "For each list item, provide a string to tag the product with.",
   clean: cleanValueListInput,
 });
+
 export const additionalFields = input({
   label: "Additional Fields",
   type: "code",
@@ -122,6 +133,7 @@ export const additionalFields = input({
   }),
   clean: (value) => cleanCodeInputEmptyObject(value, "Additional Fields"),
 });
+
 export const taxExempt = input({
   label: "Tax Exempt",
   type: "boolean",
@@ -130,6 +142,7 @@ export const taxExempt = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const optionalBoolean = input({
   label: "Optional Boolean",
   type: "string",
@@ -147,6 +160,7 @@ export const optionalBoolean = input({
   default: undefined,
   clean: cleanOptionalBooleanInput,
 });
+
 export const query = input({
   label: "Query",
   type: "string",
@@ -156,6 +170,7 @@ export const query = input({
   placeholder: "Enter query filter",
   clean: cleanStringInput,
 });
+
 export const callbackUrl = input({
   label: "Callback URL",
   type: "string",
@@ -166,6 +181,7 @@ export const callbackUrl = input({
     "The callback URL that the fulfillment service has registered for request.",
   clean: util.types.toString,
 });
+
 export const itemId = input({
   label: "Inventory Item ID",
   type: "string",

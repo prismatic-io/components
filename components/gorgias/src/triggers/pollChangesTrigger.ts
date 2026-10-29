@@ -13,6 +13,7 @@ import { fetchAllWithPagination } from "../utils/fetchAllWithPagination";
 import { filterByTimestamp } from "../utils/filterByTimestamp";
 import { resolvePollingRecordChanges } from "../utils/resolvePollingRecordChanges";
 import { resolvePollWindow } from "../utils/resolvePollWindow";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -31,6 +32,7 @@ export const pollChangesTrigger = pollingTrigger({
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
     const { lastPolledAt, isBackfill } = resolvePollWindow(
@@ -38,10 +40,12 @@ export const pollChangesTrigger = pollingTrigger({
       params.lookBackDate,
       now,
     );
+
     const client = createClient({
       connection: params.connection,
       debug: context.debug.enabled,
     });
+
     const { data } = await fetchAllWithPagination<
       CreateApiPaginationResponse<GorgiasRecord>
     >({
@@ -49,18 +53,24 @@ export const pollChangesTrigger = pollingTrigger({
       configVars: {},
       endpoint: config.endpoint,
     });
+
     const allRecords = data.data as GorgiasRecord[];
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
       isBackfill || params.showNewRecords,
       isBackfill || params.showUpdatedRecords,
     );
+
     const totalMatched = created.length + updated.length;
+
     context.logger.debug(
       `Polled ${allRecords.length} ${params.pollResourceType} records, ${created.length} created and ${updated.length} updated since last poll.`,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

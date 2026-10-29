@@ -3,6 +3,7 @@ import getInvoiceInputs from "../../inputs/invoices/getInvoice";
 import { createKarbonClient } from "../../client";
 import { cleanOdata } from "../../utils";
 import { getInvoiceExamplePayload } from "../../examplePayloads";
+
 export const getInvoice = action({
   display: {
     label: "Get Invoice",

@@ -4,6 +4,7 @@ import { createRequirementExamplePayload } from "../../examplePayloads";
 import { createRequirementInputs } from "../../inputs";
 import { requirementSchema } from "../../outputSchemas";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createRequirement = action({
   display: {
     label: "Create Requirement",
@@ -18,6 +19,7 @@ export const createRequirement = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: Record<string, unknown> = {
         title: params.title,
         template: params.templateGuid
@@ -33,6 +35,7 @@ export const createRequirement = action({
           ? { value: params.numberSequencePrefix }
           : undefined,
       };
+
       requestPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: params.additionalAttributeJson,
@@ -41,6 +44,7 @@ export const createRequirement = action({
         },
         context,
       );
+
       const { data } = await client.post("/requirements", requestPayload);
       return { data };
     } catch (error) {

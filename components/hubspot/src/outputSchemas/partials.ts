@@ -1,4 +1,5 @@
 import { crmObjectSchema, searchResponseSchema } from "./shared";
+
 const crmObjectOrArrayPartialSchema = {
   type: ["object", "array"] as string[],
   properties: crmObjectSchema.properties,
@@ -6,6 +7,7 @@ const crmObjectOrArrayPartialSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const getContactOutputSchema = {
   type: "object" as const,
   properties: {
@@ -17,7 +19,11 @@ export const getContactOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const getCompanyOutputSchema = { ...crmObjectOrArrayPartialSchema };
+
 export const getDealByIdOutputSchema = { ...crmObjectOrArrayPartialSchema };
+
 export const getProductOutputSchema = { ...crmObjectOrArrayPartialSchema };
+
 export const getLineItemOutputSchema = { ...crmObjectOrArrayPartialSchema };

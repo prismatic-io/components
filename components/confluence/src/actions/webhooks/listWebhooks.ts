@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { listWebhooksInputs } from "../../inputs";
 import { createClient } from "../../client";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -14,9 +15,7 @@ export const listWebhooks = action({
     const { data } = await client.get("/webhook");
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: {
       isLast: true,
       maxResults: 100,

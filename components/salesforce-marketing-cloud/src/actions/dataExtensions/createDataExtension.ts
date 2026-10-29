@@ -4,6 +4,7 @@ import { DATA_EXTENSIONS_PATH } from "../../constants";
 import { createDataExtensionExamplePayload } from "../../examplePayloads";
 import { createDataExtensionInputs } from "../../inputs";
 import { dataExtensionOutputSchema } from "../../outputSchemas";
+
 export const createDataExtension = action({
   examplePayload: createDataExtensionExamplePayload,
   display: {
@@ -28,21 +29,22 @@ export const createDataExtension = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       name: dataExtensionName,
       key: dataExtensionKey,
       fields: dataExtensionFields,
       isSendable,
     };
+
     const { data } = await client.post(DATA_EXTENSIONS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { dataExtensionName, dataExtensionKey, isSendable },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createDataExtensionExamplePayload.data,
       name: dataExtensionName,

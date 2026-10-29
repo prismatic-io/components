@@ -9,6 +9,7 @@ import {
   productId,
   timeout,
 } from "./common";
+
 export const productName = input({
   label: "Product Name",
   type: "string",
@@ -18,6 +19,7 @@ export const productName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const updateProductName = input({
   label: "Product Name",
   type: "string",
@@ -27,6 +29,7 @@ export const updateProductName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const productImages = input({
   label: "Product Images",
   type: "string",
@@ -37,6 +40,7 @@ export const productImages = input({
   required: false,
   clean: cleanStringListInput,
 });
+
 export const productType = input({
   label: "Product Type",
   type: "string",
@@ -49,6 +53,7 @@ export const productType = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const active = input({
   label: "Active",
   type: "boolean",
@@ -57,6 +62,7 @@ export const active = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const shippable = input({
   label: "Shippable",
   type: "boolean",
@@ -64,6 +70,7 @@ export const shippable = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const productUrl = input({
   label: "Product URL",
   type: "string",
@@ -74,6 +81,7 @@ export const productUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const createProductInputs = {
   productName,
   productType,
@@ -87,21 +95,25 @@ export const createProductInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const deleteProductInputs = {
   productId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getProductInputs = {
   productId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listProductsInputs = {
   timeout,
   pagination: forwardCursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const updateProductInputs = {
   productId,
   updateProductName,

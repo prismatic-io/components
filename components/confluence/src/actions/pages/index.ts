@@ -4,6 +4,7 @@ import { getPage } from "./getPage";
 import { listPages } from "./listPages";
 import { listPagesInSpace } from "./listPagesInSpace";
 import { updatePage } from "./updatePage";
+
 export default {
   createPage,
   deletePage,

@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { moveSoftwareExamplePayload as examplePayload } from "../../examplePayloads";
 import { moveSoftwareInputs as inputs } from "../../inputs";
 import { moveSoftwareOutputSchema } from "../../outputSchemas";
+
 export const moveSoftware = action({
   display: {
     label: "Move Software",
@@ -18,6 +19,7 @@ export const moveSoftware = action({
       `/applications/${applicationId}/move_workspace`,
       payload,
     );
+
     return {
       data,
     };

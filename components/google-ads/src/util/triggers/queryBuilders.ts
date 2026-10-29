@@ -4,16 +4,20 @@ import {
   CHANGE_TYPE,
 } from "../../constants";
 import { isAllChangeTypesSelected } from "./changeDetection";
+
 const resolveCampaignChangeResourceTypes = (
   changeTypes: string[],
 ): string[] => {
   const all = isAllChangeTypesSelected(changeTypes);
   const types: string[] = [CAMPAIGN_CHANGE_RESOURCE_TYPE.CAMPAIGN];
+
   if (all || changeTypes.includes(CHANGE_TYPE.BUDGET)) {
     types.push(CAMPAIGN_CHANGE_RESOURCE_TYPE.CAMPAIGN_BUDGET);
   }
+
   return types;
 };
+
 export const buildCampaignChangeEventQuery = (options: {
   sinceTime: string;
   toTime: string;
@@ -21,9 +25,11 @@ export const buildCampaignChangeEventQuery = (options: {
   limit: number;
 }): string => {
   const { sinceTime, toTime, changeTypes, limit } = options;
+
   const resourceTypes = resolveCampaignChangeResourceTypes(changeTypes)
     .map((type) => `'${type}'`)
     .join(",");
+
   return `
     SELECT
       change_event.resource_name,
@@ -44,13 +50,16 @@ export const buildCampaignChangeEventQuery = (options: {
     LIMIT ${limit}
   `.trim();
 };
+
 export const buildBudgetAlertQuery = (options: {
   includeSharedBudgets: boolean;
 }): string => {
   const { includeSharedBudgets } = options;
+
   const sharedBudgetFilter = includeSharedBudgets
     ? ""
     : "\n      AND campaign_budget.explicitly_shared = FALSE";
+
   const query = `
     SELECT
       campaign.id,
@@ -63,8 +72,10 @@ export const buildBudgetAlertQuery = (options: {
     WHERE segments.date DURING TODAY
       AND campaign.status = 'ENABLED'${sharedBudgetFilter}
   `;
+
   return query.trim();
 };
+
 export const buildChangeHistoryQuery = (options: {
   sinceTime: string;
   toTime: string;
@@ -73,6 +84,7 @@ export const buildChangeHistoryQuery = (options: {
   limit: number;
 }): string => {
   const { sinceTime, toTime, resourceTypes, includeUserInfo, limit } = options;
+
   const resourceFilter =
     resourceTypes.length > 0
       ? `AND change_event.change_resource_type IN (${resourceTypes
@@ -82,9 +94,11 @@ export const buildChangeHistoryQuery = (options: {
           )
           .join(",")})`
       : "";
+
   const userFields = includeUserInfo
     ? "change_event.user_email,\n          change_event.client_type,"
     : "";
+
   const query = `
     SELECT
       change_event.resource_name,
@@ -102,5 +116,6 @@ export const buildChangeHistoryQuery = (options: {
     ORDER BY change_event.change_date_time ASC
     LIMIT ${limit}
   `;
+
   return query.trim();
 };

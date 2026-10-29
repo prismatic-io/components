@@ -1,4 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+
 import {
   cleanNumberInput,
   cleanStringInput,
@@ -20,6 +21,7 @@ import {
   sort,
   technicianId,
 } from "./common";
+
 const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -29,6 +31,7 @@ const phoneNumber = input({
   placeholder: "Enter a phone number",
   clean: cleanStringInput,
 });
+
 const email = input({
   label: "Email",
   type: "string",
@@ -38,6 +41,7 @@ const email = input({
   placeholder: "Enter an email address",
   clean: cleanStringInput,
 });
+
 const login = input({
   label: "Login Username",
   type: "string",
@@ -47,6 +51,7 @@ const login = input({
   placeholder: "Enter a username",
   clean: cleanStringInput,
 });
+
 const password = input({
   label: "Password",
   type: "password",
@@ -57,6 +62,7 @@ const password = input({
   placeholder: "Enter a password",
   clean: cleanStringInput,
 });
+
 const accountCreationMethod = input({
   label: "Account Creation Method",
   type: "string",
@@ -70,6 +76,7 @@ const accountCreationMethod = input({
   clean: cleanStringInput,
   default: "",
 });
+
 const roleId = input({
   label: "Role ID",
   type: "string",
@@ -80,6 +87,7 @@ const roleId = input({
   clean: cleanNumberInput,
   dataSource: "selectUserRole",
 });
+
 const positions = input({
   label: "Positions",
   type: "string",
@@ -103,6 +111,7 @@ const positions = input({
   ),
   clean: cleanStringValueListInput,
 });
+
 const aadUserId = input({
   label: "Azure Active Directory User ID",
   type: "string",
@@ -113,6 +122,7 @@ const aadUserId = input({
   placeholder: "Enter an Azure Active Directory user ID",
   clean: cleanStringInput,
 });
+
 const licenseType = input({
   label: "License Type",
   type: "string",
@@ -125,6 +135,7 @@ const licenseType = input({
   clean: cleanStringInput,
   default: "",
 });
+
 const team = input({
   label: "Team",
   type: "string",
@@ -134,6 +145,7 @@ const team = input({
   placeholder: "Enter a team name",
   clean: cleanStringInput,
 });
+
 const dailyGoal = input({
   label: "Daily Goal",
   type: "string",
@@ -143,6 +155,7 @@ const dailyGoal = input({
   placeholder: "Enter a daily revenue goal",
   clean: cleanNumberInput,
 });
+
 const burdenRate = input({
   label: "Burden Rate",
   type: "string",
@@ -152,6 +165,7 @@ const burdenRate = input({
   placeholder: "Enter an hourly burden rate",
   clean: cleanNumberInput,
 });
+
 const bio = input({
   label: "Biography",
   type: "string",
@@ -161,6 +175,7 @@ const bio = input({
   placeholder: "Enter a biography",
   clean: cleanStringInput,
 });
+
 const jobFilter = input({
   label: "Job Filter",
   type: "string",
@@ -183,6 +198,7 @@ const jobFilter = input({
   clean: cleanStringInput,
   default: "",
 });
+
 const jobHistoryDateFilter = input({
   label: "Job History Date Filter",
   type: "string",
@@ -195,6 +211,7 @@ const jobHistoryDateFilter = input({
   clean: cleanStringInput,
   default: "",
 });
+
 const technicianAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -209,6 +226,7 @@ const technicianAdditionalFields = structuredObjectInput({
     jobHistoryDateFilter,
   },
 });
+
 export const createTechnicianInputs = {
   connection,
   name: {
@@ -243,6 +261,7 @@ export const createTechnicianInputs = {
     comments: "Custom fields for the technician",
   },
 };
+
 export const getTechnicianInputs = {
   connection,
   technicianId: {
@@ -251,6 +270,7 @@ export const getTechnicianInputs = {
     comments: "The ID of the Technician to retrieve",
   },
 };
+
 export const listTechniciansInputs = {
   connection,
   fetchAll,
@@ -260,6 +280,7 @@ export const listTechniciansInputs = {
   sort,
   customQueryParams,
 };
+
 export const updateTechnicianInputs = {
   connection,
   technicianId: {

@@ -32,6 +32,7 @@ export const listCompaniesResponse = {
     total_pages: 1,
   },
 };
+
 export const createTicketResponse = {
   type: "ticket",
   id: "773",
@@ -147,6 +148,7 @@ export const createTicketResponse = {
   category: "Back-office",
   is_shared: false,
 };
+
 export const listTicketTypesResponse = {
   type: "list",
   data: [
@@ -231,6 +233,7 @@ export const listTicketTypesResponse = {
     },
   ],
 };
+
 export const listContactsResponse = {
   data: [
     {
@@ -336,6 +339,7 @@ export const listContactsResponse = {
     total_pages: 13,
   },
 };
+
 export const getTicketResponse = {
   type: "ticket",
   id: "777",

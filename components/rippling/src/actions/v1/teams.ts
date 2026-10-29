@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { getTeamsExamplePayload } from "../../examplePayloads";
 import { getTeamsInputs } from "../../inputs";
 import { paginateV1Results } from "../../utils/pagination";
+
 const getTeams = action({
   display: {
     label: "Get Teams (V1)",
@@ -23,6 +24,7 @@ const getTeams = action({
     });
   },
 });
+
 export default {
   getTeams,
 };

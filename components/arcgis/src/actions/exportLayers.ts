@@ -9,6 +9,7 @@ import {
   ownerName,
 } from "../inputs";
 import { getIdentityManager } from "../utils";
+
 export const exportLayers = action({
   display: {
     label: "Export Layers",
@@ -19,9 +20,11 @@ export const exportLayers = action({
     { connection, featureServiceId, ownerName, format, layersToExport },
   ) => {
     const authentication = await getIdentityManager(connection);
+
     const self = await getSelf({ authentication });
     const username = self.user.username;
     const owner = ownerName || username;
+
     const data = await exportItem({
       id: featureServiceId,
       owner,
@@ -33,6 +36,7 @@ export const exportLayers = action({
         : undefined,
       authentication,
     });
+
     return { data };
   },
   inputs: {

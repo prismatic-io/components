@@ -10,9 +10,11 @@ import { removeFlags } from "./actions/removeFlags";
 import { renameMailbox } from "./actions/renameMailbox";
 import { searchMailbox } from "./actions/searchMailbox";
 import { setFlags } from "./actions/setFlags";
+
 import { imapConnection } from "./connections";
 import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
 import type { ConnectionDefinition } from "@prismatic-io/spectral";
+
 const connection = createConnection(imapConnection as ConnectionDefinition, {
   host: "127.0.0.1",
   port: 993,
@@ -23,18 +25,22 @@ const connection = createConnection(imapConnection as ConnectionDefinition, {
   maxVersion: "TLSv1.3",
   minDHSize: "512",
 });
+
 describe.skip("IMAP live tests (require IMAP server)", () => {
   it("should list accessible Mailboxes", async () => {
     const result = await invoke(listMailboxes, { connection });
     expect(result).toBeDefined();
   });
+
   it("should get mailbox status", async () => {
     const result = await invoke(getStatus, {
       connection,
       mailbox: "INBOX",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Add flags to message", async () => {
     const result = await invoke(addFlags, {
       connection,
@@ -42,8 +48,10 @@ describe.skip("IMAP live tests (require IMAP server)", () => {
       flags: ["Hello World"],
       range: "*",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Append Message To Mailbox", async () => {
     const result = await invoke(appendMessage, {
       connection,
@@ -54,6 +62,7 @@ describe.skip("IMAP live tests (require IMAP server)", () => {
     console.log(result.result?.data);
     expect(result).toBeDefined();
   });
+
   it("Copy Message", async () => {
     const result = await invoke(copyMessage, {
       connection,
@@ -61,31 +70,39 @@ describe.skip("IMAP live tests (require IMAP server)", () => {
       path: "1",
       range: "*",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Create Mailbox", async () => {
     const result = await invoke(createMailbox, {
       connection,
       path: "Decisions",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Delete Mailbox", async () => {
     const result = await invoke(deleteMessage, {
       connection,
       mailbox: "INBOX",
       messageIndex: "*",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Download Message", async () => {
     const result = await invoke(downloadMessage, {
       connection,
       mailbox: "INBOX",
       messageIndex: "2",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Remove Flags", async () => {
     const result = await invoke(removeFlags, {
       connection,
@@ -93,16 +110,20 @@ describe.skip("IMAP live tests (require IMAP server)", () => {
       mailbox: "INBOX",
       range: "*",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Rename Mailbox", async () => {
     const result = await invoke(renameMailbox, {
       connection,
       newPath: "INBOX",
       path: "INBOX2",
     });
+
     expect(result).toBeDefined();
   });
+
   it("Search Mailbox", async () => {
     const result = await invoke(searchMailbox, {
       connection,
@@ -114,6 +135,7 @@ describe.skip("IMAP live tests (require IMAP server)", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("Set Flags", async () => {
     const result = await invoke(setFlags, {
       connection,

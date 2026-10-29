@@ -7,6 +7,7 @@ export const collectionLinksSchema = {
   },
   required: ["self"],
 };
+
 export const includedItemSchema = {
   type: "object" as const,
   properties: {
@@ -21,12 +22,14 @@ export const includedItemSchema = {
     },
   },
 };
+
 export const resourceLinksSchema = {
   type: "object" as const,
   properties: {
     self: { type: "string" },
   },
 };
+
 const relationshipLinksSchema = {
   type: "object" as const,
   properties: {
@@ -35,6 +38,7 @@ const relationshipLinksSchema = {
   },
   required: ["self", "related"],
 };
+
 const relationshipDataSchema = {
   type: "object" as const,
   properties: {
@@ -43,6 +47,7 @@ const relationshipDataSchema = {
   },
   required: ["type", "id"],
 };
+
 export const toOneRelationshipSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +55,7 @@ export const toOneRelationshipSchema = {
     links: relationshipLinksSchema,
   },
 };
+
 export const toManyRelationshipSchema = {
   type: "object" as const,
   properties: {

@@ -1,4 +1,5 @@
 import { userRefSchema } from "./shared";
+
 export const createTaskCommentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -8,10 +9,12 @@ export const createTaskCommentOutputSchema = {
   },
   required: ["id", "hist_id", "date"],
 };
+
 const commentAssigneeSchema = {
   ...userRefSchema,
   required: ["id", "username", "email", "color", "initials", "profilePicture"],
 };
+
 export const getTaskCommentsOutputSchema = {
   type: "object" as const,
   properties: {

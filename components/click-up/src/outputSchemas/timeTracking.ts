@@ -5,6 +5,7 @@ import {
   timeEntryTaskSchema,
   userRefSchema,
 } from "./shared";
+
 const timeEntryApprovalUserSchema = {
   type: "object" as const,
   properties: {
@@ -17,6 +18,7 @@ const timeEntryApprovalUserSchema = {
   },
   required: ["id", "username", "email", "color", "initials", "profilePicture"],
 };
+
 const timeEntryDetailProperties = {
   id: { type: "string" },
   wid: { type: "string" },
@@ -95,6 +97,7 @@ const timeEntryDetailProperties = {
   },
   task_url: { type: "string" },
 };
+
 const timeEntryDetailRequired = [
   "id",
   "wid",
@@ -108,6 +111,7 @@ const timeEntryDetailRequired = [
   "source",
   "at",
 ];
+
 export const getSingularTimeEntryOutputSchema = {
   type: "object" as const,
   properties: {
@@ -119,6 +123,7 @@ export const getSingularTimeEntryOutputSchema = {
   },
   required: ["data"],
 };
+
 export const getTimeEntriesWithinDateRangeOutputSchema = {
   type: "object" as const,
   properties: {
@@ -146,6 +151,7 @@ export const getTimeEntriesWithinDateRangeOutputSchema = {
   },
   required: ["data"],
 };
+
 export const startTimeEntryOutputSchema = {
   type: "object" as const,
   properties: {
@@ -179,9 +185,11 @@ export const startTimeEntryOutputSchema = {
   },
   required: ["data"],
 };
+
 export const stopTimeEntryOutputSchema = {
   type: "object" as const,
   properties: { data: timeEntryRunningSchema },
   required: ["data"],
 };
+
 export const deleteTimeEntryOutputSchema = stopTimeEntryOutputSchema;

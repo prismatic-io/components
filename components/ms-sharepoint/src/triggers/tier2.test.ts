@@ -4,11 +4,15 @@ import type { DriveItem } from "../interfaces";
 import { drivePollingTrigger } from "./drivePollingTrigger";
 import { folderPollingTrigger } from "./folderPollingTrigger";
 import { pollSiteChanges } from "./pollSiteChanges";
+
 const getMock: Mock = vi.fn();
+
 vi.mock("../client", () => ({
   createClient: vi.fn(async () => ({ get: getMock })),
 }));
+
 const CREATED = "2026-01-01T00:00:00Z";
+
 const item = (id: string, overrides: Partial<DriveItem> = {}): DriveItem => ({
   id,
   name: `${id}.txt`,
@@ -21,6 +25,7 @@ const item = (id: string, overrides: Partial<DriveItem> = {}): DriveItem => ({
   },
   ...overrides,
 });
+
 const nextPage = (value: unknown[], nextLink: string) => ({
   data: { value, "@odata.nextLink": nextLink },
 });
@@ -31,15 +36,15 @@ const gone = (location?: string) =>
   Object.assign(new Error("Request failed with status code 410"), {
     response: { status: 410, headers: location ? { location } : {} },
   });
+
 type Round = {
   payload: {
     paginationState?: unknown;
-    body: {
-      data: Record<string, unknown>;
-    };
+    body: { data: Record<string, unknown> };
   };
   polledNoChanges?: boolean;
 };
+
 const makeCtx = (state: Record<string, unknown>, batching: boolean) => {
   const setState = vi.fn();
   return {
@@ -52,16 +57,20 @@ const makeCtx = (state: Record<string, unknown>, batching: boolean) => {
     } as never,
   };
 };
+
 const connection = {
   key: "oauth2",
   fields: {},
   token: { access_token: "t" },
 } as never;
+
 const ids = (list: unknown) =>
   (list as DriveItem[] | undefined)?.map((i) => i.id);
+
 beforeEach(() => {
   getMock.mockReset();
 });
+
 describe.each([
   ["drivePollingTrigger", drivePollingTrigger],
   ["folderPollingTrigger", folderPollingTrigger],
@@ -79,6 +88,7 @@ describe.each([
     expect(resolver?.({} as never, { payload: {} } as never)).toBeNull();
   });
 });
+
 describe("drivePollingTrigger batched drain", () => {
   const runRound = async (
     state: Record<string, unknown>,
@@ -93,6 +103,7 @@ describe("drivePollingTrigger batched drain", () => {
     )) as unknown as Round;
     return { round, setState };
   };
+
   test("drains three delta pages one per round, holding the nextLink until the deltaLink arrives", async () => {
     getMock
       .mockResolvedValueOnce(nextPage([item("a")], "https://graph/page2"))
@@ -100,6 +111,7 @@ describe("drivePollingTrigger batched drain", () => {
       .mockResolvedValueOnce(
         finalPage([item("c")], "https://graph/delta?token=9"),
       );
+
     const r1 = await runRound({}, undefined);
     expect(getMock).toHaveBeenCalledTimes(1);
     expect(getMock.mock.calls[0][0]).toBe("/drives/drive-1/root/delta");
@@ -111,6 +123,7 @@ describe("drivePollingTrigger batched drain", () => {
       "drive-1:nextLink": "https://graph/page2",
     });
     expect(r1.round.polledNoChanges).not.toBe(true);
+
     const s1 = r1.setState.mock.calls[0][0];
     const r2 = await runRound(s1, r1.round.payload.paginationState);
     expect(getMock).toHaveBeenCalledTimes(2);
@@ -122,6 +135,7 @@ describe("drivePollingTrigger batched drain", () => {
     expect(r2.setState).toHaveBeenCalledWith({
       "drive-1:nextLink": "https://graph/page3",
     });
+
     const s2 = r2.setState.mock.calls[0][0];
     const r3 = await runRound(s2, r2.round.payload.paginationState);
     expect(getMock.mock.calls[2][0]).toBe("https://graph/page3");
@@ -131,18 +145,21 @@ describe("drivePollingTrigger batched drain", () => {
       "drive-1": "https://graph/delta?token=9",
     });
   });
+
   test("keeps the committed deltaLink untouched while a later walk is mid-drain", async () => {
     getMock.mockResolvedValueOnce(nextPage([item("a")], "https://graph/page2"));
     const { setState } = await runRound(
       { "drive-1": "https://graph/delta?token=1" },
       undefined,
     );
+
     expect(getMock.mock.calls[0][0]).toBe("https://graph/delta?token=1");
     expect(setState).toHaveBeenCalledWith({
       "drive-1": "https://graph/delta?token=1",
       "drive-1:nextLink": "https://graph/page2",
     });
   });
+
   test("a recurrence resumes a stored nextLink when no paginationState arrives", async () => {
     getMock.mockResolvedValueOnce(finalPage([], "https://graph/delta?token=2"));
     await runRound(
@@ -154,11 +171,13 @@ describe("drivePollingTrigger batched drain", () => {
     );
     expect(getMock.mock.calls[0][0]).toBe("https://graph/page2");
   });
+
   test("never reports polledNoChanges on a platform-driven round", async () => {
     getMock.mockResolvedValueOnce(finalPage([], "https://graph/delta?token=2"));
     const { round } = await runRound({}, { nextLink: "https://graph/page2" });
     expect(round.polledNoChanges).not.toBe(true);
   });
+
   test("410 Gone restarts the enumeration from the Location header", async () => {
     getMock
       .mockRejectedValueOnce(gone("https://graph/delta?resync=1"))
@@ -169,6 +188,7 @@ describe("drivePollingTrigger batched drain", () => {
       { "drive-1": "https://graph/delta?token=stale" },
       undefined,
     );
+
     expect(getMock.mock.calls[0][0]).toBe("https://graph/delta?token=stale");
     expect(getMock.mock.calls[1][0]).toBe("https://graph/delta?resync=1");
     expect(ids(round.payload.body.data.added)).toEqual(["a"]);
@@ -176,13 +196,16 @@ describe("drivePollingTrigger batched drain", () => {
       "drive-1": "https://graph/delta?token=3",
     });
   });
+
   test("410 Gone with no Location header restarts from the drive's root delta", async () => {
     getMock
       .mockRejectedValueOnce(gone())
       .mockResolvedValueOnce(finalPage([], "https://graph/delta?token=3"));
     await runRound({}, { nextLink: "https://graph/page-stale" });
+
     expect(getMock.mock.calls[1][0]).toBe("/drives/drive-1/root/delta");
   });
+
   test("errors other than 410 still fail the round", async () => {
     getMock.mockRejectedValueOnce(
       Object.assign(new Error("boom"), {
@@ -192,6 +215,7 @@ describe("drivePollingTrigger batched drain", () => {
     await expect(runRound({}, undefined)).rejects.toThrow("boom");
     expect(getMock).toHaveBeenCalledTimes(1);
   });
+
   test("unbatched still walks every page to the deltaLink in one execution", async () => {
     getMock
       .mockResolvedValueOnce(nextPage([item("a")], "https://graph/page2"))
@@ -200,6 +224,7 @@ describe("drivePollingTrigger batched drain", () => {
         finalPage([item("c")], "https://graph/delta?token=9"),
       );
     const { round, setState } = await runRound({}, undefined, false);
+
     expect(getMock).toHaveBeenCalledTimes(3);
     expect(round.payload.paginationState).toBeUndefined();
     expect(ids(round.payload.body.data.added)).toEqual(["a", "b", "c"]);
@@ -207,6 +232,7 @@ describe("drivePollingTrigger batched drain", () => {
       "drive-1": "https://graph/delta?token=9",
     });
   });
+
   test("unbatched resumes a nextLink a batched round left behind", async () => {
     getMock.mockResolvedValueOnce(
       finalPage([item("c")], "https://graph/delta?token=9"),
@@ -225,6 +251,7 @@ describe("drivePollingTrigger batched drain", () => {
     });
   });
 });
+
 describe("folderPollingTrigger batched drain", () => {
   const folder = item("folder-1", {
     name: "Docs",
@@ -250,6 +277,7 @@ describe("folderPollingTrigger batched drain", () => {
       path: "/drives/drive-1/root:/Other",
     },
   });
+
   const runRound = async (
     state: Record<string, unknown>,
     paginationState: unknown,
@@ -268,6 +296,7 @@ describe("folderPollingTrigger batched drain", () => {
     )) as unknown as Round;
     return { round, setState };
   };
+
   test("drains the drive delta one page per round and filters each page to the folder", async () => {
     getMock
       .mockResolvedValueOnce(
@@ -276,6 +305,7 @@ describe("folderPollingTrigger batched drain", () => {
       .mockResolvedValueOnce(
         finalPage([child("c2")], "https://graph/delta?token=9"),
       );
+
     const r1 = await runRound({}, undefined);
     expect(getMock).toHaveBeenCalledTimes(1);
     expect(r1.round.payload.paginationState).toEqual({
@@ -286,6 +316,7 @@ describe("folderPollingTrigger batched drain", () => {
       "drive-1:folder-1:nextLink": "https://graph/page2",
       "drive-1:folder-1:path": "/drives/drive-1/root:/Docs",
     });
+
     const r2 = await runRound(
       r1.setState.mock.calls[0][0],
       r1.round.payload.paginationState,
@@ -298,6 +329,7 @@ describe("folderPollingTrigger batched drain", () => {
       "drive-1:folder-1:path": "/drives/drive-1/root:/Docs",
     });
   });
+
   test("410 Gone restarts from the Location header", async () => {
     getMock
       .mockRejectedValueOnce(gone("https://graph/delta?resync=1"))
@@ -311,6 +343,7 @@ describe("folderPollingTrigger batched drain", () => {
     expect(getMock.mock.calls[1][0]).toBe("https://graph/delta?resync=1");
     expect(ids(round.payload.body.data.added)).toEqual(["c1"]);
   });
+
   test("unbatched still walks every page in one execution", async () => {
     getMock
       .mockResolvedValueOnce(
@@ -329,6 +362,7 @@ describe("folderPollingTrigger batched drain", () => {
     ]);
   });
 });
+
 describe("pollSiteChanges batched drain", () => {
   const drives = {
     data: {
@@ -338,6 +372,7 @@ describe("pollSiteChanges batched drain", () => {
       ],
     },
   };
+
   const runRound = async (
     state: Record<string, unknown>,
     paginationState: unknown,
@@ -351,6 +386,7 @@ describe("pollSiteChanges batched drain", () => {
     )) as unknown as Round;
     return { round, setState };
   };
+
   test("walks one drive page per round and keeps a per-drive cursor", async () => {
     getMock
       .mockResolvedValueOnce(drives)
@@ -363,6 +399,7 @@ describe("pollSiteChanges batched drain", () => {
       .mockResolvedValueOnce(
         finalPage([item("c")], "https://graph/d2/delta?token=1"),
       );
+
     const r1 = await runRound(
       { "drive-2": "https://graph/d2/delta?token=0" },
       undefined,
@@ -385,6 +422,7 @@ describe("pollSiteChanges batched drain", () => {
       "drive-1:nextLink": "https://graph/d1/page2",
       "drive-2": "https://graph/d2/delta?token=0",
     });
+
     const r2 = await runRound(
       r1.setState.mock.calls[0][0],
       r1.round.payload.paginationState,
@@ -397,6 +435,7 @@ describe("pollSiteChanges batched drain", () => {
       "drive-1": "https://graph/d1/delta?token=1",
       "drive-2": "https://graph/d2/delta?token=0",
     });
+
     const r3 = await runRound(
       r2.setState.mock.calls[0][0],
       r2.round.payload.paginationState,
@@ -413,6 +452,7 @@ describe("pollSiteChanges batched drain", () => {
       "drive-2": "https://graph/d2/delta?token=1",
     });
   });
+
   test("a drive with no changes is passed over within the same round", async () => {
     getMock
       .mockResolvedValueOnce(drives)
@@ -421,6 +461,7 @@ describe("pollSiteChanges batched drain", () => {
         finalPage([item("c")], "https://graph/d2/delta?token=1"),
       );
     const { round, setState } = await runRound({}, undefined);
+
     expect(getMock).toHaveBeenCalledTimes(3);
     expect(round.payload.paginationState).toBeUndefined();
     expect(Object.keys(round.payload.body.data)).toEqual(["Archive"]);
@@ -429,6 +470,7 @@ describe("pollSiteChanges batched drain", () => {
       "drive-2": "https://graph/d2/delta?token=1",
     });
   });
+
   test("an empty first round reports polledNoChanges, a platform-driven round never does", async () => {
     getMock
       .mockResolvedValueOnce(drives)
@@ -436,12 +478,14 @@ describe("pollSiteChanges batched drain", () => {
       .mockResolvedValueOnce(finalPage([], "https://graph/d2/delta?token=1"));
     const first = await runRound({}, undefined);
     expect(first.round.polledNoChanges).toBe(true);
+
     getMock
       .mockResolvedValueOnce(drives)
       .mockResolvedValueOnce(finalPage([], "https://graph/d2/delta?token=2"));
     const driven = await runRound({}, { remaining: ["drive-2"] });
     expect(driven.round.polledNoChanges).not.toBe(true);
   });
+
   test("a drive removed from the site mid-drain is skipped", async () => {
     getMock
       .mockResolvedValueOnce({
@@ -459,6 +503,7 @@ describe("pollSiteChanges batched drain", () => {
     );
     expect(round.payload.paginationState).toBeUndefined();
   });
+
   test("410 Gone restarts that drive from the Location header", async () => {
     getMock
       .mockResolvedValueOnce({
@@ -477,6 +522,7 @@ describe("pollSiteChanges batched drain", () => {
       "drive-1": "https://graph/d1/delta?token=5",
     });
   });
+
   test("unbatched still walks every drive to its deltaLink in one execution", async () => {
     getMock.mockImplementation(async (url: string) => {
       if (url.startsWith("/sites/site-1/drives?")) return drives;
@@ -487,6 +533,7 @@ describe("pollSiteChanges batched drain", () => {
       return finalPage([item("c")], "https://graph/d2/d");
     });
     const { round, setState } = await runRound({}, undefined, false);
+
     expect(round.payload.paginationState).toBeUndefined();
     expect(
       ids((round.payload.body.data.Documents as Record<string, unknown>).added),

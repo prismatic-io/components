@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, customerIdInput } from "./common";
+
 const emailAddress = input({
   label: "Email Address",
   placeholder: "Enter email address",
@@ -9,6 +10,7 @@ const emailAddress = input({
   comments: "The email address of the user to invite to the customer account.",
   clean: util.types.toString,
 });
+
 const accessRole = input({
   label: "Access Role",
   placeholder: "Enter access role",
@@ -22,6 +24,7 @@ const accessRole = input({
   })),
   clean: util.types.toString,
 });
+
 export const inviteUserInputs = {
   connection: connectionInput,
   customerId: customerIdInput,

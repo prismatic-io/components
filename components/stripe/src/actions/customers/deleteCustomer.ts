@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { deleteCustomerExamplePayload } from "../../examplePayloads/customers";
 import { deleteCustomerInputs } from "../../inputs";
 import { deleteCustomerOutputSchema } from "../../outputSchemas";
+
 export const deleteCustomer = action({
   display: {
     label: "Delete Customer",
@@ -22,13 +23,12 @@ export const deleteCustomer = action({
   examplePerform: async (
     _context,
     { customerId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const deleted = deleteCustomerExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...deleted,
@@ -41,5 +41,6 @@ export const deleteCustomer = action({
     type: "actionOutput",
     schema: deleteCustomerOutputSchema,
   }),
+
   examplePayload: deleteCustomerExamplePayload,
 });

@@ -1,6 +1,7 @@
 import type Client from "ssh2-sftp-client";
 import { minimatch } from "minimatch";
 import type { FileEntry, FileMap } from "../types";
+
 export const listFilesRecursive = async (
   sftp: Client,
   currentPath: string,
@@ -9,8 +10,10 @@ export const listFilesRecursive = async (
   fileMap: FileMap,
 ): Promise<void> => {
   const fileList = await sftp.list(currentPath);
+
   for (const file of fileList) {
     const fullPath = `${currentPath}/${file.name}`.replace(/\/+/g, "/");
+
     if (file.type === "d") {
       if (recursive) {
         await listFilesRecursive(
@@ -31,17 +34,17 @@ export const listFilesRecursive = async (
     }
   }
 };
+
 export const computeFileChanges = (
   currentFileMap: FileMap,
   previousFileMap: FileMap,
-): {
-  newFiles: FileEntry[];
-  modifiedFiles: FileEntry[];
-} => {
+): { newFiles: FileEntry[]; modifiedFiles: FileEntry[] } => {
   const newFiles: FileEntry[] = [];
   const modifiedFiles: FileEntry[] = [];
+
   for (const [filePath, metadata] of Object.entries(currentFileMap)) {
     const previous = previousFileMap[filePath];
+
     if (!previous) {
       newFiles.push({
         path: filePath,
@@ -59,5 +62,6 @@ export const computeFileChanges = (
       });
     }
   }
+
   return { newFiles, modifiedFiles };
 };

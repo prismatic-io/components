@@ -5,7 +5,9 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { baseUrl, connection } from "../inputs";
 import { checkConnection, getToken } from "../utils";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -27,6 +29,7 @@ export const rawRequest = action({
   perform: async (context, { connection, baseUrl, ...rawRequestInputs }) => {
     checkConnection(connection);
     const arcgisToken = getToken(connection);
+
     const { data } = await sendRawRequest(
       baseUrl,
       { ...rawRequestInputs, debugRequest: context.debug.enabled },

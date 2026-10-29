@@ -3,6 +3,7 @@ import { getOrganizationMembershipOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { getOrganizationMembershipInputs } from "../../inputs";
 import { getOrganizationMembershipExamplePayload } from "../../examplePayloads";
+
 export const getOrganizationMembership = action({
   display: {
     label: "Get Organization Membership",
@@ -11,6 +12,7 @@ export const getOrganizationMembership = action({
   performSafety: "safe",
   perform: async (context, { connection, uuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/organization_memberships/${uuid}`);
     return { data };
   },

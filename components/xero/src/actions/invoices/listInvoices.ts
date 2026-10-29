@@ -4,6 +4,7 @@ import { listInvoicesInputs } from "../../inputs";
 import { fetchAllData } from "../../util";
 import type { Invoice } from "../../interfaces/Invoice";
 import { listInvoicesExamplePayload } from "../../examplePayloads";
+
 export const listInvoices = action({
   display: {
     label: "List Invoices",
@@ -30,6 +31,7 @@ export const listInvoices = action({
     return { data };
   },
   inputs: listInvoicesInputs,
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   examplePayload: listInvoicesExamplePayload as any,
 });

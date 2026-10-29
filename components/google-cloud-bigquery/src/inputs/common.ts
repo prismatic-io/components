@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, jsonInputClean } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Google Cloud BigQuery connection to use.",
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -16,6 +18,7 @@ export const projectId = input({
   required: true,
   dataSource: "projectsNames",
 });
+
 export const datasetId = input({
   label: "Dataset ID",
   type: "string",
@@ -26,6 +29,7 @@ export const datasetId = input({
   required: true,
   dataSource: "selectDataset",
 });
+
 export const tableId = input({
   label: "Table ID",
   type: "string",
@@ -36,6 +40,7 @@ export const tableId = input({
   required: true,
   dataSource: "tablesNames",
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -46,6 +51,7 @@ export const maxResults = input({
   placeholder: "Enter maximum results",
   required: false,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -56,6 +62,7 @@ export const pageToken = input({
   placeholder: "Enter page token",
   required: false,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -66,6 +73,7 @@ export const filter = input({
   placeholder: "Enter filter expression",
   required: false,
 });
+
 export const selectedFields = input({
   label: "Selected Fields",
   type: "string",
@@ -75,6 +83,7 @@ export const selectedFields = input({
   placeholder: "Enter selected fields",
   required: false,
 });
+
 export const startIndex = input({
   label: "Start Index",
   type: "string",
@@ -84,6 +93,7 @@ export const startIndex = input({
   placeholder: "Enter start index",
   required: false,
 });
+
 export const kind = input({
   label: "Kind",
   type: "string",
@@ -93,6 +103,7 @@ export const kind = input({
   placeholder: "Enter resource kind",
   required: false,
 });
+
 export const etag = input({
   label: "ETag",
   type: "string",
@@ -102,6 +113,7 @@ export const etag = input({
   placeholder: "Enter ETag",
   required: false,
 });
+
 export const id = input({
   label: "ID",
   type: "string",
@@ -112,6 +124,7 @@ export const id = input({
   placeholder: "Enter ID",
   required: false,
 });
+
 export const selfLink = input({
   label: "Self Link",
   type: "string",
@@ -123,6 +136,7 @@ export const selfLink = input({
   placeholder: "Enter self link",
   required: false,
 });
+
 export const friendlyName = input({
   label: "Friendly Name",
   type: "string",
@@ -132,6 +146,7 @@ export const friendlyName = input({
   placeholder: "Enter friendly name",
   required: false,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -141,6 +156,7 @@ export const description = input({
   placeholder: "Enter description",
   required: false,
 });
+
 export const creationTime = input({
   label: "Creation Time",
   type: "string",
@@ -151,6 +167,7 @@ export const creationTime = input({
   placeholder: "Enter creation time",
   required: false,
 });
+
 export const lastModifiedTime = input({
   label: "Last Modified Time",
   type: "string",
@@ -161,6 +178,7 @@ export const lastModifiedTime = input({
   placeholder: "Enter last modified time",
   required: false,
 });
+
 export const location = input({
   label: "Location",
   type: "string",
@@ -171,6 +189,7 @@ export const location = input({
   placeholder: "Enter location",
   required: false,
 });
+
 export const defaultCollation = input({
   label: "Default Collation",
   type: "string",
@@ -181,6 +200,7 @@ export const defaultCollation = input({
   placeholder: "Enter default collation",
   required: false,
 });
+
 export const defaultRoundingMode = input({
   label: "Default Rounding Mode",
   type: "string",
@@ -204,6 +224,7 @@ export const defaultRoundingMode = input({
     },
   ],
 });
+
 export const encryptionConfiguration = input({
   label: "Encryption Configuration",
   type: "code",
@@ -216,6 +237,7 @@ export const encryptionConfiguration = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const expirationTime = input({
   label: "Expiration Time",
   type: "string",
@@ -224,6 +246,7 @@ export const expirationTime = input({
     "Optional. The time when this model expires, in milliseconds since the epoch. If not present, the model will persist indefinitely. Expired models will be deleted and their storage reclaimed. The defaultTableExpirationMs property of the encapsulating dataset can be used to set a default expirationTime on newly created models.",
   required: false,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -233,6 +256,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const labels = input({
   label: "Labels",
   type: "code",

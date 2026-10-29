@@ -4,6 +4,7 @@ import { getDraftOrderExamplePayload as examplePayload } from "../../../exampleP
 import { getDraftOrderInputs as inputs } from "../../../inputsGql";
 import { getDraftOrderGqlOutputSchema } from "../../../outputSchemas";
 import getDraftOrderQuery from "../queries/draftOrders/GetDraftOrder.gql";
+
 export const getDraftOrderGql = action({
   display: {
     label: "Get Draft Order",
@@ -20,6 +21,7 @@ export const getDraftOrderGql = action({
     const data = await client.request(getDraftOrderQuery, {
       id: draftOrderId,
     });
+
     return {
       data,
     };

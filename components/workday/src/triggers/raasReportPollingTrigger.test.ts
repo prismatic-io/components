@@ -6,18 +6,17 @@ import {
   TEST_HOST,
 } from "../testHelpers";
 import { raasReportPollingTrigger } from "./raasReportPollingTrigger";
+
 type PerformArgs = Parameters<typeof raasReportPollingTrigger.perform>;
-type PollResult = {
-  polledNoChanges?: boolean;
-};
+type PollResult = { polledNoChanges?: boolean };
+
 const REPORT_PATH =
   "/ccx/service/customreport2/acme/ISU_Orgvue/Changed_Workers";
 const NOW = "2026-10-15T12:00:00.000Z";
 const logan = { Employee_ID: "21001", Worker: "Logan McNeil", Title: "VP" };
 const teresa = { Employee_ID: "21002", Worker: "Teresa Serrano", Title: "CFO" };
-const store: {
-  state?: PollingState;
-} = {};
+
+const store: { state?: PollingState } = {};
 const context = (batching = false) =>
   createPollingContext<PerformArgs[0]>(store, { batching });
 const noPayload = {} as PerformArgs[1];
@@ -39,6 +38,7 @@ const mockReport = (since: string, rows: unknown[]) =>
       format: "json",
     })
     .reply(200, { Report_Entry: rows });
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 beforeEach(() => {
@@ -51,6 +51,7 @@ afterEach(() => {
   expect(nock.isDone()).toBe(true);
   nock.cleanAll();
 });
+
 describe("raasReportPollingTrigger batching declaration", () => {
   it("declares opt-in batching with a default batch size", () => {
     expect(raasReportPollingTrigger.triggerResolverSupport).toBe("valid");
@@ -59,6 +60,7 @@ describe("raasReportPollingTrigger batching declaration", () => {
       raasReportPollingTrigger.triggerResolver?.resolveItems,
     ).toBeInstanceOf(Function);
   });
+
   it("offers the Look-back Date directly below the required inputs", () => {
     expect(Object.keys(raasReportPollingTrigger.inputs ?? {})).toEqual([
       "connection",
@@ -70,6 +72,7 @@ describe("raasReportPollingTrigger batching declaration", () => {
       "prompts",
     ]);
   });
+
   it("resolves a realistic payload into tagged items", () => {
     const items = raasReportPollingTrigger.triggerResolver?.resolveItems?.(
       {} as never,
@@ -81,6 +84,7 @@ describe("raasReportPollingTrigger batching declaration", () => {
     ]);
   });
 });
+
 describe("raasReportPollingTrigger perform", () => {
   it("records a baseline on a first run without a Look-back Date", async () => {
     mockReport("2026-10-15T11:55:00Z", [logan]);
@@ -94,6 +98,7 @@ describe("raasReportPollingTrigger perform", () => {
     expect(store.state?.lastPolledAt).toBe(NOW);
     expect(store.state?.seen).toHaveLength(1);
   });
+
   it("delivers every row from the Look-back Date on an initial sync", async () => {
     mockReport("2026-01-01T00:00:00Z", [logan, teresa]);
     const result = await raasReportPollingTrigger.perform(
@@ -107,6 +112,7 @@ describe("raasReportPollingTrigger perform", () => {
     expect(result.payload.body).toEqual({ data: { changed: [logan, teresa] } });
     expect((result as PollResult).polledNoChanges).toBe(false);
   });
+
   it("sends a date watermark when the Watermark Format is Date", async () => {
     mockReport("2026-01-01", []);
     await raasReportPollingTrigger.perform(context(), noPayload, {
@@ -115,9 +121,11 @@ describe("raasReportPollingTrigger perform", () => {
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
   });
+
   it("starts the next window before the last poll and skips rows already delivered", async () => {
     mockReport("2026-10-15T11:55:00Z", [logan]);
     await raasReportPollingTrigger.perform(context(), noPayload, params);
+
     vi.setSystemTime(new Date("2026-10-15T12:15:00.000Z"));
     const loganChanged = { ...logan, Title: "Chief People Officer" };
     mockReport("2026-10-15T11:55:00Z", [logan, teresa, loganChanged]);
@@ -132,6 +140,7 @@ describe("raasReportPollingTrigger perform", () => {
     expect(store.state?.lastPolledAt).toBe("2026-10-15T12:15:00.000Z");
     expect(store.state?.seen).toHaveLength(3);
   });
+
   it("reports no changes when only rows from the overlap come back", async () => {
     mockReport("2026-10-15T11:55:00Z", [logan]);
     await raasReportPollingTrigger.perform(context(), noPayload, params);
@@ -143,6 +152,7 @@ describe("raasReportPollingTrigger perform", () => {
     );
     expect((result as PollResult).polledNoChanges).toBe(true);
   });
+
   it("names the Record Key Field when a row lacks it", async () => {
     mockReport("2026-01-01T00:00:00Z", [{ Worker: "Logan McNeil" }]);
     await expect(
@@ -153,6 +163,7 @@ describe("raasReportPollingTrigger perform", () => {
     ).rejects.toThrow(/Record Key Field "Employee_ID" is missing.*Worker/);
     expect(store.state).toBeUndefined();
   });
+
   it("surfaces a Workday error and keeps the stored state", async () => {
     store.state = { lastPolledAt: NOW, seen: ["abc"] };
     nock(TEST_HOST)
@@ -164,6 +175,7 @@ describe("raasReportPollingTrigger perform", () => {
     ).rejects.toThrow();
     expect(store.state).toEqual({ lastPolledAt: NOW, seen: ["abc"] });
   });
+
   it("rejects a report URL on another host before sending the token", async () => {
     await expect(
       raasReportPollingTrigger.perform(context(), noPayload, {

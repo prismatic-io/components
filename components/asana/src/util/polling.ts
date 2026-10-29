@@ -8,6 +8,7 @@ import type {
 } from "../types/polling";
 import type { Task } from "../types/resources";
 import { fetchMoreData } from "./dataSources";
+
 export const fetchTasksSince = async (
   client: HttpClient,
   projectId: string,
@@ -20,18 +21,18 @@ export const fetchTasksSince = async (
     limit: DEFAULT_PAGE_LIMIT,
   });
 };
+
 export const partitionTasksByTimestamp = (
   tasks: Task[],
   sinceDate: Date,
-): {
-  created: Task[];
-  updated: Task[];
-} => {
+): { created: Task[]; updated: Task[] } => {
   const created: Task[] = [];
   const updated: Task[] = [];
+
   for (const task of tasks) {
     const createdAt = task.created_at ? new Date(task.created_at) : null;
     const modifiedAt = task.modified_at ? new Date(task.modified_at) : null;
+
     if (createdAt && createdAt > sinceDate) {
       created.push(task);
     } else if (modifiedAt && modifiedAt > sinceDate) {
@@ -40,16 +41,15 @@ export const partitionTasksByTimestamp = (
       updated.push(task);
     }
   }
+
   return { created, updated };
 };
+
 export const resolvePollWindow = (
   lastState: PollingState | undefined,
   lookBackDate: string | undefined,
   now: Date,
-): {
-  sinceDate: Date;
-  isBackfill: boolean;
-} => ({
+): { sinceDate: Date; isBackfill: boolean } => ({
   sinceDate: lastState?.lastPolledAt
     ? new Date(lastState.lastPolledAt)
     : lookBackDate
@@ -59,10 +59,12 @@ export const resolvePollWindow = (
     lastState?.isBackfill === true ||
     (!lastState?.lastPolledAt && Boolean(lookBackDate)),
 });
+
 const taskTime = (task: Task): number | undefined => {
   const value = task.modified_at ?? task.created_at;
   return value ? new Date(value).getTime() : undefined;
 };
+
 export const planBatchedPoll = (
   tasks: Task[],
   sinceDate: Date,
@@ -73,6 +75,7 @@ export const planBatchedPoll = (
   const seen = new Set(seenIds ?? []);
   const isAfter = (time: number, gid: string) =>
     time > since || (seenIds !== undefined && time === since && !seen.has(gid));
+
   const inWindow = tasks
     .filter((task) => {
       const time = taskTime(task);
@@ -83,6 +86,7 @@ export const planBatchedPoll = (
         (taskTime(a) ?? since) - (taskTime(b) ?? since) ||
         a.gid.localeCompare(b.gid),
     );
+
   let delivered = inWindow.slice(0, maxTasks);
   const complete = inWindow.length <= maxTasks;
   if (!complete) {
@@ -96,6 +100,7 @@ export const planBatchedPoll = (
       }
     }
   }
+
   const cursor = Math.max(
     since,
     ...delivered.map((task) => taskTime(task) ?? since),
@@ -108,6 +113,7 @@ export const planBatchedPoll = (
     seenIds === undefined && atCursor.length === 0
       ? undefined
       : [...new Set([...carried, ...atCursor])];
+
   const created: Task[] = [];
   const updated: Task[] = [];
   for (const task of delivered) {
@@ -120,6 +126,7 @@ export const planBatchedPoll = (
       updated.push(task);
     }
   }
+
   return {
     created,
     updated,
@@ -130,6 +137,7 @@ export const planBatchedPoll = (
     complete,
   };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

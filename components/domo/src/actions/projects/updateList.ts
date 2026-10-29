@@ -4,6 +4,7 @@ import { updateListExamplePayload } from "../../examplePayloads";
 import { updateListInputs } from "../../inputs";
 import type { UpdateListBody } from "../types/UpdateListBody";
 import type { UpdateListQueryParams } from "../types/UpdateListQueryParams";
+
 export const updateList = action({
   display: {
     label: "Update List",
@@ -23,6 +24,7 @@ export const updateList = action({
     let body = {};
     if (updateListBody.length)
       body = JSON.parse(updateListBody) as UpdateListBody;
+
     const { data } = await client.put(
       `/projects/${projectId}/lists/${listId}`,
       body,
@@ -38,4 +40,5 @@ export const updateList = action({
   },
   inputs: updateListInputs,
 });
+
 export default { updateList };

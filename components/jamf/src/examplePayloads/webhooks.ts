@@ -5,6 +5,7 @@ import type {
   WebhookResponse,
   WebhooksListResponse,
 } from "../types";
+
 const webhookExample: Webhook = {
   id: 1,
   name: "New Computer Notifier",
@@ -16,42 +17,35 @@ const webhookExample: Webhook = {
   read_timeout: 2,
   authentication_type: "NONE",
 };
-export const getWebhookExamplePayload: {
-  data: WebhookResponse;
-} = {
+
+export const getWebhookExamplePayload: { data: WebhookResponse } = {
   data: { webhook: webhookExample },
 };
-export const createWebhookExamplePayload: {
-  data: WebhookMutationResult;
-} = {
+
+export const createWebhookExamplePayload: { data: WebhookMutationResult } = {
   data: { id: 1 },
 };
-export const updateWebhookExamplePayload: {
-  data: WebhookMutationResult;
-} = {
+
+export const updateWebhookExamplePayload: { data: WebhookMutationResult } = {
   data: { id: 1 },
 };
-export const listWebhooksExamplePayload: {
-  data: WebhooksListResponse;
-} = {
+
+export const listWebhooksExamplePayload: { data: WebhooksListResponse } = {
   data: {
     webhooks: [{ id: 1, name: "New Computer Notifier" }],
   },
 };
-export const deleteWebhookExamplePayload: {
-  data: string;
-} = {
+
+export const deleteWebhookExamplePayload: { data: string } = {
   data: "Successfully deleted webhook 1",
 };
+
 export const deleteInstancedWebhooksExamplePayload: {
-  data: {
-    webhooksDeleted: number;
-  };
+  data: { webhooksDeleted: number };
 } = {
   data: { webhooksDeleted: 1 },
 };
-export const selectWebhookExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectWebhookExamplePayload: { result: Element[] } = {
   result: [{ key: "1", label: "New Computer Notifier" }],
 };

@@ -1,4 +1,5 @@
 import type { Pagination } from "./common";
+
 export interface Webhook {
   uri: string;
   callback_url: string;
@@ -12,6 +13,7 @@ export interface Webhook {
   user: string | null;
   creator: string | null;
 }
+
 export interface WebhookSubscriptionPayload {
   collection: Webhook[];
   pagination: Pagination;

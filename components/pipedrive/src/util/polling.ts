@@ -6,10 +6,13 @@ import type {
   PollResourceConfig,
 } from "../types";
 import { paginateRecordsWithLimit } from "./pagination";
+
 export const formatPipedriveTimestamp = (date: Date): string =>
   date.toISOString().replace("T", " ").substring(0, 19);
+
 export const formatPipedriveTimestampV2 = (date: Date): string =>
   date.toISOString();
+
 export const fetchRecentsSince = async (
   client: HttpClient,
   sinceTimestamp: string,
@@ -27,16 +30,15 @@ export const fetchRecentsSince = async (
   );
   return data ?? [];
 };
+
 export const partitionByTimestamp = (
   records: PipedriveRecentItem[],
   sinceDate: Date,
   config: PollResourceConfig,
-): {
-  created: PipedriveRecentItem[];
-  updated: PipedriveRecentItem[];
-} => {
+): { created: PipedriveRecentItem[]; updated: PipedriveRecentItem[] } => {
   const created: PipedriveRecentItem[] = [];
   const updated: PipedriveRecentItem[] = [];
+
   for (const record of records) {
     const recordData = record.data ?? {};
     const createdAtRaw = config.createdAtField
@@ -45,8 +47,10 @@ export const partitionByTimestamp = (
     const updatedAtRaw = config.updatedAtField
       ? (recordData[config.updatedAtField] as string | undefined)
       : undefined;
+
     const createdAt = createdAtRaw ? new Date(createdAtRaw) : null;
     const updatedAt = updatedAtRaw ? new Date(updatedAtRaw) : null;
+
     if (createdAt && createdAt > sinceDate) {
       created.push(record);
     } else if (updatedAt && updatedAt > sinceDate) {
@@ -55,8 +59,10 @@ export const partitionByTimestamp = (
       updated.push(record);
     }
   }
+
   return { created, updated };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

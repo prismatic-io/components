@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { LedgerAccount } from "../../interfaces/ledgerAccount";
 import { listGeneralLedgerAccountsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listGeneralLedgerAccounts = action({
   display: {
     label: "List General Ledger Accounts",
@@ -23,6 +24,7 @@ export const listGeneralLedgerAccounts = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<LedgerAccount>(
       client,
       "/accounting/accounts",
@@ -40,9 +42,7 @@ export const listGeneralLedgerAccounts = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listGeneralLedgerAccountsResponse,
       page: fetchAll ? null : listGeneralLedgerAccountsResponse.page,

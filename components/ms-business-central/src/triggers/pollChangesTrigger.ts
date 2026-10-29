@@ -16,6 +16,7 @@ import {
   resolvePollingStream,
   resolveRecordChanges,
 } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -38,14 +39,17 @@ export const pollChangesTrigger = pollingTrigger({
       params.lookBackDate,
       now,
     );
+
     const config = POLL_RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const modifiedFilter = `lastModifiedDateTime gt ${lastPolledAt}`;
     const $filter = params.additionalFilter
       ? `(${params.additionalFilter}) and (${modifiedFilter})`
       : modifiedFilter;
+
     const client = getMsBusinessCentralClient(
       params.connection,
       context,
@@ -71,9 +75,11 @@ export const pollChangesTrigger = pollingTrigger({
       fetched = await fetchAllPagedSince(client, path, { $filter });
     }
     const { records, truncated, nextLink } = fetched;
+
     const created: BusinessCentralRecord[] = [];
     const updated: BusinessCentralRecord[] =
       isBackfill || params.showUpdatedRecords !== false ? records : [];
+
     context.polling.setState(
       nextPollingState(
         { lastPolledAt, stream, query, isBackfill },
@@ -85,11 +91,13 @@ export const pollChangesTrigger = pollingTrigger({
         `Polling truncated at the page cap for ${params.pollResourceType} on company ${params.companyId}. Holding cursor at ${lastPolledAt}; the next poll resumes from the stored page link.`,
       );
     }
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${params.pollResourceType} on company ${params.companyId}: ${records.length} fetched, truncated=${truncated}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getLeadLabelsInputs } from "../../inputs";
 import { getLeadLabelsExamplePayload } from "../../examplePayloads";
 import { getLeadLabelsOutputSchema } from "../../outputSchemas";
+
 export const getLeadLabels = action({
   display: {
     label: "Get Lead Labels",

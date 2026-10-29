@@ -8,6 +8,7 @@ import {
   syncType,
 } from "../inputs";
 import { postSyncStatusOutputSchema } from "../outputSchemas";
+
 export const postSyncStatus = action({
   display: {
     label: "Post Sync Status",
@@ -30,6 +31,7 @@ export const postSyncStatus = action({
     { connection, failed_syncs, idempotency_key, successful_syncs, sync_type },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/accounting/syncs`, {
       failed_syncs,
       idempotency_key,
@@ -40,9 +42,7 @@ export const postSyncStatus = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: {
       sync_id: "4d2f6e05-9a1c-4f3b-8c27-1b6ae95f0d84",
     },

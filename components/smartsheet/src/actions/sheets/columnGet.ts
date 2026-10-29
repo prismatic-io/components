@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { columnGetExamplePayload } from "../../examplePayloads";
 import { columnGetInputs } from "../../inputs";
+
 export const columnGet = action({
   display: {
     label: "Get Column",

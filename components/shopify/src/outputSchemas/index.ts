@@ -4,7 +4,9 @@ export {
   getCollectionGqlOutputSchema,
   listCollectionsGqlOutputSchema,
 } from "./collections";
+
 export { listCurrenciesGqlOutputSchema } from "./currencies";
+
 export {
   countCustomersGqlOutputSchema,
   createAccountActivationURLGqlOutputSchema,
@@ -16,6 +18,7 @@ export {
   listCustomersOutputSchema,
   updateCustomerGqlOutputSchema,
 } from "./customers";
+
 export {
   completeDraftOrderGqlOutputSchema,
   countDraftOrdersGqlOutputSchema,
@@ -41,27 +44,32 @@ export {
   listFulfillmentsGqlOutputSchema,
   listFulfillmentsOutputSchema,
 } from "./fulfillments";
+
 export {
   getInventoryItemsGqlOutputSchema,
   listInventoryItemsGqlOutputSchema,
   updateInventoryItemsGqlOutputSchema,
 } from "./inventoryItems";
+
 export {
   connectInventoryLevelGqlOutputSchema,
   deleteInventoryLevelsGqlOutputSchema,
   getInventoryLevelsGqlOutputSchema,
   listInventoryLevelsGqlOutputSchema,
 } from "./inventoryLevels";
+
 export {
   countLocationsGqlOutputSchema,
   getLocationsGqlOutputSchema,
   listLocationsGqlOutputSchema,
 } from "./locations";
+
 export {
   deleteMetafieldGqlOutputSchema,
   listMetafieldsGqlOutputSchema,
   setMetafieldGqlOutputSchema,
 } from "./metafields";
+
 export {
   cancelOrderGqlOutputSchema,
   closeOrderGqlOutputSchema,
@@ -72,6 +80,7 @@ export {
   getOrderOutputSchema,
   listOrdersGqlOutputSchema,
 } from "./orders";
+
 export {
   countProductImagesGqlOutputSchema,
   createProductImageGqlOutputSchema,
@@ -80,6 +89,7 @@ export {
   listProductImagesGqlOutputSchema,
   listProductImagesOutputSchema,
 } from "./productImages";
+
 export {
   countProductsGqlOutputSchema,
   countProductsOutputSchema,
@@ -91,10 +101,12 @@ export {
   listProductsOutputSchema,
   updateProductGqlOutputSchema,
 } from "./products";
+
 export {
   getShopConfigGqlOutputSchema,
   getShopConfigOutputSchema,
 } from "./shops";
+
 export {
   countVariantsGqlOutputSchema,
   createVariantGqlOutputSchema,
@@ -103,6 +115,7 @@ export {
   listVariantsGqlOutputSchema,
   updateVariantGqlOutputSchema,
 } from "./variants";
+
 export {
   createWebhookGqlOutputSchema,
   createWebhookOutputSchema,

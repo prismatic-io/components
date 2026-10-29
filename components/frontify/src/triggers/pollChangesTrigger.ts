@@ -13,6 +13,7 @@ import type {
   FrontifyRecordChange,
 } from "../utils/polling";
 import { resolvePollingRecordChanges } from "../utils/polling";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Assets",
@@ -29,33 +30,41 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
+
     const lastPolledAt =
       pollState?.lastPolledAt ?? (params.lookBackDate || now);
     const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
+
     const client = createClient({
       connection: params.connection,
       debug: context.debug.enabled,
     });
+
     const responses: ListLibraryAssetsResponse[] = await graphqlFetchAll({
       client,
       query: listLibraryAssetsQuery,
       params: { libraryId: params.libraryId, query: {} },
       hasNextPath: ["library", "assets", "hasNextPage"],
     });
+
     const assets: AssetResponse[] = responses.flatMap(
       (response) => response.library?.assets?.items ?? [],
     );
+
     const { created, updated } = classifyAssetsByPollDate(assets, lastPolledAt);
     const emittedCreated = isBackfill || params.showNewRecords ? created : [];
     const emittedUpdated =
       isBackfill || params.showUpdatedRecords ? updated : [];
     const totalMatched = emittedCreated.length + emittedUpdated.length;
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Frontify assets: ${assets.length} fetched, ${emittedCreated.length} created, ${emittedUpdated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

@@ -17,6 +17,7 @@ import {
   uploadToStorage,
   width,
 } from "../../inputs";
+
 export const convertHtmlToPdf = action({
   display: {
     label: "Convert HTML to PDF",
@@ -97,6 +98,7 @@ export const convertHtmlToPdf = action({
       marginTop: marginTop || undefined,
       storage: storageName || undefined,
     };
+
     if (uploadToStorage) {
       if (!documentName) {
         throw new Error(
@@ -132,6 +134,7 @@ export const convertHtmlToPdf = action({
       });
       response = data;
     }
+
     return { data: response };
   },
   examplePayload: convertHtmlToPdfExamplePayload,

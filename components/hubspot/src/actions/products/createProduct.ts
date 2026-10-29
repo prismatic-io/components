@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createProductExamplePayload } from "../../examplePayloads";
 import { createProductInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createProduct = action({
   display: {
     label: "Create Product",
@@ -26,11 +27,13 @@ export const createProduct = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const { data } = await client.post(hubspotPaths.objects("products"), {
       properties: {
         description: description,
@@ -43,6 +46,7 @@ export const createProduct = action({
         ...dynamicValues,
       },
     });
+
     return { data };
   },
   inputs: createProductInputs,

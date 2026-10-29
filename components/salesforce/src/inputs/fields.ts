@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanPicklistNone, cleanStringInput } from "../util";
+
 export const firstName = input({
   label: "First Name",
   placeholder: "Enter first name",
@@ -18,6 +19,7 @@ export const lastName = input({
   example: "Smith",
   clean: cleanStringInput,
 });
+
 export const phone = input({
   label: "Phone",
   type: "string",
@@ -27,6 +29,7 @@ export const phone = input({
   example: "18005555555",
   clean: cleanStringInput,
 });
+
 export const mobile = input({
   label: "Mobile Phone",
   type: "string",
@@ -36,6 +39,7 @@ export const mobile = input({
   example: "18005555555",
   clean: cleanStringInput,
 });
+
 export const email = input({
   label: "Email Address",
   type: "string",
@@ -45,6 +49,7 @@ export const email = input({
   example: "someone@example.com",
   clean: util.types.toString,
 });
+
 export const title = input({
   label: "Title",
   type: "string",
@@ -55,6 +60,7 @@ export const title = input({
   example: "Example Title",
   clean: cleanStringInput,
 });
+
 export const street = input({
   label: "Street Address",
   type: "string",
@@ -65,6 +71,7 @@ export const street = input({
   example: "4 Privet Drive",
   clean: cleanStringInput,
 });
+
 export const state = input({
   label: "State",
   type: "string",
@@ -83,6 +90,7 @@ export const country = input({
   example: "United States",
   clean: cleanStringInput,
 });
+
 export const city = input({
   label: "City",
   type: "string",
@@ -92,6 +100,7 @@ export const city = input({
   example: "Cupertino",
   clean: cleanStringInput,
 });
+
 export const postalCode = input({
   label: "Postal Code",
   type: "string",
@@ -101,6 +110,7 @@ export const postalCode = input({
   example: "94024",
   clean: cleanStringInput,
 });
+
 export const leadSource = input({
   label: "Lead Source",
   type: "string",
@@ -111,6 +121,7 @@ export const leadSource = input({
   example: "Web",
   clean: cleanStringInput,
 });
+
 export const revenue = input({
   label: "Annual Revenue",
   type: "string",
@@ -121,6 +132,7 @@ export const revenue = input({
   example: "38000",
   clean: cleanStringInput,
 });
+
 export const fax = input({
   label: "Fax",
   type: "string",
@@ -131,6 +143,7 @@ export const fax = input({
   example: "18008999372",
   clean: cleanStringInput,
 });
+
 export const website = input({
   label: "Website",
   type: "string",
@@ -140,6 +153,7 @@ export const website = input({
   example: "website-example.com",
   clean: cleanStringInput,
 });
+
 export const billingStreet = input({
   label: "Street Address",
   type: "string",
@@ -150,6 +164,7 @@ export const billingStreet = input({
   example: "4 Privet Drive",
   clean: cleanStringInput,
 });
+
 export const billingState = input({
   label: "State",
   type: "string",
@@ -159,6 +174,7 @@ export const billingState = input({
   example: "CA",
   clean: cleanStringInput,
 });
+
 export const billingCity = input({
   label: "City",
   type: "string",
@@ -168,6 +184,7 @@ export const billingCity = input({
   example: "Cupertino",
   clean: cleanStringInput,
 });
+
 export const billingPostalCode = input({
   label: "Postal Code",
   type: "string",
@@ -177,6 +194,7 @@ export const billingPostalCode = input({
   example: "94024",
   clean: cleanStringInput,
 });
+
 export const billingCountry = input({
   label: "Country",
   type: "string",
@@ -186,6 +204,7 @@ export const billingCountry = input({
   example: "CA",
   clean: cleanStringInput,
 });
+
 export const employeeCount = input({
   label: "Number of Employees",
   type: "string",
@@ -196,6 +215,7 @@ export const employeeCount = input({
   example: "30",
   clean: cleanStringInput,
 });
+
 export const accountId = input({
   label: "Account ID",
   type: "string",
@@ -205,6 +225,7 @@ export const accountId = input({
   example: "0017000000hOMChAAO",
   clean: cleanStringInput,
 });
+
 export const company = input({
   label: "Company",
   placeholder: "Enter company name",
@@ -214,6 +235,7 @@ export const company = input({
   example: "Widgets Inc.",
   clean: util.types.toString,
 });
+
 export const leadStatus = input({
   label: "Lead Status",
   type: "string",
@@ -224,6 +246,7 @@ export const leadStatus = input({
     "The status of the lead. Examples of valid values include: Open, Working, Closed - Converted, Closed - Not Converted.",
   clean: util.types.toString,
 });
+
 export const rating = input({
   label: "Rating",
   type: "string",
@@ -247,6 +270,7 @@ export const rating = input({
   comments: "The sales priority of the lead: Hot, Warm, or Cold.",
   clean: cleanPicklistNone,
 });
+
 export const birthdate = input({
   label: "Birthdate",
   type: "string",
@@ -256,6 +280,7 @@ export const birthdate = input({
   example: "1985-06-15",
   clean: cleanStringInput,
 });
+
 export const industry = input({
   label: "Industry",
   type: "string",
@@ -300,6 +325,7 @@ export const industry = input({
     "The primary industry the account operates in, used for segmentation and reporting.",
   clean: util.types.toString,
 });
+
 export const type = input({
   label: "Account Type",
   type: "string",

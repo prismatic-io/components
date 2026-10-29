@@ -7,6 +7,7 @@ export const createListOutputSchema = {
     _metadata: { type: "object", properties: { self: { type: "string" } } },
   },
 };
+
 export const getListByIdOutputSchema = {
   type: "object" as const,
   properties: {
@@ -16,6 +17,7 @@ export const getListByIdOutputSchema = {
     _metadata: { type: "object", properties: { self: { type: "string" } } },
   },
 };
+
 export const getAllListsOutputSchema = {
   type: "object" as const,
   properties: {

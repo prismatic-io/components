@@ -10,6 +10,7 @@ import {
   projectId,
   taskId,
 } from "./common";
+
 const sectionId = input({
   label: "Section ID",
   type: "string",
@@ -20,6 +21,7 @@ const sectionId = input({
   dataSource: "selectSection",
   clean: validateId,
 });
+
 const sectionName = input({
   label: "Section Name",
   type: "string",
@@ -29,6 +31,7 @@ const sectionName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const createSectionInputs = {
   asanaConnection: connectionInput,
   insertAfter,
@@ -37,6 +40,7 @@ export const createSectionInputs = {
   projectId,
   sectionName,
 };
+
 export const updateSectionInputs = {
   asanaConnection: connectionInput,
   insertAfter,
@@ -45,20 +49,24 @@ export const updateSectionInputs = {
   sectionId,
   sectionName,
 };
+
 export const getSectionInputs = {
   asanaConnection: connectionInput,
   sectionId,
 };
+
 export const deleteSectionInputs = {
   asanaConnection: connectionInput,
   sectionId,
 };
+
 export const listSectionsInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: SECTION_OPT_FIELDS },
   pagination,
   projectId,
 };
+
 export const addTaskToSectionInputs = {
   asanaConnection: connectionInput,
   insertAfter,

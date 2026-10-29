@@ -7,15 +7,19 @@ import {
   testConnection,
 } from "../../testHarness";
 import { rawRequest } from "./rawRequest";
+
 const PATH = apiPath("/departments");
+
 describe("rawRequest", () => {
   afterEach(resetNock);
+
   test("forwards the method, path, auth and caller headers, and returns the response untouched", async () => {
     rampNock()
       .matchHeader("x-request-source", "unit-test")
       .get(PATH)
       .query({ page_size: "10" })
       .reply(200, listDepartmentsResponse);
+
     const { result } = await invoke(rawRequest, {
       connection: testConnection,
       method: "GET",
@@ -33,6 +37,7 @@ describe("rawRequest", () => {
       retryAllErrors: false,
       useExponentialBackoff: false,
     });
+
     expect(result.data).toEqual(listDepartmentsResponse);
   });
 });

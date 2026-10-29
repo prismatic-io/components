@@ -54,9 +54,11 @@ const listObject = {
   archived: false,
   permission_level: "create",
 };
+
 export const getListExamplePayload = {
   data: listObject,
 };
+
 export const getListsExamplePayload = {
   data: {
     lists: [
@@ -67,6 +69,7 @@ export const getListsExamplePayload = {
     ],
   },
 };
+
 export const createListExamplePayload = {
   data: {
     ...listObject,
@@ -80,15 +83,19 @@ export const createListExamplePayload = {
     },
   },
 };
+
 export const updateListExamplePayload = {
   data: listObject,
 };
+
 export const deleteListExamplePayload = {
   data: {},
 };
+
 export const addTaskToListExamplePayload = {
   data: {},
 };
+
 export const removeTaskFromListExamplePayload = {
   data: {},
 };

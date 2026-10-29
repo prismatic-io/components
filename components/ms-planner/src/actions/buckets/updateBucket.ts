@@ -7,6 +7,7 @@ import { updateBucketOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { patchWithEtag } from "../../utils";
 import { updateBucketInputs } from "../../inputs";
+
 export const updateBucket = action({
   display: {
     label: "Update Bucket",
@@ -29,12 +30,7 @@ export const updateBucket = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { name }): Promise<{ data: unknown }> => ({
     data: { ...updateBucketExamplePayload.data, name },
   }),
   examplePayload: updateBucketExamplePayload,

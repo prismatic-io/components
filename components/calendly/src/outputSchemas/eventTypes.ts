@@ -13,6 +13,7 @@ const customQuestionSchema = {
     include_other: { type: "boolean" },
   },
 };
+
 const profileSchema = {
   type: ["object", "null"],
   properties: {
@@ -21,6 +22,7 @@ const profileSchema = {
     owner: { type: "string" },
   },
 };
+
 const eventTypeResource = {
   type: "object",
   properties: {
@@ -60,6 +62,7 @@ const eventTypeResource = {
     "updated_at",
   ],
 };
+
 export const getEventTypeOutputSchema = {
   type: "object",
   properties: {
@@ -67,10 +70,12 @@ export const getEventTypeOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listUserEventTypesOutputSchema = {
   type: "array",
   items: eventTypeResource,
 };
+
 export const listEventTypeAvailableTimesOutputSchema = {
   type: "object",
   properties: {

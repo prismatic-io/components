@@ -5,6 +5,7 @@ import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { selectDealExamplePayload } from "../examplePayloads";
 import type { Deal } from "../types/deals";
 import { WebhookVersion } from "../constants";
+
 export const selectDeal = dataSource({
   display: {
     label: "Select Deal",
@@ -21,10 +22,12 @@ export const selectDeal = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "id").map<Element>((deal) => ({
       key: deal.id.toString(),
       label: `${deal.title} - ${deal.status}`,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectTicketInputs } from "../inputs";
 import type { Pages, Ticket } from "../interfaces";
+
 export const selectTicket = dataSource({
   display: {
     label: "Select Ticket",
@@ -31,15 +32,18 @@ export const selectTicket = dataSource({
       allTickets.push(...(data.tickets || []));
       startingAfter = data.pages?.next?.starting_after;
     } while (startingAfter);
+
     const result = allTickets.map((ticket: Ticket): Element => {
       const label =
         ticket.ticket_attributes?._default_title_ ||
         `Ticket ${ticket.ticket_id}`;
+
       return {
         label,
         key: ticket.id,
       };
     });
+
     return {
       result,
     };

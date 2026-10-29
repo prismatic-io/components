@@ -10,6 +10,7 @@ import {
   name,
   responsibleId,
 } from "../../inputs";
+
 export const updateCampaign = action({
   display: {
     label: "Update Campaign",

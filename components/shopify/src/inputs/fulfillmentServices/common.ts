@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 export const fulfillmentServiceId = input({
   label: "Fulfillment Service ID",
   type: "string",
@@ -9,6 +10,7 @@ export const fulfillmentServiceId = input({
   placeholder: "Enter fulfillment service ID",
   clean: util.types.toString,
 });
+
 export const scope = input({
   label: "Scope",
   type: "string",
@@ -19,6 +21,7 @@ export const scope = input({
   model: ["current_client", "all"].map((value) => ({ label: value, value })),
   clean: util.types.toString,
 });
+
 export const callbackUrl = input({
   label: "Callback URL",
   type: "string",
@@ -29,6 +32,7 @@ export const callbackUrl = input({
     "The callback URL that the fulfillment service has registered for request.",
   clean: cleanStringInput,
 });
+
 export const inventoryManagement = input({
   label: "Inventory Management",
   type: "boolean",
@@ -37,6 +41,7 @@ export const inventoryManagement = input({
     "When true, the fulfillment service tracks product inventory and provides updates to Shopify.",
   clean: util.types.toBool,
 });
+
 export const fulfillmentServiceName = input({
   label: "Fulfillment Service Name",
   type: "string",
@@ -46,6 +51,7 @@ export const fulfillmentServiceName = input({
   placeholder: "Enter fulfillment service name",
   clean: cleanStringInput,
 });
+
 export const permitsSkuSharing = input({
   label: "Permits SKU Sharing",
   type: "boolean",
@@ -54,6 +60,7 @@ export const permitsSkuSharing = input({
     "When true, the fulfillment service can stock inventory alongside other locations.",
   clean: util.types.toBool,
 });
+
 export const requiresShippingMethod = input({
   label: "Requires Shipping Method",
   type: "boolean",
@@ -62,6 +69,7 @@ export const requiresShippingMethod = input({
     "When true, the fulfillment service requires a shipping method to be specified.",
   clean: util.types.toBool,
 });
+
 export const trackingSupport = input({
   label: "Tracking Support",
   type: "boolean",

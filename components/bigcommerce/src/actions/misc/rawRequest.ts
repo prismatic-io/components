@@ -6,7 +6,9 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, storeHash } from "../../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -32,8 +34,10 @@ export const rawRequest = action({
         `Invalid connection or storeHash not provided.`,
       );
     }
+
     const baseUrl = `https://api.bigcommerce.com/stores/${storeHash}`;
     const { accessToken } = bigCommerceConnection.fields;
+
     try {
       const { data } = await sendRawRequest(
         baseUrl,

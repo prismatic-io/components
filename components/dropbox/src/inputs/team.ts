@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, directoryPath, fetchAll, pagination } from "./common";
+
 export const lookupKey = input({
   label: "Lookup By",
   type: "string",
@@ -13,6 +14,7 @@ export const lookupKey = input({
   ],
   clean: util.types.toString,
 });
+
 export const lookupValue = input({
   label: "Lookup Value",
   placeholder: "Enter the value to look up the team member by",
@@ -23,11 +25,13 @@ export const lookupValue = input({
   example: "user@example.com",
   clean: util.types.toString,
 });
+
 export const getTeamMembersInputs = {
   dropboxConnection: connectionInput,
   lookupKey,
   lookupValue,
 };
+
 export const listTeamFolderInputs = {
   dropboxConnection: connectionInput,
   path: directoryPath,

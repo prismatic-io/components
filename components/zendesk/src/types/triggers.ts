@@ -3,6 +3,7 @@ export type PollingState = {
   lastPolledAt?: string;
   backfillActive?: boolean;
 };
+
 export type PollingCursor = {
   afterCursor: string;
 };

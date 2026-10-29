@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient, getVersionFromConnection } from "../../client";
 import { cloneOrderExamplePayload } from "../../examplePayloads";
 import { cloneOrderInputs } from "../../inputs";
+
 export const cloneOrder = action({
   display: {
     label: "Clone Order",
@@ -14,12 +15,15 @@ export const cloneOrder = action({
       context.debug.enabled,
     );
     const version = getVersionFromConnection(squareConnection);
+
     const requestBody = {
       order_id: orderId,
       version,
       idempotency_key: idempotencyKey,
     };
+
     const response = await client.post("/v2/orders/clone", requestBody);
+
     return {
       data: response.data,
     };

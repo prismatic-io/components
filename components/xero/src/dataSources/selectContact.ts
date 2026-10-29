@@ -3,6 +3,7 @@ import { getXeroClient } from "../client";
 import { selectContactInputs } from "../inputs";
 import type { Contact } from "../interfaces/Contact";
 import { fetchAllData } from "../util";
+
 export const selectContact = dataSource({
   display: {
     label: "Select Contact",
@@ -20,6 +21,7 @@ export const selectContact = dataSource({
       headers: {},
       fetchAll: true,
     });
+
     const result = (data.Contacts || []).map<Element>((contact) => ({
       label: contact.Name,
       key: contact.ContactID,

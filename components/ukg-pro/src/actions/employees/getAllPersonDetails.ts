@@ -4,6 +4,7 @@ import { getAllPersonDetailsExamplePayload } from "../../examplePayloads";
 import { getAllPersonDetailsInputs } from "../../inputs";
 import type { EmployeeDetails } from "../../types";
 import { fetchWithPagination } from "../../util";
+
 export const getAllPersonDetails = action({
   display: {
     label: "Get All Person Details",
@@ -16,6 +17,7 @@ export const getAllPersonDetails = action({
     { connection, filterParameters, fetchAll, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
+
     const { data } = await fetchWithPagination<EmployeeDetails>(
       client,
       "/personnel/v1/person-details",
@@ -26,6 +28,7 @@ export const getAllPersonDetails = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: getAllPersonDetailsExamplePayload,

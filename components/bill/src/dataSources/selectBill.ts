@@ -4,6 +4,7 @@ import { getClient } from "../client";
 import { stringify } from "qs";
 import { cleanReturnData } from "../util";
 import { PAGE_SIZE, RESOURCE_CONFIG } from "../constants";
+
 export const selectBill = dataSource({
   display: {
     label: "Select Bill",
@@ -13,6 +14,7 @@ export const selectBill = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const { client, loginData } = await getClient(connection, false);
+
     const sendData = {
       start: 0,
       max: PAGE_SIZE,
@@ -22,20 +24,19 @@ export const selectBill = dataSource({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       RESOURCE_CONFIG.bills.endpoint,
       stringifiedData,
     );
     const cleanData = cleanReturnData(data);
     const objects = (
-      cleanData as {
-        id: string;
-        invoiceNumber: string;
-      }[]
+      cleanData as { id: string; invoiceNumber: string }[]
     ).map<Element>((bill) => ({
       key: bill.id,
       label: bill.invoiceNumber,
     }));
+
     return { result: objects };
   },
 });

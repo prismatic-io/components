@@ -4,6 +4,7 @@ import { selectServiceDeskExamplePayload } from "../examplePayloads";
 import { selectServiceDeskInputs } from "../inputs";
 import type { PagedResponse, ServiceDesk } from "../types";
 import { getPaginatedData, toSortedPicklist } from "../util";
+
 export const selectServiceDesk = dataSource({
   display: {
     label: "Select Service Desk",
@@ -13,11 +14,8 @@ export const selectServiceDesk = dataSource({
   inputs: selectServiceDeskInputs,
   perform: async (_context, { connection }) => {
     const { client } = await createClient(connection, false);
-    const {
-      data,
-    }: {
-      data: PagedResponse<ServiceDesk>;
-    } = await getPaginatedData<ServiceDesk>(client, "/servicedesk", true);
+    const { data }: { data: PagedResponse<ServiceDesk> } =
+      await getPaginatedData<ServiceDesk>(client, "/servicedesk", true);
     const result = toSortedPicklist(
       data.values,
       (d) => d.projectName,

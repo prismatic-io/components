@@ -1,4 +1,5 @@
 import type { PollingChangesObject, PollingRecordChange } from "../types";
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

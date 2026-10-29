@@ -37,11 +37,13 @@ export const findFileForSharedLinkExamplePayload = {
     },
   },
 };
+
 export const getSharedLinkForFileExamplePayload = {
   data: {
     sharedLink: "https://app.box.com/s/abbvr71aw8a4gb7u2541hlv45l806u5h",
   },
 };
+
 export const findFolderForSharedLinkExamplePayload = {
   data: {
     type: "folder",
@@ -49,11 +51,13 @@ export const findFolderForSharedLinkExamplePayload = {
     name: "Shared Documents",
   },
 };
+
 export const getSharedLinkForFolderExamplePayload = {
   data: {
     sharedLink: "https://app.box.com/s/abbvr71aw8a4gb7u2541hlv45l806u5h",
   },
 };
+
 export const addSharedLinkToFileExamplePayload = {
   data: {
     type: "file",
@@ -82,6 +86,7 @@ export const addSharedLinkToFileExamplePayload = {
     },
   },
 };
+
 export const updateSharedLinkToFileExamplePayload = {
   data: {
     type: "file",
@@ -110,6 +115,7 @@ export const updateSharedLinkToFileExamplePayload = {
     },
   },
 };
+
 export const removeSharedLinkFromFileExamplePayload = {
   data: {
     type: "file",
@@ -126,6 +132,7 @@ export const removeSharedLinkFromFileExamplePayload = {
     shared_link: null,
   },
 };
+
 export const addSharedLinkToFolderExamplePayload = {
   data: {
     type: "folder",
@@ -147,6 +154,7 @@ export const addSharedLinkToFolderExamplePayload = {
     },
   },
 };
+
 export const updateSharedLinkOnFolderExamplePayload = {
   data: {
     type: "folder",
@@ -168,6 +176,7 @@ export const updateSharedLinkOnFolderExamplePayload = {
     },
   },
 };
+
 export const removeSharedLinkFromFolderExamplePayload = {
   data: {
     type: "folder",

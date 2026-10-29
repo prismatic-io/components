@@ -20,6 +20,7 @@ export const getUserExamplePayload = {
     },
   },
 };
+
 export const listUsersExamplePayload = {
   ok: true,
   members: [

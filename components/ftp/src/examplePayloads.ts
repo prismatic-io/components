@@ -1,8 +1,7 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { FileInfoPayload } from "./types";
-export const listDirectoryExamplePayload: {
-  data: FileInfoPayload[];
-} = {
+
+export const listDirectoryExamplePayload: { data: FileInfoPayload[] } = {
   data: [
     {
       name: "reports",
@@ -32,16 +31,22 @@ export const listDirectoryExamplePayload: {
     },
   ],
 };
+
 export const readFileExamplePayload = {
   data: Buffer.from("example"),
   contentType: "application/octet-stream",
 };
+
 export const deleteFileExamplePayload = null;
+
 export const moveFileExamplePayload = null;
+
 export const writeFileExamplePayload = null;
+
 export const createDirectoryExamplePayload = {
   data: "/path/to/new/directory/",
 };
+
 export const newOrModifiedFilesExamplePayload: {
   payload: TriggerPayload;
 } = {

@@ -60,8 +60,11 @@ export const createCustomObjectExamplePayload = {
     secondaryDisplayProperties: [],
   },
 };
+
 export const deleteCustomObjectExamplePayload = { data: "" };
+
 export const getCustomObjectExamplePayload = createCustomObjectExamplePayload;
+
 export const listCustomObjectsExamplePayload = {
   data: {
     results: [
@@ -113,6 +116,7 @@ export const listCustomObjectsExamplePayload = {
     ],
   },
 };
+
 export const updateCustomObjectExamplePayload = {
   data: {
     id: "2116144016",

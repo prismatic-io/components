@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { createCheckoutSessionInputs } from "../../inputs";
 import { checkoutSessionOutputSchema } from "../../outputSchemas";
 import { createCheckoutSessionExamplePayload } from "../../examplePayloads/checkoutSessions";
+
 export const createCheckoutSession = action({
   display: {
     label: "Create Checkout Session",
@@ -29,6 +30,7 @@ export const createCheckoutSession = action({
       stripeConnection,
       timeout,
     });
+
     const session = await client.checkout.sessions.create({
       success_url: successUrl,
       cancel_url: cancelUrl,
@@ -39,6 +41,7 @@ export const createCheckoutSession = action({
       client_reference_id: clientReferenceId,
       ...bodyParams,
     });
+
     return {
       data: session,
     };
@@ -46,9 +49,7 @@ export const createCheckoutSession = action({
   examplePerform: async (
     _context,
     { mode, customerId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createCheckoutSessionExamplePayload.data,
       mode,
@@ -60,5 +61,6 @@ export const createCheckoutSession = action({
     type: "actionOutput",
     schema: checkoutSessionOutputSchema,
   }),
+
   examplePayload: createCheckoutSessionExamplePayload,
 });

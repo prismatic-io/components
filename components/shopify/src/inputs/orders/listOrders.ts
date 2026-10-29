@@ -19,6 +19,7 @@ import {
   sinceId,
   updatedAtMax,
 } from "./common";
+
 export const listOrdersInputs = {
   shopifyConnection: connectionInput,
   getAlldata,

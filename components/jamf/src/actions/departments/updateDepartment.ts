@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateDepartmentExamplePayload } from "../../examplePayloads";
 import { updateDepartmentInputs } from "../../inputs";
 import type { Department } from "../../types";
+
 export const updateDepartment = action({
   display: {
     label: "Update Department",

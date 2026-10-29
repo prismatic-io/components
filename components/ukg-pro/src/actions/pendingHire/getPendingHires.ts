@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getPendingHiresExamplePayload } from "../../examplePayloads";
 import { getPendingHiresInputs } from "../../inputs";
+
 export const getPendingHires = action({
   display: {
     label: "Get Pending Hires",
@@ -11,6 +12,7 @@ export const getPendingHires = action({
   inputs: getPendingHiresInputs,
   perform: async (context, { connection, companyId, pagination }) => {
     const client = await createClient(connection, context.debug.enabled);
+
     const { data } = await client.get("/personnel/v1/pending-hires", {
       params: {
         company: companyId,
@@ -18,6 +20,7 @@ export const getPendingHires = action({
         per_page: pagination.perPage,
       },
     });
+
     return { data };
   },
   examplePayload: getPendingHiresExamplePayload,

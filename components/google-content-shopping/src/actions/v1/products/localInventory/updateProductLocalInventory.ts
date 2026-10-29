@@ -3,6 +3,7 @@ import { createClientMerchant } from "../../../../client";
 import { updateLocalInventoryExamplePayload } from "../../../../examplePayloads/v1";
 import { updateProductLocalInventoryInputs } from "../../../../inputs/v1/inventory";
 import { productResourceName } from "../../../../util/resourceNames";
+
 export const updateProductLocalInventoryMerchant = action({
   display: {
     description:
@@ -36,6 +37,7 @@ export const updateProductLocalInventoryMerchant = action({
         localInventoryAttributes: (inventory as Record<string, unknown>) ?? {},
       },
     );
+
     return { data };
   },
   examplePayload: updateLocalInventoryExamplePayload,

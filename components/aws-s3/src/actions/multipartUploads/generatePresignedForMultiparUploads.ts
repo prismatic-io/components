@@ -5,6 +5,7 @@ import { createS3Client } from "../../client";
 import { generatePresignedForMultiparUploadsExamplePayload } from "../../examplePayloads";
 import { generatePresignedForMultiparUploadsInputs } from "../../inputs";
 import { generatePresignedForMultiparUploadsOutputSchema } from "../../outputSchemas";
+
 export const generatePresignedForMultiparUploads = action({
   display: {
     label: "Generate Presigned URL for Multipart Uploads",
@@ -41,7 +42,9 @@ export const generatePresignedForMultiparUploads = action({
         }),
       );
     }
+
     const urls = await Promise.all(urlArray);
+
     return {
       data: urls.map((value, index) => ({
         url: value,

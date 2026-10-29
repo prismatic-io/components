@@ -3,6 +3,7 @@ const sampleCreator = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleExtractDefinition = {
   guid: "EXT123DEF456GHI789JKL012",
   number: "EXT-000074",
@@ -18,6 +19,7 @@ const sampleExtractDefinition = {
     app: "https://app.bom.com/extracts/EXT123DEF456GHI789JKL012",
   },
 };
+
 const sampleExtractRunFile = {
   guid: "EFA123JKL456MNO789PQR012",
   name: "compliance-data-extract.xlsx",
@@ -25,6 +27,7 @@ const sampleExtractRunFile = {
   mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   size: 61240,
 };
+
 const sampleExtractRun = {
   guid: "RUN123ABC456DEF789GHI012",
   number: "1",
@@ -38,13 +41,16 @@ const sampleExtractRun = {
     app: "https://app.bom.com/extracts/EXT123DEF456GHI789JKL012/runs/RUN123ABC456DEF789GHI012",
   },
 };
+
 export const createExtractExamplePayload = { data: sampleExtractDefinition };
+
 export const deleteExtractExamplePayload = {
   data: {
     success: true,
     message: "Extract deleted successfully",
   },
 };
+
 export const downloadExtractRunFileContentExamplePayload = {
   data: {
     content: "UEsDBBQABgAIAAAAIQ4AAAAAAAAAAAAAAAAAAAA=",
@@ -54,8 +60,11 @@ export const downloadExtractRunFileContentExamplePayload = {
     size: 61240,
   },
 };
+
 export const getExtractExamplePayload = { data: sampleExtractDefinition };
+
 export const getExtractRunExamplePayload = { data: sampleExtractRun };
+
 export const listExtractRunFilesExamplePayload = {
   data: {
     results: [
@@ -72,6 +81,7 @@ export const listExtractRunFilesExamplePayload = {
     count: 2,
   },
 };
+
 export const listExtractRunsExamplePayload = {
   data: {
     results: [
@@ -89,6 +99,7 @@ export const listExtractRunsExamplePayload = {
     count: 2,
   },
 };
+
 export const listExtractsExamplePayload = {
   data: {
     results: [
@@ -105,9 +116,11 @@ export const listExtractsExamplePayload = {
     count: 2,
   },
 };
+
 export const getLatestCompletedExtractRunExamplePayload = {
   data: sampleExtractRun,
 };
+
 export const runExtractExamplePayload = {
   data: {
     ...sampleExtractRun,
@@ -119,6 +132,7 @@ export const runExtractExamplePayload = {
     files: [],
   },
 };
+
 export const updateExtractExamplePayload = {
   data: {
     ...sampleExtractDefinition,

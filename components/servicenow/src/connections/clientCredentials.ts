@@ -3,6 +3,7 @@ import {
   oauth2Connection,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 export const clientCredentials = oauth2Connection({
   key: "serviceNowClientCredentials",
   display: {

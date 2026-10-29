@@ -3,6 +3,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { editGenericPipelineInputs } from "../../inputs";
 import { editGenericPipelineExamplePayload } from "../../examplePayloads";
 import { getFallbackConnectionToken } from "../../util";
+
 export const editGenericPipeline = action({
   display: {
     label: "Edit Generic Pipeline",
@@ -22,8 +23,7 @@ export const editGenericPipeline = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => editGenericPipelineExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    editGenericPipelineExamplePayload,
   examplePayload: editGenericPipelineExamplePayload,
 });

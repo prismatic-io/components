@@ -1,4 +1,5 @@
 import type { Address, AssignedTo, Batch, CustomField } from "./common";
+
 interface Account {
   id: number;
   name: string | null;
@@ -6,10 +7,12 @@ interface Account {
   type: string | null;
   detailType: string | null;
 }
+
 interface ItemGroup {
   rootId: number;
   name: string | null;
 }
+
 interface Item {
   id: number;
   description: string | null;
@@ -36,27 +39,32 @@ interface Item {
   order: number;
   businessUnit: AssignedTo | null;
 }
+
 interface EmployeeInfo {
   id: number;
   name: string | null;
   modifiedOn: string;
 }
+
 interface InvoiceJob {
   id: number;
   number: string | null;
   type: string | null;
 }
+
 interface Royalty {
   status: string | null;
   date: string | null;
   sentOn: string | null;
   memo: string | null;
 }
+
 interface SalesTaxCode {
   id: number;
   name: string | null;
   taxRate: number;
 }
+
 export interface Invoice {
   id: number;
   syncStatus: string | null;

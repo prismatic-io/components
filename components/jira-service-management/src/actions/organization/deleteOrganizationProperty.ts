@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
 import { deleteOrganizationPropertyExamplePayload } from "../../examplePayloads";
 import { deleteOrganizationPropertyInputs } from "../../inputs";
+
 export const deleteOrganizationProperty = action({
   display: {
     label: "Delete Organization Property",

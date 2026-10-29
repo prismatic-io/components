@@ -9,6 +9,7 @@ import {
   str,
   userSchema,
 } from "./shared";
+
 export const labelSchema = obj({
   id: num,
   name: str,
@@ -24,6 +25,7 @@ export const labelSchema = obj({
   is_project_label: bool,
   archived: bool,
 });
+
 export const milestoneSchema = obj({
   id: num,
   iid: num,
@@ -38,6 +40,7 @@ export const milestoneSchema = obj({
   expired: bool,
   web_url: str,
 });
+
 export const memberSchema = obj({
   ...userSchema.properties,
   access_level: num,
@@ -50,9 +53,13 @@ export const memberSchema = obj({
   ),
   membership_state: str,
 });
+
 export const labelListSchema = list(labelSchema);
 export const milestoneListSchema = list(milestoneSchema);
 export const memberListSchema = list(memberSchema);
+
 export const listLabelsOutputSchema = labelListSchema;
+
 export const listMilestonesOutputSchema = milestoneListSchema;
+
 export const listProjectMembersOutputSchema = memberListSchema;

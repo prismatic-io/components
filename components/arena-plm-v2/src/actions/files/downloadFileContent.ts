@@ -4,6 +4,7 @@ import { downloadFileContentExamplePayload } from "../../examplePayloads";
 import { downloadFileContentInputs } from "../../inputs";
 import { downloadFileContentOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const downloadFileContent = action({
   display: {
     label: "Download File Content",
@@ -18,20 +19,25 @@ export const downloadFileContent = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       context.logger.info(
         `Downloading file content for file ${params.fileGuid}`,
       );
+
       const { data, headers } = await client.get(
         `/files/${params.fileGuid}/content`,
         {
           responseType: "arraybuffer",
         },
       );
+
       context.logger.info(
         `Successfully downloaded file content for ${params.fileGuid}`,
       );
+
       const buffer = Buffer.from(data);
       const base64Content = buffer.toString("base64");
+
       return {
         data: {
           content: base64Content,

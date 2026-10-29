@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const validateConnection = (connection: Connection) => {
   const { apiKey, baseUrl } = connection.fields;
   if (!apiKey) {
@@ -8,13 +9,16 @@ export const validateConnection = (connection: Connection) => {
       "A valid DeepSeek connection is required.",
     );
   }
+
   return {
     apiKey: util.types.toString(apiKey),
     baseUrl: util.types.toString(baseUrl),
   };
 };
+
 export function createDeepSeekClient(connection: Connection, debug = false) {
   const { apiKey, baseUrl } = validateConnection(connection);
+
   return createClient({
     baseUrl,
     headers: {

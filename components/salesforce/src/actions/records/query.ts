@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { queryInputs } from "../../inputs";
 import { executeSFAction } from "../../util";
 import { queryExamplePayload } from "../../examplePayloads";
+
 export const query = action({
   display: {
     label: "Query",
@@ -24,9 +25,7 @@ export const query = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => queryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> => queryExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: queryOutputSchema,

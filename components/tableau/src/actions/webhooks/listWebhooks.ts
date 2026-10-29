@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -16,6 +17,7 @@ export const listWebhooks = action({
       apiVersion,
     });
     const { data } = await client.get("/webhooks");
+
     return {
       data,
     };

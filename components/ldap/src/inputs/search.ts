@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanAttributesList } from "../util";
+
 export const searchBase = input({
   label: "Search Base",
   type: "string",
@@ -9,6 +10,7 @@ export const searchBase = input({
   placeholder: "Enter base DN (e.g., OU=Users,DC=example,DC=com)",
   clean: util.types.toString,
 });
+
 export const scope = input({
   label: "Scope",
   type: "string",
@@ -23,6 +25,7 @@ export const scope = input({
   default: "sub",
   clean: util.types.toString,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -33,6 +36,7 @@ export const filter = input({
   default: "(objectClass=*)",
   clean: util.types.toString,
 });
+
 export const attributes = input({
   label: "Attributes",
   type: "string",
@@ -44,6 +48,7 @@ export const attributes = input({
   placeholder: "Enter attribute names",
   clean: cleanAttributesList,
 });
+
 export const includeReferences = input({
   label: "Include References",
   type: "boolean",
@@ -52,6 +57,7 @@ export const includeReferences = input({
   comments: "When true, includes references in the search results.",
   clean: util.types.toBool,
 });
+
 export const additionalAttributes = input({
   label: "Additional Attributes",
   type: "string",

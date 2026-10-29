@@ -57,6 +57,7 @@ export const webhookEndpointOutputSchema = {
     "url",
   ],
 };
+
 export const listWebhooksOutputSchema = {
   type: "object" as const,
   properties: {
@@ -67,6 +68,7 @@ export const listWebhooksOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const deletedWebhookEndpointOutputSchema = {
   type: "object" as const,
   properties: {
@@ -84,6 +86,7 @@ export const deletedWebhookEndpointOutputSchema = {
   },
   required: ["deleted", "id", "object"],
 };
+
 export const deleteWebhooksOutputSchema = {
   type: "array",
   items: {

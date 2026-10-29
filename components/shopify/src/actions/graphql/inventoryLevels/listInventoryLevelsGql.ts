@@ -7,6 +7,7 @@ import { listInventoryLevelsGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listInventoryLevelsQuery from "../queries/inventoryLevels/ListInventoryLevels.gql";
+
 export const listInventoryLevelsGql = action({
   display: {
     label: "List Inventory Levels At Location",
@@ -23,6 +24,7 @@ export const listInventoryLevelsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = (await fetchData(
       client,
       ["location", "inventoryLevels"],
@@ -34,9 +36,8 @@ export const listInventoryLevelsGql = action({
         first: getAlldata ? MAX_LIMIT : pagination.limit,
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
-    )) as Record<"inventoryLevels", unknown[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"inventoryLevels", unknown[]> & { pageInfo: PageInfo };
+
     return {
       data,
     };

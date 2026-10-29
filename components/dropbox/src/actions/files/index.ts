@@ -11,6 +11,7 @@ import { saveFromUrl } from "./saveFromUrl";
 import { searchFiles } from "./searchFiles";
 import { unlockFile } from "./unlockFile";
 import { uploadFile } from "./uploadFile";
+
 export default {
   copyObject,
   deleteObject,

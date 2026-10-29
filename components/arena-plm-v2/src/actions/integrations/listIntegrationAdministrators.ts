@@ -4,6 +4,7 @@ import { listIntegrationAdministratorsExamplePayload } from "../../examplePayloa
 import { listIntegrationAdministratorsInputs } from "../../inputs";
 import { userCompactListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listIntegrationAdministrators = action({
   display: {
     label: "List Integration Administrators",
@@ -19,9 +20,11 @@ export const listIntegrationAdministrators = action({
   perform: async (context, { connection, integrationGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const { data } = await client.get(
         `/outboundintegrations/${integrationGuid}/administrators`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

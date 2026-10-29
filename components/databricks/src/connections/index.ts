@@ -4,6 +4,7 @@ import {
   OAuth2Type,
   oauth2Connection,
 } from "@prismatic-io/spectral";
+
 export const personalAccessToken = connection({
   key: "personalAccessToken",
   display: {
@@ -26,6 +27,7 @@ export const personalAccessToken = connection({
     }),
   },
 });
+
 export const workspaceServicePrincipal = oauth2Connection({
   key: "workspaceServicePrincipal",
   display: {
@@ -73,4 +75,5 @@ export const workspaceServicePrincipal = oauth2Connection({
     },
   },
 });
+
 export default [workspaceServicePrincipal, personalAccessToken];

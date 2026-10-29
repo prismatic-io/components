@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { createStatusUpdateExamplePayload } from "../../examplePayloads";
 import { createStatusUpdateInputs } from "../../inputs";
 import { statusUpdateResponseSchema } from "../../outputSchemas";
+
 export const createStatusUpdate = action({
   display: {
     label: "Create Status Update",

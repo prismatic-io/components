@@ -2,6 +2,7 @@ import { dataSource, util } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { previewRecordTypeFieldsInputs } from "../../inputs";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export const previewRecordTypeFields = dataSource({
   display: {
     label: "Preview Record Type Fields",
@@ -11,11 +12,14 @@ export const previewRecordTypeFields = dataSource({
   inputs: previewRecordTypeFieldsInputs,
   perform: async (_context, { version, connection, dynamicRecordType }) => {
     const httpClient = await createSalesforceHttpClient(version, connection);
+
     try {
       const {
         data: { fields },
       } = await httpClient.get(`/sobjects/${dynamicRecordType}/describe/`);
+
       const fieldList: string[] = fields.map(({ label }) => label);
+
       return {
         result: fieldList,
       };

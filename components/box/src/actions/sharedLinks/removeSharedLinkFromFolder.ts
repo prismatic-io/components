@@ -4,6 +4,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { removeSharedLinkFromFolderExamplePayload } from "../../examplePayloads";
 import { removeSharedLinkFromFolderInputs } from "../../inputs";
 import { removeSharedLinkFromFolderOutputSchema } from "../../outputSchemas";
+
 export const removeSharedLinkFromFolder = action({
   display: {
     label: "Remove Shared Link from Folder",
@@ -34,9 +35,7 @@ export const removeSharedLinkFromFolder = action({
   examplePerform: async (
     _context,
     { folderId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...removeSharedLinkFromFolderExamplePayload.data,
       id: folderId,

@@ -4,11 +4,13 @@ import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { WebhookVersion } from "../constants";
 import { selectActivityExamplePayload } from "../examplePayloads";
+
 interface Activity {
   id: number;
   subject: string;
   type: string;
 }
+
 export const selectActivity = dataSource({
   display: {
     label: "Select Activity",
@@ -25,12 +27,14 @@ export const selectActivity = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "subject").map<Element>((activity) => ({
       key: activity.id.toString(),
       label: activity.type
         ? `${activity.subject} (${activity.type})`
         : activity.subject,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

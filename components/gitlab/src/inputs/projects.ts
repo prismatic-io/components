@@ -6,6 +6,7 @@ import {
   project,
   search,
 } from "./common";
+
 const membership = input({
   label: "Membership",
   type: "boolean",
@@ -15,6 +16,7 @@ const membership = input({
     "When true, return only projects the authenticated user is a member of. On GitLab.com, false searches every public project.",
   clean: util.types.toBool,
 });
+
 export const listProjectsInputs = {
   connection: connectionInput,
   fetchAll: {
@@ -26,4 +28,5 @@ export const listProjectsInputs = {
   membership,
   search,
 };
+
 export const getProjectInputs = { connection: connectionInput, project };

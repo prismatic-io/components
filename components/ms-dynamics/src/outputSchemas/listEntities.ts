@@ -1,4 +1,5 @@
 import { outputSchema } from "@prismatic-io/spectral";
+
 export const listEntitiesOutputSchema = outputSchema({
   type: "actionOutput",
   schema: {

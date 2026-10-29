@@ -1,6 +1,8 @@
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { sharedInputs } from "./shared";
+
 const BASE_URL = "https://<YOUR_DOMAIN>.gorgias.com/api";
+
 export const rawRequestInputs = {
   connection: sharedInputs.connection,
   ...httpClientInputs,

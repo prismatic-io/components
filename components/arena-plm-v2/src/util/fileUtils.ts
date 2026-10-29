@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import type FormData from "form-data";
 import { getRecordString, isRecord } from "./typeGuards";
+
 export function appendFilePart(
   formData: FormData,
   partName: string,
@@ -10,17 +11,22 @@ export function appendFilePart(
   if (!isRecord(value) || !value.data) {
     return false;
   }
+
   const payload = util.types.toBufferDataPayload(value.data);
+
   formData.append(partName, payload.data, {
     filename: getRecordString(value, "filename") ?? defaultFilename,
     contentType: getRecordString(value, "contentType") ?? payload.contentType,
   });
+
   return true;
 }
+
 export function appendFormFields(formData: FormData, fields: unknown): void {
   if (!isRecord(fields)) {
     return;
   }
+
   for (const [key, value] of Object.entries(fields)) {
     if (value === undefined || value === null) {
       continue;
@@ -28,6 +34,7 @@ export function appendFormFields(formData: FormData, fields: unknown): void {
     formData.append(key, util.types.toString(value));
   }
 }
+
 export function getFilenameFromContentType(
   contentType?: string,
   format?: string,
@@ -35,6 +42,7 @@ export function getFilenameFromContentType(
   if (format) {
     return `file.${format}`;
   }
+
   if (contentType) {
     const mimeToExtension: Record<string, string> = {
       "application/pdf": "pdf",
@@ -52,10 +60,12 @@ export function getFilenameFromContentType(
       "application/x-zip-compressed": "zip",
       "text/csv": "csv",
     };
+
     const extension = mimeToExtension[contentType];
     if (extension) {
       return `file.${extension}`;
     }
   }
+
   return undefined;
 }

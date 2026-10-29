@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { validateId } from "../util";
 import { connectionInput, pagination, portfolioId } from "./common";
+
 const itemId = input({
   label: "Item ID",
   type: "string",
@@ -10,11 +11,13 @@ const itemId = input({
   required: true,
   clean: validateId,
 });
+
 export const listPortfolioItemsInputs = {
   asanaConnection: connectionInput,
   portfolioId,
   pagination,
 };
+
 export const removePortfolioItemInputs = {
   asanaConnection: connectionInput,
   itemId,

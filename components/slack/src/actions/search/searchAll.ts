@@ -3,6 +3,7 @@ import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { searchAllExamplePayload } from "../../examplePayloads";
 import { searchAllInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const searchAll = action({
   display: {
     label: "Search All",
@@ -38,14 +39,10 @@ export const searchAll = action({
       highlight,
       page,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { query },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { query }): Promise<{ data: unknown }> => ({
     data: { ...searchAllExamplePayload, query },
   }),
   examplePayload: {

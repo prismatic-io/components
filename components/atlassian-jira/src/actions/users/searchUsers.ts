@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { searchUsersExamplePayload } from "../../examplePayloads";
 import { connectionInput, searchString } from "../../inputs";
+
 export const searchUsers = action({
   display: {
     label: "Search Users",
@@ -17,6 +18,7 @@ export const searchUsers = action({
         query: params.searchString,
       },
     });
+
     return { data };
   },
   inputs: {

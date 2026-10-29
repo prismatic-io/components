@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAlgoliaClient } from "../../client";
 import { copySettingsExamplePayload } from "../../examplePayloads";
 import { connectionInput, indexName } from "../../inputs";
+
 export const copySettings = action({
   display: {
     label: "Copy Settings",
@@ -15,6 +16,7 @@ export const copySettings = action({
       isGoingToRead: false,
       debug: context.debug.enabled,
     });
+
     try {
       const { data } = await client.post(`/1/indexes/${indexFrom}/operation`, {
         operation: "copy",

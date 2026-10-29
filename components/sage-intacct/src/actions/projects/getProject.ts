@@ -9,6 +9,7 @@ import { getProjectExamplePayload } from "../../examplePayloads";
 import { OBJECT_PROJECT } from "../../constants";
 import { getProjectInputs } from "../../inputs";
 import { getProjectOutputSchema } from "../../outputSchemas";
+
 export const getProject = action({
   display: {
     label: "Get Project",

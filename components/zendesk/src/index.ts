@@ -6,6 +6,7 @@ import webhookActions from "./actions/webhooks";
 import connections from "./connections";
 import triggers from "./triggers";
 import dataSources from "./dataSources";
+
 export default component({
   key: "zendesk",
   public: true,

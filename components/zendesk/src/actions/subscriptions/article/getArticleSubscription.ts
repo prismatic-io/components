@@ -4,6 +4,7 @@ import { rawHttpClient } from "../../../auth";
 import { getArticleSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
 import { getArticleSubscriptionExamplePayload } from "../../../examplePayloads";
+
 export const getArticleSubscription = action({
   display: {
     label: "Get Article Subscription",
@@ -18,7 +19,9 @@ export const getArticleSubscription = action({
     const url = locale
       ? `/help_center/${locale}/articles/${articleId}/subscriptions/${subscriptionId}`
       : `/help_center/articles/${articleId}/subscriptions/${subscriptionId}`;
+
     const { data } = await client.get<SubscriptionResponse>(url);
+
     return {
       data,
     };

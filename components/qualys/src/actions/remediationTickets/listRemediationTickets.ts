@@ -5,6 +5,7 @@ import { listRemediationTicketsInputs } from "../../inputs";
 import { listRemediationTicketsOutputSchema } from "../../outputSchemas";
 import type { TicketListResponse } from "../../types";
 import { ensureArray, normalizeTicket, parseXml } from "../../util";
+
 export const listRemediationTickets = action({
   display: {
     label: "List Remediation Tickets",
@@ -22,6 +23,7 @@ export const listRemediationTickets = action({
     { connection, assignee, ticketState, severity, modifiedSinceDatetime },
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
+
     const response = await client.get<string>("/msp/ticket_list.php", {
       params: {
         ticket_assignee: assignee,
@@ -30,11 +32,15 @@ export const listRemediationTickets = action({
         modified_since_datetime: modifiedSinceDatetime,
       },
     });
+
     const parsed = await parseXml<TicketListResponse>(response.data);
+
     const tickets = ensureArray(
       parsed.REMEDIATION_TICKETS?.TICKET_LIST?.TICKET,
     );
+
     const truncationId = parsed.REMEDIATION_TICKETS?.TRUNCATION?.$?.last;
+
     return {
       data: {
         tickets: tickets.map(normalizeTicket),

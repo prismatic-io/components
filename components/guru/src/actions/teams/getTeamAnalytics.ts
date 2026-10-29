@@ -3,6 +3,7 @@ import { getGuruClient } from "../../client";
 import { getTeamAnalyticsPayload } from "../../examplePayloads";
 import { getTeamAnalyticsInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
+
 export const getTeamAnalytics = action({
   display: {
     label: "Get Team Analytics",
@@ -13,6 +14,7 @@ export const getTeamAnalytics = action({
     { connection, teamId, fromDate, toDate, fetchAll },
   ) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const data = await fetchGuruResults(
       client,
       `/teams/${teamId}/analytics`,
@@ -22,6 +24,7 @@ export const getTeamAnalytics = action({
         toDate,
       },
     );
+
     return { data };
   },
   inputs: getTeamAnalyticsInputs,

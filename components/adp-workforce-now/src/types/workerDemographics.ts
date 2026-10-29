@@ -10,16 +10,19 @@ import type {
   WorkerID,
   WorkerStatus,
 } from "./workers";
+
 interface CodeDemographics {
   codeValue: string;
   shortName?: string;
   longName?: string;
 }
+
 interface EmailDemographics {
   emailUri: string;
   nameCode: NameCodeDemographics;
   notificationIndicator: boolean;
 }
+
 interface CommunicationDemographics {
   emails: EmailDemographics[];
   faxes: Fax[];
@@ -27,16 +30,19 @@ interface CommunicationDemographics {
   mobiles: Fax[];
   pagers: Fax[];
 }
+
 interface CodeFieldDemographics {
   itemID: string;
   nameCode: NameCodeDemographics;
   codeValue?: string;
   shortName?: string;
 }
+
 interface IndicatorFieldDemographics {
   itemID: string;
   nameCode: CodeDemographics;
 }
+
 interface CustomFieldGroupDemographics {
   codeFields: CodeFieldDemographics[];
   indicatorFields: IndicatorFieldDemographics[];
@@ -44,6 +50,7 @@ interface CustomFieldGroupDemographics {
   percentFields: Field[];
   stringFields: Field[];
 }
+
 interface LegalAddressDemographics {
   cityName: string;
   countryCode: string;
@@ -53,11 +60,13 @@ interface LegalAddressDemographics {
   nameCode: CodeDemographics;
   postalCode: string;
 }
+
 interface LegalNameDemographics {
   familyName1: string;
   formattedName: string;
   givenName: string;
 }
+
 interface PersonDemographics {
   communication: CommunicationDemographics;
   customFieldGroup: CustomFieldGroupDemographics;
@@ -69,11 +78,13 @@ interface PersonDemographics {
   preferredName: unknown;
   tobaccoUserIndicator: boolean;
 }
+
 interface StatusCodeClassDemographics {
   codeValue: string;
   shortName: string;
   longName: string;
 }
+
 interface Address {
   nameCode: StatusCodeClassDemographics;
   lineOne: string;
@@ -82,21 +93,26 @@ interface Address {
   countryCode: string;
   postalCode: string;
 }
+
 interface AssignedWorkLocation {
   address: Address;
 }
+
 interface PayCycleCodeClass {
   codeValue: string;
   shortName: string;
 }
+
 interface AssignmentStatusDemographics {
   statusCode: StatusCodeClassDemographics;
   reasonCode: PayCycleCodeClass;
   effectiveDate: string;
 }
+
 interface PayrollProcessingStatusCode {
   shortName: string;
 }
+
 interface WorkAssignmentsDemographics {
   itemID: string;
   primaryIndicator: boolean;
@@ -114,6 +130,7 @@ interface WorkAssignmentsDemographics {
   customFieldGroup: CustomFieldGroup;
   customCountryInputs: unknown[];
 }
+
 export interface WorkerDemographics {
   associateOID: string;
   workerID: WorkerID;

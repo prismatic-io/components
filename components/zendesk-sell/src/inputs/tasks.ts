@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const resourceType = input({
   label: "Resource Type",
   comments:
@@ -10,6 +11,7 @@ const resourceType = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceTypeFilter = input({
   label: "Resource Type",
   comments:
@@ -20,6 +22,7 @@ const resourceTypeFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceId = input({
   label: "Resource ID",
   comments: "The unique identifier of the resource the task is related to.",
@@ -29,6 +32,7 @@ const resourceId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const resourceIdFilter = input({
   label: "Resource ID",
   comments: "Unique identifier of the resource to search for.",
@@ -38,6 +42,7 @@ const resourceIdFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const dueDate = input({
   label: "Due Date",
   comments: "The date and time when the task is due. Format: ISO8601 UTC.",
@@ -47,6 +52,7 @@ const dueDate = input({
   required: false,
   clean: util.types.toString,
 });
+
 const taskCompleted = input({
   label: "Completed",
   comments: "When true, marks the task as completed.",
@@ -60,6 +66,7 @@ const taskCompleted = input({
   ],
   clean: util.types.toString,
 });
+
 const remindAt = input({
   label: "Remind At",
   comments:
@@ -70,6 +77,7 @@ const remindAt = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerId = input({
   label: "Owner ID",
   placeholder: "Enter Owner ID",
@@ -80,6 +88,7 @@ const ownerId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerIdFilter = input({
   label: "Owner ID",
   placeholder: "Enter Owner ID",
@@ -90,6 +99,7 @@ const ownerIdFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const contentRequired = input({
   label: "Content",
   comments: "The description or body of the task.",
@@ -99,6 +109,7 @@ const contentRequired = input({
   required: true,
   clean: util.types.toString,
 });
+
 const contentOptional = input({
   label: "Content",
   comments: "The description or body of the task.",
@@ -108,6 +119,7 @@ const contentOptional = input({
   required: false,
   clean: util.types.toString,
 });
+
 const taskId = input({
   label: "Task ID",
   comments: "The unique identifier of the task.",
@@ -118,6 +130,7 @@ const taskId = input({
   clean: util.types.toString,
   dataSource: "selectTask",
 });
+
 const position = input({
   label: "Position",
   comments:
@@ -128,6 +141,7 @@ const position = input({
   required: true,
   clean: util.types.toString,
 });
+
 const limit = input({
   label: "Limit",
   comments: "The maximum number of events to return in a single response.",
@@ -137,6 +151,7 @@ const limit = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments:
@@ -147,6 +162,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of task IDs to be returned in a request.",
@@ -156,6 +172,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const creatorId = input({
   label: "Creator ID",
   comments:
@@ -166,6 +183,7 @@ const creatorId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const q = input({
   label: "Query",
   comments:
@@ -176,6 +194,7 @@ const q = input({
   required: false,
   clean: util.types.toString,
 });
+
 const type = input({
   label: "Type",
   comments: "Type of tasks to search for. Possible values: floating, related.",
@@ -185,6 +204,7 @@ const type = input({
   required: false,
   clean: util.types.toString,
 });
+
 const completed = input({
   label: "Completed",
   comments:
@@ -199,6 +219,7 @@ const completed = input({
   required: false,
   clean: util.types.toString,
 });
+
 const overdue = input({
   label: "Overdue",
   comments:
@@ -213,6 +234,7 @@ const overdue = input({
   ],
   clean: util.types.toString,
 });
+
 const remind = input({
   label: "Remind",
   comments:
@@ -227,6 +249,7 @@ const remind = input({
   ],
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -237,6 +260,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -247,12 +271,14 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, perPage },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -270,6 +296,7 @@ const additionalFields = structuredObjectInput({
     remind,
   },
 });
+
 export const createTaskInputs = {
   connection,
   content: contentRequired,
@@ -280,19 +307,23 @@ export const createTaskInputs = {
   remindAt,
   ownerId,
 };
+
 export const deleteTaskInputs = {
   connection,
   id: taskId,
 };
+
 export const getTaskInputs = {
   connection,
   id: taskId,
 };
+
 export const getTasksStreamInputs = {
   connection,
   position,
   limit,
 };
+
 export const listTasksInputs = {
   connection,
   fetchAll,
@@ -301,6 +332,7 @@ export const listTasksInputs = {
   pagination,
   additionalFields,
 };
+
 export const updateTaskInputs = {
   connection,
   id: taskId,

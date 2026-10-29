@@ -10,6 +10,7 @@ import {
   page,
   where,
 } from "./common";
+
 export const contactName = input({
   label: "Contact Name",
   type: "string",
@@ -19,6 +20,7 @@ export const contactName = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+
 export const firstName = input({
   label: "First Name",
   type: "string",
@@ -28,6 +30,7 @@ export const firstName = input({
   placeholder: "Enter first name",
   clean: cleanStringInput,
 });
+
 export const lastName = input({
   label: "Last Name",
   type: "string",
@@ -37,6 +40,7 @@ export const lastName = input({
   placeholder: "Enter last name",
   clean: cleanStringInput,
 });
+
 export const email = input({
   label: "Email Address",
   type: "string",
@@ -46,6 +50,7 @@ export const email = input({
   placeholder: "Enter email address",
   clean: cleanStringInput,
 });
+
 export const bankAccountDetails = input({
   label: "Bank Account Details",
   type: "string",
@@ -56,6 +61,7 @@ export const bankAccountDetails = input({
   placeholder: "Enter bank account details",
   clean: cleanStringInput,
 });
+
 export const taxNumber = input({
   label: "Tax Number",
   type: "string",
@@ -66,6 +72,7 @@ export const taxNumber = input({
   placeholder: "Enter tax number",
   clean: cleanStringInput,
 });
+
 export const accountsReceivableTaxType = input({
   label: "Accounts Receivable Tax Type",
   type: "string",
@@ -76,6 +83,7 @@ export const accountsReceivableTaxType = input({
   placeholder: "Enter accounts receivable tax type",
   clean: cleanStringInput,
 });
+
 export const accountsPayableTaxType = input({
   label: "Accounts Payable Tax Type",
   type: "string",
@@ -86,6 +94,7 @@ export const accountsPayableTaxType = input({
   placeholder: "Enter accounts payable tax type",
   clean: cleanStringInput,
 });
+
 export const defaultCurrency = input({
   label: "Default Currency",
   type: "string",
@@ -95,6 +104,7 @@ export const defaultCurrency = input({
   placeholder: "Enter default currency",
   clean: cleanStringInput,
 });
+
 export const contactNumber = input({
   label: "Contact Number",
   type: "string",
@@ -104,6 +114,7 @@ export const contactNumber = input({
   placeholder: "Enter contact number",
   clean: cleanStringInput,
 });
+
 export const contactStatus = input({
   label: "Contact Status",
   type: "string",
@@ -117,6 +128,7 @@ export const contactStatus = input({
   placeholder: "Enter contact status",
   clean: cleanStringInput,
 });
+
 export const city = input({
   label: "City",
   type: "string",
@@ -126,6 +138,7 @@ export const city = input({
   placeholder: "Enter city",
   clean: cleanStringInput,
 });
+
 export const addressType = input({
   label: "Address Type",
   type: "string",
@@ -140,6 +153,7 @@ export const addressType = input({
   placeholder: "Enter address type",
   clean: cleanStringInput,
 });
+
 export const address = input({
   label: "Address",
   type: "string",
@@ -149,6 +163,7 @@ export const address = input({
   placeholder: "Enter address",
   clean: cleanStringInput,
 });
+
 export const postalCode = input({
   label: "Postal Code",
   type: "string",
@@ -158,6 +173,7 @@ export const postalCode = input({
   placeholder: "Enter postal code",
   clean: cleanStringInput,
 });
+
 export const country = input({
   label: "Country",
   type: "string",
@@ -167,6 +183,7 @@ export const country = input({
   placeholder: "Enter country",
   clean: cleanStringInput,
 });
+
 export const region = input({
   label: "Region",
   type: "string",
@@ -176,6 +193,7 @@ export const region = input({
   placeholder: "Enter region",
   clean: cleanStringInput,
 });
+
 const contactAdditionalFields = input({
   ...additionalFields,
   example: JSON.stringify(createContactAdditionalFields, null, 2),
@@ -183,10 +201,12 @@ const contactAdditionalFields = input({
     additionalFields.comments +
     " See [Xero API documentation](https://developer.xero.com/documentation/api/accounting/contacts#post-contacts) for additional fields.",
 });
+
 export const archiveContactInputs = {
   xeroConnection: connectionInput,
   contactId,
 };
+
 export const createContactInputs = {
   xeroConnection: connectionInput,
   contactName,
@@ -207,14 +227,17 @@ export const createContactInputs = {
   defaultCurrency,
   additionalFields: contactAdditionalFields,
 };
+
 export const getContactInputs = {
   xeroConnection: connectionInput,
   contactId,
 };
+
 export const getContactHistoryInputs = {
   xeroConnection: connectionInput,
   contactId,
 };
+
 export const listContactsInputs = {
   xeroConnection: connectionInput,
   fetchAll,
@@ -222,6 +245,7 @@ export const listContactsInputs = {
   modifiedAfter,
   where,
 };
+
 export const updateContactInputs = {
   xeroConnection: connectionInput,
   contactId,

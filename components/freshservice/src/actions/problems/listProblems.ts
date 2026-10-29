@@ -4,6 +4,7 @@ import { listProblemsExamplePayload as examplePayload } from "../../examplePaylo
 import { listProblemsInputs as inputs } from "../../inputs";
 import { listProblemsOutputSchema } from "../../outputSchemas";
 import { getListData } from "../../util";
+
 export const listProblems = action({
   display: {
     label: "List Problems",
@@ -17,6 +18,7 @@ export const listProblems = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await getListData(client, `/problems`, "problems", {
       fetchAll,
       params: {
@@ -25,6 +27,7 @@ export const listProblems = action({
         page: pagination.page,
       },
     });
+
     return {
       data,
     };

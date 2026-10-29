@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection, group, includes, listDefaultInputs } from "./common";
+
 const deviceId = input({
   label: "Device ID",
   type: "string",
@@ -10,10 +11,12 @@ const deviceId = input({
   clean: util.types.toString,
   dataSource: "selectDevice",
 });
+
 export const getDeviceInputs = {
   deviceId,
   connection,
 };
+
 export const listDevicesInputs = {
   ...listDefaultInputs,
   includes,

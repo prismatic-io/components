@@ -4,6 +4,7 @@ import { updateMultipleProfilesInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { updateMultipleProfilesExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
+
 export const updateMultipleProfiles = action({
   display: {
     label: "Update Multiple Profiles",
@@ -39,8 +40,7 @@ export const updateMultipleProfiles = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateMultipleProfilesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateMultipleProfilesExamplePayload,
   examplePayload: updateMultipleProfilesExamplePayload,
 });

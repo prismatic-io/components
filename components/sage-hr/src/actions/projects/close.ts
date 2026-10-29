@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { closeProjectExamplePayload } from "../../examplePayloads";
 import { connectionInput, project_id } from "../../inputs";
+
 export const closeProject = action({
   display: {
     label: "Close Project",

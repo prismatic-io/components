@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { stopCrawlerExamplePayload } from "../../examplePayloads";
 import { stopCrawlerInputs } from "../../inputs";
+
 export const stopCrawler = action({
   display: {
     label: "Stop Crawler",

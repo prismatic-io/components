@@ -1,4 +1,5 @@
 import { identitySetSchema, deleteResultSchema } from "./common";
+
 export const plannerPlanSchema = {
   type: "object" as const,
   properties: {
@@ -19,6 +20,7 @@ export const plannerPlanSchema = {
   },
   required: ["id"],
 };
+
 export const plannerPlanCollectionSchema = {
   type: "object" as const,
   properties: {
@@ -28,11 +30,17 @@ export const plannerPlanCollectionSchema = {
   },
   required: ["value", "truncated"],
 };
+
 export const listPlansInGroupOutputSchema = plannerPlanCollectionSchema;
+
 export const listPlansForUserOutputSchema = plannerPlanCollectionSchema;
+
 export const getPlanOutputSchema = plannerPlanSchema;
+
 export const createPlanOutputSchema = plannerPlanSchema;
+
 export const updatePlanOutputSchema = plannerPlanSchema;
+
 export const plannerPlanDetailsSchema = {
   type: "object" as const,
   properties: {
@@ -75,6 +83,9 @@ export const plannerPlanDetailsSchema = {
   },
   required: ["id"],
 };
+
 export const getPlanDetailsOutputSchema = plannerPlanDetailsSchema;
+
 export const updatePlanDetailsOutputSchema = plannerPlanDetailsSchema;
+
 export const deletePlanOutputSchema = deleteResultSchema;

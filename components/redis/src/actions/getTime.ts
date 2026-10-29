@@ -3,6 +3,7 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import closeConnection from "../closeConnection";
 import { getTimeExamplePayload } from "../examplePayloads";
+
 export const getTime = action({
   display: {
     label: "Get Time",
@@ -14,7 +15,9 @@ export const getTime = action({
       context.debug.enabled,
     );
     const data = await client.time();
+
     await closeConnection(client);
+
     return {
       data,
     };
@@ -24,4 +27,5 @@ export const getTime = action({
     data: getTimeExamplePayload as unknown,
   },
 });
+
 export default getTime;

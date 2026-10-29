@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanString } from "../utils";
 import { connectionInput, fetchAll, pagination, search } from "./common";
+
 const username = input({
   label: "Username",
   type: "string",
@@ -10,7 +11,9 @@ const username = input({
   example: "jdoe",
   clean: cleanString,
 });
+
 export const getCurrentUserInputs = { connection: connectionInput };
+
 export const listUsersInputs = {
   connection: connectionInput,
   fetchAll: {

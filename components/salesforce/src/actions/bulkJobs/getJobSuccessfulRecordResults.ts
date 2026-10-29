@@ -3,6 +3,7 @@ import { getJobSuccessfulRecordResultsOutputSchema } from "../../outputSchemas";
 import { getJobSuccessfulRecordResultsInputs } from "../../inputs";
 import { createSalesforceHttpClient } from "../../client";
 import { getJobSuccessfulRecordResultsExamplePayload } from "../../examplePayloads";
+
 export const getJobSuccessfulRecordResults = action({
   display: {
     label: "Get Bulk Job Successful Record Results",
@@ -19,11 +20,11 @@ export const getJobSuccessfulRecordResults = action({
     const { data } = await client.get(
       `/jobs/ingest/${bulkJobId}/successfulResults`,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getJobSuccessfulRecordResultsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getJobSuccessfulRecordResultsExamplePayload,
   inputs: getJobSuccessfulRecordResultsInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

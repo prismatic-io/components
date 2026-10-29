@@ -4,6 +4,7 @@ import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 import type { ListUsersQueryParams } from "../types/ListUsersQueryParams";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -24,4 +25,5 @@ export const listUsers = action({
   },
   inputs: listUsersInputs,
 });
+
 export default { listUsers };

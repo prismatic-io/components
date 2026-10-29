@@ -4,6 +4,7 @@ import {
   OAuth2PkceMethod,
   OAuth2Type,
 } from "@prismatic-io/spectral";
+
 export const oauth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   oauth2PkceMethod: OAuth2PkceMethod.S256,
@@ -63,6 +64,7 @@ export const oauth = oauth2Connection({
     },
   },
 });
+
 export const personalAccessToken = connection({
   key: "personalAccessToken",
   display: {
@@ -83,6 +85,7 @@ export const personalAccessToken = connection({
     },
   },
 });
+
 export const apiKeyConnection = connection({
   key: "apiKey",
   display: {
@@ -113,4 +116,5 @@ export const apiKeyConnection = connection({
     },
   },
 });
+
 export default [oauth, personalAccessToken, apiKeyConnection];

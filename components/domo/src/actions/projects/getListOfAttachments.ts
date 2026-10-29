@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { getListOfAttachmentsExamplePayload } from "../../examplePayloads";
 import { getListOfAttachmentsInputs } from "../../inputs";
+
 export const getListOfAttachments = action({
   display: {
     label: "Get List Of Attachments",
@@ -20,4 +21,5 @@ export const getListOfAttachments = action({
   },
   inputs: getListOfAttachmentsInputs,
 });
+
 export default { getListOfAttachments };

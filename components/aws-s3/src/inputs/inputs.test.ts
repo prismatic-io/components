@@ -6,6 +6,7 @@ vi.mock("aws-utils", async () => {
     dynamicAccessAllInputs: {},
   };
 });
+
 import {
   abortMultipartUploadInputs,
   bucketEventTriggerConfigurationInputs,
@@ -22,7 +23,9 @@ import {
   unsubscribeFromTopicInputs,
   uploadPartInputs,
 } from ".";
+
 type Clean = (value: unknown) => unknown;
+
 const toStringCleaned: [string, Clean][] = [
   ["objectKey", getObjectInputs.objectKey.clean],
   ["bucket", getObjectInputs.bucket.clean],
@@ -48,6 +51,7 @@ const toStringCleaned: [string, Clean][] = [
     bucketEventTriggerConfigurationInputs.eventNotificationName.clean,
   ],
 ];
+
 describe.each(
   toStringCleaned,
 )("%s clean (util.types.toString)", (_name, clean) => {
@@ -59,13 +63,16 @@ describe.each(
   ])("normalizes %j to %j", (value, expected) => {
     expect(clean(value)).toBe(expected);
   });
+
   test("does not trim surrounding whitespace (characterized coercion)", () => {
     expect(clean(" my-bucket ")).toBe(" my-bucket ");
   });
+
   test("coerces an object to '[object Object]' rather than throwing (characterized coercion)", () => {
     expect(clean({ a: 1 })).toBe("[object Object]");
   });
 });
+
 const toIntCleaned: [string, Clean][] = [
   ["expirationSeconds", generatePresignedUrlInputs.expirationSeconds.clean],
   ["partNumber", uploadPartInputs.partNumber.clean],
@@ -78,6 +85,7 @@ const toIntCleaned: [string, Clean][] = [
     putObjectLockConfigurationInputs.defaultRetentionYears.clean,
   ],
 ];
+
 describe.each(toIntCleaned)("%s clean (util.types.toInt)", (_name, clean) => {
   test.each([
     ["3600", 3600],
@@ -86,17 +94,21 @@ describe.each(toIntCleaned)("%s clean (util.types.toInt)", (_name, clean) => {
   ])("normalizes %j to %j", (value, expected) => {
     expect(clean(value)).toBe(expected);
   });
+
   test("throws for a non-numeric value", () => {
     expect(() => clean("abc")).toThrow("Value 'abc' cannot be coerced to int.");
   });
+
   test("coerces blank and fractional values instead of throwing (characterized coercion)", () => {
     expect(clean("")).toBe(0);
     expect(clean(undefined)).toBe(0);
     expect(clean("3.9")).toBe(3);
   });
 });
+
 describe("maxKeys clean (toOptionalInt)", () => {
   const clean: Clean = listObjectsInputs.pagination.inputs.maxKeys.clean;
+
   test.each([
     ["50", 50],
     [" 7 ", 7],
@@ -104,6 +116,7 @@ describe("maxKeys clean (toOptionalInt)", () => {
   ])("normalizes %j to %j", (value, expected) => {
     expect(clean(value)).toBe(expected);
   });
+
   test.each([
     [""],
     ["   "],
@@ -113,20 +126,25 @@ describe("maxKeys clean (toOptionalInt)", () => {
   ])("returns undefined for %j so Amazon S3 applies its default", (value) => {
     expect(clean(value)).toBeUndefined();
   });
+
   test("throws for a non-numeric value", () => {
     expect(() => clean("abc")).toThrow("Value 'abc' cannot be coerced to int.");
   });
 });
+
 describe("urlsToGenerate clean (inline toInt wrapper, default 5)", () => {
   const clean: Clean =
     generatePresignedForMultiparUploadsInputs.urlsToGenerate.clean;
+
   test("normalizes a numeric string", () => {
     expect(clean("10")).toBe(10);
   });
+
   test("falls back to 5 for a blank value", () => {
     expect(clean("")).toBe(5);
     expect(clean(undefined)).toBe(5);
   });
+
   test("throws for a non-numeric value instead of substituting 5", () => {
     expect(() => clean("abc")).toThrow("must be a whole number greater than 0");
   });

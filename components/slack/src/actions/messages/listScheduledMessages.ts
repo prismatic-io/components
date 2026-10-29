@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createOauthClient } from "../../client";
 import { listScheduledMessagesExamplePayload } from "../../examplePayloads";
 import { listScheduledMessagesInputs } from "../../inputs";
+
 export const listScheduledMessages = action({
   display: {
     label: "List Scheduled Messages",
@@ -14,6 +15,7 @@ export const listScheduledMessages = action({
       slackConnection: connection,
     });
     const data = await client.chat.scheduledMessages.list();
+
     return { data };
   },
   examplePayload: {

@@ -1,9 +1,11 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const shareName = input({
   label: "Share Name",
   placeholder: "Enter share name",
@@ -14,6 +16,7 @@ export const shareName = input({
   example: "my-file-share",
   clean: util.types.toString,
 });
+
 export const path = input({
   label: "Path",
   placeholder: "Enter object path",

@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { sendTransactionalEmailInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
+
 export const sendTransactionalEmail = action({
   display: {
     label: "Send Transactional Email",
@@ -27,6 +28,7 @@ export const sendTransactionalEmail = action({
       connection,
       context.debug.enabled,
     );
+
     const requestBody = {
       definitionKey,
       recipient: {
@@ -37,6 +39,7 @@ export const sendTransactionalEmail = action({
           : undefined,
       },
     };
+
     const response = await salesforceHttpClient.post(
       `/messaging/v1/email/messages/${messageKey}`,
       requestBody,
@@ -45,8 +48,7 @@ export const sendTransactionalEmail = action({
       data: response.data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   examplePayload: genericCreateUpdateExamplePayload,
 });

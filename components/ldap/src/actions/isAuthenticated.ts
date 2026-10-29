@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getLdapClient } from "../client";
 import { isAuthenticatedExamplePayload as examplePayload } from "../examplePayloads";
 import { isAuthenticatedInputs as inputs } from "../inputs";
+
 export const isAuthenticated = action({
   display: {
     label: "Is Authenticated",
@@ -9,9 +10,11 @@ export const isAuthenticated = action({
   },
   perform: async (context, { connection }) => {
     const client = await getLdapClient(connection);
+
     if (context.debug.enabled) {
       context.logger.debug("Checking authentication status");
     }
+
     try {
       return {
         data: true,

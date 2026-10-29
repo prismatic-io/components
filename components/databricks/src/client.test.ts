@@ -1,6 +1,7 @@
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import { getHostAndApiKey } from "./client";
 import { personalAccessToken, workspaceServicePrincipal } from "./connections";
+
 describe("Test deriving host and API key from personal access token connection", () => {
   test("Test when only host name is provided", () => {
     const patWithoutProtocol = createConnection(personalAccessToken, {
@@ -30,6 +31,7 @@ describe("Test deriving host and API key from personal access token connection",
     expect(apiKey).toBe("example");
   });
 });
+
 describe("Test deriving host and API key from service principal connection", () => {
   test("Test that host can be derived from token URL", () => {
     const wsp = createConnection(

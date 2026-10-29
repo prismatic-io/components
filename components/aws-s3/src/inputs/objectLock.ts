@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { awsRegion, dynamicAccessAllInputs } from "aws-utils";
 import { toObjectLockRetentionMode } from "../utils";
 import { accessKeyInput, bucket, objectKey, versionId } from "./common";
+
 const defaultRetentionDays = input({
   label: "Default Retention Days",
   type: "string",
@@ -12,6 +13,7 @@ const defaultRetentionDays = input({
     "Number of days for the default retention period. Mutually exclusive with Default Retention Years.",
   clean: util.types.toInt,
 });
+
 const defaultRetentionYears = input({
   label: "Default Retention Years",
   type: "string",
@@ -22,6 +24,7 @@ const defaultRetentionYears = input({
     "Number of years for the default retention period. Mutually exclusive with Default Retention Days.",
   clean: util.types.toInt,
 });
+
 const defaultRetentionMode = input({
   label: "Default Retention Mode",
   type: "string",
@@ -36,6 +39,7 @@ const defaultRetentionMode = input({
   ],
   clean: toObjectLockRetentionMode,
 });
+
 const retainUntilDate = input({
   label: "Retain Until Date",
   type: "string",
@@ -46,12 +50,14 @@ const retainUntilDate = input({
     "The date and time when Object Retention expires. Required when using Retention Mode. Must be in ISO 8601 format.",
   clean: util.types.toString,
 });
+
 export const getObjectLockConfigurationInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
   bucket,
   awsRegion,
 };
+
 export const getObjectRetentionInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -64,6 +70,7 @@ export const getObjectRetentionInputs = {
   },
   awsRegion,
 };
+
 export const putObjectLockConfigurationInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -73,6 +80,7 @@ export const putObjectLockConfigurationInputs = {
   defaultRetentionYears,
   awsRegion,
 };
+
 export const putObjectRetentionInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,

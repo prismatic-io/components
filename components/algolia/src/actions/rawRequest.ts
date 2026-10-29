@@ -6,7 +6,9 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { algoliaApiKey } from "../connections";
 import { connectionInput } from "../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -32,7 +34,9 @@ const rawRequest = action({
         `Unsupported authorization method ${algoliaConnection.key}.`,
       );
     }
+
     const { applicationID, apiKey } = algoliaConnection.fields;
+
     if (typeof applicationID !== "string" || typeof apiKey !== "string") {
       throw new Error("applicationID and apiKey must be strings");
     }
@@ -57,4 +61,5 @@ const rawRequest = action({
     }
   },
 });
+
 export default rawRequest;

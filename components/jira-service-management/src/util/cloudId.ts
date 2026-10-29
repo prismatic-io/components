@@ -3,6 +3,7 @@ import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/cl
 import { buildAuthHeaders } from "atlassian-utils";
 import { CONNECTION_KEYS } from "../connections";
 import type { AccessibleResource } from "../types";
+
 const findResourceByOverride = (
   resources: AccessibleResource[],
   override: string,
@@ -14,6 +15,7 @@ const findResourceByOverride = (
   if (match) return match.id;
   throw new Error(`No accessible Atlassian resource found for "${override}"`);
 };
+
 export const resolveAtlassianCloudId = async (
   connection: Connection,
 ): Promise<string> => {
@@ -24,15 +26,15 @@ export const resolveAtlassianCloudId = async (
     const { data } = await createHttpClient({
       baseUrl: `https://${host}/_edge/tenant_info`,
       headers: buildAuthHeaders(connection, CONNECTION_KEYS),
-    }).get<{
-      cloudId: string;
-    }>("");
+    }).get<{ cloudId: string }>("");
     return data.cloudId;
   }
+
   const { data: resources } = await createHttpClient({
     baseUrl: "https://api.atlassian.com/oauth/token/accessible-resources",
     headers: buildAuthHeaders(connection, CONNECTION_KEYS),
   }).get<AccessibleResource[]>("");
+
   const override =
     util.types.toString(connection.fields.apiSiteOverride) || undefined;
   return override

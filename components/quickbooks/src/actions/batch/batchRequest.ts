@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { batchRequestPayload } from "../../examplePayloads";
 import { batchRequestItems, connectionInput } from "../../inputs";
+
 export const batchRequest = action({
   display: {
     label: "Batch Request",
@@ -12,6 +13,7 @@ export const batchRequest = action({
     const body = {
       BatchItemRequest: batchRequestItems,
     };
+
     const { data } = await client.post("/batch", body, {
       headers: {
         "Content-Type": "application/json",

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { updateProjectMembersExamplePayload } from "../../examplePayloads";
 import { updateProjectMembersInputs } from "../../inputs";
+
 export const updateProjectMembers = action({
   display: {
     label: "Update Project Members",
@@ -16,6 +17,7 @@ export const updateProjectMembers = action({
     let body = {};
     if (updateProjectMembersBody.length)
       body = JSON.parse(updateProjectMembersBody);
+
     const { data } = await client.put(`/projects/${projectId}/members`, body, {
       headers: { "Content-Type": "application/json" },
     });
@@ -23,4 +25,5 @@ export const updateProjectMembers = action({
   },
   inputs: updateProjectMembersInputs,
 });
+
 export default { updateProjectMembers };

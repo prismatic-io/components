@@ -31,6 +31,7 @@ import {
   searchEndpointObjectType,
   toCurrentSearchEndpoint,
 } from "./searchEndpoint";
+
 const assertValidDateString = (value: unknown, field: string): string => {
   if (typeof value !== "string" || Number.isNaN(new Date(value).getTime())) {
     throw new Error(
@@ -39,6 +40,7 @@ const assertValidDateString = (value: unknown, field: string): string => {
   }
   return value;
 };
+
 export const resolveCursor = ({
   incoming,
   state,
@@ -89,6 +91,7 @@ export const resolveCursor = ({
       ...(idWalk ? { idWalk } : {}),
     };
   }
+
   if (state.lastPolledAt) {
     const watermark = assertValidDateString(
       state.lastPolledAt,
@@ -101,6 +104,7 @@ export const resolveCursor = ({
       isBackfill: false,
     };
   }
+
   if (lookBackDate) {
     return {
       watermark: lookBackDate,
@@ -109,6 +113,7 @@ export const resolveCursor = ({
       isBackfill: true,
     };
   }
+
   return {
     watermark: now,
     windowStart: now,
@@ -116,10 +121,9 @@ export const resolveCursor = ({
     isBackfill: false,
   };
 };
+
 export const resolveCursorSafely = (
-  params: ResolveCursorParams & {
-    logger: CursorLogger;
-  },
+  params: ResolveCursorParams & { logger: CursorLogger },
 ): PollingCursor => {
   const { incoming, state, lookBackDate, now, logger } = params;
   try {
@@ -154,8 +158,10 @@ export const resolveCursorSafely = (
     }
   }
 };
+
 const nextMillisecond = (iso: string): string =>
   new Date(new Date(iso).getTime() + 1).toISOString();
+
 const resumeAfterDenseMs = (cursor: PollingCursor): PollingCursor => ({
   watermark: nextMillisecond(
     (cursor.idWalk as NonNullable<PollingCursor["idWalk"]>).denseTimestamp,
@@ -164,13 +170,11 @@ const resumeAfterDenseMs = (cursor: PollingCursor): PollingCursor => ({
   windowEnd: cursor.windowEnd,
   isBackfill: cursor.isBackfill,
 });
+
 export const advanceCursor = (
   { records, hasMore }: PollingWindow,
   cursor: PollingCursor,
-): {
-  emit: PollingTriggerObject[];
-  nextCursor: PollingCursor | null;
-} => {
+): { emit: PollingTriggerObject[]; nextCursor: PollingCursor | null } => {
   if (cursor.idWalk) {
     if (records.length === 0) {
       return { emit: [], nextCursor: resumeAfterDenseMs(cursor) };
@@ -190,13 +194,17 @@ export const advanceCursor = (
     }
     return { emit: records, nextCursor: resumeAfterDenseMs(cursor) };
   }
+
   if (!hasMore || records.length === 0) {
     return { emit: records, nextCursor: null };
   }
+
   const boundaryField = cursor.isBackfill ? "createdAt" : "updatedAt";
   const boundary = records[records.length - 1][boundaryField] as string;
   const emit = records.filter((r) => r[boundaryField] !== boundary);
+
   assertValidDateString(boundary, `record.${boundaryField}`);
+
   if (emit.length === 0) {
     return {
       emit: [],
@@ -206,11 +214,13 @@ export const advanceCursor = (
       },
     };
   }
+
   if (new Date(boundary).getTime() <= new Date(cursor.watermark).getTime()) {
     throw new Error(
       `Cannot advance the polling cursor: the window ended at ${boundary}, at or before the current position ${cursor.watermark}. Records must arrive sorted ascending by the queried date property.`,
     );
   }
+
   return {
     emit,
     nextCursor: {
@@ -221,6 +231,7 @@ export const advanceCursor = (
     },
   };
 };
+
 export const resolveEndpoint = (
   searchEndpoint: string | undefined,
   objectType: string | undefined,
@@ -240,6 +251,7 @@ export const resolveEndpoint = (
   }
   return toCurrentSearchEndpoint(endpoint);
 };
+
 const datePropertiesFor = (
   searchEndpoint: string | undefined,
 ): Record<string, string> | undefined => {
@@ -252,6 +264,7 @@ const datePropertiesFor = (
   >;
   return objectType ? table[objectType] : undefined;
 };
+
 export const resolveLastModifiedProperty = (
   searchEndpoint: string | undefined,
   onlyCustomObjects: boolean,
@@ -259,17 +272,22 @@ export const resolveLastModifiedProperty = (
   if (onlyCustomObjects) {
     return CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY;
   }
+
   const properties = datePropertiesFor(searchEndpoint);
   const lastModified = properties
     ? Object.values(properties).find((name) => name.includes("lastmodified"))
     : undefined;
+
   if (!lastModified) {
     throw new Error(
-      `No last-modified property is known for the search endpoint ${searchEndpoint ?? "(none provided)"}. The polling trigger cannot filter by date without one.`,
+      `No last-modified property is known for the search endpoint ${
+        searchEndpoint ?? "(none provided)"
+      }. The polling trigger cannot filter by date without one.`,
     );
   }
   return lastModified;
 };
+
 export const resolveCreatedProperty = (
   searchEndpoint: string | undefined,
   onlyCustomObjects: boolean,
@@ -277,17 +295,22 @@ export const resolveCreatedProperty = (
   if (onlyCustomObjects) {
     return CUSTOM_OBJECT_CREATED_PROPERTY;
   }
+
   const properties = datePropertiesFor(searchEndpoint);
   const created = properties
     ? Object.values(properties).find((name) => name.includes("create"))
     : undefined;
+
   if (!created) {
     throw new Error(
-      `No creation-date property is known for the search endpoint ${searchEndpoint ?? "(none provided)"}. The polling trigger cannot run an initial sync without one.`,
+      `No creation-date property is known for the search endpoint ${
+        searchEndpoint ?? "(none provided)"
+      }. The polling trigger cannot run an initial sync without one.`,
     );
   }
   return created;
 };
+
 export const buildPollingFilterGroups = (
   searchProperties: Record<string, unknown> | undefined,
   dateProp: string,
@@ -319,6 +342,7 @@ export const buildPollingFilterGroups = (
         { propertyName: dateProp, operator: "GTE", value: cursor.watermark },
         { propertyName: dateProp, operator: "LT", value: cursor.windowEnd },
       ];
+
   const declaredGroups = searchProperties?.filterGroups as
     | SearchFilterGroup[]
     | undefined;
@@ -330,14 +354,17 @@ export const buildPollingFilterGroups = (
     : declaredFilters?.length
       ? [{ filters: declaredFilters }]
       : [{ filters: [] }];
+
   const groups = userGroups.map((group) => ({
     filters: [...(group.filters ?? []), ...cursorFilters],
   }));
+
   if (groups.length > MAX_FILTER_GROUPS) {
     throw new Error(
       `Search Properties defines ${groups.length} filter groups, but HubSpot allows at most ${MAX_FILTER_GROUPS}.`,
     );
   }
+
   const overGroupIndex = groups.findIndex(
     (g) => g.filters.length > MAX_FILTERS_PER_GROUP,
   );
@@ -347,14 +374,17 @@ export const buildPollingFilterGroups = (
       `Filter group ${overGroupIndex + 1} would carry ${count} filters once the polling cursor adds its ${cursorFilters.length} date bounds, but HubSpot allows at most ${MAX_FILTERS_PER_GROUP} per group. Remove ${count - MAX_FILTERS_PER_GROUP} filter(s) from that group.`,
     );
   }
+
   const total = groups.reduce((sum, g) => sum + g.filters.length, 0);
   if (total > MAX_FILTERS_TOTAL) {
     throw new Error(
       `Search Properties would produce ${total} filters once the polling cursor adds ${cursorFilters.length} date bounds to each of its ${groups.length} filter groups, but HubSpot allows at most ${MAX_FILTERS_TOTAL} in total. Reduce the number of filters or filter groups.`,
     );
   }
+
   return groups;
 };
+
 export const buildPollingSearchBody = (
   searchProperties: Record<string, unknown> | undefined,
   dateProp: string,
@@ -368,6 +398,7 @@ export const buildPollingSearchBody = (
     sorts: _sorts,
     ...rest
   } = searchProperties ?? {};
+
   return {
     ...rest,
     limit,
@@ -381,42 +412,45 @@ export const buildPollingSearchBody = (
     ],
   };
 };
+
 export const windowFloor = (cursor: PollingCursor): Date =>
   new Date(new Date(cursor.watermark).getTime() - 1);
+
 export const cycleFloor = (cursor: PollingCursor): Date =>
   new Date(new Date(cursor.windowStart).getTime() - 1);
+
 export const getPollingChanges = (
   showNewRecords: boolean,
   showUpdatedRecords: boolean,
   searchRecords: PollingTriggerObject[],
   windowFloorDate: Date,
   cycleFloorDate: Date,
-  options: {
-    snapshot?: boolean;
-  } = {},
-): {
-  changes: number;
-  changesObject: PollingChangesObject;
-} => {
+  options: { snapshot?: boolean } = {},
+): { changes: number; changesObject: PollingChangesObject } => {
   const changesObject: PollingChangesObject = {
     createdRecords: [],
     updatedRecords: [],
   };
+
   if (options.snapshot) {
     changesObject.createdRecords = [...searchRecords];
     return { changes: searchRecords.length, changesObject };
   }
+
   let changes = 0;
   for (const record of searchRecords) {
     const recordUpdatedAt = new Date(record.updatedAt);
     const recordCreatedAt = new Date(record.createdAt);
+
     const changeExists =
       recordUpdatedAt > windowFloorDate || recordCreatedAt > cycleFloorDate;
     if (!changeExists) {
       continue;
     }
+
     const isCreated = recordCreatedAt > cycleFloorDate;
     const isUpdated = recordUpdatedAt > recordCreatedAt;
+
     if (isCreated && showNewRecords) {
       changes += 1;
       changesObject.createdRecords.push(record);
@@ -426,30 +460,34 @@ export const getPollingChanges = (
       changesObject.updatedRecords.push(record);
     }
   }
+
   return { changes, changesObject };
 };
+
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
 const statusOf = (error: unknown): number | undefined =>
   (error as HttpErrorish)?.response?.status;
+
 const messageOf = (error: unknown): string =>
   (error as HttpErrorish)?.response?.data?.message ?? "";
+
 const retryAfterMs = (error: unknown, attempt: number): number => {
   const raw = (error as HttpErrorish)?.response?.headers?.["retry-after"];
   const seconds = Number(raw);
   return Number.isFinite(seconds) && seconds >= 0
-    ? seconds * 1000
+    ? seconds * 1_000
     : RATE_LIMIT_FALLBACK_DELAY_MS * attempt;
 };
+
 const postSearchPage = async (
   client: HttpClient,
   endpoint: string,
   body: Record<string, unknown>,
   dateProp: string,
   logger: CursorLogger,
-): Promise<{
-  data: SearchResponse;
-}> => {
+): Promise<{ data: SearchResponse }> => {
   for (let attempt = 1; ; attempt += 1) {
     try {
       return await client.post<SearchResponse>(endpoint, body);
@@ -470,6 +508,7 @@ const postSearchPage = async (
     }
   }
 };
+
 export const fetchPollingWindow = async (
   client: HttpClient,
   {
@@ -484,6 +523,7 @@ export const fetchPollingWindow = async (
   const records: PollingTriggerObject[] = [];
   let after: string | undefined;
   let hasMore = false;
+
   while (records.length < windowLimit) {
     const limit = Math.min(MAX_SEARCH_LIMIT, windowLimit - records.length);
     const body = buildPollingSearchBody(
@@ -500,17 +540,22 @@ export const fetchPollingWindow = async (
       dateProp,
       logger,
     );
+
     const before = records.length;
     records.push(...((data.results ?? []) as PollingTriggerObject[]));
     after = data.paging?.next?.after;
+
     if (records.length === before) {
       hasMore = false;
       break;
     }
+
     hasMore = Boolean(after) || records.length < data.total;
+
     if (!after) {
       break;
     }
   }
+
   return { records, hasMore };
 };

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { sendIdocExamplePayload } from "../../examplePayloads";
 import { sendIdocInputs } from "../../inputs";
 import { parseAndCheckFault, parseHtmlResponse } from "../../util";
+
 export const sendIdoc = action({
   display: {
     label: "Send IDoc",
@@ -14,7 +15,9 @@ export const sendIdoc = action({
   perform: async (context, { connection, idocData, endpoint }) => {
     const debug = context.debug.enabled;
     const client = createClient(connection, context, debug);
+
     const { data } = await client.post(endpoint, idocData);
+
     const html = parseHtmlResponse(data);
     if (html) {
       if (html.title.toLowerCase().includes("not ok")) {
@@ -22,7 +25,9 @@ export const sendIdoc = action({
       }
       return { data: html.body || html.title };
     }
+
     await parseAndCheckFault(data);
+
     return { data };
   },
 });

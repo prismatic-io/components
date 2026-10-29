@@ -6,6 +6,7 @@ import type {
   FtpChangesObject,
   FtpFileChange,
 } from "../types";
+
 export const listFilesRecursive = async (
   client: Client,
   currentPath: string,
@@ -15,8 +16,10 @@ export const listFilesRecursive = async (
 ): Promise<void> => {
   await client.cd(currentPath);
   const entries = await client.list();
+
   for (const entry of entries) {
     const fullPath = `${currentPath}/${entry.name}`.replace(/\/+/g, "/");
+
     if (entry.isDirectory) {
       if (recursive) {
         await listFilesRecursive(
@@ -37,17 +40,17 @@ export const listFilesRecursive = async (
     }
   }
 };
+
 export const computeFileChanges = (
   currentFileMap: FileMap,
   previousFileMap: FileMap,
-): {
-  newFiles: FileEntry[];
-  modifiedFiles: FileEntry[];
-} => {
+): { newFiles: FileEntry[]; modifiedFiles: FileEntry[] } => {
   const newFiles: FileEntry[] = [];
   const modifiedFiles: FileEntry[] = [];
+
   for (const [filePath, metadata] of Object.entries(currentFileMap)) {
     const previous = previousFileMap[filePath];
+
     if (!previous) {
       newFiles.push({
         path: filePath,
@@ -65,8 +68,10 @@ export const computeFileChanges = (
       });
     }
   }
+
   return { newFiles, modifiedFiles };
 };
+
 export const resolvePollingFileChanges = (
   data: FtpChangesObject | undefined,
 ): FtpFileChange[] => {

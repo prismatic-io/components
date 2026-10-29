@@ -4,6 +4,7 @@ import { listCategoriesDataSourceExamplePayload } from "../examplePayloads";
 import { listCategoriesDataSourceInputs } from "../inputs";
 import type { Category } from "../types";
 import { paginateResults } from "../util";
+
 export const listCategoriesDataSource = dataSource({
   display: {
     label: "Select Categories",
@@ -19,6 +20,7 @@ export const listCategoriesDataSource = dataSource({
       results,
       "categories",
     );
+
     return {
       result: paginatedResults.map((category) => ({
         label: category.name,

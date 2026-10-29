@@ -3,6 +3,7 @@ import { getEventTypeOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { getEventTypeInputs } from "../../inputs";
 import { getEventTypeExamplePayload } from "../../examplePayloads";
+
 export const getEventType = action({
   display: {
     label: "Get Event Type",
@@ -11,6 +12,7 @@ export const getEventType = action({
   performSafety: "safe",
   perform: async (context, { connection, uuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/event_types/${uuid}`);
     return { data };
   },

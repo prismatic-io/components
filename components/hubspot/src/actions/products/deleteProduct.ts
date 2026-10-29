@@ -3,6 +3,7 @@ import { getHubspotClient } from "../../client";
 import { deleteProductExamplePayload } from "../../examplePayloads";
 import { deleteProductInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const deleteProduct = action({
   display: {
     label: "Delete Product",
@@ -16,9 +17,11 @@ export const deleteProduct = action({
       timeout,
       debugRequest,
     });
+
     const { data } = await client.delete(
       hubspotPaths.objects("products", `/${productId}`),
     );
+
     return { data };
   },
   inputs: deleteProductInputs,

@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { getRequesterExamplePayload as examplePayload } from "../../examplePayloads";
 import { getRequesterInputs as inputs } from "../../inputs";
 import { requesterOutputSchema } from "../../outputSchemas";
+
 export const getRequester = action({
   display: {
     label: "Get Requester",
@@ -13,7 +14,9 @@ export const getRequester = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await client.get(`/requesters/${requesterId}`);
+
     return {
       data,
     };

@@ -15,6 +15,7 @@ export const listFulfillmentCentersExamplePayload = {
     },
   ],
 };
+
 export const listLocationsExamplePayload = {
   data: [
     {

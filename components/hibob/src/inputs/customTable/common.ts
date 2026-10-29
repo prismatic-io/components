@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanArrayCodeInput, cleanCodeInput } from "../../util";
+
 export const customTableId = input({
   label: "Custom Table ID",
   type: "string",
@@ -9,6 +10,7 @@ export const customTableId = input({
   placeholder: "Enter custom table ID",
   clean: util.types.toString,
 });
+
 export const entryId = input({
   label: "Entry ID",
   type: "string",
@@ -18,6 +20,7 @@ export const entryId = input({
   placeholder: "Enter entry ID",
   clean: util.types.toString,
 });
+
 export const entryDataCreate = input({
   label: "Entry Data",
   type: "code",
@@ -38,6 +41,7 @@ export const entryDataCreate = input({
   ),
   clean: (value: unknown) => cleanArrayCodeInput(value, "Entry Data"),
 });
+
 export const entryDataUpdate = input({
   label: "Entry Data",
   type: "code",

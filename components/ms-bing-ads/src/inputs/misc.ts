@@ -1,8 +1,10 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+
 import { MsAdsRestService, REST_BASE_URLS, WEB_SERVICE } from "../constants";
 import { cleanModelValue } from "../util";
 import { accountIdInput, connectionInput, customerIdInput } from "./common";
+
 const webServicesModel = [
   {
     label: "Ad Insight API",
@@ -29,6 +31,7 @@ const webServicesModel = [
     value: WEB_SERVICE.REPORTING_API,
   },
 ];
+
 const webServiceInput = input({
   label: "Web Service API",
   comments:
@@ -39,6 +42,7 @@ const webServiceInput = input({
   default: WEB_SERVICE.CUSTOMER_MANAGEMENT_API,
   clean: cleanModelValue(webServicesModel, "web service"),
 });
+
 const soapActionInput = input({
   label: "SOAP Action",
   placeholder: "Enter SOAP action",
@@ -49,6 +53,7 @@ const soapActionInput = input({
   example: "GetCustomer",
   clean: util.types.toString,
 });
+
 const soapBodyRequestInput = input({
   label: "SOAP Body Request",
   placeholder: "Enter SOAP body XML",
@@ -59,6 +64,7 @@ const soapBodyRequestInput = input({
     "The required SOAP Body element contains the actual SOAP message intended for the ultimate endpoint of the message. Immediate child elements of the SOAP Body element may be namespace-qualified.",
   clean: util.types.toString,
 });
+
 export const rawRequestInputs = {
   accountId: { ...accountIdInput, required: true },
   connection: connectionInput,
@@ -67,9 +73,12 @@ export const rawRequestInputs = {
   soapBodyRequest: soapBodyRequestInput,
   webService: webServiceInput,
 };
+
 const { debugRequest: _debugRequest, ...rawHttpInputs } = httpClientInputs;
+
 const REST_BASE_URL =
   REST_BASE_URLS[MsAdsRestService.CampaignManagement].production;
+
 export const rawRestRequestInputs: {
   connection: typeof connectionInput;
 } & Omit<typeof httpClientInputs, "debugRequest"> = {

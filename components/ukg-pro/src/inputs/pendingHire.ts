@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, paginationInputs } from "./common";
 import { companyId } from "./employee";
+
 export const pendingHireId = input({
   label: "Pending Hire ID",
   placeholder: "Enter pending hire ID",
@@ -10,6 +11,7 @@ export const pendingHireId = input({
   example: "PH-10001",
   clean: util.types.toString,
 });
+
 export const recordId = input({
   label: "Record ID",
   type: "string",
@@ -19,6 +21,7 @@ export const recordId = input({
   example: "PH-12345",
   clean: util.types.toString,
 });
+
 export const pendingHireData = input({
   label: "Pending Hire Data",
   type: "code",
@@ -38,11 +41,13 @@ export const pendingHireData = input({
   ),
   clean: util.types.toObject,
 });
+
 export const getPendingHiresInputs = {
   connection: connectionInput,
   companyId,
   ...paginationInputs,
 };
+
 export const updatePendingHireInputs = {
   connection: connectionInput,
   pendingHireId,

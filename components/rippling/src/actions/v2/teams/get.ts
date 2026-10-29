@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { getTeamExamplePayload } from "../../../examplePayloads";
 import { getTeamInputs } from "../../../inputs";
+
 export const getTeam = action({
   display: {
     label: "Get Team (V2)",

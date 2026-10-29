@@ -5,6 +5,7 @@ import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserOutputSchema } from "../../outputSchemas";
 import { getAuthorizationHeader } from "../../util";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",

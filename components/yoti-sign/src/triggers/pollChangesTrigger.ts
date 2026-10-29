@@ -13,6 +13,7 @@ import {
   resolvePollingRecordChanges,
   toYotiDate,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Envelopes",
@@ -29,6 +30,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
+
     if (!pollState?.lastPolledAt) {
       if (!params.lookBackDate) {
         context.polling.setState({ lastPolledAt: now });
@@ -38,22 +40,28 @@ export const pollChangesTrigger = pollingTrigger({
         };
       }
     }
+
     const lastPolledAt =
       pollState?.lastPolledAt ??
       new Date(`${params.lookBackDate}T00:00:00.000Z`).toISOString();
     const client = createClient(params.connection, context.debug.enabled);
+
     const { data: fetched } = await fetchAllRecords<Envelope>(
       client,
       "/organisations/envelopes/search",
       { from_date: toYotiDate(lastPolledAt) },
     );
+
     const envelopes = filterEnvelopesCreatedAfter(fetched, lastPolledAt);
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Yoti Sign envelopes: ${fetched.length} fetched, ${envelopes.length} new`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created: envelopes } } },
       polledNoChanges: envelopes.length === 0,

@@ -11,6 +11,7 @@ const mailParty = {
   linked_deal_id: 1,
   linked_deal_status: "open",
 };
+
 const mailThreadRecord = {
   id: 1,
   account_id: "acc123",
@@ -49,6 +50,7 @@ const mailThreadRecord = {
   lead_id: null,
   all_messages_sent_flag: 0,
 };
+
 const mailMessageRecord = {
   id: 101,
   from: [{ id: 3, name: "John Doe", email_address: "john@example.com" }],
@@ -79,6 +81,7 @@ const mailMessageRecord = {
   item_type: "mail_thread",
   timestamp: "2024-09-27 14:30:00",
 };
+
 export const getMailThreadsExamplePayload = {
   data: {
     success: true,
@@ -92,6 +95,7 @@ export const getMailThreadsExamplePayload = {
     },
   },
 };
+
 export const deleteMailThreadExamplePayload = {
   data: {
     success: true,
@@ -100,18 +104,21 @@ export const deleteMailThreadExamplePayload = {
     },
   },
 };
+
 export const getMailThreadExamplePayload = {
   data: {
     success: true,
     data: mailThreadRecord,
   },
 };
+
 export const getMailThreadMessagesExamplePayload = {
   data: {
     success: true,
     data: [mailMessageRecord],
   },
 };
+
 export const getMailMessageExamplePayload = {
   data: {
     success: true,

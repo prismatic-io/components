@@ -13,6 +13,7 @@ export interface EngagementProperties {
   hs_email_subject?: string;
   hs_communication_body?: string;
 }
+
 export interface Engagement {
   id: number;
   properties: EngagementProperties;

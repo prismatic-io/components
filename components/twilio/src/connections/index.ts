@@ -1,6 +1,8 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const twilioApiKeyConnection = connection({
   key: "apiKeySecret",
+
   display: {
     label: "API Key",
     description: "Authenticate requests to Twilio using an API key and secret.",
@@ -34,6 +36,7 @@ export const twilioApiKeyConnection = connection({
     },
   },
 });
+
 export const twilioBasicConnection = connection({
   key: "basic",
   display: {
@@ -62,4 +65,5 @@ export const twilioBasicConnection = connection({
     },
   },
 });
+
 export default [twilioApiKeyConnection, twilioBasicConnection];

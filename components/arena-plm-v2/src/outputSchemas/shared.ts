@@ -196,6 +196,7 @@ export const attributeDefinitionSchema = {
     private: { type: "boolean" },
   },
 };
+
 export const attributeDefinitionFullRepListSchema = {
   type: "object" as const,
   properties: {
@@ -203,6 +204,7 @@ export const attributeDefinitionFullRepListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const categoryAttributeDefinitionSchema = {
   type: "object" as const,
   properties: {
@@ -397,6 +399,7 @@ export const categoryAttributeDefinitionSchema = {
     private: { type: "boolean" },
   },
 };
+
 export const categoryAttributeDefinitionListSchema = {
   type: "object" as const,
   properties: {
@@ -404,6 +407,7 @@ export const categoryAttributeDefinitionListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const qualityAssociationSchema = {
   type: "object" as const,
   properties: {
@@ -424,6 +428,7 @@ export const qualityAssociationSchema = {
     },
   },
 };
+
 export const changeQualityAssociationListSchema = {
   type: "object" as const,
   properties: {
@@ -431,6 +436,7 @@ export const changeQualityAssociationListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const fileAssociationSchema = {
   type: "object" as const,
   properties: {
@@ -504,6 +510,7 @@ export const fileAssociationSchema = {
     },
   },
 };
+
 export const fileAssociationListSchema = {
   type: "object" as const,
   properties: {
@@ -511,6 +518,7 @@ export const fileAssociationListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const itemToTicketSchema = {
   type: "object" as const,
   properties: {
@@ -521,6 +529,7 @@ export const itemToTicketSchema = {
     },
   },
 };
+
 export const itemTicketListSchema = {
   type: "object" as const,
   properties: {
@@ -528,10 +537,12 @@ export const itemTicketListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const numberFormatPrefixSchema = {
   type: "object" as const,
   properties: { guid: { type: "string" }, value: { type: "string" } },
 };
+
 export const numberSequenceCompactSchema = {
   type: "object" as const,
   properties: {
@@ -549,6 +560,7 @@ export const numberSequenceCompactSchema = {
     creationDateTime: { type: "string" },
   },
 };
+
 export const numberSequencePrefixCompactListSchema = {
   type: "object" as const,
   properties: {
@@ -556,6 +568,7 @@ export const numberSequencePrefixCompactListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const querySchema = {
   type: "object" as const,
   properties: {
@@ -563,6 +576,7 @@ export const querySchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const referencedQualitySchema = {
   type: "object" as const,
   properties: {
@@ -580,6 +594,7 @@ export const referencedQualitySchema = {
     },
   },
 };
+
 export const referencedQualityListSchema = {
   type: "object" as const,
   properties: {
@@ -587,6 +602,7 @@ export const referencedQualityListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requestChangeSchema = {
   type: "object" as const,
   properties: {
@@ -597,6 +613,7 @@ export const requestChangeSchema = {
     },
   },
 };
+
 export const requestChangeListSchema = {
   type: "object" as const,
   properties: {
@@ -604,6 +621,7 @@ export const requestChangeListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const userCompactSchema = {
   type: "object" as const,
   properties: {
@@ -612,6 +630,7 @@ export const userCompactSchema = {
     guid: { type: "string" },
   },
 };
+
 export const userCompactListSchema = {
   type: "object" as const,
   properties: {
@@ -619,6 +638,7 @@ export const userCompactListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const verifyTemplateSchema = {
   type: "object" as const,
   properties: {

@@ -22,7 +22,9 @@ export const getUploadExamplePayload = {
     },
   },
 };
+
 export const uploadFileExamplePayload = {
   data: getUploadExamplePayload.data,
 };
+
 export const deleteUploadExamplePayload = { data: {} };

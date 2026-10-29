@@ -33,6 +33,7 @@ const fileRecordSchema = {
     description: { type: "string" },
   },
 };
+
 export const getFilesOutputSchema = {
   type: "object",
   properties: {
@@ -59,6 +60,7 @@ export const getFilesOutputSchema = {
     },
   },
 };
+
 export const addFileOutputSchema = {
   type: "object",
   properties: {
@@ -71,6 +73,7 @@ export const addFileOutputSchema = {
     },
   },
 };
+
 export const getFileOutputSchema = {
   type: "object",
   properties: {
@@ -83,6 +86,7 @@ export const getFileOutputSchema = {
     },
   },
 };
+
 export const updateFileOutputSchema = {
   type: "object",
   properties: {
@@ -95,6 +99,7 @@ export const updateFileOutputSchema = {
     },
   },
 };
+
 export const deleteFileOutputSchema = {
   type: "object",
   properties: {
@@ -112,6 +117,7 @@ export const deleteFileOutputSchema = {
     },
   },
 };
+
 export const downloadFileOutputSchema = {
   type: "object",
   properties: {

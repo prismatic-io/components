@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { rawRequestInputs } from "../../inputs";
 import { createOdooAwaitClient } from "../../legacy";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request (Basic Auth)",

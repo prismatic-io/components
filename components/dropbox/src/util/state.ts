@@ -10,18 +10,18 @@ import type {
   SyncSettings,
 } from "../types";
 import { getBase64FromUrl } from "./encoding";
+
 const getStepName = (context: ActionContext): string =>
-  (
-    context.executionFrame as {
-      stepName: string;
-    }
-  ).stepName;
+  (context.executionFrame as { stepName: string }).stepName;
+
 export const getNewStateKey = (context: ActionContext): string =>
   `${LIST_CHANGES_CURSOR_STATE_KEY_PREFIX}:${context.flow.stableId}:${getStepName(context)}`;
+
 export const getLegacyStateKey = (context: ActionContext): string => {
   const encodedId = getBase64FromUrl(context.webhookUrls[context.flow.name]);
   return `${getStepName(context)}_${encodedId}`;
 };
+
 export const resolveCursorState = (
   context: ActionContext,
 ): ResolvedCursorState => {
@@ -39,12 +39,11 @@ export const resolveCursorState = (
   }
   return { value: undefined, isLegacy: false };
 };
+
 export const resolveListChangesCursor = (
   context: ActionContext,
   settings: SyncSettings,
-): ResolvedCursorState & {
-  key: string;
-} => {
+): ResolvedCursorState & { key: string } => {
   const { value, isLegacy } = resolveCursorState(context);
   const matchesSettings =
     value !== undefined &&
@@ -57,8 +56,10 @@ export const resolveListChangesCursor = (
     key: getNewStateKey(context),
   };
 };
+
 export const getSyncCursorStateKey = (context: ActionContext): string =>
   `${SYNC_CHANGES_CURSOR_STATE_KEY_PREFIX}:${context.flow.stableId}`;
+
 export const resolveSyncCursor = (
   context: ActionContext,
   settings: SyncSettings,

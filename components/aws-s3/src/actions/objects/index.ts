@@ -7,6 +7,7 @@ import { getObjectAttributes } from "./getObjectAttributes";
 import { headObject } from "./headObject";
 import { listObjects } from "./listObjects";
 import { putObject } from "./putObject";
+
 export default {
   copyObject,
   deleteObject,

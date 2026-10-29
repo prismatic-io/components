@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getDetectedAppExamplePayload } from "../../examplePayloads";
 import { getDetectedAppInputs } from "../../inputs";
+
 export const getDetectedApp = action({
   display: {
     label: "Get Detected App",
@@ -11,6 +12,7 @@ export const getDetectedApp = action({
   },
   perform: async (context, { connection, detectedAppId }) => {
     const client = createClient(connection, context.debug.enabled, true);
+
     const { data } = await client.get(
       `${ENDPOINTS.DETECTED_APPS}/${detectedAppId}`,
     );

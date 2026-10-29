@@ -8,6 +8,7 @@ import {
   pageLimit,
   storeHash,
 } from "../../inputs";
+
 export const listBrands = action({
   display: {
     label: "List Brands",
@@ -22,7 +23,9 @@ export const listBrands = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     let endpoint = `/stores/${storeHash}/v3/catalog/brands`;
+
     if (brandName) {
       endpoint += `?name=${brandName}`;
     }
@@ -30,8 +33,10 @@ export const listBrands = action({
       const separator = endpoint.includes("?") ? "&" : "?";
       endpoint += `${separator}limit=${pageLimit}`;
     }
+
     try {
       const response = await client.get(endpoint);
+
       return {
         data: response.data,
       };

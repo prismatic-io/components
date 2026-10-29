@@ -5,6 +5,7 @@ import { getChangeByGuidInputs } from "../../inputs";
 import { changeFullSchema } from "../../outputSchemas";
 import type { ChangeFullVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const getChangeByGuid = action({
   display: {
     label: "Get Change by GUID",

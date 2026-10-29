@@ -5,6 +5,7 @@ import { updateSupplierFileAssociationInputs } from "../../inputs";
 import { updateSupplierFileAssociationOutputSchema } from "../../outputSchemas";
 import type { FileAssociationVo, SupplierFileCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateSupplierFileAssociation = action({
   display: {
     label: "Update Supplier File Association",
@@ -37,7 +38,9 @@ export const updateSupplierFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const filePayload: SupplierFileCreateVo = {};
+
       if (title !== undefined && title !== null)
         filePayload["file.title"] = title;
       if (description !== undefined && description !== null)
@@ -63,6 +66,7 @@ export const updateSupplierFileAssociation = action({
       if (isPrimary !== undefined && isPrimary !== null) {
         filePayload.primary = isPrimary;
       }
+
       context.logger.info("Updating supplier file association", {
         supplierGuid,
         supplierFileAssociationGuid,
@@ -71,13 +75,16 @@ export const updateSupplierFileAssociation = action({
         isPrimary,
         latestEditionAssociation,
       });
+
       const { data } = await client.put<FileAssociationVo>(
         `/suppliers/${supplierGuid}/files/${supplierFileAssociationGuid}`,
         filePayload,
       );
+
       context.logger.info(
         `Successfully updated file association for supplier: ${supplierGuid} - File ${data.file?.title || "Unknown"} (${data.guid})`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

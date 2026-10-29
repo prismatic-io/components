@@ -26,6 +26,7 @@ import {
   statusInput,
   titleInput,
 } from "./common";
+
 const changeTitleInput = input({
   label: "Change Title",
   type: "string",
@@ -35,6 +36,7 @@ const changeTitleInput = input({
   example: "Component Design Update v3.0",
   clean: util.types.toString,
 });
+
 const changeUpdateTitleInput = input({
   label: "Change Title",
   type: "string",
@@ -44,6 +46,7 @@ const changeUpdateTitleInput = input({
   example: "Component Design Update v3.0",
   clean: toOptionalString,
 });
+
 const changeDescriptionInput = input({
   label: "Change Description",
   type: "text",
@@ -53,6 +56,7 @@ const changeDescriptionInput = input({
   example: "Updated component design to improve manufacturing efficiency",
   clean: toOptionalString,
 });
+
 const changeCategoryGuidInput = input({
   label: "Category GUID",
   type: "string",
@@ -63,6 +67,7 @@ const changeCategoryGuidInput = input({
   dataSource: "categoriesPicklist",
   clean: toOptionalString,
 });
+
 const changeNumberSequencePrefixInput = input({
   label: "Number Sequence Prefix",
   type: "string",
@@ -72,6 +77,7 @@ const changeNumberSequencePrefixInput = input({
   example: "ECO",
   clean: toOptionalString,
 });
+
 const changeRoutingsInput = input({
   label: "Routings",
   type: "data",
@@ -82,6 +88,7 @@ const changeRoutingsInput = input({
   dataSource: "changeCategoryRoutingsPicklist",
   clean: toOptionalObject,
 });
+
 const changeApprovalDeadlineDateTimeInput = input({
   label: "Approval Deadline",
   type: "string",
@@ -91,6 +98,7 @@ const changeApprovalDeadlineDateTimeInput = input({
   example: "2025-08-15T10:00:00Z",
   clean: toOptionalString,
 });
+
 const changeEnforceApprovalDeadlineInput = input({
   label: "Enforce Approval Deadline",
   type: "boolean",
@@ -99,6 +107,7 @@ const changeEnforceApprovalDeadlineInput = input({
   comments: "When true, the approval deadline is enforced.",
   clean: util.types.toBool,
 });
+
 const changeEffectivityTypeInput = input({
   label: "Effectivity Type",
   type: "string",
@@ -113,6 +122,7 @@ const changeEffectivityTypeInput = input({
   ],
   clean: toOptionalString,
 });
+
 const changeExpirationDateTimeInput = input({
   label: "Expiration Date Time",
   type: "string",
@@ -122,6 +132,7 @@ const changeExpirationDateTimeInput = input({
   example: "2026-08-15T10:00:00Z",
   clean: toOptionalString,
 });
+
 const changeEffectivityPlannedDateTimeInput = input({
   label: "Effectivity Planned Date Time",
   type: "string",
@@ -131,6 +142,7 @@ const changeEffectivityPlannedDateTimeInput = input({
   example: "2025-09-01T08:00:00Z",
   clean: toOptionalString,
 });
+
 const changeSupplierVisibilityInput = input({
   label: "Supplier Visibility",
   type: "boolean",
@@ -139,6 +151,7 @@ const changeSupplierVisibilityInput = input({
   comments: "When true, the change is visible to suppliers.",
   clean: util.types.toBool,
 });
+
 const changeItemAssociationGuidInput = input({
   label: "Change Item Association GUID",
   type: "string",
@@ -148,6 +161,7 @@ const changeItemAssociationGuidInput = input({
   example: "CHVVLTU2VVPNU6P4IVW8MN4V",
   clean: util.types.toString,
 });
+
 const changeFileAssociationGuidInput = input({
   label: "Change File Association GUID",
   type: "string",
@@ -157,6 +171,7 @@ const changeFileAssociationGuidInput = input({
   example: "CHRXMFA8H3PN48IAAH7PV9L3",
   clean: util.types.toString,
 });
+
 const changeImplementationStatusInput = input({
   label: "Implementation Status",
   type: "string",
@@ -175,6 +190,7 @@ const changeImplementationStatusInput = input({
   default: "",
   clean: toOptionalString,
 });
+
 const newItemRevisionInput = input({
   label: "New Item Revision GUID",
   type: "string",
@@ -184,6 +200,7 @@ const newItemRevisionInput = input({
   example: "CH1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const newRevisionNumberInput = input({
   label: "New Revision Number",
   type: "string",
@@ -193,6 +210,7 @@ const newRevisionNumberInput = input({
   example: "B",
   clean: toOptionalString,
 });
+
 const newLifecyclePhaseInput = input({
   label: "New Lifecycle Phase GUID",
   type: "string",
@@ -202,6 +220,7 @@ const newLifecyclePhaseInput = input({
   example: "CH5D4TZKH884FUWA7TYZCCIA",
   clean: toOptionalString,
 });
+
 const materialEffectivityDateTimeInput = input({
   label: "Material Effectivity Date Time",
   type: "string",
@@ -211,6 +230,7 @@ const materialEffectivityDateTimeInput = input({
   example: "2024-01-15T10:00:00Z",
   clean: toOptionalString,
 });
+
 const retrainingRequiredInput = input({
   label: "Retraining Required",
   type: "string",
@@ -223,6 +243,7 @@ const retrainingRequiredInput = input({
   ],
   clean: toOptionalString,
 });
+
 const retrainingRequiredBoolInput = input({
   label: "Retraining Required",
   type: "boolean",
@@ -231,6 +252,7 @@ const retrainingRequiredBoolInput = input({
   comments: "When true, retraining is required for this change.",
   clean: util.types.toBool,
 });
+
 const dispositionAttributeJsonInput = input({
   label: "Disposition Attribute JSON",
   type: "data",
@@ -239,6 +261,7 @@ const dispositionAttributeJsonInput = input({
     "Provide disposition attributes as raw JSON array. Each attribute should have 'guid' and 'value' properties.",
   clean: toOptionalObject,
 });
+
 const filesViewInput = input({
   label: "Files View JSON",
   type: "data",
@@ -247,6 +270,7 @@ const filesViewInput = input({
     "Optional Files view control object with 'includedInThisChange' (boolean) and 'notes' (string) properties.",
   clean: toOptionalObject,
 });
+
 const sourcingViewInput = input({
   label: "Sourcing View JSON",
   type: "data",
@@ -255,6 +279,7 @@ const sourcingViewInput = input({
     "Optional Sourcing view control object with 'includedInThisChange' (boolean) and 'notes' (string) properties.",
   clean: toOptionalObject,
 });
+
 const specsViewInput = input({
   label: "Specs View JSON",
   type: "data",
@@ -263,6 +288,7 @@ const specsViewInput = input({
     "Optional Specs view control object with 'includedInThisChange' (boolean) and 'notes' (string) properties.",
   clean: toOptionalObject,
 });
+
 const bomViewInput = input({
   label: "BOM View JSON",
   type: "data",
@@ -271,6 +297,7 @@ const bomViewInput = input({
     "Optional BOM view control object with 'includedInThisChange' (boolean) and 'notes' (string) properties.",
   clean: toOptionalObject,
 });
+
 const implementationTaskGuidInput = input({
   label: "Implementation Task GUID",
   type: "string",
@@ -280,6 +307,7 @@ const implementationTaskGuidInput = input({
   example: "CH4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const assigneeUserGuidInput = input({
   label: "Assignee User GUID",
   type: "string",
@@ -290,6 +318,7 @@ const assigneeUserGuidInput = input({
   example: "CH4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const assigneeUserGroupGuidInput = input({
   label: "Assignee User Group GUID",
   type: "string",
@@ -300,6 +329,7 @@ const assigneeUserGroupGuidInput = input({
   example: "CH4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const noteInput = input({
   label: "Note Content",
   type: "text",
@@ -308,6 +338,7 @@ const noteInput = input({
   comments: "The content of the note to add.",
   clean: util.types.toString,
 });
+
 const labelInput = input({
   label: "Label",
   type: "string",
@@ -316,6 +347,7 @@ const labelInput = input({
   comments: "Optional label for the note.",
   clean: toOptionalString,
 });
+
 const isPrivateInput = input({
   label: "Private",
   type: "boolean",
@@ -323,6 +355,7 @@ const isPrivateInput = input({
   comments: "When true, the note is marked as private.",
   clean: util.types.toBool,
 });
+
 const noteGuidInput = input({
   label: "Note GUID",
   type: "string",
@@ -332,6 +365,7 @@ const noteGuidInput = input({
   example: "CH4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const effectiveDateTimeInput = input({
   label: "Effective DateTime",
   type: "string",
@@ -342,6 +376,7 @@ const effectiveDateTimeInput = input({
   example: "2026-05-10T09:15:00Z",
   clean: toOptionalString,
 });
+
 const submissionDateTimeInput = input({
   label: "Submission DateTime",
   type: "string",
@@ -352,6 +387,7 @@ const submissionDateTimeInput = input({
   example: "2026-05-02T14:30:00Z",
   clean: toOptionalString,
 });
+
 const lifecycleStatusTypeInput = input({
   label: "Lifecycle Status Type",
   type: "string",
@@ -362,6 +398,7 @@ const lifecycleStatusTypeInput = input({
   example: "APPROVED",
   clean: toOptionalString,
 });
+
 const implementationStatusInput = input({
   label: "Implementation Status",
   type: "string",
@@ -372,6 +409,7 @@ const implementationStatusInput = input({
   example: "IN_PROGRESS",
   clean: toOptionalString,
 });
+
 const anyInput = input({
   label: "Any Search",
   type: "string",
@@ -382,6 +420,7 @@ const anyInput = input({
   example: "solder mask",
   clean: toOptionalString,
 });
+
 const filesViewIncludedInput = input({
   label: "Files View Included in Change",
   type: "boolean",
@@ -389,6 +428,7 @@ const filesViewIncludedInput = input({
   comments: "When true, the files view is included in this change.",
   clean: util.types.toBool,
 });
+
 const filesViewNotesInput = input({
   label: "Files View Notes",
   type: "string",
@@ -397,6 +437,7 @@ const filesViewNotesInput = input({
   comments: "Notes for the files view modification.",
   clean: toOptionalString,
 });
+
 const sourcingViewIncludedInput = input({
   label: "Sourcing View Included in Change",
   type: "boolean",
@@ -404,6 +445,7 @@ const sourcingViewIncludedInput = input({
   comments: "When true, the sourcing view is included in this change.",
   clean: util.types.toBool,
 });
+
 const sourcingViewNotesInput = input({
   label: "Sourcing View Notes",
   type: "string",
@@ -412,6 +454,7 @@ const sourcingViewNotesInput = input({
   comments: "Notes for the sourcing view modification.",
   clean: toOptionalString,
 });
+
 const specsViewIncludedInput = input({
   label: "Specs View Included in Change",
   type: "boolean",
@@ -419,6 +462,7 @@ const specsViewIncludedInput = input({
   comments: "When true, the specs view is included in this change.",
   clean: util.types.toBool,
 });
+
 const specsViewNotesInput = input({
   label: "Specs View Notes",
   type: "string",
@@ -427,6 +471,7 @@ const specsViewNotesInput = input({
   comments: "Notes for the specs view modification.",
   clean: toOptionalString,
 });
+
 const bomViewIncludedInput = input({
   label: "BOM View Included in Change",
   type: "boolean",
@@ -434,6 +479,7 @@ const bomViewIncludedInput = input({
   comments: "When true, the BOM view is included in this change.",
   clean: util.types.toBool,
 });
+
 const bomViewNotesInput = input({
   label: "BOM View Notes",
   type: "string",
@@ -442,6 +488,7 @@ const bomViewNotesInput = input({
   comments: "Notes for the BOM view modification.",
   clean: toOptionalString,
 });
+
 export const addItemToChangeInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
@@ -460,6 +507,7 @@ export const addItemToChangeInputs = {
   specsView: specsViewInput,
   bomView: bomViewInput,
 };
+
 export const createChangeInputs = {
   connection: connectionInput,
   title: changeTitleInput,
@@ -477,6 +525,7 @@ export const createChangeInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const createChangeFileAssociationInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
@@ -486,6 +535,7 @@ export const createChangeFileAssociationInputs = {
     comments: "GUID of the existing file to associate with the change.",
   },
 };
+
 export const createChangeImplementationFileInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -497,6 +547,7 @@ export const createChangeImplementationFileInputs = {
     comments: "The GUID of the file to attach as an implementation file.",
   },
 };
+
 export const createChangeImplementationTaskInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -518,6 +569,7 @@ export const createChangeImplementationTaskInputs = {
     comments: "The due date for the task (ISO 8601 format).",
   },
 };
+
 export const createChangeImplementationTaskFileInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -527,6 +579,7 @@ export const createChangeImplementationTaskFileInputs = {
   },
   fileGuid: { ...fileGuidInput, comments: "The GUID of the file to attach." },
 };
+
 export const createChangeImplementationTaskNoteInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -538,6 +591,7 @@ export const createChangeImplementationTaskNoteInputs = {
   label: labelInput,
   isPrivate: isPrivateInput,
 };
+
 export const createChangeMarkupFileInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -549,20 +603,24 @@ export const createChangeMarkupFileInputs = {
     comments: "The GUID of the file to attach as a markup file.",
   },
 };
+
 export const deleteChangeInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
 };
+
 export const deleteChangeFileAssociationInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
   changeFileAssociationGuid: changeFileAssociationGuidInput,
 };
+
 export const deleteChangeItemAssociationInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
   changeItemAssociationGuid: changeItemAssociationGuidInput,
 };
+
 export const deleteChangeMarkupFileInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -571,6 +629,7 @@ export const deleteChangeMarkupFileInputs = {
     comments: "The GUID of the change file association to delete.",
   },
 };
+
 export const listChangeAlertsInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -578,6 +637,7 @@ export const listChangeAlertsInputs = {
     comments: "The GUID of the change to get alerts for.",
   },
 };
+
 export const getChangeByGuidInputs = {
   connection: connectionInput,
   guid: {
@@ -593,6 +653,7 @@ export const getChangeByGuidInputs = {
       "When true, includes additional attributes even when they have no value.",
   },
 };
+
 export const listChangeCategoryItemAttributesInputs = {
   connection: connectionInput,
   categoryGuid: {
@@ -620,6 +681,7 @@ export const listChangeCategoryItemAttributesInputs = {
     comments: "Whether to include deleted attributes in the results.",
   },
 };
+
 export const listChangeCategoryRoutingsInputs = {
   connection: connectionInput,
   categoryGuid: {
@@ -631,15 +693,18 @@ export const listChangeCategoryRoutingsInputs = {
     clean: util.types.toString,
   },
 };
+
 export const getChangeFileAssociationInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
   changeFileAssociationGuid: changeFileAssociationGuidInput,
 };
+
 export const listChangeFileAssociationsInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
 };
+
 export const listChangeFilesInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -647,6 +712,7 @@ export const listChangeFilesInputs = {
     comments: "The GUID of the change to get files for.",
   },
 };
+
 export const listChangeHistoryInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -654,6 +720,7 @@ export const listChangeHistoryInputs = {
     comments: "The GUID of the change to get history for.",
   },
 };
+
 export const listChangeImplementationFilesInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -661,6 +728,7 @@ export const listChangeImplementationFilesInputs = {
     comments: "The GUID of the change to get implementation files for.",
   },
 };
+
 export const getChangeImplementationTaskInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -669,6 +737,7 @@ export const getChangeImplementationTaskInputs = {
     comments: "The GUID of the implementation task to retrieve.",
   },
 };
+
 export const listChangeImplementationTaskFilesInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -677,6 +746,7 @@ export const listChangeImplementationTaskFilesInputs = {
     comments: "The GUID of the implementation task to get files for.",
   },
 };
+
 export const listChangeImplementationTaskNotesInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -685,6 +755,7 @@ export const listChangeImplementationTaskNotesInputs = {
     comments: "The GUID of the implementation task to get notes for.",
   },
 };
+
 export const listChangeImplementationTasksInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -692,15 +763,18 @@ export const listChangeImplementationTasksInputs = {
     comments: "The GUID of the change to get implementation tasks for.",
   },
 };
+
 export const getChangeItemAssociationInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
   changeItemAssociationGuid: changeItemAssociationGuidInput,
 };
+
 export const listChangeItemsInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
 };
+
 export const listChangeMarkupFilesInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -708,6 +782,7 @@ export const listChangeMarkupFilesInputs = {
     comments: "The GUID of the change to get markup files for.",
   },
 };
+
 export const listChangesInputs = {
   connection: connectionInput,
   number: {
@@ -744,6 +819,7 @@ export const listChangesInputs = {
     clean: util.types.toBool,
   },
 };
+
 export const listChangesAdministratorsInputs = {
   connection: connectionInput,
   objectType: {
@@ -758,6 +834,7 @@ export const listChangesAdministratorsInputs = {
       "The type of objects whose administrators to list (changes or requests).",
   },
 };
+
 export const listNumberSequencePrefixesInputs = {
   connection: connectionInput,
   objectType: {
@@ -776,6 +853,7 @@ export const listNumberSequencePrefixesInputs = {
     clean: util.types.toString,
   },
 };
+
 export const updateChangeInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,
@@ -793,6 +871,7 @@ export const updateChangeInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const updateChangeImplementationTaskInputs = {
   connection: connectionInput,
   changeGuid: {
@@ -829,6 +908,7 @@ export const updateChangeImplementationTaskInputs = {
     comments: "The updated status of the implementation task.",
   },
 };
+
 export const updateChangeImplementationTaskNoteInputs = {
   connection: connectionInput,
   changeGuid: { ...changeGuidInput, comments: "The GUID of the change." },
@@ -852,6 +932,7 @@ export const updateChangeImplementationTaskNoteInputs = {
     comments: "When true, the note is private.",
   },
 };
+
 export const updateChangeItemAssociationInputs = {
   connection: connectionInput,
   changeGuid: changeGuidInput,

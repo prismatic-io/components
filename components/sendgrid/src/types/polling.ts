@@ -2,6 +2,7 @@ export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   backfillActive?: boolean;
 }
+
 export interface SendgridMessageRecord {
   msg_id?: string;
   from_email?: string;
@@ -15,17 +16,21 @@ export interface SendgridMessageRecord {
   template_id?: string;
   [key: string]: unknown;
 }
+
 export interface MessagesResponse {
   messages?: SendgridMessageRecord[];
 }
+
 export interface FetchMessagesInWindowResult {
   records: SendgridMessageRecord[];
   truncated: boolean;
 }
+
 export interface PollingChangesObject {
   created?: SendgridMessageRecord[];
   updated?: SendgridMessageRecord[];
 }
+
 export interface SendgridRecordChange {
   changeType: "created" | "updated";
   record: SendgridMessageRecord;

@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { listFoldersExamplePayload } from "../../examplePayloads";
 import { listFoldersInputs } from "../../inputs";
 import { listFoldersOutputSchema } from "../../outputSchemas";
+
 export const listFolders = action({
   display: {
     label: "List Folders",
@@ -16,15 +17,16 @@ export const listFolders = action({
   performSafety: "safe",
   perform: async (context, { connection, spaceId, archived }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
-    const params: {
-      archived?: unknown;
-    } = {};
+    const params: { archived?: unknown } = {};
+
     if (archived !== undefined) {
       params.archived = archived;
     }
+
     const { data } = await client.get(`/space/${spaceId}/folder`, {
       params,
     });
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { rejectMessageExamplePayload } from "../examplePayloads";
 import { queueName, connectionInput } from "../inputs";
+
 export const rejectMessage = action({
   display: {
     label: "Reject Message",

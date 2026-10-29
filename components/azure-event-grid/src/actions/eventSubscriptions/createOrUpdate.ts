@@ -7,6 +7,7 @@ import {
   DEFAULT_MAX_DELIVERY_ATTEMPTS,
 } from "../../constants";
 import { getEventSubscriptionUrl } from "../../util";
+
 export const createOrUpdateEventSubscription = action({
   display: {
     label: "Create or Update Event Subscription",
@@ -37,6 +38,7 @@ export const createOrUpdateEventSubscription = action({
       topicName,
       eventSubscriptionName,
     );
+
     const { data } = await managementClient.put(eventSubscriptionURL, {
       properties: {
         retryPolicy: {

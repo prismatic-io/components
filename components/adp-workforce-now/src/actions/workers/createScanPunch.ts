@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createScanPunchExamplePayload } from "../../examplePayloads";
 import { createScanPunchInputs } from "../../inputs";
 import { createScanPunchOutputSchema } from "../../outputSchemas";
+
 export const createScanPunch = action({
   display: {
     label: "Create Scan/Punch",
@@ -56,9 +57,8 @@ export const createScanPunch = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createScanPunchExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createScanPunchExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createScanPunchOutputSchema,

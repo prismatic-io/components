@@ -1,4 +1,5 @@
 import { pageSchema } from "./shared";
+
 const locationSchema = {
   type: "object" as const,
   properties: {
@@ -16,8 +17,11 @@ const locationSchema = {
   },
   required: ["entity_id", "id", "name"],
 };
+
 export const createLocationOutputSchema = locationSchema;
+
 export const getLocationOutputSchema = locationSchema;
+
 export const listLocationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -29,4 +33,5 @@ export const listLocationsOutputSchema = {
   },
   required: ["data", "page"],
 };
+
 export const updateLocationOutputSchema = locationSchema;

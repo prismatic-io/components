@@ -1,10 +1,9 @@
 import { trigger, util } from "@prismatic-io/spectral";
 import crypto from "crypto";
 import { bamboohrTriggerExamplePayload } from "../examplePayloads";
+
 const validateHmac = (
-  rawBody: {
-    data: unknown;
-  },
+  rawBody: { data: unknown },
   timestamp: string,
   signature: string,
   secrets: string[],
@@ -23,6 +22,7 @@ const validateHmac = (
     "The included signing signature does not match a known BambooHR signing key for this integration. Rejecting payload.",
   );
 };
+
 export const bamboohrTrigger = trigger({
   display: {
     label: "Webhook",
@@ -36,16 +36,19 @@ export const bamboohrTrigger = trigger({
         payload,
       });
     }
+
     const headers = util.types.lowerCaseHeaders(payload.headers);
     const bamboohrSignature = headers["x-bamboohr-signature"];
     const bamboohrTimestamp = headers["x-bamboohr-timestamp"];
     const secrets = context.crossFlowState.webhookSecrets as string[];
+
     validateHmac(
       payload.rawBody,
       bamboohrTimestamp,
       bamboohrSignature,
       secrets || [],
     );
+
     return Promise.resolve({
       payload,
     });

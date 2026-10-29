@@ -5,9 +5,11 @@ import {
 } from "../constants";
 import { lookBackDateClean } from "../util";
 import { connection } from "./common";
+
 const profileOrListResourceModel = Object.entries(
   PROFILE_OR_LIST_RESOURCE_CONFIG,
 ).map(([value, { label }]) => ({ label, value }));
+
 const pollProfileOrListResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -16,6 +18,7 @@ const pollProfileOrListResourceType = input({
   model: profileOrListResourceModel,
   clean: util.types.toString,
 });
+
 const pollMessageChannel = input({
   label: "Message Channel",
   type: "string",
@@ -25,6 +28,7 @@ const pollMessageChannel = input({
   model: MESSAGE_CHANNEL_MODEL,
   clean: util.types.toString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -34,6 +38,7 @@ const showNewRecords = input({
     "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -44,6 +49,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -53,6 +59,7 @@ const showUpdatedRecords = input({
     "When true, records updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const pollCampaignChangesInputs = {
   connection,
   pollMessageChannel,
@@ -60,6 +67,7 @@ export const pollCampaignChangesInputs = {
   showUpdatedRecords,
   lookBackDate,
 };
+
 export const pollProfileAndListChangesInputs = {
   connection,
   pollProfileOrListResourceType,

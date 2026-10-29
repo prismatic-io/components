@@ -28,6 +28,7 @@ import {
   userName,
   userNameReq,
 } from "./inputs";
+
 interface RequestProps {
   object: string;
 }
@@ -43,6 +44,7 @@ interface PutRequestProps extends RequestProps {
 interface PostRequestProps extends RequestProps {
   data: Record<string, unknown>;
 }
+
 const filterQueryParams = (
   params: Record<string, string>,
 ): Record<string, string> => {
@@ -51,10 +53,7 @@ const filterQueryParams = (
   );
 };
 const buildPayload = (
-  fieldValuesInput: {
-    key: string;
-    value: unknown;
-  }[],
+  fieldValuesInput: { key: string; value: unknown }[],
 ): Record<string, unknown> => {
   return (fieldValuesInput || []).reduce(
     (results, { key, value }) => ({ ...results, [key]: value }),
@@ -72,6 +71,7 @@ const constructFullUrl = (
       url = urljoin(url, `?${stringify(filteredParams)}`);
     }
   }
+
   return url;
 };
 const createRequest = async (
@@ -104,6 +104,7 @@ const updateRequest = async (
   const { results } = await response.data;
   return results;
 };
+
 const getRequest = async (
   client: HttpClient,
   requestConfig: GetRequestProps,
@@ -114,6 +115,7 @@ const getRequest = async (
   const { results } = await response.data;
   return results;
 };
+
 export const getUsers = action({
   display: {
     label: "Get Users",
@@ -129,6 +131,7 @@ export const getUsers = action({
       page: util.types.toString(page),
       ...buildPayload(additionalParams),
     };
+
     const client = createClient(connection, context.debug.enabled);
     const results = await getRequest(client, {
       object: "users",
@@ -140,6 +143,7 @@ export const getUsers = action({
   },
   inputs: { connection, active, perPage, page, additionalParams },
 });
+
 export const updateUser = action({
   display: {
     label: "Update User",
@@ -148,6 +152,7 @@ export const updateUser = action({
   perform: async (context, { connection, id, userName, additionalParams }) => {
     if (!util.types.isInt(id) && !util.types.toString(userName))
       throw new Error("Id or Username must be supplied.");
+
     const client = createClient(connection, context.debug.enabled);
     const results = await updateRequest(client, {
       object: "users",
@@ -164,6 +169,7 @@ export const updateUser = action({
   },
   inputs: { connection, id, userName, additionalParams },
 });
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -197,6 +203,7 @@ export const createUser = action({
   },
   inputs: { connection, userNameReq, firstName, lastName, additionalParams },
 });
+
 export const getJobCodes = action({
   display: {
     label: "Get Job Codes",
@@ -212,6 +219,7 @@ export const getJobCodes = action({
       page: util.types.toString(page),
       ...buildPayload(additionalParams),
     };
+
     const client = createClient(connection, context.debug.enabled);
     const results = await getRequest(client, {
       object: "jobcodes",
@@ -241,6 +249,7 @@ export const getJobCodeAssignments = action({
         : "",
       ...buildPayload(additionalParams),
     };
+
     const client = createClient(connection, context.debug.enabled);
     const results = await getRequest(client, {
       object: "jobcode_assignments",
@@ -252,6 +261,7 @@ export const getJobCodeAssignments = action({
   },
   inputs: { connection, active, perPage, page, userIds, additionalParams },
 });
+
 export const getTimeSheets = action({
   display: {
     label: "Get Time Sheets",
@@ -285,6 +295,7 @@ export const getTimeSheets = action({
       end_date: util.types.toString(endDate),
       ...buildPayload(additionalParams),
     };
+
     const client = createClient(connection, context.debug.enabled);
     const results = await getRequest(client, {
       object: "timesheets",
@@ -306,6 +317,7 @@ export const getTimeSheets = action({
     additionalParams,
   },
 });
+
 export const createTimesheet = action({
   display: {
     label: "Create Timesheet",
@@ -347,6 +359,7 @@ export const createTimesheet = action({
     additionalParams,
   },
 });
+
 export const updateTimesheet = action({
   display: {
     label: "Update Timesheet",
@@ -387,6 +400,7 @@ export const updateTimesheet = action({
     additionalParams,
   },
 });
+
 export const deleteTimeSheet = action({
   display: {
     label: "Delete Timesheet",
@@ -406,6 +420,7 @@ export const deleteTimeSheet = action({
   },
   inputs: { connection, jobCodeIdsReq },
 });
+
 export default {
   getUsers,
   updateUser,

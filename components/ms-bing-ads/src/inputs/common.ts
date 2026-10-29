@@ -1,11 +1,14 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanOptionalString } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft Advertising connection to use.",
 });
+
 export const customerIdInput = input({
   label: "Customer ID",
   placeholder: "Enter customer ID",
@@ -15,6 +18,7 @@ export const customerIdInput = input({
   clean: util.types.toString,
   dataSource: "selectCustomerId",
 });
+
 export const accountIdInput = input({
   label: "Account ID",
   placeholder: "Enter account ID",
@@ -24,6 +28,7 @@ export const accountIdInput = input({
   clean: util.types.toString,
   dataSource: "selectAccountId",
 });
+
 export const campaignIdInput = input({
   label: "Campaign ID",
   placeholder: "Enter campaign ID",
@@ -34,6 +39,7 @@ export const campaignIdInput = input({
   clean: util.types.toString,
   dataSource: "selectCampaignId",
 });
+
 export const adGroupIdInput = input({
   label: "Ad Group ID",
   placeholder: "Enter ad group ID",
@@ -44,6 +50,7 @@ export const adGroupIdInput = input({
   clean: util.types.toString,
   dataSource: "selectAdGroupId",
 });
+
 export const returnAdditionalFieldsInput = input({
   label: "Return Additional Fields",
   placeholder: "Enter additional fields",

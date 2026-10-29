@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./common";
+
 const queryField = input({
   label: "Query",
   type: "code",
@@ -12,6 +13,7 @@ const queryField = input({
   required: true,
   clean: util.types.toString,
 });
+
 const params = input({
   label: "Parameters",
   comments:
@@ -22,6 +24,7 @@ const params = input({
   collection: "valuelist",
   clean: (value: unknown) => value as string[],
 });
+
 const referenceParams = input({
   label: "Reference Parameters",
   comments:
@@ -42,6 +45,7 @@ const referenceParams = input({
     return params;
   },
 });
+
 export const queryInputs = {
   mySQLConnection: connectionInput,
   queryField,

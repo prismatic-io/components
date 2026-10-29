@@ -5,6 +5,7 @@ import { getTimeClockEventsExamplePayload } from "../../examplePayloads";
 import { getTimeClockEventsInputs } from "../../inputs";
 import { getTimeClockEventsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const getTimeClockEvents = action({
   display: {
     label: "Get Time Clock Events",

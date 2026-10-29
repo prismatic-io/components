@@ -3,6 +3,7 @@ import { BOOLEAN_INPUT_MODEL } from "../../constants";
 import { cleanBooleanInput, cleanStringInput } from "../../utils";
 import { companyId } from "../accounts/getAccountsInputs";
 import { connectionInput, fetchAll, odataQueryParams } from "../general";
+
 export const vendorId = input({
   label: "Vendor ID",
   type: "string",
@@ -13,6 +14,7 @@ export const vendorId = input({
   dataSource: "selectVendor",
   clean: util.types.toString,
 });
+
 export const displayName = input({
   label: "Display Name",
   example: "First Up Consultants",
@@ -22,6 +24,7 @@ export const displayName = input({
   type: "string",
   clean: util.types.toString,
 });
+
 export const addressLine1 = input({
   label: "Address Line 1",
   type: "string",
@@ -31,6 +34,7 @@ export const addressLine1 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const addressLine2 = input({
   label: "Address Line 2",
   type: "string",
@@ -40,6 +44,7 @@ export const addressLine2 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const city = input({
   label: "City",
   type: "string",
@@ -49,6 +54,7 @@ export const city = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const state = input({
   label: "State",
   type: "string",
@@ -58,6 +64,7 @@ export const state = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const country = input({
   label: "Country",
   type: "string",
@@ -67,6 +74,7 @@ export const country = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const postalCode = input({
   label: "Postal Code",
   type: "string",
@@ -76,6 +84,7 @@ export const postalCode = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -85,6 +94,7 @@ export const phoneNumber = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -94,6 +104,7 @@ export const email = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const website = input({
   label: "Website",
   type: "string",
@@ -103,6 +114,7 @@ export const website = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const taxRegistrationNumber = input({
   label: "Tax Registration Number",
   type: "string",
@@ -111,6 +123,7 @@ export const taxRegistrationNumber = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const currencyId = input({
   label: "Currency ID",
   type: "string",
@@ -120,6 +133,7 @@ export const currencyId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const currencyCode = input({
   label: "Currency Code",
   type: "string",
@@ -129,6 +143,7 @@ export const currencyCode = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const irs1099Code = input({
   label: "IRS 1099 Code",
   type: "string",
@@ -137,6 +152,7 @@ export const irs1099Code = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const paymentTermsId = input({
   label: "Payment Terms ID",
   type: "string",
@@ -146,6 +162,7 @@ export const paymentTermsId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const paymentMethodId = input({
   label: "Payment Method ID",
   type: "string",
@@ -155,6 +172,7 @@ export const paymentMethodId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const taxLiable = input({
   label: "Tax Liable",
   comments: "When true, the vendor is liable for sales tax.",
@@ -162,6 +180,7 @@ export const taxLiable = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const blocked = input({
   label: "Blocked",
   comments:
@@ -174,29 +193,34 @@ export const blocked = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const address = structuredObjectInput({
   label: "Address",
   required: false,
   comments: "Street, city, state, postal code, and country.",
   inputs: { addressLine1, addressLine2, city, state, country, postalCode },
 });
+
 export const contactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
   comments: "Email, phone, and other contact channel details.",
   inputs: { email, phoneNumber, website },
 });
+
 export const listVendorsInputs = {
   connection: connectionInput,
   companyId,
   fetchAll,
   odataQueryParams,
 };
+
 export const getVendorInputs = {
   connection: connectionInput,
   companyId,
   vendorId,
 };
+
 export const createVendorInputs = {
   connection: connectionInput,
   companyId: {
@@ -215,6 +239,7 @@ export const createVendorInputs = {
   paymentMethodId,
   blocked,
 };
+
 export const updateVendorInputs = {
   connection: connectionInput,
   companyId: {
@@ -240,6 +265,7 @@ export const updateVendorInputs = {
   paymentMethodId,
   blocked,
 };
+
 export const deleteVendorInputs = {
   connection: connectionInput,
   companyId,

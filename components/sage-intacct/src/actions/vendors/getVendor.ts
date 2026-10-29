@@ -5,6 +5,7 @@ import { getVendorExamplePayload } from "../../examplePayloads";
 import { OBJECT_VENDOR } from "../../constants";
 import { getVendorInputs } from "../../inputs";
 import { getVendorOutputSchema } from "../../outputSchemas";
+
 export const getVendor = action({
   display: {
     label: "Get Vendor",

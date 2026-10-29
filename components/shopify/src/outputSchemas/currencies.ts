@@ -1,4 +1,5 @@
 import { pageInfoSchema } from "./shared";
+
 export const listCurrenciesGqlOutputSchema = {
   type: "object" as const,
   properties: {

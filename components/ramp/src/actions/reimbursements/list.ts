@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { Reimbursement } from "../../interfaces/reimbursements";
 import { listReimbursementsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listReimbursements = action({
   display: {
     label: "List Reimbursements",
@@ -23,6 +24,7 @@ export const listReimbursements = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<Reimbursement>(
       client,
       "reimbursements",
@@ -40,9 +42,7 @@ export const listReimbursements = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listReimbursementsResponse,
       page: fetchAll ? null : listReimbursementsResponse.page,

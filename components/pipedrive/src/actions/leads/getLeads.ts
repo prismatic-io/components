@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getLeadsInputs } from "../../inputs";
 import { getLeadsExamplePayload } from "../../examplePayloads";
 import { getLeadsOutputSchema } from "../../outputSchemas";
+
 export const getLeads = action({
   display: {
     label: "Get Leads",

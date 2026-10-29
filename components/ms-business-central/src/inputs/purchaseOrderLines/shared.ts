@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const purchaseOrderLineId = input({
   label: "Purchase Order Line ID",
   required: true,

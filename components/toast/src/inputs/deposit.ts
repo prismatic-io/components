@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection, restaurantExternalId } from "./shared";
+
 const businessDate = input({
   label: "Business Date",
   comments:
@@ -10,6 +11,7 @@ const businessDate = input({
   placeholder: "20180228",
   clean: util.types.toString,
 });
+
 export const listDepositsInputs = {
   connection,
   restaurantExternalId,

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../util";
 import { connectionInput } from "./common";
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -10,6 +11,7 @@ const showNewRecords = input({
   comments:
     "When true, sheets created since the last poll are returned in the trigger payload.",
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -19,6 +21,7 @@ const showUpdatedRecords = input({
   comments:
     "When true, sheets modified since the last poll are returned in the trigger payload.",
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -29,10 +32,12 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };
+
 export const smartsheetWebhookInputs = {};

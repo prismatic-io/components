@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { writeFileExamplePayload } from "../../examplePayloads";
 import { writeFileInputs } from "../../inputs";
+
 export const writeFile = action({
   display: {
     label: "Write File",
@@ -16,9 +17,11 @@ export const writeFile = action({
     } finally {
       client.close();
     }
+
     return null;
   },
   inputs: writeFileInputs,
   examplePayload: writeFileExamplePayload,
 });
+
 export default writeFile;

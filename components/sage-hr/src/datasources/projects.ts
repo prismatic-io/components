@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { projectsExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
+
 export const projects = dataSource({
   display: {
     label: "Fetch Projects",

@@ -6,6 +6,7 @@ import {
   webhookPayload,
   webhookUrl,
 } from "./webhooks";
+
 describe("webhookName.clean", () => {
   test("coerces the value to a string", () => {
     expect(webhookName.clean("my-integration-webhook")).toBe(
@@ -13,31 +14,37 @@ describe("webhookName.clean", () => {
     );
     expect(webhookName.clean(123)).toBe("123");
   });
+
   test("returns an empty string when unset", () => {
     expect(webhookName.clean(undefined)).toBe("");
   });
 });
+
 describe("webhookUrl.clean", () => {
   test("coerces the value to a string", () => {
     expect(webhookUrl.clean("https://hooks.example.com/datadog")).toBe(
       "https://hooks.example.com/datadog",
     );
   });
+
   test("returns an empty string when unset", () => {
     expect(webhookUrl.clean(undefined)).toBe("");
   });
 });
+
 describe("updateWebhookInputs.webhookUrl.clean", () => {
   test("coerces a supplied value to a string", () => {
     expect(
       updateWebhookInputs.webhookUrl.clean("https://hooks.example.com/datadog"),
     ).toBe("https://hooks.example.com/datadog");
   });
+
   test("returns undefined when unset", () => {
     expect(updateWebhookInputs.webhookUrl.clean(undefined)).toBeUndefined();
     expect(updateWebhookInputs.webhookUrl.clean("")).toBeUndefined();
   });
 });
+
 describe.each([
   ["webhookCustomHeaders", webhookCustomHeaders],
   ["webhookEncodeAs", webhookEncodeAs],
@@ -48,6 +55,7 @@ describe.each([
       '{"Authorization": "Bearer my-token"}',
     );
   });
+
   test("returns undefined for a falsy value", () => {
     expect(field.clean(undefined)).toBeUndefined();
     expect(field.clean("")).toBeUndefined();

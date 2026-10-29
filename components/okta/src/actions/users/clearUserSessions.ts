@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { clearUserSessionsExamplePayload } from "../../examplePayloads/users";
 import { clearUserSessionsInputs } from "../../inputs/users";
+
 export const clearUserSessions = action({
   display: {
     label: "Clear User Sessions",
@@ -20,6 +21,7 @@ export const clearUserSessions = action({
         oauthTokens,
       },
     });
+
     return {
       data: {
         id: userId,

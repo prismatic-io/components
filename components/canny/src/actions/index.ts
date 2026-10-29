@@ -9,6 +9,7 @@ import statusChangesActions from "./statusChanges";
 import tagsActions from "./tags";
 import usersActions from "./users";
 import votesActions from "./votes";
+
 export default {
   ...boardsActions,
   ...postsActions,

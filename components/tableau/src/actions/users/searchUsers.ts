@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { searchUsersExamplePayload } from "../../examplePayloads";
 import { searchUsersInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const searchUsers = action({
   display: {
     label: "Search Users",
@@ -27,6 +28,7 @@ export const searchUsers = action({
         },
       },
     );
+
     return {
       data: response.data,
     };

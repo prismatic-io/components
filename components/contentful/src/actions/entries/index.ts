@@ -9,6 +9,7 @@ import { publishEntry } from "./publishEntry";
 import { putEntry } from "./putEntry";
 import { unarchiveEntry } from "./unarchiveEntry";
 import { unpublishEntry } from "./unpublishEntry";
+
 export default {
   archiveEntry,
   createEntry,

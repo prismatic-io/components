@@ -8,11 +8,15 @@ import {
 import nock from "nock";
 import { oauth2 } from "../connections";
 import { eventWebhook } from "./eventWebhook";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 afterEach(() => nock.cleanAll());
+
 const signatureFor = (secret: string, body: string) =>
   `sha256=${crypto.createHmac("sha256", secret).update(body).digest("hex")}`;
+
 const buildPayload = (
   body: string,
   headers: Record<string, string> = {},
@@ -34,6 +38,7 @@ const buildPayload = (
     flow: { id: "f", name: "f" },
     startedAt: new Date().toISOString(),
   }) as unknown as TriggerPayload;
+
 describe("eventWebhook trigger", () => {
   test("returns the payload unchanged on a simulated test execution", async () => {
     const payload = buildPayload('{"action":"closed"}');
@@ -46,6 +51,7 @@ describe("eventWebhook trigger", () => {
     expect(result?.payload.body).toEqual(payload.body);
     expect(result?.payload.executionId).toBe(payload.executionId);
   });
+
   test("validates the signature against the crossFlowState secret", async () => {
     const secret = "flow-secret";
     const body = JSON.stringify({ action: "closed" });
@@ -63,6 +69,7 @@ describe("eventWebhook trigger", () => {
     );
     expect(result?.payload).toBeDefined();
   });
+
   test("throws when the crossFlowState secret does not match", async () => {
     const body = JSON.stringify({ action: "closed" });
     const payload = buildPayload(body, {
@@ -80,6 +87,7 @@ describe("eventWebhook trigger", () => {
       ),
     ).rejects.toThrow(/does not match the configured GitHub signing key/);
   });
+
   test("create lifecycle handler POSTs a webhook and stores id + secret", async () => {
     const store: Record<string, unknown> = {};
     nock(BASE).post("/repos/octocat/Hello-World/hooks").reply(201, { id: 999 });
@@ -101,6 +109,7 @@ describe("eventWebhook trigger", () => {
     expect(store.f).toBe(999);
     expect(typeof store.f_secret).toBe("string");
   });
+
   test("delete lifecycle handler DELETEs the stored webhook id", async () => {
     const store: Record<string, unknown> = { f: 999, f_secret: "abc" };
     const scope = nock(BASE)

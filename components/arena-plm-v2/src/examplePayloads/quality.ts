@@ -3,17 +3,20 @@ const sampleUser = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleSecondUser = {
   guid: "8XW76VU54TS32RQ10PO98NM7",
   fullName: "Priya Nadar",
   email: "priya.nadar@example.com",
 };
+
 const sampleNumberFormat = {
   guid: "2NF33NF44NF55NF66NF77NF8",
   prefix: { guid: "3PX44PX55PX66PX77PX88PX9", value: "QMS" },
   active: true,
   format: "QMS-######",
 };
+
 const sampleTemplate = {
   guid: "4TP55TP66TP77TP88TP99TP0",
   name: "CAPA Investigation",
@@ -22,6 +25,7 @@ const sampleTemplate = {
   active: true,
   numberFormat: sampleNumberFormat,
 };
+
 const sampleAttribute = {
   guid: "5AT66AT77AT88AT99AT00AT1",
   apiName: "rootCause",
@@ -34,12 +38,14 @@ const sampleAttribute = {
   active: true,
   description: "Documented root cause identified during investigation.",
 };
+
 const sampleAttributeGroup = {
   guid: "6AG77AG88AG99AG00AG11AG2",
   name: "Investigation Details",
   description: "Attributes captured during the investigation step.",
   attributes: [sampleAttribute],
 };
+
 const sampleStep = {
   guid: "7ST88ST99ST00ST11ST22ST3",
   number: 1,
@@ -61,6 +67,7 @@ const sampleStep = {
     },
   ],
 };
+
 const sampleQualityProcess = {
   guid: "1QP22QP33QP44QP55QP66QP7",
   url: {
@@ -80,6 +87,7 @@ const sampleQualityProcess = {
   template: sampleTemplate,
   steps: [sampleStep],
 };
+
 const sampleAffectedItem = {
   guid: "8AF99AF00AF11AF22AF33AF4",
   type: "ITEM",
@@ -98,6 +106,7 @@ const sampleAffectedItem = {
   creator: sampleUser,
   creationDateTime: "2026-03-21T10:15:00Z",
 };
+
 const sampleAffectedQuality = {
   guid: "9AQ00AQ11AQ22AQ33AQ44AQ5",
   type: "QUALITY",
@@ -114,6 +123,7 @@ const sampleAffectedQuality = {
   creator: sampleUser,
   creationDateTime: "2026-03-21T10:20:00Z",
 };
+
 const sampleAffectedUrl = {
   guid: "0AU11AU22AU33AU44AU55AU6",
   type: "URL",
@@ -125,6 +135,7 @@ const sampleAffectedUrl = {
   creator: sampleUser,
   creationDateTime: "2026-03-21T10:25:00Z",
 };
+
 const sampleDecision = {
   guid: "1DC22DC33DC44DC55DC66DC7",
   decisionType: "ALL_REQUIRED",
@@ -134,6 +145,7 @@ const sampleDecision = {
   user: sampleUser,
   decisionDateTime: "2026-03-25T14:30:00Z",
 };
+
 export const addQualityStepApproverExamplePayload = {
   data: {
     guid: "2AP33AP44AP55AP66AP77AP8",
@@ -143,6 +155,7 @@ export const addQualityStepApproverExamplePayload = {
     creationDateTime: "2026-03-22T11:00:00Z",
   },
 };
+
 export const changeQualityProcessStatusExamplePayload = {
   data: {
     ...sampleQualityProcess,
@@ -150,33 +163,41 @@ export const changeQualityProcessStatusExamplePayload = {
     lifecycleDateTime: "2026-04-18T16:00:00Z",
   },
 };
+
 export const createQualityProcessExamplePayload = {
   data: sampleQualityProcess,
 };
+
 export const createQualityProcessStepAffectedExamplePayload = {
   data: sampleAffectedItem,
 };
+
 export const createQualityProcessStepAffectedQualityExamplePayload = {
   data: sampleAffectedQuality,
 };
+
 export const createQualityProcessStepAffectedUrlExamplePayload = {
   data: sampleAffectedUrl,
 };
+
 export const deleteQualityProcessExamplePayload = {
   data: {
     success: true,
     message: "Quality process deleted successfully",
   },
 };
+
 export const deleteQualityProcessStepAffectedExamplePayload = {
   data: {
     success: true,
     message: "Quality process step affected object deleted successfully",
   },
 };
+
 export const getQualityProcessByGuidExamplePayload = {
   data: sampleQualityProcess,
 };
+
 export const listQualityProcessesExamplePayload = {
   data: {
     results: [
@@ -204,9 +225,11 @@ export const listQualityProcessesExamplePayload = {
     count: 2,
   },
 };
+
 export const getQualityProcessNumberFormatByGuidExamplePayload = {
   data: sampleNumberFormat,
 };
+
 export const listQualityProcessNumberFormatsExamplePayload = {
   data: {
     results: [
@@ -221,30 +244,36 @@ export const listQualityProcessNumberFormatsExamplePayload = {
     count: 2,
   },
 };
+
 export const listQualityProcessOwnersExamplePayload = {
   data: {
     results: [sampleUser, sampleSecondUser],
     count: 2,
   },
 };
+
 export const listQualityProcessStepAffectedExamplePayload = {
   data: {
     results: [sampleAffectedItem, sampleAffectedUrl],
     count: 2,
   },
 };
+
 export const getQualityProcessStepAffectedByGuidExamplePayload = {
   data: sampleAffectedItem,
 };
+
 export const getQualityProcessStepAttributeGroupByGuidExamplePayload = {
   data: sampleAttributeGroup,
 };
+
 export const listQualityProcessStepAttributeGroupsExamplePayload = {
   data: {
     results: [sampleAttributeGroup],
     count: 1,
   },
 };
+
 export const listQualityProcessStepAttributesExamplePayload = {
   data: {
     results: [
@@ -265,9 +294,11 @@ export const listQualityProcessStepAttributesExamplePayload = {
     count: 2,
   },
 };
+
 export const getQualityProcessStepByGuidExamplePayload = {
   data: sampleStep,
 };
+
 export const listQualityProcessStepsExamplePayload = {
   data: {
     results: [
@@ -288,21 +319,25 @@ export const listQualityProcessStepsExamplePayload = {
     count: 2,
   },
 };
+
 export const listQualityProcessTemplateAttributeGroupsExamplePayload = {
   data: {
     results: [sampleAttributeGroup],
     count: 1,
   },
 };
+
 export const listQualityProcessTemplateAttributesExamplePayload = {
   data: {
     results: [sampleAttribute],
     count: 1,
   },
 };
+
 export const getQualityProcessTemplateByGuidExamplePayload = {
   data: sampleTemplate,
 };
+
 export const listQualityProcessTemplatesExamplePayload = {
   data: {
     results: [
@@ -324,6 +359,7 @@ export const listQualityProcessTemplatesExamplePayload = {
     count: 2,
   },
 };
+
 export const listQualityStepDecisionsExamplePayload = {
   data: {
     results: [
@@ -339,6 +375,7 @@ export const listQualityStepDecisionsExamplePayload = {
     count: 2,
   },
 };
+
 export const submitQualityStepDecisionExamplePayload = {
   data: {
     ...sampleDecision,
@@ -347,6 +384,7 @@ export const submitQualityStepDecisionExamplePayload = {
     decisionDateTime: "2026-03-26T09:10:00Z",
   },
 };
+
 export const updateQualityProcessExamplePayload = {
   data: {
     ...sampleQualityProcess,
@@ -354,6 +392,7 @@ export const updateQualityProcessExamplePayload = {
     targetCompletionDateTime: "2026-04-30T17:00:00Z",
   },
 };
+
 export const updateQualityProcessStepExamplePayload = {
   data: {
     ...sampleStep,
@@ -361,6 +400,7 @@ export const updateQualityProcessStepExamplePayload = {
     completedDateTime: "2026-04-08T15:20:00Z",
   },
 };
+
 export const updateQualityProcessStepAffectedExamplePayload = {
   data: {
     ...sampleAffectedItem,

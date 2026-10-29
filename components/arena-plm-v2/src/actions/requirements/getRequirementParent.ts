@@ -4,6 +4,7 @@ import { getRequirementParentExamplePayload } from "../../examplePayloads";
 import { getRequirementParentInputs } from "../../inputs";
 import { requirementListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirementParent = action({
   display: {
     label: "Get Requirement Parent",

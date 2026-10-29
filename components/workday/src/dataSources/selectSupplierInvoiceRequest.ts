@@ -5,6 +5,7 @@ import { selectSupplierInvoiceRequestExamplePayload } from "../examplePayloads";
 import { selectSupplierInvoiceRequestInputs } from "../inputs";
 import type { WorkdayInstanceSummary } from "../types";
 import { toSortedPicklist } from "../util";
+
 export const selectSupplierInvoiceRequest = dataSource({
   display: {
     label: "Select Supplier Invoice Request",
@@ -17,6 +18,7 @@ export const selectSupplierInvoiceRequest = dataSource({
     const { data } = await client.get(
       `${SERVICES.accountsPayable}/supplierInvoiceRequests`,
     );
+
     return {
       result: toSortedPicklist(data.data, (item: WorkdayInstanceSummary) => ({
         key: item.id,

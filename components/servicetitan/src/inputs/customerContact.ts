@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringInput, mapModelValues } from "../util";
 import {
   connection,
@@ -10,6 +11,7 @@ import {
   modifiedOnOrAfter,
   pagination,
 } from "./common";
+
 const customerContactId = input({
   label: "Customer Contact ID",
   type: "string",
@@ -20,6 +22,7 @@ const customerContactId = input({
   clean: util.types.toNumber,
   dataSource: "selectCustomerContact",
 });
+
 const customerContactType = input({
   label: "Customer Contact Type",
   type: "string",
@@ -29,6 +32,7 @@ const customerContactType = input({
   default: "",
   clean: cleanStringInput,
 });
+
 const customerContactTypeValue = input({
   label: "Customer Contact Type Value",
   type: "string",
@@ -38,11 +42,13 @@ const customerContactTypeValue = input({
   placeholder: "Enter an email address, phone number, or fax number",
   clean: cleanStringInput,
 });
+
 const contactMemo = {
   ...memo,
   comments:
     "Short description about this contact, for example, \u201cwork #\u201d or \u201cOwner\u2019s daughter - Kelly\u201d",
 };
+
 export const createCustomerContactInputs = {
   connection,
   customerId,
@@ -50,11 +56,13 @@ export const createCustomerContactInputs = {
   value: customerContactTypeValue,
   memo: contactMemo,
 };
+
 export const deleteCustomerContactInputs = {
   connection,
   customerId,
   customerContactId,
 };
+
 export const listCustomersContactInputs = {
   connection,
   customerId,
@@ -64,6 +72,7 @@ export const listCustomersContactInputs = {
   modifiedBefore,
   modifiedOnOrAfter,
 };
+
 export const updateCustomerContactInputs = {
   connection,
   customerId,

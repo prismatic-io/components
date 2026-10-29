@@ -7,6 +7,7 @@ import {
 import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { parseXml } from "../util/xml";
+
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -25,11 +26,14 @@ export const webhook = trigger({
       </soapenv:Body>
       </soapenv:Envelope>`,
     };
+
     const finalPayload: TriggerPayload = { ...payload };
+
     finalPayload.body.data = parseXml(
       util.types.toString(finalPayload.body.data),
     );
     finalPayload.body.contentType = undefined;
+
     return Promise.resolve({
       payload: finalPayload,
       response,

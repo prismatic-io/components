@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanStringInput } from "../../util";
+
 export const orderData = input({
   label: "Order Data",
   type: "code",
@@ -25,6 +26,7 @@ export const orderData = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -37,6 +39,7 @@ export const status = input({
   ],
   clean: util.types.toString,
 });
+
 export const attributionAppId = input({
   label: "Attribution App ID",
   type: "string",
@@ -46,6 +49,7 @@ export const attributionAppId = input({
   placeholder: "Enter app ID",
   clean: cleanStringInput,
 });
+
 export const createdAtMax = input({
   label: "Created At Max",
   type: "string",
@@ -56,6 +60,7 @@ export const createdAtMax = input({
   placeholder: "Enter date (YYYY-MM-DD)",
   clean: cleanStringInput,
 });
+
 export const created_at_min = input({
   label: "Created At Min",
   type: "string",
@@ -66,6 +71,7 @@ export const created_at_min = input({
   placeholder: "Enter date (YYYY-MM-DD)",
   clean: util.types.toString,
 });
+
 export const fields = input({
   label: "Fields",
   type: "string",
@@ -76,6 +82,7 @@ export const fields = input({
   placeholder: "Enter field names",
   clean: cleanStringInput,
 });
+
 export const financialStatus = input({
   label: "Financial Status",
   type: "string",
@@ -96,6 +103,7 @@ export const financialStatus = input({
   ],
   clean: cleanStringInput,
 });
+
 export const fulfillmentStatus = input({
   label: "Fulfillment Status",
   type: "string",
@@ -112,6 +120,7 @@ export const fulfillmentStatus = input({
   ],
   clean: cleanStringInput,
 });
+
 export const commaSeparatedIds = input({
   label: "Order IDs",
   type: "string",
@@ -122,6 +131,7 @@ export const commaSeparatedIds = input({
   placeholder: "Enter comma-separated IDs",
   clean: cleanStringInput,
 });
+
 export const processedAtMax = input({
   label: "Processed At Max",
   type: "string",
@@ -132,6 +142,7 @@ export const processedAtMax = input({
   placeholder: "Enter date (YYYY-MM-DD)",
   clean: cleanStringInput,
 });
+
 export const processedAtMin = input({
   label: "Processed At Min",
   type: "string",
@@ -142,6 +153,7 @@ export const processedAtMin = input({
   placeholder: "Enter date (YYYY-MM-DD)",
   clean: cleanStringInput,
 });
+
 export const sinceId = input({
   label: "Since ID",
   type: "string",
@@ -151,6 +163,7 @@ export const sinceId = input({
   placeholder: "Enter order ID",
   clean: cleanStringInput,
 });
+
 export const orderStatus = input({
   label: "Status",
   type: "string",
@@ -166,6 +179,7 @@ export const orderStatus = input({
   ],
   clean: cleanStringInput,
 });
+
 export const updatedAtMax = input({
   label: "Updated At Max",
   type: "string",

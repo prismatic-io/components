@@ -5,6 +5,7 @@ import { selectAssociationTypeExamplePayload } from "../examplePayloads";
 import { selectAssociationTypeInputs } from "../inputs";
 import type { AssociationTypeDefinition } from "../types";
 import { resultsOf } from "../util";
+
 export const selectAssociationType = dataSource({
   display: {
     label: "Select Association Type",
@@ -21,6 +22,7 @@ export const selectAssociationType = dataSource({
       hubspotPaths.associations(fromObjectType, toObjectType, "/labels"),
     );
     const types = resultsOf(data) as AssociationTypeDefinition[];
+
     const result = types
       .map<Element>(({ typeId, label }) => ({
         label:

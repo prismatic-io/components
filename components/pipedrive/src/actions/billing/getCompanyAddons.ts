@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCompanyAddonsInputs } from "../../inputs";
 import { getCompanyAddonsExamplePayload } from "../../examplePayloads";
 import { getCompanyAddonsOutputSchema } from "../../outputSchemas";
+
 export const getCompanyAddons = action({
   display: {
     label: "Get Company Addons",

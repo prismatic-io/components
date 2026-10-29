@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listEventsInputs } from "../../inputs";
 import { listEventsExamplePayload } from "../../examplePayloads";
 import { getEvents } from "../../util";
+
 export const listEvents = action({
   display: {
     label: "List Events",
@@ -36,9 +37,7 @@ export const listEvents = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listEventsExamplePayload.data,
   }),
   inputs: listEventsInputs,

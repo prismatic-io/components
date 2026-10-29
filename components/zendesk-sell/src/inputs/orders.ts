@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const createDealId = input({
   label: "Deal ID",
   placeholder: "Enter Deal ID",
@@ -10,6 +11,7 @@ const createDealId = input({
   clean: util.types.toString,
   dataSource: "selectDeal",
 });
+
 const discountOptional = input({
   label: "Discount",
   comments: "Overall discount on the order in percents. Defaults to 0.",
@@ -19,6 +21,7 @@ const discountOptional = input({
   required: false,
   clean: util.types.toString,
 });
+
 const orderId = input({
   label: "Order ID",
   placeholder: "Enter order ID",
@@ -29,6 +32,7 @@ const orderId = input({
   clean: util.types.toString,
   dataSource: "selectOrder",
 });
+
 const position = input({
   label: "Position",
   comments:
@@ -39,6 +43,7 @@ const position = input({
   required: true,
   clean: util.types.toString,
 });
+
 const limit = input({
   label: "Limit",
   comments: "The maximum number of events to return in a single response.",
@@ -48,6 +53,7 @@ const limit = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of IDs to be returned in request.",
@@ -57,6 +63,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments:
@@ -67,6 +74,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const dealId = input({
   label: "Deal ID",
   placeholder: "Enter Deal ID",
@@ -77,6 +85,7 @@ const dealId = input({
   clean: util.types.toString,
   dataSource: "selectDeal",
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -87,6 +96,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -97,12 +107,14 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, perPage },
 });
+
 const discountRequired = input({
   label: "Discount",
   comments: "Overall discount on the order in percents.",
@@ -112,24 +124,29 @@ const discountRequired = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const createOrderInputs = {
   connection,
   dealId: createDealId,
   discount: discountOptional,
 };
+
 export const deleteOrderInputs = {
   connection,
   id: orderId,
 };
+
 export const getOrderInputs = {
   connection,
   id: orderId,
 };
+
 export const getOrdersStreamInputs = {
   connection,
   position,
   limit,
 };
+
 export const listOrderInputs = {
   connection,
   fetchAll,
@@ -138,6 +155,7 @@ export const listOrderInputs = {
   sortBy,
   pagination,
 };
+
 export const updateOrderInputs = {
   connection,
   id: orderId,

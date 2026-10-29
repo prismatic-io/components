@@ -11,6 +11,7 @@ import {
   queryCriteriaSchema,
   statusTypeSchema,
 } from "./common";
+
 const distributionInstructionSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +33,7 @@ const distributionInstructionSchema = {
     actions: openObjectArraySchema,
   },
 };
+
 const attestationIndicatorSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +41,7 @@ const attestationIndicatorSchema = {
     effectiveDate: { type: "string", format: "date" },
   },
 };
+
 const payDistributionSchema = {
   type: "object" as const,
   properties: {
@@ -60,6 +63,7 @@ const payDistributionSchema = {
     links: linksSchema,
   },
 };
+
 export const getPaymentDistributionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -68,6 +72,7 @@ export const getPaymentDistributionsOutputSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 export const getWorkerPaymentDistributionsMetaOutputSchema = {
   type: "object" as const,
   properties: {
@@ -93,6 +98,7 @@ export const getWorkerPaymentDistributionsMetaOutputSchema = {
     },
   },
 };
+
 const payDistributionChangeEventSchema = {
   type: "object" as const,
   properties: {
@@ -146,6 +152,7 @@ const payDistributionChangeEventSchema = {
     },
   },
 };
+
 export const updateWorkerPayDistributionOutputSchema = {
   type: "object" as const,
   properties: {

@@ -11,6 +11,7 @@ import {
   phone,
   title,
 } from "./common";
+
 const accountType = input({
   label: "Account Type",
   type: "string",
@@ -34,6 +35,7 @@ const accountType = input({
   comments: "The type of account to be created.",
   clean: util.types.toString,
 });
+
 const countryCode = input({
   label: "Country Code",
   type: "string",
@@ -43,6 +45,7 @@ const countryCode = input({
   comments: "The country code of the account.",
   clean: util.types.toString,
 });
+
 const numSeats = input({
   label: "Number of Seats",
   type: "string",
@@ -52,6 +55,7 @@ const numSeats = input({
   comments: "The number of seats.",
   clean: util.types.toNumber,
 });
+
 const trialDuration = input({
   label: "Trial Duration Days",
   type: "string",
@@ -61,6 +65,7 @@ const trialDuration = input({
   comments: "Account trial duration (in days).",
   clean: util.types.toNumber,
 });
+
 export const createAccountInputs = {
   connection,
   accountType,
@@ -89,6 +94,7 @@ export const createAccountInputs = {
     },
   }),
 };
+
 export const getAccountInputs = {
   connection,
   accountId,

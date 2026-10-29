@@ -5,6 +5,7 @@ import { changeTicketStatusInputs } from "../../inputs";
 import { ticketSchema } from "../../outputSchemas";
 import type { TicketTransitionCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const changeTicketStatus = action({
   display: {
     label: "Change Ticket Status",
@@ -19,14 +20,17 @@ export const changeTicketStatus = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: TicketTransitionCreateVo = {
         ticket: { guid: params.ticketGuid },
         status: params.status,
       };
+
       const { data } = await client.post(
         "/tickets/statuschanges",
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Change Ticket Status");

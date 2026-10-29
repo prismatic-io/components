@@ -10,6 +10,7 @@ import {
   subsidiaries,
 } from "../../inputs";
 import { updateGeneralLedgerAccountOutputSchema } from "../../outputSchemas";
+
 export const updateGeneralLedgerAccount = action({
   display: {
     label: "Update General Ledger Account",
@@ -57,6 +58,7 @@ export const updateGeneralLedgerAccount = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.patch(
       `/accounting/accounts/${generalLedgerAccountId}`,
       {
@@ -73,9 +75,7 @@ export const updateGeneralLedgerAccount = action({
   examplePerform: async (
     _context,
     { code, name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateGeneralLedgerAccountResponse,
       code: code ?? updateGeneralLedgerAccountResponse.code,

@@ -1,10 +1,19 @@
 export const API_VERSION = "v3";
+
 export const BASE_URL = "https://api.sendgrid.com";
+
 export const MAX_PAGE_SIZE = 100;
+
 export const MESSAGES_ENDPOINT = `/${API_VERSION}/messages`;
+
 export const MESSAGES_MAX_LIMIT = 1000;
+
 export const RETENTION_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
-export const OVERLAP_MS = 60000;
+
+export const OVERLAP_MS = 60_000;
+
 export const POLL_WINDOW_STEP_MS = 6 * 60 * 60 * 1000;
+
 export const POLLING_BATCH_SIZE = 50;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

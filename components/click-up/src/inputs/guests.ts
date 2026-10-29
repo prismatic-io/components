@@ -9,6 +9,7 @@ import {
   getTaskId,
   getTeamId,
 } from "./common";
+
 const getPermissionLevel = (
   required: boolean,
   comments: string,
@@ -24,6 +25,7 @@ const getPermissionLevel = (
     ...(defaultValue && { default: `${defaultValue}` }),
     clean: util.types.toString,
   });
+
 const getGuestId = (required: boolean, comments: string) =>
   input({
     label: "Guest ID",
@@ -33,6 +35,7 @@ const getGuestId = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 const getCanEditTags = (
   required: boolean,
   comments: string,
@@ -46,6 +49,7 @@ const getCanEditTags = (
     clean: util.types.toBool,
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
+
 const getIncludeShared = (
   required: boolean,
   comments: string,
@@ -59,6 +63,7 @@ const getIncludeShared = (
     clean: util.types.toBool,
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
+
 const getCanSeeTimeSpent = (
   required: boolean,
   comments: string,
@@ -72,6 +77,7 @@ const getCanSeeTimeSpent = (
     clean: util.types.toBool,
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
+
 const getCanSeeTimeEstimated = (
   required: boolean,
   comments: string,
@@ -85,6 +91,7 @@ const getCanSeeTimeEstimated = (
     clean: util.types.toBool,
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
+
 const getCanCreateViews = (
   required: boolean,
   comments: string,
@@ -98,6 +105,7 @@ const getCanCreateViews = (
     clean: util.types.toBool,
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
+
 const getUsername = (required: boolean, comments: string) =>
   input({
     label: "Username",
@@ -107,6 +115,7 @@ const getUsername = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 export const addGuestToFolderInputs = {
   clickUpConnection: connectionInput,
   folderId: getFolderId(true, "The unique identifier for the Folder."),
@@ -122,6 +131,7 @@ export const addGuestToFolderInputs = {
     true,
   ),
 };
+
 export const addGuestToListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
@@ -137,6 +147,7 @@ export const addGuestToListInputs = {
     true,
   ),
 };
+
 export const addGuestToTaskInputs = {
   clickUpConnection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
@@ -160,6 +171,7 @@ export const addGuestToTaskInputs = {
     "Only used when the custom_task_ids parameter is set to true",
   ),
 };
+
 export const editGuestOnWorkspaceInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -190,11 +202,13 @@ export const editGuestOnWorkspaceInputs = {
   customRoleId,
   guestId: getGuestId(true, "The unique identifier for the guest."),
 };
+
 export const getGuestInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
   guestId: getGuestId(true, "The unique identifier for the guest."),
 };
+
 export const inviteGuestToWorkspaceInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -221,6 +235,7 @@ export const inviteGuestToWorkspaceInputs = {
   ),
   customRoleId,
 };
+
 export const removeGuestFromFolderInputs = {
   clickUpConnection: connectionInput,
   folderId: getFolderId(true, "The unique identifier for the Folder."),
@@ -231,6 +246,7 @@ export const removeGuestFromFolderInputs = {
     true,
   ),
 };
+
 export const removeGuestFromListInputs = {
   clickUpConnection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
@@ -241,6 +257,7 @@ export const removeGuestFromListInputs = {
     true,
   ),
 };
+
 export const removeGuestFromTaskInputs = {
   clickUpConnection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
@@ -260,6 +277,7 @@ export const removeGuestFromTaskInputs = {
     "Only used when the custom_task_ids parameter is set to true",
   ),
 };
+
 export const removeGuestFromWorkspaceInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),

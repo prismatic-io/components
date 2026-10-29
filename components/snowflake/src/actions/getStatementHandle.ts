@@ -8,6 +8,7 @@ import {
   snowflakeUrl,
   statementHandleId,
 } from "../inputs";
+
 export const getStatementHandle = action({
   display: {
     label: "Get Statement Handle",
@@ -30,6 +31,7 @@ export const getStatementHandle = action({
       accountLocator,
       context.debug.enabled,
     );
+
     const { data } = await snowflakeClient.get(
       `/api/v2/statements/${statementHandleId}`,
       {
@@ -38,6 +40,7 @@ export const getStatementHandle = action({
         },
       },
     );
+
     return {
       data,
     };

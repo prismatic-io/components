@@ -7,6 +7,7 @@ import {
   labelIdsInput,
 } from "../inputs";
 import { createPushNotificationExamplePayload } from "../examplePayloads";
+
 const createPushNotification = action({
   display: {
     label: "Create Push Notification (Watch Request)",
@@ -35,4 +36,5 @@ const createPushNotification = action({
   },
   examplePayload: createPushNotificationExamplePayload,
 });
+
 export default createPushNotification;

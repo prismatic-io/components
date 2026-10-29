@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { listConfigurationItemsExamplePayload } from "../../../examplePayloads";
 import { listConfigurationItemsInputs } from "../../../inputs";
 import { createNowApiClient, fetchAllTableRecords } from "../../../util";
+
 export const listConfigurationItems = action({
   display: {
     label: "List Configuration Items",
@@ -27,6 +28,7 @@ export const listConfigurationItems = action({
       apiVersionInput,
       context.debug.enabled,
     );
+
     if (fetchAll) {
       const data = await fetchAllTableRecords(
         client,
@@ -35,6 +37,7 @@ export const listConfigurationItems = action({
       );
       return { data };
     }
+
     const { data } = await client.get(`/cmdb/instance/${className}`, {
       params: {
         sysparm_limit: pagination.sysparm_limit,
@@ -44,9 +47,7 @@ export const listConfigurationItems = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listConfigurationItemsExamplePayload.data,
   }),
   examplePayload: listConfigurationItemsExamplePayload,

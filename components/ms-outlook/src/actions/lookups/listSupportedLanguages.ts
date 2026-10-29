@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listSupportedLanguagesExamplePayload } from "../../examplePayloads";
 import { listSupportedLanguagesInputs } from "../../inputs";
+
 export const listSupportedLanguages = action({
   display: {
     label: "List Supported Languages",

@@ -5,6 +5,7 @@ import { selectFolderInputs } from "../inputs";
 import { disambiguateElements, getDriveQueryParams } from "../util";
 import { fetchDrives, fetchFiles } from "../util/pagination";
 import { selectFolderExamplePayload } from "../examplePayloads";
+
 export const selectFolder = dataSource({
   display: {
     label: "List Folders",
@@ -13,7 +14,9 @@ export const selectFolder = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, params) => {
     const driveClient = createClient(params.connection);
+
     const folders: Element[] = [];
+
     if (params.driveId) {
       const { files } = await fetchFiles({
         drive: driveClient,
@@ -33,6 +36,7 @@ export const selectFolder = dataSource({
         initialParams: {},
         fetchAll: true,
       });
+
       const driveQueries: {
         driveId?: string;
         driveName: string;
@@ -44,7 +48,9 @@ export const selectFolder = dataSource({
           driveName: drive.name,
         })),
       ];
+
       driveQueries.sort((a, b) => (a.driveName < b.driveName ? -1 : 1));
+
       for (const driveQuery of driveQueries) {
         const { files } = await fetchFiles({
           drive: driveClient,
@@ -63,6 +69,7 @@ export const selectFolder = dataSource({
         );
       }
     }
+
     return { result: disambiguateElements(folders) };
   },
   inputs: selectFolderInputs,

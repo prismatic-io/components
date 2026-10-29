@@ -1,8 +1,10 @@
 import type { CustomField, ExternalData } from "./common";
+
 interface JobGeneratedLeadSource {
   jobId: number | null;
   employeeId: number | null;
 }
+
 export interface Job {
   id: number;
   jobNumber: string;
@@ -35,6 +37,7 @@ export interface Job {
   externalData: ExternalData[];
   customerPo: string;
 }
+
 export interface JobCancel {
   id: number;
   name: string;

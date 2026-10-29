@@ -4,6 +4,7 @@ import { connection, formId, operations } from "../../inputs";
 import { genericUpdateResponse } from "../../examplePayloads/general";
 import { updateFormInput } from "./../../exampleInputs/forms";
 import { OPERATIONS_APPLIED } from "../../constants";
+
 export const updateForm = action({
   display: {
     label: "Update Form",
@@ -19,6 +20,7 @@ export const updateForm = action({
   },
   perform: async (context, { connection, id, operations }) => {
     const client = createClient(connection, context.debug.enabled);
+
     await client.patch(`/forms/${id}`, operations);
     return {
       data: {

@@ -3,9 +3,8 @@ import type {
   DeleteBucketCommandOutput,
   HeadBucketCommandOutput,
 } from "@aws-sdk/client-s3";
-export const headBucketExamplePayload: {
-  data: HeadBucketCommandOutput;
-} = {
+
+export const headBucketExamplePayload: { data: HeadBucketCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,
@@ -18,9 +17,8 @@ export const headBucketExamplePayload: {
     },
   },
 };
-export const deleteBucketExamplePayload: {
-  data: DeleteBucketCommandOutput;
-} = {
+
+export const deleteBucketExamplePayload: { data: DeleteBucketCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 204,
@@ -33,9 +31,8 @@ export const deleteBucketExamplePayload: {
     },
   },
 };
-export const listBucketsExamplePayload: {
-  data: Bucket[];
-} = {
+
+export const listBucketsExamplePayload: { data: Bucket[] } = {
   data: [
     {
       Name: "bucket-1",
@@ -43,6 +40,7 @@ export const listBucketsExamplePayload: {
     },
   ],
 };
-export const getBucketLocationExamplePayload: {
-  data: string;
-} = { data: "us-east-1" };
+
+export const getBucketLocationExamplePayload: { data: string } = {
+  data: "us-east-1",
+};

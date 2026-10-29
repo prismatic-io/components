@@ -6,6 +6,7 @@ import { getJobPreset } from "./getPreset";
 import { listJobsByCampaign } from "./listByCampaign";
 import { listJobs } from "./listJobs";
 import { updateJob } from "./updateJob";
+
 export default {
   listJobs,
   listJobsByCampaign,

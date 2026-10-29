@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
+
 export default component({
   key: "azure-openai-service",
   public: true,

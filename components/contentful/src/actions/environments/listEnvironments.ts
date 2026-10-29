@@ -9,6 +9,7 @@ import { listEnvironmentsExamplePayload } from "../../examplePayloads";
 import { listEnvironmentsInputs } from "../../inputs";
 import { listEnvironmentsOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems } from "../../util";
+
 export const listEnvironments = action({
   display: {
     label: "List Environments",
@@ -18,17 +19,18 @@ export const listEnvironments = action({
   perform: async (context, { connection, spaceId }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
+
     const allItems: EnvironmentProps[] = await getAllPaginatedItems<
       Environment,
       EnvironmentProps
     >(space.getEnvironments.bind(space));
+
     return {
       data: allItems,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listEnvironmentsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listEnvironmentsExamplePayload,
   inputs: listEnvironmentsInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

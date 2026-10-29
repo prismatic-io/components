@@ -8,6 +8,7 @@ import {
   userType,
 } from "./common";
 import { includeDeleted, recursive } from "./files";
+
 export const dropboxWebhookInputs = {
   signingSecret: input({
     label: "Signing Secret",
@@ -18,6 +19,7 @@ export const dropboxWebhookInputs = {
     clean: util.types.toString,
   }),
 };
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -28,6 +30,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesTriggerInputs = {
   dropboxConnection: connectionInput,
   directoryPath,
@@ -37,6 +40,7 @@ export const pollChangesTriggerInputs = {
   userType,
   teamMemberId,
 };
+
 export const pollChangesOnDeployInputs = {
   initialSyncPageSize: input({
     label: "Initial Sync Page Size",

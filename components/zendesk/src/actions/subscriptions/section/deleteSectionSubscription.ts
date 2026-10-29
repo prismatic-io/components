@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../../auth";
 import { deleteSectionSubscriptionExamplePayload } from "../../../examplePayloads";
 import { deleteSectionSubscriptionInputs } from "../../../inputs";
 import { deleteSectionSubscriptionOutputSchema } from "../../../outputSchemas";
+
 export const deleteSectionSubscription = action({
   display: {
     label: "Delete Section Subscription",
@@ -17,6 +18,7 @@ export const deleteSectionSubscription = action({
     await client.delete(
       `/help_center/sections/${sectionId}/subscriptions/${subscriptionId}`,
     );
+
     return {
       data: null,
     };

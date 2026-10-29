@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createTeamMemberExamplePayload } from "../../examplePayloads";
 import { createTeamMemberInputs } from "../../inputs";
+
 export const createTeamMember = action({
   display: {
     label: "Create Team Member",
@@ -16,10 +17,12 @@ export const createTeamMember = action({
         "`given_name` and `family_name` are required for a team member.",
       );
     }
+
     const client = await createAuthorizedClient(
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       idempotency_key: idempotencyKey,
       team_member: {
@@ -37,11 +40,13 @@ export const createTeamMember = action({
           : undefined,
       },
     };
+
     const response = await client.request({
       url: "/v2/team-members",
       method: "POST",
       data: requestBody,
     });
+
     return {
       data: response.data,
     };

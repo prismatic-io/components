@@ -9,6 +9,7 @@ import { createClient } from "../../client";
 import { updateEntryExamplePayload } from "../../examplePayloads";
 import { updateEntryInputs } from "../../inputs";
 import { getEnvironment } from "../../util";
+
 export const updateEntry = action({
   display: {
     label: "Update Entry",
@@ -26,26 +27,29 @@ export const updateEntry = action({
       environmentId,
     );
     const entry: Entry = await environment.getEntry(entryId);
+
     if (entryTitle) {
       const locale = Object.keys(entryTitle)[0];
       entry.fields.title[locale] = (
         entryTitle as EntryProps["fields"]["title"]
       )[locale];
     }
+
     if (entryBody) {
       const locale = Object.keys(entryBody)[0];
       entry.fields.body[locale] = (entryBody as Record<string, string>)[locale];
     }
+
     const data: EntryProps<KeyValueMap> = (
       await entry.update()
     ).toPlainObject();
+
     return {
       data: data as unknown,
     };
   },
   inputs: updateEntryInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateEntryExamplePayload,
   examplePayload: updateEntryExamplePayload,
 });

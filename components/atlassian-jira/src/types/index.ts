@@ -24,29 +24,35 @@ export type {
   Watcher,
   Worklog,
 } from "./Issue";
+
 export interface JiraWebhookUser {
   accountId: string;
   accountType?: string;
   displayName: string;
   emailAddress?: string;
 }
+
 export interface JiraIssueStatus {
   name: string;
   id: string;
 }
+
 export interface JiraIssueType {
   name: string;
   id: string;
 }
+
 export interface JiraProject {
   key: string;
   name: string;
   id: string;
 }
+
 export interface JiraPriority {
   name: string;
   id: string;
 }
+
 export interface JiraIssueFields {
   summary: string;
   status: JiraIssueStatus;
@@ -59,12 +65,14 @@ export interface JiraIssueFields {
   updated: string;
   [key: string]: unknown;
 }
+
 export interface JiraIssue {
   id: string;
   key: string;
   self: string;
   fields: JiraIssueFields;
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   nextPageToken?: string;
@@ -73,20 +81,24 @@ export interface PollingState extends Record<string, unknown> {
   jqlFilter?: string;
   timeZone?: string;
 }
+
 export interface PollingCursor extends Record<string, unknown> {
   nextPageToken: string;
   streamStartedAt: string;
   timeZone: string;
   jqlFilter?: string;
 }
+
 export interface JiraIssueChangesObject {
   created: JiraIssue[];
   updated: JiraIssue[];
 }
+
 export interface JiraIssueChange {
   changeType: "created" | "updated";
   record: JiraIssue;
 }
+
 export interface IssuesWindowParams {
   sinceISO: string;
   pageSize: number;
@@ -95,22 +107,23 @@ export interface IssuesWindowParams {
   nextPageToken?: string;
   additionalJql?: string;
 }
+
 export interface StreamWindowParams {
   skipFetch: boolean;
   batching: boolean;
   sinceISO: string;
-  logger: {
-    warn: (message: string) => void;
-  };
+  logger: { warn: (message: string) => void };
   heldTimeZone?: string;
   nextPageToken?: string;
   additionalJql?: string;
 }
+
 export interface PollingStream {
   streamStartedAt: Date;
   nextPageToken?: string;
   timeZone?: string;
 }
+
 export interface JiraWebhookPayload {
   timestamp: number;
   webhookEvent: string;

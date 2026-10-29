@@ -19,6 +19,7 @@ import {
 } from "../../inputs";
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
+
 export const exportReport = action({
   display: {
     description:
@@ -122,6 +123,7 @@ export const exportReport = action({
     };
     const generatedJson = generatePayload(json, connectionInput);
     generatedJson.append("template", templateName);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

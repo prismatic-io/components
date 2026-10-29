@@ -6,6 +6,7 @@ import {
   connection,
   defaultListInputs,
 } from "./common";
+
 const applicantId = input({
   label: "Applicant ID",
   type: "string",
@@ -15,6 +16,7 @@ const applicantId = input({
   example: "1234-5678",
   clean: util.types.toString,
 });
+
 export const createOnboardingCandidateInfoInputs = {
   connection,
   additionalInputs: {
@@ -22,17 +24,21 @@ export const createOnboardingCandidateInfoInputs = {
     example: JSON.stringify(createCandidateInfoExample, null, 2),
   },
 };
+
 export const getOnboardingCandidateInfoInputs = {
   connection,
   applicantId,
   $select,
 };
+
 export const deleteOnboardingCandidateInfoInputs = {
   connection,
   applicantId,
 };
+
 export const updateOnboardingCandidateInfoInputs = {
   connection,
   applicantId,
 };
+
 export const listOnboardingCandidateInfoInputs = defaultListInputs;

@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { getPurchaseInvoiceExamplePayload } from "../../examplePayloads";
 import { getPurchaseInvoiceInputs } from "../../inputs/purchaseInvoices";
 import type { PurchaseInvoice } from "../../interfaces";
+
 export const getPurchaseInvoice = action({
   display: {
     label: "Get Purchase Invoice",
@@ -19,6 +20,7 @@ export const getPurchaseInvoice = action({
     const { data } = await client.get<PurchaseInvoice>(
       `/companies(${companyId})/purchaseInvoices(${purchaseInvoiceId})`,
     );
+
     return { data };
   },
   examplePayload: getPurchaseInvoiceExamplePayload,

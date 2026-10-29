@@ -5,6 +5,7 @@ import { listLocationsInputs } from "../../inputs";
 import { listLocationsOutputSchema } from "../../outputSchemas";
 import type { Location } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listLocations = action({
   display: {
     label: "List Locations",

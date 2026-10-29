@@ -5,6 +5,7 @@ import { updateProfileInputs as inputs } from "../../inputs";
 import { ProfileEnum, type ProfilePartialUpdateQuery } from "klaviyo-api";
 import { updateProfileExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const updateProfile = action({
   display: {
     label: "Update Profile",
@@ -26,6 +27,7 @@ export const updateProfile = action({
         debug,
       });
     }
+
     const profile: ProfilePartialUpdateQuery = {
       data: {
         type: ProfileEnum.Profile,

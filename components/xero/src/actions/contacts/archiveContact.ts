@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { archiveContactInputs } from "../../inputs";
 import { archiveContactExamplePayload } from "../../examplePayloads";
+
 export const archiveContact = action({
   display: {
     label: "Archive Contact",
@@ -19,5 +20,6 @@ export const archiveContact = action({
     return { data };
   },
   inputs: archiveContactInputs,
+
   examplePayload: archiveContactExamplePayload,
 });

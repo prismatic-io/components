@@ -11,6 +11,7 @@ import type {
   PollingWindowStart,
   PollScopeType,
 } from "../types";
+
 export const fetchTasksSince = async (
   client: HttpClient,
   scopeType: PollScopeType,
@@ -39,17 +40,21 @@ export const fetchTasksSince = async (
   }
   return tasks;
 };
+
 export const formatClickUpTimestamp = (date: Date): string =>
   util.types.toString(date.getTime());
+
 export const partitionTasksByTimestamp = (
   tasks: ClickUpTask[],
   sinceMs: number,
 ): PartitionedTasks => {
   const created: ClickUpTask[] = [];
   const updated: ClickUpTask[] = [];
+
   for (const task of tasks) {
     const createdAt = util.types.toNumber(task.date_created);
     const updatedAt = util.types.toNumber(task.date_updated);
+
     if (createdAt && createdAt > sinceMs) {
       created.push(task);
     } else if (updatedAt && updatedAt > sinceMs) {
@@ -58,8 +63,10 @@ export const partitionTasksByTimestamp = (
       updated.push(task);
     }
   }
+
   return { created, updated };
 };
+
 export const resolvePollingWindowStart = (
   state: PollingState | undefined,
   lookBackDate: string,
@@ -79,6 +86,7 @@ export const resolvePollingWindowStart = (
   }
   return { sinceMs: now.getTime(), isInitialSync: false };
 };
+
 export const resolveClickUpTaskChanges = (
   data: ClickUpTaskChangesObject | undefined,
 ): ClickUpTaskChange[] => {

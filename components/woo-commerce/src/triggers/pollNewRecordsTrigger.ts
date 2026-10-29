@@ -17,6 +17,7 @@ import {
   pollWatermark,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollNewRecordsTrigger = pollingTrigger({
   display: {
     label: "New Records",
@@ -42,6 +43,7 @@ export const pollNewRecordsTrigger = pollingTrigger({
     const client = getClient(params.connection, context.debug.enabled);
     const resource = util.types.toString(params.resourceType);
     const endpoint = RESOURCE_ENDPOINT_MAP[resource];
+
     if (!WATERMARK_RESOURCES.includes(resource)) {
       const created = await fetchCustomersSince(
         client,
@@ -56,6 +58,7 @@ export const pollNewRecordsTrigger = pollingTrigger({
         polledNoChanges: !payload.paginationState && created.length === 0,
       };
     }
+
     const incoming = payload.paginationState as PollCursor | undefined;
     const { result, nextState } = await pollWatermark(client, endpoint, {
       state,
@@ -65,6 +68,7 @@ export const pollNewRecordsTrigger = pollingTrigger({
       batching: context.batch?.enabled === true,
     });
     context.polling.setState(nextState);
+
     return {
       payload: {
         ...payload,

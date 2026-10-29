@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { listMessagesExamplePayload } from "../../examplePayloads";
 import { listMessagesInputs } from "../../inputs";
+
 export const listMessages = action({
   display: {
     label: "List SMS Messages",
@@ -15,6 +16,7 @@ export const listMessages = action({
     const result = (await twilioClient.messages.list()).map((message) =>
       message.toJSON(),
     );
+
     return {
       data: result,
     };

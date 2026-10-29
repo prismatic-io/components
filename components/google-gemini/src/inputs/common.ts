@@ -5,12 +5,14 @@ import {
   cleanNumber,
   cleanString,
 } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Google Gemini connection to use.",
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -20,6 +22,7 @@ export const pageSize = input({
   placeholder: "Enter page size",
   clean: cleanNumber,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -29,6 +32,7 @@ export const pageToken = input({
   placeholder: "Enter page token",
   clean: cleanString,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -39,6 +43,7 @@ export const filter = input({
   placeholder: "Enter filter expression",
   clean: cleanString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -48,6 +53,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const extraParameters = input({
   label: "Extra Parameters",
   type: "string",
@@ -59,6 +65,7 @@ export const extraParameters = input({
   placeholder: "Enter additional parameters",
   clean: cleanKeyValueList,
 });
+
 export const model = input({
   label: "Model Name",
   type: "string",
@@ -69,6 +76,7 @@ export const model = input({
   dataSource: "selectModel",
   clean: util.types.toString,
 });
+
 export const prompt = input({
   label: "Prompt",
   type: "string",
@@ -78,6 +86,7 @@ export const prompt = input({
   placeholder: "Enter a text prompt",
   clean: util.types.toString,
 });
+
 export const temperature = input({
   label: "Temperature",
   type: "string",
@@ -88,6 +97,7 @@ export const temperature = input({
   placeholder: "Enter temperature value",
   clean: cleanNumber,
 });
+
 export const maxOutputTokens = input({
   label: "Max Output Tokens",
   type: "string",
@@ -97,6 +107,7 @@ export const maxOutputTokens = input({
   example: "1024",
   clean: cleanNumber,
 });
+
 export const topK = input({
   label: "Top K",
   type: "string",
@@ -106,6 +117,7 @@ export const topK = input({
   example: "40",
   clean: cleanNumber,
 });
+
 export const topP = input({
   label: "Top P",
   type: "string",
@@ -116,6 +128,7 @@ export const topP = input({
   example: "0.95",
   clean: cleanNumber,
 });
+
 export const safetySettings = input({
   label: "Safety Settings",
   type: "code",
@@ -136,6 +149,7 @@ export const safetySettings = input({
   placeholder: "Enter safety settings JSON",
   clean: cleanCode,
 });
+
 export const conversationId = input({
   label: "Conversation ID",
   type: "string",

@@ -1,4 +1,5 @@
 import type { PaginatedResponse } from "../types";
+
 export const getAssetExamplePayload = {
   data: {
     id: 151239,
@@ -128,9 +129,8 @@ export const getAssetExamplePayload = {
     modelVersion: 2,
   },
 };
-export const listAssetsExamplePayload: {
-  data: PaginatedResponse;
-} = {
+
+export const listAssetsExamplePayload: { data: PaginatedResponse } = {
   data: {
     count: 22,
     page: 1,
@@ -263,9 +263,13 @@ export const listAssetsExamplePayload: {
     ],
   },
 };
+
 export const queryAssetsExamplePayload = listAssetsExamplePayload;
+
 export const createAssetExamplePayload = getAssetExamplePayload;
+
 export const updateAssetExamplePayload = getAssetExamplePayload;
+
 export const deleteAssetExamplePayload = {
   data: {
     success: true,

@@ -4,6 +4,7 @@ import { createSharedLinkExamplePayload } from "../../examplePayloads";
 import { createSharedLinkInputs, shared_folder_id } from "../../inputs";
 import { createSharedLinkOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError, pathBasename } from "../../util";
+
 export const createSharedLink = action({
   display: {
     label: "Create Shared Link",
@@ -50,12 +51,7 @@ export const createSharedLink = action({
       handleDropboxError(err, [shared_folder_id]);
     }
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...createSharedLinkExamplePayload,
       result: {

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getInstalledEquipmentExamplePayload } from "../../examplePayloads";
 import { getInstalledEquipmentInputs } from "../../inputs";
 import { getInstalledEquipmentOutputSchema } from "../../outputSchemas";
+
 export const getInstalledEquipment = action({
   display: {
     label: "Get Installed Equipment",

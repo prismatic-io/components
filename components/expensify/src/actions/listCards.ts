@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { connectionInput, type, domain } from "../inputs";
 import { createClient } from "../client";
 import { generatePayload } from "../util";
+
 export const listCards = action({
   display: {
     description:
@@ -27,6 +28,7 @@ export const listCards = action({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

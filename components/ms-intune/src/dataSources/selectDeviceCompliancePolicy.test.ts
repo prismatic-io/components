@@ -6,8 +6,10 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listDeviceCompliancePoliciesExamplePayload } from "../examplePayloads";
 import { selectDeviceCompliancePolicy } from "./selectDeviceCompliancePolicy";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -19,16 +21,21 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listDeviceCompliancePoliciesExamplePayload.data;
+
 describe("selectDeviceCompliancePolicy", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the policy list to label/key elements wrapped in result", async () => {
     nock(HOST)
       .get("/v1.0/deviceManagement/deviceCompliancePolicies")
       .reply(200, listReply);
+
     const { result } = await invokeDataSource(selectDeviceCompliancePolicy, {
       connection,
     });
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
@@ -41,13 +48,16 @@ describe("selectDeviceCompliancePolicy", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty result array when the API returns no policies", async () => {
     nock(HOST)
       .get("/v1.0/deviceManagement/deviceCompliancePolicies")
       .reply(200, { value: [] });
+
     const { result } = await invokeDataSource(selectDeviceCompliancePolicy, {
       connection,
     });
+
     expect(result).toEqual([]);
   });
 });

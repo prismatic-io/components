@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createToastClient } from "../../client";
 import { deleteShiftExamplePayload as examplePayload } from "../../examplePayloads";
 import { deleteShiftInputs as inputs } from "../../inputs/shift";
+
 export const deleteShift = action({
   display: {
     label: "Delete Shift",
@@ -14,7 +15,9 @@ export const deleteShift = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+
     const { data } = await client.delete(`/labor/v1/shifts/${shiftId}`);
+
     return {
       data,
     };

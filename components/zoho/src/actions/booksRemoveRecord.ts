@@ -7,6 +7,7 @@ import {
   parentRecordId,
   recordId,
 } from "../inputs";
+
 const booksRemoveRecord = action({
   display: {
     label: "Books - Remove Record",
@@ -33,16 +34,20 @@ const booksRemoveRecord = action({
       ClientType.BOOKS,
       context.debug.enabled,
     );
+
     const url =
       parentRecordType && parentRecordId
         ? `/${parentRecordType}/${parentRecordId}/${recordType}/${recordId}`
         : `/${recordType}/${recordId}`;
+
     const { data } = await booksClient.request({
       method: "DELETE",
       url,
     });
+
     return data;
   },
   examplePayload: booksRemoveRecordExamplePayload,
 });
+
 export default booksRemoveRecord;

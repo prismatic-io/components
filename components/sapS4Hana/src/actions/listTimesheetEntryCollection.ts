@@ -2,12 +2,14 @@ import { action, input, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
 import { connectionInput, top, skip, filter, inlinecount } from "../inputs";
+
 const orderByOptions = ["TimeSheetDataFields", "TimeSheetDataFields desc"].map(
   (option) => ({
     label: option,
     value: option,
   }),
 );
+
 const selectOptions = [
   "TimeSheetDataFields",
   "PersonWorkAgreementExternalID",
@@ -21,6 +23,7 @@ const selectOptions = [
   "TimeSheetIsExecutedInTestRun",
   "TimeSheetOperation",
 ].map((option) => ({ label: option, value: option }));
+
 export const listTimesheetEntryCollectionOrderBy = input({
   label: "Order By",
   placeholder: "Order By",
@@ -31,6 +34,7 @@ export const listTimesheetEntryCollectionOrderBy = input({
   model: orderByOptions,
   clean: util.types.toString,
 });
+
 export const listTimesheetEntryCollectionSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -41,6 +45,7 @@ export const listTimesheetEntryCollectionSelect = input({
   model: selectOptions,
   clean: util.types.toString,
 });
+
 export const listTimesheetEntryCollection = action({
   display: {
     label: "List Timesheet Entry Collection",
@@ -57,7 +62,13 @@ export const listTimesheetEntryCollection = action({
     const client = getSapClient(connectionInput, headers);
     try {
       const { data } = await client.get(
-        `/sap/opu/odata/sap/API_MANAGE_WORKFORCE_TIMESHEET/TimeSheetEntryCollection?${top.length ? `$top=${top}&` : ""}${skip.length ? `$skip=${skip}&` : ""}${filter.length ? `$filter=${filter}&` : ""}${inlinecount.length ? `$inlinecount=${inlinecount}&` : ""}${orderBy.length ? `$orderby=${orderBy}&` : ""}${select.length ? `$select=${select}&` : ""}`,
+        `/sap/opu/odata/sap/API_MANAGE_WORKFORCE_TIMESHEET/TimeSheetEntryCollection?${
+          top.length ? `$top=${top}&` : ""
+        }${skip.length ? `$skip=${skip}&` : ""}${
+          filter.length ? `$filter=${filter}&` : ""
+        }${inlinecount.length ? `$inlinecount=${inlinecount}&` : ""}${
+          orderBy.length ? `$orderby=${orderBy}&` : ""
+        }${select.length ? `$select=${select}&` : ""}`,
       );
       return { data };
     } catch (error) {

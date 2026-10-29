@@ -7,6 +7,7 @@ import { retrievePollState } from "./retrievePollState";
 import { saveAsNewAsset } from "./saveAsNewAsset";
 import { saveAsNewAssetVersion } from "./saveAsNewAssetVersion";
 import { uploadChunk } from "./uploadChunk";
+
 export default {
   finaliseCompleteUpload,
   finaliseCompleteUploadAndSaveAsNewAsset,

@@ -9,6 +9,7 @@ import type {
   ItemUpdateVo,
 } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateItem = action({
   display: {
     label: "Update Item",
@@ -46,6 +47,7 @@ export const updateItem = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const itemPayload: ItemUpdateVo = {
         name: name || undefined,
         description: description || undefined,
@@ -74,10 +76,12 @@ export const updateItem = action({
         category: categoryGuid ? { guid: categoryGuid } : undefined,
         owner: ownerFullName ? { fullName: ownerFullName } : undefined,
       };
+
       if (numberFormatGuid) {
         const numberFormatObj: CreateNumberFormatVo = {
           guid: numberFormatGuid,
         };
+
         if (numberFormatFields && Array.isArray(numberFormatFields)) {
           const validFields = numberFormatFields
             .filter((field) => {
@@ -97,12 +101,15 @@ export const updateItem = action({
               guid: field.key.trim(),
               value: String(field.value),
             }));
+
           if (validFields.length > 0) {
             numberFormatObj.fields = validFields;
           }
         }
+
         itemPayload.numberFormat = numberFormatObj;
       }
+
       itemPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: additionalAttributeJson,
@@ -111,6 +118,7 @@ export const updateItem = action({
         },
         context,
       );
+
       context.logger.info("Updating item in Arena", {
         itemGuid: itemGuid,
         itemName: name,
@@ -125,13 +133,16 @@ export const updateItem = action({
         ),
         hasAdditionalAttributeJson: !!additionalAttributeJson,
       });
+
       const { data } = await client.put(`/items/${itemGuid}`, itemPayload);
       const updatedItem: ItemFullVo = data;
+
       context.logger.info("Item updated successfully", {
         itemGuid: updatedItem.guid,
         itemNumber: updatedItem.number,
         itemName: updatedItem.name,
       });
+
       return { data: updatedItem };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Item");

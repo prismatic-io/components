@@ -6,6 +6,7 @@ import {
   onInstanceDeployFunction,
   performTriggerFunction,
 } from "../util";
+
 export const workflowTrigger = trigger({
   display: {
     label: "Workflow Outbound Message Webhook (Deprecated)",

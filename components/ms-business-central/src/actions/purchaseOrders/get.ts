@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { getPurchaseOrderExamplePayload as examplePayload } from "../../examplePayloads";
 import { getPurchaseOrderInputs as inputs } from "../../inputs/purchaseOrders/getPurchaseOrderInputs";
 import type { PurchaseOrder } from "../../interfaces";
+
 export const getPurchaseOrder = action({
   display: {
     label: "Get Purchase Order",
@@ -18,6 +19,7 @@ export const getPurchaseOrder = action({
     const { data } = await client.get<PurchaseOrder>(
       `/companies(${companyId})/purchaseOrders(${purchaseOrderId})`,
     );
+
     return { data };
   },
   inputs,

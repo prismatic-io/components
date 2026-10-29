@@ -8,12 +8,9 @@ import {
 } from "firebase-admin/app";
 import { type Firestore, getFirestore } from "firebase-admin/firestore";
 import { firebaseConnection as firebaseConnectionDefinition } from "./connections";
+
 export const withFirestore = async <T>(
-  {
-    firebaseConnection,
-  }: {
-    firebaseConnection: Connection;
-  },
+  { firebaseConnection }: { firebaseConnection: Connection },
   fn: (db: Firestore) => Promise<T>,
 ): Promise<T> => {
   if (firebaseConnection.key !== firebaseConnectionDefinition.key)
@@ -21,7 +18,9 @@ export const withFirestore = async <T>(
       firebaseConnection,
       `Unsupported connection specified: ${firebaseConnection.key}`,
     );
+
   const privateKey = util.types.toString(firebaseConnection.fields.privateKey);
+
   let credential: Credential;
   try {
     credential = cert({
@@ -36,7 +35,9 @@ export const withFirestore = async <T>(
       });
     throw error;
   }
+
   const app = initializeApp({ credential }, `firebase-${randomUUID()}`);
+
   try {
     return await fn(getFirestore(app));
   } finally {

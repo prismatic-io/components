@@ -42,6 +42,7 @@ export const openViewExamplePayload = {
     bot_id: "BA13894H",
   },
 };
+
 export const publishViewExamplePayload = {
   ok: true,
   view: {

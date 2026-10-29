@@ -8,6 +8,7 @@ import {
   version,
 } from "./common";
 import { email, firstName, lastName } from "./fields";
+
 const profile = input({
   label: "Profile",
   type: "string",
@@ -18,6 +19,7 @@ const profile = input({
   example: "Standard User",
   clean: util.types.toString,
 });
+
 const userName = input({
   label: "User Name",
   type: "string",
@@ -28,6 +30,7 @@ const userName = input({
   dataSource: "selectUser",
   clean: util.types.toString,
 });
+
 const permissionName = input({
   label: "Permission Set",
   type: "string",
@@ -38,6 +41,7 @@ const permissionName = input({
   example: "Standard User",
   clean: util.types.toString,
 });
+
 const alias = input({
   label: "Alias",
   type: "string",
@@ -48,9 +52,11 @@ const alias = input({
   example: "JD",
   clean: util.types.toString,
 });
+
 const timeZones: InputFieldChoice[] = listTimeZones().map((timeZone) => {
   return { label: timeZone, value: timeZone };
 });
+
 const timeZone = input({
   label: "Time Zone",
   type: "string",
@@ -61,6 +67,7 @@ const timeZone = input({
   model: timeZones,
   clean: util.types.toString,
 });
+
 export const createUserInputs = {
   profile,
   userName: { ...userName, dataSource: undefined },
@@ -74,6 +81,7 @@ export const createUserInputs = {
   lastName,
   connection: connectionInput,
 };
+
 export const updateUserInputs = {
   version,
   userName,
@@ -81,13 +89,16 @@ export const updateUserInputs = {
   fieldValues,
   connection: connectionInput,
 };
+
 export const listUsersInputs = { ...listInputs };
+
 export const addUserPermissionSetInputs = {
   version,
   userName,
   permissionName,
   connection: connectionInput,
 };
+
 export const removeUserPermissionSetInputs = {
   version,
   userName,

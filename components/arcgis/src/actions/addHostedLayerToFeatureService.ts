@@ -28,6 +28,7 @@ import {
   templates,
 } from "../inputs";
 import { cleanUndefinedAttributes, getIdentityManager } from "../utils";
+
 export const addHostedLayerToFeatureService = action({
   display: {
     label: "Add Hosted Layer to Feature Service",
@@ -88,15 +89,19 @@ export const addHostedLayerToFeatureService = action({
       maxRecordCount,
       capabilities,
     });
+
     const layers = { layers: [hostedLayerDefinition] };
+
     if (context.debug.enabled) {
       context.logger.debug(`featureServiceUrl: ${featureServiceUrl}`);
       context.logger.debug(JSON.stringify(layers));
     }
+
     const data = await addToServiceDefinition(featureServiceUrl, {
       authentication,
       ...layers,
     });
+
     return { data };
   },
   inputs: {

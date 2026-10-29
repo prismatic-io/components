@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { asStringArray } from "../utils";
 import { brokers, clientId, connection, consumerGroupId } from "./common";
+
 const topicsToCheck = input({
   label: "Topics to Check",
   type: "string",
@@ -12,6 +13,7 @@ const topicsToCheck = input({
   dataSource: "selectTopic",
   clean: asStringArray,
 });
+
 export const getConsumerGroupStatusInputs = {
   connection,
   clientId,

@@ -12,6 +12,7 @@ export const createCallbackOutputSchema = {
     additionalProperties: true,
   },
 };
+
 export const listCallbacksOutputSchema = {
   type: "array" as const,
   items: {
@@ -27,6 +28,7 @@ export const listCallbacksOutputSchema = {
     additionalProperties: true,
   },
 };
+
 export const updateCallbackOutputSchema = {
   type: "array" as const,
   items: {
@@ -40,6 +42,7 @@ export const updateCallbackOutputSchema = {
     additionalProperties: true,
   },
 };
+
 export const createSubscriptionOutputSchema = {
   type: "array" as const,
   items: {
@@ -56,6 +59,7 @@ export const createSubscriptionOutputSchema = {
     additionalProperties: true,
   },
 };
+
 export const getSubscriptionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -72,6 +76,7 @@ export const getSubscriptionOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const updateSubscriptionOutputSchema = {
   type: "array" as const,
   items: {

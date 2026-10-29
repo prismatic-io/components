@@ -5,6 +5,7 @@ import { listDataExtensionsExamplePayload } from "../../examplePayloads";
 import { listDataExtensionsInputs } from "../../inputs";
 import { listDataExtensionsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listDataExtensions = action({
   examplePayload: listDataExtensionsExamplePayload,
   display: {
@@ -23,22 +24,23 @@ export const listDataExtensions = action({
     { connection, searchString, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $search: searchString,
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(
       client,
       DATA_EXTENSIONS_PATH,
       fetchAll,
       params,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listDataExtensionsExamplePayload.data,
   }),
 });

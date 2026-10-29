@@ -3,6 +3,7 @@ import { getAttribute } from "./getAttribute";
 import { listAttributesAction } from "./listAttributesAction";
 import { queryAttributes } from "./queryAttributes";
 import { updateAttribute } from "./updateAttribute";
+
 export default {
   queryAttributes,
   getAttribute,

@@ -4,6 +4,7 @@ import { deleteVariantGql } from "./deleteVariantGql";
 import { getVariantGql } from "./getVariantGql";
 import { listVariantsGql } from "./listVariantsGql";
 import { updateVariantGql } from "./updateVariantGql";
+
 export default {
   countVariantsGql,
   createVariantGql,

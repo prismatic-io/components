@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import FormData from "form-data";
+
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {
     if (value !== null && value.trim() !== "") {
@@ -13,14 +14,17 @@ export const jsonInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 export const valueListInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value as string[];
   }
   return undefined;
 };
+
 const validateDataType = (value: unknown): boolean => {
   const type = typeof value;
+
   switch (type) {
     case "string":
       return value !== "" && value !== null;
@@ -40,15 +44,19 @@ const validateDataType = (value: unknown): boolean => {
       return false;
   }
 };
+
 export const generateForm = (data: Record<string, unknown>) => {
   const formData = new FormData();
+
   for (const [key, value] of Object.entries(data)) {
     if (validateDataType(value)) {
       formData.append(key, value);
     }
   }
+
   return formData;
 };
+
 const buildFormData = (formData: FormData, obj: unknown, parentKey = "") => {
   if (Array.isArray(obj)) {
     for (const element of obj) {
@@ -66,6 +74,7 @@ const buildFormData = (formData: FormData, obj: unknown, parentKey = "") => {
     if (obj == null) {
       return;
     }
+
     const value =
       typeof obj === "number" || typeof obj === "boolean"
         ? obj.toString()
@@ -73,11 +82,15 @@ const buildFormData = (formData: FormData, obj: unknown, parentKey = "") => {
     formData.append(parentKey, value);
   }
 };
+
 export const objectToFormData = (obj: unknown) => {
   const formData = new FormData();
+
   buildFormData(formData, obj);
+
   return formData;
 };
+
 const fetchEmployee = async (
   client: HttpClient,
   companyId: string,
@@ -92,6 +105,7 @@ const fetchEmployee = async (
       includetotalcount,
     },
   });
+
 export const fetchEmployees = async (
   client: HttpClient,
   companyId: string,

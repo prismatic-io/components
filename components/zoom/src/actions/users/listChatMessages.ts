@@ -17,6 +17,7 @@ import {
 import { getAllPaginationResults } from "../../util";
 import type { ChatMessage } from "../../interfaces/ChatMessage";
 import { listChatMessagesExamplePayload } from "../../examplePayloads";
+
 export const listUsersChatMessages = action({
   display: {
     label: "List User's Chat Messages",
@@ -40,25 +41,26 @@ export const listUsersChatMessages = action({
     },
   ) => {
     const client = createZoomClient({ connection, debug });
-    const data: {
-      messages: ChatMessage[];
-    } = await getAllPaginationResults<ChatMessage>(
-      client,
-      `/chat/users/${userId}/messages`,
-      "messages",
-      {
-        to_contact: toContact,
-        to_channel: toChannel,
-        date,
-        from,
-        to,
-        include_deleted_and_edited_message: includeDeletedAndEditedMessage,
-        search_type: searchType,
-        search_key: searchKey,
-        exclude_child_message: excludeChildMessage,
-        download_file_formats: downloadFileFormats,
-      },
-    );
+
+    const data: { messages: ChatMessage[] } =
+      await getAllPaginationResults<ChatMessage>(
+        client,
+        `/chat/users/${userId}/messages`,
+        "messages",
+        {
+          to_contact: toContact,
+          to_channel: toChannel,
+          date,
+          from,
+          to,
+          include_deleted_and_edited_message: includeDeletedAndEditedMessage,
+          search_type: searchType,
+          search_key: searchKey,
+          exclude_child_message: excludeChildMessage,
+          download_file_formats: downloadFileFormats,
+        },
+      );
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, destinationId, region } from "../../inputs";
 import { getDestinationExamplePayload } from "../../examplePayloads";
+
 export const getDestination = action({
   display: {
     label: "Get Destination",

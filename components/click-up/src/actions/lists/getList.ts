@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { getListExamplePayload } from "../../examplePayloads";
 import { getListInputs } from "../../inputs";
 import { getListOutputSchema } from "../../outputSchemas";
+
 export const getList = action({
   display: {
     label: "Get List",
@@ -19,7 +20,9 @@ export const getList = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/list/${listId}`);
+
     return {
       data,
     };

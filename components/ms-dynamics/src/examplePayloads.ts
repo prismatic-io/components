@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { API_BASE } from "./constants";
+
 const exampleAccount = {
   "@odata.context": `${API_BASE}/$metadata#accounts/$entity`,
   "@odata.etag": 'W/"123456789"',
@@ -9,7 +10,7 @@ const exampleAccount = {
   telephone1: "+1-555-010-2025",
   emailaddress1: "info@contoso.example.com",
   websiteurl: "https://contoso.example.com",
-  revenue: 5250000,
+  revenue: 5_250_000,
   numberofemployees: 120,
   industrycode: 7,
   statecode: 0,
@@ -21,6 +22,7 @@ const exampleAccount = {
   _ownerid_value: "9b2f3c4d-1e2f-4a5b-8c9d-0e1f2a3b4c5d",
   _owningbusinessunit_value: "0a1b2c3d-4e5f-6789-abcd-ef0123456789",
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     "@odata.context": `${API_BASE}/$metadata#Microsoft.Dynamics.CRM.WhoAmIResponse`,
@@ -29,6 +31,7 @@ export const getCurrentUserExamplePayload = {
     OrganizationId: "fedcba98-7654-3210-fedc-ba9876543210",
   },
 };
+
 export const listEntitiesExamplePayload = {
   data: {
     entities: [
@@ -42,6 +45,7 @@ export const listEntitiesExamplePayload = {
     hasMore: true,
   },
 };
+
 export const queryEntitiesExamplePayload = {
   data: {
     value: [
@@ -53,7 +57,7 @@ export const queryEntitiesExamplePayload = {
         accountnumber: "ACC-0002",
         emailaddress1: "info@fabrikam.example.com",
         websiteurl: "https://fabrikam.example.com",
-        revenue: 12750000,
+        revenue: 12_750_000,
         numberofemployees: 340,
         createdon: "2026-04-03T09:14:55Z",
         modifiedon: "2026-04-22T11:08:42Z",
@@ -63,9 +67,11 @@ export const queryEntitiesExamplePayload = {
     oDataNextLink: `${API_BASE}/accounts?$skiptoken=%3Ccookie%20pagenumber%3D%222%22%2F%3E`,
   },
 };
+
 export const getEntityExamplePayload = {
   data: exampleAccount,
 };
+
 export const createEntityExamplePayload = {
   data: {
     ...exampleAccount,
@@ -73,6 +79,7 @@ export const createEntityExamplePayload = {
     modifiedon: "2026-05-08T10:00:00Z",
   },
 };
+
 export const updateEntityExamplePayload = {
   data: {
     ...exampleAccount,
@@ -81,9 +88,11 @@ export const updateEntityExamplePayload = {
     modifiedon: "2026-05-08T11:30:00Z",
   },
 };
+
 export const deleteEntityExamplePayload = {
   data: {},
 };
+
 export const upsertEntityExamplePayload = {
   data: {
     ...exampleAccount,
@@ -91,6 +100,7 @@ export const upsertEntityExamplePayload = {
     modifiedon: "2026-05-08T10:00:00Z",
   },
 };
+
 export const batchEntityActionsExamplePayload = {
   data: [
     {
@@ -109,6 +119,7 @@ export const batchEntityActionsExamplePayload = {
     {},
   ],
 };
+
 export const listEntitiesActionExamplePayload = {
   data: {
     entities: [
@@ -145,6 +156,7 @@ export const listEntitiesActionExamplePayload = {
     systemEntitiesCount: 2,
   },
 };
+
 export const getEntitiesMetaDataExamplePayload = {
   data: [
     {
@@ -168,6 +180,7 @@ export const getEntitiesMetaDataExamplePayload = {
     },
   ],
 };
+
 export const getEntityMetaDataExamplePayload = {
   data: {
     result: {
@@ -203,6 +216,7 @@ export const getEntityMetaDataExamplePayload = {
     },
   },
 };
+
 const exampleAttribute = {
   "@odata.type": "#Microsoft.Dynamics.CRM.StringAttributeMetadata",
   MetadataId: "6d7e8f90-1234-4567-b890-123456789abc",
@@ -230,6 +244,7 @@ const exampleAttribute = {
   },
   MaxLength: 160,
 };
+
 export const queryAttributesExamplePayload = {
   data: {
     value: [
@@ -256,9 +271,11 @@ export const queryAttributesExamplePayload = {
     ],
   },
 };
+
 export const getAttributeExamplePayload = {
   data: exampleAttribute,
 };
+
 export const createAttributeExamplePayload = {
   data: {
     ...exampleAttribute,
@@ -281,9 +298,11 @@ export const createAttributeExamplePayload = {
     MaxLength: 100,
   },
 };
+
 export const updateAttributeExamplePayload = {
   data: {},
 };
+
 export const listAttributesActionExamplePayload = {
   data: {
     entityId: "3a4b5c6d-7e8f-4901-b234-56789abcdef0",
@@ -339,6 +358,7 @@ export const listAttributesActionExamplePayload = {
     primaryNameAttribute: "name",
   },
 };
+
 export const fetchXmlExamplePayload = {
   data: {
     value: [
@@ -352,11 +372,12 @@ export const fetchXmlExamplePayload = {
         "@odata.etag": 'W/"234567890"',
         accountid: "a2b3c4d5-e6f7-4890-b123-4567890bcdef",
         name: "Fabrikam, Inc.",
-        revenue: 12750000,
+        revenue: 12_750_000,
       },
     ],
   },
 };
+
 export const rawRequestV2ExamplePayload = {
   data: {
     "@odata.context": `${API_BASE}/$metadata#accounts/$entity`,
@@ -364,24 +385,28 @@ export const rawRequestV2ExamplePayload = {
     name: exampleAccount.name,
   },
 };
+
 export const selectEntityExamplePayload = {
   result: [
     { label: "Account", key: "70816501-edb9-4740-a16c-6a5efbc05d84" },
     { label: "Contact", key: "c4e9a276-67a4-4c2a-9f4e-3e4f6b8d1c2a" },
   ],
 };
+
 export const selectAttributeExamplePayload = {
   result: [
     { label: "Account Name", key: "a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
     { label: "Email Address 1", key: "b2c3d4e5-f6a7-8901-bcde-f12345678901" },
   ],
 };
+
 export const selectEntityTypeExamplePayload = {
   result: [
     { label: "Account (Account)", key: "account" },
     { label: "Contact (Contact)", key: "contact" },
   ],
 };
+
 export const getEntitiesMetaDataDataSourceExamplePayload = {
   result: [
     {
@@ -395,6 +420,7 @@ export const getEntitiesMetaDataDataSourceExamplePayload = {
     },
   ],
 };
+
 const dynamicsBodyData = {
   SchemaName: "AccountCreate",
   OperationType: 0,
@@ -422,7 +448,9 @@ const dynamicsBodyData = {
   ],
   OutputParameters: [],
 };
+
 const dynamicsInputParameters = dynamicsBodyData.InputParameters;
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     body: {
@@ -455,6 +483,7 @@ export const pollChangesTriggerExamplePayload = {
   } as unknown as TriggerPayload,
   polledNoChanges: false,
 };
+
 export const dynamicsWebhookTriggerExamplePayload = {
   payload: {
     headers: {
@@ -524,6 +553,7 @@ export const dynamicsWebhookTriggerExamplePayload = {
   response: { statusCode: 200, contentType: "text/plain" },
   branch: "Event",
 };
+
 export const attributeBodyExample = {
   AttributeType: "Money",
   AttributeTypeName: {
@@ -558,6 +588,7 @@ export const attributeBodyExample = {
   "@odata.type": "Microsoft.Dynamics.CRM.MoneyAttributeMetadata",
   PrecisionSource: 2,
 };
+
 export const batchActionsExample = [
   {
     collection: "msevtmgt_events",
@@ -570,6 +601,7 @@ export const batchActionsExample = [
     },
   },
 ];
+
 export const batchActionsDefault = [
   {
     collection: "msevtmgt_events",

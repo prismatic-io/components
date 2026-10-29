@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const myTriggerExamplePayload = {
   payload: {
     headers: {
@@ -52,6 +53,7 @@ export const myTriggerExamplePayload = {
     },
   } as unknown as TriggerPayload,
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

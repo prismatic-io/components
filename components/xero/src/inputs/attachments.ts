@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./common";
+
 export const objectType = input({
   label: "Object Type",
   type: "string",
@@ -20,6 +21,7 @@ export const objectType = input({
     { label: "Repeating Invoices", value: "repeatinginvoices" },
   ],
 });
+
 export const objectId = input({
   label: "Object ID",
   type: "string",
@@ -29,6 +31,7 @@ export const objectId = input({
   example: "example-e40f-414a-8f95-ce6a63196e1a",
   clean: util.types.toString,
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -39,6 +42,7 @@ export const fileName = input({
   example: "My Example File",
   clean: util.types.toString,
 });
+
 export const file = input({
   label: "File Data",
   type: "data",
@@ -47,6 +51,7 @@ export const file = input({
   placeholder: "Enter file data",
   clean: util.types.toBufferDataPayload,
 });
+
 export const contentType = input({
   label: "Content Type",
   type: "string",
@@ -56,6 +61,7 @@ export const contentType = input({
   placeholder: "Enter content type",
   clean: util.types.toString,
 });
+
 export const createAttachmentInputs = {
   xeroConnection: connectionInput,
   objectType,
@@ -64,6 +70,7 @@ export const createAttachmentInputs = {
   file,
   contentType,
 };
+
 export const getAttachmentInputs = {
   xeroConnection: connectionInput,
   objectType,

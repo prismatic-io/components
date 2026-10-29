@@ -4,6 +4,7 @@ import { action, util, input } from "@prismatic-io/spectral";
 import { connection, returnBuffer } from "../../inputs";
 import { getSftpClient } from "../../client";
 import { readFileExamplePayload } from "../../examplePayloads";
+
 const inputPath = input({
   label: "Path",
   placeholder: "Path on SFTP server to read data from",
@@ -13,6 +14,7 @@ const inputPath = input({
   example: "/path/to/file.txt",
   clean: util.types.toString,
 });
+
 const readFile = action({
   display: {
     label: "Read File",
@@ -20,6 +22,7 @@ const readFile = action({
   },
   perform: async (context, { connection, inputPath, returnBuffer }) => {
     const sftp = await getSftpClient(connection, context.debug.enabled);
+
     try {
       const inputData = await sftp.get(inputPath);
       return {
@@ -39,4 +42,5 @@ const readFile = action({
   },
   examplePayload: readFileExamplePayload,
 });
+
 export default readFile;

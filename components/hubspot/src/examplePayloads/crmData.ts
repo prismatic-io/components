@@ -7,6 +7,7 @@ export const cancelImportExamplePayload = {
     status: "CANCELED",
   },
 };
+
 export const listActiveImportsExamplePayload = {
   data: [
     {
@@ -42,6 +43,7 @@ export const listActiveImportsExamplePayload = {
     },
   ],
 };
+
 export const importCRMDataExamplePayload = {
   data: {
     importTemplate: {
@@ -75,6 +77,7 @@ export const importCRMDataExamplePayload = {
     updatedAt: "2024-01-15T05:02:32.679Z",
   },
 };
+
 export const getAnImportExamplePayload = {
   data: {
     importTemplate: {
@@ -108,6 +111,7 @@ export const getAnImportExamplePayload = {
     updatedAt: "2024-01-15T05:15:45.890Z",
   },
 };
+
 export const exportCRMDataExamplePayload = {
   data: {
     id: "12345678",

@@ -7,6 +7,7 @@ import {
   firstName,
   lastName,
 } from "../../inputs";
+
 export const createEmployee = action({
   display: {
     label: "Create Employee",
@@ -26,6 +27,7 @@ export const createEmployee = action({
   ) => {
     validateV2Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data } = await client.post(`/companies/${companyId}/employees`, {
       firstName: firstName || undefined,
       lastName: lastName || undefined,

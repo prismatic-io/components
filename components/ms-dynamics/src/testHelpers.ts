@@ -1,4 +1,5 @@
 import { ORG_BASE_URL } from "./constants";
+
 export const createMockConnection = () =>
   ({
     fields: {
@@ -8,6 +9,7 @@ export const createMockConnection = () =>
       access_token: "mock-access-token",
     },
   }) as any;
+
 export const createMockContext = (overrides?: Record<string, unknown>) =>
   ({
     debug: { enabled: false },

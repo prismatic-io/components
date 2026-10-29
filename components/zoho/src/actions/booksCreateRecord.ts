@@ -8,6 +8,7 @@ import {
   fieldValues,
   parentRecordId,
 } from "../inputs";
+
 const booksCreateRecord = action({
   display: {
     label: "Books - Create Record",
@@ -42,23 +43,28 @@ const booksCreateRecord = action({
       ClientType.BOOKS,
       context.debug.enabled,
     );
+
     const payload = {
       ...util.types.keyValPairListToObject(
         (dynamicValues as KeyValuePair[]) || [],
       ),
       ...fieldValues,
     };
+
     const url =
       parentRecordType && parentRecordId
         ? `/${parentRecordType}/${parentRecordId}/${recordType}`
         : `/${recordType}`;
+
     const { data } = await booksClient.request({
       method: "POST",
       url,
       data: payload,
     });
+
     return data;
   },
   examplePayload: booksCreateRecordExamplePayload,
 });
+
 export default booksCreateRecord;

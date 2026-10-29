@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { productTypesExamplePayload } from "../examplePayloads";
 import { productTypesInputs } from "../inputs";
 import { toSortedElements } from "../utils";
+
 export const productTypes = dataSource({
   display: {
     label: "Product Types",
@@ -12,11 +13,7 @@ export const productTypes = dataSource({
   perform: async (_context, { connectionInput }) => {
     const client = await getClient(connectionInput, false);
     const { data } = await client.get<
-      {
-        name: string;
-        label: string;
-        extension_attributes: object;
-      }[]
+      { name: string; label: string; extension_attributes: object }[]
     >(ENDPOINTS.productTypes);
     return {
       result: toSortedElements(data, ({ name, label }) => ({

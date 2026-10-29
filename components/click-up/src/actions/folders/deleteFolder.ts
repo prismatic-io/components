@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteFolderExamplePayload } from "../../examplePayloads";
 import { deleteFolderInputs } from "../../inputs";
+
 export const deleteFolder = action({
   display: {
     label: "Delete Folder",
@@ -11,7 +12,9 @@ export const deleteFolder = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, folderId }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(`/folder/${folderId}`);
+
     return {
       data,
     };

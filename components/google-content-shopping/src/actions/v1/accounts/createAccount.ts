@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClientMerchant } from "../../../client";
 import { createAccountExamplePayload } from "../../../examplePayloads/v1";
 import { createAccountInputs } from "../../../inputs/v1/accounts";
+
 export const createAccountMerchant = action({
   display: {
     description:
@@ -41,6 +42,7 @@ export const createAccountMerchant = action({
         })),
       },
     );
+
     return { data };
   },
   examplePayload: createAccountExamplePayload,

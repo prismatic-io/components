@@ -1,4 +1,5 @@
 import type { CreateApiPaginationResponse } from "../types";
+
 interface Event {
   id: number;
   context: string | null;
@@ -10,5 +11,7 @@ interface Event {
   user_id: number;
   url: string;
 }
+
 export type GetEventResponse = Event;
+
 export type ListEventsResponse = CreateApiPaginationResponse<Event>;

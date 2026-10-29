@@ -1,6 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { signIn } from "./signIn";
+
 interface GetTableauClientProps {
   tableauConnection: Connection;
   timeout?: number;
@@ -8,6 +9,7 @@ interface GetTableauClientProps {
   multipartMixed?: boolean;
   apiVersion?: string;
 }
+
 export const getTableauClient = async ({
   tableauConnection,
   apiVersion = "3.6",
@@ -28,6 +30,7 @@ export const getTableauClient = async ({
   const headers: Record<string, string> = {
     "X-Tableau-Auth": credentials.token,
   };
+
   if (multipartMixed) {
     headers["Content-type"] = "multipart/mixed";
   } else {
@@ -40,5 +43,6 @@ export const getTableauClient = async ({
     timeout: util.types.toInt(timeout, 2000),
     debug: util.types.toBool(debug),
   });
+
   return tableauClient;
 };

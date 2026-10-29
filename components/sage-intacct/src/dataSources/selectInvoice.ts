@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { selectInvoiceExamplePayload } from "../examplePayloads";
 import { selectInvoiceInputs } from "../inputs";
 import { queryRecordsPaginated } from "../util";
+
 export const selectInvoice = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -15,6 +16,7 @@ export const selectInvoice = dataSource({
       ["*"],
       "",
     );
+
     return {
       result: invoices.map(
         (invoice: { RECORDNO: string; INVOICENO: string }): Element => {

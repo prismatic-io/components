@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanNumber, cleanString } from "../utils";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Adobe Commerce connection to use.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -15,6 +17,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const searchCriteriaCurrentPage = input({
   label: "Current Page",
   type: "string",
@@ -25,6 +28,7 @@ export const searchCriteriaCurrentPage = input({
   example: "1",
   clean: cleanNumber,
 });
+
 export const searchCriteriaConditionType = input({
   label: "Condition Type",
   type: "string",
@@ -35,6 +39,7 @@ export const searchCriteriaConditionType = input({
   example: "gteq",
   clean: cleanString,
 });
+
 export const searchCriteriaField = input({
   label: "Field",
   type: "string",
@@ -45,6 +50,7 @@ export const searchCriteriaField = input({
   example: "updated_at",
   clean: cleanString,
 });
+
 export const searchCriteriaValue = input({
   label: "Value",
   type: "string",
@@ -55,6 +61,7 @@ export const searchCriteriaValue = input({
   example: "2026-01-01 00:00:00",
   clean: cleanString,
 });
+
 export const searchCriteriaPageSize = input({
   label: "Page Size",
   type: "string",
@@ -65,6 +72,7 @@ export const searchCriteriaPageSize = input({
   example: "50",
   clean: cleanNumber,
 });
+
 export const searchCriteriaSortDirection = input({
   label: "Sorting Direction",
   type: "string",
@@ -75,6 +83,7 @@ export const searchCriteriaSortDirection = input({
   example: "DESC",
   clean: cleanString,
 });
+
 export const searchCriteriaSortField = input({
   label: "Sorting Field",
   type: "string",

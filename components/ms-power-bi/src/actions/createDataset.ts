@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { columns, connection, datasetName, tableName } from "../inputs";
 import { createDatasetExamplePayload } from "../examplePayloads";
+
 export const createDataset = action({
   display: {
     label: "Create Dataset",
@@ -14,7 +15,9 @@ export const createDataset = action({
       defaultMode: "Push",
       tables: [{ name: tableName, columns }],
     };
+
     const { data } = await client.post("/datasets", payload);
+
     return {
       data,
     };

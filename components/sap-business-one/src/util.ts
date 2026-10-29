@@ -25,25 +25,33 @@ import type {
 } from "./types";
 import type { AxiosInstance, AxiosProxyConfig } from "axios";
 import FormData from "form-data";
+
 export const validateConnection = (connection: Connection) => {
   if (![authentication.key].includes(connection.key)) {
     throw new ConnectionError(connection, UNKOWN_CONNECTION_ERROR);
   }
 };
+
 export const cleanBoolean = (value: unknown) =>
   value ? util.types.toBool(value) : undefined;
+
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanCode = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const cleanBodyFields = (value: unknown) =>
   value ? util.types.toObject(value) : {};
+
 export const cleanNumber = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanKeyValueList = (value: unknown) =>
   value
     ? util.types.keyValPairListToObject(value as KeyValuePair[])
     : undefined;
+
 export const getAuthCredentials = (connection: Connection): AuthCredentials => {
   const username = util.types
     .toString(connection.fields.username)
@@ -51,6 +59,7 @@ export const getAuthCredentials = (connection: Connection): AuthCredentials => {
   const password = util.types.toString(connection.fields.password);
   const companyName = cleanString(connection.fields.companyName);
   const dbInstance = cleanString(connection.fields.dbInstance);
+
   return {
     CompanyDB: dbInstance,
     UserName: username,
@@ -58,6 +67,7 @@ export const getAuthCredentials = (connection: Connection): AuthCredentials => {
     CompanyName: companyName,
   };
 };
+
 export const getBaseUrlAndProxy = (connection: Connection) => {
   const { serverAddress, apiVersion } = connection.fields;
   const onPremData = computeProxyConfiguration(connection);
@@ -85,6 +95,7 @@ export const getBaseUrlAndProxy = (connection: Connection) => {
     throw new ConnectionError(connection, INVALID_SERVER_ADDRESS);
   }
 };
+
 export const fetchAllData = async (
   client: AxiosInstance,
   url: string,
@@ -95,10 +106,12 @@ export const fetchAllData = async (
   if (!fetchAll) {
     return await fetchData(client, url, params);
   }
+
   const keepFetching = true;
   const records: Record<string, unknown>[] = [];
   let $skip = 0;
   const $top = 20;
+
   while (keepFetching) {
     const promises = Array.from({ length: 20 }, () => {
       const currentSkip = $skip;
@@ -109,6 +122,7 @@ export const fetchAllData = async (
         $skip: currentSkip,
       });
     });
+
     const data = await Promise.all(promises);
     const flattenedData = data.flat();
     records.push(...flattenedData);
@@ -119,8 +133,10 @@ export const fetchAllData = async (
       break;
     }
   }
+
   return records;
 };
+
 const fetchData = async (
   client: AxiosInstance,
   url: string,
@@ -131,21 +147,25 @@ const fetchData = async (
   });
   return data.value;
 };
+
 export const mapModel = (model: string[]) => {
   return model.map((value) => ({
     value,
     label: value,
   }));
 };
+
 export const isValidArray = (data: unknown) => {
   return Array.isArray(data) && data.length > 0;
 };
+
 export const validateArray = (data: unknown): Records[] => {
   if (!isValidArray(data)) {
     return [];
   }
   return data as Records[];
 };
+
 export const mapPicklistArray = ({
   data,
   keyName,
@@ -159,43 +179,44 @@ export const mapPicklistArray = ({
       label: record[keyLabel].toString(),
     }));
 };
+
 export const mapLabel = (data: Element[], additionalLabel: string) => {
   return data.map(({ key, label }) => ({
     key,
     label: `${additionalLabel}: ${label}`,
   }));
 };
+
 export const computeProxyConfiguration = (
   connection: Connection,
 ): AxiosProxyConfig | undefined => {
   if (!connection) return;
   const { host: rawHost, port: rawPort } = connection.fields;
+
   if (!rawHost && !rawPort) {
     return;
   }
+
   return {
     host: util.types.toString(rawHost),
     port: util.types.toNumber(rawPort),
   };
 };
+
 export const toSapB1DateFilter = (iso: string): string => {
   const [datePart] = iso.split("T");
   return datePart;
 };
+
 export const filterByTimestamp = (
   records: SAPBusinessOneRecord[],
-  config: {
-    createdField: string;
-    updatedField: string;
-  },
+  config: { createdField: string; updatedField: string },
   lastPolledAt: string,
-): {
-  created: SAPBusinessOneRecord[];
-  updated: SAPBusinessOneRecord[];
-} => {
+): { created: SAPBusinessOneRecord[]; updated: SAPBusinessOneRecord[] } => {
   const lastPolledAtDate = new Date(lastPolledAt);
   const created: SAPBusinessOneRecord[] = [];
   const updated: SAPBusinessOneRecord[] = [];
+
   for (const record of records) {
     const createdValue = record[config.createdField];
     const updatedValue = record[config.updatedField];
@@ -203,20 +224,25 @@ export const filterByTimestamp = (
       typeof createdValue === "string" ? new Date(createdValue) : null;
     const updatedAtDate =
       typeof updatedValue === "string" ? new Date(updatedValue) : null;
+
     const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
     const isUpdated =
       !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
+
     if (isNew) created.push(record);
     else if (isUpdated) updated.push(record);
   }
+
   return { created, updated };
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({
     label,
     value,
   }),
 );
+
 export const toFormData = (
   formData: KeyValuePair<unknown>[],
   fileData: KeyValuePair<unknown>[],
@@ -234,18 +260,22 @@ export const toFormData = (
   );
   return form;
 };
+
 const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (raw === "") {
     return "";
   }
+
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
     throw new Error(
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = util.types.toNumber(yearStr);
   const month = util.types.toNumber(monthStr);
@@ -260,19 +290,19 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolvePollWindow = (
   state: PollingState | undefined,
   lookBackDate: string | undefined,
   now: string,
-): {
-  since: string;
-  isBackfill: boolean;
-} => {
+): { since: string; isBackfill: boolean } => {
   if (state?.lastPolledAt) {
     return { since: state.lastPolledAt, isBackfill: false };
   }
@@ -281,20 +311,16 @@ export const resolvePollWindow = (
   }
   return { since: now, isBackfill: false };
 };
+
 export const partitionBackfill = (
   records: SAPBusinessOneRecord[],
-  config: {
-    createdField: string;
-    updatedField: string;
-  },
+  config: { createdField: string; updatedField: string },
   lookBackDate: string,
-): {
-  created: SAPBusinessOneRecord[];
-  updated: SAPBusinessOneRecord[];
-} => {
+): { created: SAPBusinessOneRecord[]; updated: SAPBusinessOneRecord[] } => {
   const since = new Date(lookBackDate);
   const created: SAPBusinessOneRecord[] = [];
   const updated: SAPBusinessOneRecord[] = [];
+
   for (const record of records) {
     const createdValue = record[config.createdField];
     const createdAtDate =
@@ -302,8 +328,10 @@ export const partitionBackfill = (
     if (createdAtDate !== null && createdAtDate >= since) created.push(record);
     else updated.push(record);
   }
+
   return { created, updated };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {
@@ -317,13 +345,10 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const fetchChanges = async (
   client: AxiosInstance,
-  config: {
-    endpoint: string;
-    createdField: string;
-    updatedField: string;
-  },
+  config: { endpoint: string; createdField: string; updatedField: string },
   since: string,
   isBackfill: boolean,
 ): Promise<{

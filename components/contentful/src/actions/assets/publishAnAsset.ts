@@ -5,6 +5,7 @@ import { publishAnAssetExamplePayload } from "../../examplePayloads";
 import { publishAnAssetInputs } from "../../inputs";
 import { publishAnAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const publishAnAsset = action({
   display: {
     label: "Publish Asset",
@@ -18,15 +19,15 @@ export const publishAnAsset = action({
       spaceId,
       environmentId,
     );
+
     const asset: Asset = await environment.getAsset(assetId);
     const data: AssetProps = (await asset.publish()).toPlainObject();
     return {
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => publishAnAssetExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    publishAnAssetExamplePayload,
   inputs: publishAnAssetInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -2,6 +2,7 @@ import { util, action } from "@prismatic-io/spectral";
 import { googleStorageClient } from "../client";
 import { deleteFileExamplePayload } from "../examplePayloads";
 import { bucketName, connectionInput, fileName } from "../inputs";
+
 export const deleteFile = action({
   display: {
     label: "Delete File",
@@ -14,6 +15,7 @@ export const deleteFile = action({
       .bucket(util.types.toString(bucketName))
       .file(util.types.toString(fileName))
       .delete();
+
     return { data: null };
   },
   examplePayload: deleteFileExamplePayload,

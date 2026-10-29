@@ -8,6 +8,7 @@ import {
   pagination,
   project,
 } from "./common";
+
 const body = input({
   label: "Body",
   placeholder: "Enter comment",
@@ -17,6 +18,7 @@ const body = input({
   example: "Deployed to staging; settlements now retry up to 3 times.",
   clean: toRequiredString,
 });
+
 const internal = input({
   label: "Internal",
   type: "boolean",
@@ -25,6 +27,7 @@ const internal = input({
     "When true, the note is internal and visible only to project members with at least the Reporter role.",
   clean: toOptionalBoolean,
 });
+
 export const listIssueNotesInputs = {
   connection: connectionInput,
   project,
@@ -32,6 +35,7 @@ export const listIssueNotesInputs = {
   fetchAll,
   pagination,
 };
+
 export const createIssueNoteInputs = {
   connection: connectionInput,
   project,
@@ -39,6 +43,7 @@ export const createIssueNoteInputs = {
   body,
   internal,
 };
+
 export const listMergeRequestNotesInputs = {
   connection: connectionInput,
   project,
@@ -46,6 +51,7 @@ export const listMergeRequestNotesInputs = {
   fetchAll,
   pagination,
 };
+
 export const createMergeRequestNoteInputs = {
   connection: connectionInput,
   project,

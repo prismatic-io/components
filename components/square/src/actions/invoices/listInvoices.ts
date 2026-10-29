@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { listInvoicesExamplePayload } from "../../examplePayloads";
 import { listInvoicesInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listInvoices = action({
   display: {
     label: "List Invoices",
@@ -16,6 +17,7 @@ export const listInvoices = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const data = await fetchAllPages(
       client,
       "/v2/invoices",
@@ -29,6 +31,7 @@ export const listInvoices = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   inputs: listInvoicesInputs,

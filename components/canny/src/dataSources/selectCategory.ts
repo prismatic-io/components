@@ -4,6 +4,7 @@ import { selectCategoryExamplePayload } from "../examplePayloads";
 import { selectCategoryInputs } from "../inputs";
 import type { Category } from "../types";
 import { paginateOffset, toSortedPicklist } from "../util";
+
 export const selectCategory = dataSource({
   display: {
     label: "Select Category",

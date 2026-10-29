@@ -5,10 +5,12 @@ import type {
   MessageFieldPropertyKey,
   ResourceType,
 } from "../types";
+
 export const DELIVERY_CHANNEL_OPTIONS = [
   { const: "MS_TEAMS", title: "Teams" },
   { const: "SLACK", title: "Slack" },
 ];
+
 export const RESOURCE_TYPE_OPTIONS: Array<{
   const: ResourceType;
   title: ResourceType;
@@ -18,6 +20,7 @@ export const RESOURCE_TYPE_OPTIONS: Array<{
   { const: "QUALITY", title: "QUALITY" },
   { const: "REQUEST", title: "REQUEST" },
 ];
+
 export const resourceObjectTypes: Record<
   Exclude<ResourceType, "QUALITY">,
   string
@@ -26,6 +29,7 @@ export const resourceObjectTypes: Record<
   CHANGE: "changes",
   REQUEST: "requests",
 };
+
 export const messageFieldPropertyKeys: Record<
   ResourceType,
   MessageFieldPropertyKey
@@ -35,17 +39,20 @@ export const messageFieldPropertyKeys: Record<
   QUALITY: "qualityMessageFields",
   REQUEST: "requestMessageFields",
 };
+
 export const resourceBindingNames: Record<ResourceType, string> = {
   ITEM: "ITEM",
   CHANGE: "CHANGE",
   QUALITY: "QUALITY",
   REQUEST: "REQUEST",
 };
+
 export const buildMessageFieldOptions = (attributes: ArenaAttribute[]) =>
   attributes.map((attribute) => ({
     const: attribute.apiName,
     title: attribute.name || attribute.apiName,
   }));
+
 export const buildMessageFieldProperty = (
   attributes: ArenaAttribute[],
   title: string,
@@ -61,6 +68,7 @@ export const buildMessageFieldProperty = (
       default: [],
     };
   }
+
   return {
     type: "array",
     title,
@@ -72,10 +80,12 @@ export const buildMessageFieldProperty = (
     default: [],
   };
 };
+
 export const buildResourceBindingValue = (
   resourceType: ResourceType,
   apiName: string,
 ) => `{{${resourceBindingNames[resourceType]}.${apiName}}}`;
+
 export const buildStep2Rule = () => ({
   effect: "SHOW",
   condition: {
@@ -84,6 +94,7 @@ export const buildStep2Rule = () => ({
     failWhenUndefined: true,
   },
 });
+
 export const buildDeliveryDetailsRule = () => ({
   effect: "SHOW",
   condition: {
@@ -92,6 +103,7 @@ export const buildDeliveryDetailsRule = () => ({
     failWhenUndefined: true,
   },
 });
+
 export const buildStep3Rule = () => ({
   effect: "SHOW",
   condition: {
@@ -106,6 +118,7 @@ export const buildStep3Rule = () => ({
     failWhenUndefined: true,
   },
 });
+
 export const buildStep4Rule = () => ({
   effect: "SHOW",
   condition: {
@@ -121,6 +134,7 @@ export const buildStep4Rule = () => ({
     failWhenUndefined: true,
   },
 });
+
 export const buildStep5Rule = () => ({
   effect: "SHOW",
   condition: {
@@ -165,6 +179,7 @@ export const buildStep5Rule = () => ({
     failWhenUndefined: true,
   },
 });
+
 export const buildResourceRule = (resourceType: ResourceType) => ({
   effect: "SHOW",
   condition: {
@@ -178,6 +193,7 @@ export const buildResourceRule = (resourceType: ResourceType) => ({
     },
   },
 });
+
 export const buildSelectionRule = (
   resourceType: ResourceType,
   propertyKey: MessageFieldPropertyKey,
@@ -199,6 +215,7 @@ export const buildSelectionRule = (
     },
   },
 });
+
 export const buildPreviewElements = (
   resourceType: ResourceType,
   propertyKey: MessageFieldPropertyKey,
@@ -206,9 +223,13 @@ export const buildPreviewElements = (
 ) =>
   attributes.map((attribute) => ({
     type: "Label",
-    text: `${attribute.name || attribute.apiName}: ${buildResourceBindingValue(resourceType, attribute.apiName)}`,
+    text: `${attribute.name || attribute.apiName}: ${buildResourceBindingValue(
+      resourceType,
+      attribute.apiName,
+    )}`,
     rule: buildSelectionRule(resourceType, propertyKey, attribute.apiName),
   }));
+
 export const buildEmptyAttributeRule = (resourceType: ResourceType) => ({
   effect: "SHOW",
   condition: {
@@ -222,47 +243,44 @@ export const buildEmptyAttributeRule = (resourceType: ResourceType) => ({
     },
   },
 });
+
 export const normalizeAttributes = (
   attributes: ArenaAttribute[],
 ): ArenaAttribute[] => {
   const byApiName = new Map<string, ArenaAttribute>();
+
   for (const attribute of attributes) {
     if (!attribute?.apiName) {
       continue;
     }
+
     if (!byApiName.has(attribute.apiName)) {
       byApiName.set(attribute.apiName, attribute);
     }
   }
+
   return Array.from(byApiName.values()).sort((left, right) => {
     const leftLabel = left.name || left.apiName;
     const rightLabel = right.name || right.apiName;
     return leftLabel.localeCompare(rightLabel);
   });
 };
+
 export const extractAttributes = (payload: unknown): ArenaAttribute[] => {
   if (
     payload &&
     typeof payload === "object" &&
     "results" in payload &&
-    Array.isArray(
-      (
-        payload as {
-          results?: unknown[];
-        }
-      ).results,
-    )
+    Array.isArray((payload as { results?: unknown[] }).results)
   ) {
-    return (
-      (
-        payload as {
-          results: ArenaAttribute[];
-        }
-      ).results ?? []
-    ).filter(Boolean);
+    return ((payload as { results: ArenaAttribute[] }).results ?? []).filter(
+      Boolean,
+    );
   }
+
   return [];
 };
+
 export const fetchStandardAttributes = async (
   client: Awaited<ReturnType<typeof createArenaClient>>,
   objectType: string,
@@ -270,6 +288,7 @@ export const fetchStandardAttributes = async (
   const response = await client.get(`/settings/${objectType}/attributes`);
   return normalizeAttributes(extractAttributes(response.data));
 };
+
 export const fetchQualityAttributes = async (
   client: Awaited<ReturnType<typeof createArenaClient>>,
 ): Promise<ArenaAttribute[]> => {
@@ -277,11 +296,13 @@ export const fetchQualityAttributes = async (
     client.get("/settings/qualityprocesses/attributes"),
     client.get("/settings/qualityprocesses/steps/attributes"),
   ]);
+
   return normalizeAttributes([
     ...extractAttributes(qualityResponse.data),
     ...extractAttributes(stepResponse.data),
   ]);
 };
+
 export const createSchema = (
   attributesByResource: Record<ResourceType, ArenaAttribute[]>,
 ): JsonFormSchema => ({
@@ -332,6 +353,7 @@ export const createSchema = (
     ),
   },
 });
+
 export const createUiSchema = (
   attributesByResource: Record<ResourceType, ArenaAttribute[]>,
 ) => ({

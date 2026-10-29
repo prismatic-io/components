@@ -1,4 +1,5 @@
 import { identitySetSchema, deleteResultSchema } from "./common";
+
 const plannerAssignmentSchema = {
   type: "object" as const,
   properties: {
@@ -8,6 +9,7 @@ const plannerAssignmentSchema = {
     orderHint: { type: "string" },
   },
 };
+
 export const plannerTaskSchema = {
   type: "object" as const,
   properties: {
@@ -54,6 +56,7 @@ export const plannerTaskSchema = {
   },
   required: ["id"],
 };
+
 export const plannerTaskCollectionSchema = {
   type: "object" as const,
   properties: {
@@ -63,6 +66,7 @@ export const plannerTaskCollectionSchema = {
   },
   required: ["value", "truncated"],
 };
+
 const plannerChecklistItemSchema = {
   type: "object" as const,
   properties: {
@@ -74,6 +78,7 @@ const plannerChecklistItemSchema = {
     lastModifiedDateTime: { type: "string", format: "date-time" },
   },
 };
+
 const plannerExternalReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -85,6 +90,7 @@ const plannerExternalReferenceSchema = {
     lastModifiedDateTime: { type: "string", format: "date-time" },
   },
 };
+
 export const plannerTaskDetailsSchema = {
   type: "object" as const,
   properties: {
@@ -106,16 +112,27 @@ export const plannerTaskDetailsSchema = {
   },
   required: ["id"],
 };
+
 export const listTasksInPlanOutputSchema = plannerTaskCollectionSchema;
+
 export const listTasksInBucketOutputSchema = plannerTaskCollectionSchema;
+
 export const listTasksForUserOutputSchema = plannerTaskCollectionSchema;
+
 export const getTaskOutputSchema = plannerTaskSchema;
+
 export const updateTaskOutputSchema = plannerTaskSchema;
+
 export const completeTaskOutputSchema = plannerTaskSchema;
+
 export const assignTaskOutputSchema = plannerTaskSchema;
+
 export const moveTaskToBucketOutputSchema = plannerTaskSchema;
+
 export const getTaskDetailsOutputSchema = plannerTaskDetailsSchema;
+
 export const updateTaskDetailsOutputSchema = plannerTaskDetailsSchema;
+
 export const createTaskOutputSchema = {
   type: "object" as const,
   properties: {
@@ -124,4 +141,5 @@ export const createTaskOutputSchema = {
   },
   required: ["task", "details"],
 };
+
 export const deleteTaskOutputSchema = deleteResultSchema;

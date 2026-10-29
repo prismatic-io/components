@@ -12,6 +12,7 @@ import {
   personNameSchema,
   resourceMetaResponseSchema,
 } from "./common";
+
 const personalContactSchema = {
   type: "object" as const,
   properties: {
@@ -26,6 +27,7 @@ const personalContactSchema = {
     links: linksSchema,
   },
 };
+
 const personalContactsResponseSchema = {
   type: "object" as const,
   properties: {
@@ -34,6 +36,7 @@ const personalContactsResponseSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 const personalContactEventContextSchema = {
   type: "object" as const,
   properties: {
@@ -51,10 +54,12 @@ const personalContactEventContextSchema = {
     },
   },
 };
+
 const personalContactOutputRegion = {
   type: "object" as const,
   properties: { personalContact: personalContactSchema },
 };
+
 const personalContactWriteEventSchema = {
   type: "object" as const,
   properties: {
@@ -75,6 +80,7 @@ const personalContactWriteEventSchema = {
     },
   },
 };
+
 const personalContactWriteResponseSchema = {
   type: "object" as const,
   properties: {
@@ -83,14 +89,17 @@ const personalContactWriteResponseSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 export const addPersonalContactOutputSchema = {
   type: "object" as const,
   properties: { ...personalContactWriteResponseSchema.properties },
 };
+
 export const updatePersonalContactOutputSchema = {
   type: "object" as const,
   properties: { ...personalContactWriteResponseSchema.properties },
 };
+
 const personalContactRemoveEventSchema = {
   type: "object" as const,
   properties: {
@@ -108,6 +117,7 @@ const personalContactRemoveEventSchema = {
     },
   },
 };
+
 export const deletePersonalContactOutputSchema = {
   type: "object" as const,
   properties: {
@@ -116,14 +126,17 @@ export const deletePersonalContactOutputSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 export const getPersonalContactOutputSchema = {
   type: "object" as const,
   properties: { ...personalContactsResponseSchema.properties },
 };
+
 export const listPersonalContactsOutputSchema = {
   type: "object" as const,
   properties: { ...personalContactsResponseSchema.properties },
 };
+
 export const getPersonalContactMetaOutputSchema = {
   type: "object" as const,
   properties: { ...resourceMetaResponseSchema.properties },

@@ -4,6 +4,7 @@ import { updateScriptExamplePayload } from "../../examplePayloads";
 import { updateScriptInputs } from "../../inputs";
 import type { Script } from "../../types";
 import { mergeDefined } from "../../util";
+
 export const updateScript = action({
   display: {
     label: "Update Script",

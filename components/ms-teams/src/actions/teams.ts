@@ -33,6 +33,7 @@ import {
   visibility,
 } from "../inputs";
 import { getUserPath, paginateResults } from "../utils";
+
 const listTeams = action({
   display: {
     label: "List Teams",
@@ -44,6 +45,7 @@ const listTeams = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(client, "/groups", params.fetchAll, {
       $filter:
         params.filter || "resourceProvisioningOptions/Any(x:x eq 'Team')",
@@ -52,6 +54,7 @@ const listTeams = action({
       $orderby: params.orderBy,
       $select: params.select,
     });
+
     return { data };
   },
   inputs: {
@@ -66,6 +69,7 @@ const listTeams = action({
   },
   examplePayload: listTeamsExamplePayload,
 });
+
 const listJoinedTeams = action({
   display: {
     label: "List Joined Teams",
@@ -77,6 +81,7 @@ const listJoinedTeams = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(
       client,
       `${getUserPath(params.userPrincipalName)}/joinedTeams`,
@@ -88,6 +93,7 @@ const listJoinedTeams = action({
         $select: params.select,
       },
     );
+
     return { data };
   },
   inputs: {
@@ -102,6 +108,7 @@ const listJoinedTeams = action({
   },
   examplePayload: listJoinedTeamsExamplePayload,
 });
+
 const listMembers = action({
   display: {
     label: "List Team Members",
@@ -116,6 +123,7 @@ const listMembers = action({
       timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(
       client,
       `/teams/${teamId}/members`,
@@ -127,6 +135,7 @@ const listMembers = action({
         $select: select,
       },
     );
+
     return { data };
   },
   inputs: {
@@ -141,6 +150,7 @@ const listMembers = action({
   },
   examplePayload: listMembersExamplePayload,
 });
+
 const removeMember = action({
   display: {
     label: "Remove Team Member",
@@ -152,6 +162,7 @@ const removeMember = action({
       timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(
       `/teams/${teamId}/members/${memberId}`,
     );
@@ -159,6 +170,7 @@ const removeMember = action({
   },
   inputs: { connection, teamId, memberId, timeout },
 });
+
 const getMember = action({
   display: {
     label: "Get Member",
@@ -176,6 +188,7 @@ const getMember = action({
   inputs: { connection, teamId, memberId, timeout },
   examplePayload: getMemberExamplePayload,
 });
+
 const archiveTeam = action({
   display: {
     label: "Archive Team",
@@ -192,6 +205,7 @@ const archiveTeam = action({
   },
   inputs: { connection, teamId, timeout },
 });
+
 const addMember = action({
   display: {
     label: "Add Team Member",
@@ -213,6 +227,7 @@ const addMember = action({
   examplePayload: addMemberExamplePayload,
   inputs: { connection, teamId, roles, userId, timeout },
 });
+
 const createTeam = action({
   display: {
     label: "Create Team",
@@ -240,6 +255,7 @@ const createTeam = action({
       timeout,
       context.debug.enabled,
     );
+
     const payload = {
       "template@odata.bind": `https://graph.microsoft.com/v1.0/teamsTemplates('standard')`,
       visibility: visibility,
@@ -280,6 +296,7 @@ const createTeam = action({
         showInTeamsSearchAndSuggestions: true,
       },
     };
+
     const { data } = await client.post("/teams", payload);
     return { data };
   },
@@ -298,6 +315,7 @@ const createTeam = action({
     timeout,
   },
 });
+
 const getTeam = action({
   display: {
     label: "Get Team",
@@ -314,6 +332,7 @@ const getTeam = action({
   },
   inputs: { connection, teamId, timeout },
 });
+
 const updateTeam = action({
   display: {
     label: "Update Team",
@@ -372,6 +391,7 @@ const updateTeam = action({
     timeout,
   },
 });
+
 const listTeamsApps = action({
   display: {
     label: "List Teams Apps",
@@ -404,6 +424,7 @@ const listTeamsApps = action({
     select,
   },
 });
+
 export default {
   listTeams,
   listJoinedTeams,

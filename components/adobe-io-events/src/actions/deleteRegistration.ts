@@ -9,6 +9,7 @@ import {
   registrationId,
   workspaceId,
 } from "../inputs";
+
 export const deleteRegistration = action({
   display: {
     label: "Delete Registration (Webhook/Journal)",
@@ -20,6 +21,7 @@ export const deleteRegistration = action({
     { connection, consumerOrgId, projectId, workspaceId, registrationId },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     try {
       const { data } = await client.delete(
         `/${consumerOrgId}/${projectId}/${workspaceId}/registrations/${registrationId}`,

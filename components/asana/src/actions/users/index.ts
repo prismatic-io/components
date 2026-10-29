@@ -3,6 +3,7 @@ import { getCurrentUser } from "./getCurrentUser";
 import { getUsers } from "./getUsers";
 import { listUsers } from "./listUsers";
 import { listUsersInTeam } from "./listUsersInTeam";
+
 export default {
   findUserByNameOrEmail,
   getCurrentUser,

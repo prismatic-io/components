@@ -14,11 +14,13 @@ import {
   toOptionalNumber,
   toOptionalString,
 } from "./util";
+
 const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 const cardId = input({
   label: "Card ID",
   type: "string",
@@ -29,6 +31,7 @@ const cardId = input({
   dataSource: "selectCard",
   clean: util.types.toString,
 });
+
 const cardTitle = input({
   label: "Card Title",
   type: "string",
@@ -38,6 +41,7 @@ const cardTitle = input({
   placeholder: "Enter a card title",
   clean: util.types.toString,
 });
+
 const cardContent = input({
   label: "Card Content",
   type: "string",
@@ -47,6 +51,7 @@ const cardContent = input({
   placeholder: "Enter card content",
   clean: util.types.toString,
 });
+
 const shareStatus = input({
   label: "Share Status",
   type: "string",
@@ -57,6 +62,7 @@ const shareStatus = input({
   placeholder: "Select a share status",
   clean: toOptionalString,
 });
+
 const collectionId = input({
   label: "Collection ID",
   type: "string",
@@ -67,6 +73,7 @@ const collectionId = input({
   dataSource: "selectCollection",
   clean: util.types.toString,
 });
+
 const folderId = input({
   label: "Folder ID",
   type: "string",
@@ -77,6 +84,7 @@ const folderId = input({
   placeholder: "Enter a folder ID",
   clean: util.types.toString,
 });
+
 const folderTitle = input({
   label: "Folder Title",
   type: "string",
@@ -86,6 +94,7 @@ const folderTitle = input({
   placeholder: "Enter a folder title",
   clean: util.types.toString,
 });
+
 const folderDescription = input({
   label: "Folder Description",
   type: "string",
@@ -95,6 +104,7 @@ const folderDescription = input({
   placeholder: "Enter a folder description",
   clean: toOptionalString,
 });
+
 const parentFolder = input({
   label: "Parent Folder ID",
   type: "string",
@@ -105,6 +115,7 @@ const parentFolder = input({
   placeholder: "Enter a parent folder ID",
   clean: toOptionalString,
 });
+
 const verificationStatus = input({
   label: "Verification Status",
   type: "string",
@@ -115,6 +126,7 @@ const verificationStatus = input({
   example: "VERIFIED",
   clean: toOptionalString,
 });
+
 const verificationReason = input({
   label: "Verification Reason",
   type: "string",
@@ -124,6 +136,7 @@ const verificationReason = input({
   placeholder: "Enter a verification reason",
   clean: toOptionalString,
 });
+
 const additionalProperties = input({
   label: "Additional Properties",
   type: "code",
@@ -141,6 +154,7 @@ const additionalProperties = input({
   ),
   clean: util.types.toObject,
 });
+
 const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -149,6 +163,7 @@ const fetchAll = input({
   comments: "Fetch all records using pagination.",
   clean: util.types.toBool,
 });
+
 const targetUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -158,6 +173,7 @@ const targetUrl = input({
   placeholder: "Enter webhook URL",
   clean: util.types.toString,
 });
+
 const webhookEventTypes = input({
   label: "Event Types",
   type: "string",
@@ -170,6 +186,7 @@ const webhookEventTypes = input({
     "Select which event types should trigger the webhook. <strong>Important:</strong> Max 10 event types can be selected.",
   clean: asStringArray,
 });
+
 const webhookActive = input({
   label: "Active",
   type: "boolean",
@@ -178,6 +195,7 @@ const webhookActive = input({
   comments: "Whether the webhook subscription is active.",
   clean: util.types.toBool,
 });
+
 const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -187,6 +205,7 @@ const webhookId = input({
   placeholder: "Enter webhook ID",
   clean: util.types.toString,
 });
+
 export const createCardInputs = {
   connection: connectionInput,
   cardTitle,
@@ -198,6 +217,7 @@ export const createCardInputs = {
     example: JSON.stringify({ verificationInterval: "90" }),
   },
 };
+
 export const updateCardInputs = {
   connection: connectionInput,
   cardId,
@@ -211,33 +231,40 @@ export const updateCardInputs = {
   },
   additionalProperties,
 };
+
 export const getCardInputs = {
   connection: connectionInput,
   cardId,
 };
+
 export const deleteCardInputs = {
   connection: connectionInput,
   cardId,
 };
+
 export const verifyCardInputs = {
   connection: connectionInput,
   cardId,
   verificationStatus,
   verificationReason,
 };
+
 export const unverifyCardInputs = {
   connection: connectionInput,
   cardId,
   verificationReason,
 };
+
 export const getCardFoldersInputs = {
   connection: connectionInput,
   cardId,
 };
+
 export const listCardVerifiersInputs = {
   connection: connectionInput,
   cardId,
 };
+
 export const createFolderInputs = {
   connection: connectionInput,
   folderTitle,
@@ -245,6 +272,7 @@ export const createFolderInputs = {
   folderDescription,
   parentFolder,
 };
+
 export const updateFolderInputs = {
   connection: connectionInput,
   folderId,
@@ -252,14 +280,17 @@ export const updateFolderInputs = {
   folderDescription,
   parentFolder,
 };
+
 export const getFolderInputs = {
   connection: connectionInput,
   folderId,
 };
+
 export const deleteFolderInputs = {
   connection: connectionInput,
   folderId,
 };
+
 export const getFolderItemsInputs = {
   connection: connectionInput,
   folderId,
@@ -268,6 +299,7 @@ export const getFolderItemsInputs = {
     comments: "Turn on to fetch more than 50 folders.",
   },
 };
+
 const searchTerms = input({
   label: "Search Terms",
   type: "string",
@@ -277,19 +309,23 @@ const searchTerms = input({
   placeholder: "Enter search terms",
   clean: util.types.toString,
 });
+
 export const searchFoldersInputs = {
   connection: connectionInput,
   searchTerms,
   collectionId: { ...collectionId, required: false, clean: toOptionalString },
 };
+
 export const getCollectionInputs = {
   connection: connectionInput,
   collectionId,
 };
+
 export const listCollectionGroupAccessInputs = {
   connection: connectionInput,
   collectionId,
 };
+
 const q = input({
   label: "Query",
   type: "string",
@@ -300,6 +336,7 @@ const q = input({
   placeholder: "Enter query language syntax",
   clean: toOptionalString,
 });
+
 const queryType = input({
   label: "Query Type",
   type: "string",
@@ -311,6 +348,7 @@ const queryType = input({
   placeholder: "Select a query type",
   clean: toOptionalString,
 });
+
 const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -320,6 +358,7 @@ const maxResults = input({
   placeholder: "Enter max results",
   clean: toOptionalNumber,
 });
+
 export const searchCardsInputs = {
   connection: connectionInput,
   q,
@@ -331,6 +370,7 @@ export const searchCardsInputs = {
     comments: "Turn on to fetch more than 50 cards.",
   },
 };
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -340,6 +380,7 @@ const showNewRecords = input({
     "When true, cards created since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -349,6 +390,7 @@ const showUpdatedRecords = input({
     "When true, cards updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -359,12 +401,14 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollCardsInputs = {
   connection: connectionInput,
   lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };
+
 const search = input({
   label: "Search",
   type: "string",
@@ -374,6 +418,7 @@ const search = input({
   placeholder: "Enter search term",
   clean: toOptionalString,
 });
+
 export const listFoldersInputs = {
   connection: connectionInput,
   q,
@@ -383,6 +428,7 @@ export const listFoldersInputs = {
     comments: "Turn on to fetch more than 110 folders.",
   },
 };
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -392,6 +438,7 @@ const lastName = input({
   placeholder: "Enter last name",
   clean: util.types.toString,
 });
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -401,6 +448,7 @@ const firstName = input({
   placeholder: "Enter first name",
   clean: util.types.toString,
 });
+
 const email = input({
   label: "Email",
   type: "string",
@@ -411,6 +459,7 @@ const email = input({
   placeholder: "Enter email address",
   clean: util.types.toString,
 });
+
 const groupId = input({
   label: "Group ID",
   type: "string",
@@ -421,6 +470,7 @@ const groupId = input({
   dataSource: "selectUserGroup",
   clean: util.types.toString,
 });
+
 export const addUserGroupMemberInputs = {
   connection: connectionInput,
   firstName,
@@ -428,6 +478,7 @@ export const addUserGroupMemberInputs = {
   email,
   groupId,
 };
+
 const memberId = input({
   label: "Member ID",
   type: "string",
@@ -437,17 +488,21 @@ const memberId = input({
   placeholder: "Enter member ID",
   clean: util.types.toString,
 });
+
 export const deleteUserGroupMemberInputs = {
   connection: connectionInput,
   groupId,
   memberId,
 };
+
 export const listUserGroupsInputs = {
   connection: connectionInput,
 };
+
 export const whoAmIInputs = {
   connection: connectionInput,
 };
+
 export const listTeamMembersInputs = {
   connection: connectionInput,
   search,
@@ -456,10 +511,12 @@ export const listTeamMembersInputs = {
     comments: "Turn on to fetch more than 50 members.",
   },
 };
+
 export const listCollectionsInputs = {
   connection: connectionInput,
   search,
 };
+
 const teamId = input({
   label: "Team ID",
   type: "string",
@@ -469,6 +526,7 @@ const teamId = input({
   placeholder: "Enter team ID",
   clean: util.types.toString,
 });
+
 const fromDate = input({
   label: "From Date",
   type: "string",
@@ -478,6 +536,7 @@ const fromDate = input({
   placeholder: "Enter start date (YYYY-MM-DD)",
   clean: toOptionalString,
 });
+
 const toDate = input({
   label: "To Date",
   type: "string",
@@ -487,6 +546,7 @@ const toDate = input({
   placeholder: "Enter end date (YYYY-MM-DD)",
   clean: toOptionalString,
 });
+
 export const getTeamAnalyticsInputs = {
   connection: connectionInput,
   teamId,
@@ -497,6 +557,7 @@ export const getTeamAnalyticsInputs = {
     comments: "Turn on to fetch more than 500 events.",
   },
 };
+
 const deliveryMode = input({
   label: "Delivery Mode",
   type: "string",
@@ -507,6 +568,7 @@ const deliveryMode = input({
   placeholder: "Select a delivery mode",
   clean: util.types.toString,
 });
+
 export const createWebhookSubscriptionInputs = {
   connection: connectionInput,
   targetUrl,
@@ -514,12 +576,14 @@ export const createWebhookSubscriptionInputs = {
   webhookActive,
   deliveryMode,
 };
+
 export const webhookInputs = {
   connection: connectionInput,
   webhookEventTypes,
   webhookActive,
   deliveryMode,
 };
+
 export const updateWebhookSubscriptionInputs = {
   connection: connectionInput,
   webhookId,
@@ -528,20 +592,25 @@ export const updateWebhookSubscriptionInputs = {
   webhookActive,
   deliveryMode,
 };
+
 export const deleteWebhookSubscriptionInputs = {
   connection: connectionInput,
   webhookId,
 };
+
 export const getWebhookSubscriptionInputs = {
   connection: connectionInput,
   webhookId,
 };
+
 export const listWebhookSubscriptionsInputs = {
   connection: connectionInput,
 };
+
 export const deleteAllWebhookSubscriptionsInputs = {
   connection: connectionInput,
 };
+
 const testData = input({
   label: "Test Data",
   type: "code",
@@ -560,11 +629,13 @@ const testData = input({
   ),
   clean: util.types.toObject,
 });
+
 export const testWebhookInputs = {
   connection: connectionInput,
   webhookId,
   testData,
 };
+
 const { debugRequest: _, ...destructuredInputs } = httpClientInputs;
 export const rawRequestInputs: {
   connection: typeof connectionInput;
@@ -577,28 +648,34 @@ export const rawRequestInputs: {
     example: "/cards",
   },
 };
+
 export const selectCardInputs = {
   connection: connectionInput,
   q,
   searchTerms: { ...searchTerms, required: false, clean: toOptionalString },
   queryType,
 };
+
 export const selectCollectionInputs = {
   connection: connectionInput,
   search,
 };
+
 export const selectFolderInputs = {
   connection: connectionInput,
   q,
   search,
 };
+
 export const selectMemberInputs = {
   connection: connectionInput,
   search,
 };
+
 export const selectUserGroupInputs = {
   connection: connectionInput,
 };
+
 export const selectWebhookSubscriptionInputs = {
   connection: connectionInput,
 };

@@ -1,4 +1,5 @@
 import type { BrowseResponse } from "./shared";
+
 export default interface ListLibraryFoldersResponse {
   library: {
     id: string;

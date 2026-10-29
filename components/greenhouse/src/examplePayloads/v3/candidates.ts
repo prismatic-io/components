@@ -1,4 +1,5 @@
 import type { V3Candidate } from "../../types/v3";
+
 const sampleCandidate: V3Candidate = {
   id: 53883394,
   first_name: "Jane",
@@ -17,12 +18,15 @@ const sampleCandidate: V3Candidate = {
   tags: ["Senior", "Remote"],
   custom_fields: {},
 };
+
 export const listCandidatesV3ExamplePayload = {
   data: [sampleCandidate],
 };
+
 export const getCandidateV3ExamplePayload = {
   data: sampleCandidate,
 };
+
 export const createCandidateV3ExamplePayload = {
   data: {
     candidate: sampleCandidate,
@@ -49,6 +53,7 @@ export const createCandidateV3ExamplePayload = {
     },
   },
 };
+
 export const editCandidateV3ExamplePayload = {
   data: {
     ...sampleCandidate,
@@ -56,6 +61,7 @@ export const editCandidateV3ExamplePayload = {
     updated_at: "2026-06-01T12:00:00.000Z",
   },
 };
+
 export const deleteCandidateV3ExamplePayload = {
   data: {
     id: 53883394,

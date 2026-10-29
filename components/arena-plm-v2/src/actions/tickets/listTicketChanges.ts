@@ -4,6 +4,7 @@ import { listTicketChangesExamplePayload } from "../../examplePayloads";
 import { listTicketChangesInputs } from "../../inputs";
 import { requestChangeListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listTicketChanges = action({
   display: {
     label: "List Ticket Changes",
@@ -19,9 +20,11 @@ export const listTicketChanges = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/tickets/${params.ticketGuid}/changes`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Ticket Changes");

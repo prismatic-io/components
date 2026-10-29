@@ -27,18 +27,21 @@ const filterRecord = {
     ],
   },
 };
+
 export const getFiltersExamplePayload = {
   data: {
     success: true,
     data: [filterRecord],
   },
 };
+
 export const getFilterExamplePayload = {
   data: {
     success: true,
     data: filterRecord,
   },
 };
+
 export const updateFilterExamplePayload = {
   data: {
     success: true,

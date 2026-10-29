@@ -11,6 +11,7 @@ import {
   merchantId,
   pagination,
 } from "./common";
+
 const view = input({
   label: "View",
   type: "string",
@@ -30,6 +31,7 @@ const view = input({
   ],
   required: false,
 });
+
 const label = input({
   label: "Label",
   type: "string",
@@ -40,6 +42,7 @@ const label = input({
   placeholder: "Enter Label ID",
   required: false,
 });
+
 const name = input({
   label: "Name",
   type: "string",
@@ -50,6 +53,7 @@ const name = input({
   placeholder: "Enter Account Name",
   required: false,
 });
+
 const accountId = input({
   label: "Account ID",
   type: "string",
@@ -61,6 +65,7 @@ const accountId = input({
   required: true,
   dataSource: "selectAccount",
 });
+
 const websiteUrl = input({
   label: "Website URL",
   type: "string",
@@ -70,6 +75,7 @@ const websiteUrl = input({
   placeholder: "Enter Website URL",
   required: true,
 });
+
 const adultContent = input({
   label: "Adult Content",
   type: "boolean",
@@ -77,6 +83,7 @@ const adultContent = input({
   comments: "When true, indicates the merchant sells adult content.",
   required: true,
 });
+
 const sellerId = input({
   label: "Seller ID",
   type: "string",
@@ -87,6 +94,7 @@ const sellerId = input({
   placeholder: "Enter Seller ID",
   required: true,
 });
+
 const cssId = input({
   label: "CSS ID",
   type: "string",
@@ -97,6 +105,7 @@ const cssId = input({
   placeholder: "Enter CSS ID",
   required: true,
 });
+
 const labelIds = input({
   label: "Label IDs",
   type: "string",
@@ -108,6 +117,7 @@ const labelIds = input({
   placeholder: "Enter Label IDs",
   clean: valueListInputClean,
 });
+
 export const productHighlights = input({
   label: "Product Highlights",
   type: "string",
@@ -119,6 +129,7 @@ export const productHighlights = input({
   placeholder: "Enter Product Highlights",
   clean: valueListInputClean,
 });
+
 const accountManagement = input({
   label: "Account Management",
   type: "string",
@@ -137,6 +148,7 @@ const accountManagement = input({
   ],
   required: false,
 });
+
 const automaticLabelIds = input({
   label: "Automatic Label IDs",
   type: "string",
@@ -148,6 +160,7 @@ const automaticLabelIds = input({
   placeholder: "Enter Automatic Label IDs",
   clean: valueListInputClean,
 });
+
 const users = input({
   label: "User",
   type: "code",
@@ -166,6 +179,7 @@ const users = input({
   ]),
   clean: jsonInputClean,
 });
+
 const youtubeChannelLinks = input({
   label: "YouTube Channel Links",
   type: "code",
@@ -180,6 +194,7 @@ const youtubeChannelLinks = input({
   ]),
   clean: jsonInputClean,
 });
+
 const googleMyBusinessLink = input({
   label: "Google My Business Link",
   type: "code",
@@ -193,6 +208,7 @@ const googleMyBusinessLink = input({
   }),
   clean: jsonInputClean,
 });
+
 const businessInformation = input({
   label: "Business Information",
   type: "code",
@@ -218,6 +234,7 @@ const businessInformation = input({
   }),
   clean: jsonInputClean,
 });
+
 const automaticImprovements = input({
   label: "Automatic Improvements",
   type: "code",
@@ -249,6 +266,7 @@ const automaticImprovements = input({
   }),
   clean: jsonInputClean,
 });
+
 const adsLinks = input({
   label: "Ads Links",
   type: "code",
@@ -263,6 +281,7 @@ const adsLinks = input({
   ]),
   clean: jsonInputClean,
 });
+
 const conversionSettings = input({
   label: "Conversion Settings",
   type: "code",
@@ -273,6 +292,7 @@ const conversionSettings = input({
   }),
   clean: jsonInputClean,
 });
+
 const accountWriteInputs = {
   name: {
     ...name,
@@ -296,22 +316,26 @@ const accountWriteInputs = {
   automaticLabelIds,
   conversionSettings,
 };
+
 export const createAccountInputs = {
   connectionInput,
   merchantId,
   ...accountWriteInputs,
 };
+
 export const deleteAccountInputs = {
   connectionInput,
   merchantId,
   accountId,
 };
+
 export const getAccountInputs = {
   connectionInput,
   merchantId,
   accountId,
   view,
 };
+
 export const listAccountsInputs = {
   connectionInput,
   merchantId,
@@ -321,12 +345,14 @@ export const listAccountsInputs = {
   label,
   name,
 };
+
 export const updateAccountInputs = {
   connectionInput,
   merchantId,
   accountId,
   ...accountWriteInputs,
 };
+
 export const selectAccountInputs = {
   connection: connectionInput,
   merchantId: {

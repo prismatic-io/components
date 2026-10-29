@@ -13,18 +13,17 @@ import type {
   PollingState,
   SendgridRecordChange,
 } from "../types/polling";
+
 export function computePollWindow(
   pollState: PollingState | undefined,
   nowMs: number = Date.now(),
   lookBackDate?: string,
-): {
-  fromIso: string;
-  toIso: string;
-} {
+): { fromIso: string; toIso: string } {
   const retentionFloorMs = nowMs - RETENTION_WINDOW_MS;
   const persistedMs = pollState?.lastPolledAt
     ? Date.parse(pollState.lastPolledAt)
     : Number.NaN;
+
   let fromMs: number;
   if (Number.isFinite(persistedMs)) {
     fromMs = Math.max(persistedMs, retentionFloorMs);
@@ -33,12 +32,14 @@ export function computePollWindow(
   } else {
     fromMs = retentionFloorMs;
   }
+
   const toMs = Math.min(fromMs + POLL_WINDOW_STEP_MS, nowMs - OVERLAP_MS);
   return {
     fromIso: new Date(fromMs).toISOString(),
     toIso: new Date(toMs).toISOString(),
   };
 }
+
 export async function fetchMessagesInWindow(
   client: Client,
   fromIso: string,
@@ -60,11 +61,7 @@ export async function fetchMessagesInWindow(
       truncated: records.length === MESSAGES_MAX_LIMIT,
     };
   } catch (error) {
-    const status = (
-      error as {
-        code?: number;
-      }
-    )?.code;
+    const status = (error as { code?: number })?.code;
     if (status === 401 || status === 403) {
       throw new Error(
         "SendGrid returned an authorization error while querying the Email Activity Feed. " +
@@ -76,6 +73,7 @@ export async function fetchMessagesInWindow(
     throw error;
   }
 }
+
 export function resolvePollingRecordChanges(
   data: PollingChangesObject | undefined,
 ): SendgridRecordChange[] {

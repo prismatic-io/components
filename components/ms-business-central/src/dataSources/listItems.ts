@@ -4,6 +4,7 @@ import { companyId } from "../inputs/accounts/getAccountsInputs";
 import { connectionInput, odataParams } from "../inputs/general";
 import type { Item, MultipleItemsResponse } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const listItems = dataSource({
   display: {
     label: "Select Items",
@@ -16,6 +17,7 @@ export const listItems = dataSource({
       `/companies(${companyId})/items`,
       { params: { $select: "id,displayName", $filter } },
     );
+
     return {
       result: toSortedPicklist(data.value, (item) => ({
         key: item.id,

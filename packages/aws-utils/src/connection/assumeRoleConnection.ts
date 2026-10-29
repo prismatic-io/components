@@ -1,4 +1,5 @@
 import type { DefaultConnectionDefinition } from "@prismatic-io/spectral";
+
 export const assumeRoleConnection: DefaultConnectionDefinition = {
   key: "awsAssumeRole",
   display: {

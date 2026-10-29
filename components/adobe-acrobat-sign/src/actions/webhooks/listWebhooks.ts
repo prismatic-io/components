@@ -4,6 +4,7 @@ import { getAdobeSignClient } from "../../client";
 import type { WebhookResponse } from "../../types";
 import { fetchAdobeSignResults } from "../../util";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -22,6 +23,7 @@ export const listWebhooks = action({
     },
   ) => {
     const client = getAdobeSignClient(connection, context.debug.enabled);
+
     const data = await fetchAdobeSignResults<
       WebhookResponse,
       "userWebhookList",
@@ -39,6 +41,7 @@ export const listWebhooks = action({
       },
       "userWebhookList",
     );
+
     return { data };
   },
   examplePayload: listWebhooksExamplePayload,

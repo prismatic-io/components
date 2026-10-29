@@ -5,6 +5,7 @@ import { WEBHOOK_CHANNEL_TYPE } from "../../constants";
 import { createDriveWebhookInputs } from "../../inputs";
 import { createDriveWebhookOutputSchema } from "../../outputSchemas";
 import { createDriveWebhookExamplePayload } from "../../examplePayloads";
+
 export const createDriveWebhook = action({
   display: {
     label: "Create Webhook for Drive",
@@ -39,9 +40,7 @@ export const createDriveWebhook = action({
   examplePerform: async (
     _context,
     { endpoint, expiration },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createDriveWebhookExamplePayload.data,
       address: endpoint,

@@ -5,6 +5,7 @@ import { deletePlanExamplePayload } from "../../examplePayloads";
 import { deleteWithEtag } from "../../utils";
 import { deletePlanInputs } from "../../inputs";
 import { deletePlanOutputSchema } from "../../outputSchemas";
+
 export const deletePlan = action({
   display: {
     label: "Delete Plan",
@@ -23,8 +24,7 @@ export const deletePlan = action({
       data: { success: true, id: planId, message: "Plan deleted successfully" },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deletePlanExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deletePlanExamplePayload,
   examplePayload: deletePlanExamplePayload,
 });

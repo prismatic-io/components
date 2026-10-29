@@ -4,6 +4,7 @@ import { getDealsTimelineInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getDealsTimelineExamplePayload } from "../../examplePayloads";
 import { getDealsTimelineOutputSchema } from "../../outputSchemas";
+
 export const getDealsTimeline = action({
   display: {
     label: "Get Deals Timeline",

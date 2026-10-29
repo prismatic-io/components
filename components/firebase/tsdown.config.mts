@@ -1,6 +1,8 @@
 import { createRequire } from "node:module";
 import { defineConfig } from "tsdown";
+
 const require = createRequire(import.meta.url);
+
 export default defineConfig({
   entry: { index: "src/index.ts" },
   format: "cjs",

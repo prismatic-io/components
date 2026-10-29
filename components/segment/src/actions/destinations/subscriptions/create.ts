@@ -12,6 +12,7 @@ import {
   trigger,
 } from "../../../inputs";
 import { getDestinationSubscriptionExamplePayload } from "../../../examplePayloads";
+
 export const createDestinationSubscription = action({
   display: {
     label: "Create Destination Subscription",

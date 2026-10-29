@@ -8,6 +8,7 @@ import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import type { WebhooksIntegration } from "../../types";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -32,6 +33,7 @@ export const createWebhook = action({
     },
   ) => {
     const client = createClient(connection);
+
     const response = await client.post<WebhooksIntegration>(
       WEBHOOKS_CONFIGURATION_PATH,
       {
@@ -42,6 +44,7 @@ export const createWebhook = action({
         payload: webhookPayload,
       },
     );
+
     return { data: response.data };
   },
   examplePerform: async (
@@ -53,9 +56,7 @@ export const createWebhook = action({
       webhookEncodeAs,
       webhookPayload,
     },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createWebhookExamplePayload.data,
       name: webhookName,

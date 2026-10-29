@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCodeInput } from "../actionUtils";
+
 export const invoiceId = input({
   label: "Invoice ID",
   placeholder: "Enter invoice ID",
@@ -10,6 +11,7 @@ export const invoiceId = input({
   dataSource: "selectInvoice",
   clean: util.types.toString,
 });
+
 export const data = input({
   label: "Data",
   placeholder: "Enter JSON data",

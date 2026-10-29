@@ -9,6 +9,7 @@ import {
   userType,
 } from "./common";
 import { fileName, includeDeleted, recursive } from "./files";
+
 export const folderActions = input({
   label: "Folder Actions",
   placeholder: "Enter a folder action",
@@ -26,10 +27,12 @@ export const folderActions = input({
     return folderActions.map((value) => ({ ".tag": value }));
   },
 });
+
 export const createFolderInputs = {
   dropboxConnection: connectionInput,
   path,
 };
+
 export const listChangesInputs = {
   dropboxConnection: connectionInput,
   directoryPath,
@@ -38,6 +41,7 @@ export const listChangesInputs = {
   userType,
   teamMemberId,
 };
+
 export const listFolderInputs = {
   dropboxConnection: connectionInput,
   path: directoryPath,
@@ -47,6 +51,7 @@ export const listFolderInputs = {
   userType,
   teamMemberId,
 };
+
 export const searchFoldersInputs = {
   dropboxConnection: connectionInput,
   query: {

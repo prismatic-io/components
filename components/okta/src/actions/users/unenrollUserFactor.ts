@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { unenrollUserFactorExamplePayload } from "../../examplePayloads/users";
 import { unenrollUserFactorInputs } from "../../inputs/users";
+
 export const unenrollUserFactor = action({
   display: {
     label: "Unenroll User Factor",
@@ -19,6 +20,7 @@ export const unenrollUserFactor = action({
         params: { removeRecoveryEnrollment },
       },
     );
+
     return {
       data: {
         id: factorId,

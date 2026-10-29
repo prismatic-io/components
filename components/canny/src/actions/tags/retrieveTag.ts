@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrieveTagExamplePayload } from "../../examplePayloads";
 import { retrieveTagInputs } from "../../inputs";
 import { retrieveTagOutputSchema } from "../../outputSchemas";
+
 export const retrieveTag = action({
   display: {
     label: "Retrieve Tag",

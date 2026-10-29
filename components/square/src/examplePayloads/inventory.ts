@@ -29,6 +29,7 @@ export const batchChangeInventoryExamplePayload = {
     ],
   },
 };
+
 export const batchRetrieveInventoryCountsExamplePayload = {
   data: {
     counts: [

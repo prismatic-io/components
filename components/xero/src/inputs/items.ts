@@ -9,6 +9,7 @@ import {
   purchaseTaxType,
   where,
 } from "./common";
+
 export const itemId = input({
   label: "Item ID",
   type: "string",
@@ -19,6 +20,7 @@ export const itemId = input({
   dataSource: "selectItem",
   clean: util.types.toString,
 });
+
 export const itemCode = input({
   label: "Item Code",
   type: "string",
@@ -28,6 +30,7 @@ export const itemCode = input({
   placeholder: "Enter item code",
   clean: util.types.toString,
 });
+
 export const purchaseDescription = input({
   label: "Purchase Description",
   type: "string",
@@ -37,6 +40,7 @@ export const purchaseDescription = input({
   placeholder: "Enter purchase description",
   clean: cleanStringInput,
 });
+
 export const purchaseUnitPrice = input({
   label: "Purchase Unit Price",
   type: "string",
@@ -46,6 +50,7 @@ export const purchaseUnitPrice = input({
   placeholder: "Enter purchase unit price",
   clean: cleanStringInput,
 });
+
 export const purchaseAccountCode = input({
   label: "Purchase Account Code",
   type: "string",
@@ -55,6 +60,7 @@ export const purchaseAccountCode = input({
   placeholder: "Enter purchase account code",
   clean: cleanStringInput,
 });
+
 export const salesTaxType = input({
   label: "Sales Tax Type",
   type: "string",
@@ -65,6 +71,7 @@ export const salesTaxType = input({
   placeholder: "Enter sales tax type",
   clean: cleanStringInput,
 });
+
 export const salesUnitPrice = input({
   label: "Sales Unit Price",
   type: "string",
@@ -74,6 +81,7 @@ export const salesUnitPrice = input({
   placeholder: "Enter sales unit price",
   clean: cleanStringInput,
 });
+
 export const salesAccountCode = input({
   label: "Sales Account Code",
   type: "string",
@@ -83,6 +91,7 @@ export const salesAccountCode = input({
   placeholder: "Enter sales account code",
   clean: cleanStringInput,
 });
+
 export const itemName = input({
   label: "Item Name",
   type: "string",
@@ -92,6 +101,7 @@ export const itemName = input({
   placeholder: "Enter item name",
   clean: cleanStringInput,
 });
+
 export const inventoryAssetAccountCode = input({
   label: "Inventory Asset Account Code",
   type: "string",
@@ -101,6 +111,7 @@ export const inventoryAssetAccountCode = input({
   placeholder: "Enter inventory asset account code",
   clean: cleanStringInput,
 });
+
 export const isSold = input({
   label: "Is Sold",
   type: "boolean",
@@ -109,6 +120,7 @@ export const isSold = input({
   placeholder: "Enter is sold",
   clean: util.types.toBool,
 });
+
 export const isPurchased = input({
   label: "Is Purchased",
   type: "boolean",
@@ -117,11 +129,13 @@ export const isPurchased = input({
   placeholder: "Enter is purchased",
   clean: util.types.toBool,
 });
+
 export const addNoteToItemInputs = {
   xeroConnection: connectionInput,
   itemId,
   notes,
 };
+
 export const createItemInputs = {
   xeroConnection: connectionInput,
   itemCode,
@@ -138,23 +152,28 @@ export const createItemInputs = {
   isSold,
   isPurchased,
 };
+
 export const deleteItemInputs = {
   xeroConnection: connectionInput,
   itemId,
 };
+
 export const getItemInputs = {
   xeroConnection: connectionInput,
   itemId,
 };
+
 export const getItemHistoryInputs = {
   xeroConnection: connectionInput,
   itemId,
 };
+
 export const listItemsInputs = {
   xeroConnection: connectionInput,
   modifiedAfter,
   where,
 };
+
 export const updateItemInputs = {
   xeroConnection: connectionInput,
   itemId,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { fetchAllData } from "../../util";
 import { defaultPaginationInputs, connection } from "../../inputs/general";
 import { listPriceListsExamplePayload } from "../../examplePayloads/priceLists";
+
 export const listPriceLists = action({
   display: {
     label: "List Price Lists",
@@ -31,6 +32,7 @@ export const listPriceLists = action({
       context,
       context.debug.enabled,
     );
+
     const data = await fetchAllData(
       client,
       "PriceLists",

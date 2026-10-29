@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 export const warehouseIdInput = input({
   label: "Warehouse ID",
   type: "string",
@@ -9,6 +10,7 @@ export const warehouseIdInput = input({
   dataSource: "selectWarehouses",
   clean: util.types.toString,
 });
+
 export const warehouseNameInput = input({
   label: "Warehouse Name",
   type: "string",
@@ -17,6 +19,7 @@ export const warehouseNameInput = input({
   placeholder: "Enter warehouse name",
   clean: cleanStringInput,
 });
+
 export const originAddressInput = input({
   label: "Origin Address",
   type: "jsonForm",
@@ -24,6 +27,7 @@ export const originAddressInput = input({
   comments:
     "The origin address. Shipping rates will be calculated from this address.",
 });
+
 export const returnAddressInput = input({
   label: "Return Address",
   type: "jsonForm",
@@ -31,6 +35,7 @@ export const returnAddressInput = input({
   comments:
     "The return address. If not specified, the origin address will be used.",
 });
+
 export const isDefaultWarehouseInput = input({
   label: "Is Default Warehouse",
   type: "boolean",
@@ -38,6 +43,7 @@ export const isDefaultWarehouseInput = input({
   comments: "When true, sets this as the default ship from location.",
   clean: util.types.toBool,
 });
+
 export const warehouseUpdateDataInput = input({
   label: "Warehouse Update Data",
   type: "code",

@@ -1,13 +1,16 @@
 import { URL, URLSearchParams } from "node:url";
 import type { PaginationMetadata } from "../types/pagination";
+
 function extractPaginationTokens(url?: string): {
   nextPageToken?: string;
   previousPageToken?: string;
 } {
   if (!url) return {};
+
   try {
     const urlObj = new URL(url);
     const params = new URLSearchParams(urlObj.search);
+
     return {
       nextPageToken: params.get("page_token") || undefined,
       previousPageToken: params.get("previous_token") || undefined,
@@ -16,14 +19,17 @@ function extractPaginationTokens(url?: string): {
     return {};
   }
 }
+
 export function extractMetadata(metadata?: PaginationMetadata): {
   nextPageToken?: string;
   previousPageToken?: string;
   totalCount?: number;
 } {
   if (!metadata) return {};
+
   const nextTokens = extractPaginationTokens(metadata.next);
   const prevTokens = extractPaginationTokens(metadata.prev);
+
   return {
     nextPageToken: nextTokens.nextPageToken,
     previousPageToken: prevTokens.previousPageToken,

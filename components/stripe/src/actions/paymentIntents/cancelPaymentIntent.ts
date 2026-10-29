@@ -4,6 +4,7 @@ import { cancelPaymentIntentExamplePayload } from "../../examplePayloads/payment
 import { cancelPaymentIntentInputs } from "../../inputs";
 import { paymentIntentOutputSchema } from "../../outputSchemas";
 import type Stripe from "stripe";
+
 export const cancelPaymentIntent = action({
   display: {
     label: "Cancel Payment Intent",
@@ -31,13 +32,12 @@ export const cancelPaymentIntent = action({
   examplePerform: async (
     _context,
     { paymentIntentId, cancellationReason },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const intent = cancelPaymentIntentExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...intent,
@@ -51,5 +51,6 @@ export const cancelPaymentIntent = action({
     type: "actionOutput",
     schema: paymentIntentOutputSchema,
   }),
+
   examplePayload: cancelPaymentIntentExamplePayload,
 });

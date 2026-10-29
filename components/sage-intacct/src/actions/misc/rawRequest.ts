@@ -6,6 +6,7 @@ import { rawRequestExamplePayload } from "../../examplePayloads";
 import { connection, explicitArray } from "../../inputs";
 import { getXmlBoilerplate } from "../../util";
 import { parseStringPromise } from "xml2js";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -28,6 +29,7 @@ export const rawRequest = action({
     },
   ) => {
     validateConnection(connection);
+
     const client = createHttpClient(connection, {
       debug: context.debug.enabled,
       retryConfig: {
@@ -39,18 +41,22 @@ export const rawRequest = action({
     });
     const action = data;
     const toSend = getXmlBoilerplate(action, connection);
+
     const cleanHeaders: Record<string, string> =
       util.types.keyValPairListToObject(headers);
+
     const { data: xmlResponse } = await client.post("/", toSend, {
       maxBodyLength: Number.POSITIVE_INFINITY,
       headers: cleanHeaders,
       responseType,
       timeout,
     });
+
     const responseData =
       responseType === "json"
         ? await parseStringPromise(xmlResponse, { explicitArray })
         : xmlResponse;
+
     return { data: responseData };
   },
   inputs: {

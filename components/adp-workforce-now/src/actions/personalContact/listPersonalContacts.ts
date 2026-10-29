@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listPersonalContactsExamplePayload } from "../../examplePayloads";
 import { listPersonalContactsInputs } from "../../inputs";
 import { listPersonalContactsOutputSchema } from "../../outputSchemas";
+
 export const listPersonalContacts = action({
   display: {
     label: "List Personal Contacts",
@@ -28,9 +29,8 @@ export const listPersonalContacts = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listPersonalContactsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listPersonalContactsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listPersonalContactsOutputSchema,

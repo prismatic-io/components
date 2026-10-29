@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createScriptExamplePayload } from "../../examplePayloads";
 import { createScriptInputs } from "../../inputs";
 import type { JamfCreateResponse } from "../../types";
+
 export const createScript = action({
   display: {
     label: "Create Script",

@@ -6,6 +6,7 @@ import { listFulfillmentsGqlOutputSchema } from "../../../outputSchemas";
 import type { Fulfillment } from "../../../types";
 import { fulfillmentMapper } from "../mappers/fulfillmentMapper";
 import listFulfillmentsQuery from "../queries/fulfillments/ListFulfillments.gql";
+
 export const listFulfillmentsGql = action({
   display: {
     label: "List Fulfillments",
@@ -18,14 +19,12 @@ export const listFulfillmentsGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      order: {
-        fulfillments: Fulfillment[];
-      };
-    } = await client.request(listFulfillmentsQuery, {
-      orderId,
-      first: 10000,
-    });
+    const data: { order: { fulfillments: Fulfillment[] } } =
+      await client.request(listFulfillmentsQuery, {
+        orderId,
+        first: 10000,
+      });
+
     return {
       data: {
         data: {

@@ -15,6 +15,7 @@ export const retrieveCategoryExamplePayload = {
     url: "https://your-company.canny.io/admin/board/feature-requests?category=example-category-name",
   },
 };
+
 export const listCategoriesExamplePayload = {
   data: {
     categories: [
@@ -37,7 +38,9 @@ export const listCategoriesExamplePayload = {
     hasMore: false,
   },
 };
+
 export const createCategoryExamplePayload = {
   data: { id: "553c3ef8b8cdcd1501baabcd" },
 };
+
 export const deleteCategoryExamplePayload = { data: "success" };

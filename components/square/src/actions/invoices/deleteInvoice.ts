@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient, getVersionFromConnection } from "../../client";
 import { deleteInvoiceExamplePayload } from "../../examplePayloads";
 import { deleteInvoiceInputs } from "../../inputs";
+
 export const deleteInvoice = action({
   display: {
     label: "Delete Invoice",
@@ -13,9 +14,11 @@ export const deleteInvoice = action({
       context.debug.enabled,
     );
     const version = getVersionFromConnection(squareConnection);
+
     const response = await client.delete(`/v2/invoices/${invoiceId}`, {
       params: { version },
     });
+
     return {
       data: response.data,
     };

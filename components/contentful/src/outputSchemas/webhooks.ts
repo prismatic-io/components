@@ -1,4 +1,5 @@
 import { emptyResultSchema, linkSchema } from "./shared";
+
 const webhookSchema = {
   type: "object" as const,
   properties: {
@@ -33,14 +34,20 @@ const webhookSchema = {
     url: { type: "string" },
   },
 };
+
 export const createWebhookOutputSchema = webhookSchema;
+
 export const getWebhookOutputSchema = webhookSchema;
+
 export const updateWebhookOutputSchema = webhookSchema;
+
 export const listWebhooksOutputSchema = {
   type: "array" as const,
   items: webhookSchema,
 };
+
 export const deleteWebhookOutputSchema = emptyResultSchema;
+
 export const deleteInstancedWebhooksOutputSchema = {
   type: "object" as const,
   properties: {

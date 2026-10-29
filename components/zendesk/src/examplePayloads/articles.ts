@@ -1,4 +1,5 @@
 import { paginationAttributes } from "./general";
+
 export const listArticlesRaw = {
   ...paginationAttributes,
   articles: [
@@ -31,7 +32,9 @@ export const listArticlesRaw = {
     },
   ],
 };
+
 const getArticleRaw = { article: listArticlesRaw.articles[0] };
+
 const createArticleRaw = {
   article: {
     author_id: 3465,
@@ -46,6 +49,7 @@ const createArticleRaw = {
     user_segment_id: 12,
   },
 };
+
 const updateArticleRaw = {
   article: {
     author_id: 3465,
@@ -60,11 +64,17 @@ const updateArticleRaw = {
     user_segment_id: 12,
   },
 };
+
 const associateAttachmentsInBulkToArticleRaw = "";
+
 export const associateAttachmentsInBulkToArticleExamplePayload = {
   data: associateAttachmentsInBulkToArticleRaw,
 };
+
 export const createArticleExamplePayload = { data: createArticleRaw };
+
 export const listArticlesExamplePayload = { data: listArticlesRaw };
+
 export const showArticleExamplePayload = { data: getArticleRaw };
+
 export const updateArticleExamplePayload = { data: updateArticleRaw };

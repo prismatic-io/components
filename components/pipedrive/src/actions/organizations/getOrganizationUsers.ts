@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getOrganizationUsersInputs } from "../../inputs";
 import { getOrganizationUsersExamplePayload } from "../../examplePayloads";
 import { getOrganizationUsersOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationUsers = action({
   display: {
     label: "Get Organization Users",

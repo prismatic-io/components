@@ -8,6 +8,7 @@ export const billDatasource = [
     label: "423 - OPEN",
   },
 ];
+
 export const vendorDatasource = [
   {
     key: "1",
@@ -18,6 +19,7 @@ export const vendorDatasource = [
     label: "Widgets Inc",
   },
 ];
+
 export const generalLedgerAccountDatasource = [
   {
     key: "1",
@@ -28,6 +30,9 @@ export const generalLedgerAccountDatasource = [
     label: "Widgets Inc - 6850",
   },
 ];
+
 export const departmentDatasource = vendorDatasource;
+
 export const businessEntityDatasource = vendorDatasource;
+
 export const locationDatasource = vendorDatasource;

@@ -21,6 +21,7 @@ import {
   getTaskId,
   getTeamId,
 } from "./common";
+
 const customFieldsCode = input({
   label: "Custom Fields",
   type: "code",
@@ -49,6 +50,7 @@ const customFieldsCode = input({
   required: false,
   clean: util.types.toString,
 });
+
 const getStartDateInt = (
   required: boolean,
   comments: string,
@@ -63,6 +65,7 @@ const getStartDateInt = (
     comments,
     clean: cleanNumber,
   });
+
 const getStartDateTime = (
   required: boolean,
   comments: string,
@@ -76,6 +79,7 @@ const getStartDateTime = (
     clean: util.types.toBool,
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
   });
+
 const getTags = (required: boolean, comments: string) =>
   input({
     label: "Tag",
@@ -86,6 +90,7 @@ const getTags = (required: boolean, comments: string) =>
     required,
     clean: cleanStringArray,
   });
+
 const getTaskName = <R extends boolean>(required: R, comments: string) =>
   input({
     label: "Name",
@@ -95,6 +100,7 @@ const getTaskName = <R extends boolean>(required: R, comments: string) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 const getParent = <R extends boolean>(required: R, comments: string) =>
   input({
     label: "Parent",
@@ -104,6 +110,7 @@ const getParent = <R extends boolean>(required: R, comments: string) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 const getLinksTo = (required: boolean, comments: string) =>
   input({
     label: "Links To",
@@ -113,6 +120,7 @@ const getLinksTo = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 const getTimeEstimate = (
   required: boolean,
   comments: string,
@@ -127,6 +135,7 @@ const getTimeEstimate = (
     ...(example?.length && { example }),
     clean: cleanNumber,
   });
+
 const getCheckRequiredCustomFields = (
   required: boolean,
   comments: string,
@@ -140,6 +149,7 @@ const getCheckRequiredCustomFields = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
     clean: util.types.toBool,
   });
+
 const getAssignees = (required: boolean, comments: string) =>
   input({
     label: "Assignee",
@@ -150,6 +160,7 @@ const getAssignees = (required: boolean, comments: string) =>
     required,
     clean: cleanNumberArray,
   });
+
 const getAddAssignees = (required: boolean, comments: string) =>
   input({
     label: "Add Assignee",
@@ -160,6 +171,7 @@ const getAddAssignees = (required: boolean, comments: string) =>
     required,
     clean: cleanNumberArray,
   });
+
 const getRemoveAssignees = (required: boolean, comments: string) =>
   input({
     label: "Remove Assignee",
@@ -170,6 +182,7 @@ const getRemoveAssignees = (required: boolean, comments: string) =>
     required,
     clean: cleanNumberArray,
   });
+
 const customFields = input({
   label: "Custom Fields",
   type: "string",
@@ -180,6 +193,7 @@ const customFields = input({
   required: false,
   clean: toKeyValuePairList,
 });
+
 const orderBy = input({
   label: "Order By",
   type: "string",
@@ -190,6 +204,7 @@ const orderBy = input({
   example: "created",
   clean: cleanString,
 });
+
 const reverse = input({
   label: "Reverse",
   type: "boolean",
@@ -198,6 +213,7 @@ const reverse = input({
   comments: "When true, tasks are displayed in reverse order.",
   clean: util.types.toBool,
 });
+
 const includeClosed = input({
   label: "Include Closed",
   type: "boolean",
@@ -207,6 +223,7 @@ const includeClosed = input({
     "When true, includes closed tasks in the results. By default, they are excluded.",
   clean: util.types.toBool,
 });
+
 const dueDateGt = input({
   label: "Due Date Greater Than",
   type: "string",
@@ -216,6 +233,7 @@ const dueDateGt = input({
   comments: "Filter by due date greater than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dueDateLt = input({
   label: "Due Date Less Than",
   type: "string",
@@ -225,6 +243,7 @@ const dueDateLt = input({
   comments: "Filter by due date less than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dateCreatedGt = input({
   label: "Date Created Greater Than",
   type: "string",
@@ -234,6 +253,7 @@ const dateCreatedGt = input({
   comments: "Filter by date created greater than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dateCreatedLt = input({
   label: "Date Created Less Than",
   type: "string",
@@ -243,6 +263,7 @@ const dateCreatedLt = input({
   comments: "Filter by date created less than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dateUpdatedGt = input({
   label: "Date Updated Greater Than",
   type: "string",
@@ -252,6 +273,7 @@ const dateUpdatedGt = input({
   comments: "Filter by date updated greater than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dateUpdatedLt = input({
   label: "Date Updated Less Than",
   type: "string",
@@ -261,6 +283,7 @@ const dateUpdatedLt = input({
   comments: "Filter by date updated less than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dateDoneGt = input({
   label: "Date Done Greater Than",
   type: "string",
@@ -270,6 +293,7 @@ const dateDoneGt = input({
   comments: "Filter by date done greater than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const dateDoneLt = input({
   label: "Date Done Less Than",
   type: "string",
@@ -279,6 +303,7 @@ const dateDoneLt = input({
   comments: "Filter by date done less than Unix time in milliseconds.",
   clean: cleanString,
 });
+
 const getSubTasks = (required: boolean, comments: string) =>
   input({
     label: "Include Subtasks",
@@ -288,6 +313,7 @@ const getSubTasks = (required: boolean, comments: string) =>
     comments,
     clean: util.types.toBool,
   });
+
 const markdownDescription = input({
   label: "Markdown Description",
   type: "string",
@@ -297,6 +323,7 @@ const markdownDescription = input({
   required: false,
   clean: cleanString,
 });
+
 const page = input({
   label: "Page",
   type: "string",
@@ -307,46 +334,55 @@ const page = input({
   default: "0",
   clean: util.types.toNumber,
 });
+
 const dueDate = getDueDateInt(
   false,
   "The task due date as a Unix timestamp in milliseconds.",
   "1508369194377",
 );
+
 const dueDateTime = getDueDateTime(
   false,
   "When true, the Due Date includes a time of day rather than only a date.",
   false,
 );
+
 const timeEstimate = getTimeEstimate(
   false,
   "The time estimate for the task, in milliseconds.",
   "8640000",
 );
+
 const startDate = getStartDateInt(
   false,
   "The task start date as a Unix timestamp in milliseconds.",
   "1567780450202",
 );
+
 const startDateTime = getStartDateTime(
   false,
   "When true, the Start Date includes a time of day rather than only a date.",
   false,
 );
+
 const notifyAll = getNotifyAll(
   false,
   "When true, sends notifications to everyone, including the creator of the task.",
   true,
 );
+
 const checkRequiredCustomFields = getCheckRequiredCustomFields(
   false,
   "When true, enforces required Custom Fields when creating the task. By default, they are ignored.",
   false,
 );
+
 const archivedFilter = getArchived(
   false,
   "When true, returns archived tasks.",
   false,
 );
+
 const schedule = structuredObjectInput({
   label: "Schedule",
   required: false,
@@ -354,6 +390,7 @@ const schedule = structuredObjectInput({
     "Start and due dates, whether each includes a time of day, and time estimate.",
   inputs: { startDate, startDateTime, dueDate, dueDateTime, timeEstimate },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -361,6 +398,7 @@ const additionalFields = structuredObjectInput({
     "Additional optional fields: includes Markdown Description, Notify All, and Check Required Custom Fields.",
   inputs: { markdownDescription, notifyAll, checkRequiredCustomFields },
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -377,6 +415,7 @@ const dateRangeFilters = structuredObjectInput({
     dateDoneLt,
   },
 });
+
 const filters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -389,6 +428,7 @@ const filters = structuredObjectInput({
     customFieldsCode,
   },
 });
+
 export const createTaskInputs = {
   connection: connectionInput,
   listId: getlistId(true, "The unique identifier for the List."),
@@ -427,6 +467,7 @@ export const createTaskInputs = {
   additionalFields,
   customFields,
 };
+
 export const deleteTaskInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
@@ -436,6 +477,7 @@ export const deleteTaskInputs = {
     "Only used when the custom_task_ids parameter is set to true.",
   ),
 };
+
 export const getTaskInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),
@@ -449,6 +491,7 @@ export const getTaskInputs = {
     "When true, includes subtasks in the results. By default, subtasks are excluded.",
   ),
 };
+
 export const listTasksInputs = {
   connection: connectionInput,
   listId: getlistId(
@@ -465,6 +508,7 @@ export const listTasksInputs = {
   tags: getTags(false, "Filter by tags. Add a tag to filter."),
   dateRangeFilters,
 };
+
 export const updateTaskInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),

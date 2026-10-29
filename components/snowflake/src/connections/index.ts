@@ -4,6 +4,7 @@ import {
   oauth2Connection,
 } from "@prismatic-io/spectral";
 import { CONNECTION_KEY } from "../constants";
+
 export const snowflakeOauthConnection = oauth2Connection({
   key: CONNECTION_KEY,
   display: {
@@ -74,6 +75,7 @@ export const snowflakeOauthConnection = oauth2Connection({
     },
   },
 });
+
 export const snowflakeKeyPairConnection = connection({
   key: "snowflakeKeyPairConnection",
   display: {
@@ -122,4 +124,5 @@ export const snowflakeKeyPairConnection = connection({
     },
   },
 });
+
 export default [snowflakeOauthConnection, snowflakeKeyPairConnection];

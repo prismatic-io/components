@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const shipmentMethodId = input({
   label: "Shipment Method ID",
   comments: "The ID of the shipment method to update.",

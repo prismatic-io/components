@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { rawRequestInputs } from "../../inputs";
 import { BaseUrl, validateConnection } from "../../util";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -16,6 +17,7 @@ export const rawRequest = action({
       ? JSON.parse(httpInputs.data as string)
       : {};
     const dataWithApiKey = JSON.stringify({ apiKey, ...existingBody });
+
     const { data } = await sendRawRequest(
       BaseUrl.Root,
       {
@@ -25,6 +27,7 @@ export const rawRequest = action({
       },
       { "Content-Type": "application/json" },
     );
+
     return { data };
   },
 });

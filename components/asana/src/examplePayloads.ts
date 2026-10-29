@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const webhookExamplePayload = {
   payload: {
     headers: {
@@ -69,6 +70,7 @@ export const webhookExamplePayload = {
   } as unknown as TriggerPayload,
   branch: "Notification",
 };
+
 export const workspaceProjectsTriggerExamplePayload = {
   payload: {
     headers: {
@@ -131,6 +133,7 @@ export const workspaceProjectsTriggerExamplePayload = {
   } as unknown as TriggerPayload,
   branch: "Notification",
 };
+
 export const projectTasksTriggerExamplePayload = {
   payload: {
     headers: {
@@ -231,6 +234,7 @@ export const projectTasksTriggerExamplePayload = {
   } as unknown as TriggerPayload,
   branch: "Notification",
 };
+
 export const storiesTriggerExamplePayload = {
   payload: {
     headers: {
@@ -309,6 +313,7 @@ export const storiesTriggerExamplePayload = {
   } as unknown as TriggerPayload,
   branch: "Notification",
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},
@@ -409,6 +414,7 @@ export const pollChangesTriggerExamplePayload = {
   } as unknown as TriggerPayload,
   polledNoChanges: false,
 };
+
 export const createTaskExamplePayload = {
   data: {
     data: {
@@ -440,6 +446,7 @@ export const createTaskExamplePayload = {
     },
   },
 };
+
 export const updateTaskExamplePayload = {
   data: {
     data: {
@@ -471,6 +478,7 @@ export const updateTaskExamplePayload = {
     },
   },
 };
+
 export const getTaskExamplePayload = {
   data: {
     data: {
@@ -499,6 +507,7 @@ export const getTaskExamplePayload = {
     },
   },
 };
+
 export const listTasksExamplePayload = {
   data: {
     data: [
@@ -539,9 +548,13 @@ export const listTasksExamplePayload = {
     ],
   },
 };
+
 export const deleteTaskExamplePayload = { data: { data: {} } };
+
 export const addTagToTaskExamplePayload = { data: { data: {} } };
+
 export const removeTagFromTaskExamplePayload = { data: { data: {} } };
+
 export const addFollowersToTaskExamplePayload = {
   data: {
     data: {
@@ -554,6 +567,7 @@ export const addFollowersToTaskExamplePayload = {
     },
   },
 };
+
 export const removeFollowersFromTaskExamplePayload = {
   data: {
     data: {
@@ -566,7 +580,9 @@ export const removeFollowersFromTaskExamplePayload = {
     },
   },
 };
+
 export const removeAssigneeFromTaskExamplePayload = { data: { data: {} } };
+
 export const listSubtasksExamplePayload = {
   data: {
     data: [
@@ -615,6 +631,7 @@ export const listSubtasksExamplePayload = {
     ],
   },
 };
+
 export const createProjectsExamplePayload = {
   data: {
     data: {
@@ -638,6 +655,7 @@ export const createProjectsExamplePayload = {
     },
   },
 };
+
 export const updateProjectExamplePayload = {
   data: {
     data: {
@@ -694,6 +712,7 @@ export const updateProjectExamplePayload = {
     },
   },
 };
+
 export const getProjectExamplePayload = {
   data: {
     data: {
@@ -718,6 +737,7 @@ export const getProjectExamplePayload = {
     },
   },
 };
+
 export const listProjectsExamplePayload = {
   data: {
     data: [
@@ -746,7 +766,9 @@ export const listProjectsExamplePayload = {
     ],
   },
 };
+
 export const deleteProjectsExamplePayload = { data: { data: {} } };
+
 export const addUserToProjectExamplePayload = {
   data: {
     data: {
@@ -770,6 +792,7 @@ export const addUserToProjectExamplePayload = {
     },
   },
 };
+
 export const addCustomFieldToProjectExamplePayload = {
   data: {
     data: {
@@ -824,9 +847,11 @@ export const addCustomFieldToProjectExamplePayload = {
     },
   },
 };
+
 export const removeCustomFieldFromProjectExamplePayload = {
   data: { data: {} },
 };
+
 export const createSectionExamplePayload = {
   data: {
     data: {
@@ -838,6 +863,7 @@ export const createSectionExamplePayload = {
     },
   },
 };
+
 export const updateSectionExamplePayload = {
   data: {
     data: {
@@ -849,6 +875,7 @@ export const updateSectionExamplePayload = {
     },
   },
 };
+
 export const getSectionExamplePayload = {
   data: {
     data: {
@@ -864,7 +891,9 @@ export const getSectionExamplePayload = {
     },
   },
 };
+
 export const deleteSectionExamplePayload = { data: { data: {} } };
+
 export const listSectionsExamplePayload = {
   data: {
     data: [
@@ -885,7 +914,9 @@ export const listSectionsExamplePayload = {
     ],
   },
 };
+
 export const addTaskToSectionExamplePayload = { data: { data: {} } };
+
 export const createTagExamplePayload = {
   data: {
     data: {
@@ -902,6 +933,7 @@ export const createTagExamplePayload = {
     },
   },
 };
+
 export const updateTagExamplePayload = {
   data: {
     data: {
@@ -916,6 +948,7 @@ export const updateTagExamplePayload = {
     },
   },
 };
+
 export const getTagExamplePayload = {
   data: {
     data: {
@@ -930,7 +963,9 @@ export const getTagExamplePayload = {
     },
   },
 };
+
 export const deleteTagExamplePayload = { data: { data: {} } };
+
 export const listTagsExamplePayload = {
   data: {
     data: [
@@ -946,6 +981,7 @@ export const listTagsExamplePayload = {
     ],
   },
 };
+
 export const listTagsInTaskExamplePayload = {
   data: {
     data: [
@@ -961,6 +997,7 @@ export const listTagsInTaskExamplePayload = {
     ],
   },
 };
+
 export const findTagByNameExamplePayload = {
   data: {
     gid: "1202467057873527",
@@ -970,6 +1007,7 @@ export const findTagByNameExamplePayload = {
     resource_type: "tag",
   },
 };
+
 export const createTeamExamplePayload = {
   data: {
     data: {
@@ -985,6 +1023,7 @@ export const createTeamExamplePayload = {
     },
   },
 };
+
 export const getTeamExamplePayload = {
   data: {
     data: {
@@ -1000,6 +1039,7 @@ export const getTeamExamplePayload = {
     },
   },
 };
+
 export const listTeamsExamplePayload = {
   data: {
     data: [
@@ -1009,6 +1049,7 @@ export const listTeamsExamplePayload = {
     ],
   },
 };
+
 export const addUserToTeamExamplePayload = {
   data: {
     data: {
@@ -1028,6 +1069,7 @@ export const addUserToTeamExamplePayload = {
     },
   },
 };
+
 export const findTeamByNameExamplePayload = {
   data: {
     gid: "1126509132283071",
@@ -1035,6 +1077,7 @@ export const findTeamByNameExamplePayload = {
     resource_type: "team",
   },
 };
+
 export const getUsersExamplePayload = {
   data: {
     data: {
@@ -1064,6 +1107,7 @@ export const getUsersExamplePayload = {
     },
   },
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     data: {
@@ -1093,6 +1137,7 @@ export const getCurrentUserExamplePayload = {
     },
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     data: [
@@ -1123,6 +1168,7 @@ export const listUsersExamplePayload = {
     ],
   },
 };
+
 export const listUsersInTeamExamplePayload = {
   data: {
     data: [
@@ -1139,6 +1185,7 @@ export const listUsersInTeamExamplePayload = {
     ],
   },
 };
+
 export const findUserByNameOrEmailExamplePayload = {
   data: {
     gid: "1126508793140155",
@@ -1154,6 +1201,7 @@ export const findUserByNameOrEmailExamplePayload = {
     ],
   },
 };
+
 export const getWorkspaceExamplePayload = {
   data: {
     data: {
@@ -1165,6 +1213,7 @@ export const getWorkspaceExamplePayload = {
     },
   },
 };
+
 export const listWorkspacesExamplePayload = {
   data: {
     data: [
@@ -1181,6 +1230,7 @@ export const listWorkspacesExamplePayload = {
     ],
   },
 };
+
 export const addUserExamplePayload = {
   data: {
     data: {
@@ -1203,6 +1253,7 @@ export const addUserExamplePayload = {
     },
   },
 };
+
 export const findWorkspaceByNameExamplePayload = {
   data: {
     gid: "1126509132283071",
@@ -1210,6 +1261,7 @@ export const findWorkspaceByNameExamplePayload = {
     resource_type: "workspace",
   },
 };
+
 const portfolioResponsePayload = {
   data: {
     data: {
@@ -1319,10 +1371,13 @@ const portfolioResponsePayload = {
     },
   },
 };
+
 export const createPortfolioExamplePayload = { ...portfolioResponsePayload };
 export const getPortfolioExamplePayload = { ...portfolioResponsePayload };
 export const updatePortfolioExamplePayload = { ...portfolioResponsePayload };
+
 export const deletePortfolioExamplePayload = { data: { data: {} } };
+
 export const listPortfoliosExamplePayload = {
   data: {
     data: [
@@ -1334,6 +1389,7 @@ export const listPortfoliosExamplePayload = {
     ],
   },
 };
+
 export const addUserToPortfolioExamplePayload = {
   data: {
     data: {
@@ -1382,6 +1438,7 @@ export const addUserToPortfolioExamplePayload = {
     },
   },
 };
+
 export const removeUserFromPortfolioExamplePayload = {
   data: {
     data: {
@@ -1400,12 +1457,15 @@ export const removeUserFromPortfolioExamplePayload = {
     },
   },
 };
+
 export const addCustomFieldToPortfolioExamplePayload = {
   data: { data: {} },
 };
+
 export const removeCustomFieldFromPortfolioExamplePayload = {
   data: { data: {} },
 };
+
 export const listPortfolioItemsExamplePayload = {
   data: {
     data: [
@@ -1417,8 +1477,11 @@ export const listPortfolioItemsExamplePayload = {
     ],
   },
 };
+
 export const removePortfolioItemExamplePayload = { data: { data: {} } };
+
 export const deleteWebhookExamplePayload = { data: {} };
+
 export const listWebhooksExamplePayload = {
   data: [
     {
@@ -1434,6 +1497,7 @@ export const listWebhooksExamplePayload = {
     },
   ],
 };
+
 export const getAttachmentExamplePayload = {
   data: {
     data: {
@@ -1455,7 +1519,9 @@ export const getAttachmentExamplePayload = {
     },
   },
 };
+
 export const deleteAttachmentExamplePayload = { data: { data: {} } };
+
 export const listAttachmentsExamplePayload = {
   data: {
     data: [
@@ -1468,6 +1534,7 @@ export const listAttachmentsExamplePayload = {
     ],
   },
 };
+
 export const attachFileToTaskExamplePayload = {
   data: {
     data: {
@@ -1478,6 +1545,7 @@ export const attachFileToTaskExamplePayload = {
     },
   },
 };
+
 export const createStatusUpdateExamplePayload = {
   data: {
     data: {
@@ -1509,7 +1577,9 @@ export const createStatusUpdateExamplePayload = {
     },
   },
 };
+
 export const deleteStatusExamplePayload = { data: { data: {} } };
+
 export const getStatusUpdateExamplePayload = {
   data: {
     data: {
@@ -1534,6 +1604,7 @@ export const getStatusUpdateExamplePayload = {
     },
   },
 };
+
 export const getStatusesForObjectExamplePayload = {
   data: {
     data: [
@@ -1566,6 +1637,7 @@ export const getStatusesForObjectExamplePayload = {
     ],
   },
 };
+
 export const getCustomFieldExamplePayload = {
   data: {
     data: {
@@ -1600,6 +1672,7 @@ export const getCustomFieldExamplePayload = {
     },
   },
 };
+
 export const listCustomFieldsExamplePayload = {
   data: {
     data: [
@@ -1681,12 +1754,15 @@ export const listCustomFieldsExamplePayload = {
     ],
   },
 };
+
 export const selectPortfolioExamplePayload = {
   result: [{ label: "Example Portfolio", key: "1202700984385401" }],
 };
+
 export const selectAttachmentExamplePayload = {
   result: [{ label: "Screenshot.png", key: "1202700984385601" }],
 };
+
 export const selectCustomFieldExamplePayload = {
   result: [{ label: "Priority", key: "1202467472002610" }],
 };

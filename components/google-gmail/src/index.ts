@@ -4,6 +4,7 @@ import actions from "./actions";
 import { gmailOauth, gmailServiceAccountAuth } from "./connections";
 import triggers from "./triggers";
 import dataSources from "./dataSources";
+
 export default component({
   key: "google-gmail",
   documentationUrl: "https://prismatic.io/docs/components/google-gmail/",

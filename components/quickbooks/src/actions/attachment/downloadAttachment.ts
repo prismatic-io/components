@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { attachableId, connectionInput, minorVersion } from "../../inputs";
+
 export const downloadAttachment = action({
   display: {
     label: "Download Attachment",

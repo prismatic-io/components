@@ -20,12 +20,14 @@ export const listOrdersResponse = [
     currency_symbol: "36",
   },
 ];
+
 export const getOrderInfoResponse = {
   id: "A1B2C3D4-E5F6-7890-A1B2C3D4E5F67890",
   dateCreated: "2015-06-01T08:36:18Z",
   status: "IN_PRODUCTION",
   orderReference: "NL0456",
 };
+
 export const getOrderResponse = [
   {
     id: "C3D4E5F6-A7B8-9012-C3D4-E5F6A7B89012",

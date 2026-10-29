@@ -1,4 +1,5 @@
 import { customFieldsSchema } from "./common";
+
 export const workspaceSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +33,7 @@ export const workspaceSchema = {
   required: ["id"],
   additionalProperties: false,
 };
+
 export const getWorkspaceOutputSchema = {
   type: "object" as const,
   properties: {
@@ -40,6 +42,7 @@ export const getWorkspaceOutputSchema = {
   required: ["workspace"],
   additionalProperties: false,
 };
+
 export const listWorkspacesOutputSchema = {
   type: "object" as const,
   properties: {

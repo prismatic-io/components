@@ -8,6 +8,7 @@ import {
   employeeId,
   startDate,
 } from "../../inputs";
+
 export const createUpdateEarning = action({
   display: {
     label: "Create/Update Earning",
@@ -35,6 +36,7 @@ export const createUpdateEarning = action({
   ) => {
     validateV2Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data } = await client.put(
       `/companies/${companyId}/employees/${employeeId}/earnings`,
       {

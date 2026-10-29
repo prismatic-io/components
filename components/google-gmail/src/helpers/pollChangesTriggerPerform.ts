@@ -12,6 +12,7 @@ import type {
 import { getStartHistoryId } from "./getStartHistoryId";
 import type { gmail_v1 } from "@googleapis/gmail";
 import { getMessagesDetails } from "./getMessagesDetails";
+
 export const pollChangesTriggerPerform = async (
   { polling, logger, debug }: ActionContext & PollingContext,
   payload: TriggerPayload,
@@ -30,24 +31,30 @@ export const pollChangesTriggerPerform = async (
     "No start history ID found to start polling, is your mailbox empty?";
   const pollState = polling.getState() as PollChangesTriggerState;
   const newLastPolledAt = new Date().toISOString();
+
   const isFirstPoll = !pollState.historyId;
+
   if (isFirstPoll && lookBackDate) {
     const epoch = Math.floor(new Date(lookBackDate).getTime() / 1000);
     const query = labelId
       ? `after:${epoch} label:${labelId}`
       : `after:${epoch}`;
+
     const listResult = await listAllMessages(
       client,
       { userId, q: query },
       true,
       getMessageDetails,
     );
+
     const messages = listResult.messages ?? [];
+
     const currentHistoryId = await getStartHistoryId(client, userId);
     polling.setState({
       historyId: currentHistoryId,
       lastPolledAt: newLastPolledAt,
     } as PollChangesTriggerState);
+
     if (messages.length === 0) {
       return {
         payload: {
@@ -57,10 +64,12 @@ export const pollChangesTriggerPerform = async (
         polledNoChanges: true,
       };
     }
+
     const syntheticHistory = messages.map((message) => ({
       id: message.id,
       messages: [message],
     }));
+
     return {
       payload: {
         ...payload,
@@ -71,6 +80,7 @@ export const pollChangesTriggerPerform = async (
       polledNoChanges: false,
     };
   }
+
   let startHistoryId = pollState.historyId;
   if (!startHistoryId) {
     startHistoryId = await getStartHistoryId(client, userId);
@@ -84,6 +94,7 @@ export const pollChangesTriggerPerform = async (
       });
     }
   }
+
   let data: gmail_v1.Schema$ListHistoryResponse;
   try {
     const { nextPageToken: _, ...restData } = await listAllHistory(
@@ -95,12 +106,11 @@ export const pollChangesTriggerPerform = async (
       },
       true,
     );
+
     data = restData;
   } catch (e) {
-    const error = e as {
-      code: number;
-      message: string;
-    };
+    const error = e as { code: number; message: string };
+
     if (error.code === 404) {
       if (debug.enabled) {
         logger.error(error.message);
@@ -110,6 +120,7 @@ export const pollChangesTriggerPerform = async (
       }
       reSyncRequired = true;
       startHistoryId = await getStartHistoryId(client, userId);
+
       if (!startHistoryId) {
         if (debug.enabled) {
           logger.warn(mailboxEmptyMessage);
@@ -119,6 +130,7 @@ export const pollChangesTriggerPerform = async (
           polledNoChanges: true,
         });
       }
+
       const { nextPageToken: _, ...restData } = await listAllHistory(
         client,
         {
@@ -133,9 +145,11 @@ export const pollChangesTriggerPerform = async (
       throw error;
     }
   }
+
   if (getMessageDetails) {
     if ((data.history ?? []).length > 0) {
       const newHistory = [];
+
       for (const history of data.history ?? []) {
         const detailedMessages = await getMessagesDetails(
           client,
@@ -166,6 +180,7 @@ export const pollChangesTriggerPerform = async (
   logger.debug(
     `Polling for changes from ${lastPolledAt} to ${newLastPolledAt}`,
   );
+
   polling.setState({
     historyId: data.historyId,
     lastPolledAt: newLastPolledAt,

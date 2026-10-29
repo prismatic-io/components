@@ -1,4 +1,5 @@
 export type AdditionalFieldsProfile = "subscriptions" | "predictive_analytics";
+
 export type FieldsAccount =
   | "test_account"
   | "contact_information"
@@ -18,6 +19,7 @@ export type FieldsAccount =
   | "preferred_currency"
   | "public_api_key"
   | "locale";
+
 export type FieldsCampaign =
   | "archived"
   | "audiences"
@@ -45,11 +47,13 @@ export type FieldsCampaign =
   | "tracking_options.is_tracking_clicks"
   | "tracking_options.is_tracking_opens"
   | "updated_at";
+
 export type FieldsEvent =
   | "timestamp"
   | "event_properties"
   | "datetime"
   | "uuid";
+
 export type FieldsImage =
   | "name"
   | "image_url"
@@ -57,8 +61,11 @@ export type FieldsImage =
   | "size"
   | "hidden"
   | "updated_at";
+
 export type FieldsList = "name" | "created" | "updated" | "opt_in_process";
+
 export type FieldsMetric = "name" | "created" | "updated" | "integration";
+
 export type FieldsProfile =
   | "email"
   | "phone_number"
@@ -115,6 +122,7 @@ export type FieldsProfile =
   | "predictive_analytics.average_order_value"
   | "predictive_analytics.churn_probability"
   | "predictive_analytics.expected_date_of_next_order";
+
 export type FieldsProfileEvent =
   | "email"
   | "phone_number"
@@ -140,6 +148,7 @@ export type FieldsProfileEvent =
   | "location.timezone"
   | "location.ip"
   | "properties";
+
 export type FieldsSegment =
   | "name"
   | "definition"
@@ -149,6 +158,7 @@ export type FieldsSegment =
   | "is_active"
   | "is_processing"
   | "is_starred";
+
 export type FieldsTemplate =
   | "name"
   | "editor_type"

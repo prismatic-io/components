@@ -8,6 +8,7 @@ import { deleteFile } from "./deleteFile";
 import { moveFile } from "./moveFile";
 import { searchFiles } from "./searchFiles";
 import { listExportTypes } from "./listExportTypes";
+
 export default {
   getFile,
   getFileMetadata,

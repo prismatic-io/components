@@ -3,12 +3,14 @@ import {
   advanceChangeEventCursor,
   resolveChangeEventCursor,
 } from "./changeEventPagination";
+
 const row = (id: number, changeDateTime: string) => ({
   changeEvent: {
     resourceName: `customers/1/changeEvents/${id}~0~0`,
     changeDateTime,
   },
 });
+
 describe("resolveChangeEventCursor", () => {
   const nowTime = "2026-03-15 12:00:00";
   const cursor: ChangeEventCursor = {
@@ -16,11 +18,14 @@ describe("resolveChangeEventCursor", () => {
     toTime: "2026-03-15 11:45:00",
     boundaryResourceNames: ["customers/1/changeEvents/3~0~0"],
   };
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-03-15T12:00:00Z"));
   });
+
   afterEach(() => vi.useRealTimers());
+
   test("with no drain in flight, opens a fresh window from lastChangeTime to now", () => {
     expect(
       resolveChangeEventCursor({
@@ -34,6 +39,7 @@ describe("resolveChangeEventCursor", () => {
       boundaryResourceNames: [],
     });
   });
+
   test("the incoming cursor wins over the mirrored one", () => {
     expect(
       resolveChangeEventCursor({
@@ -47,6 +53,7 @@ describe("resolveChangeEventCursor", () => {
       }),
     ).toEqual(cursor);
   });
+
   test("the mirrored cursor wins over lastChangeTime", () => {
     expect(
       resolveChangeEventCursor({
@@ -59,6 +66,7 @@ describe("resolveChangeEventCursor", () => {
       }),
     ).toEqual(cursor);
   });
+
   test("a malformed mirrored cursor is ignored in favor of lastChangeTime", () => {
     expect(
       resolveChangeEventCursor({
@@ -71,6 +79,7 @@ describe("resolveChangeEventCursor", () => {
       }).sinceTime,
     ).toBe("2026-03-15 11:00:00");
   });
+
   test("the lower bound is clamped to the change_event window", () => {
     const resolved = resolveChangeEventCursor({
       state: { lastChangeTime: "2025-01-01 00:00:00" },
@@ -80,12 +89,14 @@ describe("resolveChangeEventCursor", () => {
     expect(resolved.sinceTime > "2026-02-01 00:00:00").toBe(true);
   });
 });
+
 describe("advanceChangeEventCursor", () => {
   const cursor: ChangeEventCursor = {
     sinceTime: "2026-03-15 11:00:00",
     toTime: "2026-03-15 12:00:00",
     boundaryResourceNames: [],
   };
+
   test("a short page ends the drain and emits every row", () => {
     const rows = [row(1, "2026-03-15 11:10:00.1")];
     expect(advanceChangeEventCursor(rows, cursor, 2)).toEqual({
@@ -93,6 +104,7 @@ describe("advanceChangeEventCursor", () => {
       nextCursor: null,
     });
   });
+
   test("a full page resumes at the newest second, excluding the rows already emitted there", () => {
     const rows = [
       row(1, "2026-03-15 11:10:00.1"),
@@ -111,6 +123,7 @@ describe("advanceChangeEventCursor", () => {
       },
     });
   });
+
   test("rows already emitted at the boundary second are not emitted again", () => {
     const resumed = {
       ...cursor,
@@ -126,6 +139,7 @@ describe("advanceChangeEventCursor", () => {
       nextCursor: null,
     });
   });
+
   test("a full page that stays inside the boundary second accumulates its names", () => {
     const resumed = {
       ...cursor,
@@ -144,6 +158,7 @@ describe("advanceChangeEventCursor", () => {
       ],
     });
   });
+
   test("a full page of rows already emitted cannot advance, so it skips past that second with a warning", () => {
     const resumed = {
       ...cursor,
@@ -168,6 +183,7 @@ describe("advanceChangeEventCursor", () => {
     });
     expect(warn).toHaveBeenCalledTimes(1);
   });
+
   test("skipping past the last second of the window ends the drain", () => {
     const resumed = {
       ...cursor,

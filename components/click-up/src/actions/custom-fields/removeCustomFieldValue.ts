@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { removeCustomFieldValueExamplePayload } from "../../examplePayloads";
 import { removeCustomFieldValueInputs } from "../../inputs";
 import type { RemoveCustomFieldValueQueryParams } from "../../types";
+
 export const removeCustomFieldValue = action({
   display: {
     label: "Remove Custom Field Value",
@@ -23,6 +24,7 @@ export const removeCustomFieldValue = action({
     const { data } = await client.delete(`/task/${taskId}/field/${fieldId}`, {
       params,
     });
+
     return {
       data,
     };

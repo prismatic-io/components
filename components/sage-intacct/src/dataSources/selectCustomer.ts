@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { selectCustomerExamplePayload } from "../examplePayloads";
 import { selectCustomerInputs } from "../inputs";
 import { queryRecordsPaginated } from "../util";
+
 export const selectCustomer = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -15,15 +16,14 @@ export const selectCustomer = dataSource({
       ["*"],
       "",
     );
+
     return {
       result: customers.map(
         (customer: {
           RECORDNO: string;
           CUSTOMERID: string;
           NAME: string;
-          DISPLAYCONTACT: {
-            CONTACTNAME: string;
-          };
+          DISPLAYCONTACT: { CONTACTNAME: string };
         }): Element => {
           const label = customer?.DISPLAYCONTACT?.CONTACTNAME || customer.NAME;
           return {

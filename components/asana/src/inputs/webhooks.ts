@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalObject, validateId } from "../util";
 import { connectionInput, pagination, workspaceId } from "./common";
+
 const filter = input({
   label: "Filter",
   type: "code",
@@ -22,6 +23,7 @@ const filter = input({
     "The filter parameters for the webhook expressed as a JSON array. See the [Asana webhooks guide](https://developers.asana.com/docs/webhooks-guide) for available filter options.",
   clean: toOptionalObject,
 });
+
 const endpoint = input({
   label: "Webhook URL",
   comments:
@@ -32,6 +34,7 @@ const endpoint = input({
   required: true,
   clean: util.types.toString,
 });
+
 const webhookResourceId = input({
   label: "Resource ID",
   comments:
@@ -42,6 +45,7 @@ const webhookResourceId = input({
   required: true,
   clean: validateId,
 });
+
 const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -51,6 +55,7 @@ const webhookId = input({
   required: true,
   clean: validateId,
 });
+
 const showOnlyInstanceWebhooks = input({
   label: "Show Only Instance Webhooks",
   comments:
@@ -59,22 +64,26 @@ const showOnlyInstanceWebhooks = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const createWebhookInputs = {
   asanaConnection: connectionInput,
   endpoint,
   resourceId: webhookResourceId,
   filter,
 };
+
 export const deleteWebhookInputs = {
   asanaConnection: connectionInput,
   webhookId,
 };
+
 export const listWebhooksInputs = {
   asanaConnection: connectionInput,
   workspaceId,
   showOnlyInstanceWebhooks,
   pagination,
 };
+
 export const deleteInstanceWebhooksInputs = {
   asanaConnection: connectionInput,
   workspaceId,

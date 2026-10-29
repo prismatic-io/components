@@ -7,13 +7,16 @@ import { arenaApiKey } from "../connections";
 import { listQualityProcessStepAttributesExamplePayload } from "../examplePayloads";
 import { createTestContext } from "../tests/testContext";
 import { notificationJsonForm } from "./notificationJsonForm";
+
 const ARENA_HOST = "https://arena.example.com";
 const API = "/v1";
+
 const ITEM_ENDPOINT = `${API}/settings/items/attributes`;
 const CHANGE_ENDPOINT = `${API}/settings/changes/attributes`;
 const REQUEST_ENDPOINT = `${API}/settings/requests/attributes`;
 const QUALITY_ENDPOINT = `${API}/settings/qualityprocesses/attributes`;
 const QUALITY_STEP_ENDPOINT = `${API}/settings/qualityprocesses/steps/attributes`;
+
 const itemAttributesStub = {
   results: [
     { guid: "1AT11AT11AT11AT11AT11AT1", apiName: "name", name: "Name" },
@@ -38,7 +41,9 @@ const qualityAttributesStub = {
   ],
   count: 1,
 };
+
 const EMPTY = { results: [], count: 0 };
+
 const mockAttributeEndpoints = (bodies: {
   item: unknown;
   change: unknown;
@@ -52,6 +57,7 @@ const mockAttributeEndpoints = (bodies: {
   nock(ARENA_HOST).get(QUALITY_ENDPOINT).reply(200, bodies.quality);
   nock(ARENA_HOST).get(QUALITY_STEP_ENDPOINT).reply(200, bodies.qualityStep);
 };
+
 const params = () => ({
   connection: createConnection(arenaApiKey, {
     baseUrl: "custom",
@@ -60,13 +66,16 @@ const params = () => ({
     timeout: "3000",
   }),
 });
+
 describe("notificationJsonForm", () => {
   afterEach(() => {
     nock.cleanAll();
   });
+
   afterAll(() => {
     nock.restore();
   });
+
   it("returns the schema, uiSchema and data triple a jsonForm requires", async () => {
     mockAttributeEndpoints({
       item: itemAttributesStub,
@@ -75,11 +84,13 @@ describe("notificationJsonForm", () => {
       quality: qualityAttributesStub,
       qualityStep: listQualityProcessStepAttributesExamplePayload.data,
     });
+
     const { result } = await invokeDataSource(
       notificationJsonForm,
       params(),
       createTestContext(),
     );
+
     expect(result).toEqual(
       expect.objectContaining({
         schema: expect.any(Object),
@@ -87,6 +98,7 @@ describe("notificationJsonForm", () => {
         data: expect.any(Object),
       }),
     );
+
     expect(result.data).toEqual({
       notificationEnabled: true,
       deliveryChannel: null,
@@ -98,10 +110,9 @@ describe("notificationJsonForm", () => {
       qualityMessageFields: [],
       requestMessageFields: [],
     });
+
     const properties = (
-      result.schema as {
-        properties: Record<string, unknown>;
-      }
+      result.schema as { properties: Record<string, unknown> }
     ).properties;
     expect(properties.itemMessageFields).toMatchObject({
       type: "array",
@@ -122,6 +133,7 @@ describe("notificationJsonForm", () => {
       },
     });
   });
+
   it("still builds the form when no endpoint returns any attribute", async () => {
     mockAttributeEndpoints({
       item: EMPTY,
@@ -130,15 +142,15 @@ describe("notificationJsonForm", () => {
       quality: EMPTY,
       qualityStep: EMPTY,
     });
+
     const { result } = await invokeDataSource(
       notificationJsonForm,
       params(),
       createTestContext(),
     );
+
     const properties = (
-      result.schema as {
-        properties: Record<string, unknown>;
-      }
+      result.schema as { properties: Record<string, unknown> }
     ).properties;
     expect(properties.itemMessageFields).toEqual({
       type: "array",
@@ -149,6 +161,7 @@ describe("notificationJsonForm", () => {
     });
     expect(result.data).toMatchObject({ itemMessageFields: [] });
   });
+
   it("propagates an HTTP failure instead of returning a partial form", async () => {
     nock(ARENA_HOST).get(ITEM_ENDPOINT).reply(200, itemAttributesStub);
     nock(ARENA_HOST).get(CHANGE_ENDPOINT).reply(200, changeAttributesStub);
@@ -159,6 +172,7 @@ describe("notificationJsonForm", () => {
     nock(ARENA_HOST)
       .get(QUALITY_STEP_ENDPOINT)
       .reply(200, listQualityProcessStepAttributesExamplePayload.data);
+
     await expect(
       invokeDataSource(notificationJsonForm, params(), createTestContext()),
     ).rejects.toThrow();

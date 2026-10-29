@@ -1,6 +1,8 @@
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { connection } from "./common";
+
 const { debugRequest: _, ...noDebugRawRequestInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   ...noDebugRawRequestInputs,
   url: {
@@ -10,5 +12,6 @@ export const rawRequestInputs = {
     example: "/hr/v2/workers",
     placeholder: "/hr/v2/workers",
   },
+
   connection,
 };

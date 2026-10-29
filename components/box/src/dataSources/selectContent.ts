@@ -4,6 +4,7 @@ import { FILE_TYPE, FOLDER_TYPE } from "../constants";
 import { selectContentExamplePayload } from "../examplePayloads";
 import { selectContentInputs } from "../inputs";
 import { getFolderEntries, getPathEntries } from "../util";
+
 export const selectContent = dataSource({
   display: {
     label: "Select File or Folder",
@@ -15,10 +16,13 @@ export const selectContent = dataSource({
       boxConnection: params.boxConnection,
     });
     const pathEntries = await getPathEntries(client, "/");
+
     const { id, type, name } = pathEntries.slice(-1)[0];
+
     if (type !== FOLDER_TYPE) {
       throw Error(`'${name}' is not a folder`);
     }
+
     let allEntries = await getFolderEntries({
       client,
       id,
@@ -26,6 +30,7 @@ export const selectContent = dataSource({
       marker: util.types.toString(params.marker) || undefined,
       offset: util.types.toInt(params.offset) || undefined,
     });
+
     switch (params.contentType) {
       case FILE_TYPE:
         allEntries = allEntries.filter((entry) => entry.type === FILE_TYPE);

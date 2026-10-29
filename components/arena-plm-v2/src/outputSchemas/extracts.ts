@@ -23,10 +23,12 @@ export const createExtractOutputSchema = {
     },
   },
 };
+
 export const deleteExtractOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
 };
+
 export const downloadExtractRunFileContentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -37,6 +39,7 @@ export const downloadExtractRunFileContentOutputSchema = {
   },
   required: ["content", "contentType", "filename", "size"],
 };
+
 export const extractSchema = {
   type: "object" as const,
   properties: {
@@ -56,6 +59,7 @@ export const extractSchema = {
     notifications: { type: "string" },
   },
 };
+
 export const runFileAssociationSchema = {
   type: "object" as const,
   properties: {
@@ -130,6 +134,7 @@ export const runFileAssociationSchema = {
     guid: { type: "string" },
   },
 };
+
 export const listExtractRunFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -137,6 +142,7 @@ export const listExtractRunFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const runSchema = {
   type: "object" as const,
   properties: {
@@ -168,6 +174,7 @@ export const runSchema = {
     },
   },
 };
+
 export const listExtractRunsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -175,6 +182,7 @@ export const listExtractRunsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listExtractsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -182,6 +190,7 @@ export const listExtractsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const updateExtractOutputSchema = {
   type: "object" as const,
   properties: {

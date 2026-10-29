@@ -4,6 +4,7 @@ import {
   fetchAllKnowledgeRecords,
   getKnowledgeManagementApiClient,
 } from "../../util";
+
 export const listFeaturedKnowledgeArticles = action({
   display: {
     label: "List Featured Knowledge Articles",
@@ -28,6 +29,7 @@ export const listFeaturedKnowledgeArticles = action({
       apiVersionInput,
       context.debug.enabled,
     );
+
     if (fetchAll) {
       const data = await fetchAllKnowledgeRecords(
         client,
@@ -40,6 +42,7 @@ export const listFeaturedKnowledgeArticles = action({
       );
       return { data };
     }
+
     const { data } = await client.get("/knowledge/articles/featured", {
       params: {
         fields: filters.fields,
@@ -51,9 +54,7 @@ export const listFeaturedKnowledgeArticles = action({
     });
     return { data: data.result };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: [] },
   }),
   inputs: listFeaturedKnowledgeArticlesInputs,

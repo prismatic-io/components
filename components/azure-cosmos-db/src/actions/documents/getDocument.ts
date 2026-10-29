@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { getDocumentInputs } from "../../inputs";
 import { getDocumentExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const getDocument = action({
   display: {
     label: "Get Document",
@@ -13,6 +14,7 @@ export const getDocument = action({
     { connection, databaseId, collectionId, documentId, partitionKey },
   ) => {
     const resourceLink = `dbs/${databaseId}/colls/${collectionId}/docs/${documentId}`;
+
     const client = createCosmosDbClient({
       connection,
       verb: HttpVerb.GET,
@@ -24,7 +26,9 @@ export const getDocument = action({
     if (partitionKey) {
       headers["x-ms-documentdb-partitionkey"] = `["${partitionKey}"]`;
     }
+
     const { data } = await client.get(`/${resourceLink}`, { headers });
+
     return {
       data,
     };

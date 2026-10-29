@@ -3,6 +3,7 @@ import { executeXmlRequest, handleSageError } from "../../util";
 import { createBillExamplePayload } from "../../examplePayloads";
 import { createBillInputs } from "../../inputs";
 import { createBillOutputSchema } from "../../outputSchemas";
+
 export const createBill = action({
   display: {
     label: "Create Bill",
@@ -51,12 +52,15 @@ export const createBill = action({
             </APBILLITEMS>
         </APBILL>
     </create>`;
+
     const responseFromSage = await executeXmlRequest(
       connection,
       action,
       context.debug.enabled,
     );
+
     handleSageError(responseFromSage);
+
     return {
       data: responseFromSage,
     };

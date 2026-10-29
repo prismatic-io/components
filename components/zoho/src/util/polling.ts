@@ -17,18 +17,17 @@ import type {
   PollingState,
 } from "../types";
 import { toZohoTimestamp } from "./general";
+
 const REJECTED_PAGE_TOKEN_CODES = [
   "EXPIRED_VALUE",
   "TOKEN_BOUND_DATA_MISMATCH",
 ];
+
 export const resolvePollingStart = (
   state: PollingState,
   lookBackDate: string | undefined,
   now: Date,
-): {
-  sinceDate: Date;
-  isBackfill: boolean;
-} => {
+): { sinceDate: Date; isBackfill: boolean } => {
   const held = state.lastPolledAt ?? state.lastUpdated;
   return {
     sinceDate: held ? new Date(held) : new Date(lookBackDate || now),
@@ -36,15 +35,12 @@ export const resolvePollingStart = (
       state.backfillActive === true || (!held && Boolean(lookBackDate)),
   };
 };
+
 export const resolveCRMStream = (
   state: CRMPollingState,
   incoming: CRMPollingCursor | undefined,
   now: Date,
-): {
-  pageToken?: string;
-  streamStartedAt: Date;
-  restartedStream: boolean;
-} => {
+): { pageToken?: string; streamStartedAt: Date; restartedStream: boolean } => {
   const held = incoming ?? state;
   const resumable = Boolean(held.pageToken) && Boolean(held.streamStartedAt);
   return {
@@ -53,6 +49,7 @@ export const resolveCRMStream = (
     restartedStream: resumable && held.restartedStream === true,
   };
 };
+
 export const fetchCRMStreamWindow = async (
   context: ActionContext,
   {
@@ -87,27 +84,17 @@ export const fetchCRMStreamWindow = async (
     };
     try {
       const { data } = await client.get(`/${recordType}`, { params, headers });
-      return data as {
-        data: CRMRecord[];
-        info?: {
-          next_page_token?: string;
-        };
-      };
+      return data as { data: CRMRecord[]; info?: { next_page_token?: string } };
     } catch (error) {
       if (
-        (
-          error as {
-            response?: {
-              status?: number;
-            };
-          }
-        )?.response?.status === 304
+        (error as { response?: { status?: number } })?.response?.status === 304
       ) {
         return { data: [] };
       }
       throw error;
     }
   };
+
   let token = pageToken;
   let held = Boolean(pageToken);
   let restarted = false;
@@ -118,15 +105,8 @@ export const fetchCRMStreamWindow = async (
       body = await fetchPage(token);
     } catch (error) {
       if (!token || !isRejectedPageToken(error)) throw error;
-      const code = (
-        error as {
-          response: {
-            data: {
-              code: string;
-            };
-          };
-        }
-      ).response.data.code;
+      const code = (error as { response: { data: { code: string } } }).response
+        .data.code;
       if (!held || (restartedStream && code !== "EXPIRED_VALUE")) {
         throw new Error(
           `Zoho rejected the page_token ${held ? "of a stream that was already restarted" : "issued in this poll"} (${code}); the continuation request parameters may differ from the first request`,
@@ -148,6 +128,7 @@ export const fetchCRMStreamWindow = async (
   }
   return { records, nextPageToken: token, restarted };
 };
+
 export const buildCRMPollingCursor = (
   pageToken: string | undefined,
   streamStartedAt: Date,
@@ -160,6 +141,7 @@ export const buildCRMPollingCursor = (
         ...(restartedStream ? { restartedStream } : {}),
       }
     : null;
+
 export const buildCRMPollingState = (
   next: CRMPollingCursor | null,
   streamStartedAt: Date,
@@ -170,6 +152,7 @@ export const buildCRMPollingState = (
   lastPolledAt: (next ? sinceDate : streamStartedAt).toISOString(),
   ...(isBackfill && next ? { backfillActive: true } : {}),
 });
+
 export const resolveCRMRecordChanges = (
   data: CRMChangesObject | undefined,
 ): CRMRecordChange[] => {
@@ -183,6 +166,7 @@ export const resolveCRMRecordChanges = (
     ),
   ];
 };
+
 export const resolveBooksRecordChanges = (
   data: BooksChangesObject | undefined,
 ): BooksRecordChange[] => {
@@ -196,16 +180,10 @@ export const resolveBooksRecordChanges = (
     ),
   ];
 };
+
 export const isRejectedPageToken = (error: unknown): boolean => {
   const response = (
-    error as {
-      response?: {
-        status?: number;
-        data?: {
-          code?: string;
-        };
-      };
-    }
+    error as { response?: { status?: number; data?: { code?: string } } }
   )?.response;
   return (
     response?.status === 400 &&

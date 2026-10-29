@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { selectWebhookEventTypeExamplePayload } from "../examplePayloads";
 import { WEBHOOK_EVENT_TYPES } from "../constants";
+
 export const selectWebhookEventType = dataSource({
   display: {
     label: "Select Webhook Event Type",

@@ -1,6 +1,7 @@
 import FormData from "form-data";
 import { MULTIPART_JSON_PART_NAME } from "../constants";
 import type { MultipartBody, MultipartFile } from "../types";
+
 export const createMultipartBody = (
   jsonData: Record<string, unknown>,
   file?: MultipartFile,

@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { incidentEvents, serviceEvents } from "../constants";
 import { toOptionalString, toRequiredStringList } from "../util";
 import { createWebhookExample, updateWebhookExample } from "./examples";
+
 export const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -11,6 +12,7 @@ export const webhookId = input({
   placeholder: "Enter a webhook ID",
   comments: "The unique identifier for the webhook.",
 });
+
 export const incidentEventsInput = input({
   label: "Incident Events",
   type: "string",
@@ -20,6 +22,7 @@ export const incidentEventsInput = input({
   comments: "The incident events that trigger the webhook.",
   clean: toRequiredStringList,
 });
+
 export const webhookDescription = input({
   label: "Webhook Description",
   type: "string",
@@ -29,6 +32,7 @@ export const webhookDescription = input({
   comments: "A descriptive label used to identify the webhook.",
   clean: util.types.toString,
 });
+
 export const filterId = input({
   label: "Filter ID",
   type: "string",
@@ -38,6 +42,7 @@ export const filterId = input({
   comments: "The unique identifier of the object used as the filter.",
   clean: util.types.toString,
 });
+
 export const filterType = input({
   label: "Filter Type",
   type: "string",
@@ -50,6 +55,7 @@ export const filterType = input({
   ],
   clean: util.types.toString,
 });
+
 export const serviceEventsInput = input({
   label: "Service Events",
   type: "string",
@@ -59,6 +65,7 @@ export const serviceEventsInput = input({
   comments: "The service events that trigger the webhook.",
   clean: toRequiredStringList,
 });
+
 export const createWebhookObject = input({
   label: "Webhook Subscription",
   type: "code",
@@ -69,6 +76,7 @@ export const createWebhookObject = input({
   comments:
     "The JSON object body describing the webhook subscription to create.",
 });
+
 export const updateWebhookObject = input({
   label: "Update Webhook Payload",
   type: "code",
@@ -78,6 +86,7 @@ export const updateWebhookObject = input({
   comments: "The JSON object body describing the updated webhook subscription.",
   clean: util.types.toObject,
 });
+
 export const listFilterType = input({
   label: "Filter Type",
   type: "string",
@@ -89,6 +98,7 @@ export const listFilterType = input({
   clean: toOptionalString,
   comments: "The type of resource to filter results upon.",
 });
+
 export const listFilterId = input({
   label: "Filter ID",
   type: "string",

@@ -5,6 +5,7 @@ import { listSubscriptions } from "./list";
 import { pullMessages } from "./pullMessages";
 import { updateSubscription } from "./update";
 import { updatePushConfig } from "./updatePushConfig";
+
 export default {
   createSubscription,
   createWebhookSubscription,

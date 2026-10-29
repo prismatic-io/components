@@ -5,6 +5,7 @@ import { postTableExamplePayload } from "../../examplePayloads";
 import { postTableInputs } from "../../inputs";
 import { postTableOutputSchema } from "../../outputSchemas";
 import { compactRows } from "../../util";
+
 export const postTable = action({
   display: {
     label: "Create Table",

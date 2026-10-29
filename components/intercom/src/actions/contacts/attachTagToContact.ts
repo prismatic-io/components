@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, idInput } from "../../inputs";
 import { tagIdInput } from "../../inputs/contacts";
+
 export const attachTag = action({
   display: {
     label: "Attach Tag to Contact",

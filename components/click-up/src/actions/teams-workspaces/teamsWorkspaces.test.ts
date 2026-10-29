@@ -4,15 +4,18 @@ import { clickUpApiKeyConnection } from "../../connections/clickUpApiKeyConnecti
 import { clickUpOauth2Connection } from "../../connections/clickUpOauth2Connection";
 import { getAuthorizedTeamsExamplePayload } from "../../examplePayloads";
 import { getAuthorizedTeams } from "./getAuthorizedTeams";
+
 const API = "https://api.clickup.com";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
+
 interface Captured {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, unknown>;
 }
+
 const mockClickUp = (
   method: string,
   path: string,
@@ -35,15 +38,12 @@ const mockClickUp = (
     });
   return captured;
 };
+
 type ActionUnderTest = {
-  inputs: Record<
-    string,
-    {
-      type?: string;
-    }
-  >;
+  inputs: Record<string, { type?: string }>;
   perform: unknown;
 };
+
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
   const connectionKey = Object.keys(action.inputs).find(
     (key) => action.inputs[key].type === "connection",
@@ -53,6 +53,7 @@ const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
     { [connectionKey]: connection, ...params } as any,
   );
 };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -60,12 +61,14 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 describe("getAuthorizedTeams", () => {
   const oauthConnection = createConnection(
     clickUpOauth2Connection,
     {},
     { access_token: "oauth-token" },
   );
+
   test("happy path authenticates with the OAuth access token and returns the workspaces", async () => {
     const req = mockClickUp(
       "GET",

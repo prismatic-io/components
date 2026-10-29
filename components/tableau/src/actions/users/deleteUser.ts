@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { deleteUserExamplePayload } from "../../examplePayloads";
 import { deleteUserInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",
@@ -12,9 +13,11 @@ export const deleteUser = action({
     const client = await getTableauClient({
       tableauConnection: params.tableauConnection,
       timeout: util.types.toInt(params.timeout),
+
       debug: context.debug.enabled,
     });
     const response = await client.delete(`/users/${params.userId}`);
+
     return {
       data: response.data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { genericCreateResponse } from "../../examplePayloads";
 import { connection, description, name } from "../../inputs";
+
 export const createCollection = action({
   display: {
     label: "Create Collection",

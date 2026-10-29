@@ -2,6 +2,7 @@ import { component } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { destroy, identify, track, trackPageView, rawRequest } from "./actions";
 import connections from "./connections";
+
 export default component({
   key: "customer-io",
   documentationUrl: "https://prismatic.io/docs/components/customer-io/",

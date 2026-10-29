@@ -1,5 +1,6 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { ConnectionKeys } from "ms-utils";
+
 export const oauth = oauth2Connection({
   key: ConnectionKeys.SharedOauth,
   display: {

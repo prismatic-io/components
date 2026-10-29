@@ -3,6 +3,7 @@ import { createArenaClient } from "../client";
 import { exportsPicklistInputs } from "../inputs";
 import type { ExportDefinitionResult } from "../types";
 import { handleArenaError } from "../util";
+
 export const exportsPicklist = dataSource({
   display: {
     label: "Select Export",
@@ -26,6 +27,7 @@ export const exportsPicklist = dataSource({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         number,
         name,
@@ -36,10 +38,13 @@ export const exportsPicklist = dataSource({
         limit,
         offset,
       };
+
       context.logger.info("Fetching exports for datasource", { queryParams });
+
       const response = await client.get("/exports", {
         params: queryParams,
       });
+
       const responseData = response.data as ExportDefinitionResult;
       const result =
         responseData.results
@@ -55,12 +60,14 @@ export const exportsPicklist = dataSource({
                 ? `#${exportDefinition.number}`
                 : undefined,
             ].filter(Boolean);
+
             return {
               label: labelParts.join(" "),
               key,
             };
           })
           .filter((entry) => entry.key) || [];
+
       return { result };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Get Exports Datasource");

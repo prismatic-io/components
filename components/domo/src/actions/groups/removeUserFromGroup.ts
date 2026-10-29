@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { removeUserFromGroupExamplePayload } from "../../examplePayloads";
 import { removeUserFromGroupInputs } from "../../inputs";
+
 export const removeUserFromGroup = action({
   display: {
     label: "Remove User From Group",
@@ -15,4 +16,5 @@ export const removeUserFromGroup = action({
   },
   inputs: removeUserFromGroupInputs,
 });
+
 export default { removeUserFromGroup };

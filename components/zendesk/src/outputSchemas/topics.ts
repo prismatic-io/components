@@ -3,6 +3,7 @@ import {
   cursorMetaSchema,
   offsetPaginationProperties,
 } from "./pagination";
+
 export const topicSchema = {
   type: "object" as const,
   properties: {
@@ -20,17 +21,21 @@ export const topicSchema = {
   },
   required: ["name"],
 };
+
 export const createTopicOutputSchema = {
   type: "object" as const,
   properties: { topic: topicSchema },
   required: ["topic"],
 };
+
 export const deleteTopicOutputSchema = { type: "string" as const };
+
 export const getTopicOutputSchema = {
   type: "object" as const,
   properties: { topic: topicSchema },
   required: ["topic"],
 };
+
 export const listTopicsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -41,6 +46,7 @@ export const listTopicsOutputSchema = {
   },
   required: ["topics"],
 };
+
 export const updateTopicOutputSchema = {
   type: "object" as const,
   properties: { topic: topicSchema },

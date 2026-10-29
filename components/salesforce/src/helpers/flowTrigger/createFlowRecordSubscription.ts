@@ -1,4 +1,5 @@
 import { type ActionContext, util } from "@prismatic-io/spectral";
+
 import type {
   FlowMetadata,
   CreateFlowRecordSubscriptionParams,
@@ -12,6 +13,7 @@ import {
   removeObjectPrefix,
   toFullNameIdentifier,
 } from "../../util";
+
 export const createFlowRecordSubscription = async (
   _context: ActionContext,
   {
@@ -29,8 +31,10 @@ export const createFlowRecordSubscription = async (
 ) => {
   const label = name;
   const fullName = generateApiName(name);
+
   const outboundMessageDescription = `Flow: ${name}.`;
   const flowDescription = `Outbound message: ${name}.`;
+
   let metadata: FlowMetadata = {
     fullName: fullName,
     label,
@@ -44,6 +48,7 @@ export const createFlowRecordSubscription = async (
     ...(flowMetadata ? flowMetadata : {}),
   };
   const { username: integrationUser } = await client.identity();
+
   const createOutboundMessageResult =
     await createWorkflowOutboundMessageFunction(client, {
       apiVersion:
@@ -55,13 +60,19 @@ export const createFlowRecordSubscription = async (
       integrationUser,
       fields: processOutboundMessageFields(fields, dynamicFields),
     });
+
   const outboundMessageFullName = createOutboundMessageResult.fullName;
+
   const outboundMessageName = removeObjectPrefix(outboundMessageFullName);
+
   const cleanOutboundMessageName = outboundMessageName.replace(/^Send_/i, "");
+
   const actionCallName = `Send_${cleanOutboundMessageName}`;
+
   const fullOutboundMessageName = cleanOutboundMessageName.includes(".")
     ? cleanOutboundMessageName
     : `${triggerObject}.${cleanOutboundMessageName}`;
+
   const flowDefinition = {
     actionCalls: {
       name: actionCallName,
@@ -97,13 +108,18 @@ export const createFlowRecordSubscription = async (
       objectType: triggerObject,
     },
   };
+
   metadata = {
     ...metadata,
     ...flowDefinition,
   };
+
   const createFlowResult = await createFlowFunction(client, metadata);
+
   processMetadataResult(createFlowResult);
+
   const flowFullName = createFlowResult.fullName;
+
   return {
     outboundMessageFullName,
     flowFullName,

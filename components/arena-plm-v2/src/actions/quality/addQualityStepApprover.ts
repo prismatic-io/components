@@ -5,6 +5,7 @@ import { addQualityStepApproverInputs } from "../../inputs";
 import { addQualityStepApproverOutputSchema } from "../../outputSchemas";
 import type { ApproverDecisionRequestVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const addQualityStepApprover = action({
   display: {
     label: "Add Quality Step Approver",
@@ -19,23 +20,28 @@ export const addQualityStepApprover = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       if (!params.userGuid && !params.groupGuid) {
         throw new Error("Either User GUID or Group GUID must be provided");
       }
+
       if (params.userGuid && params.groupGuid) {
         throw new Error(
           "Cannot specify both User GUID and Group GUID - choose one",
         );
       }
+
       const requestPayload: ApproverDecisionRequestVo = {
         decisionType: params.decisionType,
         user: params.userGuid ? { guid: params.userGuid } : undefined,
         group: params.groupGuid ? { guid: params.groupGuid } : undefined,
       };
+
       const { data } = await client.post(
         `/qualityprocesses/${params.qualityprocessGuid}/steps/${params.stepGuid}/decisions`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Add Quality Step Approver");

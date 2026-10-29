@@ -3,6 +3,7 @@ import { EMPLOYEE_TYPE_OPTIONS, STATUS_CODE_OPTIONS } from "../constants";
 import { cleanString } from "../util";
 import { connectionInput, paginationInputs } from "./common";
 import { companyId } from "./employee";
+
 export const jobId = input({
   label: "Job ID",
   type: "string",
@@ -13,6 +14,7 @@ export const jobId = input({
   dataSource: "selectJob",
   clean: util.types.toString,
 });
+
 export const locationId = input({
   label: "Location ID",
   type: "string",
@@ -23,6 +25,7 @@ export const locationId = input({
   dataSource: "selectLocation",
   clean: util.types.toString,
 });
+
 export const positionCode = input({
   label: "Position Code",
   type: "string",
@@ -33,6 +36,7 @@ export const positionCode = input({
   dataSource: "selectPosition",
   clean: cleanString,
 });
+
 export const employeeType = input({
   label: "Employee Type",
   type: "string",
@@ -44,6 +48,7 @@ export const employeeType = input({
   model: EMPLOYEE_TYPE_OPTIONS,
   clean: cleanString,
 });
+
 export const payGroupCode = input({
   label: "Pay Group Code",
   type: "string",
@@ -53,6 +58,7 @@ export const payGroupCode = input({
   example: "WEEKLY",
   clean: cleanString,
 });
+
 export const statusCode = input({
   label: "Status Code",
   type: "string",
@@ -64,6 +70,7 @@ export const statusCode = input({
   model: STATUS_CODE_OPTIONS,
   clean: cleanString,
 });
+
 export const projectCode = input({
   label: "Project Code",
   type: "string",
@@ -73,6 +80,7 @@ export const projectCode = input({
   example: "PROJ-001",
   clean: cleanString,
 });
+
 export const shiftGroupCode = input({
   label: "Shift Group Code",
   type: "string",
@@ -82,6 +90,7 @@ export const shiftGroupCode = input({
   example: "DAY",
   clean: cleanString,
 });
+
 export const countryCode = input({
   label: "Country Code",
   type: "string",
@@ -91,6 +100,7 @@ export const countryCode = input({
   example: "US",
   clean: cleanString,
 });
+
 export const isActive = input({
   label: "Is Active",
   type: "boolean",
@@ -98,6 +108,7 @@ export const isActive = input({
   comments: "When true, filters to only active jobs.",
   clean: util.types.toBool,
 });
+
 export const isProrated = input({
   label: "Is Prorated",
   type: "boolean",
@@ -105,6 +116,7 @@ export const isProrated = input({
   comments: "When true, filters to only prorated employee positions.",
   clean: util.types.toBool,
 });
+
 export const isApproved = input({
   label: "Is Approved",
   type: "boolean",
@@ -112,6 +124,7 @@ export const isApproved = input({
   comments: "When true, filters to only approved employee positions.",
   clean: util.types.toBool,
 });
+
 export const isElegibleForBenefits = input({
   label: "Is Eligible For Benefits",
   type: "boolean",
@@ -120,6 +133,7 @@ export const isElegibleForBenefits = input({
     "When true, filters to only employee positions eligible for benefits.",
   clean: util.types.toBool,
 });
+
 export const companyCode = input({
   label: "Company Code",
   type: "string",
@@ -129,6 +143,7 @@ export const companyCode = input({
   example: "COMP-001",
   clean: cleanString,
 });
+
 export const masterCompanyId = input({
   label: "Master Company ID",
   type: "string",
@@ -138,6 +153,7 @@ export const masterCompanyId = input({
   example: "MCOMP-001",
   clean: cleanString,
 });
+
 export const isMasterCompany = input({
   label: "Is Master Company",
   type: "boolean",
@@ -145,19 +161,23 @@ export const isMasterCompany = input({
   comments: "When true, filters to only master companies.",
   clean: util.types.toBool,
 });
+
 export const getJobInputs = {
   connection: connectionInput,
   jobId,
 };
+
 export const getSingleLocationInputs = {
   connection: connectionInput,
   locationId,
 };
+
 export const listJobsInputs = {
   connection: connectionInput,
   companyId,
   ...paginationInputs,
 };
+
 export const listCompaniesInputs = {
   connection: connectionInput,
   companyId: {
@@ -169,11 +189,13 @@ export const listCompaniesInputs = {
   isMasterCompany,
   ...paginationInputs,
 };
+
 export const listLocationsInputs = {
   connection: connectionInput,
   countryCode,
   isActive,
 };
+
 export const listPositionsInputs = {
   companyId,
   employeeType,

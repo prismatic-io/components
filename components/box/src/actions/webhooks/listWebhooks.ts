@@ -4,6 +4,7 @@ import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
 import { getAllWebhookEntries, getInstanceWebhookIds } from "../../util";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -17,15 +18,13 @@ export const listWebhooks = action({
     { boxConnection, pagination, showOnlyInstanceWebhooks, fetchAll },
   ) => {
     const client = createAuthorizedClient({ boxConnection });
+
     let entries: Record<string, unknown>[];
     let extra: Record<string, unknown> = {};
     if (fetchAll) {
       ({ entries } = await getAllWebhookEntries(client));
     } else {
-      const options: {
-        limit?: number;
-        marker?: string;
-      } = {};
+      const options: { limit?: number; marker?: string } = {};
       if (pagination.limit) options.limit = util.types.toInt(pagination.limit);
       if (pagination.marker)
         options.marker = util.types.toString(pagination.marker);
@@ -35,6 +34,7 @@ export const listWebhooks = action({
       );
       extra = { limit: result.limit, next_marker: result.nextMarker };
     }
+
     if (showOnlyInstanceWebhooks) {
       const instanceWebhookIds = await getInstanceWebhookIds(
         client,
@@ -45,6 +45,7 @@ export const listWebhooks = action({
         instanceWebhookIds.has(util.types.toString(entry.id)),
       );
     }
+
     return { data: { ...extra, entries } };
   },
   examplePerform: async (
@@ -58,9 +59,11 @@ export const listWebhooks = action({
     };
   }> => {
     const { entries, limit, next_marker } = listWebhooksExamplePayload.data;
+
     if (params.fetchAll) {
       return { data: { entries } };
     }
+
     return {
       data: {
         limit: util.types.toInt(params.pagination.limit) || limit,

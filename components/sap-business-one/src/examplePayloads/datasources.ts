@@ -6,6 +6,7 @@ export const businessPartnerDataSourceExamplePayload = {
     },
   ],
 };
+
 export const orderDataSourceExamplePayload = {
   result: [
     {
@@ -14,6 +15,7 @@ export const orderDataSourceExamplePayload = {
     },
   ],
 };
+
 export const warehouseDataSourceExamplePayload = {
   result: [
     {

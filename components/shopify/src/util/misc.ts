@@ -1,5 +1,6 @@
 import { util } from "@prismatic-io/spectral";
 import type { UserError } from "../types";
+
 export const validateMetafieldType = (value: unknown, type: string) => {
   if (type.toLocaleLowerCase().trim() === "single_line_text_field") {
     return util.types.toString(value);
@@ -11,6 +12,7 @@ export const validateMetafieldType = (value: unknown, type: string) => {
     return util.types.toBool(value);
   }
 };
+
 export const generateModelFromSnakeCaseArray = (strings: string[]) =>
   strings.map((key) => ({
     label: key
@@ -19,12 +21,14 @@ export const generateModelFromSnakeCaseArray = (strings: string[]) =>
       .replace(/\b\w/g, (char) => char.toUpperCase()),
     value: key,
   }));
+
 export const findKeyByValue = (
   obj: Record<string, string>,
   value: string,
 ): string | undefined => {
   return Object.keys(obj).find((key) => obj[key] === value);
 };
+
 export const createTimezoneString = (
   timezoneOffset: string,
   ianaTimezone: string,
@@ -32,6 +36,7 @@ export const createTimezoneString = (
   const gmtOffset = `GMT${timezoneOffset.substring(0, 3)}:${timezoneOffset.substring(3)}`;
   return `(${gmtOffset}) ${ianaTimezone}`;
 };
+
 const searchUserErrors = (obj): UserError[] | null => {
   if (obj && typeof obj === "object") {
     if (obj.userErrors) {
@@ -44,6 +49,7 @@ const searchUserErrors = (obj): UserError[] | null => {
   }
   return null;
 };
+
 export const gqlErrorsCheck = (response): void => {
   const userErrors = searchUserErrors(response);
   if (userErrors && userErrors.length > 0) {

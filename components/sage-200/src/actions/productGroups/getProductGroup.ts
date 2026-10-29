@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { getProductGroupPayload } from "../../examplePayloads";
 import { company, connection, site } from "../../inputs/general";
 import getProductGroupInputs from "../../inputs/productGroups/getProductGroupInputs";
+
 export const getProductGroup = action({
   display: {
     label: "Get Product Group",

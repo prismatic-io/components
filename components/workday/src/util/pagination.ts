@@ -1,5 +1,6 @@
 import { PAGINATION_DEFAULT_LIMIT, PAGINATION_MAX_PAGES } from "../constants";
 import type { PaginateOptions, WorkdayListResponse } from "../types";
+
 export const paginateResults = async ({
   client,
   endpoint,
@@ -7,14 +8,13 @@ export const paginateResults = async ({
   fetchAll,
   limit,
   offset,
-}: PaginateOptions): Promise<{
-  data: unknown;
-}> => {
+}: PaginateOptions): Promise<{ data: unknown }> => {
   if (fetchAll) {
     const allResults: unknown[] = [];
     const pageLimit = limit || PAGINATION_DEFAULT_LIMIT;
     let offset = 0;
     let pages = 0;
+
     do {
       const { data } = await client.get<WorkdayListResponse>(endpoint, {
         params: { ...params, limit: pageLimit, offset },
@@ -29,10 +29,13 @@ export const paginateResults = async ({
       offset += page.length;
       pages++;
     } while (pages < PAGINATION_MAX_PAGES);
+
     return { data: allResults };
   }
+
   const { data } = await client.get(endpoint, {
     params: { ...params, limit, offset },
   });
+
   return { data };
 };

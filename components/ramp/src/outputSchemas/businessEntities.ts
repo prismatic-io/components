@@ -1,4 +1,5 @@
 import { pageSchema } from "./shared";
+
 const businessEntitySchema = {
   type: "object" as const,
   properties: {
@@ -429,7 +430,9 @@ const businessEntitySchema = {
     "payment_accounts",
   ],
 };
+
 export const getBusinessEntityOutputSchema = businessEntitySchema;
+
 export const listBusinessEntitiesOutputSchema = {
   type: "object" as const,
   properties: {

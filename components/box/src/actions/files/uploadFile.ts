@@ -6,6 +6,7 @@ import { uploadFileExamplePayload } from "../../examplePayloads";
 import { uploadFileInputs } from "../../inputs";
 import { uploadFileOutputSchema } from "../../outputSchemas";
 import { getPathEntries, pathLeafName } from "../../util";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -21,9 +22,11 @@ export const uploadFile = action({
     );
     const { id, type, name } = pathEntries.slice(-2)[0];
     const { name: fileName } = pathEntries.slice(-1)[0];
+
     if (type !== FOLDER_TYPE) {
       throw Error(`'${name}' is not a folder`);
     }
+
     const { data } = util.types.toData(fileContents);
     const result = await client.uploads.uploadFile({
       attributes: {
@@ -36,12 +39,7 @@ export const uploadFile = action({
       data: result.rawData,
     };
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...uploadFileExamplePayload.data,
       entries: [

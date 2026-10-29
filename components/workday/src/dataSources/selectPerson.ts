@@ -5,6 +5,7 @@ import { selectPersonExamplePayload } from "../examplePayloads";
 import { selectPersonInputs } from "../inputs";
 import type { PersonSummary } from "../types";
 import { toSortedPicklist } from "../util";
+
 export const selectPerson = dataSource({
   display: {
     label: "Select Person",
@@ -14,6 +15,7 @@ export const selectPerson = dataSource({
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
     const { data } = await client.get(`${SERVICES.person}/people`);
+
     return {
       result: toSortedPicklist(data.data, (item: PersonSummary) => ({
         key: item.id,

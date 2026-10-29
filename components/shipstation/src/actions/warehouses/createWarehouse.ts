@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { createWarehouseExamplePayload } from "../../examplePayloads";
 import { createWarehouseInputs } from "../../inputs";
+
 export const createWarehouse = action({
   display: {
     label: "Create Warehouse",
@@ -16,12 +17,14 @@ export const createWarehouse = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const body = {
       warehouseName,
       originAddress,
       returnAddress,
       isDefault,
     };
+
     const { data } = await client.post("/warehouses/createwarehouse", body);
     return { data };
   },

@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../../client";
 import { connection, draftTaskId, guId } from "../../inputs";
+
 export const getDraftTask = action({
   display: {
     label: "Get Draft Task",
@@ -17,10 +18,12 @@ export const getDraftTask = action({
     const { data } = await client.get(
       `/Projects('${params.guId}')/Draft/Tasks('${params.draftTaskId}')`,
     );
+
     return {
       data,
     };
   },
   inputs: { connection, guId, draftTaskId },
 });
+
 export default getDraftTask;

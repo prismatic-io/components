@@ -6,6 +6,7 @@ import { listBoardsOutputSchema } from "../../outputSchemas";
 import GetBoardsQuery from "../../queries/getBoards.gql";
 import type { Board } from "../../types";
 import { getAllBoards } from "../../util";
+
 export const listBoards = action({
   display: {
     label: "List Boards",
@@ -23,10 +24,12 @@ export const listBoards = action({
       context.debug.enabled,
       context.logger,
     );
+
     if (params.fetchAll) {
       const data = await getAllBoards<Board>(client);
       return { data };
     }
+
     const variables = {
       limit: params.pagination.limit,
       page: params.pagination.page,

@@ -110,6 +110,7 @@ export const CREATE_CONTACT_EXAMPLE_PAYLOAD = {
     url: "/contacts/5ba682d23d7cf92bef87bfd4/companies",
   },
 };
+
 export const GET_CONTACT_EXAMPLE_PAYLOAD = {
   data: {
     type: "contact",
@@ -206,6 +207,7 @@ export const GET_CONTACT_EXAMPLE_PAYLOAD = {
     referrer: null,
   },
 };
+
 export const ATTACH_COMPANY_TO_CONTACT_EXAMPLE_PAYLOAD = {
   data: {
     type: "company",
@@ -231,6 +233,7 @@ export const ATTACH_COMPANY_TO_CONTACT_EXAMPLE_PAYLOAD = {
     custom_attributes: {},
   },
 };
+
 export const DETACH_COMPANY_FROM_CONTACT_EXAMPLE_PAYLOAD = {
   data: {
     type: "company",
@@ -256,6 +259,7 @@ export const DETACH_COMPANY_FROM_CONTACT_EXAMPLE_PAYLOAD = {
     custom_attributes: {},
   },
 };
+
 export const ARCHIVE_CONTACT_EXAMPLE_PAYLOAD = {
   data: {
     id: "5ba682d23d7cf92bef87bfd4",
@@ -263,6 +267,7 @@ export const ARCHIVE_CONTACT_EXAMPLE_PAYLOAD = {
     archived: true,
   },
 };
+
 export const DELETE_CONTACT_EXAMPLE_PAYLOAD = {
   data: {
     data: {

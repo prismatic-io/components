@@ -4,6 +4,7 @@ import { listTicketsExamplePayload as examplePayload } from "../../examplePayloa
 import { listTicketsInputs as inputs } from "../../inputs";
 import { listTicketsOutputSchema } from "../../outputSchemas";
 import { getListData } from "../../util";
+
 export const listTickets = action({
   display: {
     label: "List Tickets",
@@ -17,6 +18,7 @@ export const listTickets = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await getListData(client, `/tickets`, "tickets", {
       fetchAll,
       params: {
@@ -26,6 +28,7 @@ export const listTickets = action({
         filter,
       },
     });
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createGotoWebinarClient } from "../../client";
 import { LIST_SESSION_ATTENDEES_EXAMPLE_PAYLOAD } from "../../examplePayloads";
 import { listSessionAttendeesInputs } from "../../inputs";
+
 export const listSessionAttendees = action({
   display: {
     label: "List Session Attendees",
@@ -16,6 +17,7 @@ export const listSessionAttendees = action({
   ) => {
     const { client, organizerKey } = createGotoWebinarClient(connection, debug);
     const url = `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/attendees`;
+
     const { data } = await client.get(url);
     return {
       data,

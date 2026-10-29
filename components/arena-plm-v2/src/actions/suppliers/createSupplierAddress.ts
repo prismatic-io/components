@@ -9,6 +9,7 @@ import type {
   SupplierAddressCreateVo,
 } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createSupplierAddress = action({
   display: {
     label: "Create Supplier Address",
@@ -26,7 +27,9 @@ export const createSupplierAddress = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const addressData: AddressCreateVo = {};
+
       if (label) addressData.label = label;
       if (address.address1) addressData.address1 = address.address1;
       if (address.address2) addressData.address2 = address.address2;
@@ -35,12 +38,15 @@ export const createSupplierAddress = action({
       if (address.province) addressData.province = address.province;
       if (address.postalCode) addressData.postalCode = address.postalCode;
       if (address.country) addressData.country = address.country;
+
       const supplierAddressPayload: SupplierAddressCreateVo = {
         address: addressData,
       };
+
       if (isPrimary !== undefined && isPrimary !== null) {
         supplierAddressPayload.primary = isPrimary;
       }
+
       context.logger.info("Adding address to supplier", {
         supplierGuid,
         address1: address.address1,
@@ -49,13 +55,16 @@ export const createSupplierAddress = action({
         country: address.country,
         isPrimary,
       });
+
       const { data } = await client.post<SupplierAddressCompactVo>(
         `/suppliers/${supplierGuid}/addresses`,
         supplierAddressPayload,
       );
+
       context.logger.info(
         `Successfully added address to supplier: ${supplierGuid} - ${data.address?.label || "No Label"} (${data.address?.guid})`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Supplier Address");

@@ -1,5 +1,7 @@
 import { countSchema, pageInfoSchema, userErrorsArraySchema } from "./shared";
+
 export const countVariantsGqlOutputSchema = countSchema;
+
 export const createVariantGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -26,6 +28,7 @@ export const createVariantGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const deleteVariantGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +42,7 @@ export const deleteVariantGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const getVariantGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -55,6 +59,7 @@ export const getVariantGqlOutputSchema = {
     },
   },
 };
+
 export const listVariantsGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -71,6 +76,7 @@ export const listVariantsGqlOutputSchema = {
     pageInfo: pageInfoSchema,
   },
 };
+
 export const updateVariantGqlOutputSchema = {
   type: "object" as const,
   properties: {

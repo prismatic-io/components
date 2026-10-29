@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanExpirationDateTime } from "ms-utils";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft SharePoint connection to use.",
 });
+
 export const siteId = input({
   label: "Site Id",
   type: "string",
@@ -16,6 +18,7 @@ export const siteId = input({
   example:
     "example.sharepoint.com,c45de8832-a4969-479d-aeb2-7nAh8321,48bf81d7-2d37-40a9-b47b-c1d1960d00f87",
 });
+
 export const driveId = input({
   label: "Drive",
   type: "string",
@@ -26,6 +29,7 @@ export const driveId = input({
   dataSource: "listDrives",
   clean: util.types.toString,
 });
+
 export const folderId = input({
   label: "Folder ID",
   placeholder: "Enter folder ID",
@@ -43,6 +47,7 @@ export const folderId = input({
     return folderId;
   },
 });
+
 export const listId = input({
   label: "List Id",
   type: "string",
@@ -52,6 +57,7 @@ export const listId = input({
   example: "48bf81d7-2d37-40a9-b47b-c1d1960d00f87",
   dataSource: "selectSiteList",
 });
+
 export const itemId = input({
   label: "Item Id",
   type: "string",
@@ -61,6 +67,7 @@ export const itemId = input({
   dataSource: "listItemsInSiteList",
   example: "01Q7VXROAW7LCB32ODBRCKZNSJIC544XAQ",
 });
+
 export const pageLimit = input({
   label: "Page Limit",
   type: "string",
@@ -70,6 +77,7 @@ export const pageLimit = input({
   comments: "The maximum number of results to return per page.",
   clean: util.types.toNumber,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -79,6 +87,7 @@ export const pageToken = input({
   comments: "The token for the desired page from a previous response.",
   clean: util.types.toString,
 });
+
 export const optInFields = input({
   label: "Opt In Fields",
   type: "string",
@@ -89,6 +98,7 @@ export const optInFields = input({
     "Comma-separated list of fields to return. Overrides the default result set.",
   clean: util.types.toString,
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -97,6 +107,7 @@ export const fileName = input({
   comments: "The name of the file including extension.",
   example: "reports.csv",
 });
+
 export const fileData = input({
   label: "File Data",
   type: "data",
@@ -105,6 +116,7 @@ export const fileData = input({
     "The file content to upload to SharePoint. Reference a file from a previous step or provide file data.",
   clean: util.types.toData,
 });
+
 export const parentId = input({
   label: "Parent Id",
   type: "string",
@@ -113,6 +125,7 @@ export const parentId = input({
   comments: "The unique identifier of the parent folder or drive item.",
   example: "48bf81d7-2d37-40a9-b47b-c1d1960d00f87",
 });
+
 export const fields = input({
   label: "Fields",
   type: "string",
@@ -122,6 +135,7 @@ export const fields = input({
   comments:
     "Key-value pairs to set as properties on the drive item. Each key represents a field name and its corresponding value.",
 });
+
 export const changeType = input({
   label: "Change Type",
   type: "string",
@@ -133,6 +147,7 @@ export const changeType = input({
   default: "updated",
   clean: util.types.toString,
 });
+
 export const notificationUrl = input({
   label: "Notification URL",
   type: "string",
@@ -143,6 +158,7 @@ export const notificationUrl = input({
   example: "https://contoso.azurewebsites.net/api/webhook-receiver",
   clean: util.types.toString,
 });
+
 export const resource = input({
   label: "Resource",
   type: "string",
@@ -152,6 +168,7 @@ export const resource = input({
   example: "/me/drive/root",
   clean: util.types.toString,
 });
+
 export const expirationDateTime = input({
   label: "Expiration Date Time",
   type: "string",
@@ -162,6 +179,7 @@ export const expirationDateTime = input({
   example: "2018-01-01T11:23:00.000Z",
   clean: cleanExpirationDateTime,
 });
+
 export const clientState = input({
   label: "Client State",
   type: "string",
@@ -172,6 +190,7 @@ export const clientState = input({
   example: "client-specific string",
   clean: util.types.toString,
 });
+
 export const subscriptionId = input({
   label: "Subscription Id",
   type: "string",
@@ -182,6 +201,7 @@ export const subscriptionId = input({
   dataSource: "listSubscriptions",
   clean: util.types.toString,
 });
+
 export const allowDuplicates = input({
   label: "Allow Duplicates",
   type: "boolean",
@@ -191,6 +211,7 @@ export const allowDuplicates = input({
     "When true, allows creating multiple subscriptions for the same endpoint.",
   clean: util.types.toBool,
 });
+
 export const showInstanceSubscriptions = input({
   label: "Show Instance Subscriptions",
   type: "boolean",
@@ -200,6 +221,7 @@ export const showInstanceSubscriptions = input({
     "When true, filters results to show only subscriptions created by this instance.",
   clean: util.types.toBool,
 });
+
 export const deltaURL = input({
   label: "URL to fetch for delta",
   type: "string",
@@ -211,6 +233,7 @@ export const deltaURL = input({
   default: "/drives/{drive-id}/root/delta",
   clean: util.types.toString,
 });
+
 export const $select = input({
   label: "$select Parameter",
   type: "string",
@@ -221,6 +244,7 @@ export const $select = input({
   example: "givenName,surname",
   clean: util.types.toString,
 });
+
 export const $expand = input({
   label: "$expand Parameter",
   type: "string",
@@ -231,6 +255,7 @@ export const $expand = input({
   example: "members",
   clean: util.types.toString,
 });
+
 export const $top = input({
   label: "$top Parameter",
   type: "string",
@@ -241,6 +266,7 @@ export const $top = input({
   example: "5",
   clean: util.types.toString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -249,6 +275,7 @@ export const fetchAll = input({
     "When true, retrieves all results by automatically following pagination.",
   clean: util.types.toBool,
 });
+
 export const recursive = input({
   label: "Recursive",
   type: "boolean",
@@ -257,6 +284,7 @@ export const recursive = input({
     "When true, returns files from all subfolders in addition to the specified folder.",
   clean: util.types.toBool,
 });
+
 const parentItemId = input({
   label: "Parent Item Id",
   type: "string",
@@ -267,6 +295,7 @@ const parentItemId = input({
   example: "root",
   clean: util.types.toString,
 });
+
 export const folderName = input({
   label: "Folder Name",
   type: "string",
@@ -276,6 +305,7 @@ export const folderName = input({
   comments: "The name of the folder.",
   clean: util.types.toString,
 });
+
 export const createFolderInputs = {
   connection,
   siteId: {
@@ -295,6 +325,7 @@ export const createFolderInputs = {
     comments: "Provide the name of the new folder.",
   },
 };
+
 export const moveFileInputs = {
   connection,
   siteId: { ...siteId, required: false },
@@ -314,6 +345,7 @@ export const moveFileInputs = {
       "Provide the Id of the destination parent element to move file to.",
   },
 };
+
 export const listItemsInputs = {
   connection,
   siteId: { ...siteId, required: false },
@@ -327,6 +359,7 @@ export const listItemsInputs = {
     required: true,
   },
 };
+
 export const renameFolderInputs = {
   connection,
   siteId: {
@@ -347,6 +380,7 @@ export const renameFolderInputs = {
     comments: "Provide the new name of the folder.",
   },
 };
+
 export const query = input({
   label: "Query",
   type: "string",
@@ -356,6 +390,7 @@ export const query = input({
   comments: "The search query to find items by name.",
   clean: util.types.toString,
 });
+
 export const searchItemsInputs = {
   connection,
   siteId: {
@@ -367,6 +402,7 @@ export const searchItemsInputs = {
     comments: "Provide the query to search for items by name.",
   },
 };
+
 export const itemPath = input({
   label: "Item Path",
   type: "string",
@@ -376,6 +412,7 @@ export const itemPath = input({
   comments: "The path to the file or folder, relative to the drive root.",
   clean: util.types.toString,
 });
+
 export const expirationDays = input({
   label: "Expiration Days",
   type: "string",
@@ -390,6 +427,7 @@ export const expirationDays = input({
     return days > 0 && days <= 30 ? days : 3;
   },
 });
+
 export const includeSubfolders = input({
   label: "Include Subfolders",
   type: "boolean",
@@ -399,6 +437,7 @@ export const includeSubfolders = input({
     "When enabled, changes in subfolders will also be tracked recursively.",
   clean: util.types.toBool,
 });
+
 export const checkItemExistsInputs = {
   connection,
   siteId: {
@@ -415,6 +454,7 @@ export const checkItemExistsInputs = {
       "Provide the path to the file or folder, relative to the drive root.",
   },
 };
+
 export const instanceDeployWebhookInputs = {
   connection,
   resource: {
@@ -435,6 +475,7 @@ export const instanceDeployWebhookInputs = {
       "Optional expiration date/time for the subscription. If not provided, defaults to 3 days from now. Maximum is 30 days for SharePoint/OneDrive resources.",
   },
 };
+
 export const deleteAllSubscriptionsInputs = {
   connection,
   notificationUrl: {
@@ -444,11 +485,13 @@ export const deleteAllSubscriptionsInputs = {
     required: false,
   },
 };
+
 export const renewSubscriptionInputs = {
   connection,
   subscriptionId,
   expirationDays,
 };
+
 export const folderPollingTriggerInputs = {
   connection,
   siteId: { ...siteId, required: false },

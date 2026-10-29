@@ -3,6 +3,7 @@ import {
   columnDelimiterSchema,
   lineEndingSchema,
 } from "./bulkShared";
+
 const ingestJobInfoSchema = {
   type: "object" as const,
   properties: {
@@ -44,16 +45,23 @@ const ingestJobInfoSchema = {
     apexProcessingTime: { type: "integer" },
   },
 };
+
 export const createBulkJobOutputSchema = ingestJobInfoSchema;
+
 export const getBulkJobOutputSchema = ingestJobInfoSchema;
+
 export const completeUploadBulkJobOutputSchema = ingestJobInfoSchema;
+
 export const abortBulkJobOutputSchema = ingestJobInfoSchema;
+
 export const getJobFailedRecordResultsOutputSchema = {
   type: "string" as const,
 };
+
 export const getJobSuccessfulRecordResultsOutputSchema = {
   type: "string" as const,
 };
+
 export const bulkLoadRecordsOutputSchema = {
   type: "array" as const,
   items: {

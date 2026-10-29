@@ -5,6 +5,7 @@ import { listQualityProcessesInputs } from "../../inputs";
 import { qualityProcessListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listQualityProcesses = action({
   display: {
     label: "List Quality Processes",
@@ -20,6 +21,7 @@ export const listQualityProcesses = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         number: params.number,
         name: params.name,
@@ -34,12 +36,14 @@ export const listQualityProcesses = action({
         limit: params.pagination?.limit,
         offset: params.pagination?.offset,
       };
+
       const data = await fetchArenaList(
         client,
         "/qualityprocesses",
         queryParams,
         params.fetchAll,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Quality Processes");

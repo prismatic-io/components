@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getAttachmentInputs } from "../../inputs";
 import { getAttachmentExamplePayload } from "../../examplePayloads";
 import { attachmentSchema } from "../../outputSchemas";
+
 export const getAttachment = action({
   display: {
     label: "Get Attachment",

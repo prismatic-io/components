@@ -3,6 +3,7 @@ import fetch from "cross-fetch";
 import { Dropbox } from "dropbox";
 import { MISSING_ACCESS_TOKEN_ERROR_MESSAGE } from "./constants";
 import { getUserTypeHeader } from "./util";
+
 export const createAuthorizedClient = (
   dropboxConnection: Connection,
   userType?: "admin" | "user",
@@ -17,11 +18,13 @@ export const createAuthorizedClient = (
       MISSING_ACCESS_TOKEN_ERROR_MESSAGE,
     );
   }
+
   const client = new Dropbox({
     accessToken,
     fetch,
     customHeaders:
       userType && teamMemberId ? getUserTypeHeader(userType, teamMemberId) : {},
   });
+
   return client;
 };

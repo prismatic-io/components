@@ -6,11 +6,13 @@ import {
   pagination,
   workspaceId,
 } from "./common";
+
 export const getCustomFieldInputs = {
   asanaConnection: connectionInput,
   fieldId,
   optFields: { ...optFields, default: CUSTOM_FIELD_OPT_FIELDS },
 };
+
 export const listCustomFieldsInputs = {
   asanaConnection: connectionInput,
   workspaceId,

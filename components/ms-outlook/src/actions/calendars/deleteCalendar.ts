@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteCalendarExamplePayload } from "../../examplePayloads";
 import { deleteCalendarInputs } from "../../inputs";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const deleteCalendar = action({
   display: {
     label: "Delete Calendar",

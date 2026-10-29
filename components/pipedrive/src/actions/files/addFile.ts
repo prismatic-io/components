@@ -4,6 +4,7 @@ import { addFileInputs } from "../../inputs";
 import { addFileExamplePayload } from "../../examplePayloads";
 import { addFileOutputSchema } from "../../outputSchemas";
 import FormData from "form-data";
+
 export const addFile = action({
   display: {
     label: "Add File",

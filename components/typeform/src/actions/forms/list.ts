@@ -9,6 +9,7 @@ import {
 import { fetchAllData } from "../../util";
 import { listFormsResponse } from "../../examplePayloads/forms";
 import type { Form } from "../../interfaces/forms";
+
 export const listForms = action({
   display: {
     label: "List Forms",
@@ -31,6 +32,7 @@ export const listForms = action({
     { connection, pagination, fetchAll, workspaceId },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await fetchAllData<Form>(
       client,
       "/forms",

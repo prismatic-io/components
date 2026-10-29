@@ -4,6 +4,7 @@ import { listOrganizationUsersExamplePayload } from "../../examplePayloads";
 import { listOrganizationUsersInputs } from "../../inputs";
 import type { User } from "../../types";
 import { getPaginatedData } from "../../util";
+
 export const listOrganizationUsers = action({
   display: {
     label: "List Organization Users",

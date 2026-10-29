@@ -10,6 +10,7 @@ import {
   pagination,
   version,
 } from "./common";
+
 export const getAdSetInputs = {
   connection: myConnectionField,
   adId: {
@@ -23,6 +24,7 @@ export const getAdSetInputs = {
   },
   version,
 };
+
 export const updateAdSetInputs = {
   connection: myConnectionField,
   adId: {
@@ -46,6 +48,7 @@ export const updateAdSetInputs = {
   fields: { ...fields, default: AD_SET_DEFAULTS },
   version,
 };
+
 export const listAdSetsInAccountInputs = {
   connection: myConnectionField,
   adAccountId,

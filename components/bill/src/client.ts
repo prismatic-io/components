@@ -7,12 +7,14 @@ import { getBaseUrl, validateConnection } from "./util";
 import { stringify } from "qs";
 import type { LoginData } from "./interfaces/LoginData";
 import type { TrustedSession } from "./interfaces/TrustedSession";
+
 const login = async (
   connection: Connection,
   debug: boolean,
   trustedSession?: TrustedSession,
 ): Promise<LoginData> => {
   const devKey = connection.fields.developerKey;
+
   const sendData = stringify({
     userName: connection.fields.username,
     password: connection.fields.password,
@@ -28,22 +30,25 @@ const login = async (
     },
     debug,
   });
+
   const { data } = await client.post("/Login.json", sendData);
+
   if (data.response_status !== 0) {
     throw new Error(JSON.stringify(data));
   }
+
   return { ...data.response_data, devKey };
 };
+
 export const getClient = async (
   connection: Connection,
   debug: boolean,
   trustedSession?: TrustedSession,
-): Promise<{
-  client: HttpClient;
-  loginData: LoginData;
-}> => {
+): Promise<{ client: HttpClient; loginData: LoginData }> => {
   validateConnection(connection);
+
   const loginData = await login(connection, debug, trustedSession);
+
   const baseUrl = getBaseUrl(connection);
   const client = createHttpClient({
     baseUrl,

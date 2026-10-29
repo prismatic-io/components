@@ -3,11 +3,13 @@ export const sendMessageExamplePayload = {
     id: "1649887364395|0000000",
   },
 };
+
 export const sendAdaptiveCardMessageExamplePayload = {
   data: {
     id: "1649887498472|0000001",
   },
 };
+
 export const createConversationExamplePayload = {
   data: {
     id: "a:1bT8Gx4kJ2mN5pQ7rS9tU0vW1xY2zA3bC4dE5fG6hH7iJ8kL9mN0oP1qR2sT3uV4wX5yZ6aB7cD8eF9gH0iJ1kL",
@@ -15,6 +17,7 @@ export const createConversationExamplePayload = {
     serviceUrl: "https://smba.trafficmanager.net/teams/",
   },
 };
+
 export const getConversationMembersExamplePayload = {
   data: [
     {

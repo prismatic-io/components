@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { updateVendorExamplePayload } from "../../examplePayloads";
 import { updateVendorInputs } from "../../inputs/vendors";
 import type { Vendor } from "../../interfaces";
+
 export const updateVendor = action({
   display: {
     label: "Update Vendor",
@@ -34,6 +35,7 @@ export const updateVendor = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.patch<Vendor>(
       `/companies(${companyId})/vendors(${vendorId})`,
       {
@@ -62,6 +64,7 @@ export const updateVendor = action({
         },
       },
     );
+
     return { data };
   },
   examplePayload: updateVendorExamplePayload,

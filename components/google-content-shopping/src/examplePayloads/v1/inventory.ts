@@ -23,6 +23,7 @@ export const updateLocalInventoryExamplePayload: {
     instoreProductLocation: "Aisle 5, Shelf 3",
   },
 };
+
 export const batchLocalInventoryExamplePayload: {
   data: Record<string, unknown>;
 } = {
@@ -45,6 +46,7 @@ export const batchLocalInventoryExamplePayload: {
     ],
   },
 };
+
 export const updateRegionalInventoryExamplePayload: {
   data: Record<string, unknown>;
 } = {
@@ -66,6 +68,7 @@ export const updateRegionalInventoryExamplePayload: {
     },
   },
 };
+
 export const batchRegionalInventoryExamplePayload: {
   data: Record<string, unknown>;
 } = {

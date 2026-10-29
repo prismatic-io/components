@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { listDisputesExamplePayload } from "../../examplePayloads/disputes";
 import { listDisputesInputs } from "../../inputs";
 import { listDisputesOutputSchema } from "../../outputSchemas";
+
 export const listDisputes = action({
   display: {
     label: "List Disputes",
@@ -18,6 +19,7 @@ export const listDisputes = action({
       stripeConnection: stripeConnection,
       timeout,
     });
+
     const params: Stripe.DisputeListParams = {
       charge: chargeId,
       payment_intent: paymentIntent,
@@ -35,5 +37,6 @@ export const listDisputes = action({
     type: "actionOutput",
     schema: listDisputesOutputSchema,
   }),
+
   examplePayload: listDisputesExamplePayload,
 });

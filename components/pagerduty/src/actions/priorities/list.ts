@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listPrioritiesExamplePayloads } from "../../examplePayloads";
 import { connectionInput, fetchAll, limit, offset, total } from "../../inputs";
 import { fetchAllWithPagination } from "../../util/fetchAllWithPagination";
+
 export const listPriorities = action({
   display: {
     label: "List Priorities",
@@ -12,6 +13,7 @@ export const listPriorities = action({
   perform: async (context, { connection, limit, offset, total, fetchAll }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = { limit, offset, total };
+
     if (fetchAll) {
       return {
         data: await fetchAllWithPagination({
@@ -22,6 +24,7 @@ export const listPriorities = action({
         }),
       };
     }
+
     const { data } = await client.get(ENDPOINTS.PRIORITIES, {
       params,
     });

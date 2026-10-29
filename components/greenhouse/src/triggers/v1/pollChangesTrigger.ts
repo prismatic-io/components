@@ -11,7 +11,9 @@ import {
   fetchAllApplicationsSince,
   partitionApplicationsByTimestamp,
 } from "../../util";
+
 const HARVEST_API_VERSION = "v1";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Applications (Harvest v1/v2)",
@@ -33,6 +35,7 @@ export const pollChangesTrigger = pollingTrigger({
     const sinceDate = lastState?.lastPolledAt
       ? new Date(lastState.lastPolledAt)
       : now;
+
     const client = createClient(
       connection,
       HARVEST_API_VERSION,
@@ -42,22 +45,27 @@ export const pollChangesTrigger = pollingTrigger({
       client,
       sinceDate.toISOString(),
     );
+
     const { created, updated } = partitionApplicationsByTimestamp(
       applications,
       sinceDate,
     );
+
     context.polling.setState({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
+
     const result = {
       created: showNewRecords ? created : [],
       updated: showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled applications: ${applications.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

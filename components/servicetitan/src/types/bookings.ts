@@ -1,4 +1,5 @@
 import type { Address } from "./common";
+
 export interface Booking {
   id: number;
   source: string;

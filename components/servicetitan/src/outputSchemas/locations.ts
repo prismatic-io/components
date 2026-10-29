@@ -1,4 +1,5 @@
 import { addressSchema, listEnvelope } from "./shared";
+
 const createdLocationSchema = {
   type: "object" as const,
   properties: {
@@ -125,6 +126,7 @@ const createdLocationSchema = {
     "contacts",
   ],
 };
+
 const locationSchema = {
   type: "object" as const,
   properties: {
@@ -227,7 +229,11 @@ const locationSchema = {
     "externalData",
   ],
 };
+
 export const createLocationOutputSchema = createdLocationSchema;
+
 export const getLocationOutputSchema = locationSchema;
+
 export const updateLocationOutputSchema = locationSchema;
+
 export const listLocationsOutputSchema = listEnvelope(locationSchema);

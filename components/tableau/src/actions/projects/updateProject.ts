@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { updateProjectExamplePayload } from "../../examplePayloads";
 import { updateProjectInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const updateProject = action({
   display: {
     label: "Update Project",
@@ -23,6 +24,7 @@ export const updateProject = action({
         contentPermissions: params.contentPermissions || undefined,
       },
     });
+
     return {
       data: response.data,
     };

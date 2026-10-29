@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
 import { deleteEmployeeFileExamplePayload } from "../../examplePayloads";
 import { deleteEmployeeFileInputs } from "../../inputs";
+
 export const deleteEmployeeFile = action({
   display: {
     label: "Delete Employee File",

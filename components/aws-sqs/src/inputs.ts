@@ -1,6 +1,8 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+
 import { awsRegion, connectionInput, dynamicAccessAllInputs } from "aws-utils";
 import { cleanIntInput, cleanStringInput, lookBackDateClean } from "./utils";
+
 export const message = input({
   label: "Message",
   type: "string",
@@ -10,6 +12,7 @@ export const message = input({
   clean: (msg) =>
     typeof msg === "object" ? JSON.stringify(msg) : util.types.toString(msg),
 });
+
 export const messageGroupId = input({
   label: "Message Group Id",
   type: "string",
@@ -19,6 +22,7 @@ export const messageGroupId = input({
     "The message group ID is the tag that specifies that a message belongs to a specific message group. Messages that belong to the same message group are always processed one by one, in a strict order relative to the message group (however, messages that belong to different message groups might be processed out of order).",
   clean: util.types.toString,
 });
+
 export const messageDeduplicationId = input({
   label: "Message deduplication ID",
   type: "string",
@@ -28,6 +32,7 @@ export const messageDeduplicationId = input({
     "The message deduplication ID is the token used for deduplication of sent messages. If a message with a particular message deduplication ID is sent successfully, any messages sent with the same message deduplication ID are accepted successfully but aren't delivered during the 5-minute deduplication interval.",
   clean: util.types.toString,
 });
+
 export const attributes = input({
   label: "Attributes",
   type: "string",
@@ -36,6 +41,7 @@ export const attributes = input({
   comments:
     "Amazon SQS lets you include structured metadata (such as timestamps, geospatial data, signatures, and identifiers) with messages using message attributes. Each message can have up to 10 attributes.",
 });
+
 export const delaySeconds = input({
   label: "Delay Seconds",
   placeholder: "Delay Seconds",
@@ -45,6 +51,7 @@ export const delaySeconds = input({
   comments: "Provide a number of optional seconds to delay sending a message.",
   clean: util.types.toInt,
 });
+
 export const url = input({
   label: "Queue URL",
   type: "string",
@@ -55,6 +62,7 @@ export const url = input({
   dataSource: "selectQueue",
   clean: util.types.toString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -65,6 +73,7 @@ export const name = input({
     "The name of a new queue. Can only include alphanumeric characters, hyphens, or underscores and must be 1 to 80 characters in length. FIFO queues must end with the .fifo suffix.",
   clean: util.types.toString,
 });
+
 export const receiptHandle = input({
   label: "Receipt Handle",
   type: "string",
@@ -74,6 +83,7 @@ export const receiptHandle = input({
     "Every time you receive a message from a queue, you receive a receipt handle for that message. This handle is associated with the action of receiving the message, not with the message itself. ",
   clean: util.types.toString,
 });
+
 export const maxNumber = input({
   label: "Max Messages",
   type: "string",
@@ -83,6 +93,7 @@ export const maxNumber = input({
   comments: "Provide a number for the max amount of values to be returned.",
   clean: (value) => util.types.toInt(value, 1),
 });
+
 export const waitTime = input({
   label: "Wait Time (seconds)",
   type: "string",
@@ -92,6 +103,7 @@ export const waitTime = input({
     "The duration (in seconds) for which the call waits for a message to arrive in the queue before returning. If a message is available, the call returns sooner than WaitTimeSeconds. If no messages are available and the wait time expires, the call returns successfully with an empty list of messages.",
   clean: util.types.toInt,
 });
+
 export const isFifo = input({
   label: "FIFO Queue",
   type: "boolean",
@@ -101,6 +113,7 @@ export const isFifo = input({
     "This flag enables the creation of a FIFO Queue. Once you create a FIFO queue you cannot change it to a standard queue.",
   clean: util.types.toBool,
 });
+
 export const contentBasedDeduplication = input({
   label: "Content Based Deduplication",
   type: "boolean",
@@ -110,6 +123,7 @@ export const contentBasedDeduplication = input({
     "This flag enables Content Based Deduplication on a FIFO queue. Once you create a FIFO queue you cannot change the value of this input.",
   clean: util.types.toBool,
 });
+
 export const prefix = input({
   label: "Queue Prefix",
   type: "string",
@@ -120,11 +134,13 @@ export const prefix = input({
   placeholder: "Enter a prefix to filter the list results",
   clean: cleanStringInput,
 });
+
 export const connectionInputs = {
   awsConnection: connectionInput,
   awsRegion,
   ...dynamicAccessAllInputs,
 };
+
 export const tags = input({
   label: "Tags",
   type: "string",
@@ -134,12 +150,14 @@ export const tags = input({
   clean: (value: unknown): Record<string, string> => {
     if (!value) return {};
     const record = util.types.keyValPairListToObject(value as KeyValuePair[]);
+
     return Object.entries(record).reduce((acc, [key, value]) => {
       acc[key] = util.types.toString(value);
       return acc;
     }, {});
   },
 });
+
 export const dlqName = input({
   label: "Dead Letter Queue Name",
   type: "string",
@@ -150,6 +168,7 @@ export const dlqName = input({
     "The name of the dead letter queue where messages will be sent after exceeding the maximum number of receive attempts in the main queue. Can only include alphanumeric characters, hyphens, or underscores and must be 1 to 80 characters in length. FIFO queues must end with the .fifo suffix.",
   clean: util.types.toString,
 });
+
 export const maxReceiveCount = input({
   label: "Max Receive Count",
   type: "string",
@@ -161,6 +180,7 @@ export const maxReceiveCount = input({
     "The maximum number of times a message is delivered to the source queue before being moved to the dead letter queue. Must be greater than or equal to 1.",
   clean: util.types.toInt,
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -171,6 +191,7 @@ export const maxResults = input({
     "The maximum number of results to return. <strong>Must be between 1 and 1000</strong>.",
   clean: cleanIntInput,
 });
+
 export const nextToken = input({
   label: "Next Token",
   type: "string",
@@ -180,6 +201,7 @@ export const nextToken = input({
   comments: "The next token to return.",
   clean: cleanStringInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -189,6 +211,7 @@ export const fetchAll = input({
     "Turn this On to fetch all results. It will ignore the Max Results and Next Token inputs.",
   clean: util.types.toBool,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",

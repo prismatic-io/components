@@ -18,6 +18,7 @@ import { listProjectMembers } from "../projectMetadata/listProjectMembers";
 import { createFile } from "./createFile";
 import { getFile } from "./getFile";
 import { updateFile } from "./updateFile";
+
 const exampleFile = getFileExamplePayload.data;
 const exampleFileCommit = createFileExamplePayload.data;
 const exampleLabel = listLabelsExamplePayload.data[0];
@@ -25,10 +26,12 @@ const exampleMember = listProjectMembersExamplePayload.data[0];
 const exampleMilestone = listMilestonesExamplePayload.data[0];
 const examplePipeline = listPipelinesExamplePayload.data[0];
 const examplePipelineDetail = getPipelineExamplePayload.data;
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
 const project = "278964";
 const encodedPath = "config%2Fsettings%2Ejson";
+
 test("Get File encodes the path including the dot", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/repository/files/${encodedPath}`)
@@ -42,6 +45,7 @@ test("Get File encodes the path including the dot", async () => {
   });
   expect(result?.data).toEqual(exampleFile);
 });
+
 test("Create File posts and Update File puts", async () => {
   const body = {
     branch: "main",
@@ -70,6 +74,7 @@ test("Create File posts and Update File puts", async () => {
     exampleFileCommit,
   );
 });
+
 test("Pipelines", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/pipelines`)
@@ -95,6 +100,7 @@ test("Pipelines", async () => {
       .result?.data,
   ).toEqual(examplePipelineDetail);
 });
+
 test("Labels, Milestones, Members", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/labels`)
@@ -141,6 +147,7 @@ test("Labels, Milestones, Members", async () => {
     ).result?.data,
   ).toEqual([exampleMember]);
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Not Found" };
@@ -157,6 +164,7 @@ describe("error paths", () => {
     commitMessage: "Update",
     encoding: "text",
   };
+
   test("Get File rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/repository/files/${encodedPath}`)
@@ -171,18 +179,21 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Create File rejects on 400", async () => {
     nock(GITLAB_URL)
       .post(`/api/v4/projects/${project}/repository/files/${encodedPath}`)
       .reply(400, { message: "A file with this name already exists" });
     await expect(invoke(createFile, writeParams)).rejects.toThrow();
   });
+
   test("Update File rejects on 400", async () => {
     nock(GITLAB_URL)
       .put(`/api/v4/projects/${project}/repository/files/${encodedPath}`)
       .reply(400, { message: "A file with this name doesn't exist" });
     await expect(invoke(updateFile, writeParams)).rejects.toThrow();
   });
+
   test("List Pipelines rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/pipelines`)
@@ -199,6 +210,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Get Pipeline rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/pipelines/1`)
@@ -207,6 +219,7 @@ describe("error paths", () => {
       invoke(getPipeline, { connection, project, pipelineId: 1 }),
     ).rejects.toThrow();
   });
+
   test("List Labels rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/labels`)
@@ -216,6 +229,7 @@ describe("error paths", () => {
       invoke(listLabels, { connection, project, ...paging, search: undefined }),
     ).rejects.toThrow();
   });
+
   test("List Milestones rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/milestones`)
@@ -230,6 +244,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("List Project Members rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/members/all`)

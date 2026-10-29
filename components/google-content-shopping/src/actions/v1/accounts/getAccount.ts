@@ -3,6 +3,7 @@ import { createClientMerchant } from "../../../client";
 import { getAccountExamplePayload } from "../../../examplePayloads/v1";
 import { getAccountInputs } from "../../../inputs/v1/accounts";
 import { accountResourceName } from "../../../util/resourceNames";
+
 export const getAccountMerchant = action({
   display: {
     description: "Retrieves a Merchant Center account.",
@@ -14,6 +15,7 @@ export const getAccountMerchant = action({
     const { data } = await client.get(
       `/accounts/v1/${accountResourceName(account)}`,
     );
+
     return { data };
   },
   examplePayload: getAccountExamplePayload,

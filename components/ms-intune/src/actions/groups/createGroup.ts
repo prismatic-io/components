@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getGroupExamplePayload as createGroupExamplePayload } from "../../examplePayloads";
 import { createGroupInputs } from "../../inputs";
+
 export const createGroup = action({
   display: {
     label: "Create Group",
@@ -31,6 +32,7 @@ export const createGroup = action({
       visibility: additionalFields.visibility,
       ...bodyFields,
     });
+
     return {
       data,
     };

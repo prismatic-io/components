@@ -5,6 +5,7 @@ import { HttpMethod, MAX_PAGE_SIZE } from "../../constants";
 import { listPagesExamplePayload } from "../../examplePayloads";
 import { listPagesInputs } from "../../inputs";
 import { getPaginatedData } from "../../utils";
+
 export const listPages = action({
   display: {
     label: "List Pages",
@@ -34,8 +35,7 @@ export const listPages = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listPagesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listPagesExamplePayload,
   examplePayload: listPagesExamplePayload,
 });

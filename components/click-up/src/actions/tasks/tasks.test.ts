@@ -9,15 +9,18 @@ import {
 import { createTask } from "./createTask";
 import { listTasks } from "./listTasks";
 import { updateTask } from "./updateTask";
+
 const API = "https://api.clickup.com";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
+
 interface Captured {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, unknown>;
 }
+
 const mockClickUp = (
   method: string,
   path: string,
@@ -40,15 +43,12 @@ const mockClickUp = (
     });
   return captured;
 };
+
 type ActionUnderTest = {
-  inputs: Record<
-    string,
-    {
-      type?: string;
-    }
-  >;
+  inputs: Record<string, { type?: string }>;
   perform: unknown;
 };
+
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
   const connectionKey = Object.keys(action.inputs).find(
     (key) => action.inputs[key].type === "connection",
@@ -58,6 +58,7 @@ const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
     { [connectionKey]: connection, ...params } as any,
   );
 };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -65,6 +66,7 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 describe("createTask", () => {
   const params = {
     listId: "124",
@@ -91,6 +93,7 @@ describe("createTask", () => {
     },
     customFields: [{ key: "f-1", value: 5 }],
   };
+
   test("happy path maps structured objects and custom fields into the body", async () => {
     const req = mockClickUp(
       "POST",
@@ -119,6 +122,7 @@ describe("createTask", () => {
     });
   });
 });
+
 describe("listTasks", () => {
   const params = {
     listId: "124",
@@ -141,6 +145,7 @@ describe("listTasks", () => {
       dateDoneGt: "",
     },
   };
+
   test("happy path maps the structured-object filters to query params and returns the tasks", async () => {
     const req = mockClickUp(
       "GET",
@@ -166,6 +171,7 @@ describe("listTasks", () => {
     });
   });
 });
+
 describe("updateTask", () => {
   const params = {
     taskId: "9hx",
@@ -182,6 +188,7 @@ describe("updateTask", () => {
     removeAssignees: undefined,
     archived: false,
   };
+
   test("happy path builds the add/rem assignee object and returns the response", async () => {
     const req = mockClickUp(
       "PUT",

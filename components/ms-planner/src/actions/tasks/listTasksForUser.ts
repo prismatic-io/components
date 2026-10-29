@@ -7,6 +7,7 @@ import { listTasksForUserOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { computeEndpointBasedOnConnection, fetchAllPlanner } from "../../utils";
 import { listTasksForUserInputs } from "../../inputs";
+
 export const listTasksForUser = action({
   display: {
     label: "List Tasks for User",
@@ -27,8 +28,7 @@ export const listTasksForUser = action({
     const data = await fetchAllPlanner<PlannerTask & Etagged>(client, endpoint);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listTasksForUserExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listTasksForUserExamplePayload,
   examplePayload: listTasksForUserExamplePayload,
 });

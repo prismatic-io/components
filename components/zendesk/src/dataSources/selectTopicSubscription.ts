@@ -4,6 +4,7 @@ import { selectTopicSubscriptionExamplePayload } from "../examplePayloads";
 import { selectTopicSubscriptionInputs } from "../inputs";
 import type { Subscription } from "../types";
 import { byElementLabel, paginateResults } from "../util";
+
 export const selectTopicSubscription = dataSource({
   display: {
     label: "Select Topic Subscription",
@@ -13,12 +14,14 @@ export const selectTopicSubscription = dataSource({
   perform: async (_context, { zendeskConnection, topicId }) => {
     const client = rawHttpClient(zendeskConnection);
     const results = [] as Subscription[];
+
     const paginatedResults = await paginateResults<Subscription>(
       client,
       `/community/topics/${topicId}/subscriptions`,
       results,
       "subscriptions",
     );
+
     return {
       result: paginatedResults
         .map<Element>((sub) => ({

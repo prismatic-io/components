@@ -3,6 +3,7 @@ import { executeXmlRequest, handleSageError } from "../../util";
 import { deleteObjectExamplePayload } from "../../examplePayloads";
 import { deleteObjectInputs } from "../../inputs";
 import { deleteObjectOutputSchema } from "../../outputSchemas";
+
 export const deleteObject = action({
   display: {
     label: "Delete Object",
@@ -14,13 +15,16 @@ export const deleteObject = action({
     <object>${object}</object>
     <keys>${keys}</keys>
   </delete>`;
+
     const responseFromSage = await executeXmlRequest(
       connection,
       action,
       context.debug.enabled,
       { explicitArray: false },
     );
+
     handleSageError(responseFromSage);
+
     return {
       data: responseFromSage,
     };

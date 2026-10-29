@@ -4,6 +4,7 @@ import { selectSectionSubscriptionExamplePayload } from "../examplePayloads";
 import { selectSectionSubscriptionInputs } from "../inputs";
 import type { Subscription } from "../types";
 import { byElementLabel, paginateResults } from "../util";
+
 export const selectSectionSubscription = dataSource({
   display: {
     label: "Select Section Subscription",
@@ -13,12 +14,14 @@ export const selectSectionSubscription = dataSource({
   perform: async (_context, { zendeskConnection, sectionId }) => {
     const client = rawHttpClient(zendeskConnection);
     const results = [] as Subscription[];
+
     const paginatedResults = await paginateResults<Subscription>(
       client,
       `/help_center/sections/${sectionId}/subscriptions`,
       results,
       "subscriptions",
     );
+
     return {
       result: paginatedResults
         .map<Element>((sub) => ({

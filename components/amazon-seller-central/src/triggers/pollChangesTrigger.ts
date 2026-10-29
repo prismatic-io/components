@@ -14,6 +14,7 @@ import type {
   PollingState,
 } from "../types";
 import { fetchPollingChanges, resolvePollingRecordChanges } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -51,6 +52,7 @@ export const pollChangesTrigger = pollingTrigger({
     const isInitialSync =
       pollState?.lastPolledAt === undefined && Boolean(lookBackDate);
     const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
+
     const client = createClient(connection, context.debug.enabled);
     const { created, updated } = await fetchPollingChanges(
       client,
@@ -58,17 +60,21 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt,
       marketplaceIds,
     );
+
     const filteredCreated = showNewRecords || isInitialSync ? created : [];
     const filteredUpdated = showUpdatedRecords || isInitialSync ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
+
     context.polling.setState({
       lastPolledAt: now,
     });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${filteredCreated.length} new, ${filteredUpdated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

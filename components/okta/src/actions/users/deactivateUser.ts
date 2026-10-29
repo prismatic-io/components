@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deactivateUserExamplePayload } from "../../examplePayloads/users";
 import { deactivateUserInputs } from "../../inputs/users";
+
 export const deactivateUser = action({
   display: {
     label: "Deactivate User",
@@ -13,6 +14,7 @@ export const deactivateUser = action({
     await client.post(`/users/${encodeURIComponent(id)}/lifecycle/deactivate`, {
       sendEmail,
     });
+
     return {
       data: {
         id,

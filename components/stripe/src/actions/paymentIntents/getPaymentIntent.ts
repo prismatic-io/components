@@ -4,6 +4,7 @@ import { getPaymentIntentExamplePayload } from "../../examplePayloads/paymentInt
 import { getPaymentIntentInputs } from "../../inputs";
 import { paymentIntentOutputSchema } from "../../outputSchemas";
 import type Stripe from "stripe";
+
 export const getPaymentIntent = action({
   display: {
     label: "Get Payment Intent",
@@ -31,5 +32,6 @@ export const getPaymentIntent = action({
     type: "actionOutput",
     schema: paymentIntentOutputSchema,
   }),
+
   examplePayload: getPaymentIntentExamplePayload,
 });

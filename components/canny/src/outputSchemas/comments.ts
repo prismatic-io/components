@@ -1,4 +1,5 @@
 import { commentSchema, idOnlySchema, successStringSchema } from "./shared";
+
 export const listCommentsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -9,6 +10,9 @@ export const listCommentsOutputSchema = {
   required: ["items", "hasNextPage", "cursor"],
   additionalProperties: true,
 };
+
 export const retrieveCommentOutputSchema = commentSchema;
+
 export const createCommentOutputSchema = idOnlySchema;
+
 export const deleteCommentOutputSchema = successStringSchema;

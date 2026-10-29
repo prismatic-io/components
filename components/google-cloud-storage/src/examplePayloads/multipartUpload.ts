@@ -14,10 +14,12 @@ export const createMultipartUploadPayloadExample = {
     },
   },
 };
+
 export const uploadPartPayloadExample = {
   PartNumber: 1,
   ETag: "5fbd6b4faa5393f343d276457f3f7d9f",
 };
+
 export const completeMultipartUploadPayloadExample = {
   results: {
     CompleteMultipartUploadResult: {

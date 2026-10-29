@@ -12,22 +12,28 @@ import {
   useNockLifecycle,
 } from "../../testHelpers";
 import { getCurrentUser } from "./getCurrentUser";
+
 describe("getCurrentUser", () => {
   useNockLifecycle();
+
   it("queries the current user and returns the data", async () => {
     mockTokenExchange();
     const graphql = mockGraphql(200, getCurrentUserExamplePayload);
+
     const { result } = await invoke(getCurrentUser, {
       connection: testConnection,
     });
+
     expect(graphql.body()?.query).toContain("me");
     expect(result).toEqual({ data: getCurrentUserExamplePayload.data });
     expect(nock.isDone()).toBe(true);
   });
+
   it("never logs the connection's credentials or token when Debug Mode is on", async () => {
     mockTokenExchange();
     mockGraphql(200, getCurrentUserExamplePayload);
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+
     try {
       await invoke(
         getCurrentUser,
@@ -43,21 +49,26 @@ describe("getCurrentUser", () => {
     }
     expect(nock.isDone()).toBe(true);
   });
+
   it("logs the GraphQL query in Debug Mode", async () => {
     mockTokenExchange();
     mockGraphql(200, getCurrentUserExamplePayload);
     const logger = recordingLogger();
+
     await invoke(
       getCurrentUser,
       { connection: testConnection },
       debugModeContext(logger),
     );
+
     expectDebugLoggedRequest(logger, ["primaryEmail"]);
     expect(nock.isDone()).toBe(true);
   });
+
   it("rejects when the GraphQL endpoint returns a 4xx", async () => {
     mockTokenExchange();
     mockGraphql(401, { errors: [{ message: "Unauthorized" }] });
+
     await expect(
       invoke(getCurrentUser, { connection: testConnection }),
     ).rejects.toThrow();

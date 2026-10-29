@@ -13,6 +13,7 @@ import {
   resolvePollWindow,
   resolveSage200RecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -31,6 +32,7 @@ export const pollChangesTrigger = pollingTrigger({
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
     const { lastPolledAt, includeNew, includeUpdated } = resolvePollWindow(
@@ -38,6 +40,7 @@ export const pollChangesTrigger = pollingTrigger({
       params,
       now,
     );
+
     if (!includeNew && !includeUpdated) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -45,29 +48,36 @@ export const pollChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const client = getClient(
       params.connection,
       context.debug.enabled,
       params.site,
       params.company,
     );
+
     const { data } = await client.get<Sage200Record[]>(config.endpoint, {
       params: { $filter: `date_time_updated gt ${lastPolledAt}` },
     });
     const allRecords = Array.isArray(data) ? data : [];
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
       includeNew,
       includeUpdated,
     );
+
     const totalMatched = created.length + updated.length;
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${allRecords.length} ${params.pollResourceType} records, ${totalMatched} matched since last poll (${created.length} created, ${updated.length} updated).`,
       );
     }
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

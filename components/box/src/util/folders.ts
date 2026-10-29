@@ -2,6 +2,7 @@ import { util } from "@prismatic-io/spectral";
 import type { BoxClient } from "box-node-sdk";
 import { FOLDER_TYPE } from "../constants";
 import type { BoxRawEntry, GetFolderEntriesParams } from "../types";
+
 export const getFolderEntries = async <T extends BoxRawEntry = BoxRawEntry>({
   client,
   id,
@@ -12,6 +13,7 @@ export const getFolderEntries = async <T extends BoxRawEntry = BoxRawEntry>({
 }: GetFolderEntriesParams): Promise<T[]> => {
   let initial = true;
   let allEntries: T[] = [];
+
   while (initial || marker) {
     const response = await client.folders.getFolderItems(id, {
       queryParams: {
@@ -22,25 +24,22 @@ export const getFolderEntries = async <T extends BoxRawEntry = BoxRawEntry>({
         fields: fields ? fields.split(",") : undefined,
       },
     });
+
     initial = false;
     const rawEntries =
       ((response.rawData as Record<string, unknown>)?.entries as T[]) ?? [];
     allEntries = allEntries.concat(rawEntries);
     marker = response.nextMarker;
   }
+
   return allEntries;
 };
+
 export const getPathEntries = async (
   client: BoxClient,
   path: string,
   lastShouldExist = true,
-): Promise<
-  {
-    id?: string;
-    type?: string;
-    name?: string;
-  }[]
-> => {
+): Promise<{ id?: string; type?: string; name?: string }[]> => {
   if (!path.startsWith("/")) {
     throw Error("Path must start with '/'");
   }
@@ -54,12 +53,10 @@ export const getPathEntries = async (
       type: FOLDER_TYPE,
     },
   ];
-  const pathEntries: {
-    id?: string;
-    type?: string;
-    name?: string;
-  }[] = [];
+
+  const pathEntries: { id?: string; type?: string; name?: string }[] = [];
   const pathParts = path.split("/");
+
   for (const [i, part] of pathParts.entries()) {
     const isLastPart = i === pathParts.length - 1;
     const found = allEntries.find((entry) => entry.name === part) || {};
@@ -69,11 +66,14 @@ export const getPathEntries = async (
       found.type !== undefined ? util.types.toString(found.type) : undefined;
     const name =
       found.name !== undefined ? util.types.toString(found.name) : undefined;
+
     if (id) {
       if (isLastPart && !lastShouldExist) {
         throw Error(`Expected '${part}' to not exist`);
       }
+
       pathEntries.push({ id, type, name });
+
       if (type === FOLDER_TYPE && !isLastPart) {
         allEntries = await getFolderEntries({ client, id });
       }
@@ -83,5 +83,6 @@ export const getPathEntries = async (
       throw Error(`Expected '${part}' to exist in path '${path}'`);
     }
   }
+
   return pathEntries;
 };

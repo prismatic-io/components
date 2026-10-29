@@ -5,7 +5,9 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { getBynderURL, validateConnection } from "../../client";
 import { connection } from "../../inputs";
+
 const { debugRequest: _, ...httpInputsWithoutDebug } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",

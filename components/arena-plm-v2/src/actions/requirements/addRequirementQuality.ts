@@ -4,6 +4,7 @@ import { addRequirementQualityExamplePayload } from "../../examplePayloads";
 import { addRequirementQualityInputs } from "../../inputs";
 import { addRequirementQualityOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const addRequirementQuality = action({
   display: {
     label: "Add Requirement Quality",

@@ -5,6 +5,7 @@ import {
 } from "../constants";
 import { toOptionalObject } from "../util";
 import { connection, environmentId, spaceId } from "./common";
+
 const bulkActionId = input({
   label: "Bulk Action ID",
   type: "string",
@@ -14,6 +15,7 @@ const bulkActionId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const bulkActionItems = input({
   label: "Items",
   type: "code",
@@ -25,6 +27,7 @@ const bulkActionItems = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const bulkActionUnpublishItems = input({
   label: "Items",
   type: "code",
@@ -36,18 +39,21 @@ const bulkActionUnpublishItems = input({
   required: true,
   clean: toOptionalObject,
 });
+
 export const getBulkActionInputs = {
   connection,
   spaceId,
   environmentId,
   bulkActionId,
 };
+
 export const publishBulkActionInputs = {
   connection,
   spaceId,
   environmentId,
   items: bulkActionItems,
 };
+
 export const unpublishBulkActionInputs = {
   connection,
   spaceId,

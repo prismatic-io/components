@@ -4,6 +4,7 @@ import { FILE_TYPE, FOLDER_TYPE } from "../../constants";
 import { deleteObjectExamplePayload } from "../../examplePayloads";
 import { deleteObjectInputs } from "../../inputs";
 import { getPathEntries } from "../../util";
+
 export const deleteObject = action({
   display: {
     label: "Delete Object",
@@ -13,7 +14,9 @@ export const deleteObject = action({
   perform: async (_context, { path, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
+
     const { id, type, name } = pathEntries.slice(-1)[0];
+
     if (type === FOLDER_TYPE) {
       await client.folders.deleteFolderById(util.types.toString(id));
     } else if (type === FILE_TYPE) {
@@ -21,13 +24,12 @@ export const deleteObject = action({
     } else {
       throw Error(`'${name}' is neither a file nor a folder`);
     }
+
     return {
       data: {},
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteObjectExamplePayload.data,
   }),
   inputs: deleteObjectInputs,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { deactivateStoreExamplePayload } from "../../examplePayloads";
 import { deactivateStoreInputs } from "../../inputs";
+
 export const deactivateStore = action({
   display: {
     label: "Deactivate Store",
@@ -12,9 +13,11 @@ export const deactivateStore = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const body = {
       storeId,
     };
+
     const { data } = await client.post("/stores/deactivate", body);
     return { data };
   },

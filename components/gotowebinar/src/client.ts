@@ -2,9 +2,11 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { gotoWebinarOAuth2Connection } from "./connections";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { ClientProps } from "./types";
+
 interface AuthorizationHeaders {
   Authorization: string;
 }
+
 export const getAuthorizationHeaders = ({
   connection,
 }: {
@@ -19,6 +21,7 @@ export const getAuthorizationHeaders = ({
           "No access token found in connection",
         );
       }
+
       return {
         Authorization: `Bearer ${token}`,
       };
@@ -28,6 +31,7 @@ export const getAuthorizationHeaders = ({
     }
   }
 };
+
 export const getClientProps = (connection: Connection): ClientProps => {
   const token = util.types.toString(connection.token?.access_token);
   const organizerKey = util.types.toString(connection.fields?.organizerKey);
@@ -37,18 +41,21 @@ export const getClientProps = (connection: Connection): ClientProps => {
       "No access token found in connection",
     );
   }
+
   if (!organizerKey) {
     throw new ConnectionError(
       connection,
       "No organizer key found in connection",
     );
   }
+
   return {
     token,
     organizerKey,
     baseUrl: "https://api.getgo.com/G2W/rest/v2",
   };
 };
+
 export const createGotoWebinarClient = (
   connection: Connection,
   debug = false,

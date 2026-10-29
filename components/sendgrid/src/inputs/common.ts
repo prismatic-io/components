@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput, cleanValueListInput } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The SendGrid connection to use.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -14,6 +16,7 @@ export const fetchAll = input({
   comments: "When true, fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -23,6 +26,7 @@ const pageSize = input({
   comments: "Number of results to return per page (max 100).",
   clean: cleanStringInput,
 });
+
 const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -31,12 +35,14 @@ const pageToken = input({
   comments: "Token for fetching the next or previous page of results.",
   clean: cleanStringInput,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and page token controls for paging through results.",
   inputs: { page_size: pageSize, page_token: pageToken },
 });
+
 export const events = input({
   label: "Events",
   collection: "valuelist",
@@ -62,6 +68,7 @@ export const events = input({
   default: ["delivered"],
   clean: cleanValueListInput,
 });
+
 export const webhookFriendlyName = input({
   label: "Friendly Name",
   placeholder: "Enter a friendly name",

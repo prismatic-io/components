@@ -3,6 +3,7 @@ export const createCampaignResponse = {
     id: "23849551358310668",
   },
 };
+
 export const listCampaignsInAccountResponse = {
   data: {
     data: [

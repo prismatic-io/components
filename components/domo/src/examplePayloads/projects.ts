@@ -9,6 +9,7 @@ export const getProjectExamplePayload = {
     members: [87264918, 54320910, 66011234],
   },
 };
+
 export const listProjectsExamplePayload = {
   data: [
     getProjectExamplePayload.data,
@@ -23,7 +24,9 @@ export const listProjectsExamplePayload = {
     },
   ],
 };
+
 export const createProjectExamplePayload = getProjectExamplePayload;
+
 export const updateProjectExamplePayload = {
   data: {
     ...getProjectExamplePayload.data,
@@ -31,11 +34,15 @@ export const updateProjectExamplePayload = {
     dueDate: "2024-07-15",
   },
 };
+
 export const deleteProjectExamplePayload = { data: null };
+
 export const getProjectMembersExamplePayload = {
   data: [87264918, 54320910, 66011234],
 };
+
 export const updateProjectMembersExamplePayload = { data: null };
+
 export const getListExamplePayload = {
   data: {
     id: 101,
@@ -45,6 +52,7 @@ export const getListExamplePayload = {
     projectId: 7,
   },
 };
+
 export const listProjectListsExamplePayload = {
   data: [
     getListExamplePayload.data,
@@ -64,7 +72,9 @@ export const listProjectListsExamplePayload = {
     },
   ],
 };
+
 export const createListExamplePayload = getListExamplePayload;
+
 export const updateListExamplePayload = {
   data: {
     ...getListExamplePayload.data,
@@ -72,7 +82,9 @@ export const updateListExamplePayload = {
     index: 0,
   },
 };
+
 export const deleteListExamplePayload = { data: null };
+
 export const getTaskExamplePayload = {
   data: {
     id: 2001,
@@ -91,6 +103,7 @@ export const getTaskExamplePayload = {
     lastModified: "2024-03-22",
   },
 };
+
 export const listProjectListTasksExamplePayload = {
   data: [
     getTaskExamplePayload.data,
@@ -111,7 +124,9 @@ export const listProjectListTasksExamplePayload = {
     },
   ],
 };
+
 export const createTaskExamplePayload = getTaskExamplePayload;
+
 export const updateTaskExamplePayload = {
   data: {
     ...getTaskExamplePayload.data,

@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../client";
 import { connection } from "../inputs/sharedInputs";
 import type { RelatedAssetItem, RelatedAssetsResponse } from "../types";
+
 const assetId = input({
   label: "Asset ID",
   type: "string",
@@ -12,6 +13,7 @@ const assetId = input({
   placeholder: "eyJpZG...",
   clean: util.types.toString,
 });
+
 const query = gql`
   query listRelatedAssets($assetId: ID!) {
     asset(id: $assetId) {
@@ -24,6 +26,7 @@ const query = gql`
     }
   }
 `;
+
 export const selectRelatedAsset = dataSource({
   display: {
     label: "Select Related Asset",

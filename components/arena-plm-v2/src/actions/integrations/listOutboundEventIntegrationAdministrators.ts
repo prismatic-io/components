@@ -4,6 +4,7 @@ import { listOutboundEventIntegrationAdministratorsExamplePayload } from "../../
 import { listOutboundEventIntegrationAdministratorsInputs } from "../../inputs";
 import { userCompactListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listOutboundEventIntegrationAdministrators = action({
   display: {
     label: "List Outbound Event Integration Administrators",
@@ -23,6 +24,7 @@ export const listOutboundEventIntegrationAdministrators = action({
         `/outboundevents/${integrationGuid}/administrators`,
       );
       const administrators = response.data;
+
       context.logger.info(
         "Retrieved outbound event integration administrators",
         {
@@ -30,6 +32,7 @@ export const listOutboundEventIntegrationAdministrators = action({
           count: administrators.count || 0,
         },
       );
+
       return { data: administrators };
     } catch (error) {
       handleArenaError(

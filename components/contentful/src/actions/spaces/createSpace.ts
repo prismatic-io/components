@@ -28,9 +28,8 @@ export const createSpace = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createSpaceExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createSpaceExamplePayload,
   inputs: createSpaceInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

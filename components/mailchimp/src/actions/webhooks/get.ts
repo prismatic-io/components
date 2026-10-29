@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getWebhookInputs } from "../../inputs";
 import { getWebhookExamplePayload } from "../../examplePayloads";
 import { getWebhook } from "../../utils/webhooks";
+
 export default action({
   display: {
     label: "Get Webhook",

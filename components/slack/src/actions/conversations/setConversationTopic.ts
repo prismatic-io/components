@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { inviteUserToConversationExamplePayload as setConversationTopicResponse } from "../../examplePayloads";
 import { setConversationTopicInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const setConversationTopic = action({
   display: {
     label: "Set Conversation Topic",
@@ -22,14 +23,10 @@ export const setConversationTopic = action({
       channel: channelName,
       topic,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { topic },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { topic }): Promise<{ data: unknown }> => ({
     data: {
       ...setConversationTopicResponse,
       channel: {

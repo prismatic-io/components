@@ -6,6 +6,7 @@ import { listSuppliersOutputSchema } from "../../outputSchemas";
 import type { SupplierFullVo } from "../../types";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listSuppliers = action({
   display: {
     label: "List Suppliers",
@@ -24,24 +25,29 @@ export const listSuppliers = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         name,
         supplierId,
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       context.logger.info("Fetching suppliers", {
         queryParamNames: Object.keys(queryParams),
       });
+
       const data = await fetchArenaList<SupplierFullVo>(
         client,
         "/suppliers",
         queryParams,
         fetchAll,
       );
+
       context.logger.info(
         `Successfully retrieved ${data.results?.length || 0} suppliers`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Suppliers");

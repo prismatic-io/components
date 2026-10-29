@@ -14,9 +14,11 @@ export const createDeviceExamplePayload = {
     teamviewer_id: 0,
   },
 };
+
 export const listDevicesExamplePayload = {
   data: {
     devices: [createDeviceExamplePayload.data],
   },
 };
+
 export const getDeviceExamplePayload = listDevicesExamplePayload;

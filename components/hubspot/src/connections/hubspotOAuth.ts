@@ -1,5 +1,6 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { BASE_URL, hubspotPaths } from "../constants";
+
 export const hubspotOAuth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",

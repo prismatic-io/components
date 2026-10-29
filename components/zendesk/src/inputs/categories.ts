@@ -11,6 +11,7 @@ import {
   sortBy,
   sortOrder,
 } from "./common";
+
 export const createCategoryInputs = {
   zendeskConnection: connectionInput,
   categoryName: {
@@ -29,6 +30,7 @@ export const createCategoryInputs = {
     comments: "The position of the category to be created.",
   },
 };
+
 export const deleteCategoryInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -40,11 +42,13 @@ export const deleteCategoryInputs = {
   },
   categoryId,
 };
+
 export const getCategoryInputs = {
   zendeskConnection: connectionInput,
   locale,
   categoryId,
 };
+
 export const listCategoriesInputs = {
   zendeskConnection: connectionInput,
   locale,
@@ -74,6 +78,7 @@ export const listCategoriesInputs = {
   },
   sortOrder,
 };
+
 export const updateCategoryInputs = {
   zendeskConnection: connectionInput,
   locale: {

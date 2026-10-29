@@ -4,6 +4,7 @@ import { listCategoriesExamplePayload } from "../../examplePayloads";
 import { listCategoriesInputs } from "../../inputs";
 import { listCategoriesOutputSchema } from "../../outputSchemas";
 import { paginateOffset } from "../../util";
+
 export const listCategories = action({
   display: {
     label: "List Categories",
@@ -26,8 +27,7 @@ export const listCategories = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCategoriesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCategoriesExamplePayload,
   examplePayload: listCategoriesExamplePayload,
 });

@@ -4,12 +4,14 @@ import {
   cleanStringInput,
   generateApiVersionModel,
 } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft Intune connection to use.",
 });
+
 export const apiVersion = input({
   label: "API Version",
   type: "string",
@@ -18,6 +20,7 @@ export const apiVersion = input({
   comments: "The version of the API to use.",
   clean: cleanStringInput,
 });
+
 export const $filter = input({
   label: "Filter",
   type: "string",
@@ -29,6 +32,7 @@ export const $filter = input({
   default: "",
   clean: cleanStringInput,
 });
+
 export const $select = input({
   label: "Select",
   type: "string",
@@ -39,6 +43,7 @@ export const $select = input({
   example: "id,displayName,mail",
   clean: cleanStringInput,
 });
+
 export const $expand = input({
   label: "Expand",
   type: "string",
@@ -49,6 +54,7 @@ export const $expand = input({
   example: "members,owners",
   clean: cleanStringInput,
 });
+
 export const $orderBy = input({
   label: "Order By",
   type: "string",
@@ -59,6 +65,7 @@ export const $orderBy = input({
   example: "displayName desc",
   clean: cleanStringInput,
 });
+
 export const $top = input({
   label: "Top",
   type: "string",
@@ -68,6 +75,7 @@ export const $top = input({
   example: "50",
   clean: cleanStringInput,
 });
+
 export const $skip = input({
   label: "Skip",
   type: "string",
@@ -77,6 +85,7 @@ export const $skip = input({
   example: "100",
   clean: cleanStringInput,
 });
+
 export const $count = input({
   label: "Count",
   type: "boolean",
@@ -85,6 +94,7 @@ export const $count = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const $search = input({
   label: "Search",
   type: "string",
@@ -95,6 +105,7 @@ export const $search = input({
   example: "displayName:Marketing",
   clean: cleanStringInput,
 });
+
 export const $format = input({
   label: "Format",
   type: "string",
@@ -104,6 +115,7 @@ export const $format = input({
   example: "json",
   clean: cleanStringInput,
 });
+
 export const $skipToken = input({
   label: "Skip Token",
   type: "string",
@@ -114,6 +126,7 @@ export const $skipToken = input({
   example: "X%274453707402000100000017...",
   clean: cleanStringInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -122,6 +135,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const odataParams = {
   $filter,
   $select,
@@ -134,6 +148,7 @@ export const odataParams = {
   $format,
   $skipToken,
 };
+
 export const odataGroupParams = {
   $count,
   $expand,
@@ -143,6 +158,7 @@ export const odataGroupParams = {
   $select,
   $top,
 };
+
 export const odataSoftwareUpdatesParams = {
   $select,
   $expand,
@@ -150,6 +166,7 @@ export const odataSoftwareUpdatesParams = {
   $format,
   $skipToken,
 };
+
 export const bodyFields = input({
   label: "Body Fields",
   type: "code",

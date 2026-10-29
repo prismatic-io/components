@@ -4,6 +4,7 @@ import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookOutputSchema } from "../../outputSchemas";
 import { eventsBuilder, updateWebhookHelper } from "../../util";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
@@ -16,7 +17,9 @@ export const updateWebhook = action({
     { sendGridConnection, webhookId, url, friendlyName, enabled, events },
   ) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const eventsPayload = eventsBuilder(events);
+
     const data = await updateWebhookHelper(client, {
       webhookId,
       enabled,
@@ -24,6 +27,7 @@ export const updateWebhook = action({
       ...eventsPayload,
       friendlyName,
     });
+
     return {
       data,
     };
@@ -32,9 +36,7 @@ export const updateWebhook = action({
     type: "actionOutput",
     schema: updateWebhookOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: updateWebhookExamplePayload.data,
   }),
   examplePayload: updateWebhookExamplePayload,

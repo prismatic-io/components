@@ -3,6 +3,7 @@ import { createZoomClient } from "../../client";
 import { connection, meetingId, includeFields, ttl } from "../../inputs";
 import { getMeetingRecordingsExamplePayload } from "../../examplePayloads";
 import type { MeetingRecording } from "../../interfaces/MeetingRecording";
+
 export const getMeetingRecordings = action({
   display: {
     label: "Get Meeting Recordings",
@@ -13,6 +14,7 @@ export const getMeetingRecordings = action({
     { connection, meetingId, includeFields, ttl },
   ) => {
     const client = createZoomClient({ connection, debug });
+
     const { data } = await client.get<MeetingRecording>(
       `/meetings/${meetingId}/recordings`,
       {
@@ -22,6 +24,7 @@ export const getMeetingRecordings = action({
         },
       },
     );
+
     return {
       data,
     };

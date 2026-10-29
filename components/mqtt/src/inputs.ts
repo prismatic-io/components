@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const message = input({
   label: "Message",
   example: "Message to Queue",
@@ -8,6 +9,7 @@ export const message = input({
   comments: "Provide a string value to be sent to the MQTT topic.",
   clean: util.types.toString,
 });
+
 export const topicName = input({
   label: "Topic Name",
   example: "myTopic",
@@ -16,6 +18,7 @@ export const topicName = input({
   comments: "Provide a string value for the name of the MQTT topic.",
   clean: util.types.toString,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",

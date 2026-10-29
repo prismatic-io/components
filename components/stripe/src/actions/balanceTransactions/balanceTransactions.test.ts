@@ -7,15 +7,20 @@ import {
 } from "../../examplePayloads/balanceTransactions";
 import { getBalanceTransaction } from "./getBalanceTransaction";
 import { listBalanceTransactions } from "./listBalanceTransactions";
+
 const BASE = "https://api.stripe.com";
 const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
+
 const params = (values: Record<string, unknown>) => values as never;
+
 afterEach(() => nock.cleanAll());
+
 describe("getBalanceTransaction", () => {
   it("returns the balance transaction for the supplied ID", async () => {
     const scope = nock(BASE)
       .get("/v1/balance_transactions/txn_1MiN3gLkdIwHu7ixxapQrznl")
       .reply(200, getBalanceTransactionExamplePayload.data);
+
     const { result } = await invoke(
       getBalanceTransaction,
       params({
@@ -23,9 +28,11 @@ describe("getBalanceTransaction", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(getBalanceTransactionExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/balance_transactions/txn_missing")
@@ -35,6 +42,7 @@ describe("getBalanceTransaction", () => {
           message: "No such balancetransaction",
         },
       });
+
     await expect(
       invoke(
         getBalanceTransaction,
@@ -43,12 +51,14 @@ describe("getBalanceTransaction", () => {
     ).rejects.toThrow("No such balancetransaction");
   });
 });
+
 describe("listBalanceTransactions", () => {
   it("returns the balance transaction list", async () => {
     const scope = nock(BASE)
       .get("/v1/balance_transactions")
       .query({ currency: "usd", limit: "10" })
       .reply(200, listBalanceTransactionsExamplePayload.data);
+
     const { result } = await invoke(
       listBalanceTransactions,
       params({
@@ -57,9 +67,11 @@ describe("listBalanceTransactions", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(listBalanceTransactionsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/balance_transactions")
@@ -70,6 +82,7 @@ describe("listBalanceTransactions", () => {
           message: "Invalid currency: xyz",
         },
       });
+
     await expect(
       invoke(
         listBalanceTransactions,

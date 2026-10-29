@@ -5,6 +5,7 @@ import { listAssetsExamplePayload } from "../../examplePayloads";
 import { listAssetsInputs } from "../../inputs";
 import { listAssetsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listAssets = action({
   examplePayload: listAssetsExamplePayload,
   display: {
@@ -19,16 +20,17 @@ export const listAssets = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(client, ASSETS_PATH, fetchAll, params);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listAssetsExamplePayload.data,
   }),
 });

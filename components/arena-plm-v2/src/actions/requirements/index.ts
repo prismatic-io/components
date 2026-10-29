@@ -11,8 +11,10 @@ export { getRequirement } from "./getRequirement";
 export { listRequirementChildren } from "./listRequirementChildren";
 export { getRequirementFileAssociation } from "./getRequirementFileAssociation";
 export { listRequirementFiles } from "./listRequirementFiles";
+
 export { listRequirementHistory } from "./listRequirementHistory";
 export { getRequirementParent } from "./getRequirementParent";
+
 export { listRequirementQuality } from "./listRequirementQuality";
 export { getRequirementQualityAssociation } from "./getRequirementQualityAssociation";
 export { listRequirementRelationshipTypes } from "./listRequirementRelationshipTypes";

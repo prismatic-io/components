@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
@@ -45,6 +46,7 @@ export const updateWebhook = action({
       };
     }
     const { data } = await client.put(`/webhooks/${webhookId}`, body);
+
     return {
       data,
     };

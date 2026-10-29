@@ -1,12 +1,15 @@
 import { SchemaRegistry } from "@kafkajs/confluent-schema-registry";
 import { type Connection, util } from "@prismatic-io/spectral";
 import type { DeserializedValue } from "../types/consumer";
+
 export const createSchemaRegistryClient = (
   connection: Connection,
 ): SchemaRegistry => {
   const { schemaRegistryUrl, schemaRegistryApiKey, schemaRegistryApiSecret } =
     connection.fields;
+
   const url = util.types.toString(schemaRegistryUrl);
+
   return new SchemaRegistry({
     host: url,
     auth: schemaRegistryApiKey
@@ -17,12 +20,11 @@ export const createSchemaRegistryClient = (
       : undefined,
   });
 };
+
 export const deserializeBuffer = async (
   registry: SchemaRegistry,
   buffer: Buffer,
-  logger: {
-    warn: (message: string) => void;
-  },
+  logger: { warn: (message: string) => void },
 ): Promise<DeserializedValue> => {
   try {
     return (await registry.decode(buffer)) as Record<string, unknown>;

@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Databricks connection to use.",
 });
+
 export const clusterIdInput = input({
   label: "Cluster ID",
   type: "string",
@@ -14,6 +16,7 @@ export const clusterIdInput = input({
   placeholder: "Enter cluster ID",
   clean: util.types.toString,
 });
+
 export const warehouseIdInput = input({
   label: "Warehouse ID",
   type: "string",

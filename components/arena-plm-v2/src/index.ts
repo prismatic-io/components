@@ -13,6 +13,7 @@ import {
   qualityProcessTemplatesPicklist,
 } from "./dataSources";
 import { pollChangesTrigger } from "./triggers";
+
 export default component({
   key: "arena-plm-v2",
   public: true,

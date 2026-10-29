@@ -1,16 +1,19 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { DEFAULT_VERSION } from "../constants";
 import { cleanKeyValuePairs, cleanString, cleanVersion } from "../util/clean";
+
 export const myConnectionField = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const webhookConnection = {
   ...myConnectionField,
   comments:
     "This connection must be a Meta Ads Client Credentials connection to be able to use webhooks APIs.",
 };
+
 export const version = input({
   label: "Graph Version",
   type: "string",
@@ -20,6 +23,7 @@ export const version = input({
   default: `${DEFAULT_VERSION}`,
   clean: cleanVersion,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -29,6 +33,7 @@ export const fetchAll = input({
     "If true, it will fetch all records and ignore parameters like limit, after, and before.",
   clean: util.types.toBool,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -38,6 +43,7 @@ export const limit = input({
   placeholder: "30",
   clean: cleanString,
 });
+
 export const after = input({
   label: "After",
   type: "string",
@@ -47,6 +53,7 @@ export const after = input({
   placeholder: "xOTQ1MjAwNzI5NDE=",
   clean: cleanString,
 });
+
 export const before = input({
   label: "Before",
   type: "string",
@@ -56,12 +63,14 @@ export const before = input({
   placeholder: "xOTQ1MjAwNzI5NDE=",
   clean: cleanString,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Limit, before, and after cursor controls.",
   inputs: { limit, before, after },
 });
+
 export const fields = input({
   label: "Fields",
   type: "string",
@@ -70,6 +79,7 @@ export const fields = input({
   placeholder: "id,name",
   clean: cleanString,
 });
+
 export const optionalValues = input({
   label: "Optional Values",
   type: "string",
@@ -78,6 +88,7 @@ export const optionalValues = input({
   comments: "Provide optional values to mutate the given object.",
   clean: cleanKeyValuePairs,
 });
+
 export const userId = input({
   label: "User Id",
   type: "string",
@@ -87,6 +98,7 @@ export const userId = input({
   comments: "Provide the Id of a user.",
   clean: util.types.toString,
 });
+
 export const adAccountId = input({
   label: "Ad Account",
   type: "string",
@@ -98,6 +110,7 @@ export const adAccountId = input({
   clean: util.types.toString,
   dataSource: "selectAdAccount",
 });
+
 export const adId = input({
   label: "Ad Id",
   type: "string",

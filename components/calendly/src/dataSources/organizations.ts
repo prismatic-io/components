@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { organizationsInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { extractUuidFromUri } from "../util";
+
 export const organizations = dataSource({
   display: {
     label: "Select Organization",
@@ -13,9 +14,11 @@ export const organizations = dataSource({
     const client = getCalendlyClient(connection, false);
     const { data } = await client.get("/users/me");
     const orgUri = data?.resource?.current_organization;
+
     if (!orgUri) {
       return { result: [] };
     }
+
     return {
       result: [
         {

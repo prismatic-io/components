@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_DELETE_RESPONSE } from "../../constants";
 import { priceListNo } from "../../inputs/priceLists/general";
+
 export const deletePriceList = action({
   display: {
     label: "Delete Price List",
@@ -18,6 +19,7 @@ export const deletePriceList = action({
       context,
       context.debug.enabled,
     );
+
     await client.delete(`/PriceLists(${priceListNo})`);
     return {
       data: DEFAULT_DELETE_RESPONSE,

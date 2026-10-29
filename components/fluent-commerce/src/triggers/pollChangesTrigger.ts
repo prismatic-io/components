@@ -10,6 +10,7 @@ import type {
   PollingState,
 } from "../types";
 import { fetchFluentOrdersInWindow, resolveFluentOrderChanges } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -38,6 +39,7 @@ export const pollChangesTrigger = pollingTrigger({
     const showUpdated = isBackfill || params.showUpdatedRecords !== false;
     const windowTo = incoming?.windowTo ?? pollState.windowTo ?? now;
     const cursor = incoming?.after ?? pollState.after ?? null;
+
     const isBatching = context.batch?.enabled === true;
     const { records, truncated, after } = await fetchFluentOrdersInWindow(
       params.connection,
@@ -45,9 +47,11 @@ export const pollChangesTrigger = pollingTrigger({
       params.retailerId,
       isBatching ? 1 : MAX_POLL_PAGES,
     );
+
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: FluentOrder[] = [];
     const updated: FluentOrder[] = [];
+
     for (const record of records) {
       const createValue = record.createdOn;
       const createdAtDate =
@@ -56,6 +60,7 @@ export const pollChangesTrigger = pollingTrigger({
       if (isNew && showNew) created.push(record);
       else if (!isNew && showUpdated) updated.push(record);
     }
+
     if (truncated) {
       context.polling.setState({
         lastPolledAt,
@@ -71,11 +76,13 @@ export const pollChangesTrigger = pollingTrigger({
     } else {
       context.polling.setState({ lastPolledAt: windowTo });
     }
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Fluent orders: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
       );
     }
+
     const nextCursor: PollingCursor | null =
       truncated && after ? { windowTo, after } : null;
     const totalMatched = created.length + updated.length;

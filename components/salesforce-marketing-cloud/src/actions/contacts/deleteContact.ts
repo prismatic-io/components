@@ -4,6 +4,7 @@ import { CONTACTS_PATH } from "../../constants";
 import { deleteContactExamplePayload } from "../../examplePayloads";
 import { deleteContactInputs } from "../../inputs";
 import { deleteContactOutputSchema } from "../../outputSchemas";
+
 export const deleteContact = action({
   examplePayload: deleteContactExamplePayload,
   display: {
@@ -19,19 +20,20 @@ export const deleteContact = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, deleteContactKeys }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       values: deleteContactKeys,
       DeleteOperationType: "ContactAndAttributes",
     };
+
     const { data } = await client.post(
       `${CONTACTS_PATH}/actions/delete?type=keys`,
       body,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteContactExamplePayload.data,
   }),
 });

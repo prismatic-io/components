@@ -1,6 +1,4 @@
-export const getAccountExamplePayload: {
-  data: unknown;
-} = {
+export const getAccountExamplePayload: { data: unknown } = {
   data: {
     kind: "content#account",
     id: "123456789",
@@ -67,24 +65,22 @@ export const getAccountExamplePayload: {
     sellerId: "SELLER_001",
   },
 };
+
 export const createAccountExamplePayload = getAccountExamplePayload;
-export const updateAccountExamplePayload: {
-  data: unknown;
-} = {
+
+export const updateAccountExamplePayload: { data: unknown } = {
   data: {
     ...(getAccountExamplePayload.data as object),
     name: "Example Merchant Store - Updated",
     websiteUrl: "https://shop.example.com",
   },
 };
-export const deleteAccountExamplePayload: {
-  data: unknown;
-} = {
+
+export const deleteAccountExamplePayload: { data: unknown } = {
   data: {},
 };
-export const listAccountsExamplePayload: {
-  data: unknown;
-} = {
+
+export const listAccountsExamplePayload: { data: unknown } = {
   data: {
     kind: "content#accountsListResponse",
     resources: [

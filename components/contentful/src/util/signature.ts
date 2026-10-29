@@ -2,13 +2,18 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { escape as escapeQueryString } from "node:querystring";
 import { type TriggerPayload, util } from "@prismatic-io/spectral";
 import type { ContentfulCanonicalRequest } from "../types";
+
 const SIGNATURE_HEADER = "x-contentful-signature";
 const SIGNED_HEADERS_HEADER = "x-contentful-signed-headers";
 const TIMESTAMP_HEADER = "x-contentful-timestamp";
+
 export const SIGNATURE_TTL_SECONDS = 30;
+
 const SECRET_LENGTH = 64;
+
 const sortHeaderKeys = (keyA: string, keyB: string): number =>
   keyA > keyB ? 1 : -1;
+
 const normalizeHeaders = (
   headers: Record<string, string>,
 ): Record<string, string> =>
@@ -18,11 +23,13 @@ const normalizeHeaders = (
       String(value).trim(),
     ]),
   );
+
 const getNormalizedEncodedURI = (uri: string): string => {
   const [pathname, search] = uri.split("?");
   const escapedSearch = search ? escapeQueryString(search) : "";
   return encodeURI(escapedSearch ? `${pathname}?${escapedSearch}` : pathname);
 };
+
 const timingSafeUtf8StringEqual = (a: string, b: string): boolean => {
   const aBuf = Buffer.from(a, "utf8");
   const bBuf = Buffer.from(b, "utf8");
@@ -31,6 +38,7 @@ const timingSafeUtf8StringEqual = (a: string, b: string): boolean => {
   }
   return timingSafeEqual(aBuf, bBuf);
 };
+
 export const computeContentfulSignature = (
   secret: string,
   request: ContentfulCanonicalRequest,
@@ -48,6 +56,7 @@ export const computeContentfulSignature = (
   headers[SIGNED_HEADERS_HEADER] = signedHeaderNames
     .sort(sortHeaderKeys)
     .join(",");
+
   const stringifiedHeaders = Object.entries(headers)
     .sort(([keyA], [keyB]) => sortHeaderKeys(keyA, keyB))
     .map(([key, value]) => `${key}:${value}`)
@@ -58,8 +67,10 @@ export const computeContentfulSignature = (
     stringifiedHeaders,
     request.body,
   ].join("\n");
+
   return createHmac("sha256", secret).update(stringifiedRequest).digest("hex");
 };
+
 export const verifyContentfulRequest = (
   secret: string,
   request: ContentfulCanonicalRequest,
@@ -75,6 +86,7 @@ export const verifyContentfulRequest = (
       "Unable to verify the Contentful webhook signature: the request path could not be determined.",
     );
   }
+
   const headers = normalizeHeaders(request.headers);
   const signature = headers[SIGNATURE_HEADER];
   const signedHeaders = (headers[SIGNED_HEADERS_HEADER] ?? "").split(",");
@@ -88,11 +100,13 @@ export const verifyContentfulRequest = (
       `The request is missing a valid Contentful signature. Confirm request verification is enabled for the space, or clear the Webhook Signing Secret input. Expected headers: ${SIGNATURE_HEADER}, ${SIGNED_HEADERS_HEADER}, ${TIMESTAMP_HEADER}.`,
     );
   }
+
   if (ttlSeconds !== 0 && Date.now() - timestamp >= ttlSeconds * 1000) {
     throw new Error(
       `The Contentful webhook request expired: requests must be verified within ${ttlSeconds}s of their signature timestamp.`,
     );
   }
+
   const signedOnly = Object.fromEntries(
     Object.entries(headers).filter(([key]) => signedHeaders.includes(key)),
   );
@@ -107,6 +121,7 @@ export const verifyContentfulRequest = (
     );
   }
 };
+
 export const buildContentfulCanonicalRequest = (
   payload: TriggerPayload,
   flowWebhookUrl: string | undefined,
@@ -117,6 +132,7 @@ export const buildContentfulCanonicalRequest = (
     : typeof rawBody === "string"
       ? rawBody
       : util.types.toString(rawBody);
+
   const queryString = new URLSearchParams(
     payload.queryParameters ?? {},
   ).toString();
@@ -133,6 +149,7 @@ export const buildContentfulCanonicalRequest = (
       path = "";
     }
   }
+
   return {
     method: "POST",
     path,
@@ -140,6 +157,7 @@ export const buildContentfulCanonicalRequest = (
     body,
   };
 };
+
 export const validateContentfulWebhookRequest = (
   payload: TriggerPayload,
   {

@@ -4,6 +4,7 @@ import { getDealInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getDealExamplePayload } from "../../examplePayloads";
 import { getDealOutputSchema } from "../../outputSchemas";
+
 export const getDeal = action({
   display: {
     label: "Get Deal",

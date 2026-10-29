@@ -17,6 +17,7 @@ import {
   statementName,
   workgroupName,
 } from "./common";
+
 const databaseUser = input({
   label: "Database User",
   type: "string",
@@ -27,6 +28,7 @@ const databaseUser = input({
   placeholder: "Enter the database user",
   clean: toOptionalString,
 });
+
 const secretArn = input({
   label: "Secret ARN",
   type: "string",
@@ -38,6 +40,7 @@ const secretArn = input({
   placeholder: "Enter the secret ARN",
   clean: toOptionalString,
 });
+
 const sqlStatement = input({
   label: "SQL Statement",
   type: "code",
@@ -49,6 +52,7 @@ const sqlStatement = input({
   placeholder: "SELECT * FROM users WHERE status = :status",
   clean: util.types.toString,
 });
+
 const sqlParameters = input({
   label: "SQL Parameters",
   type: "string",
@@ -59,6 +63,7 @@ const sqlParameters = input({
   example: "status: active, limit: 100",
   clean: cleanSqlParameters,
 });
+
 const resultFormat = input({
   label: "Result Format",
   type: "string",
@@ -70,6 +75,7 @@ const resultFormat = input({
   model: RESULT_FORMAT_OPTIONS,
   clean: toOptionalResultFormatString,
 });
+
 const sessionId = input({
   label: "Session ID",
   type: "string",
@@ -80,6 +86,7 @@ const sessionId = input({
   placeholder: "Enter the session ID",
   clean: toOptionalString,
 });
+
 const sessionKeepAliveSeconds = input({
   label: "Session Keep Alive (seconds)",
   type: "string",
@@ -90,6 +97,7 @@ const sessionKeepAliveSeconds = input({
   placeholder: "Enter the keep alive duration in seconds",
   clean: toOptionalNumber,
 });
+
 const clientToken = input({
   label: "Client Token",
   type: "string",
@@ -99,6 +107,7 @@ const clientToken = input({
   placeholder: "Enter the client token",
   clean: toOptionalString,
 });
+
 export const getStatementResult = input({
   label: "Get Statement Result",
   type: "boolean",
@@ -109,6 +118,7 @@ export const getStatementResult = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const nextToken = input({
   label: "Next Token",
   type: "string",
@@ -119,6 +129,7 @@ const nextToken = input({
   placeholder: "Enter the next token",
   clean: toOptionalString,
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -130,6 +141,7 @@ const status = input({
   default: "ALL",
   clean: (value: unknown) => util.types.toString(value) as StatusString,
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -143,6 +155,7 @@ const additionalFields = structuredObjectInput({
     sessionId,
   },
 });
+
 export const executeStatementInputs = {
   awsConnection,
   sqlStatement,
@@ -156,6 +169,7 @@ export const executeStatementInputs = {
   sqlParameters,
   additionalFields,
 };
+
 export const getStatementResultInputs = {
   awsConnection,
   statementId: {
@@ -165,6 +179,7 @@ export const getStatementResultInputs = {
   awsRegion,
   nextToken,
 };
+
 const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -175,12 +190,14 @@ const maxResults = input({
   placeholder: "100",
   clean: toOptionalNumber,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { nextToken, maxResults },
 });
+
 const filters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -212,6 +229,7 @@ const filters = structuredObjectInput({
     },
   },
 });
+
 export const listStatementsInputs = {
   awsConnection,
   awsRegion,
@@ -220,6 +238,7 @@ export const listStatementsInputs = {
   fetchAll,
   pagination,
 };
+
 export const describeStatementInputs = {
   awsConnection,
   statementId,

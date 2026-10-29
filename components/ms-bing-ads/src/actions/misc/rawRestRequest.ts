@@ -6,6 +6,7 @@ import {
   getRestBaseUrl,
   validateRestConnection,
 } from "../../util";
+
 export const rawRestRequest = action({
   display: {
     label: "Raw Request (REST)",
@@ -15,6 +16,7 @@ export const rawRestRequest = action({
   inputs: rawRestRequestInputs,
   perform: async (context, { connection, ...rawRequestInputs }) => {
     validateRestConnection(connection);
+
     const { data } = await sendRawRequest(
       getRestBaseUrl(connection),
       {
@@ -23,6 +25,7 @@ export const rawRestRequest = action({
       },
       getRestAuthHeaders(connection),
     );
+
     return { data };
   },
 });

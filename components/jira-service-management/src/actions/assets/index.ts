@@ -6,6 +6,7 @@ import { updateAssetObject } from "./objects/updateAssetObject";
 import { getAssetSchema } from "./schemas/getAssetSchema";
 import { listAssetSchemas } from "./schemas/listAssetSchemas";
 import { listSchemaObjectTypes } from "./schemas/listSchemaObjectTypes";
+
 export default {
   searchAssetObjects,
   getAssetObject,

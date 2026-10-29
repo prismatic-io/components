@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { usersGetAuthenticatedExamplePayload } from "../../examplePayloads";
 import { usersGetAuthenticatedInputs } from "../../inputs";
 import { usersGetAuthenticatedOutputSchema } from "../../outputSchemas";
+
 export const usersGetAuthenticated = action({
   display: {
     label: "Get Authenticated User",

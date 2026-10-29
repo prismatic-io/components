@@ -20,6 +20,7 @@ const personFieldRecord = {
   mandatory_flag: true,
   options: null,
 };
+
 const personFieldV2Record = {
   id: 9001,
   key: "name",
@@ -34,6 +35,7 @@ const personFieldV2Record = {
   add_time: "2024-01-01T00:00:00Z",
   update_time: "2024-01-01T00:00:00Z",
 };
+
 export const getPersonFieldsExamplePayload = {
   data: {
     success: true,
@@ -47,24 +49,28 @@ export const getPersonFieldsExamplePayload = {
     },
   },
 };
+
 export const getPersonFieldsV2ExamplePayload = {
   data: {
     data: [personFieldV2Record],
     additional_data: { next_cursor: "eyJpZCI6Mn0" },
   },
 };
+
 export const getPersonFieldExamplePayload = {
   data: {
     success: true,
     data: personFieldRecord,
   },
 };
+
 export const getPersonFieldV2ExamplePayload = {
   data: {
     success: true,
     data: personFieldV2Record,
   },
 };
+
 export const deletePersonFieldExamplePayload = {
   data: {
     success: true,
@@ -73,6 +79,7 @@ export const deletePersonFieldExamplePayload = {
     },
   },
 };
+
 export const deletePersonFieldV2ExamplePayload = {
   data: {
     success: true,

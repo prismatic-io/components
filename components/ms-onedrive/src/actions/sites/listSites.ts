@@ -3,6 +3,7 @@ import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { listSitesExamplePayload } from "../../examplePayloads";
 import { listSitesInputs } from "../../inputs";
+
 export const listSites = action({
   display: {
     label: "List Sites",

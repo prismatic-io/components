@@ -1,12 +1,16 @@
 import { paginateResults } from "./pagination";
+
 const createMockClient = (getMock: jest.Mock) => ({
   get: getMock,
 });
+
 describe("paginateResults", () => {
   let getMock: jest.Mock;
+
   beforeEach(() => {
     getMock = jest.fn();
   });
+
   describe("fetchAll=false", () => {
     it("makes a single call and returns full response", async () => {
       const response = {
@@ -15,17 +19,21 @@ describe("paginateResults", () => {
         totalSetSize: "1",
       };
       getMock.mockResolvedValueOnce({ data: response });
+
       const result = await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/templates",
         fetchAll: false,
         itemsKey: "envelopeTemplates",
       });
+
       expect(getMock).toHaveBeenCalledTimes(1);
       expect(result).toEqual({ data: response });
     });
+
     it("forwards count and start_position to the API call", async () => {
       getMock.mockResolvedValueOnce({ data: { folders: [] } });
+
       await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/folders",
@@ -34,12 +42,15 @@ describe("paginateResults", () => {
         startPosition: "50",
         itemsKey: "folders",
       });
+
       const callParams = getMock.mock.calls[0][1].params;
       expect(callParams.count).toBe("25");
       expect(callParams.start_position).toBe("50");
     });
+
     it("forwards extra params alongside pagination params", async () => {
       getMock.mockResolvedValueOnce({ data: { folders: [] } });
+
       await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/folders",
@@ -49,25 +60,30 @@ describe("paginateResults", () => {
         startPosition: "0",
         itemsKey: "folders",
       });
+
       const callParams = getMock.mock.calls[0][1].params;
       expect(callParams.include).toBe("normal_folders");
       expect(callParams.user_filter).toBe("owned_by_me");
       expect(callParams.count).toBe("10");
       expect(callParams.start_position).toBe("0");
     });
+
     it("omits pagination params when not provided", async () => {
       getMock.mockResolvedValueOnce({ data: { templates: [] } });
+
       await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/templates",
         fetchAll: false,
         itemsKey: "envelopeTemplates",
       });
+
       const callParams = getMock.mock.calls[0][1].params;
       expect(callParams.count).toBeUndefined();
       expect(callParams.start_position).toBeUndefined();
     });
   });
+
   describe("fetchAll=true", () => {
     it("accumulates items across multiple pages", async () => {
       getMock
@@ -89,6 +105,7 @@ describe("paginateResults", () => {
             endPosition: "2",
           },
         });
+
       const result = await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/templates",
@@ -96,6 +113,7 @@ describe("paginateResults", () => {
         count: "2",
         itemsKey: "envelopeTemplates",
       });
+
       expect(getMock).toHaveBeenCalledTimes(2);
       expect(getMock.mock.calls[0][1].params.count).toBe("2");
       expect(getMock.mock.calls[0][1].params.start_position).toBe("0");
@@ -104,6 +122,7 @@ describe("paginateResults", () => {
         data: [{ templateId: "1" }, { templateId: "2" }, { templateId: "3" }],
       });
     });
+
     it("handles single page with fewer results than count", async () => {
       getMock.mockResolvedValueOnce({
         data: {
@@ -112,15 +131,18 @@ describe("paginateResults", () => {
           totalSetSize: "1",
         },
       });
+
       const result = await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/folders",
         fetchAll: true,
         itemsKey: "folders",
       });
+
       expect(getMock).toHaveBeenCalledTimes(1);
       expect(result).toEqual({ data: [{ folderId: "1" }] });
     });
+
     it("handles empty results", async () => {
       getMock.mockResolvedValueOnce({
         data: {
@@ -129,15 +151,18 @@ describe("paginateResults", () => {
           totalSetSize: "0",
         },
       });
+
       const result = await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/templates",
         fetchAll: true,
         itemsKey: "envelopeTemplates",
       });
+
       expect(getMock).toHaveBeenCalledTimes(1);
       expect(result).toEqual({ data: [] });
     });
+
     it("stops after MAX_PAGES (100) to prevent infinite loops", async () => {
       const fullPage = Array.from({ length: 100 }, (_, i) => ({
         templateId: `${i}`,
@@ -149,15 +174,18 @@ describe("paginateResults", () => {
           totalSetSize: "999999",
         },
       });
+
       const result = await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/templates",
         fetchAll: true,
         itemsKey: "envelopeTemplates",
       });
+
       expect(getMock).toHaveBeenCalledTimes(100);
       expect((result.data as unknown[]).length).toBe(10000);
     });
+
     it("preserves extra params across pages", async () => {
       getMock
         .mockResolvedValueOnce({
@@ -174,6 +202,7 @@ describe("paginateResults", () => {
             totalSetSize: "2",
           },
         });
+
       await paginateResults({
         client: createMockClient(getMock) as any,
         endpoint: "/folders",
@@ -182,6 +211,7 @@ describe("paginateResults", () => {
         itemsKey: "folders",
         count: "1",
       });
+
       expect(getMock.mock.calls[0][1].params.include).toBe("normal_folders");
       expect(getMock.mock.calls[0][1].params.user_filter).toBe("all");
     });

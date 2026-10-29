@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { stopTriggerExamplePayload } from "../../examplePayloads";
 import { stopTriggerInputs } from "../../inputs";
+
 export const stopTrigger = action({
   display: {
     label: "Stop Trigger",

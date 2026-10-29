@@ -5,6 +5,7 @@ import { getSupplierByGuidInputs } from "../../inputs";
 import { supplierFullSchema } from "../../outputSchemas";
 import type { SupplierFullVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const getSupplierByGuid = action({
   display: {
     label: "Get Supplier by GUID",
@@ -23,22 +24,27 @@ export const getSupplierByGuid = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         ...(includeEmptyAdditionalAttributes && {
           includeEmptyAdditionalAttributes,
         }),
       };
+
       context.logger.info(`Fetching supplier ${supplierGuid}`, {
         supplierGuid,
         includeEmptyAdditionalAttributes,
       });
+
       const { data } = await client.get<SupplierFullVo>(
         `/suppliers/${supplierGuid}`,
         { params: queryParams },
       );
+
       context.logger.info(
         `Successfully retrieved supplier: ${data.name || supplierGuid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Get Supplier by GUID");

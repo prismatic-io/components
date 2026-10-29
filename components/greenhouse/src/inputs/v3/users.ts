@@ -15,6 +15,7 @@ import {
   updatedAtGte,
   updatedAtLte,
 } from "./common";
+
 export const userId = input({
   label: "User ID",
   type: "string",
@@ -25,6 +26,7 @@ export const userId = input({
   clean: util.types.toString,
   dataSource: "usersV3",
 });
+
 export const ids = input({
   label: "User IDs",
   type: "string",
@@ -35,6 +37,7 @@ export const ids = input({
   example: "92120,92121",
   clean: toOptionalString,
 });
+
 export const officeIds = input({
   label: "Office IDs",
   type: "string",
@@ -45,6 +48,7 @@ export const officeIds = input({
   example: "50891,50892",
   clean: toOptionalString,
 });
+
 export const departmentIds = input({
   label: "Department IDs",
   type: "string",
@@ -55,6 +59,7 @@ export const departmentIds = input({
   example: "650,651",
   clean: toOptionalString,
 });
+
 export const deactivated = input({
   label: "Deactivated",
   type: "boolean",
@@ -63,6 +68,7 @@ export const deactivated = input({
     "When set, filters users by activation state. Omit to return both active and deactivated users.",
   clean: toOptionalBoolean,
 });
+
 export const primaryEmail = input({
   label: "Primary Email",
   type: "string",
@@ -72,6 +78,7 @@ export const primaryEmail = input({
   example: "john.doe@example.com",
   clean: toOptionalString,
 });
+
 export const showServiceAccounts = input({
   label: "Show Service Accounts",
   type: "boolean",
@@ -81,14 +88,17 @@ export const showServiceAccounts = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const firstName = {
   ...first_name,
   comments: "The user's first name (max 255 characters).",
 };
+
 export const lastName = {
   ...last_name,
   comments: "The user's last name (max 255 characters).",
 };
+
 export const firstNameOptional = {
   ...first_name,
   required: false,
@@ -96,6 +106,7 @@ export const firstNameOptional = {
     "The user's first name (max 255 characters). If provided, cannot be blank.",
   clean: toOptionalString,
 };
+
 export const lastNameOptional = {
   ...last_name,
   required: false,
@@ -103,6 +114,7 @@ export const lastNameOptional = {
     "The user's last name (max 255 characters). If provided, cannot be blank.",
   clean: toOptionalString,
 };
+
 export const sendEmailInvite = {
   ...send_email_invite,
   required: false,
@@ -110,11 +122,13 @@ export const sendEmailInvite = {
   comments:
     "When true, Greenhouse sends the new user an invitation email to set a password and sign in. Defaults to false.",
 };
+
 export const employeeId = {
   ...employee_id,
   comments:
     "External employee identifier (e.g. HRIS or payroll ID, max 255 characters). Must be unique within the organization.",
 };
+
 export const primaryEmailRequired = input({
   label: "Primary Email",
   type: "string",
@@ -125,6 +139,7 @@ export const primaryEmailRequired = input({
   example: "john.doe@example.com",
   clean: util.types.toString,
 });
+
 export const primaryEmailOptional = input({
   label: "Primary Email",
   type: "string",
@@ -135,6 +150,7 @@ export const primaryEmailOptional = input({
   example: "john.doe@example.com",
   clean: toOptionalString,
 });
+
 export const jobTitle = input({
   label: "Job Title",
   type: "string",
@@ -145,6 +161,7 @@ export const jobTitle = input({
   example: "Senior Recruiter",
   clean: toOptionalString,
 });
+
 export const officeIdsWrite = input({
   label: "Office IDs",
   type: "string",
@@ -156,6 +173,7 @@ export const officeIdsWrite = input({
   example: "50891",
   clean: toStringArray,
 });
+
 export const externalOfficeIds = input({
   label: "External Office IDs",
   type: "string",
@@ -167,6 +185,7 @@ export const externalOfficeIds = input({
   example: "ext-office-boston",
   clean: toStringArray,
 });
+
 export const departmentIdsWrite = input({
   label: "Department IDs",
   type: "string",
@@ -178,6 +197,7 @@ export const departmentIdsWrite = input({
   example: "650",
   clean: toStringArray,
 });
+
 export const externalDepartmentIds = input({
   label: "External Department IDs",
   type: "string",
@@ -189,6 +209,7 @@ export const externalDepartmentIds = input({
   example: "ext-dept-engineering",
   clean: toStringArray,
 });
+
 export const interviewerTagIds = input({
   label: "Interviewer Tag IDs",
   type: "string",
@@ -200,6 +221,7 @@ export const interviewerTagIds = input({
   example: "42",
   clean: toStringArray,
 });
+
 const idFilters = structuredObjectInput({
   label: "ID Filters",
   required: false,
@@ -207,6 +229,7 @@ const idFilters = structuredObjectInput({
     "Optional filters that narrow results to users matching specific record IDs: user, office, and department IDs. Each accepts a comma-separated list of up to 50 IDs.",
   inputs: { ids, officeIds, departmentIds },
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -214,6 +237,7 @@ const dateRangeFilters = structuredObjectInput({
     "Optional inclusive date-range filters. Narrow results by when users were created or last updated.",
   inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
 });
+
 export const listUsersV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
@@ -223,10 +247,12 @@ export const listUsersV3Inputs = {
   showServiceAccounts,
   dateRangeFilters,
 };
+
 export const getUserV3Inputs = {
   connection: connectionInput,
   userId,
 };
+
 export const createUserV3Inputs = {
   connection: connectionInput,
   firstName,
@@ -245,6 +271,7 @@ export const createUserV3Inputs = {
     example: '[{"name_key": "t_shirt_size", "value": "L"}]',
   },
 };
+
 export const editUserV3Inputs = {
   connection: connectionInput,
   userId,
@@ -263,10 +290,12 @@ export const editUserV3Inputs = {
     example: '[{"name_key": "t_shirt_size", "value": "L"}]',
   },
 };
+
 export const activateUserV3Inputs = {
   connection: connectionInput,
   userId,
 };
+
 export const deactivateUserV3Inputs = {
   connection: connectionInput,
   userId,

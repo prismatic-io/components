@@ -8,6 +8,7 @@ import { createClient } from "../client";
 import { mailFolderWebhookTriggerExamplePayload } from "../examplePayloads";
 import { createMailFolderWebhookInputs } from "../inputs";
 import { createWebhookPerformFN } from "../util";
+
 export const mailFolderWebhook = trigger({
   display: {
     label: "Mail Message Webhook",
@@ -47,12 +48,14 @@ export const mailFolderWebhook = trigger({
         },
         context,
       );
+
       if (subscription?.id) {
         context.logger.info(
           `Storing subscription ID ${subscription.id} for scheduled renewals`,
         );
         context.crossFlowState[flowKey] = subscription.id;
       }
+
       context.logger.info(
         `Created mail webhook subscription for flow ${context.flow.name} (${context.flow.id})`,
       );

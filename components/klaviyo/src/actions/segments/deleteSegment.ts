@@ -4,6 +4,7 @@ import { getApi } from "../../api";
 import { deleteSegmentInputs as inputs } from "../../inputs";
 import { deleteSegmentExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const deleteSegment = action({
   display: {
     label: "Delete Segment",

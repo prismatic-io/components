@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { getCompanyActivityExamplePayload } from "../../examplePayloads";
 import { getCompanyActivityInputs } from "../../inputs";
 import { paginateV1CompanyActivity } from "../../utils/pagination";
+
 const getCompanyActivity = action({
   display: {
     label: "Get Company Activity (V1)",
@@ -28,6 +29,7 @@ const getCompanyActivity = action({
     });
   },
 });
+
 export default {
   getCompanyActivity,
 };

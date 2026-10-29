@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { listWorkflowRulesInputs } from "../../inputs";
 import { listWorkflowRulesFunction } from "../../util";
 import { listWorkflowRulesExamplePayload } from "../../examplePayloads";
+
 export const listWorkflowRules = action({
   display: {
     label: "List Workflow Rules",
@@ -17,9 +18,8 @@ export const listWorkflowRules = action({
     const result = await listWorkflowRulesFunction(client);
     return { data: result };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listWorkflowRulesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listWorkflowRulesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listMetadataOutputSchema,

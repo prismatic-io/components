@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createToastClient } from "../../client";
 import { getTimeEntryExamplePayload as examplePayload } from "../../examplePayloads";
 import { getTimeEntryInputs as inputs } from "../../inputs/entry";
+
 export const getTimeEntry = action({
   display: {
     label: "Get Time Entry",
@@ -23,12 +24,14 @@ export const getTimeEntry = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+
     const { data } = await client.get(`/labor/v1/timeEntries/${timeEntryId}`, {
       params: {
         includeArchived,
         includeMissedBreaks,
       },
     });
+
     return {
       data,
     };

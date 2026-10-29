@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
 import { asStringArray } from "../utils";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   comments: "The Kafka connection to use.",
 });
+
 export const brokers = input({
   label: "Brokers",
   type: "string",
@@ -16,6 +18,7 @@ export const brokers = input({
   required: true,
   clean: asStringArray,
 });
+
 export const clientId = input({
   label: "Client ID",
   type: "string",
@@ -26,6 +29,7 @@ export const clientId = input({
   placeholder: "Enter client ID",
   clean: util.types.toString,
 });
+
 export const consumerGroupId = input({
   label: "Consumer Group ID",
   type: "string",

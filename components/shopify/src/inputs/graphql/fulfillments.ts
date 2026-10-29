@@ -5,6 +5,7 @@ import {
 } from "../../constants";
 import { cleanFulfillmentId, cleanFulfillmentOrderId } from "../../util";
 import { getAlldata, orderId, pagination, shopifyConnection } from "./common";
+
 const fulfillmentId = input({
   label: "Fulfillment ID",
   type: "string",
@@ -15,6 +16,7 @@ const fulfillmentId = input({
   clean: cleanFulfillmentId,
   dataSource: LIST_FULFILLMENTS_DATASOURCE_REFERENCE,
 });
+
 const fulfillmentOrderId = input({
   label: "Fulfillment Order ID",
   type: "string",
@@ -25,20 +27,24 @@ const fulfillmentOrderId = input({
   clean: cleanFulfillmentOrderId,
   dataSource: LIST_FULFILLMENT_ORDERS_DATASOURCE_REFERENCE,
 });
+
 export const listFulfillmentOrdersInputs = {
   shopifyConnection,
   orderId,
   getAlldata,
   pagination,
 };
+
 export const getFulfillmentInputs = {
   shopifyConnection,
   fulfillmentId,
 };
+
 export const getFulfillmentOrderInputs = {
   shopifyConnection,
   fulfillmentOrderId,
 };
+
 export const listFulfillmentsInputs = {
   shopifyConnection,
   orderId,

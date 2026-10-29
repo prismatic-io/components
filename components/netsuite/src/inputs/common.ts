@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toNumberWithDefault1000 } from "../utils/cleanFunctions";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The NetSuite connection to use.",
 });
+
 export const limitInput = input({
   label: "Limit",
   type: "string",
@@ -17,6 +19,7 @@ export const limitInput = input({
   required: false,
   clean: toNumberWithDefault1000,
 });
+
 export const offsetInput = input({
   label: "Offset",
   type: "string",

@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { deleteBusinessPartnerExamplePayload } from "../../../examplePayloads";
 import { deleteBusinessPartnerInputs } from "../../../inputs";
+
 export const deleteBusinessPartner = action({
   display: {
     label: "Delete Business Partner (V2)",

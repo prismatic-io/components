@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { FIELDS_DEFAULT } from "../constants";
 import { toOptionalObject, toOptionalString } from "../util";
 import { connection, contentTypeId, environmentId, spaceId } from "./common";
+
 const contentTypeName = input({
   label: "Content Type Name",
   type: "string",
@@ -11,6 +12,7 @@ const contentTypeName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const contentTypeFields = input({
   label: "Content Type Fields",
   type: "code",
@@ -22,6 +24,7 @@ const contentTypeFields = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const displayField = input({
   label: "Display Field",
   type: "string",
@@ -32,6 +35,7 @@ const displayField = input({
   required: false,
   clean: toOptionalString,
 });
+
 const contentTypeDescription = input({
   label: "Description",
   type: "string",
@@ -42,6 +46,7 @@ const contentTypeDescription = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const createContentTypeInputs = {
   connection,
   spaceId,
@@ -51,11 +56,13 @@ export const createContentTypeInputs = {
   displayField,
   description: contentTypeDescription,
 };
+
 export const listContentTypesInputs = {
   connection,
   spaceId,
   environmentId,
 };
+
 export const updateContentTypeInputs = {
   connection,
   spaceId,

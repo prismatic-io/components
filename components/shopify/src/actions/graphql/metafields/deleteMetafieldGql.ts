@@ -5,6 +5,7 @@ import { deleteMetafieldInputs as inputs } from "../../../inputsGql";
 import { deleteMetafieldGqlOutputSchema } from "../../../outputSchemas";
 import type { DeletedMetafield } from "../../../types";
 import deleteMetafieldQuery from "../queries/metafields/DeleteMetafield.gql";
+
 export const deleteMetafieldGql = action({
   display: {
     label: "Delete Metafield",
@@ -19,10 +20,9 @@ export const deleteMetafieldGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
-      metafieldsDelete: {
-        deletedMetafields: DeletedMetafield[];
-      };
+      metafieldsDelete: { deletedMetafields: DeletedMetafield[] };
     } = await client.request(deleteMetafieldQuery, {
       metafields: [
         {

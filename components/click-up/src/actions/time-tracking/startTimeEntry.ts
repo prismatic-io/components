@@ -7,6 +7,7 @@ import type {
   CreateTimeEntryQueryParams,
   StartTimeEntryBody,
 } from "../../types";
+
 export const startTimeEntry = action({
   display: {
     label: "Start Time Entry",
@@ -48,6 +49,7 @@ export const startTimeEntry = action({
       tid: taskId,
       billable,
     };
+
     const { data } = await client.post(
       `/team/${teamId}/time_entries/start`,
       body,
@@ -55,6 +57,7 @@ export const startTimeEntry = action({
         params: queryParams,
       },
     );
+
     return {
       data,
     };

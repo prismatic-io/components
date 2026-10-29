@@ -5,7 +5,9 @@ import {
 import { apiKey } from "../connections";
 import type { PollingState } from "../types";
 import { newFileComments } from "./newFileComments";
+
 const mockGetFileComments = vi.fn();
+
 vi.mock("../client", () => ({
   createAuthorizedClient: vi.fn().mockReturnValue({
     comments: {
@@ -13,17 +15,21 @@ vi.mock("../client", () => ({
     },
   }),
 }));
+
 const POLL_ONE_AT = "2026-06-01T12:00:00.000Z";
 const POLL_TWO_AT = "2026-06-01T13:00:00.000Z";
 const SEEDED_CURSOR = "2026-05-01T00:00:00.000Z";
+
 const testConnection = createConnection(apiKey, {
   apiKey: "test-token-for-unit-tests",
 });
+
 interface PollingStore {
   context: Record<string, unknown>;
   currentState: () => PollingState;
   writes: PollingState[];
 }
+
 const createPollingStore = (initial?: PollingState): PollingStore => {
   let state: PollingState = initial ?? ({} as PollingState);
   const writes: PollingState[] = [];
@@ -52,25 +58,27 @@ const createPollingStore = (initial?: PollingState): PollingStore => {
     writes,
   };
 };
+
 const freezeClockAt = (iso: string) => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(new Date(iso));
 };
+
 const triggerUnderTest = {
   perform: newFileComments.perform,
 } as unknown as Parameters<typeof invokeTrigger>[0];
+
 interface PollResult {
   payload: {
     body: {
       data: {
-        newComments: {
-          data: Record<string, unknown>[];
-        };
+        newComments: { data: Record<string, unknown>[] };
       };
     };
   };
   polledNoChanges: boolean;
 }
+
 const sdkResponse = (
   entries: {
     created_at?: string;
@@ -81,6 +89,7 @@ const sdkResponse = (
 ) => ({
   rawData: { entries },
 });
+
 const poll = async (
   store: PollingStore,
   fileId = "123",
@@ -98,11 +107,13 @@ const poll = async (
   );
   return result as unknown as PollResult;
 };
+
 describe("newFileComments", () => {
   afterEach(() => {
     vi.useRealTimers();
     mockGetFileComments.mockReset();
   });
+
   test("advances the cursor and suppresses comments the previous poll already emitted", async () => {
     const commentOld = {
       id: "c_old",
@@ -114,32 +125,40 @@ describe("newFileComments", () => {
       message: "New comment",
       created_at: "2026-06-01T12:30:00.000Z",
     };
+
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockGetFileComments.mockResolvedValueOnce(sdkResponse([commentOld]));
+
     const resultOne = await poll(store);
     expect(
       resultOne.payload.body.data.newComments.data.map((c) => c.id),
     ).toEqual(["c_old"]);
     expect(resultOne.polledNoChanges).toBe(false);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
+
     freezeClockAt(POLL_TWO_AT);
     mockGetFileComments.mockResolvedValueOnce(
       sdkResponse([commentOld, commentNew]),
     );
+
     const resultTwo = await poll(store);
     expect(
       resultTwo.payload.body.data.newComments.data.map((c) => c.id),
     ).toEqual(["c_new"]);
     expect(resultTwo.polledNoChanges).toBe(false);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_TWO_AT });
+
     expect(store.writes).toEqual([
       { lastPolledAt: POLL_ONE_AT },
       { lastPolledAt: POLL_TWO_AT },
     ]);
   });
+
   test("reports polledNoChanges when no comments match the cursor window", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockGetFileComments.mockResolvedValueOnce(
       sdkResponse([
@@ -150,13 +169,16 @@ describe("newFileComments", () => {
         },
       ]),
     );
+
     const result = await poll(store);
     expect(result.payload.body.data.newComments.data).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
+
   test("cold first poll with no prior state seeds the cursor and emits nothing", async () => {
     const store = createPollingStore();
+
     freezeClockAt(POLL_ONE_AT);
     mockGetFileComments.mockResolvedValueOnce(
       sdkResponse([
@@ -167,29 +189,38 @@ describe("newFileComments", () => {
         },
       ]),
     );
+
     const result = await poll(store);
     expect(result.payload.body.data.newComments.data).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
+
   test("polledNoChanges is true when the response has no entries", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockGetFileComments.mockResolvedValueOnce(sdkResponse([]));
+
     const result = await poll(store);
     expect(result.payload.body.data.newComments.data).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("handles rawData with missing entries gracefully", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockGetFileComments.mockResolvedValueOnce({ rawData: {} });
+
     const result = await poll(store);
     expect(result.payload.body.data.newComments.data).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("paginates through multiple pages of comments", async () => {
     const { MAX_PAGE_SIZE } = await import("../constants");
+
     const page1Entries = Array.from({ length: MAX_PAGE_SIZE }, (_, i) => ({
       id: `c_p1_${i}`,
       message: `Page 1 comment ${i}`,
@@ -200,17 +231,21 @@ describe("newFileComments", () => {
       message: "Page 2 comment",
       created_at: "2026-06-01T12:20:00.000Z",
     };
+
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockGetFileComments
       .mockResolvedValueOnce(sdkResponse(page1Entries))
       .mockResolvedValueOnce(sdkResponse([commentPage2]));
+
     const result = await poll(store);
     const ids = result.payload.body.data.newComments.data.map((c) => c.id);
     expect(ids).toHaveLength(MAX_PAGE_SIZE + 1);
     expect(ids[ids.length - 1]).toBe("c_page2");
     expect(result.polledNoChanges).toBe(false);
     expect(mockGetFileComments).toHaveBeenCalledTimes(2);
+
     const secondCallArgs = mockGetFileComments.mock.calls[1];
     expect(secondCallArgs[1].queryParams.offset).toBe(MAX_PAGE_SIZE);
   });

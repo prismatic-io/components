@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const tableauConnection = connection({
   key: "privateKey",
   display: {

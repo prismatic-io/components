@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { listProjectsExamplePayload } from "../../examplePayloads";
 import { connectionInput, maxResults, startAt } from "../../inputs";
+
 export const listProjects = action({
   display: {
     label: "List Projects",

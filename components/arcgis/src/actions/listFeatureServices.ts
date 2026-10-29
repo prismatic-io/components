@@ -7,6 +7,7 @@ import { action } from "@prismatic-io/spectral";
 import { LIST_FEATURE_SERVICES_EXAMPLE_PAYLOAD } from "../examplePayloads";
 import { connection, fetchAll, number, ownerName, start } from "../inputs";
 import { getApiKeyManager, paginateRecords } from "../utils";
+
 export const listFeatureServices = action({
   display: {
     label: "List Feature Services",
@@ -29,15 +30,19 @@ export const listFeatureServices = action({
       .in("type")
       .from(0)
       .to(1000);
+
     const searchItemParams: ISearchOptions = {
       authentication,
       q: featureServicesQuery,
     };
+
     if (!fetchAll) {
       searchItemParams.num = number;
       searchItemParams.start = start;
     }
+
     const data = await paginateRecords(searchItemParams, fetchAll);
+
     return {
       data: data as unknown,
     };

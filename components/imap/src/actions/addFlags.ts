@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { addFlagsExamplePayload } from "../examplePayloads";
 import { addFlagsInputs } from "../inputs/actions";
+
 export const addFlags = action({
   display: {
     label: "Add Flags",

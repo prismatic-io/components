@@ -1,4 +1,5 @@
 import type { IMessage } from "./IMessage";
+
 export interface IChatCompletionParams {
   messages: Array<IMessage>;
   model: string;

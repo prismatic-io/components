@@ -7,6 +7,7 @@ import { completeTaskOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { patchWithEtag } from "../../utils";
 import { completeTaskInputs } from "../../inputs";
+
 export const completeTask = action({
   display: {
     label: "Complete Task",
@@ -20,6 +21,7 @@ export const completeTask = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, taskId, etag }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await patchWithEtag<PlannerTask & Etagged>(
       client,
       PLANNER_ENDPOINTS.TASK(taskId),
@@ -28,8 +30,7 @@ export const completeTask = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => completeTaskExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    completeTaskExamplePayload,
   examplePayload: completeTaskExamplePayload,
 });

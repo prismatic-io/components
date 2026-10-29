@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanModelValue, cleanStringArray } from "../util";
 import { connectionInput, customerIdInput } from "./common";
+
 const accountIdsInput = input({
   label: "Account ID",
   type: "string",
@@ -10,6 +11,7 @@ const accountIdsInput = input({
     "An array of identifiers of the accounts that the user can manage. To specify that the user can manage all current and future accounts of the customer to which the user belongs, set to NULL.",
   clean: cleanStringArray,
 });
+
 const emailInput = input({
   label: "Email",
   placeholder: "Enter email address",
@@ -20,6 +22,7 @@ const emailInput = input({
   example: "john.doe@example.com",
   clean: util.types.toString,
 });
+
 const firstNameInput = input({
   label: "First Name",
   placeholder: "Enter first name",
@@ -30,6 +33,7 @@ const firstNameInput = input({
   example: "John",
   clean: util.types.toString,
 });
+
 const lastNameInput = input({
   label: "Last Name",
   placeholder: "Enter last name",
@@ -40,6 +44,7 @@ const lastNameInput = input({
   example: "Doe",
   clean: util.types.toString,
 });
+
 const lcidModel = [
   { label: "Arabic Algeria", value: "ArabicAlgeria" },
   { label: "Arabic Bahrain", value: "ArabicBahrain" },
@@ -95,6 +100,7 @@ const lcidModel = [
   { label: "Spanish Venezuela", value: "SpanishVenezuela" },
   { label: "Swedish Sweden", value: "SwedishSweden" },
 ];
+
 const lcidInput = input({
   label: "LCID",
   type: "string",
@@ -105,6 +111,7 @@ const lcidInput = input({
   model: lcidModel,
   clean: cleanModelValue(lcidModel, "lcid", { allowEmpty: true }),
 });
+
 const roleIdModel = [
   { label: "Advertiser Campaign Manager", value: "16" },
   { label: "Aggregator", value: "33" },
@@ -112,6 +119,7 @@ const roleIdModel = [
   { label: "Viewer", value: "100" },
   { label: "Standard User", value: "203" },
 ];
+
 const roleIdInput = input({
   label: "Role ID",
   comments: "The role that the user has for each customer or list of accounts.",
@@ -120,6 +128,7 @@ const roleIdInput = input({
   required: true,
   clean: cleanModelValue(roleIdModel, "role id", { allowEmpty: true }),
 });
+
 export const sendUserInvitationInputs = {
   accountIds: accountIdsInput,
   connection: connectionInput,

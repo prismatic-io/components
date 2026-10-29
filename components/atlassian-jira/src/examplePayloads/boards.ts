@@ -26,6 +26,7 @@ export const listBoardsSprintsExamplePayload = {
     ],
   },
 };
+
 export const listBoardsExamplePayload = {
   data: {
     maxResults: 2,
@@ -48,6 +49,7 @@ export const listBoardsExamplePayload = {
     ],
   },
 };
+
 export const getBoardExamplePayload = {
   data: {
     id: 84,

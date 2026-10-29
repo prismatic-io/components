@@ -5,6 +5,7 @@ import { createBomLineInputs } from "../../inputs";
 import { itemBomSchema } from "../../outputSchemas";
 import type { ItemBomCreateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createBomLine = action({
   display: {
     label: "Create BOM Line",
@@ -33,12 +34,14 @@ export const createBomLine = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const bomPayload: ItemBomCreateVo = {
         item: { guid: bomItemGuid },
         refDes,
         quantity,
         notes,
       };
+
       bomPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: additionalAttributeJson,
@@ -47,6 +50,7 @@ export const createBomLine = action({
         },
         context,
       );
+
       context.logger.info(`Creating BOM line for item ${itemGuid}`, {
         itemGuid,
         bomItemGuid,
@@ -55,11 +59,14 @@ export const createBomLine = action({
         notes,
         attributeCount: bomPayload.additionalAttributes?.length || 0,
       });
+
       const { data } = await client.post(`/items/${itemGuid}/bom`, bomPayload);
+
       context.logger.info("Successfully created BOM line", {
         bomLineGuid: data?.guid,
         lineNumber: data?.lineNumber,
       });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create BOM Line");

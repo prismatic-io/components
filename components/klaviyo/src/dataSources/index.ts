@@ -6,6 +6,7 @@ import { selectList } from "./selectList";
 import { selectProfile } from "./selectProfile";
 import { selectSegment } from "./selectSegment";
 import { selectTemplate } from "./selectTemplate";
+
 export default {
   selectAccount,
   selectTemplate,

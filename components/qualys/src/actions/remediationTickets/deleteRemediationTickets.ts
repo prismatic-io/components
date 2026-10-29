@@ -5,6 +5,7 @@ import { deleteRemediationTicketsExamplePayload } from "../../examplePayloads";
 import { deleteRemediationTicketsInputs } from "../../inputs";
 import { deleteRemediationTicketsOutputSchema } from "../../outputSchemas";
 import { parseXml } from "../../util";
+
 export const deleteRemediationTickets = action({
   display: {
     label: "Delete Remediation Tickets",
@@ -22,11 +23,13 @@ export const deleteRemediationTickets = action({
     { connection, ticketNumbers, assignee, ticketState, severity, dryRun },
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
+
     if (ticketNumbers.length > TICKET_BATCH_LIMIT) {
       throw new Error(
         `Qualys allows at most ${TICKET_BATCH_LIMIT} tickets per delete call. Received ${ticketNumbers.length}.`,
       );
     }
+
     const params = new URLSearchParams();
     if (ticketNumbers.length > 0) {
       params.set("ticket_numbers", ticketNumbers.join(","));
@@ -34,11 +37,14 @@ export const deleteRemediationTickets = action({
     if (assignee) params.set("ticket_assignee", assignee);
     if (ticketState) params.set("states", ticketState);
     if (severity) params.set("vuln_severities", severity);
+
     if (dryRun) {
       const listResponse = await client.get<string>("/msp/ticket_list.php", {
         params,
       });
+
       const parsed = await parseXml<Record<string, unknown>>(listResponse.data);
+
       return {
         data: {
           message: Messages.TICKETS_DRY_RUN,
@@ -49,11 +55,14 @@ export const deleteRemediationTickets = action({
         },
       };
     }
+
     const response = await client.post<string>(
       "/msp/ticket_delete.php",
       params,
     );
+
     const parsed = await parseXml<Record<string, unknown>>(response.data);
+
     return {
       data: {
         message: Messages.TICKETS_DELETED,

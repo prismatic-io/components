@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { fetchAllData } from "../../util";
 import { defaultPaginationInputs, connection } from "../../inputs/general";
 import { listBusinessPartnersExample } from "../../examplePayloads/businessPartners";
+
 export const listBusinessPartners = action({
   display: {
     label: "List Business Partners",
@@ -31,6 +32,7 @@ export const listBusinessPartners = action({
       context,
       context.debug.enabled,
     );
+
     const data = await fetchAllData(
       client,
       "BusinessPartners",

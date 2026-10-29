@@ -12,6 +12,7 @@ export const parseSapDate = (value: unknown): Date | undefined => {
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? undefined : parsed;
 };
+
 export const toSapFilterDatetime = (isoString: string): string => {
   const date = new Date(isoString);
   if (Number.isNaN(date.getTime())) {

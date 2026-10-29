@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
 import { emptyExamplePayload as examplePayload } from "../../examplePayloads";
 import { deleteGroupInputs as inputs } from "../../inputs/group";
+
 export const deleteGroup = action({
   display: {
     label: "Delete Group",

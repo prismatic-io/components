@@ -1,6 +1,7 @@
 import type { BoxClient } from "box-node-sdk";
 import folderTree from "../../tests/fixtures/files.json";
 import { getPathEntries } from "./index";
+
 const buildMockClient = () =>
   ({
     folders: {
@@ -10,13 +11,18 @@ const buildMockClient = () =>
           const allEntries = folderTree.files.filter(
             (entry) => entry.parent === id,
           );
+
           if (!allEntries.length) return Promise.reject(new Error("Not found"));
+
           let index = Number.parseInt(queryParams?.marker, 10);
           if (Number.isNaN(index)) index = 0;
+
           const { id: fileId, name, type } = allEntries[index];
+
           let nextMarker: string | null = null;
           if (index + 1 < allEntries.length)
             nextMarker = (index + 1).toString();
+
           return Promise.resolve({
             rawData: { entries: [{ id: fileId, name, type }] },
             nextMarker,
@@ -24,23 +30,28 @@ const buildMockClient = () =>
         }),
     },
   }) as unknown as BoxClient;
+
 const client = buildMockClient();
+
 describe("getPathEntries", () => {
   test('throws error when path does not start with "/"', async () => {
     await expect(getPathEntries(client, "path_without_slash")).rejects.toThrow(
       "Path must start with '/'",
     );
   });
+
   test("throws error when path does not exist", async () => {
     await expect(getPathEntries(client, "/a/a1/a1file3")).rejects.toThrow(
       "Expected 'a1file3' to exist in path '/a/a1/a1file3'",
     );
   });
+
   test("throws error when last item should not exist but does", async () => {
     await expect(
       getPathEntries(client, "/a/a1/a1file1", false),
     ).rejects.toThrow("Expected 'a1file1' to not exist");
   });
+
   test("returns all entries in a path", async () => {
     const actual = await getPathEntries(client, "/a/a1/a1file1");
     const expected = [
@@ -51,6 +62,7 @@ describe("getPathEntries", () => {
     ];
     expect(actual).toEqual(expected);
   });
+
   test("last item does not need to exist when requested", async () => {
     const actual = await getPathEntries(client, "/a/a1/a1file3", false);
     const expected = [

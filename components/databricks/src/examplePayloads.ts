@@ -52,9 +52,11 @@ export const getClusterExamplePayload = {
     },
   },
 };
+
 export const listClustersExamplePayload = {
   data: [getClusterExamplePayload.data],
 };
+
 export const listNodeTypesExamplePayload = {
   data: [
     {
@@ -83,20 +85,25 @@ export const listNodeTypesExamplePayload = {
     },
   ],
 };
+
 export const terminateClusterExamplePayload = {
   data: "Cluster terminated successfully",
 };
+
 export const startTerminatedClusterExamplePayload = {
   data: "Cluster started successfully",
 };
+
 export const restartClusterExamplePayload = {
   data: "Cluster restarted successfully",
 };
+
 export const createExecutionContextExamplePayload = {
   data: {
     id: "1234-567890-reef123",
   },
 };
+
 export const getCommandStatusExamplePayload = {
   data: {
     id: "d4aa2c2f871048e797efdbe635de94be",
@@ -104,11 +111,13 @@ export const getCommandStatusExamplePayload = {
     result: null,
   },
 };
+
 export const runCommandExamplePayload = {
   data: {
     id: "d4aa2c2f871048e797efdbe635de94be",
   },
 };
+
 export const runSqlExamplePayload = {
   data: {
     statement_id: "01eea4a3-4f6d-1f31-a8d4-dbc7b6b1a5c4",
@@ -158,6 +167,7 @@ export const runSqlExamplePayload = {
     },
   },
 };
+
 export const getWarehouseExamplePayload = {
   data: {
     id: "0000000000000001",
@@ -191,15 +201,19 @@ export const getWarehouseExamplePayload = {
     },
   },
 };
+
 export const listWarehousesExamplePayload = {
   data: [getWarehouseExamplePayload.data],
 };
+
 export const startWarehouseExamplePayload = {
   data: "Warehouse started",
 };
+
 export const stopWarehouseExamplePayload = {
   data: "Warehouse stopped",
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     emails: [
@@ -231,6 +245,7 @@ export const getCurrentUserExamplePayload = {
     userName: "1d021345-e23c-4f29-84fa-d027a622259e",
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     clusters: [

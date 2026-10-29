@@ -4,6 +4,7 @@ import { CONTACTS_PATH } from "../../constants";
 import { createContactExamplePayload } from "../../examplePayloads";
 import { createContactInputs } from "../../inputs";
 import { createContactOutputSchema } from "../../outputSchemas";
+
 export const createContact = action({
   examplePayload: createContactExamplePayload,
   display: {
@@ -18,19 +19,20 @@ export const createContact = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, contactKey, attributeSets }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       contactKey,
       attributeSets,
     };
+
     const { data } = await client.post(CONTACTS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { contactKey },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: { ...createContactExamplePayload.data, contactKey },
   }),
 });

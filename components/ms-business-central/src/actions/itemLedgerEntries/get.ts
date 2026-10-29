@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { getItemLedgerEntryExamplePayload } from "../../examplePayloads";
 import { getItemLedgerEntryInputs } from "../../inputs/itemLedgerEntries";
 import type { ItemLedgerEntry } from "../../interfaces";
+
 export const getItemLedgerEntry = action({
   display: {
     label: "Get Item Ledger Entry",
@@ -19,6 +20,7 @@ export const getItemLedgerEntry = action({
     const { data } = await client.get<ItemLedgerEntry>(
       `/companies(${companyId})/itemLedgerEntries(${itemLedgerEntryId})`,
     );
+
     return { data };
   },
   examplePayload: getItemLedgerEntryExamplePayload,

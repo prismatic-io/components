@@ -5,6 +5,7 @@ import { updateTrainingPlanInputs } from "../../inputs";
 import { trainingShortSchema } from "../../outputSchemas";
 import type { TrainingUpdateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateTrainingPlan = action({
   display: {
     label: "Update Training Plan",
@@ -29,7 +30,9 @@ export const updateTrainingPlan = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const trainingPayload: TrainingUpdateVo = {};
+
       if (name) trainingPayload.name = name;
       if (description) trainingPayload.description = description;
       if (daysToComplete !== undefined)
@@ -37,6 +40,7 @@ export const updateTrainingPlan = action({
       if (managerGuid) {
         trainingPayload.manager = { guid: managerGuid };
       }
+
       context.logger.info("Updating training plan in Arena", {
         trainingGuid,
         hasName: !!name,
@@ -44,11 +48,14 @@ export const updateTrainingPlan = action({
         hasDaysToComplete: daysToComplete !== undefined,
         hasManager: !!managerGuid,
       });
+
       const { data } = await client.put(
         `/trainingplans/${trainingGuid}`,
         trainingPayload,
       );
+
       context.logger.info("Successfully updated training plan");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update Training Plan");

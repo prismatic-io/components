@@ -4,6 +4,7 @@ import { updateRequirementTraceExamplePayload } from "../../examplePayloads";
 import { updateRequirementTraceInputs } from "../../inputs";
 import { requirementTraceSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const updateRequirementTrace = action({
   display: {
     label: "Update Requirement Trace",

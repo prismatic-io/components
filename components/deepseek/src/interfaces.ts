@@ -3,6 +3,7 @@ export interface Model {
   object: string;
   owned_by: string;
 }
+
 export interface ListModelsResponse {
   data: Model[];
   object: string;

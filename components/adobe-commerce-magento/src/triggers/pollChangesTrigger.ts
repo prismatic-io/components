@@ -12,6 +12,7 @@ import {
   fetchMagentoRecordsSince,
   resolvePollingRecordChanges,
 } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -32,15 +33,18 @@ export const pollChangesTrigger = pollingTrigger({
     const isInitialSync = !pollState?.lastPolledAt;
     const lastPolledAt =
       pollState?.lastPolledAt ?? (params.lookBackDate || now);
+
     const { records, truncated } = await fetchMagentoRecordsSince(
       params.connection,
       params.pollResourceType,
       lastPolledAt,
       context.debug.enabled,
     );
+
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: MagentoRecord[] = [];
     const updated: MagentoRecord[] = [];
+
     for (const record of records) {
       const createValue = record.created_at;
       const createdAtDate =
@@ -53,6 +57,7 @@ export const pollChangesTrigger = pollingTrigger({
       else if (!isNew && (isInitialSync || params.showUpdatedRecords !== false))
         updated.push(record);
     }
+
     let nextCursor = now;
     if (truncated) {
       const newestFetchedUpdatedAt = records[records.length - 1]?.updated_at;
@@ -67,11 +72,13 @@ export const pollChangesTrigger = pollingTrigger({
       );
     }
     context.polling.setState({ lastPolledAt: nextCursor });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Magento ${params.pollResourceType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

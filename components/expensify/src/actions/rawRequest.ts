@@ -6,7 +6,9 @@ import {
 import { connectionInput } from "../inputs";
 import { baseUrl, validateConnection } from "../client";
 import { generatePayload } from "../util";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -26,6 +28,7 @@ export const rawRequest = action({
   perform: async (context, { connectionInput, ...rawRequestInputs }) => {
     validateConnection(connectionInput);
     const { data: inputData } = rawRequestInputs;
+
     const generatedJson = generatePayload(
       inputData as Record<string, unknown>,
       connectionInput,

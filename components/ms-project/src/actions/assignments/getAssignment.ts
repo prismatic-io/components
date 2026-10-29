@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../../client";
 import { connection, guId } from "../../inputs";
+
 export const getAssignments = action({
   display: {
     label: "Get Assignment",
@@ -16,10 +17,12 @@ export const getAssignments = action({
     const { data } = await client.get(
       `/Projects('${params.guId}')/Assignments`,
     );
+
     return {
       data,
     };
   },
   inputs: { connection, guId },
 });
+
 export default getAssignments;

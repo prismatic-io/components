@@ -5,6 +5,7 @@ import {
   OAuth2Type,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 export const sapApiKeyConnection = connection({
   key: "apiKey",
   display: {
@@ -36,6 +37,7 @@ export const sapApiKeyConnection = connection({
     },
   },
 });
+
 export const sapBasicAuthConnection = connection({
   key: "sapBasicAuth",
   display: {
@@ -74,6 +76,7 @@ export const sapBasicAuthConnection = connection({
     },
   },
 });
+
 export const sapOAuthConnection = oauth2Connection({
   key: "sapOAuth",
   display: {
@@ -155,6 +158,7 @@ export const sapOAuthConnection = oauth2Connection({
     OAuth2Type.AuthorizationCode,
   ),
 });
+
 export default [
   sapOAuthConnection,
   sapBasicAuthConnection,

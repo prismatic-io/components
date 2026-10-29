@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { updatePaymentIntentExamplePayload } from "../../examplePayloads/paymentIntents";
 import { updatePaymentIntentInputs } from "../../inputs";
 import { paymentIntentOutputSchema } from "../../outputSchemas";
+
 export const updatePaymentIntent = action({
   display: {
     label: "Update Payment Intent",
@@ -87,13 +88,12 @@ export const updatePaymentIntent = action({
       additionalFields,
       paymentIntentId,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const intent = updatePaymentIntentExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...intent,
@@ -119,5 +119,6 @@ export const updatePaymentIntent = action({
     type: "actionOutput",
     schema: paymentIntentOutputSchema,
   }),
+
   examplePayload: updatePaymentIntentExamplePayload,
 });

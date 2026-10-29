@@ -18,6 +18,7 @@ export const eventWebhookBaseProperties = {
   oauth_client_id: { type: ["string", "null"] },
   oauth_token_url: { type: ["string", "null"] },
 };
+
 export const createWebhookOutputSchema = {
   type: "object" as const,
   properties: {
@@ -26,7 +27,9 @@ export const createWebhookOutputSchema = {
     updated_date: { type: "string", format: "date-time" },
   },
 };
+
 export const updateWebhookOutputSchema = createWebhookOutputSchema;
+
 export const getWebhookOutputSchema = {
   type: "object" as const,
   properties: {
@@ -36,6 +39,7 @@ export const getWebhookOutputSchema = {
     updated_at: { type: ["string", "null"], format: "date-time" },
   },
 };
+
 export const listWebhooksOutputSchema = {
   type: "object" as const,
   properties: {
@@ -54,6 +58,7 @@ export const listWebhooksOutputSchema = {
     },
   },
 };
+
 export const toggleSignatureVerificationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -61,6 +66,7 @@ export const toggleSignatureVerificationOutputSchema = {
     public_key: { type: "string" },
   },
 };
+
 export const testWebhookOutputSchema = {
   type: "object" as const,
   properties: {
@@ -69,6 +75,7 @@ export const testWebhookOutputSchema = {
   },
   required: ["success", "message"],
 };
+
 export const deleteWebhookOutputSchema = {
   type: "object" as const,
   properties: {

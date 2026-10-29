@@ -1,9 +1,11 @@
 import { statusRefSchema, workspaceTeamUserSchema } from "./shared";
+
 const featureToggleSchema = {
   type: "object" as const,
   properties: { enabled: { type: "boolean" } },
   required: ["enabled"],
 };
+
 const dueDatesFeatureSchema = {
   type: "object" as const,
   properties: {
@@ -19,6 +21,7 @@ const dueDatesFeatureSchema = {
     "remap_closed_due_date",
   ],
 };
+
 const spaceFeaturesProperties = {
   due_dates: dueDatesFeatureSchema,
   time_tracking: featureToggleSchema,
@@ -30,6 +33,7 @@ const spaceFeaturesProperties = {
   dependency_warning: featureToggleSchema,
   portfolios: featureToggleSchema,
 };
+
 const spaceCoreProperties = {
   id: { type: "string" },
   name: { type: "string" },
@@ -37,6 +41,7 @@ const spaceCoreProperties = {
   statuses: { type: "array", items: statusRefSchema },
   multiple_assignees: { type: "boolean" },
 };
+
 const spaceCoreRequired = [
   "id",
   "name",
@@ -45,6 +50,7 @@ const spaceCoreRequired = [
   "multiple_assignees",
   "features",
 ];
+
 const spaceSchema = {
   type: "object" as const,
   properties: {
@@ -67,8 +73,11 @@ const spaceSchema = {
   },
   required: spaceCoreRequired,
 };
+
 export const getSpaceOutputSchema = spaceSchema;
+
 export const updateSpaceOutputSchema = spaceSchema;
+
 export const createSpaceOutputSchema = {
   type: "object" as const,
   properties: {
@@ -121,6 +130,7 @@ export const createSpaceOutputSchema = {
   },
   required: [...spaceCoreRequired, "archived"],
 };
+
 export const listSpacesOutputSchema = {
   type: "object" as const,
   properties: {

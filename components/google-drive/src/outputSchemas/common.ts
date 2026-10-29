@@ -10,6 +10,7 @@ export const userSchema = {
   },
   required: [],
 };
+
 export const permissionSchema = {
   type: "object" as const,
   properties: {
@@ -56,6 +57,7 @@ export const permissionSchema = {
   },
   required: [],
 };
+
 export const contentRestrictionSchema = {
   type: "object" as const,
   properties: {
@@ -69,6 +71,7 @@ export const contentRestrictionSchema = {
   },
   required: [],
 };
+
 export const labelFieldSchema = {
   type: "object" as const,
   properties: {
@@ -83,6 +86,7 @@ export const labelFieldSchema = {
   },
   required: [],
 };
+
 export const labelSchema = {
   type: "object" as const,
   properties: {
@@ -93,6 +97,7 @@ export const labelSchema = {
   },
   required: [],
 };
+
 export const downloadRestrictionSchema = {
   type: "object" as const,
   properties: {
@@ -101,6 +106,7 @@ export const downloadRestrictionSchema = {
   },
   required: [],
 };
+
 export const driveSchema = {
   type: "object" as const,
   properties: {
@@ -166,6 +172,7 @@ export const driveSchema = {
   },
   required: [],
 };
+
 export const fileSchema = {
   type: "object" as const,
   properties: {
@@ -361,6 +368,7 @@ export const fileSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const fileListSchema = {
   type: "object" as const,
   properties: {
@@ -372,6 +380,7 @@ export const fileListSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const emptyResponseSchema = {
   type: "object" as const,
   properties: {},

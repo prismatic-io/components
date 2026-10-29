@@ -4,6 +4,7 @@ import { getRequirementTicketAssociationExamplePayload } from "../../examplePayl
 import { getRequirementTicketAssociationInputs } from "../../inputs";
 import { itemToTicketSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirementTicketAssociation = action({
   display: {
     label: "Get Requirement Ticket Association",

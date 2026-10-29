@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Google Content Shopping connection to use.",
 });
+
 export const account = input({
   label: "Account",
   type: "string",
@@ -17,6 +19,7 @@ export const account = input({
   required: true,
   dataSource: "selectAccountMerchant",
 });
+
 const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -27,6 +30,7 @@ const pageSize = input({
   placeholder: "Enter Page Size",
   required: false,
 });
+
 const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -37,6 +41,7 @@ const pageToken = input({
   placeholder: "Enter Page Token",
   required: false,
 });
+
 const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -46,6 +51,7 @@ const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const updateMask = input({
   label: "Update Mask",
   type: "string",
@@ -56,20 +62,24 @@ export const updateMask = input({
   placeholder: "Enter Field Names (Comma-Separated)",
   required: false,
 });
+
 export const connectionOnlyInputs = {
   connectionInput,
 };
+
 export const paginationInputs = {
   fetchAll,
   pageSize,
   pageToken,
 };
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { pageSize, pageToken },
 });
+
 export const paginationGroupedInputs = {
   fetchAll,
   pagination,

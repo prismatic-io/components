@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createWorkflowClient } from "../../client";
 import { getCampaignResponse } from "../../examplePayloads";
 import { connection, id } from "../../inputs";
+
 export const getCampaign = action({
   display: {
     label: "Get Campaign",

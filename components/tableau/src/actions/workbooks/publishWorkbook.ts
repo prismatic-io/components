@@ -3,6 +3,7 @@ import FormData from "form-data";
 import { publishWorkbookExamplePayload } from "../../examplePayloads";
 import { publishWorkbookInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const publishWorkbook = action({
   display: {
     label: "Publish Workbook",
@@ -27,13 +28,17 @@ export const publishWorkbook = action({
       asJob: params.publishOptions.asJob,
       skipConnectionCheck: params.publishOptions.skipConnectionCheck,
     };
+
     const form = new FormData();
+
     form.append("request_payload", params.workbookXml, {
       filename: "publish-workbook.xml",
     });
+
     form.append("tableau_workbook", params.workbookFileContents.data, {
       filename: "workbook.twbx",
     });
+
     const response = await client.post("/workbooks", form.getBuffer(), {
       params: queryParams,
       headers: {
@@ -41,6 +46,7 @@ export const publishWorkbook = action({
       },
       maxBodyLength: Number.POSITIVE_INFINITY,
     });
+
     return {
       data: response.data,
     };

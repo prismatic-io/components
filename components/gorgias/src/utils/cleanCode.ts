@@ -1,7 +1,9 @@
 import { util } from "@prismatic-io/spectral";
+
 const throwCodeInputError = (inputLabel: string) => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     try {
@@ -10,8 +12,10 @@ export const cleanCodeInput = (value: unknown, inputLabel: string) => {
       throwCodeInputError(inputLabel);
     }
   }
+
   return undefined;
 };
+
 export const cleanArrayCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     let object: unknown;

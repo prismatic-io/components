@@ -5,6 +5,7 @@ import { getApi } from "../../api";
 import { fetchCampaigns, toCampaignFields } from "../../util";
 import { listCampaignsExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const listCampaigns = action({
   display: {
     label: "List Campaigns",
@@ -29,6 +30,7 @@ export const listCampaigns = action({
       [],
       undefined,
     );
+
     return {
       data,
     };

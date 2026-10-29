@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./common";
+
 const since = input({
   label: "Since",
   type: "string",
@@ -11,6 +12,7 @@ const since = input({
   example: "2010-01-01T00:00:00Z",
   placeholder: "Enter start date",
 });
+
 const streamPosition = input({
   label: "Stream Position",
   type: "string",
@@ -21,6 +23,7 @@ const streamPosition = input({
     "The pagination cursor used to retrieve the next set of events. Returned by a previous request.",
   placeholder: "Enter stream position",
 });
+
 const maxCount = input({
   label: "Max Count",
   type: "string",
@@ -30,12 +33,14 @@ const maxCount = input({
   example: "100",
   placeholder: "Enter max count",
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and result-count controls for paging through results.",
   inputs: { streamPosition, maxCount },
 });
+
 export const listEventsInputs = {
   connection: connectionInput,
   since,

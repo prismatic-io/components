@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { saveAsNewAssetResponse } from "../../examplePayloads";
 import { connection, id } from "../../inputs";
+
 export const saveAsNewAssetVersion = action({
   display: {
     label: "Save as a New Asset Version",

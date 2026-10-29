@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { upsertApplicationExamplePayload as examplePayload } from "../../examplePayloads";
 import { upsertApplicationInputs as inputs } from "../../inputs/application";
 import { getUpsertHeader } from "../../util";
+
 export const upsertApplication = action({
   display: {
     label: "Upsert Application",

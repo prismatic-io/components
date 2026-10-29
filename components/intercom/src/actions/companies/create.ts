@@ -12,6 +12,7 @@ import {
   websiteInput,
 } from "../../inputs/companies";
 import { companyIdInput } from "../../inputs/general";
+
 export const createCompany = action({
   display: {
     label: "Create Company",

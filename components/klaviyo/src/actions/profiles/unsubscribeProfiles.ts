@@ -9,6 +9,7 @@ import {
 } from "klaviyo-api";
 import { unsubscribeProfilesExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const unsubscribeProfiles = action({
   display: {
     label: "Unsubscribe Profiles",
@@ -26,6 +27,7 @@ export const unsubscribeProfiles = action({
         debug,
       });
     }
+
     const subscription: SubscriptionDeleteJobCreateQuery = {
       data: {
         type: ProfileSubscriptionBulkDeleteJobEnum.ProfileSubscriptionBulkDeleteJob,

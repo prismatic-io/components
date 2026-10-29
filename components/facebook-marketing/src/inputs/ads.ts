@@ -16,6 +16,7 @@ import {
   pagination,
   version,
 } from "./common";
+
 export const adName = input({
   label: "Ad Name",
   type: "string",
@@ -25,6 +26,7 @@ export const adName = input({
   comments: "Provide a name for the given ad.",
   clean: cleanString,
 });
+
 export const status = input({
   label: "Ad Status",
   type: "string",
@@ -39,6 +41,7 @@ export const status = input({
     "Provide a status for the ad. During testing, it is recommended to set ads to a PAUSED status so as to not incur accidental spend.",
   clean: cleanString,
 });
+
 const adFormat = input({
   label: "Ad Format",
   type: "string",
@@ -47,6 +50,7 @@ const adFormat = input({
   model: PREVIEW_FORMATS,
   clean: util.types.toString,
 });
+
 export const adLabels = input({
   label: "Ad Labels",
   type: "code",
@@ -68,6 +72,7 @@ export const adLabels = input({
   ),
   clean: (value) => cleanArrayCodeInput(value, "Ad Labels"),
 });
+
 const tracking = input({
   label: "Tracking",
   type: "code",
@@ -96,6 +101,7 @@ const tracking = input({
     "Provide a JSON array containing valid tracking specs. The shape of this field can change depending on the type of ad: https://developers.facebook.com/docs/marketing-api/tracking-specs#default_by_ad.",
   clean: (value) => cleanArrayCodeInput(value, "Tracking"),
 });
+
 const ad_schedule_end_time = input({
   label: "Ad Schedule End Time",
   type: "string",
@@ -106,6 +112,7 @@ const ad_schedule_end_time = input({
   placeholder: "2022-10-10T00:00:00Z",
   clean: cleanString,
 });
+
 const ad_schedule_start_time = input({
   label: "Ad Schedule Start Time",
   type: "string",
@@ -116,6 +123,7 @@ const ad_schedule_start_time = input({
   placeholder: "2022-10-10T00:00:00Z",
   clean: cleanString,
 });
+
 const adset_id = input({
   label: "Adset Id",
   type: "string",
@@ -126,6 +134,7 @@ const adset_id = input({
   clean: util.types.toString,
   dataSource: "selectAdSet",
 });
+
 const adset_spec = input({
   label: "Adset Spec",
   type: "code",
@@ -135,6 +144,7 @@ const adset_spec = input({
     "The ad set spec for this ad. When the spec is provided, Adset Id field is not required.",
   clean: (values) => cleanCodeInput(values, "Adset Spec"),
 });
+
 const audience_id = input({
   label: "Audience Id",
   type: "string",
@@ -143,6 +153,7 @@ const audience_id = input({
   placeholder: "123456789",
   clean: cleanString,
 });
+
 const conversion_domain = input({
   label: "Conversion Domain",
   type: "string",
@@ -153,6 +164,7 @@ const conversion_domain = input({
   placeholder: "facebook.com",
   clean: cleanString,
 });
+
 const creative = input({
   label: "Creative",
   type: "code",
@@ -163,6 +175,7 @@ const creative = input({
     "This field is required for create. The ID or creative spec of the ad creative to be used by this ad. You may supply the ID within an object as shown in the example.",
   clean: (value) => cleanCodeInput(value, "Creative"),
 });
+
 const date_format = input({
   label: "Date Format",
   type: "string",
@@ -171,6 +184,7 @@ const date_format = input({
   placeholder: "U",
   clean: cleanString,
 });
+
 const display_sequence = input({
   label: "Display Sequence",
   type: "string",
@@ -179,6 +193,7 @@ const display_sequence = input({
   placeholder: "1",
   clean: cleanString,
 });
+
 const engagement_audience = input({
   label: "Engagement Audience",
   type: "boolean",
@@ -187,6 +202,7 @@ const engagement_audience = input({
     "Flag to create a new audience based on users who engage with this ad.",
   clean: util.types.toBool,
 });
+
 const include_demolink_hashes = input({
   label: "Include Demolink Hashes",
   type: "boolean",
@@ -194,6 +210,7 @@ const include_demolink_hashes = input({
   comments: "Include the demolink hashes.",
   clean: util.types.toBool,
 });
+
 const priority = input({
   label: "Priority",
   type: "string",
@@ -202,6 +219,7 @@ const priority = input({
   placeholder: "0",
   clean: cleanString,
 });
+
 const source_ad_id = input({
   label: "Source Ad Id",
   type: "string",
@@ -210,6 +228,7 @@ const source_ad_id = input({
   placeholder: "342512647855388",
   clean: cleanString,
 });
+
 export const targeting = input({
   label: "Targeting",
   type: "code",
@@ -228,6 +247,7 @@ export const targeting = input({
   comments: "The targeting specs for the ad set.",
   clean: (value) => cleanCodeInput(value, "Targeting"),
 });
+
 const createAdAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -246,6 +266,7 @@ const createAdAdditionalFields = structuredObjectInput({
     priority,
   },
 });
+
 export const createAdInputs = {
   connection: myConnectionField,
   adAccountId,
@@ -258,6 +279,7 @@ export const createAdInputs = {
   source_ad_id,
   version,
 };
+
 export const getAdInputs = {
   connection: myConnectionField,
   adId: { ...adId, comments: "Ad ID to get." },
@@ -267,6 +289,7 @@ export const getAdInputs = {
   },
   version,
 };
+
 export const updateAdInputs = {
   connection: myConnectionField,
   adId,
@@ -281,11 +304,13 @@ export const updateAdInputs = {
   },
   version,
 };
+
 export const deleteAdInputs = {
   connection: myConnectionField,
   adId: { ...adId, comments: "Ad ID to delete." },
   version,
 };
+
 export const getAdPreviewInputs = {
   connection: myConnectionField,
   adId: {
@@ -295,6 +320,7 @@ export const getAdPreviewInputs = {
   adFormat,
   version,
 };
+
 export const listAdsInAccountInputs = {
   connection: myConnectionField,
   adAccountId,
@@ -303,6 +329,7 @@ export const listAdsInAccountInputs = {
   fields: { ...fields, default: AD_DEFAULTS },
   version,
 };
+
 export const listAdsInAdsetInputs = {
   connection: myConnectionField,
   adId: {
@@ -316,6 +343,7 @@ export const listAdsInAdsetInputs = {
   },
   version,
 };
+
 export const listAdLeadsInputs = {
   connection: myConnectionField,
   adId: { ...adId, comments: "The ID of the ad to list leads for." },

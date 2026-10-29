@@ -4,6 +4,7 @@ import { listSavedFunnelsInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { listSavedFunnelsExamplePayload } from "../../examplePayloads";
 import { listSavedFunnelsOutputSchema } from "../../outputSchemas";
+
 export const listSavedFunnels = action({
   display: {
     label: "List Saved Funnels",

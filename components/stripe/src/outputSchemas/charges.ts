@@ -2085,6 +2085,7 @@ export const chargeOutputSchema = {
     "status",
   ],
 };
+
 export const listChargesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -2095,6 +2096,7 @@ export const listChargesOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const searchChargesOutputSchema = {
   type: "object" as const,
   properties: {

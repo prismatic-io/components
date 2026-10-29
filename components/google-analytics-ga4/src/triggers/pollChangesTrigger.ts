@@ -16,6 +16,7 @@ import {
   paginateRecords,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -34,11 +35,13 @@ export const pollChangesTrigger = pollingTrigger({
     const state = context.polling.getState() as PollingState;
     const isBackfill = !state?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
+
     const client = createAnalyticsClient({
       connection: params.connection,
       endpointType: "adminv1beta",
       debug: context.debug.enabled,
     });
+
     let allRecords: GA4Record[];
     if (params.pollResourceType === POLL_RESOURCE_KEYS.ACCOUNTS) {
       const response = await paginateRecords<Account, "accounts">(
@@ -66,6 +69,7 @@ export const pollChangesTrigger = pollingTrigger({
     } else {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
@@ -73,13 +77,17 @@ export const pollChangesTrigger = pollingTrigger({
       params.showNewRecords,
       params.showUpdatedRecords,
     );
+
     const totalMatched = created.length + updated.length;
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${allRecords.length} ${params.pollResourceType} records, ${created.length} created, ${updated.length} updated since last poll.`,
       );
     }
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

@@ -17,6 +17,7 @@ import {
   search,
 } from "../inputs";
 import { paginateRecords } from "../util";
+
 export const listRefunds = action({
   display: {
     label: "List Refunds",
@@ -68,6 +69,7 @@ export const listRefunds = action({
     };
   },
 });
+
 export const getRefund = action({
   display: {
     label: "Get Refund",
@@ -87,6 +89,7 @@ export const getRefund = action({
     };
   },
 });
+
 export const deleteRefund = action({
   display: {
     label: "Delete Refund",
@@ -108,6 +111,7 @@ export const deleteRefund = action({
     };
   },
 });
+
 export const createRefund = action({
   display: {
     label: "Create Refund",

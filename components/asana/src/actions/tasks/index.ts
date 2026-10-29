@@ -8,6 +8,7 @@ import { removeAssigneeFromTask } from "./removeAssigneeFromTask";
 import { removeFollowersFromTask } from "./removeFollowersFromTask";
 import { removeTagFromTask } from "./removeTagFromTask";
 import { updateTask } from "./updateTask";
+
 export default {
   addFollowersToTask,
   addTagToTask,

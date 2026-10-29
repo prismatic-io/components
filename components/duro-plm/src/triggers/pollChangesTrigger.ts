@@ -16,6 +16,7 @@ import {
   resolvePollingStream,
   resolveRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -38,14 +39,17 @@ export const pollChangesTrigger = pollingTrigger({
       params.lookBackDate,
       now,
     );
+
     const stream = resolvePollingStream(
       pollState,
       params.pollResourceType,
       now,
     );
+
     if (!POLL_RESOURCE_CONFIG[params.pollResourceType]) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const client = createDuroClient(params.connection, context.debug.enabled);
     const { records, truncated, endCursor } = await fetchAllSince(
       client,
@@ -57,11 +61,13 @@ export const pollChangesTrigger = pollingTrigger({
         logger: context.logger,
       },
     );
+
     const { created, updated } = classifyRecords(records, lastPolledAt, {
       ...params,
       isBackfill,
     });
     const totalMatched = created.length + updated.length;
+
     context.polling.setState(
       nextPollingState(
         {
@@ -78,11 +84,13 @@ export const pollChangesTrigger = pollingTrigger({
         `Polling truncated at the page cap for ${params.pollResourceType}. Holding cursor at ${lastPolledAt}; the next poll resumes from the stored cursor.`,
       );
     }
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${params.pollResourceType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created, updated } } },
       polledNoChanges: totalMatched === 0,

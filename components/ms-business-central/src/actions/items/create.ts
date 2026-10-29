@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import { itemDisplayName, number } from "../../inputs/items/createItemInputs";
 import type { Item } from "../../interfaces";
+
 export const createItem = action({
   display: {
     label: "Create Item",
@@ -21,10 +22,12 @@ export const createItem = action({
       number,
       displayName,
     };
+
     const { data } = await client.post<Item>(
       `/companies(${companyId})/items`,
       payload,
     );
+
     return { data };
   },
   inputs: {

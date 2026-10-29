@@ -62,7 +62,9 @@ export const getChargeExamplePayload = {
     transfer_group: null,
   } as unknown,
 };
+
 export const updateChargeExamplePayload = getChargeExamplePayload;
+
 export const listChargesExamplePayload = {
   data: {
     object: "list",
@@ -71,6 +73,7 @@ export const listChargesExamplePayload = {
     url: "/v1/charges",
   } as unknown,
 };
+
 export const searchChargesExamplePayload = {
   data: {
     object: "search_result",

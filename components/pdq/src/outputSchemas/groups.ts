@@ -1,4 +1,5 @@
 import { metaSchema } from "./common";
+
 export const groupSchema = {
   type: "object" as const,
   properties: {
@@ -12,6 +13,7 @@ export const groupSchema = {
   },
   required: ["id"],
 };
+
 export const listGroupsOutputSchema = {
   type: "object" as const,
   properties: {

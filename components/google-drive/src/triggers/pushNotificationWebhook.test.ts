@@ -3,6 +3,7 @@ import {
   invokeTrigger,
 } from "@prismatic-io/spectral/dist/testing";
 import { pushNotificationWebhook } from "./pushNotificationWebhook";
+
 describe("pushNotificationWebhook", () => {
   test("echoes the received payload back untouched", async () => {
     const payload = {
@@ -13,15 +14,18 @@ describe("pushNotificationWebhook", () => {
         "X-Goog-Message-Number": "96035",
       },
     };
+
     const { result } = await invokeTrigger(
       pushNotificationWebhook,
       undefined,
       payload,
       {},
     );
+
     expect(result.payload).toEqual(payload);
     expect(result.payload.headers["X-Goog-Resource-State"]).toBe("change");
   });
+
   test("returns no response envelope, as its synchronousResponseSupport declares", async () => {
     const { result } = await invokeTrigger(
       pushNotificationWebhook,
@@ -29,19 +33,24 @@ describe("pushNotificationWebhook", () => {
       defaultTriggerPayload(),
       {},
     );
+
     expect(result).not.toHaveProperty("response");
     expect(pushNotificationWebhook.synchronousResponseSupport).toBe("invalid");
   });
+
   test("accepts a request carrying no Google channel headers at all", async () => {
     const payload = { ...defaultTriggerPayload(), headers: {} };
+
     const { result } = await invokeTrigger(
       pushNotificationWebhook,
       undefined,
       payload,
       {},
     );
+
     expect(result.payload.headers).toEqual({});
   });
+
   test("makes no API calls", async () => {
     const { result } = await invokeTrigger(
       pushNotificationWebhook,
@@ -49,6 +58,7 @@ describe("pushNotificationWebhook", () => {
       defaultTriggerPayload(),
       {},
     );
+
     expect(result.payload).toBeDefined();
   });
 });

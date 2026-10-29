@@ -4,6 +4,7 @@ import { SMS_MESSAGES_PATH } from "../../constants";
 import { sendSmsBatchExamplePayload } from "../../examplePayloads";
 import { sendSmsBatchInputs } from "../../inputs";
 import { sendSmsBatchOutputSchema } from "../../outputSchemas";
+
 export const sendSmsBatch = action({
   examplePayload: sendSmsBatchExamplePayload,
   display: {
@@ -22,16 +23,17 @@ export const sendSmsBatch = action({
     { connection, smsDefinitionKey, smsBatchRecipients },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       definitionKey: smsDefinitionKey,
       recipients: smsBatchRecipients,
     };
+
     const { data } = await client.post(SMS_MESSAGES_PATH, body);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: sendSmsBatchExamplePayload.data,
   }),
 });

@@ -1,4 +1,5 @@
 import { propertySchema } from "./properties";
+
 const objectTypeDefinitionProperties = {
   allowsSensitiveProperties: { type: "boolean" },
   archived: { type: "boolean" },
@@ -24,6 +25,7 @@ const objectTypeDefinitionProperties = {
   },
   updatedAt: { type: "string", format: "date-time" },
 };
+
 const objectTypeDefinitionRequired = [
   "allowsSensitiveProperties",
   "archived",
@@ -36,6 +38,7 @@ const objectTypeDefinitionRequired = [
   "searchableProperties",
   "secondaryDisplayProperties",
 ];
+
 export const customObjectSchema = {
   type: "object" as const,
   properties: {
@@ -61,6 +64,7 @@ export const customObjectSchema = {
   },
   required: [...objectTypeDefinitionRequired, "associations", "properties"],
 };
+
 export const listCustomObjectsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -68,6 +72,7 @@ export const listCustomObjectsOutputSchema = {
   },
   required: ["results"],
 };
+
 export const updateCustomObjectOutputSchema = {
   type: "object" as const,
   properties: {

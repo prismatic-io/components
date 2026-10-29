@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const getConsumerGroupStatusExamplePayload = {
   data: {
     groupId: "order-processing-group",
@@ -35,9 +36,8 @@ export const getConsumerGroupStatusExamplePayload = {
     totalLag: "5",
   },
 };
-export const kafkaConsumerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const kafkaConsumerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

@@ -7,6 +7,7 @@ import type {
   CreateTaskCommentBody,
   CreateTaskCommentQueryParams,
 } from "../../types";
+
 export const createTaskComment = action({
   display: {
     label: "Create Task Comment",
@@ -36,13 +37,16 @@ export const createTaskComment = action({
       assignee: assigneeId,
       notify_all: notifyAll,
     };
+
     const params: CreateTaskCommentQueryParams = {
       custom_task_ids: customTaskIds,
       team_id: teamId,
     };
+
     const { data } = await client.post(`/task/${taskId}/comment`, body, {
       params,
     });
+
     return {
       data,
     };

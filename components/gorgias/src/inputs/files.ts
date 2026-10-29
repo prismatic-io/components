@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toStr } from "../utils/toStr";
 import { sharedInputs } from "./shared";
+
 export const postApiUploadInputs = {
   type: input({
     label: "Type",
@@ -29,6 +30,7 @@ export const postApiUploadInputs = {
   }),
   ...sharedInputs,
 };
+
 export const downloadFileInputs = {
   file_type: input({
     label: "File Type",

@@ -1,12 +1,14 @@
 import { input, util } from "@prismatic-io/spectral";
 import { WEBHOOK_TRIGGER_TYPES } from "../types";
 import { humanizeEnumLabel, toStringList } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Box connection to use.",
 });
+
 export const path = input({
   label: "Path",
   placeholder: "Enter file or folder path",
@@ -17,6 +19,7 @@ export const path = input({
   example: "/Marketing/Documents/Q4_Report.pdf",
   clean: util.types.toString,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -26,6 +29,7 @@ export const limit = input({
   example: "100",
   clean: util.types.toNumber,
 });
+
 export const marker = input({
   label: "Marker",
   type: "string",
@@ -36,6 +40,7 @@ export const marker = input({
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
   clean: util.types.toString,
 });
+
 export const offset = input({
   label: "Offset",
   type: "string",
@@ -45,6 +50,7 @@ export const offset = input({
   example: "0",
   clean: util.types.toNumber,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -54,6 +60,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const targetId = input({
   label: "Target ID",
   placeholder: "Enter target file or folder ID",
@@ -65,6 +72,7 @@ export const targetId = input({
   dataSource: "selectContent",
   clean: util.types.toString,
 });
+
 export const targetType = input({
   label: "Target Type",
   placeholder: "Select target type",
@@ -78,6 +86,7 @@ export const targetType = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const triggerTypes = input({
   label: "Trigger Type",
   placeholder: "Select event types",
@@ -92,6 +101,7 @@ export const triggerTypes = input({
   })),
   clean: toStringList,
 });
+
 export const signatureKey = input({
   label: "Signature Key",
   placeholder: "Enter signature key",
@@ -102,6 +112,7 @@ export const signatureKey = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const fileIdInput = input({
   label: "File ID",
   placeholder: "Enter file ID",
@@ -112,6 +123,7 @@ export const fileIdInput = input({
   dataSource: "selectContent",
   clean: util.types.toString,
 });
+
 export const folderIdInput = input({
   label: "Folder ID",
   placeholder: "Enter folder ID",

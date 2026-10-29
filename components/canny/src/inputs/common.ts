@@ -5,6 +5,7 @@ import {
   toOptionalObject,
   toOptionalString,
 } from "../util";
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -14,12 +15,14 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Canny connection to use.",
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -29,6 +32,7 @@ export const limit = input({
   placeholder: "Enter limit",
   example: "10",
 });
+
 export const skip = input({
   label: "Skip",
   type: "string",
@@ -38,6 +42,7 @@ export const skip = input({
   placeholder: "Enter skip count",
   example: "0",
 });
+
 export const cursor = input({
   label: "Cursor",
   type: "string",
@@ -47,18 +52,21 @@ export const cursor = input({
   placeholder: "Enter cursor token",
   example: "next_abc123def456",
 });
+
 export const offsetPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { limit, skip },
 });
+
 export const cursorPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { cursor, limit },
 });
+
 export const boardId = input({
   label: "Board ID",
   type: "string",
@@ -69,6 +77,7 @@ export const boardId = input({
   placeholder: "Enter board ID",
   example: "553c3ef8b8cdcd1501ba1234",
 });
+
 export const boardIdRequired = input({
   label: "Board ID",
   type: "string",
@@ -79,6 +88,7 @@ export const boardIdRequired = input({
   placeholder: "Enter board ID",
   example: "553c3ef8b8cdcd1501ba1234",
 });
+
 export const postId = input({
   label: "Post ID",
   type: "string",
@@ -89,6 +99,7 @@ export const postId = input({
   placeholder: "Enter post ID",
   example: "553c3ef8b8cdcd1501ba5678",
 });
+
 export const postIdOptional = input({
   label: "Post ID",
   type: "string",
@@ -99,6 +110,7 @@ export const postIdOptional = input({
   placeholder: "Enter post ID",
   example: "553c3ef8b8cdcd1501ba5678",
 });
+
 export const userIdOptional = input({
   label: "User ID",
   type: "string",
@@ -109,6 +121,7 @@ export const userIdOptional = input({
   placeholder: "Enter user ID",
   example: "553c3ef8b8cdcd1501ba9999",
 });
+
 export const authorId = input({
   label: "Author ID",
   type: "string",
@@ -119,6 +132,7 @@ export const authorId = input({
   placeholder: "Enter author ID",
   example: "553c3ef8b8cdcd1501ba9999",
 });
+
 export const companyId = input({
   label: "Company ID",
   type: "string",
@@ -129,6 +143,7 @@ export const companyId = input({
   placeholder: "Enter company ID",
   example: "553c3ef8b8cdcd1501ba1111",
 });
+
 export const customFields = input({
   label: "Custom Fields",
   type: "code",
@@ -139,6 +154,7 @@ export const customFields = input({
   placeholder: "Enter custom fields",
   example: JSON.stringify({ key: "value" }, null, 2),
 });
+
 export const imageURLs = input({
   label: "Image URLs",
   type: "code",
@@ -149,6 +165,7 @@ export const imageURLs = input({
   placeholder: "Enter image URLs",
   example: JSON.stringify(["https://example.com/image.png"], null, 2),
 });
+
 export const additionalFields = input({
   label: "Additional Fields",
   type: "code",

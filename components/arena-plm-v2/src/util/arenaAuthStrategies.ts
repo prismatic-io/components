@@ -6,6 +6,7 @@ import {
   readApiKey,
   readOAuthToken,
 } from "./arenaCredentials";
+
 export const ARENA_AUTH_STRATEGIES: Record<string, ArenaAuthStrategy> = {
   [arenaUsernamePassword.key]: {
     label: "session",

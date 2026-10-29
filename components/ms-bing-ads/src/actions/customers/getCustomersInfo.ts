@@ -5,6 +5,7 @@ import { getCustomersInfoExamplePayload } from "../../examplePayloads";
 import { getCustomersInfoInputs } from "../../inputs/customers";
 import type { CustomerInfo, GetCustomersInfoResponse } from "../../types";
 import { toArray } from "../../util";
+
 export const getCustomersInfo = action({
   display: {
     label: "Get Customers Info",
@@ -19,6 +20,7 @@ export const getCustomersInfo = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<GetCustomersInfoResponse>({
       debug,
       args: { CustomerNameFilter: customerNameFilter, TopN: topN },
@@ -26,6 +28,7 @@ export const getCustomersInfo = action({
       soapAction: SOAP_ACTION.GetCustomersInfo,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data: response?.CustomersInfo?.CustomerInfo
         ? {

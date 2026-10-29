@@ -5,6 +5,7 @@ import { listLineItemsExamplePayload } from "../../examplePayloads";
 import { listLineItemsInputs } from "../../inputs";
 import { getAllPaginatedData, getProps } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const listLineItems = action({
   display: {
     label: "List Line Items",
@@ -18,10 +19,12 @@ export const listLineItems = action({
       timeout: params.timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       ["name"],
       params.additionalProperties || [],
     );
+
     const data = await getAllPaginatedData(
       client,
       hubspotPaths.objects("line_items"),
@@ -37,6 +40,7 @@ export const listLineItems = action({
         },
       },
     );
+
     return {
       data,
     };

@@ -5,6 +5,7 @@ import * as mime from "mime-types";
 import { createClient } from "../../client";
 import { readFileExamplePayload } from "../../examplePayloads";
 import { readFileInputs } from "../../inputs";
+
 export const readFile = action({
   display: {
     label: "Read File",
@@ -21,6 +22,7 @@ export const readFile = action({
         },
       });
       await client.downloadTo(writable, inputPath);
+
       return {
         data: Buffer.concat(chunks),
         contentType: returnBuffer
@@ -34,4 +36,5 @@ export const readFile = action({
   inputs: readFileInputs,
   examplePayload: readFileExamplePayload,
 });
+
 export default readFile;

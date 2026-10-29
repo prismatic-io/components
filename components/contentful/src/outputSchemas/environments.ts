@@ -1,4 +1,5 @@
 import { emptyResultSchema, linkSchema } from "./shared";
+
 const environmentSchema = {
   type: "object" as const,
   properties: {
@@ -19,11 +20,16 @@ const environmentSchema = {
     },
   },
 };
+
 export const listEnvironmentsOutputSchema = {
   type: "array" as const,
   items: environmentSchema,
 };
+
 export const getEnvironmentOutputSchema = environmentSchema;
+
 export const createEnvironmentOutputSchema = environmentSchema;
+
 export const updateEnvironmentOutputSchema = environmentSchema;
+
 export const deleteEnvironmentOutputSchema = emptyResultSchema;

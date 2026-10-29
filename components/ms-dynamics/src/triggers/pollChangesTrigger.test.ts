@@ -1,21 +1,20 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { createMockConnection } from "../testHelpers";
 import type { DynamicsChangesObject } from "../types";
-const getData = (result: {
-  payload: {
-    body: {
-      data: unknown;
-    };
-  };
-}) => result.payload.body.data as DynamicsChangesObject;
+
+const getData = (result: { payload: { body: { data: unknown } } }) =>
+  result.payload.body.data as DynamicsChangesObject;
+
 const { mockRetrieveMultiple } = vi.hoisted(() => ({
   mockRetrieveMultiple: vi.fn(),
 }));
+
 vi.mock("../client", () => ({
   createCrmClient: vi.fn().mockResolvedValue({
     retrieveMultiple: mockRetrieveMultiple,
   }),
 }));
+
 vi.mock("../util", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
@@ -30,8 +29,11 @@ vi.mock("../util", async (importOriginal) => {
       ),
   };
 });
+
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const conn = createMockConnection();
+
 const createPollingContext = (state: Record<string, unknown> = {}) => {
   let currentState = state;
   return {
@@ -46,8 +48,10 @@ const createPollingContext = (state: Record<string, unknown> = {}) => {
     getCurrentState: () => currentState,
   } as any;
 };
+
 describe("pollChangesTrigger", () => {
   afterEach(() => vi.clearAllMocks());
+
   test("cursor/state advance: first poll with lookBackDate uses it as filter start", async () => {
     mockRetrieveMultiple.mockResolvedValueOnce({
       value: [
@@ -59,6 +63,7 @@ describe("pollChangesTrigger", () => {
         },
       ],
     });
+
     const ctx = createPollingContext({});
     const result = await pollChangesTrigger.perform(
       ctx,
@@ -72,13 +77,16 @@ describe("pollChangesTrigger", () => {
         showUpdatedRecords: true,
       } as any,
     );
+
     const newState = ctx.polling.getState();
     expect(newState.lastPolledAt).toBe("2025-06-01T10:00:00Z");
     expect(getData(result).created).toHaveLength(1);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("dedup/classification: createdon > lastPolledAt is created, modifiedon > lastPolledAt is updated", async () => {
     const lastPolledAt = "2025-05-01T00:00:00Z";
+
     mockRetrieveMultiple.mockResolvedValueOnce({
       value: [
         {
@@ -93,6 +101,7 @@ describe("pollChangesTrigger", () => {
         },
       ],
     });
+
     const ctx = createPollingContext({ lastPolledAt });
     const result = await pollChangesTrigger.perform(
       ctx,
@@ -106,13 +115,16 @@ describe("pollChangesTrigger", () => {
         showUpdatedRecords: true,
       } as any,
     );
+
     expect(getData(result).created).toHaveLength(1);
     expect(getData(result).created[0].accountid).toBe("new-1");
     expect(getData(result).updated).toHaveLength(1);
     expect(getData(result).updated[0].accountid).toBe("updated-1");
   });
+
   test("showNewRecords=false excludes created records", async () => {
     const lastPolledAt = "2025-05-01T00:00:00Z";
+
     mockRetrieveMultiple.mockResolvedValueOnce({
       value: [
         {
@@ -127,6 +139,7 @@ describe("pollChangesTrigger", () => {
         },
       ],
     });
+
     const ctx = createPollingContext({ lastPolledAt });
     const result = await pollChangesTrigger.perform(
       ctx,
@@ -140,11 +153,14 @@ describe("pollChangesTrigger", () => {
         showUpdatedRecords: true,
       } as any,
     );
+
     expect(getData(result).created).toHaveLength(0);
     expect(getData(result).updated).toHaveLength(1);
   });
+
   test("cursor advances to max modifiedon from returned records", async () => {
     const lastPolledAt = "2025-05-01T00:00:00Z";
+
     mockRetrieveMultiple.mockResolvedValueOnce({
       value: [
         {
@@ -164,6 +180,7 @@ describe("pollChangesTrigger", () => {
         },
       ],
     });
+
     const ctx = createPollingContext({ lastPolledAt });
     await pollChangesTrigger.perform(
       ctx,
@@ -177,8 +194,10 @@ describe("pollChangesTrigger", () => {
         showUpdatedRecords: true,
       } as any,
     );
+
     expect(ctx.polling.getState().lastPolledAt).toBe("2025-05-15T14:00:00Z");
   });
+
   test("initial sync seeds all records despite toggles=false", async () => {
     mockRetrieveMultiple.mockResolvedValueOnce({
       value: [
@@ -194,6 +213,7 @@ describe("pollChangesTrigger", () => {
         },
       ],
     });
+
     const ctx = createPollingContext({});
     const result = await pollChangesTrigger.perform(
       ctx,
@@ -207,13 +227,16 @@ describe("pollChangesTrigger", () => {
         showUpdatedRecords: false,
       } as any,
     );
+
     const total =
       getData(result).created.length + getData(result).updated.length;
     expect(total).toBeGreaterThan(0);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("steady-state respects toggles after initial sync", async () => {
     const lastPolledAt = "2025-05-01T00:00:00Z";
+
     mockRetrieveMultiple.mockResolvedValueOnce({
       value: [
         {
@@ -228,6 +251,7 @@ describe("pollChangesTrigger", () => {
         },
       ],
     });
+
     const ctx = createPollingContext({ lastPolledAt });
     const result = await pollChangesTrigger.perform(
       ctx,
@@ -241,12 +265,15 @@ describe("pollChangesTrigger", () => {
         showUpdatedRecords: false,
       } as any,
     );
+
     expect(getData(result).created).toHaveLength(0);
     expect(getData(result).updated).toHaveLength(0);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("empty result falls back to now and returns polledNoChanges: true", async () => {
     mockRetrieveMultiple.mockResolvedValueOnce({ value: [] });
+
     const before = new Date().toISOString();
     const ctx = createPollingContext({ lastPolledAt: "2025-05-01T00:00:00Z" });
     const result = await pollChangesTrigger.perform(
@@ -262,9 +289,11 @@ describe("pollChangesTrigger", () => {
       } as any,
     );
     const after = new Date().toISOString();
+
     expect(getData(result).created).toHaveLength(0);
     expect(getData(result).updated).toHaveLength(0);
     expect(result.polledNoChanges).toBe(true);
+
     const cursor = ctx.polling.getState().lastPolledAt as string;
     expect(cursor >= before).toBe(true);
     expect(cursor <= after).toBe(true);

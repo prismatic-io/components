@@ -8,6 +8,7 @@ import type {
   SupplierPhoneNumberVo,
 } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateSupplierPhoneNumber = action({
   display: {
     label: "Update Supplier Phone Number",
@@ -33,32 +34,41 @@ export const updateSupplierPhoneNumber = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const phoneNumberPayload: SupplierPhoneNumberCreateVo = {};
+
       if (label !== undefined && label !== null) {
         phoneNumberPayload.label = label;
       }
+
       if (number !== undefined && number !== null) {
         phoneNumberPayload.number = number;
       }
+
       if (extension !== undefined && extension !== null) {
         phoneNumberPayload.extension = extension;
       }
+
       if (comment !== undefined && comment !== null) {
         phoneNumberPayload.comment = comment;
       }
+
       context.logger.info("Updating supplier phone number", {
         supplierGuid,
         phoneNumberGuid,
         hasExtension: !!extension,
         hasComment: !!comment,
       });
+
       const { data } = await client.put<SupplierPhoneNumberVo>(
         `/suppliers/${supplierGuid}/phonenumbers/${phoneNumberGuid}`,
         phoneNumberPayload,
       );
+
       context.logger.info(
         `Successfully updated phone number for supplier: ${supplierGuid} - ${data.label || "No Label"} (${data.guid})`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Supplier Phone Number");

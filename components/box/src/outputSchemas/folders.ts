@@ -1,5 +1,7 @@
 import { folderFullSchema, folderItemSchema } from "./common";
+
 export const createFolderOutputSchema = folderFullSchema;
+
 export const listFolderWithPaginationOutputSchema = {
   type: "object" as const,
   properties: {

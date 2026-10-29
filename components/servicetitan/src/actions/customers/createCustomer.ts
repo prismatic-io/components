@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
 import { createCustomerOutputSchema } from "../../outputSchemas";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",

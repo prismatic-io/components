@@ -5,6 +5,7 @@ export const stringArrayMapSchema = {
     items: { type: "string" },
   },
 };
+
 export const batchErrorSchema = {
   type: "object" as const,
   properties: {
@@ -35,6 +36,7 @@ export const batchErrorSchema = {
   },
   required: ["category", "context", "errors", "links", "message", "status"],
 };
+
 export const crmObjectSchema = {
   type: "object" as const,
   properties: {
@@ -110,6 +112,7 @@ export const crmObjectSchema = {
   },
   required: ["id", "properties", "createdAt", "updatedAt", "archived"],
 };
+
 export const paginatedListSchema = {
   type: "object" as const,
   properties: {
@@ -133,10 +136,12 @@ export const paginatedListSchema = {
   },
   required: ["results"],
 };
+
 export const crmObjectArraySchema = {
   type: "array" as const,
   items: crmObjectSchema,
 };
+
 export const batchResponseSchema = {
   type: "object" as const,
   properties: {
@@ -163,6 +168,7 @@ export const batchResponseSchema = {
   },
   required: ["status", "results", "startedAt", "completedAt"],
 };
+
 export const searchResponseSchema = {
   type: "object" as const,
   properties: {

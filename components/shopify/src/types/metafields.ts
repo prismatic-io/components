@@ -9,6 +9,7 @@ export interface Metafield {
   updatedAt: string;
   productId: string | undefined;
 }
+
 export interface DeletedMetafield {
   key: string;
   namespace: string;

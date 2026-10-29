@@ -4,6 +4,7 @@ import { getItamDeviceExamplePayload as examplePayload } from "../../examplePayl
 import { getItamDeviceInputs as inputs } from "../../inputs";
 import { itamDeviceOutputSchema } from "../../outputSchemas";
 import { itamPath } from "../../util";
+
 export const getItamDevice = action({
   display: {
     label: "Get Device (ITAM)",
@@ -14,9 +15,11 @@ export const getItamDevice = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await client.get(
       itamPath("devices", { op: "read", id: deviceId }),
     );
+
     return { data };
   },
   outputSchema: outputSchema({

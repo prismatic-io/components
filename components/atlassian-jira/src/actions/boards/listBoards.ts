@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../connections/auth";
 import { listBoardsExamplePayload } from "../../examplePayloads";
 import { connectionInput, filter, maxResults, startAt } from "../../inputs";
+
 export const listBoards = action({
   display: {
     label: "List Boards",

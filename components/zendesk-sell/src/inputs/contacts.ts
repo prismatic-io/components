@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const exampleAddressJson = JSON.stringify(
   {
     line1: "2726 Smith Street",
@@ -11,6 +12,7 @@ const exampleAddressJson = JSON.stringify(
   null,
   2,
 );
+
 const contactId = input({
   label: "Contact ID",
   comments: "The unique identifier of the contact.",
@@ -21,6 +23,7 @@ const contactId = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const customFields = input({
   label: "Custom Fields",
   comments: "Custom field key-value pairs.",
@@ -30,6 +33,7 @@ const customFields = input({
   required: false,
   example: "key: external_id value: SKU01",
 });
+
 const tags = input({
   label: "Tags",
   comments: "Tags to apply.",
@@ -39,6 +43,7 @@ const tags = input({
   required: false,
   example: "important",
 });
+
 const filterableCustomFields = input({
   label: "Filters",
   comments: "Custom-field filters to match against.",
@@ -47,6 +52,7 @@ const filterableCustomFields = input({
   required: true,
   example: "key: custom_fields[referral_website] value: https://www.test.com",
 });
+
 const isOrganizationCreate = input({
   label: "Is Organization",
   comments:
@@ -62,6 +68,7 @@ const isOrganizationCreate = input({
   required: false,
   clean: util.types.toString,
 });
+
 const isOrganizationList = input({
   label: "Is Organization",
   comments:
@@ -76,6 +83,7 @@ const isOrganizationList = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createOrgName = input({
   label: "Organization Name",
   comments: "Required only when Is Organization is set to true.",
@@ -85,6 +93,7 @@ const createOrgName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const orgName = input({
   label: "Organization Name",
   comments: "The full company name, used when the contact is an organization.",
@@ -94,6 +103,7 @@ const orgName = input({
   required: false,
   clean: util.types.toString,
 });
+
 const orgNameFilter = input({
   label: "Organization Name",
   comments: "Filters results to organization contacts with this company name.",
@@ -103,6 +113,7 @@ const orgNameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const firstName = input({
   label: "First Name",
   comments:
@@ -113,6 +124,7 @@ const firstName = input({
   required: false,
   clean: util.types.toString,
 });
+
 const firstNameFilter = input({
   label: "First Name",
   comments: "Filters results to contacts with this given name.",
@@ -122,6 +134,7 @@ const firstNameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createLastName = input({
   label: "Last Name",
   comments:
@@ -132,6 +145,7 @@ const createLastName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const lastName = input({
   label: "Last Name",
   comments:
@@ -142,6 +156,7 @@ const lastName = input({
   required: false,
   clean: util.types.toString,
 });
+
 const lastNameFilter = input({
   label: "Last Name",
   comments: "Filters results to contacts with this family name.",
@@ -151,6 +166,7 @@ const lastNameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const position = input({
   label: "Position",
   comments:
@@ -161,6 +177,7 @@ const position = input({
   required: true,
   clean: util.types.toString,
 });
+
 const limit = input({
   label: "Limit",
   comments: "The maximum number of events to return in a single response.",
@@ -170,6 +187,7 @@ const limit = input({
   required: false,
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -180,6 +198,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -190,6 +209,7 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressCity = input({
   label: "City",
   comments: "The city of the contact's physical address.",
@@ -199,6 +219,7 @@ const addressCity = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressPostalCode = input({
   label: "Zip/Postal Code",
   comments: "The postal or ZIP code of the contact's physical address.",
@@ -208,6 +229,7 @@ const addressPostalCode = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressCountry = input({
   label: "Country",
   comments: "The country of the contact's physical address.",
@@ -217,6 +239,7 @@ const addressCountry = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressCityFilter = input({
   label: "City",
   comments: "Filters results to contacts located in this city.",
@@ -226,6 +249,7 @@ const addressCityFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressPostalCodeFilter = input({
   label: "Zip/Postal Code",
   comments: "Filters results to contacts with this postal or ZIP code.",
@@ -235,6 +259,7 @@ const addressPostalCodeFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressCountryFilter = input({
   label: "Country",
   comments: "Filters results to contacts located in this country.",
@@ -244,6 +269,7 @@ const addressCountryFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressState = input({
   label: "State/Province",
   comments: "Filters results to contacts located in this state or region.",
@@ -253,6 +279,7 @@ const addressState = input({
   required: false,
   clean: util.types.toString,
 });
+
 const billingAddressJson = input({
   label: "Billing Address",
   comments:
@@ -263,6 +290,7 @@ const billingAddressJson = input({
   required: false,
   clean: util.types.toString,
 });
+
 const shippingAddressJson = input({
   label: "Shipping Address",
   comments:
@@ -273,6 +301,7 @@ const shippingAddressJson = input({
   required: false,
   clean: util.types.toString,
 });
+
 const billingAddressString = input({
   label: "Billing Address",
   comments:
@@ -283,6 +312,7 @@ const billingAddressString = input({
   required: false,
   clean: util.types.toString,
 });
+
 const shippingAddressString = input({
   label: "Shipping Address",
   comments:
@@ -293,6 +323,7 @@ const shippingAddressString = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressInput = input({
   label: "Address",
   comments: "Physical address of the contact.",
@@ -302,6 +333,7 @@ const addressInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const contactChannelInputs = {
   email: input({
     label: "Email",
@@ -389,6 +421,7 @@ const contactChannelInputs = {
     clean: util.types.toString,
   }),
 };
+
 const listEmail = input({
   label: "Email",
   comments: "Filters results to contacts with this email address.",
@@ -398,6 +431,7 @@ const listEmail = input({
   required: false,
   clean: util.types.toString,
 });
+
 const listPhone = input({
   label: "Phone",
   comments: "Filters results to contacts with this phone number.",
@@ -407,6 +441,7 @@ const listPhone = input({
   required: false,
   clean: util.types.toString,
 });
+
 const listMobile = input({
   label: "Mobile",
   comments: "Filters results to contacts with this mobile number.",
@@ -416,6 +451,7 @@ const listMobile = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createCustomerStatus = input({
   label: "Customer Status",
   comments:
@@ -426,6 +462,7 @@ const createCustomerStatus = input({
   required: false,
   clean: util.types.toString,
 });
+
 const customerStatus = input({
   label: "Customer Status",
   comments:
@@ -441,6 +478,7 @@ const customerStatus = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createProspectStatus = input({
   label: "Prospect Status",
   comments:
@@ -451,6 +489,7 @@ const createProspectStatus = input({
   required: false,
   clean: util.types.toString,
 });
+
 const prospectStatus = input({
   label: "Prospect Status",
   comments:
@@ -466,6 +505,7 @@ const prospectStatus = input({
   required: false,
   clean: util.types.toString,
 });
+
 const title = input({
   label: "Title",
   comments: "Job title of the contact.",
@@ -475,6 +515,7 @@ const title = input({
   required: false,
   clean: util.types.toString,
 });
+
 const description = input({
   label: "Description",
   comments: "Additional notes or details about the contact.",
@@ -484,6 +525,7 @@ const description = input({
   required: false,
   clean: util.types.toString,
 });
+
 const industry = input({
   label: "Industry",
   comments: "Industry classification of the contact.",
@@ -493,6 +535,7 @@ const industry = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerId = input({
   label: "Owner ID",
   comments:
@@ -503,6 +546,7 @@ const ownerId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerIdFilter = input({
   label: "Owner ID",
   comments: "User ID. Returns all contacts owned by that user.",
@@ -512,6 +556,7 @@ const ownerIdFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const additionalContactId = input({
   label: "Contact ID",
   comments:
@@ -523,6 +568,7 @@ const additionalContactId = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const additionalContactIdFilter = input({
   label: "Contact ID",
   comments:
@@ -534,6 +580,7 @@ const additionalContactIdFilter = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const parentOrganizationId = input({
   label: "Parent Organization ID",
   comments:
@@ -545,6 +592,7 @@ const parentOrganizationId = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const creatorId = input({
   label: "Creator ID",
   comments: "User ID. Returns all contacts created by that user.",
@@ -554,6 +602,7 @@ const creatorId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const contactIds = input({
   label: "Contact IDs",
   comments:
@@ -564,6 +613,7 @@ const contactIds = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments: "A field to sort by. Filterable custom fields can also be used.",
@@ -573,6 +623,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const listInclusive = input({
   label: "Inclusive",
   comments:
@@ -587,6 +638,7 @@ const listInclusive = input({
   required: false,
   clean: util.types.toString,
 });
+
 const upsertInclusive = input({
   label: "Inclusive",
   comments:
@@ -601,18 +653,21 @@ const upsertInclusive = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const createContactInputs = {
   connection,
   isOrganization: isOrganizationCreate,
   name: createOrgName,
   firstName,
   lastName: createLastName,
+
   contactInfo: structuredObjectInput({
     label: "Contact Information",
     required: false,
     comments: "Email, phone, and other contact channel details.",
     inputs: contactChannelInputs,
   }),
+
   addresses: structuredObjectInput({
     label: "Addresses",
     required: false,
@@ -623,8 +678,11 @@ export const createContactInputs = {
       shippingAddress: shippingAddressJson,
     },
   }),
+
   customFields,
+
   tags,
+
   additionalFields: structuredObjectInput({
     label: "Additional Fields",
     required: false,
@@ -644,26 +702,32 @@ export const createContactInputs = {
     },
   }),
 };
+
 export const deleteContactInputs = {
   connection,
   id: contactId,
 };
+
 export const getContactInputs = {
   connection,
   id: contactId,
 };
+
 export const getContactsStreamInputs = {
   connection,
   position,
   limit,
 };
+
 export const listContactsInputs = {
   connection,
   fetchAll,
+
   isOrganization: isOrganizationList,
   name: orgNameFilter,
   firstName: firstNameFilter,
   lastName: lastNameFilter,
+
   contactInfo: structuredObjectInput({
     label: "Contact Information",
     required: false,
@@ -674,6 +738,7 @@ export const listContactsInputs = {
       mobile: listMobile,
     },
   }),
+
   address: structuredObjectInput({
     label: "Primary Address",
     required: false,
@@ -685,6 +750,7 @@ export const listContactsInputs = {
       addressState,
     },
   }),
+
   otherAddresses: structuredObjectInput({
     label: "Other Addresses",
     required: false,
@@ -694,7 +760,9 @@ export const listContactsInputs = {
       shippingAddress: shippingAddressString,
     },
   }),
+
   customFields,
+
   pagination: structuredObjectInput({
     label: "Pagination",
     required: false,
@@ -704,6 +772,7 @@ export const listContactsInputs = {
       perPage,
     },
   }),
+
   additionalFields: structuredObjectInput({
     label: "Additional Fields",
     required: false,
@@ -721,18 +790,22 @@ export const listContactsInputs = {
     },
   }),
 };
+
 export const updateContactInputs = {
   connection,
   id: contactId,
+
   name: orgName,
   firstName,
   lastName,
+
   contactInfo: structuredObjectInput({
     label: "Contact Information",
     required: false,
     comments: "Email, phone, and other contact channel details.",
     inputs: contactChannelInputs,
   }),
+
   addresses: structuredObjectInput({
     label: "Addresses",
     required: false,
@@ -743,8 +816,11 @@ export const updateContactInputs = {
       shippingAddress: shippingAddressJson,
     },
   }),
+
   customFields,
+
   tags,
+
   additionalFields: structuredObjectInput({
     label: "Additional Fields",
     required: false,
@@ -764,12 +840,15 @@ export const updateContactInputs = {
     },
   }),
 };
+
 export const upsertContactInputs = {
   connection,
   isOrganization: isOrganizationCreate,
+
   name: orgName,
   firstName,
   lastName,
+
   contactInfo: structuredObjectInput({
     label: "Contact Information",
     required: false,
@@ -780,6 +859,7 @@ export const upsertContactInputs = {
       mobile: contactChannelInputs.mobile,
     },
   }),
+
   addresses: structuredObjectInput({
     label: "Addresses",
     required: false,
@@ -792,8 +872,11 @@ export const upsertContactInputs = {
       shippingAddress: shippingAddressJson,
     },
   }),
+
   customFields,
+
   filterableCustomFields,
+
   additionalFields: structuredObjectInput({
     label: "Additional Fields",
     required: false,

@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { getObjectRetentionExamplePayload } from "../../examplePayloads";
 import { getObjectRetentionInputs } from "../../inputs";
 import { getObjectRetentionOutputSchema } from "../../outputSchemas";
+
 export const getObjectRetention = action({
   display: {
     label: "Get Object Retention",
@@ -38,6 +39,7 @@ export const getObjectRetention = action({
       VersionId: versionId,
     });
     const data = await s3.send(command);
+
     return {
       data,
     };

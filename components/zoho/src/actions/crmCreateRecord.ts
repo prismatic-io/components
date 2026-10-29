@@ -7,6 +7,7 @@ import {
   dynamicValues,
   fieldValues,
 } from "../inputs";
+
 const crmCreateRecord = action({
   display: {
     label: "CRM - Create Record",
@@ -27,6 +28,7 @@ const crmCreateRecord = action({
       ClientType.CRM,
       context.debug.enabled,
     );
+
     const payload = {
       data: [
         {
@@ -37,14 +39,18 @@ const crmCreateRecord = action({
         },
       ],
     };
+
     const url = `/${recordType}`;
+
     const { data } = await crmClient.request({
       method: "POST",
       url,
       data: payload,
     });
+
     return data;
   },
   examplePayload: crmCreateRecordExamplePayload,
 });
+
 export default crmCreateRecord;

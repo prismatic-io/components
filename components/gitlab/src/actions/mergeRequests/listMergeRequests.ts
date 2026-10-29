@@ -4,6 +4,7 @@ import { listMergeRequestsExamplePayload } from "../../examplePayloads";
 import { listMergeRequestsInputs } from "../../inputs";
 import { listMergeRequestsOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listMergeRequests = action({
   display: {
     label: "List Merge Requests",
@@ -45,9 +46,8 @@ export const listMergeRequests = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listMergeRequestsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listMergeRequestsExamplePayload,
   examplePayload: listMergeRequestsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

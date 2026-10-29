@@ -4,6 +4,7 @@ import { createClient } from "../../../client";
 import { listAccountsExamplePayload } from "../../../examplePayloads/v2_1";
 import { listAccountsInputs } from "../../../inputs/v2_1";
 import { fetchAllAccounts } from "../../../util/fetchAllAccounts";
+
 export const listAccounts = action({
   display: {
     description: "Lists the sub-accounts in the Merchant Center account.",
@@ -15,6 +16,7 @@ export const listAccounts = action({
     { connectionInput, pagination, view, label, name, merchantId, fetchAll },
   ) => {
     const client = createClient(connectionInput);
+
     const params: content_v2_1.Params$Resource$Accounts$List = {
       merchantId,
       maxResults: pagination.maxResults,
@@ -23,7 +25,9 @@ export const listAccounts = action({
       label,
       name,
     };
+
     const { data } = await fetchAllAccounts({ client, fetchAll, params });
+
     return {
       data,
     };

@@ -1,5 +1,6 @@
 import type { TriggerBaseResult, TriggerPayload } from "@prismatic-io/spectral";
 import type { Page } from "./types";
+
 export const getAttachmentExamplePayload = {
   id: "att456712389",
   status: "current",
@@ -27,6 +28,7 @@ export const getAttachmentExamplePayload = {
     download: "/download/attachments/98765432/architecture-diagram.png",
   },
 };
+
 export const listAttachmentsExamplePayload = {
   data: {
     results: [
@@ -53,6 +55,7 @@ export const listAttachmentsExamplePayload = {
     },
   },
 };
+
 export const getPageExamplePayload = {
   id: "98765432",
   status: "current",
@@ -93,6 +96,7 @@ export const getPageExamplePayload = {
     tinyui: "/x/ABCDEF",
   },
 };
+
 export const createPageExamplePayload = {
   ...getPageExamplePayload,
   version: {
@@ -103,6 +107,7 @@ export const createPageExamplePayload = {
     minorEdit: false,
   },
 };
+
 export const listPagesExamplePayload = {
   results: [
     getPageExamplePayload,
@@ -119,6 +124,7 @@ export const listPagesExamplePayload = {
     next: "/api/v2/pages?cursor=eyJpZCI6Ijk4NzY1NDMyIiwiY29udGVudE9yZGVyIjoiaWQifQ",
   },
 };
+
 export const getSpaceExamplePayload = {
   id: "65789012",
   key: "ENG",
@@ -144,6 +150,7 @@ export const getSpaceExamplePayload = {
   },
   _links: { webui: "/spaces/ENG" },
 };
+
 export const listSpacesExamplePayload = {
   results: [
     getSpaceExamplePayload,
@@ -161,6 +168,7 @@ export const listSpacesExamplePayload = {
     next: "/api/v2/spaces?cursor=eyJpZCI6IjY1Nzg5MDEyIiwiY29udGVudE9yZGVyIjoiaWQifQ",
   },
 };
+
 export const getContentPropertyExamplePayload = {
   id: "prop-998877",
   key: "metadata.source",
@@ -172,6 +180,7 @@ export const getContentPropertyExamplePayload = {
     authorId: "5b10a2844c20165700ede21g",
   },
 };
+
 export const createContentPropertyExamplePayload = {
   ...getContentPropertyExamplePayload,
   version: {
@@ -182,6 +191,7 @@ export const createContentPropertyExamplePayload = {
     minorEdit: false,
   },
 };
+
 export const listContentPropertiesExamplePayload = {
   results: [
     getContentPropertyExamplePayload,
@@ -195,14 +205,10 @@ export const listContentPropertiesExamplePayload = {
     next: "/api/v2/attachments/att456712389/properties?cursor=eyJpZCI6InByb3AtOTk4ODc3In0",
   },
 };
+
 export const pagesPollingTriggerExamplePayload: TriggerBaseResult<
   TriggerPayload & {
-    body: {
-      data: {
-        createdRecords: Page[];
-        updatedRecords: Page[];
-      };
-    };
+    body: { data: { createdRecords: Page[]; updatedRecords: Page[] } };
   }
 > = {
   polledNoChanges: false,
@@ -285,6 +291,7 @@ export const pagesPollingTriggerExamplePayload: TriggerBaseResult<
     startedAt: "2024-11-21 18:07:22.778766+00",
   },
 };
+
 export const newSpacesPollingTriggerExamplePayload: TriggerBaseResult<TriggerPayload> =
   {
     polledNoChanges: false,

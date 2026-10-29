@@ -1,6 +1,4 @@
-export const rawRequestExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+export const rawRequestExamplePayload: { data: Record<string, unknown> } = {
   data: {
     kind: "content#productsListResponse",
     resources: [

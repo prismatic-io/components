@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { toOptionalString, valueListInputClean } from "../../util";
 import { connectionInput, kind, merchantId } from "./common";
+
 const cloudTopicName = input({
   label: "Cloud Topic Name",
   type: "string",
@@ -10,6 +11,7 @@ const cloudTopicName = input({
   placeholder: "Enter Cloud Pub/Sub topic name",
   required: false,
 });
+
 const registeredEvents = input({
   label: "Registered Events",
   type: "string",
@@ -20,10 +22,12 @@ const registeredEvents = input({
   placeholder: "Enter Event Types",
   clean: valueListInputClean,
 });
+
 export const getPubSubNotificationInputs = {
   connectionInput,
   merchantId,
 };
+
 export const updatePubSubNotificationInputs = {
   connectionInput,
   merchantId,

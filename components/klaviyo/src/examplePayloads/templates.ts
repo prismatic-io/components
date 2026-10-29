@@ -4,9 +4,8 @@ import type {
   PatchTemplateDndResponse,
   PostTemplateDndResponse,
 } from "klaviyo-api";
-export const createTemplateExamplePayload: {
-  data: PostTemplateDndResponse;
-} = {
+
+export const createTemplateExamplePayload: { data: PostTemplateDndResponse } = {
   data: {
     data: {
       type: "template",
@@ -25,14 +24,12 @@ export const createTemplateExamplePayload: {
     },
   },
 };
-export const deleteTemplateExamplePayload: {
-  data: string;
-} = {
+
+export const deleteTemplateExamplePayload: { data: string } = {
   data: "Template deleted successfully.",
 };
-export const getTemplateExamplePayload: {
-  data: GetTemplateDndResponse;
-} = {
+
+export const getTemplateExamplePayload: { data: GetTemplateDndResponse } = {
   data: {
     data: {
       type: "template",
@@ -51,6 +48,7 @@ export const getTemplateExamplePayload: {
     },
   },
 };
+
 export const listTemplatesExamplePayload: {
   data: GetTemplateDndResponseCollection;
 } = {
@@ -79,27 +77,28 @@ export const listTemplatesExamplePayload: {
     },
   },
 };
-export const updateTemplateExamplePayload: {
-  data: PatchTemplateDndResponse;
-} = {
-  data: {
+
+export const updateTemplateExamplePayload: { data: PatchTemplateDndResponse } =
+  {
     data: {
-      type: "template",
-      id: "string",
-      attributes: {
-        name: "string",
-        editorType: "string",
-        html: "string",
-        text: "string",
-        created: new Date("2022-11-08T00:00:00+00:00"),
-        updated: new Date("2022-11-08T00:00:00+00:00"),
-      },
-      links: {
-        self: "string",
+      data: {
+        type: "template",
+        id: "string",
+        attributes: {
+          name: "string",
+          editorType: "string",
+          html: "string",
+          text: "string",
+          created: new Date("2022-11-08T00:00:00+00:00"),
+          updated: new Date("2022-11-08T00:00:00+00:00"),
+        },
+        links: {
+          self: "string",
+        },
       },
     },
-  },
-};
+  };
+
 export const selectTemplateExamplePayload = {
   result: [{ label: "Welcome Email", key: "01HABCDEF012345678TEMPLATE" }],
 };

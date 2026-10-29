@@ -5,6 +5,7 @@ import {
   cleanString,
 } from "../util";
 import { connectionInput, getTeamId } from "./common";
+
 const groupIds = input({
   label: "Group IDs",
   type: "string",
@@ -15,6 +16,7 @@ const groupIds = input({
   required: false,
   clean: cleanString,
 });
+
 const groupId = input({
   label: "Group ID",
   type: "string",
@@ -24,6 +26,7 @@ const groupId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const teamName = input({
   label: "Team Name",
   type: "string",
@@ -33,6 +36,7 @@ const teamName = input({
   required: false,
   clean: cleanString,
 });
+
 const teamHandle = input({
   label: "Team Handle",
   type: "string",
@@ -43,6 +47,7 @@ const teamHandle = input({
   required: false,
   clean: cleanString,
 });
+
 const addMember = input({
   label: "Add Member",
   type: "string",
@@ -52,6 +57,7 @@ const addMember = input({
   required: false,
   clean: cleanCommaSeparatedString,
 });
+
 const removeMember = input({
   label: "Remove Member",
   type: "string",
@@ -61,6 +67,7 @@ const removeMember = input({
   required: false,
   clean: cleanCommaSeparatedString,
 });
+
 const name = input({
   label: "Name",
   type: "string",
@@ -70,6 +77,7 @@ const name = input({
   required: true,
   clean: util.types.toString,
 });
+
 const members = input({
   label: "Member",
   type: "string",
@@ -80,21 +88,25 @@ const members = input({
   required: true,
   clean: cleanNumberArray,
 });
+
 export const createTeamInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
   name,
   members,
 };
+
 export const deleteTeamInputs = {
   clickUpConnection: connectionInput,
   groupId,
 };
+
 export const getTeamInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(false),
   groupIds,
 };
+
 export const updateTeamInputs = {
   clickUpConnection: connectionInput,
   groupId,

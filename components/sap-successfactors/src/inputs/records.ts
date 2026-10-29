@@ -13,6 +13,7 @@ import {
   customQueryParams,
   fetchAll,
 } from "./common";
+
 const recordTypeId = input({
   label: "Record Type ID",
   type: "string",
@@ -22,6 +23,7 @@ const recordTypeId = input({
   example: "1234-5678",
   clean: util.types.toString,
 });
+
 const recordType = input({
   label: "Record Type",
   type: "string",
@@ -32,12 +34,14 @@ const recordType = input({
   example: "Candidate",
   clean: util.types.toString,
 });
+
 export const getRecordInputs = {
   connection,
   recordType,
   recordTypeId,
   $select,
 };
+
 export const deleteRecordInputs = {
   connection,
   recordType: {
@@ -49,17 +53,20 @@ export const deleteRecordInputs = {
     comments: "The unique identifier for the record to delete.",
   },
 };
+
 export const createRecordInputs = {
   connection,
   recordType,
   additionalInputs,
 };
+
 export const updateRecordInputs = {
   connection,
   recordType,
   recordTypeId,
   additionalInputs,
 };
+
 export const listRecordsInputs = {
   connection,
   recordType,

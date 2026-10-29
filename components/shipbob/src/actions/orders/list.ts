@@ -26,6 +26,7 @@ import {
 } from "../../inputs";
 import { generatePayload } from "../util";
 import { getAllPaginatedData } from "../../util";
+
 export const listOrders = action({
   display: {
     label: "List Orders",
@@ -48,10 +49,12 @@ export const listOrders = action({
     );
     const params = generatePayload(inputs);
     const headers = generatePayload({ shipbob_channel_id });
+
     if (doFetchAll) {
       const data = await getAllPaginatedData(client, "/order", params, headers);
       return { data };
     }
+
     const { data } = await client.get(`/order`, {
       params,
       headers,

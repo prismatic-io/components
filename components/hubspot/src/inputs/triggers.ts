@@ -7,6 +7,7 @@ import {
 } from "./common";
 import { searchEndpoint, searchProperties } from "./search";
 import { eventTypes, overwriteWebhookSettings } from "./webhook";
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -15,6 +16,7 @@ const showNewRecords = input({
   comments: "When true, includes new records in the results.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -23,6 +25,7 @@ const showUpdatedRecords = input({
   comments: "When true, includes updated records in the results.",
   clean: util.types.toBool,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   type: "string",
@@ -33,15 +36,18 @@ export const lookBackDate = input({
     "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record created on or after this date once, ignoring the visibility toggles.",
   clean: lookBackDateClean,
 });
+
 export const webhookTriggerInputs = {
   hubspotConnection: connectionInput,
 };
+
 export const eventTypeSubscriptionInputs = {
   hubspotConnection: connectionInput,
   eventTypes,
   propertyChangeProperties,
   overwriteWebhookSettings,
 };
+
 export const pollChangesTriggerInputs = {
   lookBackDate,
   showNewRecords,
@@ -55,6 +61,7 @@ export const pollChangesTriggerInputs = {
   },
   searchProperties,
 };
+
 export const pollChangesCustomObjectsTriggerInputs = {
   lookBackDate,
   showNewRecords,

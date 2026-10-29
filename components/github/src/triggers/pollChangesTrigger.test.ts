@@ -12,8 +12,10 @@ import type {
 } from "../interfaces/PollingState";
 import { resolvePollingRecordChanges } from "../utils";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 // biome-ignore lint/suspicious/noExplicitAny: harness typing gap for polling triggers
 type AnyTrigger = any;
 type PollResult = {
@@ -29,10 +31,10 @@ const invokePoll = (
     context as never,
     undefined,
     params as never,
-  ) as Promise<{
-    result: PollResult;
-  }>;
+  ) as Promise<{ result: PollResult }>;
+
 afterEach(() => nock.cleanAll());
+
 const buildPayload = (
   body: string,
   headers: Record<string, string> = {},
@@ -54,6 +56,7 @@ const buildPayload = (
     flow: { id: "f", name: "f" },
     startedAt: new Date().toISOString(),
   }) as unknown as TriggerPayload;
+
 const makePollingMock = () => {
   let store: PollingState = {};
   return {
@@ -66,6 +69,7 @@ const makePollingMock = () => {
     },
   };
 };
+
 const pollParams = {
   connection: conn,
   owner: "octocat",
@@ -74,9 +78,11 @@ const pollParams = {
   showNewRecords: true,
   showUpdatedRecords: true,
 };
+
 describe("pollChangesTrigger", () => {
   test("first poll seeds the cursor; second poll resumes and reports no changes", async () => {
     const polling = makePollingMock();
+
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date(T0));
     const issue: GithubIssueRecord = {
@@ -91,23 +97,28 @@ describe("pollChangesTrigger", () => {
       .get("/repos/octocat/Hello-World/issues")
       .query(true)
       .reply(200, [issue]);
+
     const first = await invokePoll({ polling }, pollParams);
     vi.useRealTimers();
     expect(polling.current.lastPolledAt).toBe(T1);
     expect(first.result?.polledNoChanges).toBe(false);
+
     nock(BASE)
       .get("/repos/octocat/Hello-World/issues")
       .query(true)
       .reply(200, []);
+
     const second = await invokePoll({ polling }, pollParams);
     expect(second.result?.polledNoChanges).toBe(true);
     const body = second.result?.payload.body.data as PollingChangesObject;
     expect(body.created).toEqual([]);
     expect(body.updated).toEqual([]);
   });
+
   test("partitions records into created vs updated by created_at against the cursor", async () => {
     const polling = makePollingMock();
     polling.setState({ lastPolledAt: "2024-06-01T00:00:00Z" });
+
     const newIssue: GithubIssueRecord = {
       id: 10,
       number: 10,
@@ -126,14 +137,17 @@ describe("pollChangesTrigger", () => {
       .get("/repos/octocat/Hello-World/issues")
       .query(true)
       .reply(200, [newIssue, oldIssue]);
+
     const { result } = await invokePoll({ polling }, pollParams);
     const body = result?.payload.body.data as PollingChangesObject;
     expect(body.created?.map((r) => r.id)).toEqual([10]);
     expect(body.updated?.map((r) => r.id)).toEqual([11]);
   });
+
   test("gating: showUpdatedRecords=false drops the updated branch", async () => {
     const polling = makePollingMock();
     polling.setState({ lastPolledAt: "2024-06-01T00:00:00Z" });
+
     const oldIssue: GithubIssueRecord = {
       id: 11,
       created_at: "2024-01-01T00:00:00Z",
@@ -143,6 +157,7 @@ describe("pollChangesTrigger", () => {
       .get("/repos/octocat/Hello-World/issues")
       .query(true)
       .reply(200, [oldIssue]);
+
     const { result } = await invokePoll(
       { polling },
       { ...pollParams, showUpdatedRecords: false },
@@ -150,6 +165,7 @@ describe("pollChangesTrigger", () => {
     const body = result?.payload.body.data as PollingChangesObject;
     expect(body.updated).toEqual([]);
   });
+
   test("initial-sync look-back date seeds `since` and suppresses the visibility toggles", async () => {
     const polling = makePollingMock();
     const newIssue: GithubIssueRecord = {
@@ -170,6 +186,7 @@ describe("pollChangesTrigger", () => {
         return true;
       })
       .reply(200, [newIssue, oldIssue]);
+
     const { result } = await invokePoll(
       { polling },
       {
@@ -185,6 +202,7 @@ describe("pollChangesTrigger", () => {
     expect(body.updated?.map((r) => r.id)).toEqual([21]);
   });
 });
+
 const T0 = "2026-08-19T12:00:00Z";
 const T1 = "2026-08-19T13:00:00Z";
 const T2 = "2026-08-19T14:00:00Z";
@@ -226,18 +244,21 @@ const countRequests = () => {
 };
 const changesOf = (result: PollResult) =>
   result?.payload.body.data as PollingChangesObject;
+
 describe("pollChangesTrigger cursor", () => {
   beforeEach(() => vi.useFakeTimers({ toFake: ["Date"] }));
   afterEach(() => {
     vi.useRealTimers();
     nock.cleanAll();
   });
+
   test("sends the current time as `since` when Look-back Date is empty", async () => {
     vi.setSystemTime(new Date("2026-08-19T12:00:00.750Z"));
     const since = captureSince([]);
     await invokePoll({ polling: makePollingMock() }, pollParams);
     expect(since()).toBe(T0);
   });
+
   test("floors a millisecond cursor to the second and classes a same-second record as created", async () => {
     const polling = makePollingMock();
     polling.setState({ lastPolledAt: "2026-08-19T13:00:00.500Z" });
@@ -254,6 +275,7 @@ describe("pollChangesTrigger cursor", () => {
     expect(since()).toBe(T1);
     expect(changesOf(result).created?.map((r) => r.id)).toEqual([5]);
   });
+
   test("holds the cursor when a poll returns no records", async () => {
     const polling = seededMock();
     captureSince([]);
@@ -261,6 +283,7 @@ describe("pollChangesTrigger cursor", () => {
     await invokePoll({ polling }, pollParams);
     expect(polling.current.lastPolledAt).toBe(T0);
   });
+
   test("advances the cursor to the newest record received, not the wall clock", async () => {
     const polling = seededMock();
     captureSince([{ id: 1, created_at: T0, updated_at: T1 }]);
@@ -268,6 +291,7 @@ describe("pollChangesTrigger cursor", () => {
     await invokePoll({ polling }, pollParams);
     expect(polling.current.lastPolledAt).toBe(T1);
   });
+
   test("delivers a record at the cursor boundary that an earlier poll did not deliver", async () => {
     const polling = seededMock();
     const seen: GithubIssueRecord = { id: 1, created_at: T1, updated_at: T1 };
@@ -278,15 +302,19 @@ describe("pollChangesTrigger cursor", () => {
     };
     nock(BASE).get(issuesUrl).query(true).reply(200, [seen]);
     nock(BASE).get(issuesUrl).query(true).times(2).reply(200, [seen, unseen]);
+
     const first = await invokePoll({ polling }, pollParams);
     expect(changesOf(first.result).created).toEqual([seen]);
     expect(polling.current).toEqual({ lastPolledAt: T1, lastSeenIds: [1] });
+
     const second = await invokePoll({ polling }, pollParams);
     expect(changesOf(second.result).created).toEqual([unseen]);
     expect(polling.current.lastSeenIds).toEqual([1, 2]);
+
     const third = await invokePoll({ polling }, pollParams);
     expect(third.result?.polledNoChanges).toBe(true);
   });
+
   test("stops at MAX_BATCHED_RECORDS with batching on", async () => {
     const { counter, interceptor } = countRequests();
     interceptor()
@@ -299,6 +327,7 @@ describe("pollChangesTrigger cursor", () => {
     expect(counter.n).toBe(5);
     expect(changesOf(result).created).toHaveLength(500);
   });
+
   test("fetches the whole window with batching off", async () => {
     const { counter, interceptor } = countRequests();
     interceptor()
@@ -309,6 +338,7 @@ describe("pollChangesTrigger cursor", () => {
     expect(counter.n).toBe(6);
     expect(changesOf(result).created).toHaveLength(600);
   });
+
   test("resumes the remainder of a capped window from the 500th record's second", async () => {
     const at = (i: number) =>
       new Date(Date.parse(T0) + i * 1000).toISOString().replace(".000Z", "Z");
@@ -328,6 +358,7 @@ describe("pollChangesTrigger cursor", () => {
     expect(changesOf(first.result).created).toHaveLength(500);
     expect(polling.current.lastPolledAt).toBe(at(500));
     expect(polling.current.lastSeenIds).toEqual([500]);
+
     nock.cleanAll();
     nock(BASE)
       .get(issuesUrl)
@@ -342,6 +373,7 @@ describe("pollChangesTrigger cursor", () => {
     );
     expect(polling.current.lastPolledAt).toBe(at(600));
   });
+
   test("fetches a same-second group whole when it fills the cap, instead of stalling on it", async () => {
     const polling = seededMock();
     const sameSecondPages = () => {
@@ -370,17 +402,20 @@ describe("pollChangesTrigger cursor", () => {
     expect(changesOf(first.result).created).toHaveLength(500);
     expect(counter.n).toBe(5);
     expect(polling.current.lastPolledAt).toBe(T1);
+
     nock.cleanAll();
     counter = sameSecondPages();
     const second = await invokePoll({ polling, ...batched }, pollParams);
     expect(changesOf(second.result).created).toHaveLength(200);
     expect(counter.n).toBe(12);
     expect(polling.current.lastSeenIds).toHaveLength(700);
+
     nock.cleanAll();
     sameSecondPages();
     const third = await invokePoll({ polling, ...batched }, pollParams);
     expect(third.result?.polledNoChanges).toBe(true);
   });
+
   test("a truncated batched initial sync keeps seed semantics until it drains", async () => {
     const polling = makePollingMock();
     const seedParams = {
@@ -395,6 +430,7 @@ describe("pollChangesTrigger cursor", () => {
     const first = await invokePoll({ polling, ...batched }, seedParams);
     expect(changesOf(first.result).created).toHaveLength(500);
     expect(polling.current.backfillActive).toBe(true);
+
     nock.cleanAll();
     const remainder: GithubIssueRecord = {
       id: 7,
@@ -405,6 +441,7 @@ describe("pollChangesTrigger cursor", () => {
     const second = await invokePoll({ polling, ...batched }, seedParams);
     expect(changesOf(second.result).created).toEqual([remainder]);
     expect(polling.current.backfillActive).toBeUndefined();
+
     nock.cleanAll();
     const steady: GithubIssueRecord = {
       id: 8,
@@ -416,6 +453,7 @@ describe("pollChangesTrigger cursor", () => {
     expect(changesOf(third.result).created).toEqual([]);
   });
 });
+
 describe("pollChangesTrigger batching declaration", () => {
   test("New and Updated Records is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -425,6 +463,7 @@ describe("pollChangesTrigger batching declaration", () => {
     );
   });
 });
+
 describe("resolvePollingRecordChanges (triggerResolver.resolveItems)", () => {
   test("flattens { created, updated } into a tagged [{ changeType, record }] stream", () => {
     const data: PollingChangesObject = {
@@ -437,15 +476,18 @@ describe("resolvePollingRecordChanges (triggerResolver.resolveItems)", () => {
       { changeType: "updated", record: { id: 3 } },
     ]);
   });
+
   test("guards missing arrays with ?? [] -> empty result", () => {
     expect(resolvePollingRecordChanges({})).toEqual([]);
     expect(resolvePollingRecordChanges({ created: [{ id: 1 }] })).toEqual([
       { changeType: "created", record: { id: 1 } },
     ]);
   });
+
   test("guards an undefined envelope with data ?? {} -> empty result", () => {
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const created: GithubIssueRecord = {
       id: 142,

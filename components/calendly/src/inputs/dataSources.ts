@@ -14,11 +14,13 @@ import {
   status,
   email,
 } from "./common";
+
 export const selectEventInviteeInputs = {
   connection,
   uuid,
   returnUuidOnly,
 };
+
 export const eventTypesInputs = {
   connection,
   user: {
@@ -42,6 +44,7 @@ export const eventTypesInputs = {
   },
   returnUuidOnly,
 };
+
 export const eventsInputs = {
   connection,
   inviteeEmail,
@@ -53,6 +56,7 @@ export const eventsInputs = {
   status,
   user,
 };
+
 export const organizationMembershipsInputs = {
   connection,
   email: {
@@ -71,9 +75,11 @@ export const organizationMembershipsInputs = {
   },
   returnUuidOnly,
 };
+
 export const organizationsInputs = {
   connection,
 };
+
 export const routingFormsInputs = {
   connection,
   organization: {

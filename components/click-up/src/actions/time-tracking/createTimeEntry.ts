@@ -6,6 +6,7 @@ import type {
   CreateTimeEntryBody,
   CreateTimeEntryQueryParams,
 } from "../../types";
+
 export const createTimeEntry = action({
   display: {
     label: "Create Time Entry",
@@ -37,6 +38,7 @@ export const createTimeEntry = action({
       custom_task_ids: customTaskIds,
       team_id: customTeamId,
     };
+
     const body: CreateTimeEntryBody = {
       description,
       tags: JSON.parse(tagsCode).tags,
@@ -46,9 +48,11 @@ export const createTimeEntry = action({
       assignee: assigneeTimeEntry,
       tid: taskId,
     };
+
     const { data } = await client.post(`/team/${teamId}/time_entries`, body, {
       params: queryParams,
     });
+
     return {
       data,
     };

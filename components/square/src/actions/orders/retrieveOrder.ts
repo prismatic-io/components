@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { retrieveOrderExamplePayload } from "../../examplePayloads";
 import { retrieveOrderInputs } from "../../inputs";
+
 export const retrieveOrder = action({
   display: {
     label: "Retrieve Order",
@@ -12,7 +13,9 @@ export const retrieveOrder = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.get(`/v2/orders/${orderId}`);
+
     return {
       data: response.data,
     };

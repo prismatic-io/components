@@ -4,6 +4,7 @@ import { selectImageExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
 import { fetchImages } from "../util";
 import { KlaviyoApi } from "../constants";
+
 export const selectImage = dataSource({
   display: {
     label: "Select Image",
@@ -13,6 +14,7 @@ export const selectImage = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const imagesApi = getApi(connection, KlaviyoApi.Images);
+
     const data = await fetchImages(imagesApi, ["name"], [], undefined);
     const result = data.data
       .map<Element>((response) => ({
@@ -20,6 +22,7 @@ export const selectImage = dataSource({
         label: response.attributes.name ?? response.id,
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   examplePayload: selectImageExamplePayload,

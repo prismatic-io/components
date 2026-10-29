@@ -7,6 +7,7 @@ import type {
   AddGuestToTaskBody,
   AddGuestToTaskQueryParams,
 } from "../../types";
+
 export const addGuestToTask = action({
   display: {
     label: "Add Guest to Task",
@@ -42,11 +43,13 @@ export const addGuestToTask = action({
       custom_task_ids: customTaskIds,
       team_id: teamId,
     };
+
     const { data } = await client.post(
       `/task/${taskId}/guest/${guestId}`,
       body,
       { params },
     );
+
     return {
       data,
     };

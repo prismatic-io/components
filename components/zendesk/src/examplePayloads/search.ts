@@ -1,4 +1,5 @@
 import { listArticlesRaw } from "./articles";
+
 const unifiedSearchRaw = {
   links: {
     first: "https://example.zendesk.com/api/v2/guide/search?page[size]=100",
@@ -26,6 +27,7 @@ const unifiedSearchRaw = {
     },
   ],
 };
+
 const searchArticlesRaw = {
   results: [listArticlesRaw.articles[0]],
   count: 1,
@@ -33,6 +35,7 @@ const searchArticlesRaw = {
   page_count: 1,
   per_page: 25,
 };
+
 const searchPostsRaw = {
   results: [
     {
@@ -57,10 +60,13 @@ const searchPostsRaw = {
   ],
   count: 1,
 };
+
 export const searchArticlesExamplePayload = {
   data: searchArticlesRaw as unknown,
 };
+
 export const searchPostsExamplePayload = { data: searchPostsRaw as unknown };
+
 export const unifiedSearchExamplePayload = {
   data: unifiedSearchRaw as unknown,
 };

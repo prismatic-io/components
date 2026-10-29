@@ -3,6 +3,7 @@ export interface ItamMeta {
   per_page: number;
   total_count: number;
 }
+
 export interface ItamWriteResult {
   action: string;
   id: number | null;
@@ -12,6 +13,7 @@ export interface ItamWriteResult {
   code: number | null;
   raw: unknown[];
 }
+
 export type ItamOperation =
   | "list"
   | "read"
@@ -19,20 +21,20 @@ export type ItamOperation =
   | "update"
   | "updateByName"
   | "delete";
+
 export interface ItamDevice {
   device_id: number;
   name: string;
   serial_no?: string;
 }
-export type ItamDevicesResponse = {
-  devices: ItamDevice[];
-};
+
+export type ItamDevicesResponse = { devices: ItamDevice[] };
+
 export interface ItamAsset {
   id: number;
   name: string;
   serial_no?: string;
   type?: string;
 }
-export type ItamAssetsResponse = {
-  assets: ItamAsset[];
-};
+
+export type ItamAssetsResponse = { assets: ItamAsset[] };

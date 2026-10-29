@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const invoiceSchema = {
   type: "object" as const,
   properties: {
@@ -582,7 +583,9 @@ const invoiceSchema = {
     "invoiceConfiguration",
   ],
 };
+
 export const listInvoicesOutputSchema = listEnvelope(invoiceSchema);
+
 export const createInvoicesOutputSchema = {
   type: "integer",
   format: "int64",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getNoteFieldsInputs } from "../../inputs";
 import { getNoteFieldsExamplePayload } from "../../examplePayloads";
 import { getNoteFieldsOutputSchema } from "../../outputSchemas";
+
 export const getNoteFields = action({
   display: {
     label: "Get Note Fields",

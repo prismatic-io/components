@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../../client";
 import { createCollectionExamplePayload as examplePayload } from "../../examplePayloads";
 import { createCollectionInputs as inputs } from "../../inputs/libraries";
+
 export const createCollection = action({
   display: {
     label: "Create Collection",
@@ -19,10 +20,12 @@ export const createCollection = action({
         }
       }
     `;
+
     const response = await createClient({
       connection,
       debug: context.debug.enabled,
     }).request(mutation, { input });
+
     return {
       data: response,
     };

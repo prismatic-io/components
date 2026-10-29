@@ -6,6 +6,7 @@ import { createRecordInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
 import { json2Path } from "../../util";
 import { createRecordOutputSchema } from "../../outputSchemas";
+
 export const createRecord = action({
   display: {
     label: "Create Record",
@@ -62,8 +63,7 @@ export const createRecord = action({
     }
     return { data: recordId };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createRecordExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createRecordExamplePayload,
   examplePayload: createRecordExamplePayload,
 });

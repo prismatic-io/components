@@ -1,14 +1,18 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { ListWebhooks, TableauTriggerPayload, Webhook } from "../types";
+
 export const deleteWebhooksInstance = async (
   client: HttpClient,
   endpoint: string,
 ) => {
   const foundWebhooks = await findWebhooks(client, endpoint);
+
   if (foundWebhooks && foundWebhooks.length > 0)
     return await deleteWebhooks(client, foundWebhooks);
+
   throw new Error("Webhooks not found");
 };
+
 export const createWebhookSubscriptions = async (
   client: HttpClient,
   endpoint: string,
@@ -22,6 +26,7 @@ export const createWebhookSubscriptions = async (
   }
   return await Promise.allSettled(eventsToSubscribe);
 };
+
 export const createWebhookSubscription = async (
   client: HttpClient,
   endpoint: string,
@@ -46,6 +51,7 @@ export const createWebhookSubscription = async (
     },
   });
 };
+
 export const findWebhooks = async (client: HttpClient, endpoint: string) => {
   const { data } = await client.get<ListWebhooks>("/webhooks");
   return data.webhooks.webhook.filter(
@@ -54,6 +60,7 @@ export const findWebhooks = async (client: HttpClient, endpoint: string) => {
       endpoint,
   );
 };
+
 export const deleteWebhooks = async (
   client: HttpClient,
   webhooks: Webhook[],
@@ -64,9 +71,11 @@ export const deleteWebhooks = async (
   }
   return await Promise.allSettled(webhooksToDelete);
 };
+
 export const deleteWebhook = async (client: HttpClient, webhookId: string) => {
   return await client.delete(`/webhooks/${webhookId}`);
 };
+
 export const getEventInfo = async (
   client: HttpClient,
   event: TableauTriggerPayload,
@@ -74,8 +83,11 @@ export const getEventInfo = async (
   if (event.event_type.includes("Deleted")) {
     return event;
   }
+
   const eventResourceId = event.resource_luid;
+
   const { data } = await client.get(`/workbooks/${eventResourceId}`);
+
   return {
     ...event,
     resourceInfo: data,

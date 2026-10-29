@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { destroyInputs } from "../../inputs";
 import { createCustomerClient } from "../../client";
 import { destroyExamplePayload } from "../../examplePayloads";
+
 export const destroy = action({
   display: {
     label: "Destroy",
@@ -9,6 +10,7 @@ export const destroy = action({
   },
   perform: async (context, { id, region, cioConnection }) => {
     const client = createCustomerClient(cioConnection, region);
+
     return {
       data: await client.destroy(id),
     };
@@ -16,4 +18,5 @@ export const destroy = action({
   inputs: destroyInputs,
   examplePayload: destroyExamplePayload,
 });
+
 export default destroy;

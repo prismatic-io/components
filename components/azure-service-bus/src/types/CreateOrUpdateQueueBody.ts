@@ -1,4 +1,5 @@
 import type { EntityStatus } from "./EntityStatus";
+
 export interface CreateOrUpdateQueueBody {
   properties?: {
     autoDeleteOnIdle?: string;

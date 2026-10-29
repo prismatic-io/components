@@ -3,6 +3,7 @@ import { createCrmClient } from "../../client";
 import { listAttributesActionExamplePayload } from "../../examplePayloads";
 import { listAttributesActionInputs } from "../../inputs";
 import { listAttributesActionOutputSchema } from "../../outputSchemas";
+
 export const listAttributesAction = action({
   display: {
     label: "List Attributes",
@@ -17,6 +18,7 @@ export const listAttributesAction = action({
     { connection, entityId, attributeType, includeDetails },
   ) => {
     const client = await createCrmClient(connection, context.debug.enabled);
+
     const selectFields = [
       "LogicalName",
       "DisplayName",
@@ -30,6 +32,7 @@ export const listAttributesAction = action({
       "IsValidForCreate",
       "IsValidForUpdate",
     ];
+
     if (includeDetails) {
       selectFields.push(
         "SchemaName",
@@ -38,11 +41,13 @@ export const listAttributesAction = action({
         "IsValidForAdvancedFind",
       );
     }
+
     const response = await client.retrieveAttributes({
       entityKey: util.types.toString(entityId),
       castType: util.types.toString(attributeType),
       select: selectFields,
     });
+
     const attributes = response.value
       .filter((attr) => attr.DisplayName?.UserLocalizedLabel?.Label)
       .sort((a, b) => (a.LogicalName || "").localeCompare(b.LogicalName || ""))
@@ -60,6 +65,7 @@ export const listAttributesAction = action({
           isValidForCreate: attribute.IsValidForCreate,
           isValidForUpdate: attribute.IsValidForUpdate,
         };
+
         if (includeDetails) {
           return {
             ...baseAttribute,
@@ -69,8 +75,10 @@ export const listAttributesAction = action({
             isValidForAdvancedFind: attribute.IsValidForAdvancedFind,
           };
         }
+
         return baseAttribute;
       });
+
     const attributesByType = attributes.reduce(
       (acc, attr) => {
         const type = attr.attributeType || "Unknown";
@@ -79,6 +87,7 @@ export const listAttributesAction = action({
       },
       {} as Record<string, number>,
     );
+
     return {
       data: {
         entityId: util.types.toString(entityId),

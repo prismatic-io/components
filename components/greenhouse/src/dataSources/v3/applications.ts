@@ -4,6 +4,7 @@ import { applicationsV3DataSourceExamplePayload } from "../../examplePayloads/v3
 import { connectionOnlyInputs } from "../../inputs/v3/common";
 import type { V3Application } from "../../types";
 import { fetchAllV3 } from "../../util/v3";
+
 export const applicationsV3 = dataSource({
   display: {
     label: "Fetch Applications",

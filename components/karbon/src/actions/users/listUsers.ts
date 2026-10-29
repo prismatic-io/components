@@ -4,6 +4,7 @@ import listUsersInputs from "../../inputs/users/listUsers";
 import { getPaginatedData } from "../../utils";
 import { listUsersExamplePayload } from "../../examplePayloads";
 import type { User } from "../../interfaces/User";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -17,6 +18,7 @@ export const listUsers = action({
     { connection, $filter, $top, $skip, getAllData },
   ) => {
     const client = createKarbonClient(connection, context.debug.enabled);
+
     const data = await getPaginatedData<User>({
       pagination: { $top, $skip },
       client,

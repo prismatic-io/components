@@ -8,12 +8,14 @@ import {
   toTrimmedStringList,
   valueListInputClean,
 } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The connection to use for authenticating requests to HubSpot.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -23,6 +25,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -31,6 +34,7 @@ export const limit = input({
   comments: "The maximum number of items that will be returned by the search.",
   clean: toOptionalInt,
 });
+
 export const after = input({
   label: "Start After",
   type: "string",
@@ -40,12 +44,14 @@ export const after = input({
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
   clean: toOptionalString,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor-based pagination: page size and cursor token.",
   inputs: { limit, after },
 });
+
 export const timeout = input({
   label: "Timeout",
   type: "string",
@@ -55,6 +61,7 @@ export const timeout = input({
   comments: "The maximum time a client will await a request",
   clean: toOptionalInt,
 });
+
 export const objectType = input({
   label: "Object Type",
   type: "string",
@@ -65,6 +72,7 @@ export const objectType = input({
   clean: util.types.toString,
   dataSource: "selectCustomObject",
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -75,6 +83,7 @@ export const description = input({
   example: "This is an example description.",
   clean: toOptionalString,
 });
+
 export const hubspotOwnerId = input({
   label: "Owner ID",
   type: "string",
@@ -85,6 +94,7 @@ export const hubspotOwnerId = input({
   example: "910901",
   clean: toOptionalString,
 });
+
 export const idProperty = input({
   label: "ID Property",
   type: "string",
@@ -94,6 +104,7 @@ export const idProperty = input({
   dataSource: "selectProperty",
   clean: toOptionalString,
 });
+
 export const additionalProperties = input({
   label: "Additional Properties To Return",
   type: "string",
@@ -105,6 +116,7 @@ export const additionalProperties = input({
   dataSource: "selectProperty",
   clean: valueListInputClean,
 });
+
 export const associationsList = input({
   label: "Associations List",
   type: "string",
@@ -115,6 +127,7 @@ export const associationsList = input({
     "For each item, provide an object type to retrieve the associated Ids for.",
   clean: toCommaSeparatedList,
 });
+
 export const archived = input({
   label: "Return Archived Results",
   type: "boolean",
@@ -123,6 +136,7 @@ export const archived = input({
   comments: "When true, returns only results that have been archived.",
   clean: util.types.toBool,
 });
+
 export const propertiesWithHistory = input({
   label: "Properties With History",
   type: "string",
@@ -131,6 +145,7 @@ export const propertiesWithHistory = input({
   comments: "A list of properties to read by.",
   clean: valueListInputClean,
 });
+
 export const fieldValues = input({
   label: "Values",
   placeholder: "Values",
@@ -142,6 +157,7 @@ export const fieldValues = input({
   example: "name:My Example Account,phone:5551234567",
   clean: toKeyValueObject,
 });
+
 export const dynamicValues = input({
   label: "Dynamic Fields",
   placeholder: "",
@@ -160,6 +176,7 @@ export const dynamicValues = input({
   ),
   clean: getDynamicValues,
 });
+
 export const value = input({
   label: "Value",
   type: "string",
@@ -169,6 +186,7 @@ export const value = input({
   comments: "The value corresponding to the given property name.",
   clean: util.types.toString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -178,6 +196,7 @@ export const name = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const properties = input({
   label: "Properties",
   type: "code",
@@ -204,6 +223,7 @@ export const properties = input({
   clean: util.types.toObject,
   required: true,
 });
+
 export const propertyChangeProperties = input({
   label: "Property Change Properties",
   type: "string",
@@ -214,6 +234,7 @@ export const propertyChangeProperties = input({
   example: '{"contact.propertyChange": "email,firstname"}',
   clean: toKeyValueObject,
 });
+
 export const objectsToSelect = input({
   label: "Objects to Select",
   type: "string",

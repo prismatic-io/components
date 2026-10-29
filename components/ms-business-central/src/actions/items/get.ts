@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import { itemId } from "../../inputs/items/updateItemInputs";
 import type { Item } from "../../interfaces";
+
 export const getItem = action({
   display: {
     label: "Get Item",
@@ -20,6 +21,7 @@ export const getItem = action({
     const { data } = await client.get<Item>(
       `/companies(${companyId})/items(${itemId})`,
     );
+
     return { data };
   },
   inputs: {

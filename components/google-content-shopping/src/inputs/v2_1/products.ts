@@ -16,6 +16,7 @@ import {
   pickupSla,
   updateMask,
 } from "./common";
+
 export const productId = input({
   label: "Product ID",
   type: "string",
@@ -27,6 +28,7 @@ export const productId = input({
   required: true,
   dataSource: "selectProduct",
 });
+
 const feedId = input({
   label: "Feed ID",
   type: "string",
@@ -37,6 +39,7 @@ const feedId = input({
   placeholder: "Enter Feed ID",
   required: false,
 });
+
 const offerId = input({
   label: "Offer ID",
   type: "string",
@@ -47,6 +50,7 @@ const offerId = input({
   placeholder: "Enter Offer ID",
   required: true,
 });
+
 const title = input({
   label: "Title",
   type: "string",
@@ -57,6 +61,7 @@ const title = input({
   placeholder: "Enter Product Title",
   required: false,
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -68,6 +73,7 @@ const description = input({
   placeholder: "Enter Product Description",
   required: false,
 });
+
 const link = input({
   label: "Link",
   type: "string",
@@ -77,6 +83,7 @@ const link = input({
   placeholder: "Enter Product URL",
   required: false,
 });
+
 const imageLink = input({
   label: "Image Link",
   type: "string",
@@ -86,6 +93,7 @@ const imageLink = input({
   placeholder: "Enter Image URL",
   required: false,
 });
+
 const contentLanguage = input({
   label: "Content Language",
   type: "string",
@@ -95,6 +103,7 @@ const contentLanguage = input({
   placeholder: "Enter Language Code",
   required: true,
 });
+
 const targetCountry = input({
   label: "Target Country",
   type: "string",
@@ -104,6 +113,7 @@ const targetCountry = input({
   placeholder: "Enter Country Code",
   required: true,
 });
+
 const feedLabel = input({
   label: "Feed Label",
   type: "string",
@@ -114,6 +124,7 @@ const feedLabel = input({
   placeholder: "Enter Feed Label",
   required: false,
 });
+
 const expirationDate = input({
   label: "Expiration Date",
   type: "string",
@@ -124,6 +135,7 @@ const expirationDate = input({
   placeholder: "Enter Expiration Date (YYYY-MM-DD)",
   required: false,
 });
+
 const adult = input({
   label: "Adult",
   type: "boolean",
@@ -131,6 +143,7 @@ const adult = input({
   comments: "When true, indicates the item is targeted towards adults.",
   required: false,
 });
+
 const brand = input({
   label: "Brand",
   type: "string",
@@ -141,6 +154,7 @@ const brand = input({
   placeholder: "Enter Brand Name",
   required: false,
 });
+
 const color = input({
   label: "Color",
   type: "string",
@@ -151,6 +165,7 @@ const color = input({
   placeholder: "Enter Color",
   required: false,
 });
+
 const googleProductCategory = input({
   label: "Google Product Category",
   type: "string",
@@ -161,6 +176,7 @@ const googleProductCategory = input({
   placeholder: "Enter Google Product Category",
   required: false,
 });
+
 const gtin = input({
   label: "GTIN",
   type: "string",
@@ -170,6 +186,7 @@ const gtin = input({
   placeholder: "Enter GTIN",
   required: false,
 });
+
 const itemGroupId = input({
   label: "Item Group ID",
   type: "string",
@@ -179,6 +196,7 @@ const itemGroupId = input({
   placeholder: "Enter Item Group ID",
   required: false,
 });
+
 const material = input({
   label: "Material",
   type: "string",
@@ -189,6 +207,7 @@ const material = input({
   placeholder: "Enter Material",
   required: false,
 });
+
 const mpn = input({
   label: "MPN",
   type: "string",
@@ -198,6 +217,7 @@ const mpn = input({
   placeholder: "Enter MPN",
   required: false,
 });
+
 const pattern = input({
   label: "Pattern",
   type: "string",
@@ -208,6 +228,7 @@ const pattern = input({
   placeholder: "Enter Pattern",
   required: false,
 });
+
 const identifierExists = input({
   label: "Identifier Exists",
   type: "boolean",
@@ -216,6 +237,7 @@ const identifierExists = input({
     "When true, indicates that an identifier (GTIN, MPN, or brand) exists for the product. Set to false for custom or handmade products.",
   required: true,
 });
+
 export const salePriceEffectiveDate = input({
   label: "Sale Price Effective Date",
   type: "string",
@@ -225,6 +247,7 @@ export const salePriceEffectiveDate = input({
   placeholder: "Enter Date Range (ISO 8601 Format)",
   required: false,
 });
+
 const multipack = input({
   label: "Multipack",
   type: "string",
@@ -234,6 +257,7 @@ const multipack = input({
   placeholder: "Enter Multipack Quantity",
   required: false,
 });
+
 const customLabel0 = input({
   label: "Custom Label 0",
   type: "string",
@@ -244,6 +268,7 @@ const customLabel0 = input({
   placeholder: "Enter Custom Label 0",
   required: false,
 });
+
 const customLabel1 = input({
   label: "Custom Label 1",
   type: "string",
@@ -254,6 +279,7 @@ const customLabel1 = input({
   placeholder: "Enter Custom Label 1",
   required: false,
 });
+
 const customLabel2 = input({
   label: "Custom Label 2",
   type: "string",
@@ -264,6 +290,7 @@ const customLabel2 = input({
   placeholder: "Enter Custom Label 2",
   required: false,
 });
+
 const customLabel3 = input({
   label: "Custom Label 3",
   type: "string",
@@ -274,6 +301,7 @@ const customLabel3 = input({
   placeholder: "Enter Custom Label 3",
   required: false,
 });
+
 const customLabel4 = input({
   label: "Custom Label 4",
   type: "string",
@@ -284,6 +312,7 @@ const customLabel4 = input({
   placeholder: "Enter Custom Label 4",
   required: false,
 });
+
 const isBundle = input({
   label: "Is Bundle",
   type: "boolean",
@@ -292,6 +321,7 @@ const isBundle = input({
     "When true, indicates the item is a merchant-defined bundle (a custom grouping of different products sold for a single price).",
   required: false,
 });
+
 const mobileLink = input({
   label: "Mobile Link",
   type: "string",
@@ -301,6 +331,7 @@ const mobileLink = input({
   placeholder: "Enter Mobile URL",
   required: false,
 });
+
 const availabilityDate = input({
   label: "Availability Date",
   type: "string",
@@ -311,6 +342,7 @@ const availabilityDate = input({
   placeholder: "Enter Availability Date (YYYY-MM-DD)",
   required: false,
 });
+
 const shippingLabel = input({
   label: "Shipping Label",
   type: "string",
@@ -321,6 +353,7 @@ const shippingLabel = input({
   placeholder: "Enter Shipping Label",
   required: false,
 });
+
 const displayAdsId = input({
   label: "Display Ads ID",
   type: "string",
@@ -330,6 +363,7 @@ const displayAdsId = input({
   placeholder: "Enter Display Ads ID",
   required: false,
 });
+
 const displayAdsTitle = input({
   label: "Display Ads Title",
   type: "string",
@@ -339,6 +373,7 @@ const displayAdsTitle = input({
   placeholder: "Enter Display Ads Title",
   required: false,
 });
+
 const displayAdsLink = input({
   label: "Display Ads Link",
   type: "string",
@@ -349,6 +384,7 @@ const displayAdsLink = input({
   placeholder: "Enter Display Ads URL",
   required: false,
 });
+
 const displayAdsValue = input({
   label: "Display Ads Value",
   type: "string",
@@ -358,6 +394,7 @@ const displayAdsValue = input({
   placeholder: "Enter Display Ads Value",
   required: false,
 });
+
 const sellOnGoogleQuantity = input({
   label: "Sell On Google Quantity",
   type: "string",
@@ -368,6 +405,7 @@ const sellOnGoogleQuantity = input({
   placeholder: "Enter Quantity Available for Google",
   required: false,
 });
+
 export const quantity = input({
   label: "Quantity",
   type: "string",
@@ -377,6 +415,7 @@ export const quantity = input({
   placeholder: "Enter Quantity",
   required: false,
 });
+
 const maxHandlingTime = input({
   label: "Max Handling Time",
   type: "string",
@@ -386,6 +425,7 @@ const maxHandlingTime = input({
   placeholder: "Enter Maximum Handling Time",
   required: false,
 });
+
 const minHandlingTime = input({
   label: "Min Handling Time",
   type: "string",
@@ -395,6 +435,7 @@ const minHandlingTime = input({
   placeholder: "Enter Minimum Handling Time",
   required: false,
 });
+
 const adsGrouping = input({
   label: "Ads Grouping",
   type: "string",
@@ -405,6 +446,7 @@ const adsGrouping = input({
   placeholder: "Enter Ads Grouping",
   required: false,
 });
+
 const adsRedirect = input({
   label: "Ads Redirect",
   type: "string",
@@ -415,6 +457,7 @@ const adsRedirect = input({
   placeholder: "Enter Ads Redirect URL",
   required: false,
 });
+
 const ageGroup = input({
   label: "Age Group",
   type: "string",
@@ -424,6 +467,7 @@ const ageGroup = input({
   placeholder: "Enter Age Group",
   required: false,
 });
+
 export const availability = input({
   label: "Availability",
   type: "string",
@@ -434,6 +478,7 @@ export const availability = input({
   placeholder: "Enter Availability Status",
   required: false,
 });
+
 const condition = input({
   label: "Condition",
   type: "string",
@@ -444,6 +489,7 @@ const condition = input({
   placeholder: "Enter Condition",
   required: false,
 });
+
 const gender = input({
   label: "Gender",
   type: "string",
@@ -453,6 +499,7 @@ const gender = input({
   placeholder: "Enter Gender",
   required: false,
 });
+
 const sizeSystem = input({
   label: "Size System",
   type: "string",
@@ -463,6 +510,7 @@ const sizeSystem = input({
   placeholder: "Enter Size System",
   required: false,
 });
+
 const sizeType = input({
   label: "Size Type",
   type: "string",
@@ -472,6 +520,7 @@ const sizeType = input({
   placeholder: "Enter Size Type",
   required: false,
 });
+
 const additionalSizeType = input({
   label: "Additional Size Type",
   type: "string",
@@ -482,6 +531,7 @@ const additionalSizeType = input({
   placeholder: "Enter Additional Size Type",
   required: false,
 });
+
 const energyEfficiencyClass = input({
   label: "Energy Efficiency Class",
   type: "string",
@@ -492,6 +542,7 @@ const energyEfficiencyClass = input({
   placeholder: "Enter Energy Efficiency Class",
   required: false,
 });
+
 const minEnergyEfficiencyClass = input({
   label: "Min Energy Efficiency Class",
   type: "string",
@@ -502,6 +553,7 @@ const minEnergyEfficiencyClass = input({
   placeholder: "Enter Minimum Energy Efficiency Class",
   required: false,
 });
+
 const maxEnergyEfficiencyClass = input({
   label: "Max Energy Efficiency Class",
   type: "string",
@@ -512,6 +564,7 @@ const maxEnergyEfficiencyClass = input({
   placeholder: "Enter Maximum Energy Efficiency Class",
   required: false,
 });
+
 const taxCategory = input({
   label: "Tax Category",
   type: "string",
@@ -521,6 +574,7 @@ const taxCategory = input({
   placeholder: "Enter Tax Category",
   required: false,
 });
+
 const transitTimeLabel = input({
   label: "Transit Time Label",
   type: "string",
@@ -531,6 +585,7 @@ const transitTimeLabel = input({
   placeholder: "Enter Transit Time Label",
   required: false,
 });
+
 const linkTemplate = input({
   label: "Link Template",
   type: "string",
@@ -540,6 +595,7 @@ const linkTemplate = input({
   placeholder: "Enter Link Template",
   required: false,
 });
+
 const mobileLinkTemplate = input({
   label: "Mobile Link Template",
   type: "string",
@@ -550,6 +606,7 @@ const mobileLinkTemplate = input({
   placeholder: "Enter Mobile Link Template",
   required: false,
 });
+
 const canonicalLink = input({
   label: "Canonical Link",
   type: "string",
@@ -559,6 +616,7 @@ const canonicalLink = input({
   placeholder: "Enter Canonical URL",
   required: false,
 });
+
 const externalSellerId = input({
   label: "External Seller ID",
   type: "string",
@@ -569,6 +627,7 @@ const externalSellerId = input({
   placeholder: "Enter External Seller ID",
   required: true,
 });
+
 const pause = input({
   label: "Pause",
   type: "string",
@@ -583,6 +642,7 @@ const pause = input({
   ],
   required: false,
 });
+
 const source = input({
   label: "Source",
   type: "string",
@@ -605,6 +665,7 @@ const source = input({
   ],
   required: false,
 });
+
 export const price = input({
   label: "Price",
   type: "code",
@@ -622,6 +683,7 @@ export const price = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const salePrice = input({
   label: "Sale Price",
   type: "code",
@@ -639,6 +701,7 @@ export const salePrice = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const productHeight = input({
   label: "Product Height",
   type: "code",
@@ -656,6 +719,7 @@ const productHeight = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const productLength = input({
   label: "Product Length",
   type: "code",
@@ -673,6 +737,7 @@ const productLength = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const productWidth = input({
   label: "Product Width",
   type: "code",
@@ -690,6 +755,7 @@ const productWidth = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const productWeight = input({
   label: "Product Weight",
   type: "code",
@@ -707,6 +773,7 @@ const productWeight = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const installment = input({
   label: "Installment",
   type: "code",
@@ -726,6 +793,7 @@ const installment = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const shipping = input({
   label: "Shipping",
   type: "code",
@@ -754,6 +822,7 @@ const shipping = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const unitPricingMeasure = input({
   label: "Unit Pricing Measure",
   type: "code",
@@ -770,6 +839,7 @@ const unitPricingMeasure = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const unitPricingBaseMeasure = input({
   label: "Unit Pricing Base Measure",
   type: "code",
@@ -786,6 +856,7 @@ const unitPricingBaseMeasure = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const shippingLength = input({
   label: "Shipping Length",
   type: "code",
@@ -802,6 +873,7 @@ const shippingLength = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const shippingWidth = input({
   label: "Shipping Width",
   type: "code",
@@ -818,6 +890,7 @@ const shippingWidth = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const shippingHeight = input({
   label: "Shipping Height",
   type: "code",
@@ -834,6 +907,7 @@ const shippingHeight = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const displayAdsSimilarIds = input({
   label: "Display Ads Similar IDs",
   type: "string",
@@ -844,6 +918,7 @@ const displayAdsSimilarIds = input({
   placeholder: "Enter Similar Product IDs",
   clean: valueListInputClean,
 });
+
 const promotionIds = input({
   label: "Promotion IDs",
   type: "string",
@@ -854,6 +929,7 @@ const promotionIds = input({
   placeholder: "Enter Promotion IDs",
   clean: valueListInputClean,
 });
+
 const includedDestinations = input({
   label: "Included Destinations",
   type: "string",
@@ -865,6 +941,7 @@ const includedDestinations = input({
   placeholder: "Enter Included Destinations",
   clean: valueListInputClean,
 });
+
 const excludedDestinations = input({
   label: "Excluded Destinations",
   type: "string",
@@ -876,6 +953,7 @@ const excludedDestinations = input({
   placeholder: "Enter Excluded Destinations",
   clean: valueListInputClean,
 });
+
 const adsLabels = input({
   label: "Ads Labels",
   type: "string",
@@ -886,6 +964,7 @@ const adsLabels = input({
   placeholder: "Enter Ads Labels",
   clean: valueListInputClean,
 });
+
 const productTypes = input({
   label: "Product Types",
   type: "string",
@@ -897,6 +976,7 @@ const productTypes = input({
   placeholder: "Enter Product Type Categories",
   clean: valueListInputClean,
 });
+
 const sizes = input({
   label: "Sizes",
   type: "string",
@@ -908,6 +988,7 @@ const sizes = input({
   placeholder: "Enter Size",
   clean: valueListInputClean,
 });
+
 const shoppingAdsExcludedCountries = input({
   label: "Shopping Ads Excluded Countries",
   type: "string",
@@ -919,6 +1000,7 @@ const shoppingAdsExcludedCountries = input({
   placeholder: "Enter Country Codes",
   clean: valueListInputClean,
 });
+
 const taxes = input({
   label: "Taxes",
   type: "code",
@@ -937,6 +1019,7 @@ const taxes = input({
   ]),
   clean: jsonInputClean,
 });
+
 const shippingWeight = input({
   label: "Shipping Weight",
   type: "code",
@@ -948,6 +1031,7 @@ const shippingWeight = input({
   }),
   clean: jsonInputClean,
 });
+
 const dimensions = structuredObjectInput({
   label: "Dimensions",
   required: false,
@@ -955,6 +1039,7 @@ const dimensions = structuredObjectInput({
     "Physical dimensions of the product: length, width, height, and weight.",
   inputs: { productLength, productWidth, productHeight, productWeight },
 });
+
 const shippingDimensions = structuredObjectInput({
   label: "Shipping Dimensions",
   required: false,
@@ -962,6 +1047,7 @@ const shippingDimensions = structuredObjectInput({
     "Physical dimensions of the item for shipping: length, width, height, and weight.",
   inputs: { shippingLength, shippingWidth, shippingHeight, shippingWeight },
 });
+
 export const customAttributes = input({
   label: "Custom Attributes",
   type: "code",
@@ -982,6 +1068,7 @@ export const customAttributes = input({
   ]),
   clean: jsonInputClean,
 });
+
 const channel = input({
   label: "Channel",
   type: "string",
@@ -1001,6 +1088,7 @@ const channel = input({
     },
   ],
 });
+
 const additionalImageLinks = input({
   label: "Additional Image Links",
   type: "string",
@@ -1011,6 +1099,7 @@ const additionalImageLinks = input({
   placeholder: "Enter Image URLs",
   clean: valueListInputClean,
 });
+
 const lifestyleImageLinks = input({
   label: "Lifestyle Image Links",
   type: "string",
@@ -1022,6 +1111,7 @@ const lifestyleImageLinks = input({
   placeholder: "Enter Lifestyle Image URLs",
   clean: valueListInputClean,
 });
+
 const costOfGoodsSold = input({
   label: "Cost Of Goods Sold",
   type: "code",
@@ -1033,6 +1123,7 @@ const costOfGoodsSold = input({
   }),
   clean: jsonInputClean,
 });
+
 const productDetails = input({
   label: "Product Details",
   type: "code",
@@ -1047,6 +1138,7 @@ const productDetails = input({
   ]),
   clean: jsonInputClean,
 });
+
 const subscriptionCost = input({
   label: "Subscription Cost",
   type: "code",
@@ -1063,6 +1155,7 @@ const subscriptionCost = input({
   }),
   clean: jsonInputClean,
 });
+
 const entriesForBatchProduct = input({
   label: "Entries for Batch Request",
   type: "code",
@@ -1074,10 +1167,12 @@ const entriesForBatchProduct = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const batchProductInputs = {
   connectionInput,
   entries: entriesForBatchProduct,
 };
+
 export const createProductInputs = {
   connectionInput,
   merchantId,
@@ -1168,23 +1263,27 @@ export const createProductInputs = {
   canonicalLink,
   pause,
 };
+
 export const deleteProductInputs = {
   connectionInput,
   merchantId,
   productId,
   feedId,
 };
+
 export const getProductInputs = {
   connectionInput,
   merchantId,
   productId,
 };
+
 export const listProductsInputs = {
   connectionInput,
   merchantId,
   fetchAll,
   pagination,
 };
+
 export const updateProductInputs = {
   connectionInput,
   merchantId,
@@ -1284,6 +1383,7 @@ export const updateProductInputs = {
   pause,
   updateMask,
 };
+
 export const selectProductInputs = {
   connection: connectionInput,
   merchantId: {

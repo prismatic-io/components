@@ -6,6 +6,7 @@ import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import type { CreateWebhookBody } from "../../types";
 import { assertTargetType } from "../../util";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -27,6 +28,7 @@ export const createWebhook = action({
   ) => {
     const client = createAuthorizedClient({ boxConnection });
     assertTargetType(targetType);
+
     let data = null;
     try {
       const created = await client.webhooks.createWebhook({
@@ -47,20 +49,20 @@ export const createWebhook = action({
         throw error;
       }
     }
+
     if (primarySignatureKey) {
       crossFlowState.primarySignatureKey = primarySignatureKey;
     }
     if (secondarySignatureKey) {
       crossFlowState.secondarySignatureKey = secondarySignatureKey;
     }
+
     return { data, crossFlowState };
   },
   examplePerform: async (
     _context,
     { address, targetId, targetType, triggerTypes },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createWebhookExamplePayload.data,
       target: { id: targetId, type: targetType },

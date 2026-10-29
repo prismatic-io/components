@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getProductFieldsInputs } from "../../inputs";
 import { getProductFieldsExamplePayload } from "../../examplePayloads";
 import { getProductFieldsOutputSchema } from "../../outputSchemas";
+
 export const getProductFields = action({
   display: {
     label: "Get Product Fields",

@@ -4,6 +4,7 @@ import { listQualityProcessTemplateAttributesExamplePayload } from "../../exampl
 import { listQualityProcessTemplateAttributesInputs } from "../../inputs";
 import { listQualityProcessTemplateAttributesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessTemplateAttributes = action({
   display: {
     label: "List Quality Process Template Attributes",
@@ -19,6 +20,7 @@ export const listQualityProcessTemplateAttributes = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         includePossibleValues: params.includePossibleValues,
         creatableOnly: params.creatableOnly,
@@ -26,10 +28,12 @@ export const listQualityProcessTemplateAttributes = action({
         searchableOnly: params.searchableOnly,
         includeDeleted: params.includeDeleted,
       };
+
       const { data } = await client.get(
         `/settings/qualityprocesses/templates/${params.templateGuid}/attributes`,
         { params: queryParams },
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

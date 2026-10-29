@@ -1,7 +1,6 @@
 import type { GetAccountResponse } from "../interfaces/account";
-export const getAccountExamplePayload: {
-  data: GetAccountResponse;
-} = {
+
+export const getAccountExamplePayload: { data: GetAccountResponse } = {
   data: {
     created_datetime: "2017-11-23T15:59:41.966927",
     deactivated_datetime: null,

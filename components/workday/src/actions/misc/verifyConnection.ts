@@ -9,6 +9,7 @@ import {
   parseReportUrl,
   usesRefreshToken,
 } from "../../util";
+
 export const verifyConnection = action({
   display: {
     label: "Verify Connection",
@@ -24,6 +25,7 @@ export const verifyConnection = action({
     if (!reportUrl) {
       return { data: { tokenExchanged, reportRead: false } };
     }
+
     const url = parseReportUrl(reportUrl, getBaseUrl(connection));
     url.searchParams.set("format", "json");
     const client = getClient(connection, context.debug.enabled, url.origin);

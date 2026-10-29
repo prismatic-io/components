@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listAdsInAccountResponse } from "../../examplePayloads";
 import { listAdsInAccountInputs } from "../../inputs";
 import { getPaginatedData } from "../../util";
+
 export const listAdsInAccount = action({
   display: {
     label: "List Ads In Account",
@@ -13,6 +14,7 @@ export const listAdsInAccount = action({
     { version, connection, adAccountId, fetchAll, pagination, fields },
   ) => {
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await getPaginatedData(
       client,
       `/${adAccountId}/ads`,
@@ -24,6 +26,7 @@ export const listAdsInAccount = action({
         fields,
       },
     );
+
     return {
       data,
     };

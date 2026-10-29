@@ -6,6 +6,7 @@ import { listPagesInputs } from "../../inputs";
 import type { Page } from "../../types";
 import { listPagesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util";
+
 export const listPages = action({
   display: {
     label: "List Pages",
@@ -32,6 +33,7 @@ export const listPages = action({
     },
   ) => {
     const client = await createClient(connectionInput, context.debug.enabled);
+
     if (fetchAll) {
       const results = await paginateResults<Page>(
         client,
@@ -40,6 +42,7 @@ export const listPages = action({
       );
       return { data: { results } };
     }
+
     const params = {
       id,
       "space-id": spaceIdFilter,
@@ -57,9 +60,7 @@ export const listPages = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listPagesExamplePayload,
   }),
   examplePayload: {

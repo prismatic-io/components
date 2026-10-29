@@ -40,6 +40,7 @@ export const getCustomerExamplePayload = {
     ],
   },
 };
+
 export const listCustomersExamplePayload = {
   data: {
     customers: [getCustomerExamplePayload.data],

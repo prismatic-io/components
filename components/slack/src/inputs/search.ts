@@ -9,6 +9,7 @@ import {
   sortSearch,
   team_id,
 } from "./common";
+
 const searchAllPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -22,6 +23,7 @@ const searchAllPagination = structuredObjectInput({
     page,
   },
 });
+
 export const searchAllInputs = {
   connection: connectionInput,
   query,

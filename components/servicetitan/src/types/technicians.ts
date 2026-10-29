@@ -1,4 +1,5 @@
 import type { Address, CustomField } from "./common";
+
 export interface Technician {
   id: number;
   userId: number;

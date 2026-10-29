@@ -1,6 +1,7 @@
 import { createAuthorizedClient } from "./client";
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import { twilioApiKeyConnection, twilioBasicConnection } from "./connections";
+
 describe("createAuthorizedClient", () => {
   test("returns client with basic credentials", () => {
     createAuthorizedClient(
@@ -21,6 +22,7 @@ describe("createAuthorizedClient", () => {
       true,
     );
   });
+
   test("throws error for unsupported authorization methods", () => {
     expect(() =>
       createAuthorizedClient(

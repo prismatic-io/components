@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { emptyTrashInputs } from "../../inputs";
 import { emptyTrashOutputSchema } from "../../outputSchemas";
 import { emptyTrashExamplePayload } from "../../examplePayloads";
+
 export const emptyTrash = action({
   display: {
     label: "Empty Trash",
@@ -12,6 +13,7 @@ export const emptyTrash = action({
   perform: async (_context, { connection }) => {
     const drive = createClient(connection);
     const { data } = await drive.files.emptyTrash();
+
     return {
       data,
     };
@@ -21,9 +23,8 @@ export const emptyTrash = action({
     type: "actionOutput",
     schema: emptyTrashOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({ data: {} }),
+  examplePerform: async (): Promise<{ data: unknown }> => ({ data: {} }),
   examplePayload: emptyTrashExamplePayload,
 });
+
 export default emptyTrash;

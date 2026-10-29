@@ -4,6 +4,7 @@ import {
   oauth2Connection,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 export const oktaOAuth2AuthorizationCode = oauth2Connection({
   key: "oktaOAuth2AuthorizationCode",
   display: {
@@ -78,6 +79,7 @@ export const oktaOAuth2AuthorizationCode = oauth2Connection({
     OAuth2Type.AuthorizationCode,
   ),
 });
+
 export const oktaClientCredentialsOrg = connection({
   key: "oktaClientCredentialsOrg",
   display: {
@@ -127,6 +129,7 @@ export const oktaClientCredentialsOrg = connection({
     },
   },
 });
+
 export const oktaApiTokenConnection = connection({
   key: "oktaApiTokenConnection",
   display: {
@@ -154,6 +157,7 @@ export const oktaApiTokenConnection = connection({
     },
   },
 });
+
 export default [
   oktaOAuth2AuthorizationCode,
   oktaClientCredentialsOrg,

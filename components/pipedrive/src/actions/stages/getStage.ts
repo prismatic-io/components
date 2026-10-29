@@ -4,6 +4,7 @@ import { getStageInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getStageExamplePayload } from "../../examplePayloads";
 import { getStageOutputSchema } from "../../outputSchemas";
+
 export const getStage = action({
   display: {
     label: "Get Stage",

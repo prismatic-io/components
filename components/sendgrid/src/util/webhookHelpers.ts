@@ -8,6 +8,7 @@ import type {
   WebhookRequestBody,
   WebhookResponse,
 } from "../types";
+
 export const eventsBuilder = (events: string[]): TrackEvents => {
   const trackEvents: TrackEvents = {
     delivered: false,
@@ -65,6 +66,7 @@ export const eventsBuilder = (events: string[]): TrackEvents => {
   });
   return trackEvents;
 };
+
 const buildWebhookRequestBody = (
   params: CreateWebhookParams | UpdateWebhookParams,
 ): WebhookRequestBody => {
@@ -84,11 +86,14 @@ const buildWebhookRequestBody = (
     group_resubscribe: params.groupResubscribe,
     account_status_change: params.accountStatusChange,
   };
+
   if (params.friendlyName) {
     requestBody.friendly_name = params.friendlyName;
   }
+
   return requestBody;
 };
+
 export const createWebhookHelper = async (
   client: Client,
   params: CreateWebhookParams,
@@ -98,8 +103,10 @@ export const createWebhookHelper = async (
     method: "POST",
     body: buildWebhookRequestBody(params),
   });
+
   return body as WebhookResponse;
 };
+
 export const updateWebhookHelper = async (
   client: Client,
   params: UpdateWebhookParams,
@@ -109,8 +116,10 @@ export const updateWebhookHelper = async (
     method: "PATCH",
     body: buildWebhookRequestBody(params),
   });
+
   return body as WebhookResponse;
 };
+
 export const deleteWebhookHelper = async (
   client: Client,
   params: DeleteWebhookParams,
@@ -119,11 +128,13 @@ export const deleteWebhookHelper = async (
     url: `/v3/user/webhooks/event/settings/${params.webhookId}`,
     method: "DELETE",
   });
+
   return {
     success: true,
     message: "Webhook deleted successfully",
   };
 };
+
 export const toggleSignatureVerificationHelper = async (
   client: Client,
   params: ToggleSignatureVerificationParams,
@@ -135,5 +146,6 @@ export const toggleSignatureVerificationHelper = async (
       enabled: params.enabled,
     },
   });
+
   return body as WebhookResponse;
 };

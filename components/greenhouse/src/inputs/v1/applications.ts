@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../../util/clean";
+
 export const application_id = input({
   label: "Application ID",
   type: "string",
@@ -10,6 +11,7 @@ export const application_id = input({
   example: "69102626",
   dataSource: "applications",
 });
+
 export const last_activity_after = input({
   label: "Last Activity After",
   type: "string",
@@ -20,6 +22,7 @@ export const last_activity_after = input({
   example: "2024-01-01T00:00:00Z",
   clean: toOptionalString,
 });
+
 export const source_id = input({
   label: "Source ID",
   type: "string",
@@ -29,6 +32,7 @@ export const source_id = input({
   example: "2",
   clean: toOptionalNumber,
 });
+
 export const prospect_pool_id = input({
   label: "Prospect Pool ID",
   type: "string",
@@ -38,6 +42,7 @@ export const prospect_pool_id = input({
   example: "123",
   clean: toOptionalNumber,
 });
+
 export const prospect_stage_id = input({
   label: "Prospect Stage ID",
   type: "string",
@@ -48,6 +53,7 @@ export const prospect_stage_id = input({
   example: "456",
   clean: toOptionalNumber,
 });
+
 export const referrer = input({
   label: "Referrer",
   type: "code",

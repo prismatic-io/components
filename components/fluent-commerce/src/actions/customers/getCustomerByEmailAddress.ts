@@ -4,6 +4,7 @@ import { createFluentClient } from "../../client";
 import { getCustomerByEmailAddressExamplePayload } from "../../examplePayloads";
 import { getCustomerByEmailAddressInputs } from "../../inputs";
 import { getCustomerByEmailAddressOutputSchema } from "../../outputSchemas";
+
 export const getCustomerByEmailAddress = action({
   display: {
     label: "Get Customer by Email",
@@ -21,6 +22,7 @@ export const getCustomerByEmailAddress = action({
       context.debug.enabled,
       context.logger,
     );
+
     const query = gql`
       query GetCustomerByEmailAddress($emailAddress: String) {
         customers(primaryEmail: [$emailAddress]) {
@@ -43,8 +45,11 @@ export const getCustomerByEmailAddress = action({
         }
       }
     `;
+
     const variables = { emailAddress: params.emailAddress };
+
     const data = await client.request(query, variables);
+
     return { data };
   },
   examplePayload: getCustomerByEmailAddressExamplePayload,

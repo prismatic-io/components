@@ -11,6 +11,7 @@ import {
 import { getAllPaginationResults } from "../../util";
 import type { Meeting } from "../../interfaces/Meeting";
 import { listMeetingsExamplePayload } from "../../examplePayloads";
+
 export const listMeetings = action({
   display: {
     label: "List Meetings",
@@ -21,14 +22,15 @@ export const listMeetings = action({
     { connection, userId, typeOfMeeting, from, to, timezoneQuery },
   ) => {
     const client = createZoomClient({ connection, debug });
-    const data: {
-      meetings: Meeting[];
-    } = await getAllPaginationResults<Meeting>(
-      client,
-      `/users/${userId}/meetings`,
-      "meetings",
-      { type: typeOfMeeting, from, to, timezone: timezoneQuery },
-    );
+
+    const data: { meetings: Meeting[] } =
+      await getAllPaginationResults<Meeting>(
+        client,
+        `/users/${userId}/meetings`,
+        "meetings",
+        { type: typeOfMeeting, from, to, timezone: timezoneQuery },
+      );
+
     return {
       data,
     };

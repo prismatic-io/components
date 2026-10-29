@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { renameConversationExamplePayload } from "../../examplePayloads";
 import { renameConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const renameConversation = action({
   display: {
     label: "Rename Conversation",
@@ -22,19 +23,19 @@ export const renameConversation = action({
       channel: conversationName,
       name: newConversationName,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { newConversationName },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const name = newConversationName
       .toLowerCase()
       .replace(/[^a-z0-9_-]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 80);
+
     return {
       data: {
         ...renameConversationExamplePayload,

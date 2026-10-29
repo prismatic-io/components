@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { searchProjectsExamplePayload } from "../../examplePayloads";
 import { searchProjectsInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const searchProjects = action({
   display: {
     label: "Search Projects",
@@ -24,6 +25,7 @@ export const searchProjects = action({
         filter: `${searchField}:eq:${searchString}`,
       },
     });
+
     return {
       data: response.data,
     };

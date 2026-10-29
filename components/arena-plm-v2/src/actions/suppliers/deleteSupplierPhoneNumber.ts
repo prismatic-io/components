@@ -4,6 +4,7 @@ import { deleteSupplierPhoneNumberExamplePayload } from "../../examplePayloads";
 import { deleteSupplierPhoneNumberInputs } from "../../inputs";
 import { deleteSupplierPhoneNumberOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteSupplierPhoneNumber = action({
   display: {
     label: "Delete Supplier Phone Number",
@@ -19,16 +20,20 @@ export const deleteSupplierPhoneNumber = action({
   perform: async (context, { connection, supplierGuid, phoneNumberGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting supplier phone number", {
         supplierGuid,
         phoneNumberGuid,
       });
+
       await client.delete(
         `/suppliers/${supplierGuid}/phonenumbers/${phoneNumberGuid}`,
       );
+
       context.logger.info(
         `Successfully deleted phone number: ${phoneNumberGuid} from supplier: ${supplierGuid}`,
       );
+
       return {
         data: {
           success: true,

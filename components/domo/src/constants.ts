@@ -1,6 +1,8 @@
 import type { ResourceConfig } from "./types";
+
 export const BASE_URL = "https://api.domo.com/v1";
 export const OAUTH_URL = "https://api.domo.com/oauth";
+
 export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
   datasets: {
     label: "DataSets",
@@ -45,6 +47,7 @@ export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
     updatedAtField: null,
   },
 };
+
 export const resourceModel = Object.entries(RESOURCE_CONFIG).map(
   ([value, { label }]) => ({ label, value }),
 );

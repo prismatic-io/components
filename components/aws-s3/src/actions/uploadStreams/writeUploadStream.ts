@@ -3,6 +3,7 @@ import { writeUploadStreamExamplePayload } from "../../examplePayloads";
 import { writeUploadStreamInputs } from "../../inputs";
 import { writeUploadStreamOutputSchema } from "../../outputSchemas";
 import { getUploadStream } from "../../utils";
+
 export const writeUploadStream = action({
   display: {
     label: "Write Upload Stream",
@@ -16,6 +17,7 @@ export const writeUploadStream = action({
   performSafety: "notAllowed",
   perform: async ({ executionState }, params) => {
     const { fileStream } = getUploadStream(executionState, params.uploadId);
+
     await new Promise((resolve) => {
       if (!fileStream.write(params.fileContents.data)) {
         fileStream.once("drain", resolve);
@@ -23,6 +25,7 @@ export const writeUploadStream = action({
         resolve(true);
       }
     });
+
     return { data: null };
   },
   examplePerform: async () => writeUploadStreamExamplePayload,

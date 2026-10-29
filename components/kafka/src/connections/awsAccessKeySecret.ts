@@ -1,5 +1,6 @@
 import { connection } from "@prismatic-io/spectral";
 import { awsRegions } from "aws-utils";
+
 export const awsAccessKeySecret = connection({
   key: "awsAccessKeySecret",
   display: {

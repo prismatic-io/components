@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import {
   cleanBooleanInput,
   cleanStringInput,
@@ -23,6 +24,7 @@ import {
   start,
   summary,
 } from "./common";
+
 const bookingProvider = input({
   label: "Booking Provider ID",
   type: "string",
@@ -32,6 +34,7 @@ const bookingProvider = input({
   placeholder: "Enter a booking provider ID",
   clean: util.types.toString,
 });
+
 const bookingId = input({
   label: "Booking ID",
   type: "string",
@@ -42,6 +45,7 @@ const bookingId = input({
   clean: util.types.toString,
   dataSource: "selectBooking",
 });
+
 const externalId = input({
   label: "External ID",
   type: "string",
@@ -51,6 +55,7 @@ const externalId = input({
   placeholder: "Enter an external ID",
   clean: cleanStringInput,
 });
+
 const isFirstTimeClient = input({
   label: "Is First Time Client",
   type: "string",
@@ -60,6 +65,7 @@ const isFirstTimeClient = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 const source = input({
   label: "Source",
   type: "string",
@@ -69,6 +75,7 @@ const source = input({
   placeholder: "Enter a booking source",
   clean: cleanStringInput,
 });
+
 const uploadedImages = input({
   label: "Uploaded Images",
   type: "string",
@@ -79,6 +86,7 @@ const uploadedImages = input({
   placeholder: "Enter an image to attach",
   clean: cleanStringValueListInput,
 });
+
 const isSendConfirmationEmail = input({
   label: "Send Confirmation Email",
   type: "string",
@@ -88,6 +96,7 @@ const isSendConfirmationEmail = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 export const createBookingByProviderInputs = {
   connection,
   bookingProvider,
@@ -115,15 +124,18 @@ export const createBookingByProviderInputs = {
   uploadedImages,
   isSendConfirmationEmail,
 };
+
 export const getBookingByProviderInputs = {
   connection,
   bookingProvider,
   bookingId,
 };
+
 export const getBookingByTenantInputs = {
   connection,
   bookingId,
 };
+
 export const listBookingByProviderInputs = {
   connection,
   bookingProvider: bookingProvider,
@@ -133,6 +145,7 @@ export const listBookingByProviderInputs = {
   sort,
   customQueryParams,
 };
+
 export const listBookingByTenantInputs = {
   connection,
   fetchAll,
@@ -141,6 +154,7 @@ export const listBookingByTenantInputs = {
   sort,
   customQueryParams,
 };
+
 export const updateBookingInputs = {
   connection,
   bookingProvider,

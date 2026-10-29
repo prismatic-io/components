@@ -5,6 +5,7 @@ import { createWebhookInputs as inputs } from "../../../inputsGql";
 import { createWebhookGqlOutputSchema } from "../../../outputSchemas";
 import { createWebhook } from "../../../util";
 import { webhookMapper } from "../mappers/webhookMapper";
+
 export const createWebhookGql = action({
   display: {
     label: "Create Webhook",
@@ -21,6 +22,7 @@ export const createWebhookGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const { webhookSubscriptionCreate } = await createWebhook(client, {
       topic: webhookTopic,
       webhookSubscription: {
@@ -28,6 +30,7 @@ export const createWebhookGql = action({
         format: webhookFormat,
       },
     });
+
     return {
       data: {
         webhook: webhookMapper(webhookSubscriptionCreate.webhookSubscription),

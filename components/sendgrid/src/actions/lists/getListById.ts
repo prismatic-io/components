@@ -4,6 +4,7 @@ import { API_VERSION } from "../../constants";
 import { getListByIdExamplePayload } from "../../examplePayloads";
 import { getListByIdInputs } from "../../inputs";
 import { getListByIdOutputSchema } from "../../outputSchemas";
+
 export const getListById = action({
   display: {
     label: "Get List by ID",

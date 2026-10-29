@@ -20,6 +20,7 @@ const dealFieldRecord = {
   mandatory_flag: true,
   options: null,
 };
+
 const dealFieldV2Record = {
   id: 12345,
   key: "title",
@@ -34,6 +35,7 @@ const dealFieldV2Record = {
   add_time: "2024-01-01T00:00:00Z",
   update_time: "2024-01-01T00:00:00Z",
 };
+
 export const getDealFieldsExamplePayload = {
   data: {
     success: true,
@@ -47,24 +49,28 @@ export const getDealFieldsExamplePayload = {
     },
   },
 };
+
 export const getDealFieldsV2ExamplePayload = {
   data: {
     data: [dealFieldV2Record],
     additional_data: { next_cursor: "eyJpZCI6Mn0" },
   },
 };
+
 export const getDealFieldExamplePayload = {
   data: {
     success: true,
     data: dealFieldRecord,
   },
 };
+
 export const getDealFieldV2ExamplePayload = {
   data: {
     success: true,
     data: dealFieldV2Record,
   },
 };
+
 export const deleteDealFieldExamplePayload = {
   data: {
     success: true,
@@ -73,6 +79,7 @@ export const deleteDealFieldExamplePayload = {
     },
   },
 };
+
 export const deleteDealFieldV2ExamplePayload = {
   data: {
     success: true,

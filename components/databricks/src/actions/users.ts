@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createDataBricksClient } from "../client";
 import { getCurrentUserExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
+
 const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -22,4 +23,5 @@ const getCurrentUser = action({
   },
   examplePayload: getCurrentUserExamplePayload,
 });
+
 export default { getCurrentUser };

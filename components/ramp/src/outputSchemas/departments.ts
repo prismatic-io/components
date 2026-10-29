@@ -1,4 +1,5 @@
 import { pageSchema } from "./shared";
+
 const departmentSchema = {
   type: "object" as const,
   properties: {
@@ -12,8 +13,11 @@ const departmentSchema = {
   },
   required: ["id", "name"],
 };
+
 export const createDepartmentOutputSchema = departmentSchema;
+
 export const getDepartmentOutputSchema = departmentSchema;
+
 export const listDepartmentsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -25,4 +29,5 @@ export const listDepartmentsOutputSchema = {
   },
   required: ["data", "page"],
 };
+
 export const updateDepartmentOutputSchema = departmentSchema;

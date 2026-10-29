@@ -1,28 +1,24 @@
 import type { Connection } from "@prismatic-io/spectral";
 import type { PollingTriggerObject } from "./pollingTriggerObject";
+
 export interface PollResult {
-  payload: {
-    body: {
-      data: unknown;
-    };
-    paginationState?: unknown;
-  };
+  payload: { body: { data: unknown }; paginationState?: unknown };
   polledNoChanges: boolean;
 }
+
 export interface PollingCursor extends Record<string, unknown> {
   watermark: string;
   windowStart: string;
   windowEnd: string;
   isBackfill: boolean;
-  idWalk?: {
-    denseTimestamp: string;
-    idWatermark: string;
-  };
+  idWalk?: { denseTimestamp: string; idWatermark: string };
 }
+
 export interface PollingWindow {
   records: PollingTriggerObject[];
   hasMore: boolean;
 }
+
 export interface SearchFilter {
   propertyName: string;
   operator: string;
@@ -30,13 +26,16 @@ export interface SearchFilter {
   values?: unknown[];
   highValue?: unknown;
 }
+
 export interface SearchFilterGroup {
   filters?: SearchFilter[];
 }
+
 export interface SearchRecordsPollingState {
   lastPolledAt?: string;
   cursor?: PollingCursor;
 }
+
 export interface PollChangesParams {
   hubspotConnection: Connection;
   showNewRecords: boolean;
@@ -46,12 +45,14 @@ export interface PollChangesParams {
   objectType?: string;
   searchProperties?: Record<string, unknown>;
 }
+
 export interface ResolveCursorParams {
   incoming: PollingCursor | undefined;
   state: SearchRecordsPollingState;
   lookBackDate: string;
   now: string;
 }
+
 export interface FetchPollingWindowParams {
   endpoint: string;
   searchProperties: Record<string, unknown> | undefined;
@@ -59,15 +60,15 @@ export interface FetchPollingWindowParams {
   cursor: PollingCursor;
   windowLimit: number;
 }
+
 export interface CursorLogger {
   warn: (message: string) => void;
 }
+
 export interface HttpErrorish {
   response?: {
     status?: number;
     headers?: Record<string, unknown>;
-    data?: {
-      message?: string;
-    };
+    data?: { message?: string };
   };
 }

@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { archiveConversationExamplePayload as setConversationPurposeResponse } from "../../examplePayloads";
 import { setConversationPurposeInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const setConversationPurpose = action({
   display: {
     label: "Set Conversation Purpose",
@@ -22,14 +23,13 @@ export const setConversationPurpose = action({
       channel: channelName,
       purpose,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { purpose },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...setConversationPurposeResponse,
       purpose,

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toKeyValueObject } from "../util";
 import { connectionInput } from "./common";
+
 const eventType = input({
   label: "Event Type",
   type: "string",
@@ -11,6 +12,7 @@ const eventType = input({
     "The event type name used to categorize the event in NRDB. Allowed characters: alphanumeric, underscores, and colons.",
   clean: util.types.toString,
 });
+
 const additionalAttributes = input({
   label: "Additional Attributes",
   type: "string",
@@ -19,6 +21,7 @@ const additionalAttributes = input({
   comments: "Key-value pairs to include in the request body.",
   clean: toKeyValueObject,
 });
+
 const accountId = input({
   label: "Account ID",
   type: "string",
@@ -28,6 +31,7 @@ const accountId = input({
   comments: "The unique identifier of the New Relic Insights account.",
   clean: util.types.toString,
 });
+
 export const sendEventDataInputs = {
   eventType,
   additionalAttributes,

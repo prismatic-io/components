@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, idInput } from "../../inputs";
+
 export const unarchiveContact = action({
   display: {
     label: "Unarchive Contact",

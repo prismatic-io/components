@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const id = input({
   label: "ID",
   type: "string",
@@ -8,6 +9,7 @@ export const id = input({
   comments: "The unique identifier that targets a specific customer record.",
   clean: util.types.toString,
 });
+
 export const region = input({
   label: "Region",
   placeholder: "Enter region",
@@ -21,6 +23,7 @@ export const region = input({
   comments: "The region in which the account is configured.",
   clean: util.types.toString,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",

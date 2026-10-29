@@ -9,6 +9,7 @@ import { fetchData } from "../../../util";
 import { draftOrderMapper } from "../mappers/draftOrderMapper";
 import { paginationMapper } from "../mappers/paginationMapper";
 import listDraftOrdersQuery from "../queries/draftOrders/ListDraftOrders.gql";
+
 export const listDraftOrdersGql = action({
   display: {
     label: "List Draft Orders",
@@ -44,6 +45,7 @@ export const listDraftOrdersGql = action({
       },
     };
   },
+
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

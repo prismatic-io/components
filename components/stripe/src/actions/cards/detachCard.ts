@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { detachCardExamplePayload } from "../../examplePayloads/cards";
 import { detachCardInputs } from "../../inputs";
 import { paymentMethodOutputSchema } from "../../outputSchemas";
+
 export const detachCard = action({
   display: {
     label: "Detach Card",
@@ -21,10 +22,9 @@ export const detachCard = action({
   examplePerform: async (
     _context,
     { paymentId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const card = detachCardExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...card,
@@ -37,5 +37,6 @@ export const detachCard = action({
     type: "actionOutput",
     schema: paymentMethodOutputSchema,
   }),
+
   examplePayload: detachCardExamplePayload,
 });

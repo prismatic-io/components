@@ -3,6 +3,7 @@ import { defaultInputs } from "./general";
 import { cleanString } from "../util";
 import { groupId } from "./devices";
 import { groupName } from "./sessions";
+
 export const contactId = input({
   label: "Contacts ID",
   type: "string",
@@ -13,10 +14,12 @@ export const contactId = input({
   dataSource: "selectContact",
   clean: util.types.toString,
 });
+
 export const getContactInputs = {
   contactId,
   ...defaultInputs,
 };
+
 export const deleteContactInputs = {
   contactId: {
     ...contactId,
@@ -24,6 +27,7 @@ export const deleteContactInputs = {
   },
   ...defaultInputs,
 };
+
 const email = input({
   label: "Email",
   type: "string",
@@ -33,6 +37,7 @@ const email = input({
   placeholder: "test@test.com",
   clean: util.types.toString,
 });
+
 const name = input({
   label: "Name",
   type: "string",
@@ -42,6 +47,7 @@ const name = input({
   placeholder: "John Doe",
   clean: cleanString,
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -51,6 +57,7 @@ const description = input({
   placeholder: "This is my contact.",
   clean: cleanString,
 });
+
 const invite = input({
   label: "Invite",
   type: "boolean",
@@ -58,6 +65,7 @@ const invite = input({
   comments: "Whether to invite the contact to TeamViewer.",
   clean: util.types.toBool,
 });
+
 export const createContactInputs = {
   email,
   groupid: {

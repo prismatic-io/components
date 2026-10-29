@@ -12,18 +12,18 @@ export const AVAILABLE_PROTOCOLS = [
     label: "REST",
   },
 ];
+
 export const PAGINATION_DEFAULT_LIMIT = 250;
+
 export const NO_CONTENT_RESPONSE_TEXT = "Action completed successfully";
+
 export const NO_CONTENT_RESPONSE = {
   data: NO_CONTENT_RESPONSE_TEXT,
 };
+
 export const POLL_RESOURCE_CONFIG: Record<
   string,
-  {
-    endpoint: string;
-    timestampField: string;
-    label: string;
-  }
+  { endpoint: string; timestampField: string; label: string }
 > = {
   candidate: {
     endpoint: "/Candidate",

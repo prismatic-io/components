@@ -4,6 +4,7 @@ import { listQualityProcessStepAttributesExamplePayload } from "../../examplePay
 import { listQualityProcessStepAttributesInputs } from "../../inputs";
 import { attributeDefinitionFullRepListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessStepAttributes = action({
   display: {
     label: "List Quality Process Step Attributes",
@@ -19,6 +20,7 @@ export const listQualityProcessStepAttributes = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         includePossibleValues: params.includePossibleValues,
         creatableOnly: params.creatableOnly,
@@ -26,12 +28,14 @@ export const listQualityProcessStepAttributes = action({
         searchableOnly: params.searchableOnly,
         includeDeleted: params.includeDeleted,
       };
+
       const { data } = await client.get(
         "/settings/qualityprocesses/steps/attributes",
         {
           params: queryParams,
         },
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

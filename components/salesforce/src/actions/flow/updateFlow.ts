@@ -10,6 +10,7 @@ import {
 } from "../../util";
 import { generateApiName } from "../../util";
 import { updateFlowExamplePayload } from "../../examplePayloads";
+
 export const updateFlow = action({
   display: {
     label: "Update Flow",
@@ -22,23 +23,28 @@ export const updateFlow = action({
     { version, flowName, description, status, flowMetadata, connection },
   ) => {
     const client = await createSalesforceClient(connection, version);
+
     const fullName = generateApiName(flowName);
+
     const flowData = await getFlowFunction(client, fullName);
+
     if (description) {
       flowData.description = description;
     }
+
     if (status) {
       flowData.status = status as FlowMetadata["status"];
     }
+
     for (const key in flowMetadata) {
       flowData[key] = flowMetadata[key];
     }
+
     const result = await updateFlowFunction(client, flowData as FlowMetadata);
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

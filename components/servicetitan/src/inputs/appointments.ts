@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringInput } from "../util";
 import {
   connection,
@@ -12,6 +13,7 @@ import {
   start,
   technicianId,
 } from "./common";
+
 const appointmentId = input({
   label: "Appointment ID",
   type: "string",
@@ -22,6 +24,7 @@ const appointmentId = input({
   clean: util.types.toString,
   dataSource: "selectAppointment",
 });
+
 const arrivalWindowStart = input({
   label: "Arrival Window Start",
   type: "string",
@@ -31,6 +34,7 @@ const arrivalWindowStart = input({
   placeholder: "Enter the arrival window start date and time in UTC",
   clean: cleanStringInput,
 });
+
 const arrivalWindowEnd = input({
   label: "Arrival Window End",
   type: "string",
@@ -40,6 +44,7 @@ const arrivalWindowEnd = input({
   placeholder: "Enter the arrival window end date and time in UTC",
   clean: cleanStringInput,
 });
+
 const specialInstructions = input({
   label: "Special Instructions",
   type: "text",
@@ -49,6 +54,7 @@ const specialInstructions = input({
   placeholder: "Enter special instructions",
   clean: cleanStringInput,
 });
+
 export const createAppointmentInputs = {
   connection,
   jobId,
@@ -67,14 +73,17 @@ export const createAppointmentInputs = {
   technicianId,
   specialInstructions,
 };
+
 export const deleteAppointmentInputs = {
   connection,
   appointmentId,
 };
+
 export const getAppointmentInputs = {
   connection,
   appointmentId,
 };
+
 export const listAppointmentsInputs = {
   connection,
   fetchAll,

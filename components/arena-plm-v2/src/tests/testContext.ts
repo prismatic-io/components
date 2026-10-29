@@ -1,11 +1,14 @@
 import type { ArenaAuthContext } from "../types";
+
 export interface CapturedLog {
   level: string;
   args: unknown[];
 }
+
 export interface TestContext extends ArenaAuthContext {
   logs: CapturedLog[];
 }
+
 export const createTestContext = (): TestContext => {
   const logs: CapturedLog[] = [];
   const capture =
@@ -13,6 +16,7 @@ export const createTestContext = (): TestContext => {
     (...args: unknown[]) => {
       logs.push({ level, args });
     };
+
   return {
     logger: {
       metric: capture("metric"),

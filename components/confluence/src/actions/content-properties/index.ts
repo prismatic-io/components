@@ -13,6 +13,7 @@ import { listContentPropertiesForPage } from "./listContentPropertiesForPage";
 import { updateContentPropertyForAttachment } from "./updateContentPropertyForAttachment";
 import { updateContentPropertyForCustomContent } from "./updateContentPropertyForCustomContent";
 import { updateContentPropertyForPage } from "./updateContentPropertyForPage";
+
 export default {
   createContentPropertyForAttachment,
   createContentPropertyForCustomContent,

@@ -17,6 +17,7 @@ import {
   v3PollWindowBounds,
 } from "../../util/polling";
 import { fetchV3Window } from "../../util/v3";
+
 export const pollChangesTriggerV3 = pollingTrigger({
   display: {
     label: "New and Updated Applications",
@@ -50,6 +51,7 @@ export const pollChangesTriggerV3 = pollingTrigger({
     const { perPage, maxPages } = v3PollWindowBounds(
       context.batch?.enabled === true,
     );
+
     const client = createV3Client(connection, context.debug.enabled);
     const { records, after } = await fetchV3Window<V3Application>(
       client,
@@ -61,24 +63,29 @@ export const pollChangesTriggerV3 = pollingTrigger({
         maxPages,
       },
     );
+
     const { created, updated } = partitionApplicationsByTimestamp(
       records,
       new Date(start.since),
     );
     const next: V3PollingCursor | null = after ? { ...start, after } : null;
+
     context.polling.setState({
       lastPolledAt: next ? state.lastPolledAt : start.drainStartedAt,
       ...(next ? { cursor: next } : {}),
     } satisfies V3PollingState);
+
     const result: V3ApplicationChangesObject = {
       created: start.backfill || showNewRecords ? created : [],
       updated: start.backfill || showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled applications (v3): ${records.length} read → ${created.length} new, ${updated.length} updated, ${next ? "more pending" : "drained"}`,
       );
     }
+
     return {
       payload: {
         ...payload,

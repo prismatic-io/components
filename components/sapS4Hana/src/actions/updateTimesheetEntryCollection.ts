@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
 import { requestBodyCode, connectionInput } from "../inputs";
+
 export const updateTimesheetEntryCollection = action({
   display: {
     label: "Update Timesheet Entry Collection",

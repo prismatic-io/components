@@ -7,7 +7,9 @@ import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage, getHttpStatus, getNestedValue } from "../util";
 import { guidOf, resultData, resultList } from "./resultHelpers";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
@@ -15,12 +17,14 @@ const testConnection = createConnection(arenaUsernamePassword, {
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 let itemGuid: string | undefined;
 let secondItemGuid: string | undefined;
 let thirdItemGuid: string | undefined;
 let itemCategoryGuid: string | undefined;
 let numberFormatGuid: string | undefined;
 let numberFormatFieldGuid: string | undefined;
+
 beforeAll(async () => {
   const itemsResult = await harness.action("listItems", {
     connection: testConnection,
@@ -30,23 +34,27 @@ beforeAll(async () => {
   itemGuid = guidOf(items[0]);
   secondItemGuid = guidOf(items[1]);
   thirdItemGuid = guidOf(items[2]);
+
   if (!itemGuid) {
     console.warn(
       "No items found in workspace — many tests will be skipped. Populate the workspace with at least two items before running this suite.",
     );
   }
+
   const catResult = await harness.action("listCategories", {
     connection: testConnection,
     objectType: "items",
   });
   const cats = resultList(catResult);
   itemCategoryGuid = guidOf(cats[0]);
+
   const fmtResult = await harness.action("listItemNumberFormats", {
     connection: testConnection,
     limit: "1",
   });
   const fmts = resultList(fmtResult);
   numberFormatGuid = guidOf(fmts[0]);
+
   if (numberFormatGuid) {
     const fieldsResult = await harness.action("listItemNumberFormatFields", {
       connection: testConnection,
@@ -58,8 +66,10 @@ beforeAll(async () => {
     numberFormatFieldGuid = guidOf(fields[0]);
   }
 });
+
 describe("Item", () => {
   let createdItemGuid: string | undefined;
+
   afterAll(async () => {
     if (createdItemGuid) {
       try {
@@ -72,6 +82,7 @@ describe("Item", () => {
       }
     }
   });
+
   test("listItems — returns result array", async () => {
     const result = await harness.action("listItems", {
       connection: testConnection,
@@ -80,6 +91,7 @@ describe("Item", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   test("getItemByGuid — returns item details", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping getItemByGuid");
@@ -92,6 +104,7 @@ describe("Item", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(itemGuid);
   });
+
   test("getItemByGuid — with includeEmptyAdditionalAttributes and responseView", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping getItemByGuid extended");
@@ -105,6 +118,7 @@ describe("Item", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("createItem — creates and returns item with guid", async () => {
     if (!itemCategoryGuid || !numberFormatGuid) {
       console.warn(
@@ -136,6 +150,7 @@ describe("Item", () => {
       throw err;
     }
   });
+
   test("updateItem — updates item description", async () => {
     if (!createdItemGuid) {
       console.warn("No created item GUID, skipping updateItem");
@@ -149,6 +164,7 @@ describe("Item", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(createdItemGuid);
   });
+
   test("deleteItem — deletes the created item", async () => {
     if (!createdItemGuid) {
       console.warn("No created item GUID, skipping deleteItem");
@@ -162,6 +178,7 @@ describe("Item", () => {
     expect(resultData(result).success).toBe(true);
     createdItemGuid = undefined;
   });
+
   test("getItemRevisions — returns revision data", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping getItemRevisions");
@@ -173,6 +190,7 @@ describe("Item", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("listItemWhereUsed — returns where-used data", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listItemWhereUsed");
@@ -184,6 +202,7 @@ describe("Item", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("listItemHistory — returns history data", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listItemHistory");
@@ -195,6 +214,7 @@ describe("Item", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("listItemFutureChanges — returns future changes data", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listItemFutureChanges");
@@ -206,6 +226,7 @@ describe("Item", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("getItemImageContent — returns content object or handles no-image gracefully", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping getItemImageContent");
@@ -228,8 +249,10 @@ describe("Item", () => {
       );
     }
   });
+
   test.skip("createItemImage — multipart upload, manual testing required", () => {});
   test.skip("deleteItemImage — depends on createItemImage, manual testing required", () => {});
+
   test("changeItemLifecyclePhase — requires lifecyclePhaseGuid, skipped if not available", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping changeItemLifecyclePhase");
@@ -241,6 +264,7 @@ describe("Item", () => {
     const phases: unknown[] = Array.isArray(phasesResult.data)
       ? phasesResult.data
       : resultList(phasesResult);
+
     if (phases.length === 0) {
       console.warn(
         "No lifecycle phases found, skipping changeItemLifecyclePhase",
@@ -248,6 +272,7 @@ describe("Item", () => {
       return;
     }
     const toLifecyclePhaseGuid: string = guidOf(phases[0]);
+
     try {
       const result = await harness.action("changeItemLifecyclePhase", {
         connection: testConnection,
@@ -264,9 +289,11 @@ describe("Item", () => {
     }
   });
 });
+
 describe("Item BOM", () => {
   let createdBomLineGuid: string | undefined;
   let createdSubstituteGuid: string | undefined;
+
   afterAll(async () => {
     if (itemGuid && createdBomLineGuid) {
       try {
@@ -288,6 +315,7 @@ describe("Item BOM", () => {
       }
     }
   });
+
   test("listBom — returns BOM collection for item", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listBom");
@@ -300,6 +328,7 @@ describe("Item BOM", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   test("getBomSettings — returns BOM settings for item", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping getBomSettings");
@@ -311,6 +340,7 @@ describe("Item BOM", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("updateBomSettings — updates automaticallyGenerateLineNumbers", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping updateBomSettings");
@@ -325,6 +355,7 @@ describe("Item BOM", () => {
     const currentValue: boolean = util.types.isBool(rawGenerateLineNumbers)
       ? rawGenerateLineNumbers
       : true;
+
     const result = await harness.action("updateBomSettings", {
       connection: testConnection,
       itemGuid,
@@ -332,6 +363,7 @@ describe("Item BOM", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("createBomLine — creates a BOM child line", async () => {
     if (!itemGuid || !secondItemGuid) {
       console.warn(
@@ -350,6 +382,7 @@ describe("Item BOM", () => {
     expect(resultData(result).guid).toBeTruthy();
     createdBomLineGuid = guidOf(resultData(result));
   });
+
   test("getBomLine — retrieves the created BOM line", async () => {
     if (!itemGuid || !createdBomLineGuid) {
       console.warn("No BOM line GUID, skipping getBomLine");
@@ -363,6 +396,7 @@ describe("Item BOM", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(createdBomLineGuid);
   });
+
   test("updateBomLine — updates notes on the BOM line", async () => {
     if (!itemGuid || !createdBomLineGuid) {
       console.warn("No BOM line GUID, skipping updateBomLine");
@@ -376,6 +410,7 @@ describe("Item BOM", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("listBomSubstitutes — returns substitute list for BOM line", async () => {
     if (!itemGuid || !createdBomLineGuid) {
       console.warn("No BOM line GUID, skipping listBomSubstitutes");
@@ -389,6 +424,7 @@ describe("Item BOM", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   test("createBomSubstitute — creates a substitute on the BOM line", async () => {
     if (!itemGuid || !createdBomLineGuid || !thirdItemGuid) {
       console.warn(
@@ -421,6 +457,7 @@ describe("Item BOM", () => {
       throw err;
     }
   });
+
   test("getBomSubstitute — retrieves the created substitute", async () => {
     if (!itemGuid || !createdBomLineGuid || !createdSubstituteGuid) {
       console.warn("No substitute GUID, skipping getBomSubstitute");
@@ -435,6 +472,7 @@ describe("Item BOM", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(createdSubstituteGuid);
   });
+
   test("updateBomSubstitute — updates notes on the substitute", async () => {
     if (!itemGuid || !createdBomLineGuid || !createdSubstituteGuid) {
       console.warn("No substitute GUID, skipping updateBomSubstitute");
@@ -449,6 +487,7 @@ describe("Item BOM", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("deleteBomSubstitute — deletes the created substitute", async () => {
     if (!itemGuid || !createdBomLineGuid || !createdSubstituteGuid) {
       console.warn("No substitute GUID, skipping deleteBomSubstitute");
@@ -464,6 +503,7 @@ describe("Item BOM", () => {
     expect(resultData(result).success).toBe(true);
     createdSubstituteGuid = undefined;
   });
+
   test("deleteBomLine — deletes the created BOM line", async () => {
     if (!itemGuid || !createdBomLineGuid) {
       console.warn("No BOM line GUID, skipping deleteBomLine");
@@ -479,6 +519,7 @@ describe("Item BOM", () => {
     createdBomLineGuid = undefined;
   });
 });
+
 describe("Item Settings", () => {
   test("listItemLifecyclePhases — returns array of lifecycle phases", async () => {
     const result = await harness.action("listItemLifecyclePhases", {
@@ -490,12 +531,14 @@ describe("Item Settings", () => {
       : resultList(result);
     expect(Array.isArray(phases)).toBe(true);
   });
+
   test("listItemRequirements — returns compliance requirements", async () => {
     const result = await harness.action("listItemRequirements", {
       connection: testConnection,
     });
     expect(result.data).toBeDefined();
   });
+
   test("listItemNumberFormats — returns list of number formats", async () => {
     const result = await harness.action("listItemNumberFormats", {
       connection: testConnection,
@@ -504,6 +547,7 @@ describe("Item Settings", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   test("getItemNumberFormatByGuid — returns format details", async () => {
     if (!numberFormatGuid) {
       console.warn("No number format GUID, skipping getItemNumberFormatByGuid");
@@ -516,6 +560,7 @@ describe("Item Settings", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(numberFormatGuid);
   });
+
   test("listItemNumberFormatFields — returns fields for a format", async () => {
     if (!numberFormatGuid) {
       console.warn(
@@ -529,6 +574,7 @@ describe("Item Settings", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("getItemNumberFormatField — returns a single field by GUID", async () => {
     if (!numberFormatGuid || !numberFormatFieldGuid) {
       console.warn(
@@ -544,7 +590,9 @@ describe("Item Settings", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(numberFormatFieldGuid);
   });
+
   test.skip("createItemNumberFormatField — schema-modifying operation, manual testing required", () => {});
+
   test("listItemNumberReservations — returns list of reservations", async () => {
     const result = await harness.action("listItemNumberReservations", {
       connection: testConnection,
@@ -552,6 +600,7 @@ describe("Item Settings", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("createItemNumberReservation — creates a reservation and returns GUID", async () => {
     if (!numberFormatGuid || !itemCategoryGuid) {
       console.warn(
@@ -576,8 +625,10 @@ describe("Item Settings", () => {
     }
   });
 });
+
 describe("Item File", () => {
   let discoveredFileAssociationGuid: string | undefined;
+
   beforeAll(async () => {
     if (!itemGuid) return;
     const filesResult = await harness.action("listItemFileAssociations", {
@@ -587,6 +638,7 @@ describe("Item File", () => {
     const assocs = resultList(filesResult);
     discoveredFileAssociationGuid = guidOf(assocs[0]);
   });
+
   test("listItemFileAssociations — returns list of file associations", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listItemFileAssociations");
@@ -599,6 +651,7 @@ describe("Item File", () => {
     expect(result.data).toBeDefined();
     expect(Array.isArray(resultData(result).results)).toBe(true);
   });
+
   test("getItemFileAssociation — returns details of a single file association", async () => {
     if (!itemGuid || !discoveredFileAssociationGuid) {
       console.warn(
@@ -614,6 +667,7 @@ describe("Item File", () => {
     expect(result.data).toBeDefined();
     expect(resultData(result).guid).toBe(discoveredFileAssociationGuid);
   });
+
   test("updateItemFileAssociation — updates latestEditionAssociation flag", async () => {
     if (!itemGuid || !discoveredFileAssociationGuid) {
       console.warn(
@@ -630,6 +684,7 @@ describe("Item File", () => {
     const currentFlag: boolean = util.types.isBool(rawLatestEdition)
       ? rawLatestEdition
       : true;
+
     const result = await harness.action("updateItemFileAssociation", {
       connection: testConnection,
       itemGuid,
@@ -638,11 +693,14 @@ describe("Item File", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test.skip("createItemFileAssociation — multipart upload, manual testing required", () => {});
   test.skip("deleteItemFileAssociation — would remove workspace data, manual testing required", () => {});
 });
+
 describe("Item Reference — Sourcing Relationships", () => {
   let createdSourcingGuid: string | undefined;
+
   afterAll(async () => {
     if (itemGuid && createdSourcingGuid) {
       try {
@@ -656,6 +714,7 @@ describe("Item Reference — Sourcing Relationships", () => {
       }
     }
   });
+
   test("listSourcingRelationships — returns list of sourcing relationships", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listSourcingRelationships");
@@ -667,6 +726,7 @@ describe("Item Reference — Sourcing Relationships", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("createSourcingRelationship — creates a make-item sourcing entry", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping createSourcingRelationship");
@@ -690,6 +750,7 @@ describe("Item Reference — Sourcing Relationships", () => {
       );
     }
   });
+
   test("updateSourcingRelationship — updates notes on sourcing entry", async () => {
     if (!itemGuid || !createdSourcingGuid) {
       console.warn(
@@ -705,6 +766,7 @@ describe("Item Reference — Sourcing Relationships", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("deleteSourcingRelationship — deletes the created sourcing entry", async () => {
     if (!itemGuid || !createdSourcingGuid) {
       console.warn(
@@ -722,6 +784,7 @@ describe("Item Reference — Sourcing Relationships", () => {
     createdSourcingGuid = undefined;
   });
 });
+
 describe("Item Reference — Training", () => {
   test("listItemTrainingRecords — returns training records for item", async () => {
     if (!itemGuid) {
@@ -734,6 +797,7 @@ describe("Item Reference — Training", () => {
     });
     expect(result.data).toBeDefined();
   });
+
   test("listItemTrainingPlans — returns training plans associated with item", async () => {
     if (!itemGuid) {
       console.warn("No item GUID, skipping listItemTrainingPlans");

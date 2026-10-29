@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "../connections";
+
 export const validateConnection = (connection: Connection): void => {
   if (!connections.some(({ key }) => key === connection?.key)) {
     throw new ConnectionError(
@@ -8,6 +9,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getBearerToken = (connection: Connection): string =>
   util.types.toString(
     connection.token?.access_token || connection.fields?.apiKey,

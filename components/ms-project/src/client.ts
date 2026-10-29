@@ -6,7 +6,9 @@ import {
 import { URL } from "node:url";
 import { oauth } from "./connections";
 import type { CreateClientProps } from "./types";
+
 Array.isArray([]);
+
 export const validateConnection = (
   connection: Connection,
 ): connection is Connection => {
@@ -16,6 +18,7 @@ export const validateConnection = (
       `Unknown Connection type provided: ${connection.key}`,
     );
   }
+
   if (!connection.token?.access_token) {
     throw new ConnectionError(
       connection,
@@ -24,15 +27,18 @@ export const validateConnection = (
   }
   return true;
 };
+
 export const createProjectsClient = (
   { connection }: CreateClientProps,
   debug: boolean,
 ): HttpClient => {
   validateConnection(connection);
+
   const url = new URL(
     "/sites/pwa/_api/ProjectServer",
     util.types.toString(connection.fields.pwaSite),
   );
+
   const projectsClient = createClient({
     baseUrl: url.toString(),
     headers: {
@@ -42,5 +48,6 @@ export const createProjectsClient = (
     responseType: "json",
     debug,
   });
+
   return projectsClient;
 };

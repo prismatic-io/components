@@ -5,6 +5,7 @@ import { createFileMarkupExamplePayload } from "../../examplePayloads";
 import { createFileMarkupInputs } from "../../inputs";
 import { fileAssociationMarkupSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const createFileMarkup = action({
   display: {
     label: "Create File Markup",
@@ -32,8 +33,11 @@ export const createFileMarkup = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const formData = new FormData();
+
       if (reserved !== undefined) formData.append("reserved", String(reserved));
+
       if (markupContent?.data) {
         formData.append("markup.content", markupContent.data, {
           filename: "markup",
@@ -48,13 +52,17 @@ export const createFileMarkup = action({
       if (markupFormat) formData.append("markup.format", markupFormat);
       if (markupAuthorFullName)
         formData.append("markup.author.fullName", markupAuthorFullName);
+
       context.logger.info("Creating file markup", { fileGuid });
+
       const { data } = await client.post(
         `/files/${fileGuid}/markups`,
         formData,
         { headers: { ...formData.getHeaders() } },
       );
+
       context.logger.info("File markup created successfully", { fileGuid });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create File Markup");

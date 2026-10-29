@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { getSoftwareExamplePayload as examplePayload } from "../../examplePayloads";
 import { getSoftwareInputs as inputs } from "../../inputs";
 import { softwareOutputSchema } from "../../outputSchemas";
+
 export const getSoftware = action({
   display: {
     label: "Get Software",
@@ -13,7 +14,9 @@ export const getSoftware = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await client.get(`/applications/${applicationId}`);
+
     return {
       data,
     };

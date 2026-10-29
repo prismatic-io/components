@@ -4,6 +4,7 @@ import { getPipelineDealsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getPipelineDealsExamplePayload } from "../../examplePayloads";
 import { getPipelineDealsOutputSchema } from "../../outputSchemas";
+
 export const getPipelineDeals = action({
   display: {
     label: "Get Pipeline Deals",

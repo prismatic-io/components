@@ -7,6 +7,7 @@ import { listLocationsGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listLocationsQuery from "../queries/locations/ListLocations.gql";
+
 export const listLocationsGql = action({
   display: {
     label: "List Locations",
@@ -33,9 +34,8 @@ export const listLocationsGql = action({
         first: getAlldata ? MAX_LIMIT : pagination.limit,
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
-    )) as Record<"locations", unknown[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"locations", unknown[]> & { pageInfo: PageInfo };
+
     return {
       data,
     };

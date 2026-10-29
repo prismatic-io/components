@@ -1,4 +1,5 @@
 import { googleRpcStatusSchema, userIdentifierSchema } from "./common";
+
 export const uploadCallConversionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -17,6 +18,7 @@ export const uploadCallConversionsOutputSchema = {
     },
   },
 };
+
 export const uploadClickConversionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -38,6 +40,7 @@ export const uploadClickConversionsOutputSchema = {
     },
   },
 };
+
 export const ingestOfflineConversionsOutputSchema = {
   type: "object" as const,
   properties: {

@@ -15,10 +15,13 @@ import type {
   WorkdayHttpError,
 } from "../types";
 import { buildTokenUrl, parseRestApiEndpoint } from "./workdayUrls";
+
 const tokenCache = new Map<string, CachedToken>();
 const rotatedRefreshTokens = new Map<string, string>();
+
 export const usesRefreshToken = (connection: Connection): boolean =>
   connection.key === workdayRefreshTokenConnection.key;
+
 const parseConnectionEndpoint = (connection: Connection): WorkdayEndpoint => {
   try {
     return parseRestApiEndpoint(
@@ -28,16 +31,19 @@ const parseConnectionEndpoint = (connection: Connection): WorkdayEndpoint => {
     throw new ConnectionError(connection, (error as Error).message);
   }
 };
+
 export const getBaseUrl = (connection: Connection): string =>
   usesRefreshToken(connection)
     ? parseConnectionEndpoint(connection).baseUrl
     : util.types.toString(connection.fields.apiUrl);
+
 export const getConnectionTenant = (
   connection: Connection,
 ): string | undefined =>
   usesRefreshToken(connection)
     ? parseConnectionEndpoint(connection).tenant
     : undefined;
+
 const describeTokenError = (error: unknown): string => {
   const response = (error as WorkdayHttpError).response;
   const data = response?.data as Record<string, unknown> | undefined;
@@ -50,6 +56,7 @@ const describeTokenError = (error: unknown): string => {
   }
   return response ? status : `: ${(error as Error).message}`;
 };
+
 const cacheKey = (connection: Connection): string =>
   createHash("sha256")
     .update(
@@ -64,6 +71,7 @@ const cacheKey = (connection: Connection): string =>
         .join("\n"),
     )
     .digest("hex");
+
 const getTokenUrl = (connection: Connection): string => {
   const override = util.types.toString(connection.fields.tokenUrl).trim();
   if (override && !override.startsWith("https://")) {
@@ -71,6 +79,7 @@ const getTokenUrl = (connection: Connection): string => {
   }
   return override || buildTokenUrl(parseConnectionEndpoint(connection));
 };
+
 const exchangeRefreshToken = async (
   connection: Connection,
   key: string,
@@ -127,6 +136,7 @@ const exchangeRefreshToken = async (
     );
   }
 };
+
 export const getAccessToken = async (
   connection: Connection,
   { forceRefresh = false }: ForceRefreshOptions = {},
@@ -143,6 +153,7 @@ export const getAccessToken = async (
   tokenCache.set(key, token);
   return token.accessToken;
 };
+
 export const clearTokenCache = (): void => {
   tokenCache.clear();
   rotatedRefreshTokens.clear();

@@ -4,6 +4,7 @@ import { listEventsExamplePayload as examplePayload } from "../../examplePayload
 import { listEventsInputs as inputs } from "../../inputs/events";
 import type { ListEventsResponse } from "../../interfaces/events";
 import { fetchAllWithPagination } from "../../utils/fetchAllWithPagination";
+
 export const listEvents = action({
   display: {
     label: "List Events",
@@ -15,6 +16,7 @@ export const listEvents = action({
       connection,
       debug: context.debug.enabled,
     });
+
     const configVars = { ...rest, ...pagination };
     const { data } = fetchAll
       ? await fetchAllWithPagination<ListEventsResponse>({
@@ -26,6 +28,7 @@ export const listEvents = action({
           params: configVars,
           paramsSerializer: { indexes: null },
         });
+
     return {
       data,
     };

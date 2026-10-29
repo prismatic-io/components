@@ -3,7 +3,9 @@ import actions from "./actions";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 import connections from "./connections";
+
 export default component({
   key: "imap",
   public: true,

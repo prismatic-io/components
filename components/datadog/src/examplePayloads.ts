@@ -1,11 +1,14 @@
 import type { Element, TriggerPayload } from "@prismatic-io/spectral";
 import type { WebhooksIntegration } from "./types";
+
 export const submitMetricsExamplePayload = {
   data: {
     errors: [],
   },
 };
+
 export const submitSingleMetricExamplePayload = submitMetricsExamplePayload;
+
 export const listMetricsExamplePayload = {
   data: {
     metrics: [
@@ -18,6 +21,7 @@ export const listMetricsExamplePayload = {
     from: "1636629071",
   },
 };
+
 export const searchMetricsExamplePayload = {
   data: {
     results: {
@@ -30,9 +34,8 @@ export const searchMetricsExamplePayload = {
     },
   },
 };
-export const getWebhookExamplePayload: {
-  data: WebhooksIntegration;
-} = {
+
+export const getWebhookExamplePayload: { data: WebhooksIntegration } = {
   data: {
     name: "datadog-alert-webhook",
     url: "https://example.com/webhook",
@@ -41,14 +44,16 @@ export const getWebhookExamplePayload: {
     payload: null,
   },
 };
+
 export const createWebhookExamplePayload = getWebhookExamplePayload;
+
 export const updateWebhookExamplePayload = getWebhookExamplePayload;
+
 export const deleteWebhookExamplePayload = {
   data: null,
 };
-export const selectMetricExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectMetricExamplePayload: { result: Element[] } = {
   result: [
     { label: "system.cpu.idle", key: "system.cpu.idle" },
     { label: "system.cpu.user", key: "system.cpu.user" },
@@ -56,9 +61,8 @@ export const selectMetricExamplePayload: {
     { label: "system.load.1", key: "system.load.1" },
   ],
 };
-export const webhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const webhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: { "Content-Type": "application/json" },
     queryParameters: {},

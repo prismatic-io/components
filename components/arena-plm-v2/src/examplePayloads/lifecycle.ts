@@ -1,9 +1,11 @@
 import type { ChangeLifecycleTransitionFullVo, UserCompactVo } from "../types";
+
 const sampleUser: UserCompactVo = {
   guid: "9ZY87XW65VU43TS21RQ09PO8",
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 export const changeLifecycleStatusExamplePayload: {
   data: ChangeLifecycleTransitionFullVo;
 } = {

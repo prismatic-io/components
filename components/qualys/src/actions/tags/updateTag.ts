@@ -6,6 +6,7 @@ import { updateTagInputs } from "../../inputs";
 import { updateTagOutputSchema } from "../../outputSchemas";
 import type { QpsServiceResponse, QualysTag } from "../../types";
 import { parseXml } from "../../util";
+
 export const updateTag = action({
   display: {
     label: "Update Tag",
@@ -23,6 +24,7 @@ export const updateTag = action({
     { connection, tagId, updateTagName, color, criticalityScore },
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
+
     const tagElements = [
       updateTagName ? `<name>${updateTagName}</name>` : "",
       color ? `<color>${color}</color>` : "",
@@ -32,18 +34,22 @@ export const updateTag = action({
     ]
       .filter(Boolean)
       .join("");
+
     const requestBody = `<?xml version="1.0" encoding="UTF-8"?>
 <ServiceRequest>
   <data>
     <Tag>${tagElements}</Tag>
   </data>
 </ServiceRequest>`;
+
     const response = await client.post<string>(
       `/qps/rest/2.0/update/am/tag/${tagId}`,
       requestBody,
       { headers: XML_HEADERS },
     );
+
     const parsed = await parseXml<QpsServiceResponse<QualysTag>>(response.data);
+
     return { data: parsed };
   },
   examplePerform: async () => updateTagExamplePayload,

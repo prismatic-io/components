@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, connectionInput } from "./common";
 import { lookBackDateClean } from "../util";
+
 const fromFilter = input({
   label: "From Filter",
   placeholder: "Enter sender phone number",
@@ -11,6 +12,7 @@ const fromFilter = input({
   example: "+15555551234",
   clean: cleanString,
 });
+
 const toFilter = input({
   label: "To Filter",
   placeholder: "Enter recipient phone number",
@@ -21,6 +23,7 @@ const toFilter = input({
   example: "+15551234567",
   clean: cleanString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -30,6 +33,7 @@ const showNewRecords = input({
     "When true, newly sent messages are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -39,7 +43,9 @@ const showUpdatedRecords = input({
     "Reserved for shape consistency with other polling triggers. Twilio polling does not detect status changes to already-sent messages (use the webhook trigger for status callbacks). The 'updated' bucket is always empty.",
   clean: util.types.toBool,
 });
+
 export const webhookInputs = {};
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -50,6 +56,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesTriggerInputs = {
   connection: connectionInput,
   lookBackDate,

@@ -5,6 +5,7 @@ import { updateAssetExamplePayload } from "../../examplePayloads";
 import { updateAssetInputs } from "../../inputs";
 import { updateAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const updateAsset = action({
   display: {
     label: "Update Asset",
@@ -21,13 +22,16 @@ export const updateAsset = action({
       spaceId,
       environmentId,
     );
+
     const asset: Asset = await environment.getAsset(assetId);
+
     if (title) {
       const locale = Object.keys(title)[0];
       asset.fields.title[locale] = (title as AssetProps["fields"]["title"])[
         locale
       ];
     }
+
     if (description && asset.fields.description) {
       const locale = Object.keys(description)[0];
       asset.fields.description[locale] = (
@@ -39,9 +43,8 @@ export const updateAsset = action({
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateAssetExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateAssetExamplePayload,
   inputs: updateAssetInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -9,6 +9,7 @@ export interface Worker {
   CreationDate: string | null;
   LastUpdateDate: string | null;
 }
+
 export interface WorkerRecord {
   PersonId: number;
   PersonNumber: string | null;
@@ -19,6 +20,7 @@ export interface WorkerRecord {
   LastUpdateDate: string | null;
   workersUniqID: string;
 }
+
 export interface Assignment {
   AssignmentId: number;
   AssignmentName: string | null;
@@ -39,6 +41,7 @@ export interface Assignment {
   WorkerType: string | null;
   FullPartTime: string | null;
 }
+
 export interface Department {
   OrganizationId: number;
   Name: string | null;
@@ -48,6 +51,7 @@ export interface Department {
   EffectiveEndDate: string | null;
   LastUpdateDate: string | null;
 }
+
 export interface Job {
   JobId: number;
   JobCode: string | null;
@@ -59,6 +63,7 @@ export interface Job {
   EffectiveEndDate: string | null;
   LastUpdateDate: string | null;
 }
+
 export interface LocationAddress {
   Country: string | null;
   AddressUsageType: string | null;
@@ -69,6 +74,7 @@ export interface LocationAddress {
   EffectiveStartDate: string | null;
   EffectiveEndDate: string | null;
 }
+
 export interface Location {
   LocationId: number;
   LocationCode: string;
@@ -83,6 +89,7 @@ export interface Location {
   LastUpdateDate: string | null;
   addresses?: LocationAddress[];
 }
+
 export interface Position {
   PositionId: number;
   Name: string;
@@ -95,6 +102,7 @@ export interface Position {
   EffectiveStartDate: string;
   EffectiveEndDate: string;
 }
+
 export interface Grade {
   GradeId: number;
   GradeCode: string | null;
@@ -104,6 +112,7 @@ export interface Grade {
   EffectiveStartDate: string | null;
   EffectiveEndDate: string | null;
 }
+
 export interface Absence {
   personAbsenceEntryId: number;
   personId: number;

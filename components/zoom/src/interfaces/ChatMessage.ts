@@ -19,27 +19,32 @@ export interface ChatMessage {
   timestamp: number;
   at_items: AtItem[];
 }
+
 interface File {
   download_url: string;
   file_id: string;
   file_name: string;
   file_size: number;
 }
+
 interface RichText {
   start_position: number;
   end_position: number;
   format_type: string;
   format_attr: string;
 }
+
 interface Reaction {
   emoji: string;
   total_count: number;
   senders: Sender[];
 }
+
 interface Sender {
   user_id: string;
   member_id: string;
 }
+
 interface AtItem {
   at_contact: string;
   at_contact_member_id: string;

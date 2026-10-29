@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { updateDataSetExamplePayload } from "../../examplePayloads";
 import { updateDataSetInputs } from "../../inputs";
 import type { UpdateDataSetBody } from "../types/UpdateDataSetBody";
+
 export const updateDataSet = action({
   display: {
     label: "Update Data Set",
@@ -24,4 +25,5 @@ export const updateDataSet = action({
   },
   inputs: updateDataSetInputs,
 });
+
 export default { updateDataSet };

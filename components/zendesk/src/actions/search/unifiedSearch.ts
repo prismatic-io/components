@@ -4,6 +4,7 @@ import { unifiedSearchExamplePayload } from "../../examplePayloads";
 import { unifiedSearchInputs } from "../../inputs";
 import { unifiedSearchOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse } from "../../types";
+
 export const unifiedSearch = action({
   display: {
     label: "Unified Search",
@@ -39,13 +40,13 @@ export const unifiedSearch = action({
       "page[size]": pagination.pageLimit,
       "page[after]": pagination.cursor,
     };
+
     const { data } = await client.get<
-      PaginatedResponse<{
-        results: unknown[];
-      }>
+      PaginatedResponse<{ results: unknown[] }>
     >("/guide/search", {
       params,
     });
+
     return {
       data,
     };

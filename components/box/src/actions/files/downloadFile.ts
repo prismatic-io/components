@@ -5,6 +5,7 @@ import { FILE_TYPE } from "../../constants";
 import { downloadFileExamplePayload } from "../../examplePayloads";
 import { downloadFileInputs } from "../../inputs";
 import { getPathEntries } from "../../util";
+
 export const downloadFile = action({
   display: {
     label: "Download File",
@@ -15,9 +16,11 @@ export const downloadFile = action({
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
     const { id, type, name } = pathEntries.slice(-1)[0];
+
     if (type !== FILE_TYPE) {
       throw Error(`'${name}' is not a file`);
     }
+
     const url = await client.downloads.getDownloadFileUrl(
       util.types.toString(id),
     );
@@ -28,14 +31,13 @@ export const downloadFile = action({
       baseUrl: url,
       responseType: "arraybuffer",
     }).get("");
+
     return {
       data,
       contentType: util.types.toString(contentType),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: downloadFileExamplePayload.data,
   }),
   inputs: downloadFileInputs,

@@ -3,9 +3,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { createManagedAppExamplePayload } from "../../examplePayloads";
 import { createManagedApp } from "./createManagedApp";
+
 const HOST = "https://graph.microsoft.com";
 const PATH = "/beta/deviceAppManagement/mobileApps";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -17,7 +19,9 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const appReply = createManagedAppExamplePayload.data;
+
 const emptyAdditionalFields = {
   publisher: undefined,
   largeIconType: undefined,
@@ -28,12 +32,15 @@ const emptyAdditionalFields = {
   developer: undefined,
   notes: undefined,
 };
+
 const specificPlatformProperties = {
   autoAcceptEula: true,
   productIds: ["o365BusinessRetail"],
 };
+
 describe("createManagedApp", () => {
   afterEach(() => nock.cleanAll());
+
   test("assembles the largeIcon from its two Additional Fields children and merges the platform properties", async () => {
     const scope = nock(HOST)
       .post(PATH, {
@@ -51,6 +58,7 @@ describe("createManagedApp", () => {
         productIds: ["o365BusinessRetail"],
       })
       .reply(201, appReply);
+
     const { result } = await invoke(createManagedApp, {
       connection,
       odataTypeApp: "#microsoft.graph.officeSuiteApp",
@@ -65,13 +73,16 @@ describe("createManagedApp", () => {
         largeIconValue: "dmFsdWU=",
       },
     });
+
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(appReply);
   });
+
   test("surfaces the failure when the API rejects the request", async () => {
     nock(HOST)
       .post(PATH)
       .reply(400, { error: { code: "BadRequest" } });
+
     await expect(
       invoke(createManagedApp, {
         connection,

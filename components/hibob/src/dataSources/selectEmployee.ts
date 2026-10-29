@@ -1,7 +1,9 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
+
 import { getClient } from "../client";
 import { selectEmployeeInputs } from "../inputs";
 import type { EmployeeSearchResponse } from "../types/employee";
+
 export const selectEmployee = dataSource({
   display: {
     label: "Select Employee",
@@ -10,6 +12,7 @@ export const selectEmployee = dataSource({
   inputs: selectEmployeeInputs,
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
+
     const { data } = await client.post<EmployeeSearchResponse>(
       `/people/search`,
       {

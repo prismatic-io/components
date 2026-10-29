@@ -4,6 +4,7 @@ import { selectPositionExamplePayload } from "../examplePayloads";
 import { selectPositionInputs } from "../inputs";
 import type { EmployeePosition } from "../types";
 import { fetchAllPages, toPicklistResult } from "../util";
+
 export const selectPosition = dataSource({
   display: {
     label: "Select Position",

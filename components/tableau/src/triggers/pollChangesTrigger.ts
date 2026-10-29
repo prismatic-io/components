@@ -8,6 +8,7 @@ import {
   getTableauClient,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -37,10 +38,12 @@ export const pollChangesTrigger = pollingTrigger({
   ) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+
     const isInitialSync = !state?.lastPolledAt && Boolean(lookBackDate);
     const lastPolledAt =
       state?.lastPolledAt ??
       (lookBackDate ? new Date(lookBackDate).toISOString() : now);
+
     const client = await getTableauClient({
       tableauConnection,
       debug: context.debug.enabled,
@@ -50,9 +53,11 @@ export const pollChangesTrigger = pollingTrigger({
       pollResourceType,
       lastPolledAt,
     );
+
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: TableauRecord[] = [];
     const updated: TableauRecord[] = [];
+
     for (const record of records) {
       const createdValue = record.createdAt;
       const createdAtDate =
@@ -63,6 +68,7 @@ export const pollChangesTrigger = pollingTrigger({
       else if (!isNew && (isInitialSync || showUpdatedRecords !== false))
         updated.push(record);
     }
+
     let nextCursor = now;
     if (truncated) {
       const latestUpdatedAt = records[records.length - 1]?.updatedAt;
@@ -73,11 +79,13 @@ export const pollChangesTrigger = pollingTrigger({
       );
     }
     context.polling.setState({ lastPolledAt: nextCursor });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Tableau ${pollResourceType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

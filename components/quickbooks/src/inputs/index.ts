@@ -13,8 +13,11 @@ export {
   parentRef,
   baseRecord,
 } from "./common";
+
 export { customerId, customerName, customerDisplayName } from "./customers";
+
 export { invoiceId, data } from "./invoices";
+
 export {
   billEmail,
   billEmailBcc,
@@ -36,6 +39,7 @@ export {
   shippingPostalCode,
   shippingState,
 } from "./invoiceFields";
+
 export {
   receiptId,
   refundAmount,
@@ -43,6 +47,7 @@ export {
   chargeRequestId,
   requestId,
 } from "./refunds";
+
 export {
   resourceType,
   resourceData,
@@ -50,13 +55,16 @@ export {
   syncToken,
   resourceId,
 } from "./resources";
+
 export {
   purchaseOrderId,
   apAccountIdInput,
   vendorIdInput,
   linesInput,
 } from "./purchases";
+
 export { accountName, accountId } from "./accounts";
+
 export {
   file,
   note,
@@ -71,7 +79,9 @@ export {
   attachableEntityId,
   updateRequestBody,
 } from "./attachments";
+
 export { paymentMethodId, paymentMethodName, totalAmount } from "./payments";
+
 export {
   line1,
   line2,
@@ -81,7 +91,11 @@ export {
   long,
   billingAddressId,
 } from "./addresses";
+
 export { lineItems, customFields, nonInventoryItemData } from "./items";
+
 export { queryString, queryParams } from "./queries";
+
 export { batchRequestItems } from "./batch";
+
 export { applyTaxAfterDiscount, createTime } from "./receipts";

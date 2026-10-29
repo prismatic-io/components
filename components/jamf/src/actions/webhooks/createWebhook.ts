@@ -3,6 +3,7 @@ import { createClassicClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { parseWebhookId, toWebhookXml } from "../../util";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -21,6 +22,7 @@ export const createWebhook = action({
       webhookAuthHeaderValue,
     } = additionalFields;
     const client = await createClassicClient(connection, context.debug.enabled);
+
     let authFields: Record<string, string> = {};
     if (webhookAuthType === "HEADER") {
       if (!webhookAuthHeaderName || !webhookAuthHeaderValue) {
@@ -35,6 +37,7 @@ export const createWebhook = action({
         }),
       };
     }
+
     const body = toWebhookXml({
       name: webhookName,
       event: webhookEvent,

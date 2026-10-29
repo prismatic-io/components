@@ -8,6 +8,7 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { createClient } from "../client";
 import { TriggerBranches } from "../constants";
 import { clientCredentialsConnection, getAppId } from "./auth";
+
 export const performFunction = async (
   _context: ActionContext,
   payload: TriggerPayload,
@@ -24,6 +25,7 @@ export const performFunction = async (
   const mode = query["hub.mode"];
   const token = query["hub.verify_token"];
   const challenge = query["hub.challenge"];
+
   if (mode === "subscribe") {
     const validWebhook = validateWebhook(token, challenge, verifyToken);
     if (validWebhook) {
@@ -38,6 +40,7 @@ export const performFunction = async (
       });
     }
   }
+
   const validWebhook = verifyWebhook(payload, params);
   if (validWebhook) {
     return Promise.resolve({
@@ -50,6 +53,7 @@ export const performFunction = async (
   }
   throw new Error("Invalid webhook");
 };
+
 const verifyWebhook = (
   payload: TriggerPayload,
   params: Record<string, unknown>,
@@ -71,6 +75,7 @@ const verifyWebhook = (
     .digest("hex");
   return signature === bodySignature;
 };
+
 const validateWebhook = (
   token: string,
   challenge: string,
@@ -81,6 +86,7 @@ const validateWebhook = (
   }
   return null;
 };
+
 export const onInstanceDeploy = async (
   context: ActionContext,
   { connection, version, object, verifyToken, fields },
@@ -91,6 +97,7 @@ export const onInstanceDeploy = async (
   const endpoint = context.webhookUrls[context.flow.name];
   await createWebhookFn(client, appId, object, endpoint, verifyToken, fields);
 };
+
 export const onInstanceDelete = async (
   _context: ActionContext,
   { connection, version, object, fields },
@@ -100,6 +107,7 @@ export const onInstanceDelete = async (
   const appId = getAppId(connection);
   await deleteWebhookFn(client, appId, object, fields);
 };
+
 export const getWebhookObject = (object: string) => {
   let webhookObject: string;
   let webhookFields: string;
@@ -121,6 +129,7 @@ export const getWebhookObject = (object: string) => {
   }
   return { webhookObject, webhookFields };
 };
+
 export const createWebhookFn = async (
   client: HttpClient,
   appId: string,
@@ -138,6 +147,7 @@ export const createWebhookFn = async (
   });
   return data;
 };
+
 export const deleteWebhookFn = async (
   client: HttpClient,
   appId: string,
@@ -151,6 +161,7 @@ export const deleteWebhookFn = async (
     },
   });
 };
+
 export const validateFields = (fields: string[]) => {
   if (fields.length === 0) {
     throw new Error("At least one field must be selected");

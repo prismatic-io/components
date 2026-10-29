@@ -3,6 +3,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, notificationType } from "../inputs";
 import type { Subscription, SubscriptionsResponse } from "../interfaces";
+
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
@@ -18,12 +19,14 @@ export const selectSubscription = dataSource({
     const { data } = await client.get<SubscriptionsResponse>(
       `/notifications/v1/subscriptions/${notificationType}`,
     );
+
     const result: Element[] = (data.subscriptions ?? [])
       .map<Element>((subscription: Subscription) => ({
         label: `${subscription.subscriptionId} - ${subscription.processingDirective?.eventFilter?.eventFilterType ?? notificationType}`,
         key: subscription.subscriptionId.toString(),
       }))
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

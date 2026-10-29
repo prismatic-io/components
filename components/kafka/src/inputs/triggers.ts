@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { asStringArray, toIntOrDefault, toMaxMessages } from "../utils";
 import { brokers, clientId, connection, consumerGroupId } from "./common";
+
 const topics = input({
   label: "Topics",
   type: "string",
@@ -12,6 +13,7 @@ const topics = input({
   placeholder: "Enter topic name",
   clean: asStringArray,
 });
+
 const fromBeginning = input({
   label: "From Beginning",
   type: "boolean",
@@ -20,6 +22,7 @@ const fromBeginning = input({
     "When true, starts consuming from the beginning of the topic instead of the last committed offset.",
   clean: util.types.toBool,
 });
+
 const maxMessages = input({
   label: "Max Messages",
   type: "string",
@@ -31,6 +34,7 @@ const maxMessages = input({
   placeholder: "Enter maximum number of messages",
   clean: toMaxMessages,
 });
+
 const autoCommit = input({
   label: "Auto Commit",
   type: "boolean",
@@ -39,6 +43,7 @@ const autoCommit = input({
     "When true, automatically commits offsets after processing messages.",
   clean: (value) => util.types.toBool(value, true),
 });
+
 const sessionTimeout = input({
   label: "Session Timeout (ms)",
   type: "string",
@@ -50,6 +55,7 @@ const sessionTimeout = input({
   placeholder: "Enter session timeout in milliseconds",
   clean: toIntOrDefault(30000),
 });
+
 const heartbeatInterval = input({
   label: "Heartbeat Interval (ms)",
   type: "string",
@@ -61,6 +67,7 @@ const heartbeatInterval = input({
   placeholder: "Enter heartbeat interval in milliseconds",
   clean: toIntOrDefault(3000),
 });
+
 const deserializeKeys = input({
   label: "Deserialize Keys as Avro",
   type: "boolean",
@@ -69,6 +76,7 @@ const deserializeKeys = input({
     "When true, also deserializes message keys from Avro format. Requires Avro deserialization to be enabled on the connection.",
   clean: util.types.toBool,
 });
+
 const consumerOptions = structuredObjectInput({
   label: "Consumer Options",
   required: false,
@@ -76,6 +84,7 @@ const consumerOptions = structuredObjectInput({
     "Options that control where consumption starts, whether offsets are auto-committed, and whether message keys are deserialized from Avro.",
   inputs: { fromBeginning, autoCommit, deserializeKeys },
 });
+
 export const kafkaConsumerInputs = {
   connection,
   clientId,

@@ -1,4 +1,5 @@
 import { connection, input, util } from "@prismatic-io/spectral";
+
 export const arenaUsernamePassword = connection({
   key: "arenaUsernamePassword",
   display: {

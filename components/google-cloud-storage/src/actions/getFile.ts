@@ -1,6 +1,7 @@
 import { util, action } from "@prismatic-io/spectral";
 import { googleStorageClient } from "../client";
 import { bucketName, connectionInput, fileName } from "../inputs";
+
 export const getFile = action({
   display: {
     label: "Get File",
@@ -14,6 +15,7 @@ export const getFile = action({
       .bucket(util.types.toString(bucketName))
       .file(util.types.toString(fileName))
       .getMetadata();
+
     return {
       data: metadata,
       contentType: metadata.contentType,

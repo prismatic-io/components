@@ -4,6 +4,7 @@ const accountEnvelope = {
   ProviderName: "Acme Corp",
   DateTimeUTC: "/Date(1637616068092)/",
 };
+
 const sampleAccount = {
   AccountID: "c81e728d-9d4c-3f63-af06-7f89cc14862c",
   Code: "200",
@@ -20,6 +21,7 @@ const sampleAccount = {
   HasAttachments: false,
   UpdatedDateUTC: "/Date(1637614988203+0000)/",
 };
+
 export const listAccountsExamplePayload = {
   data: {
     ...accountEnvelope,
@@ -41,24 +43,28 @@ export const listAccountsExamplePayload = {
     ],
   },
 };
+
 export const getAccountExamplePayload = {
   data: {
     ...accountEnvelope,
     Accounts: [sampleAccount],
   },
 };
+
 export const createAccountExamplePayload = {
   data: {
     ...accountEnvelope,
     Accounts: [sampleAccount],
   },
 };
+
 export const updateAccountExamplePayload = {
   data: {
     ...accountEnvelope,
     Accounts: [sampleAccount],
   },
 };
+
 export const deleteAccountExamplePayload = {
   data: {
     ...accountEnvelope,
@@ -70,6 +76,7 @@ export const deleteAccountExamplePayload = {
     ],
   },
 };
+
 export const archiveAccountExamplePayload = {
   data: {
     ...accountEnvelope,

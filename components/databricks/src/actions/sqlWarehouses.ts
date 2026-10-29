@@ -8,6 +8,7 @@ import {
 } from "../examplePayloads";
 import { connectionInput, warehouseIdInput } from "../inputs";
 import type { Warehouse } from "../types";
+
 const listWarehouses = action({
   display: {
     label: "List SQL Warehouses",
@@ -20,13 +21,14 @@ const listWarehouses = action({
       "2.0",
       context.debug.enabled,
     );
-    const response = await client.get<{
-      warehouses: Warehouse[];
-    }>("sql/warehouses");
+    const response = await client.get<{ warehouses: Warehouse[] }>(
+      "sql/warehouses",
+    );
     return { data: response.data.warehouses || [] };
   },
   examplePayload: listWarehousesExamplePayload,
 });
+
 const getWarehouse = action({
   display: {
     label: "Get SQL Warehouse",
@@ -49,6 +51,7 @@ const getWarehouse = action({
   },
   examplePayload: getWarehouseExamplePayload,
 });
+
 const startWarehouse = action({
   display: {
     label: "Start SQL Warehouse",
@@ -69,6 +72,7 @@ const startWarehouse = action({
   },
   examplePayload: startWarehouseExamplePayload,
 });
+
 const stopWarehouse = action({
   display: {
     label: "Stop SQL Warehouse",
@@ -89,4 +93,5 @@ const stopWarehouse = action({
   },
   examplePayload: stopWarehouseExamplePayload,
 });
+
 export default { getWarehouse, listWarehouses, startWarehouse, stopWarehouse };

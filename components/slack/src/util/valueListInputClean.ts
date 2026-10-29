@@ -1,11 +1,13 @@
 import { util } from "@prismatic-io/spectral";
 import type { SearchChannelType } from "../types";
+
 export const isValidArrayNotEmpty = (value: unknown) => {
   if (!Array.isArray(value)) {
     return false;
   }
   return value.map((v) => util.types.toString(v)).filter((v) => v !== "");
 };
+
 export const valueListInputClean = (value: unknown) => {
   if (value) {
     const data = isValidArrayNotEmpty(value);

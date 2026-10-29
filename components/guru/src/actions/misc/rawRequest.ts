@@ -4,6 +4,7 @@ import { getAuthorizationHeaderValue } from "../../client";
 import { BASE_URL } from "../../constants";
 import { rawRequestInputs } from "../../inputs";
 import { validateConnection } from "../../util";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -12,6 +13,7 @@ export const rawRequest = action({
   inputs: rawRequestInputs,
   perform: async (context, { connection, ...rawRequestInputs }) => {
     validateConnection(connection);
+
     const { data } = await sendRawRequest(
       BASE_URL,
       {
@@ -22,6 +24,7 @@ export const rawRequest = action({
         Authorization: getAuthorizationHeaderValue(connection),
       },
     );
+
     return { data };
   },
 });

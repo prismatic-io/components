@@ -1,4 +1,5 @@
 import { fileFullSchema } from "./common";
+
 export const uploadFileOutputSchema = {
   type: "object" as const,
   properties: {
@@ -7,6 +8,7 @@ export const uploadFileOutputSchema = {
   },
   required: ["total_count", "entries"],
 };
+
 export const getFileDownloadUrlOutputSchema = {
   type: "string" as const,
   format: "uri",

@@ -8,6 +8,7 @@ import {
   productImageProductId,
   storeHash,
 } from "../../inputs";
+
 export const getProductImage = action({
   display: {
     label: "Get Product Image",
@@ -28,6 +29,7 @@ export const getProductImage = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${productImageProductId}/images/${productImageImageId}`;
+
     try {
       const response = await client.get(endpoint);
       return {
@@ -39,6 +41,7 @@ export const getProductImage = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

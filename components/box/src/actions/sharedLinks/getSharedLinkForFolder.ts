@@ -4,6 +4,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { getSharedLinkForFolderExamplePayload } from "../../examplePayloads";
 import { getSharedLinkForFolderInputs } from "../../inputs";
 import { getSharedLinkForFolderOutputSchema } from "../../outputSchemas";
+
 export const getSharedLinkForFolder = action({
   display: {
     label: "Get Shared Link for Folder",
@@ -16,6 +17,7 @@ export const getSharedLinkForFolder = action({
       params.boxConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/folders/${folderId}`, {
       params: {
         fields: SHARED_LINK_FIELD,

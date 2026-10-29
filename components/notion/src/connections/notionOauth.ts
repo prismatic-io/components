@@ -1,4 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
+
 export const notionOauth = oauth2Connection({
   key: "notionOauth",
   display: {

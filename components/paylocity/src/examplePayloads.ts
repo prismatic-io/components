@@ -300,6 +300,7 @@ export const createEmployeeObj = {
     workUntil: null,
   },
 };
+
 export const earningInput = {
   agency: null,
   amount: null,
@@ -322,6 +323,7 @@ export const earningInput = {
   rate: null,
   rateCode: null,
 };
+
 export const sensitiveDataPayload = {
   disability: {
     disability: null,
@@ -353,6 +355,7 @@ export const sensitiveDataPayload = {
     veteran: null,
   },
 };
+
 export const payEntryInputPayload = {
   AutoAcknowledge: false,
   Batch: {

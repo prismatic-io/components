@@ -7,6 +7,7 @@ import { createS3Client } from "../../client";
 import { copyObjectExamplePayload } from "../../examplePayloads";
 import { copyObjectInputs } from "../../inputs";
 import { copyObjectOutputSchema } from "../../outputSchemas";
+
 export const copyObject = action({
   display: {
     label: "Copy Object",

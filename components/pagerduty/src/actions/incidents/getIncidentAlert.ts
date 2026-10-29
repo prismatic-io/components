@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getIncidentAlertExamplePayload } from "../../examplePayloads";
 import { connectionInput, incidentAlertId, incidentId } from "../../inputs";
+
 export const getIncidentAlert = action({
   display: {
     label: "Get Incident Alert",

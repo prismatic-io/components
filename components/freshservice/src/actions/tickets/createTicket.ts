@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { createTicketExamplePayload as examplePayload } from "../../examplePayloads";
 import { createTicketInputs as inputs } from "../../inputs";
 import { ticketOutputSchema } from "../../outputSchemas";
+
 export const createTicket = action({
   display: {
     label: "Create Ticket",
@@ -26,6 +27,7 @@ export const createTicket = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       description,
       subject,
@@ -36,7 +38,9 @@ export const createTicket = action({
       workspace_id: workspaceId,
       ...ticketsAdditionalFields,
     };
+
     const { data } = await client.post(`/tickets`, payload);
+
     return {
       data,
     };

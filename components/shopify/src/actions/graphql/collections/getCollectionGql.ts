@@ -5,6 +5,7 @@ import { getCollectionInputs as inputs } from "../../../inputsGql";
 import { getCollectionGqlOutputSchema } from "../../../outputSchemas";
 import type { Collection } from "../../../types";
 import getCollectionQuery from "../queries/collections/GetCollection.gql";
+
 export const getCollectionGql = action({
   display: {
     label: "Get Collection",
@@ -18,11 +19,13 @@ export const getCollectionGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      collection: Collection;
-    } = await client.request(getCollectionQuery, {
-      id: collectionId,
-    });
+    const data: { collection: Collection } = await client.request(
+      getCollectionQuery,
+      {
+        id: collectionId,
+      },
+    );
+
     return {
       data,
     };

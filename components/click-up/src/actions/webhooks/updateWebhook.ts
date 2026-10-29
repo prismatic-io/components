@@ -4,6 +4,7 @@ import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookOutputSchema } from "../../outputSchemas";
 import type { UpdateWebhookBody } from "../../types";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
@@ -28,7 +29,9 @@ export const updateWebhook = action({
       events: allEvents ? "*" : events,
       status,
     };
+
     const { data } = await client.put(`/webhook/${webhookId}`, body);
+
     return {
       data,
     };

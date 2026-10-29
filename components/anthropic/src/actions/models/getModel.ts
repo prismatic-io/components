@@ -4,6 +4,7 @@ import { getModelExamplePayload } from "../../examplePayloads";
 import { getModelInputs } from "../../inputs";
 import { getModelOutputSchema } from "../../outputSchemas";
 import type { Model } from "../../types";
+
 export const getModel = action({
   display: {
     label: "Get Model",

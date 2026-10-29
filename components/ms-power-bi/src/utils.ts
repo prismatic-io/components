@@ -1,5 +1,6 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { TResponse } from "./interfaces/TResponse";
+
 export const paginateResults = async <T>(
   client: HttpClient,
   url: string,
@@ -17,8 +18,10 @@ export const paginateResults = async <T>(
     } = await client.get<TResponse<T>>(url, {
       params,
     });
+
     return { value };
   }
+
   const results: T[] = [];
   let nextLink = url;
   do {
@@ -26,11 +29,14 @@ export const paginateResults = async <T>(
       params,
     });
     results.push(...data.value);
+
     if (!firstResponse) {
       firstResponse = data;
     }
+
     nextLink = data["@odata.nextLink"] ?? "";
   } while (nextLink);
+
   if (firstResponse?.["@odata.context"]) {
     return {
       "@odata.nextLink": firstResponse["@odata.nextLink"] || undefined,
@@ -38,5 +44,6 @@ export const paginateResults = async <T>(
       value: results,
     };
   }
+
   return { value: results };
 };

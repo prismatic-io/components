@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll, id, limit, name, offset } from "./common";
+
 export const accountId = input({
   label: "Account ID",
   type: "string",
@@ -10,6 +11,7 @@ export const accountId = input({
   dataSource: "accounts",
   clean: util.types.toString,
 });
+
 export const accountTypeId = input({
   label: "Account Type ID",
   type: "string",
@@ -20,6 +22,7 @@ export const accountTypeId = input({
   dataSource: "accountTypes",
   clean: util.types.toString,
 });
+
 export const password = input({
   label: "Password",
   type: "password",
@@ -28,6 +31,7 @@ export const password = input({
   placeholder: "Enter password",
   clean: util.types.toString,
 });
+
 export const authenticateBy = input({
   label: "Authenticate By",
   type: "string",
@@ -38,6 +42,7 @@ export const authenticateBy = input({
   example: "basic",
   clean: util.types.toString,
 });
+
 export const url = input({
   label: "URL",
   type: "string",
@@ -47,6 +52,7 @@ export const url = input({
   example: "https://example.com",
   clean: util.types.toString,
 });
+
 export const username = input({
   label: "Username",
   type: "string",
@@ -56,6 +62,7 @@ export const username = input({
   example: "john.doe",
   clean: util.types.toString,
 });
+
 export const userArray = input({
   label: "User",
   comments: "The User to share the Account with.",
@@ -69,6 +76,7 @@ export const userArray = input({
       util.types.toString(string),
     ),
 });
+
 export const updateAccountBody = input({
   label: "Update Account Body",
   type: "code",
@@ -93,6 +101,7 @@ export const updateAccountBody = input({
   ),
   clean: util.types.toString,
 });
+
 export const createAccountInputs = {
   connection,
   name,
@@ -102,14 +111,17 @@ export const createAccountInputs = {
   url,
   username,
 };
+
 export const deleteAccountInputs = {
   connection,
   accountId,
 };
+
 export const getAccountsInputs = {
   connection,
   accountTypeId,
 };
+
 export const listAccountsInputs = {
   connection,
   fetchAll,
@@ -133,6 +145,7 @@ export const listAccountsInputs = {
     },
   }),
 };
+
 export const shareAccountInputs = {
   connection,
   userArray,
@@ -142,6 +155,7 @@ export const shareAccountInputs = {
     comments: "The ID of the Account.",
   }),
 };
+
 export const updateAccountInputs = {
   connection,
   accountId: input({

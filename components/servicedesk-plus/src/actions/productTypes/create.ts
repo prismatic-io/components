@@ -10,6 +10,7 @@ import {
   name,
 } from "../../inputs";
 import { createPayload } from "../../util";
+
 export const createProductType = action({
   display: {
     label: "Create Product Type",

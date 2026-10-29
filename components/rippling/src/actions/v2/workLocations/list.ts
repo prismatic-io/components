@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listWorkLocationsV2ExamplePayload } from "../../../examplePayloads";
 import { listWorkLocationsInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listWorkLocations = action({
   display: {
     label: "List Work Locations (V2)",

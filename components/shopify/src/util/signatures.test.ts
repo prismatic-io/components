@@ -1,25 +1,31 @@
 import * as crypto from "node:crypto";
 import type { Mock } from "vitest";
 import { signaturesMatch } from ".";
+
 vi.mock("node:crypto", async () => {
   const actual =
     await vi.importActual<typeof import("node:crypto")>("node:crypto");
   return { ...actual, timingSafeEqual: vi.fn(actual.timingSafeEqual) };
 });
+
 const timingSafeEqualMock = crypto.timingSafeEqual as unknown as Mock;
 const SIGNATURE = "cU2s5TgLZkTVpZTJgOWJhOWY0YmQ0ZmM2ZDgwZjFhZjA=";
+
 beforeEach(() => {
   timingSafeEqualMock.mockClear();
 });
+
 describe("signaturesMatch", () => {
   test("accepts an identical signature", () => {
     expect(signaturesMatch(SIGNATURE, SIGNATURE)).toBe(true);
   });
+
   test("rejects a different signature of the same length", () => {
     const tampered = `X${SIGNATURE.slice(1)}`;
     expect(tampered).toHaveLength(SIGNATURE.length);
     expect(signaturesMatch(SIGNATURE, tampered)).toBe(false);
   });
+
   test.each([
     ["shorter", SIGNATURE.slice(0, 10)],
     ["longer", `${SIGNATURE}extra`],
@@ -28,6 +34,7 @@ describe("signaturesMatch", () => {
     expect(() => signaturesMatch(SIGNATURE, received)).not.toThrow();
     expect(signaturesMatch(SIGNATURE, received)).toBe(false);
   });
+
   test.each([
     undefined,
     null,
@@ -36,10 +43,12 @@ describe("signaturesMatch", () => {
   ])("fails closed on %p", (received) => {
     expect(signaturesMatch(SIGNATURE, received)).toBe(false);
   });
+
   test("uses a constant-time comparison rather than string equality", () => {
     expect(signaturesMatch(SIGNATURE, SIGNATURE)).toBe(true);
     expect(timingSafeEqualMock).toHaveBeenCalledTimes(1);
   });
+
   test("does not reach the comparison at all when the lengths differ", () => {
     expect(signaturesMatch(SIGNATURE, "short")).toBe(false);
     expect(timingSafeEqualMock).not.toHaveBeenCalled();

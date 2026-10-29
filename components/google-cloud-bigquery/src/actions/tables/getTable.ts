@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getTableInputs } from "../../inputs";
+
 export const getTable = action({
   display: {
     description: "Gets the specified table resource by table ID.",

@@ -6,6 +6,7 @@ import {
   toOptionalString,
 } from "../util";
 import { connectionInput } from "./common";
+
 const variablesObject = input({
   label: "Variables Object",
   type: "code",
@@ -17,6 +18,7 @@ const variablesObject = input({
   example: JSON.stringify({ boardId: 1234567890, limit: 50 }, null, 2),
   clean: toObjectOrEmpty,
 });
+
 const variables = input({
   label: "Variables",
   type: "string",
@@ -27,6 +29,7 @@ const variables = input({
   placeholder: "Enter variable name",
   clean: keyValPairListToObject,
 });
+
 const query = input({
   label: "Query or Mutation",
   type: "code",
@@ -43,6 +46,7 @@ email
 }`,
   clean: util.types.toString,
 });
+
 const apiVersion = input({
   label: "API Version",
   type: "string",
@@ -52,6 +56,7 @@ const apiVersion = input({
   example: CURRENT_API_VERSION,
   clean: toOptionalString,
 });
+
 export const genericRequestInputs = {
   connection: connectionInput,
   query,

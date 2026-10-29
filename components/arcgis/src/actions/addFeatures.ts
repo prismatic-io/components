@@ -8,6 +8,7 @@ import {
   featuresToAdd,
 } from "../inputs";
 import { getApiKeyManager } from "../utils";
+
 export const addFeatures = action({
   display: {
     label: "Add Features (Geometry objects or Feature Attributes)",
@@ -20,15 +21,18 @@ export const addFeatures = action({
     const authentication = getApiKeyManager(connection);
     const url = `${featureServiceUrl}/${featureServiceLayerId}`;
     const features = { features: featuresToAdd };
+
     if (context.debug.enabled) {
       context.logger.debug(`url: ${url}`);
       context.logger.debug(JSON.stringify(features));
     }
+
     const data = await addFeaturesEsri({
       url,
       ...features,
       authentication,
     });
+
     return { data: data as unknown };
   },
   inputs: {

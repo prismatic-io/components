@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { asKeyValueList } from "../utils";
 import { brokers, clientId, connection } from "./common";
 import { topic } from "./topics";
+
 const messages = input({
   label: "Messages",
   type: "string",
@@ -13,6 +14,7 @@ const messages = input({
   placeholder: "Enter message content",
   clean: asKeyValueList,
 });
+
 export const publishMessagesInputs = {
   connection,
   clientId,

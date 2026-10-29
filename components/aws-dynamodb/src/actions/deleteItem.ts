@@ -13,6 +13,7 @@ import { createDynamoClient } from "../auth";
 import { convertDataType, getItemKeySearch } from "../util";
 import { DeleteItemCommand } from "@aws-sdk/client-dynamodb";
 import { deleteItemExamplePayload } from "../examplePayloads";
+
 export const deleteItem = action({
   display: {
     label: "Delete Item",
@@ -37,12 +38,14 @@ export const deleteItem = action({
       debug: context.debug.enabled,
       logger: context.logger,
     });
+
     const key = await getItemKeySearch({
       client,
       tableName,
       hashKeyValue: value,
       rangeKeyValue: rangeKeyValue,
     });
+
     const command = new DeleteItemCommand({
       TableName: tableName,
       Key: key,

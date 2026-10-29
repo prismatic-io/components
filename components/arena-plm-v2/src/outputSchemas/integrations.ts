@@ -424,6 +424,7 @@ export const eventItemSchema = {
     },
   },
 };
+
 export const getEventOutputSchema = {
   type: "object" as const,
   properties: {
@@ -691,6 +692,7 @@ export const getEventOutputSchema = {
     itemsReconciled: { type: "boolean" },
   },
 };
+
 export const getIntegrationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -728,6 +730,7 @@ export const getIntegrationOutputSchema = {
     },
   },
 };
+
 export const integrationShortSchema = {
   type: "object" as const,
   properties: {
@@ -739,6 +742,7 @@ export const integrationShortSchema = {
     transferType: { type: "string" },
   },
 };
+
 export const listEventAssociationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1002,6 +1006,7 @@ export const listEventAssociationsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listEventItemGuidsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1009,6 +1014,7 @@ export const listEventItemGuidsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listEventItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1016,6 +1022,7 @@ export const listEventItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listIntegrationFiltersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1048,6 +1055,7 @@ export const listIntegrationFiltersOutputSchema = {
     },
   },
 };
+
 export const listIntegrationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1055,6 +1063,7 @@ export const listIntegrationsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const outboundEventShortSchema = {
   type: "object" as const,
   properties: {
@@ -1086,6 +1095,7 @@ export const outboundEventShortSchema = {
     guid: { type: "string" },
   },
 };
+
 export const listOutboundEventIntegrationEventsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1093,6 +1103,7 @@ export const listOutboundEventIntegrationEventsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const outboundEventIntegrationSchema = {
   type: "object" as const,
   properties: {
@@ -1120,6 +1131,7 @@ export const outboundEventIntegrationSchema = {
     creationDateTime: { type: "string" },
   },
 };
+
 export const listOutboundEventIntegrationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1127,6 +1139,7 @@ export const listOutboundEventIntegrationsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const triggerShortSchema = {
   type: "object" as const,
   properties: {
@@ -1137,6 +1150,7 @@ export const triggerShortSchema = {
     resource: { type: "string" },
   },
 };
+
 export const listOutboundEventIntegrationTriggersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1144,6 +1158,7 @@ export const listOutboundEventIntegrationTriggersOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const outboundEventResourceSchema = {
   type: "object" as const,
   properties: {
@@ -1184,6 +1199,7 @@ export const outboundEventResourceSchema = {
     },
   },
 };
+
 export const listOutboundEventResourcesOutputSchema = {
   type: "object" as const,
   properties: {

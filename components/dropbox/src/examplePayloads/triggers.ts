@@ -4,6 +4,7 @@ import type {
   TriggerPayload,
 } from "@prismatic-io/spectral";
 import type { ListChangesResult } from "../types";
+
 export const dropboxWebhookExamplePayload: TriggerBranchingResult<TriggerPayload> =
   {
     branch: "Notification",
@@ -69,12 +70,9 @@ export const dropboxWebhookExamplePayload: TriggerBranchingResult<TriggerPayload
       startedAt: "2024-11-21 18:07:22.778766+00",
     },
   };
+
 export const pollChangesTriggerExamplePayload: TriggerBaseResult<
-  TriggerPayload & {
-    body: {
-      data: ListChangesResult;
-    };
-  }
+  TriggerPayload & { body: { data: ListChangesResult } }
 > = {
   crossFlowState: {
     "dropbox-list-changes-cursor:exampleStableFlowId:exampleStepName": {

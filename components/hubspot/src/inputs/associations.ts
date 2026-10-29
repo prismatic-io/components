@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toObjectTypeKey } from "../util";
 import { connectionInput, timeout } from "./common";
+
 export const fromObjectType = input({
   label: "From Object Type",
   type: "string",
@@ -12,6 +13,7 @@ export const fromObjectType = input({
   clean: toObjectTypeKey,
   dataSource: "selectObjectType",
 });
+
 export const toObjectType = input({
   label: "To Object Type",
   type: "string",
@@ -23,6 +25,7 @@ export const toObjectType = input({
   clean: toObjectTypeKey,
   dataSource: "selectObjectType",
 });
+
 const fromId = input({
   label: "From ID",
   type: "string",
@@ -32,6 +35,7 @@ const fromId = input({
   example: "890435",
   clean: util.types.toString,
 });
+
 const toId = input({
   label: "To ID",
   type: "string",
@@ -41,6 +45,7 @@ const toId = input({
   example: "890435",
   clean: util.types.toString,
 });
+
 const associateType = input({
   label: "Type Of Association",
   type: "string",
@@ -52,12 +57,14 @@ const associateType = input({
   clean: util.types.toString,
   dataSource: "selectAssociationType",
 });
+
 export const listAssociationTypesInputs = {
   hubspotConnection: connectionInput,
   fromObjectType,
   toObjectType,
   timeout,
 };
+
 export const createAssociationsInputs = {
   fromObjectType,
   toObjectType,
@@ -67,6 +74,7 @@ export const createAssociationsInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const readAssociationsInputs = {
   fromObjectType,
   toObjectType,
@@ -74,6 +82,7 @@ export const readAssociationsInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const archiveAssociationsInputs = {
   fromObjectType,
   toObjectType,

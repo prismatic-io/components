@@ -7,6 +7,7 @@ import { listTasksInPlanOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { fetchAllPlanner } from "../../utils";
 import { listTasksInPlanInputs } from "../../inputs";
+
 export const listTasksInPlan = action({
   display: {
     label: "List Tasks in Plan",
@@ -26,12 +27,7 @@ export const listTasksInPlan = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { planId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { planId }): Promise<{ data: unknown }> => ({
     data: {
       ...listTasksInPlanExamplePayload.data,
       value: listTasksInPlanExamplePayload.data.value.map((task) => ({

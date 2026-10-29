@@ -7,15 +7,18 @@ import {
 } from "../../constants";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhook } from "./updateWebhook";
+
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
   apiKey: "test-api-key",
   applicationKey: "test-application-key",
 });
+
 describe("updateWebhook", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("sends the name only in the path, never in the body", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .put(`${WEBHOOKS_CONFIGURATION_PATH}/my%20webhook%2Fprod`, {
@@ -25,6 +28,7 @@ describe("updateWebhook", () => {
         payload: '{"alert": "$ALERT_TITLE"}',
       })
       .reply(200, updateWebhookExamplePayload.data);
+
     const { result } = await invoke(updateWebhook, {
       connection: testConnection,
       webhookName: "my webhook/prod",
@@ -33,13 +37,16 @@ describe("updateWebhook", () => {
       webhookEncodeAs: "json",
       webhookPayload: '{"alert": "$ALERT_TITLE"}',
     });
+
     expect(result.data).toEqual(updateWebhookExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("surfaces an API error", async () => {
     nock(DEFAULT_DATADOG_SITE)
       .put(`${WEBHOOKS_CONFIGURATION_PATH}/missing-webhook`)
       .reply(404, { errors: ["Webhook not found"] });
+
     await expect(
       invoke(updateWebhook, {
         connection: testConnection,

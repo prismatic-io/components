@@ -7,6 +7,7 @@ const restErrorSchema = {
     fields: { type: "array", items: { type: "string" } },
   },
 };
+
 export const createRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -16,6 +17,7 @@ export const createRecordOutputSchema = {
   },
   required: ["success", "errors"],
 };
+
 export const updateRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -25,6 +27,7 @@ export const updateRecordOutputSchema = {
   },
   required: ["id", "success", "errors"],
 };
+
 export const deleteRecordOutputSchema = {
   type: "object" as const,
   properties: {
@@ -34,6 +37,7 @@ export const deleteRecordOutputSchema = {
   },
   required: ["id", "success", "errors"],
 };
+
 export const upsertRecordOutputSchema = {
   type: "array" as const,
   items: {
@@ -47,6 +51,7 @@ export const upsertRecordOutputSchema = {
     required: ["success", "errors"],
   },
 };
+
 export const queryOutputSchema = {
   type: "object" as const,
   properties: {

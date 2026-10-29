@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createOpsEventsClient } from "../../client";
 import { createIntegrationAlertExamplePayload } from "../../examplePayloads";
 import { createIntegrationAlertInputs } from "../../inputs";
+
 export const createIntegrationAlert = action({
   display: {
     label: "Create Integration Alert",
@@ -35,6 +36,7 @@ export const createIntegrationAlert = action({
       tags: additionalFields.alertTags,
       details: additionalFields.alertDetails,
     };
+
     const { data } = await client.post("/alerts", body);
     return { data };
   },

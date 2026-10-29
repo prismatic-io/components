@@ -5,6 +5,7 @@ import { getItemFileAssociationInputs } from "../../inputs";
 import { itemFileSchema } from "../../outputSchemas";
 import type { ItemFileVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const getItemFileAssociation = action({
   display: {
     label: "Get Item File Association",
@@ -22,14 +23,17 @@ export const getItemFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Retrieving item file association details", {
         itemGuid,
         itemFileAssociationGuid,
       });
+
       const response = await client.get(
         `/items/${itemGuid}/files/${itemFileAssociationGuid}`,
       );
       const fileAssociation: ItemFileVo = response.data;
+
       context.logger.info("Item file association retrieved successfully", {
         itemGuid,
         itemFileAssociationGuid,
@@ -39,6 +43,7 @@ export const getItemFileAssociation = action({
         primary: fileAssociation.primary,
         latestEditionAssociation: fileAssociation.latestEditionAssociation,
       });
+
       return { data: fileAssociation };
     } catch (error) {
       handleArenaError(

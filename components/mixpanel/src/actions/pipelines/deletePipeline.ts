@@ -3,6 +3,7 @@ import { createDataClient } from "../../client";
 import { deletePipelineInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { deletePipelineExamplePayload } from "../../examplePayloads";
+
 export const deletePipeline = action({
   display: {
     label: "Delete Pipeline",
@@ -29,8 +30,7 @@ export const deletePipeline = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deletePipelineExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deletePipelineExamplePayload,
   examplePayload: deletePipelineExamplePayload,
 });

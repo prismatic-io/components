@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, region } from "../inputs";
+
 export const selectWarehouseMetadata = dataSource({
   display: {
     label: "Select Warehouse Metadata",
@@ -26,15 +27,8 @@ export const selectWarehouseMetadata = dataSource({
           label: item.name,
           key: item.id,
         }))
-        .sort(
-          (
-            a: {
-              label: string;
-            },
-            b: {
-              label: string;
-            },
-          ) => (a.label < b.label ? -1 : 1),
+        .sort((a: { label: string }, b: { label: string }) =>
+          a.label < b.label ? -1 : 1,
         );
       return { result };
     }

@@ -1,4 +1,5 @@
 import type { GenerateContentResponse } from "@google/genai";
+
 export const sendMessageExamplePayload = {
   data: {
     candidates: [

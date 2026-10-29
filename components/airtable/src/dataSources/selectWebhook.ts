@@ -1,6 +1,7 @@
 import { dataSource, util } from "@prismatic-io/spectral";
 import { createAirtableClient } from "../client";
 import { selectWebhookInputs } from "../inputs";
+
 export const selectWebhook = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -10,7 +11,9 @@ export const selectWebhook = dataSource({
   inputs: selectWebhookInputs,
   perform: async (context, { airtableConnection, baseId, includeId }) => {
     const client = createAirtableClient(airtableConnection);
+
     const { data } = await client.get(`/v0/bases/${baseId}/webhooks`);
+
     return {
       result: data.webhooks.map((webhook) => {
         const label = includeId

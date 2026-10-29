@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { headObjectExamplePayload } from "../../examplePayloads";
 import { headObjectInputs } from "../../inputs";
 import { headObjectOutputSchema } from "../../outputSchemas";
+
 export const headObject = action({
   display: {
     label: "Head Object",

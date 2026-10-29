@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { startTriggerExamplePayload } from "../../examplePayloads";
 import { startTriggerInputs } from "../../inputs";
+
 export const startTrigger = action({
   display: {
     label: "Start Trigger",

@@ -5,6 +5,7 @@ import { selectInvoiceExamplePayload } from "../examplePayloads";
 import { selectInvoiceInputs } from "../inputs";
 import type { CustomerInvoiceSummary } from "../types";
 import { toSortedPicklist } from "../util";
+
 export const selectInvoice = dataSource({
   display: {
     label: "Select Invoice",
@@ -14,6 +15,7 @@ export const selectInvoice = dataSource({
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
     const { data } = await client.get(`${SERVICES.customerAccounts}/invoices`);
+
     return {
       result: toSortedPicklist(data.data, (item: CustomerInvoiceSummary) => ({
         key: item.id,

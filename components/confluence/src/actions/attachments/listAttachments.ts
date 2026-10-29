@@ -6,6 +6,7 @@ import type { Attachment } from "../../types";
 import { listAttachmentsExamplePayload } from "../../examplePayloads";
 import { listAttachmentsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util";
+
 export const listAttachments = action({
   display: {
     label: "List Attachments",
@@ -22,6 +23,7 @@ export const listAttachments = action({
     { connectionInput, pagination, queryParameters, fetchAll },
   ) => {
     const client = await createClient(connectionInput, context.debug.enabled);
+
     if (fetchAll) {
       const results = await paginateResults<Attachment>(
         client,
@@ -30,6 +32,7 @@ export const listAttachments = action({
       );
       return { data: { results } };
     }
+
     const { data } = await client.get(ATTACHMENTS_URL, {
       params: {
         cursor: pagination.cursor,

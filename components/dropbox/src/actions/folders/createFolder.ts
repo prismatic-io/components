@@ -9,6 +9,7 @@ import {
   pathBasename,
   validatePath,
 } from "../../util";
+
 export const createFolder = action({
   display: {
     label: "Create Folder",
@@ -30,12 +31,7 @@ export const createFolder = action({
       handleDropboxError(err, [path]);
     }
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...createFolderExamplePayload,
       result: {

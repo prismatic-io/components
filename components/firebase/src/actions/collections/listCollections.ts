@@ -3,6 +3,7 @@ import { withFirestore } from "../../client";
 import { listCollectionsExamplePayload } from "../../examplePayloads";
 import { listCollectionsInputs } from "../../inputs";
 import { listCollectionsOutputSchema } from "../../outputSchemas";
+
 export const listCollections = action({
   display: {
     label: "List Collections",
@@ -14,13 +15,13 @@ export const listCollections = action({
       const result = await db.listCollections();
       return result.map((item) => ({ id: item.id, path: item.path }));
     });
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCollectionsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCollectionsExamplePayload,
   inputs: listCollectionsInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

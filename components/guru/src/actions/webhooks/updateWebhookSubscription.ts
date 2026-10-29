@@ -4,6 +4,7 @@ import { updateWebhookSubscriptionPayload } from "../../examplePayloads";
 import { updateWebhookSubscriptionInputs } from "../../inputs";
 import type { GuruWebhookSubscription } from "../../types";
 import { arrayToCommaString, getStatusValue } from "../../util";
+
 export const updateWebhookSubscription = action({
   display: {
     label: "Update Webhook Subscription",
@@ -27,10 +28,12 @@ export const updateWebhookSubscription = action({
       status: getStatusValue(webhookActive),
       filter: arrayToCommaString(webhookEventTypes),
     };
+
     const { data } = await client.put<GuruWebhookSubscription>(
       `/webhooks/${webhookId}`,
       requestBody,
     );
+
     return { data };
   },
   inputs: updateWebhookSubscriptionInputs,

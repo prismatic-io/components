@@ -28,6 +28,7 @@ export const sendChangeEventExample = JSON.stringify(
   null,
   2,
 );
+
 export const updateChangeEventExample = JSON.stringify(
   {
     change_event: {
@@ -43,6 +44,7 @@ export const updateChangeEventExample = JSON.stringify(
   null,
   2,
 );
+
 export const sendEventExample = JSON.stringify(
   {
     payload: {
@@ -81,6 +83,7 @@ export const sendEventExample = JSON.stringify(
   null,
   2,
 );
+
 export const createUserExample = JSON.stringify(
   {
     user: {
@@ -103,6 +106,7 @@ export const createUserExample = JSON.stringify(
   null,
   2,
 );
+
 export const updateUserExample = JSON.stringify(
   {
     user: {
@@ -125,6 +129,7 @@ export const updateUserExample = JSON.stringify(
   null,
   2,
 );
+
 export const createIncidentExample = JSON.stringify({
   incident: {
     type: "incident",
@@ -150,6 +155,7 @@ export const createIncidentExample = JSON.stringify({
     },
   },
 });
+
 export const createServiceExample = JSON.stringify(
   {
     type: "service",
@@ -205,6 +211,7 @@ export const createServiceExample = JSON.stringify(
   null,
   2,
 );
+
 export const updateServiceExample = JSON.stringify(
   {
     type: "service",
@@ -260,6 +267,7 @@ export const updateServiceExample = JSON.stringify(
   null,
   2,
 );
+
 export const createTemplateExample = JSON.stringify(
   {
     description: "Sample template description",
@@ -274,6 +282,7 @@ export const createTemplateExample = JSON.stringify(
   null,
   2,
 );
+
 export const updateTemplateExample = JSON.stringify(
   {
     description: "Sample template description",
@@ -288,6 +297,7 @@ export const updateTemplateExample = JSON.stringify(
   null,
   2,
 );
+
 export const createWebhookExample = JSON.stringify(
   {
     delivery_method: {
@@ -329,6 +339,7 @@ export const createWebhookExample = JSON.stringify(
   null,
   2,
 );
+
 export const updateWebhookExample = JSON.stringify(
   {
     webhook_subscription: {
@@ -351,6 +362,7 @@ export const updateWebhookExample = JSON.stringify(
   null,
   2,
 );
+
 export const manageIncidentsExample = JSON.stringify(
   [
     {

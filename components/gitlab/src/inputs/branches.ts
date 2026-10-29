@@ -8,6 +8,7 @@ import {
   ref,
   search,
 } from "./common";
+
 const branch = input({
   label: "Branch",
   placeholder: "Enter branch name",
@@ -19,6 +20,7 @@ const branch = input({
   dataSource: "selectBranch",
   clean: toPathSegment,
 });
+
 const newBranch = input({
   label: "Branch Name",
   placeholder: "Enter new branch name",
@@ -28,6 +30,7 @@ const newBranch = input({
   example: "feature/CU-86b1x2-ach-retry",
   clean: toRequiredString,
 });
+
 export const listBranchesInputs = {
   connection: connectionInput,
   project,
@@ -35,7 +38,9 @@ export const listBranchesInputs = {
   pagination,
   search,
 };
+
 export const getBranchInputs = { connection: connectionInput, project, branch };
+
 export const createBranchInputs = {
   connection: connectionInput,
   project,
@@ -45,6 +50,7 @@ export const createBranchInputs = {
     comments: "The branch name, tag, or commit SHA to create the branch from.",
   },
 };
+
 export const deleteBranchInputs = {
   connection: connectionInput,
   project,

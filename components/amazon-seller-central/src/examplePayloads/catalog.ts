@@ -169,6 +169,7 @@ export const searchCatalogItemExamplePayload = {
     ],
   },
 };
+
 export const getCatalogItemExamplePayload = {
   data: {
     asin: "B07XJ8C8F5",
@@ -299,6 +300,7 @@ export const getCatalogItemExamplePayload = {
     vendorDetails: [],
   },
 };
+
 export const getListingsItemExamplePayload = {
   data: {
     sku: "MY-SKU-12345",
@@ -397,6 +399,7 @@ export const getListingsItemExamplePayload = {
     procurement: [],
   },
 };
+
 export const createListingsItemExamplePayload = {
   data: {
     sku: "MY-SKU-12345",
@@ -405,6 +408,7 @@ export const createListingsItemExamplePayload = {
     issues: [],
   },
 };
+
 export const updateListingsItemExamplePayload = {
   data: {
     sku: "MY-SKU-12345",
@@ -413,6 +417,7 @@ export const updateListingsItemExamplePayload = {
     issues: [],
   },
 };
+
 export const deleteListingsItemExamplePayload = {
   data: {
     sku: "MY-SKU-12345",

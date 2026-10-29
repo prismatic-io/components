@@ -4,6 +4,7 @@ import { connection } from "../../inputs/general";
 import { getRowsInputs } from "../../inputs/rows/get";
 import { getRowExamplePayload } from "../../examplePayloads/rows";
 import { getDriveOrSiteBaseUrl } from "../../helpers";
+
 export const getRow = action({
   display: {
     label: "Get Row",
@@ -15,9 +16,11 @@ export const getRow = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     const { data } = await client.get(
       `${baseUrl}/worksheets/${worksheetId}/tables/${tableId}/rows/${rowId}`,
     );
+
     return {
       data,
     };

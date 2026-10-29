@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { createAttachmentV3ExamplePayload } from "../../../examplePayloads/v3/attachments";
 import { createAttachmentV3Inputs } from "../../../inputs/v3/attachments";
 import { generatePayload } from "../../../util";
+
 export const createAttachmentV3 = action({
   display: {
     label: "Create Attachment",
@@ -26,7 +27,9 @@ export const createAttachmentV3 = action({
         "Provide either File Content (base64) or File URL, not both and not neither.",
       );
     }
+
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       application_id: applicationId,
       filename,
@@ -35,6 +38,7 @@ export const createAttachmentV3 = action({
       url: fileUrl,
       visibility,
     });
+
     const { data } = await client.post("/attachments", body);
     return { data };
   },

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listMetapropertiesResponse } from "../../examplePayloads";
 import { connection, count, ids, options, type } from "../../inputs";
+
 export const listMetaproperties = action({
   display: {
     label: "List Metaproperties",

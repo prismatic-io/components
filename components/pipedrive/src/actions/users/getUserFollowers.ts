@@ -4,6 +4,7 @@ import { getUserFollowersInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getUserFollowersExamplePayload } from "../../examplePayloads";
 import { getUserFollowersOutputSchema } from "../../outputSchemas";
+
 export const getUserFollowers = action({
   display: {
     label: "Get User Followers",

@@ -32,6 +32,7 @@ const personFieldDetailSchema = {
     },
   },
 };
+
 const personRecordSchema = {
   type: "object",
   properties: {
@@ -90,6 +91,7 @@ const personRecordSchema = {
     cc_email: { type: "string" },
   },
 };
+
 export const getPersonFieldDetailsOutputSchema = {
   type: "object",
   properties: {
@@ -102,6 +104,7 @@ export const getPersonFieldDetailsOutputSchema = {
     },
   },
 };
+
 export const setFieldValueForPersonOutputSchema = {
   type: "object",
   properties: {

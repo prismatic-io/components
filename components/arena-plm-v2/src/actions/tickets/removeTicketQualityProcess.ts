@@ -4,6 +4,7 @@ import { removeTicketQualityProcessExamplePayload } from "../../examplePayloads"
 import { removeTicketQualityProcessInputs } from "../../inputs";
 import { removeTicketQualityProcessOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const removeTicketQualityProcess = action({
   display: {
     label: "Remove Ticket Quality Process",
@@ -18,9 +19,11 @@ export const removeTicketQualityProcess = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       await client.delete(
         `/tickets/${params.ticketGuid}/quality/${params.associationGuid}`,
       );
+
       return {
         data: {
           success: true,

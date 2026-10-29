@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCallLogInputs } from "../../inputs";
 import { getCallLogExamplePayload } from "../../examplePayloads";
 import { getCallLogOutputSchema } from "../../outputSchemas";
+
 export const getCallLog = action({
   display: {
     label: "Get Call Log",

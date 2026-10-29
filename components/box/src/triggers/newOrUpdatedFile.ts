@@ -10,6 +10,7 @@ import {
   normalizeDatesBetweenEntries,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const newOrUpdatedFile = pollingTrigger({
   display: {
     label: "New and Updated Files",
@@ -29,6 +30,7 @@ export const newOrUpdatedFile = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const fields = "name,created_at,modified_at,id,type";
+
     context.logger.debug(`Polling for changes from: ${lastPolledAt} to ${now}`);
     const entries = await getFolderEntries({
       client,
@@ -36,19 +38,23 @@ export const newOrUpdatedFile = pollingTrigger({
       fields,
       limit: MAX_PAGE_SIZE,
     });
+
     context.logger.info("Polled entries: ", JSON.stringify(entries, null, 2));
     context.logger.info("Normalizing entry dates...");
     const normalizedEntries = normalizeDatesBetweenEntries(
       entries.filter(({ type }) => type !== FOLDER_TYPE),
     );
+
     context.logger.info("Computing new files...");
     const newFiles = computeNewEntries(normalizedEntries, lastPolledAt);
+
     const newFilesKeys = newFiles.map((entry) => entry.id);
     context.logger.info("Computing updated files...");
     const updatedFiles = normalizedEntries.filter(
       ({ modified_at: modifiedAt, id: entryId }) =>
         modifiedAt > lastPolledAt && !newFilesKeys.includes(entryId),
     );
+
     context.logger.info("Setting polling state...");
     context.polling.setState({ lastPolledAt: now });
     return buildPollingResult(payload, {

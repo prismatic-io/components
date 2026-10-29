@@ -8,6 +8,7 @@ import {
   type,
   uri,
 } from "../../inputs";
+
 export const createDataStore = action({
   display: {
     label: "Create Data Store",
@@ -19,6 +20,7 @@ export const createDataStore = action({
     { connection, dataStoreInput, technicalName, type, uri },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/data-stores`, {
       id: null,
       technicalName: technicalName || undefined,
@@ -26,6 +28,7 @@ export const createDataStore = action({
       uri: uri || undefined,
       ...dataStoreInput,
     });
+
     return {
       data,
     };

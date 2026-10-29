@@ -5,6 +5,7 @@ import { selectMessageTemplateExamplePayload } from "../examplePayloads";
 import { selectMessageTemplateInputs } from "../inputs";
 import type { MessageTemplateSummary } from "../types";
 import { toSortedPicklist } from "../util";
+
 export const selectMessageTemplate = dataSource({
   display: {
     label: "Select Message Template",
@@ -14,6 +15,7 @@ export const selectMessageTemplate = dataSource({
   perform: async (_context, { connection }) => {
     const client = getClient(connection, false);
     const { data } = await client.get(`${SERVICES.connect}/messageTemplates`);
+
     return {
       result: toSortedPicklist(data.data, (item: MessageTemplateSummary) => ({
         key: item.id,

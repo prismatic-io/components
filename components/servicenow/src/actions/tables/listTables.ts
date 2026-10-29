@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listTablesInputs } from "../../inputs";
 import { fetchAllTableRecords, getAllTables } from "../../util";
+
 export const listTables = action({
   display: {
     label: "List Tables",
@@ -32,6 +33,7 @@ export const listTables = action({
       );
       return { data };
     }
+
     return {
       data: await getAllTables({
         connection,
@@ -46,9 +48,7 @@ export const listTables = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: [] },
   }),
   inputs: listTablesInputs,

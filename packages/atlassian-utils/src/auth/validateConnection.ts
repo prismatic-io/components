@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import type { AtlassianConnectionKeys } from "../interfaces/AtlassianConnectionKeys";
+
 export const validateAtlassianConnection = (
   connection: Connection,
   keys: AtlassianConnectionKeys,

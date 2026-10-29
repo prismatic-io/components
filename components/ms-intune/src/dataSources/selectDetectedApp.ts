@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectDetectedAppExamplePayload } from "../examplePayloads";
 import { selectDetectedAppInputs } from "../inputs";
 import type { SelectableResource } from "../types";
+
 export const selectDetectedApp = dataSource({
   display: {
     label: "Select Detected App",
@@ -15,6 +16,7 @@ export const selectDetectedApp = dataSource({
     const {
       data: { value },
     } = await client.get(ENDPOINTS.DETECTED_APPS);
+
     return value.map((detectedApp: SelectableResource) => {
       return {
         label: detectedApp.displayName,

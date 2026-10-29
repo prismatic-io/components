@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createOpsManagementClient } from "../../client";
 import { getOpsScheduleExamplePayload } from "../../examplePayloads";
 import { getOpsScheduleInputs } from "../../inputs";
+
 export const getOpsSchedule = action({
   display: {
     label: "Get Ops Schedule",

@@ -13,6 +13,7 @@ export const RETRYABLE_NETWORK_CODES = new Set([
   "EAI_AGAIN",
   "EPIPE",
 ]);
+
 export const REDACTED_HEADERS = new Set(["private-token", "authorization"]);
 export const REDACTED_BODY_KEYS = new Set([
   "token",
@@ -24,6 +25,7 @@ export const REDACTED_BODY_KEYS = new Set([
 ]);
 export const REDACTED_QUERY_PARAMS = new Set(["private_token", "access_token"]);
 export const DEBUG_BODY_LIMIT_BYTES = 10 * 1024;
+
 export const TLS_TRUST_CODES = new Set([
   "DEPTH_ZERO_SELF_SIGNED_CERT",
   "SELF_SIGNED_CERT_IN_CHAIN",
@@ -31,12 +33,15 @@ export const TLS_TRUST_CODES = new Set([
   "UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
   "CERT_HAS_EXPIRED",
 ]);
+
 export const DEFAULT_BATCH_SIZE = 50;
 export const MAX_BATCHED_PAGE_SIZE = 500;
-export const MAX_BATCHED_PAYLOAD_BYTES = 4500000;
+export const MAX_BATCHED_PAYLOAD_BYTES = 4_500_000;
 export const MAX_UNBATCHED_RECORDS = 1000;
+
 export const WEBHOOK_STATE_KEY_PREFIX = "gitlabWebhook";
 export const OTHER_EVENT_BRANCH = "Other";
+
 export const WEBHOOK_EVENTS = [
   { label: "Push", value: "push_events", header: "Push Hook" },
   { label: "Tag Push", value: "tag_push_events", header: "Tag Push Hook" },
@@ -67,19 +72,23 @@ export const WEBHOOK_EVENTS = [
   },
   { label: "Milestone", value: "milestone_events", header: "Milestone Hook" },
 ] as const;
+
 export const WEBHOOK_BRANCH_NAMES = [
   ...WEBHOOK_EVENTS.map((event) => event.label),
   OTHER_EVENT_BRANCH,
 ];
+
 export const POLL_RESOURCE_CONFIG = {
   issues: { label: "Issues", path: "issues" },
   mergeRequests: { label: "Merge Requests", path: "merge_requests" },
 } as const;
+
 export const ISSUE_STATE_OPTIONS = [
   { label: "Opened", value: "opened" },
   { label: "Closed", value: "closed" },
   { label: "All", value: "all" },
 ];
+
 export const MERGE_REQUEST_STATE_OPTIONS = [
   { label: "Opened", value: "opened" },
   { label: "Closed", value: "closed" },
@@ -87,22 +96,28 @@ export const MERGE_REQUEST_STATE_OPTIONS = [
   { label: "Merged", value: "merged" },
   { label: "All", value: "all" },
 ];
+
 export const BOOLEAN_OPTIONS = [
   { label: "True", value: "true" },
   { label: "False", value: "false" },
 ];
+
 export const STATE_EVENT_OPTIONS = [
   { label: "Close", value: "close" },
   { label: "Reopen", value: "reopen" },
 ];
+
 export const ISSUE_STATES = ["opened", "closed"] as const;
+
 export const MERGE_REQUEST_STATES = [
   "opened",
   "closed",
   "locked",
   "merged",
 ] as const;
+
 export const MILESTONE_STATES = ["active", "closed"] as const;
+
 export const PIPELINE_STATUSES = [
   "created",
   "waiting_for_resource",
@@ -118,18 +133,24 @@ export const PIPELINE_STATUSES = [
   "manual",
   "scheduled",
 ] as const;
+
 export const PIPELINE_STATUS_OPTIONS = PIPELINE_STATUSES.map((value) => ({
   label: value,
   value,
 }));
+
 export const MILESTONE_STATE_OPTIONS = MILESTONE_STATES.map((value) => ({
   label: `${value.charAt(0).toUpperCase()}${value.slice(1)}`,
   value,
 }));
+
 export const FILE_ENCODING_OPTIONS = [
   { label: "Text", value: "text" },
   { label: "Base64", value: "base64" },
 ];
+
 export const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const BRANCH_DELETED_MESSAGE = "Branch deleted successfully.";
+
 export const ISSUE_DELETED_MESSAGE = "Issue deleted successfully.";

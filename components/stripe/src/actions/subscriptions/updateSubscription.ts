@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { updateSubscriptionExamplePayload } from "../../examplePayloads/subscriptions";
 import { updateSubscriptionInputs } from "../../inputs";
 import { subscriptionOutputSchema } from "../../outputSchemas";
+
 export const updateSubscription = action({
   display: {
     label: "Update Subscription",
@@ -61,9 +62,7 @@ export const updateSubscription = action({
       paymentId,
       metadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const subscription = updateSubscriptionExamplePayload.data as Record<
       string,
       unknown
@@ -71,6 +70,7 @@ export const updateSubscription = action({
     const items = subscription.items as Record<string, unknown>;
     const [item] = items.data as Record<string, unknown>[];
     const price = item.price as Record<string, unknown>;
+
     return {
       data: {
         ...subscription,
@@ -102,5 +102,6 @@ export const updateSubscription = action({
     type: "actionOutput",
     schema: subscriptionOutputSchema,
   }),
+
   examplePayload: updateSubscriptionExamplePayload,
 });

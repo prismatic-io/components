@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createOpsManagementClient } from "../../client";
 import { snoozeOpsAlertExamplePayload } from "../../examplePayloads";
 import { snoozeOpsAlertInputs } from "../../inputs";
+
 export const snoozeOpsAlert = action({
   display: {
     label: "Snooze Ops Alert",

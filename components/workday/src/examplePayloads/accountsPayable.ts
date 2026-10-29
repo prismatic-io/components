@@ -73,6 +73,7 @@ export const listSupplierInvoiceRequestsExamplePayload = {
     total: 1,
   },
 };
+
 export const postSupplierInvoiceRequestsExamplePayload = {
   data: {
     currency: {
@@ -195,6 +196,7 @@ export const postSupplierInvoiceRequestsExamplePayload = {
     descriptor: "Supplier Invoice Request INV-0001234",
   },
 };
+
 export const getSupplierInvoiceRequestsByIdExamplePayload = {
   data: {
     invoiceDate: "2024-06-08T07:00:00.000Z",
@@ -265,6 +267,7 @@ export const getSupplierInvoiceRequestsByIdExamplePayload = {
     id: "15263748596071829abcdef012345678",
   },
 };
+
 export const getSupplierInvoiceRequestAttachmentsExamplePayload = {
   data: {
     data: [
@@ -279,6 +282,7 @@ export const getSupplierInvoiceRequestAttachmentsExamplePayload = {
     total: 1,
   },
 };
+
 export const postSupplierInvoiceRequestsAttachmentsExamplePayload = {
   data: {
     fileLength: 20480,
@@ -292,6 +296,7 @@ export const postSupplierInvoiceRequestsAttachmentsExamplePayload = {
     id: "63748596071829abcdef0123456789ab",
   },
 };
+
 export const submitSupplierInvoiceRequestExamplePayload = {
   data: {
     id: "3748596071829abcdef0123456789abc",

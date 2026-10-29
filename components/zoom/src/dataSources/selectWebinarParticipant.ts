@@ -3,6 +3,7 @@ import { selectWebinarParticipantInputs } from "../inputs";
 import { createZoomClient } from "../client";
 import { getAllPaginationResults } from "../util";
 import type { Participant } from "../interfaces/Participant";
+
 export const selectWebinarParticipant = dataSource({
   display: {
     label: "Select Webinar Participant",
@@ -12,13 +13,13 @@ export const selectWebinarParticipant = dataSource({
   inputs: selectWebinarParticipantInputs,
   perform: async (_context, { connection, webinarId }) => {
     const client = createZoomClient({ connection });
-    const data: {
-      participants: Participant[];
-    } = await getAllPaginationResults<Participant>(
-      client,
-      `/past_webinars/${webinarId}/participants`,
-      "participants",
-    );
+    const data: { participants: Participant[] } =
+      await getAllPaginationResults<Participant>(
+        client,
+        `/past_webinars/${webinarId}/participants`,
+        "participants",
+      );
+
     const result = data.participants.map(
       ({ id, name, user_email, user_id }): Element => {
         const label = name || user_email || id;
@@ -28,6 +29,7 @@ export const selectWebinarParticipant = dataSource({
         };
       },
     );
+
     return {
       result,
     };

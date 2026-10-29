@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateCompanyExamplePayload } from "../../examplePayloads";
 import { updateCompanyInputs } from "../../inputs";
 import { updateCompanyOutputSchema } from "../../outputSchemas";
+
 export const updateCompany = action({
   display: {
     label: "Update Company",
@@ -28,8 +29,7 @@ export const updateCompany = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateCompanyExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateCompanyExamplePayload,
   examplePayload: updateCompanyExamplePayload,
 });

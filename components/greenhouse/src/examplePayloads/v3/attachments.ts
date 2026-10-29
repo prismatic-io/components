@@ -1,4 +1,5 @@
 import type { V3Attachment } from "../../types/v3";
+
 const sampleAttachment: V3Attachment = {
   id: 4949394,
   application_id: 1003961,
@@ -9,12 +10,15 @@ const sampleAttachment: V3Attachment = {
   created_at: "2026-05-21T08:00:00.000Z",
   updated_at: "2026-05-21T08:00:00.000Z",
 };
+
 export const listAttachmentsV3ExamplePayload = {
   data: [sampleAttachment],
 };
+
 export const createAttachmentV3ExamplePayload = {
   data: sampleAttachment,
 };
+
 export const deleteAttachmentV3ExamplePayload = {
   data: { success: true },
 };

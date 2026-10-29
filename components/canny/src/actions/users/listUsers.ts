@@ -4,6 +4,7 @@ import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
 import { listUsersOutputSchema } from "../../outputSchemas";
 import { paginateCursor } from "../../util";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -26,8 +27,7 @@ export const listUsers = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listUsersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listUsersExamplePayload,
   examplePayload: listUsersExamplePayload,
 });

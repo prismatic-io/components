@@ -6,6 +6,7 @@ import {
 } from "../constants";
 import { toOptionalObject } from "../util";
 import { connection, environmentId, spaceId } from "./common";
+
 const assetTitle = input({
   label: "Title",
   type: "code",
@@ -16,6 +17,7 @@ const assetTitle = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const assetDescription = input({
   label: "Description",
   type: "code",
@@ -26,6 +28,7 @@ const assetDescription = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const assetFile = input({
   label: "File",
   type: "code",
@@ -37,6 +40,7 @@ const assetFile = input({
   required: true,
   clean: toOptionalObject,
 });
+
 const assetId = input({
   label: "Asset ID",
   type: "string",
@@ -47,6 +51,7 @@ const assetId = input({
   clean: util.types.toString,
   dataSource: "selectAsset",
 });
+
 export const createAssetInputs = {
   connection,
   spaceId,
@@ -55,41 +60,48 @@ export const createAssetInputs = {
   description: assetDescription,
   file: assetFile,
 };
+
 export const deleteAssetInputs = {
   connection,
   spaceId,
   environmentId,
   assetId,
 };
+
 export const getAssetInputs = {
   connection,
   spaceId,
   environmentId,
   assetId,
 };
+
 export const listAssetsInputs = {
   connection,
   spaceId,
   environmentId,
 };
+
 export const processAssetInputs = {
   connection,
   spaceId,
   environmentId,
   assetId,
 };
+
 export const publishAnAssetInputs = {
   connection,
   spaceId,
   environmentId,
   assetId,
 };
+
 export const unpublishAnAssetInputs = {
   connection,
   spaceId,
   environmentId,
   assetId,
 };
+
 export const updateAssetInputs = {
   connection,
   spaceId,

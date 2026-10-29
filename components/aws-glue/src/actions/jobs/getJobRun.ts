@@ -6,6 +6,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getJobRunExamplePayload } from "../../examplePayloads";
 import { getJobRunInputs } from "../../inputs";
+
 export const getJobRun = action({
   display: {
     label: "Get Job Run",

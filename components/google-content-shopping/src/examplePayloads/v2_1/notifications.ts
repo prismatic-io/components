@@ -1,4 +1,5 @@
 import type { content_v2_1 } from "googleapis";
+
 export const getPubSubNotificationExamplePayload: {
   data: content_v2_1.Schema$PubsubNotificationSettings;
 } = {
@@ -12,6 +13,7 @@ export const getPubSubNotificationExamplePayload: {
     ],
   },
 };
+
 export const updatePubSubNotificationExamplePayload: {
   data: content_v2_1.Schema$PubsubNotificationSettings;
 } = {

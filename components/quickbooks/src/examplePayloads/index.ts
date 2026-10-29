@@ -108,6 +108,7 @@ export const batchRequestPayload = {
     time: "2016-04-15T09:01:18.141-07:00",
   },
 };
+
 export const getCompanyInfoPayload = {
   data: {
     CompanyName: "Example Corp",
@@ -122,6 +123,7 @@ export const getCompanyInfoPayload = {
     },
   },
 };
+
 export const getCustomerByDisplayNamePayload = {
   data: {
     Id: "1",
@@ -132,7 +134,9 @@ export const getCustomerByDisplayNamePayload = {
     ReportPrefs: {},
   },
 };
+
 export const getCustomerByIdPayload = getCustomerByDisplayNamePayload;
+
 export const createPurchaseOrderPayload = {
   data: {
     PurchaseOrder: {
@@ -217,6 +221,7 @@ export const createPurchaseOrderPayload = {
     time: "2015-07-28T16:04:49.874-07:00",
   },
 };
+
 export const updatePurchaseOrderPayload = {
   data: {
     PurchaseOrder: {
@@ -301,6 +306,7 @@ export const updatePurchaseOrderPayload = {
     time: "2015-07-28T16:04:49.874-07:00",
   },
 };
+
 export const deletePurchaseOrderPayload = {
   data: {
     PurchaseOrder: {
@@ -311,6 +317,7 @@ export const deletePurchaseOrderPayload = {
     time: "2015-05-26T14:08:39.858-07:00",
   },
 };
+
 export const selectCustomerExamplePayload = {
   result: [
     {
@@ -319,6 +326,7 @@ export const selectCustomerExamplePayload = {
     },
   ],
 };
+
 export const selectAccountExamplePayload = {
   result: [
     {
@@ -327,6 +335,7 @@ export const selectAccountExamplePayload = {
     },
   ],
 };
+
 export const selectPurchaseOrderExamplePayload = {
   result: [
     {
@@ -335,9 +344,12 @@ export const selectPurchaseOrderExamplePayload = {
     },
   ],
 };
+
 export const selectInvoiceExamplePayload = selectPurchaseOrderExamplePayload;
+
 export const selectRefundReceiptExamplePayload =
   selectPurchaseOrderExamplePayload;
+
 export const selectTermExamplePayload = {
   result: [
     {
@@ -346,4 +358,5 @@ export const selectTermExamplePayload = {
     },
   ],
 };
+
 export { createInvoiceV2ExamplePayload } from "./invoices";

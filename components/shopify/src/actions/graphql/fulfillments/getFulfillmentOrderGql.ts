@@ -6,6 +6,7 @@ import { getFulfillmentOrderGqlOutputSchema } from "../../../outputSchemas";
 import type { FulfillmentOrder } from "../../../types";
 import { fulfillmentOrderMapper } from "../mappers/fulfillmentOrderMapper";
 import getFulfillmentOrderQuery from "../queries/fulfillments/GetFulfillmentOrder.gql";
+
 export const getFulfillmentOrderGql = action({
   display: {
     label: "Get Fulfillment Order",
@@ -24,11 +25,13 @@ export const getFulfillmentOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      fulfillmentOrder: FulfillmentOrder;
-    } = await client.request(getFulfillmentOrderQuery, {
-      id: fulfillmentOrderId,
-    });
+
+    const data: { fulfillmentOrder: FulfillmentOrder } = await client.request(
+      getFulfillmentOrderQuery,
+      {
+        id: fulfillmentOrderId,
+      },
+    );
     return {
       data: {
         data: {

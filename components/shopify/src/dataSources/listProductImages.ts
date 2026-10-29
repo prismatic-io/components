@@ -5,6 +5,7 @@ import { MAX_LIMIT } from "../constants";
 import { selectProductImagesInputs } from "../inputs";
 import type { ProductImageNode } from "../types";
 import { fetchData, getNumericId } from "../util";
+
 export const listProductImages = dataSource({
   display: {
     label: "Select Product Image",
@@ -22,6 +23,7 @@ export const listProductImages = dataSource({
     const cleanedProductId = productId.startsWith("gid://")
       ? productId
       : `gid://shopify/Product/${productId}`;
+
     const { images } = (await fetchData<ProductImageNode>(
       client,
       ["product", "media"],
@@ -33,6 +35,7 @@ export const listProductImages = dataSource({
         first: MAX_LIMIT,
       },
     )) as unknown as Record<"images", ProductImageNode[]>;
+
     const result = images
       .map<Element>((image, index) => {
         const numericId = getNumericId(image.id);
@@ -42,6 +45,7 @@ export const listProductImages = dataSource({
         };
       })
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

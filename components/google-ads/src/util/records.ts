@@ -4,6 +4,7 @@ import {
   googleAdsSearchPath,
   NO_DESCRIPTIVE_NAME,
 } from "../constants";
+
 export const getCustomerDescriptiveName = async (
   client: HttpClient,
   customerId: string,
@@ -15,6 +16,7 @@ export const getCustomerDescriptiveName = async (
     if (data?.results[0]?.customer) {
       return data.results[0].customer?.descriptiveName || NO_DESCRIPTIVE_NAME;
     }
+
     return NO_DESCRIPTIVE_NAME;
   } catch (_error) {
     return DESCRIPTIVE_NAME_UNAVAILABLE;

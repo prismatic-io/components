@@ -18,6 +18,7 @@ import {
   resolvePollingRecordChanges,
   resolvePollWindow,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -41,6 +42,7 @@ export const pollChangesTrigger = pollingTrigger({
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
     const window = resolvePollWindow(pollState, params.lookBackDate, now);
+
     const client = createClient(params.connection, context.debug.enabled);
     const data = await fetchChangedRecords(
       client,
@@ -52,14 +54,17 @@ export const pollChangesTrigger = pollingTrigger({
       },
     );
     const totalChanges = data.created.length + data.updated.length;
+
     context.polling.setState({
       lastPolledAt: now,
     } as unknown as Record<string, unknown>);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${params.resourceType}: ${data.created.length} new, ${data.updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data } },
       polledNoChanges: totalChanges === 0,

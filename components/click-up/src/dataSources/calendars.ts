@@ -3,6 +3,7 @@ import { createClickUpClient as createClient } from "../client";
 import { calendarsExamplePayload } from "../examplePayloads";
 import { calendarsInputs } from "../inputs";
 import type { Calendar, GetSpaceViewsResponse } from "../types";
+
 export const calendars = dataSource({
   display: {
     label: "Select Calendar View",

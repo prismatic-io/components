@@ -5,6 +5,7 @@ import { listRecentActivityUserAccessesInputs } from "../../inputs";
 import { listRecentActivityUserAccessesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listRecentActivityUserAccesses = action({
   display: {
     label: "List Recent User Access Activities",
@@ -22,25 +23,30 @@ export const listRecentActivityUserAccesses = action({
   ) => {
     try {
       context.logger.info("Getting recent user access activities");
+
       const client = await createArenaClient(context, connection);
+
       const params = {
         dateTimeFrom,
         dateTimeTo,
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       const data = await fetchArenaList(
         client,
         "/settings/recentactivities/useraccesses",
         params,
         fetchAll,
       );
+
       context.logger.info(
         `Retrieved ${data?.count || 0} user access activities`,
         {
           count: data?.count,
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

@@ -1,17 +1,21 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanNumberInput, cleanStringInput } from "../util";
 import { additionalFields, connection } from "./common";
+
 const softwareDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#software_attributes) for more information.";
+
 const softwareAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${softwareDocumentationComments}`,
 });
+
 const applicationTypeOptions = [
   { label: "Desktop", value: "desktop" },
   { label: "SaaS", value: "saas" },
   { label: "Mobile", value: "mobile" },
 ];
+
 const statusOptions = [
   { label: "Restricted", value: "restricted" },
   { label: "Ignored", value: "ignored" },
@@ -21,6 +25,7 @@ const statusOptions = [
   { label: "In Review", value: "in review" },
   { label: "Needs Review", value: "needs review" },
 ];
+
 const name = input({
   label: "Name",
   type: "string",
@@ -30,6 +35,7 @@ const name = input({
   placeholder: "Enter software name",
   clean: util.types.toString,
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -39,6 +45,7 @@ const description = input({
   placeholder: "Enter software description",
   clean: util.types.toString,
 });
+
 const applicationType = input({
   label: "Application Type",
   type: "string",
@@ -49,6 +56,7 @@ const applicationType = input({
   model: applicationTypeOptions,
   clean: util.types.toString,
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -59,6 +67,7 @@ const status = input({
   model: statusOptions,
   clean: cleanStringInput,
 });
+
 const managedById = input({
   label: "Managed By ID",
   type: "string",
@@ -69,6 +78,7 @@ const managedById = input({
   placeholder: "Enter user ID",
   clean: cleanNumberInput,
 });
+
 const notes = input({
   label: "Notes",
   type: "string",
@@ -78,6 +88,7 @@ const notes = input({
   placeholder: "Enter notes",
   clean: cleanStringInput,
 });
+
 const category = input({
   label: "Category",
   type: "string",
@@ -88,6 +99,7 @@ const category = input({
   placeholder: "Enter category",
   clean: cleanStringInput,
 });
+
 const source = input({
   label: "Source",
   type: "string",
@@ -98,6 +110,7 @@ const source = input({
   placeholder: "Enter source",
   clean: cleanStringInput,
 });
+
 const workspaceId = input({
   label: "Workspace ID",
   type: "string",
@@ -109,6 +122,7 @@ const workspaceId = input({
   dataSource: "selectWorkspace",
   clean: cleanNumberInput,
 });
+
 const applicationId = input({
   label: "Application ID",
   type: "string",
@@ -119,6 +133,7 @@ const applicationId = input({
   dataSource: "selectSoftware",
   clean: util.types.toNumber,
 });
+
 const createSoftwareAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -130,6 +145,7 @@ const createSoftwareAdditionalFields = structuredObjectInput({
     source,
   },
 });
+
 export const createSoftwareInputs = {
   connection,
   name,
@@ -140,6 +156,7 @@ export const createSoftwareInputs = {
   workspaceId,
   softwareAdditionalFields,
 };
+
 export const deleteSoftwareInputs = {
   connection,
   applicationId: input({
@@ -147,6 +164,7 @@ export const deleteSoftwareInputs = {
     comments: "Unique ID of the software to delete.",
   }),
 };
+
 export const getSoftwareInputs = {
   connection,
   applicationId: input({
@@ -154,9 +172,11 @@ export const getSoftwareInputs = {
     comments: "Unique ID of the software to retrieve.",
   }),
 };
+
 export const listSoftwareInputs = {
   connection,
 };
+
 export const moveSoftwareInputs = {
   connection,
   applicationId: input({
@@ -170,6 +190,7 @@ export const moveSoftwareInputs = {
     clean: util.types.toNumber,
   }),
 };
+
 const updateSoftwareAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -197,6 +218,7 @@ const updateSoftwareAdditionalFields = structuredObjectInput({
     source,
   },
 });
+
 export const updateSoftwareInputs = {
   connection,
   applicationId,

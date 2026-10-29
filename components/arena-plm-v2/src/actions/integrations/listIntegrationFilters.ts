@@ -4,6 +4,7 @@ import { listIntegrationFiltersExamplePayload } from "../../examplePayloads";
 import { listIntegrationFiltersInputs } from "../../inputs";
 import { listIntegrationFiltersOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listIntegrationFilters = action({
   display: {
     label: "List Integration Filters",
@@ -19,9 +20,11 @@ export const listIntegrationFilters = action({
   perform: async (context, { connection, integrationGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const { data } = await client.get(
         `/outboundintegrations/${integrationGuid}/filters`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Integration Filters");

@@ -7,6 +7,7 @@ import { listInventoryItemsGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listInventoryItemsQuery from "../queries/inventoryItems/ListInventoryItems.gql";
+
 export const listInventoryItemsGql = action({
   display: {
     label: "List Inventory Items",
@@ -34,9 +35,8 @@ export const listInventoryItemsGql = action({
         cursor: getAlldata ? undefined : pagination.endCursor,
         query,
       },
-    )) as Record<"inventoryItems", unknown[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"inventoryItems", unknown[]> & { pageInfo: PageInfo };
+
     return {
       data,
     };

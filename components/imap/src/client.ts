@@ -1,6 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { imapConnection } from "./connections";
 import { ImapFlow } from "imapflow";
+
 export const createClient = (connection: Connection, debug: boolean) => {
   if (connection.key !== imapConnection.key) {
     throw new ConnectionError(
@@ -8,6 +9,7 @@ export const createClient = (connection: Connection, debug: boolean) => {
       `Unsupported connection provided: ${connection.key}`,
     );
   }
+
   const client = new ImapFlow({
     host: util.types.toString(connection.fields.host),
     port: util.types.toNumber(connection.fields.port),

@@ -7,6 +7,7 @@ import {
   timeout,
   workbookId,
 } from "./common";
+
 const connectionId = input({
   label: "Connection ID",
   type: "string",
@@ -17,6 +18,7 @@ const connectionId = input({
   dataSource: "selectConnection",
   clean: toOptionalString,
 });
+
 const serverPort = input({
   label: "Server Port",
   type: "string",
@@ -26,6 +28,7 @@ const serverPort = input({
   placeholder: "Enter server port",
   clean: toOptionalString,
 });
+
 const serverAddress = input({
   label: "Server Address",
   type: "string",
@@ -35,6 +38,7 @@ const serverAddress = input({
   placeholder: "Enter server address",
   clean: toOptionalString,
 });
+
 const connectionUsername = input({
   label: "Connection Username",
   type: "string",
@@ -44,6 +48,7 @@ const connectionUsername = input({
   placeholder: "Enter connection username",
   clean: toOptionalString,
 });
+
 const connectionPassword = input({
   label: "Connection Password",
   type: "string",
@@ -53,6 +58,7 @@ const connectionPassword = input({
   placeholder: "Enter connection password",
   clean: toOptionalString,
 });
+
 const embedPassword = input({
   label: "Embed Password",
   type: "boolean",
@@ -60,6 +66,7 @@ const embedPassword = input({
   comments: "When true, embeds the password for the connection.",
   clean: toOptionalBoolean,
 });
+
 const queryTaggingEnabled = input({
   label: "Query Tagging Enabled",
   type: "boolean",
@@ -68,6 +75,7 @@ const queryTaggingEnabled = input({
     "When true, associates a server log query event with the Tableau resource that made the query.",
   clean: toOptionalBoolean,
 });
+
 const connectionSettings = structuredObjectInput({
   label: "Connection Settings",
   required: false,
@@ -82,6 +90,7 @@ const connectionSettings = structuredObjectInput({
     queryTaggingEnabled,
   },
 });
+
 const connectionSearchField = input({
   label: "Search Field",
   type: "string",
@@ -91,12 +100,14 @@ const connectionSearchField = input({
   placeholder: "Enter search field",
   clean: util.types.toString,
 });
+
 export const listConnectionsInputs = {
   workbookId,
   timeout,
   pagination,
   tableauConnection: connectionInput,
 };
+
 export const searchConnectionsInputs = {
   workbookId,
   searchString,
@@ -105,6 +116,7 @@ export const searchConnectionsInputs = {
   tableauConnection: connectionInput,
   pagination,
 };
+
 export const updateConnectionInputs = {
   workbookId,
   connectionId,

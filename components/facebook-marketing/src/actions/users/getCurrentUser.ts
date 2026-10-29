@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getCurrentUserResponse } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -9,7 +10,9 @@ export const getCurrentUser = action({
   },
   perform: async (context, { version, connection }) => {
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await client.get("/me");
+
     return {
       data,
     };

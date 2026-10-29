@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrieveCommentExamplePayload } from "../../examplePayloads";
 import { retrieveCommentInputs } from "../../inputs";
 import { retrieveCommentOutputSchema } from "../../outputSchemas";
+
 export const retrieveComment = action({
   display: {
     label: "Retrieve Comment",

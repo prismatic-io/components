@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
+
 export const snowflakeConnectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Snowflake connection to use.",
 });
+
 export const sqlInput = input({
   label: "SQL statements to run",
   type: "code",
@@ -17,6 +19,7 @@ export const sqlInput = input({
   placeholder: "Enter SQL statement",
   clean: util.types.toString,
 });
+
 export const accountLocator = input({
   label: "Account Locator",
   placeholder: "Enter Account Locator",
@@ -27,6 +30,7 @@ export const accountLocator = input({
     "The account locator for your Snowflake account. Find this in the organization's account panel. [Learn more](https://docs.snowflake.com/en/user-guide/admin-account-identifier#finding-the-region-and-locator-for-an-account)",
   clean: util.types.toString,
 });
+
 export const snowflakeUrl = input({
   label: "Snowflake Identifier URL",
   placeholder: "Enter Snowflake URL",
@@ -37,6 +41,7 @@ export const snowflakeUrl = input({
     "The Snowflake URL for your account. Format: https://[account-identifier].snowflakecomputing.com",
   clean: util.types.toString,
 });
+
 export const nStatementsToExecute = input({
   label: "Number of statements to execute",
   example: "1",
@@ -47,6 +52,7 @@ export const nStatementsToExecute = input({
     "The number of statements to execute. Use 0 to indicate a variable number of statements can be included in the request.",
   clean: util.types.toNumber,
 });
+
 export const timeout = input({
   label: "Timeout",
   example: "60",
@@ -60,6 +66,7 @@ export const timeout = input({
       ? util.types.toNumber(str)
       : undefined,
 });
+
 export const database = input({
   label: "Database",
   example: "MYDB",
@@ -69,6 +76,7 @@ export const database = input({
   comments: "The database name in which the statement should be executed.",
   clean: cleanString,
 });
+
 export const schema = input({
   label: "Schema",
   example: "PUBLIC",
@@ -78,6 +86,7 @@ export const schema = input({
   comments: "The schema name in which the statement should be executed.",
   clean: cleanString,
 });
+
 export const warehouse = input({
   label: "Warehouse",
   example: "COMPUTE_WH",
@@ -87,6 +96,7 @@ export const warehouse = input({
   comments: "The warehouse name to use when executing the statement.",
   clean: cleanString,
 });
+
 export const role = input({
   label: "Role",
   example: "ACCOUNTADMIN",
@@ -96,6 +106,7 @@ export const role = input({
   comments: "The role name to use when executing the statement.",
   clean: cleanString,
 });
+
 export const bindings = input({
   label: "Bindings",
   type: "code",
@@ -114,6 +125,7 @@ export const bindings = input({
   required: false,
   clean: util.types.toObject,
 });
+
 export const parameters = input({
   label: "Parameters",
   type: "code",
@@ -132,6 +144,7 @@ export const parameters = input({
   required: false,
   clean: util.types.toObject,
 });
+
 export const shouldPoll = input({
   label: "Poll for asynchronous results",
   type: "boolean",
@@ -141,6 +154,7 @@ export const shouldPoll = input({
     "When true, the action will handle polling for results on queries that take longer than 45 seconds to execute. When false, the action returns immediately after executing the query.",
   clean: util.types.toBool,
 });
+
 export const statementHandleId = input({
   label: "Statement Handle ID",
   type: "string",
@@ -151,6 +165,7 @@ export const statementHandleId = input({
   placeholder: "Enter Statement Handle ID",
   clean: util.types.toString,
 });
+
 export const partition = input({
   label: "Partition",
   type: "string",

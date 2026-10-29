@@ -9,6 +9,7 @@ import {
   str,
   userSchema,
 } from "./shared";
+
 const pipelineProperties = {
   id: num,
   iid: num,
@@ -22,7 +23,9 @@ const pipelineProperties = {
   updated_at: str,
   web_url: str,
 };
+
 export const pipelineSchema = obj(pipelineProperties);
+
 export const pipelineDetailSchema = obj({
   ...pipelineProperties,
   before_sha: str,
@@ -60,6 +63,9 @@ export const pipelineDetailSchema = obj({
   }),
   archived: bool,
 });
+
 export const pipelineListSchema = list(pipelineSchema);
+
 export const getPipelineOutputSchema = pipelineDetailSchema;
+
 export const listPipelinesOutputSchema = pipelineListSchema;

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrieveBoardExamplePayload } from "../../examplePayloads";
 import { retrieveBoardInputs } from "../../inputs";
 import { retrieveBoardOutputSchema } from "../../outputSchemas";
+
 export const retrieveBoard = action({
   display: {
     label: "Retrieve Board",

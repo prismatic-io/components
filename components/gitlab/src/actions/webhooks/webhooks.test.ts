@@ -4,8 +4,11 @@ import { listProjectWebhooksExamplePayload } from "../../examplePayloads";
 import { accessTokenConnection, GITLAB_URL } from "../../testHelpers";
 import { deleteInstancedWebhooks } from "./deleteInstancedWebhooks";
 import { listProjectWebhooks } from "./listProjectWebhooks";
+
 const exampleHook = listProjectWebhooksExamplePayload.data[0];
+
 afterEach(() => nock.cleanAll());
+
 test("List Project Webhooks", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/278964/hooks")
@@ -19,6 +22,7 @@ test("List Project Webhooks", async () => {
   });
   expect(result?.data).toEqual([exampleHook]);
 });
+
 test("Delete Instanced Webhooks removes only hooks pointing at this instance", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/278964/hooks")
@@ -42,6 +46,7 @@ test("Delete Instanced Webhooks removes only hooks pointing at this instance", a
     deleted: [{ projectId: "278964", hookId: 14982 }],
   });
 });
+
 test("Delete Instanced Webhooks lists each project's hooks once across every flow URL", async () => {
   const hooksList = nock(GITLAB_URL)
     .get("/api/v4/projects/278964/hooks")
@@ -82,9 +87,11 @@ test("Delete Instanced Webhooks lists each project's hooks once across every flo
     ],
   });
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Project Not Found" };
+
   test("List Project Webhooks rejects on 404", async () => {
     nock(GITLAB_URL)
       .get("/api/v4/projects/999/hooks")
@@ -99,6 +106,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Delete Instanced Webhooks rejects when the hooks list returns 404", async () => {
     nock(GITLAB_URL)
       .get("/api/v4/projects/999/hooks")

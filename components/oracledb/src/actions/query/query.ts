@@ -3,6 +3,7 @@ import merge from "lodash.merge";
 import { createOracleDbClient } from "../../client";
 import { queryExamplePayload } from "../../examplePayloads";
 import { queryInputs } from "../../inputs";
+
 export const query = action({
   display: {
     label: "Query",
@@ -19,7 +20,9 @@ export const query = action({
         }),
       );
     }
+
     const client = await createOracleDbClient(params.connection);
+
     try {
       const namedParameters = merge(
         params.namedParameters,

@@ -1,5 +1,6 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { Pagination } from "./Pagination";
+
 export interface GetPaginatedDataParams {
   client: HttpClient;
   endpoint: string;

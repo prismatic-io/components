@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { getAccountsExamplePayload } from "../../examplePayloads";
 import { getAccountsInputs } from "../../inputs";
+
 export const getAccounts = action({
   display: {
     label: "Get Accounts",
@@ -17,4 +18,5 @@ export const getAccounts = action({
   },
   inputs: getAccountsInputs,
 });
+
 export default { getAccounts };

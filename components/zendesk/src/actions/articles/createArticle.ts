@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { createArticleExamplePayload } from "../../examplePayloads";
 import { createArticleInputs } from "../../inputs";
 import { createArticleOutputSchema } from "../../outputSchemas";
+
 export const createArticle = action({
   display: {
     label: "Create Article",
@@ -37,6 +38,7 @@ export const createArticle = action({
         notify_subscribers: notifySubscribers,
       },
     );
+
     return {
       data,
     };

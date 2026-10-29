@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const groupDn = input({
   label: "Group DN",
   type: "string",
@@ -9,6 +10,7 @@ export const groupDn = input({
   clean: util.types.toString,
   dataSource: "selectGroup",
 });
+
 export const groupName = input({
   label: "Group Name",
   type: "string",
@@ -18,6 +20,7 @@ export const groupName = input({
   placeholder: "Enter group name",
   clean: util.types.toString,
 });
+
 export const sAMAccountName = input({
   label: "sAMAccountName",
   type: "string",
@@ -27,6 +30,7 @@ export const sAMAccountName = input({
   placeholder: "Enter sAMAccountName",
   clean: util.types.toString,
 });
+
 export const groupType = input({
   label: "Group Type",
   type: "string",

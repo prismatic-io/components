@@ -37,6 +37,7 @@ import {
   uploadToStorage,
   useZOrder,
 } from "../../inputs";
+
 export const convertPdfToHtml = action({
   display: {
     label: "Convert PDF to HTML",
@@ -184,6 +185,7 @@ export const convertPdfToHtml = action({
       trySaveTextUnderliningAndStrikeoutingInCss:
         trySaveTextUnderliningAndStrikeoutingInCss || undefined,
     };
+
     if (!fileContent) {
       const NO_CHARACTERS = 0;
       if (documentName.length === NO_CHARACTERS) {
@@ -191,6 +193,7 @@ export const convertPdfToHtml = action({
           "Document Name input is required whenever pre-conversion file is located in an Aspose storage.",
         );
       }
+
       if (!uploadToStorage) {
         const { data } = await client.get(`/pdf/${documentName}/convert/html`, {
           headers: {
@@ -201,6 +204,7 @@ export const convertPdfToHtml = action({
             folder: folder || undefined,
           },
         });
+
         response = data;
       } else {
         if (!outPath) {
@@ -208,6 +212,7 @@ export const convertPdfToHtml = action({
             "Out Path input is required whenever trying to save post-conversion file into an aspose storage.",
           );
         }
+
         const { data } = await client.put(
           `/pdf/${documentName}/convert/html`,
           null,
@@ -219,25 +224,34 @@ export const convertPdfToHtml = action({
             },
           },
         );
+
         response = data;
       }
     } else {
       if (!uploadToStorage)
-        throw new Error(`This use-case (provided a file into the File Content input
+        throw new Error(
+          `This use-case (provided a file into the File Content input
           and wanting the converted file to be returned in response body)
-          is not supported by Aspose's API.`);
+          is not supported by Aspose's API.`,
+        );
+
       if (!outPath) {
-        throw new Error(`Out Path input is required whenever trying to save post-conversion
-          file into an Aspose storage.`);
+        throw new Error(
+          `Out Path input is required whenever trying to save post-conversion
+          file into an Aspose storage.`,
+        );
       }
+
       const { data } = await client.put("/pdf/convert/html", fileContent.data, {
         params: {
           ...commonParams,
           outPath,
         },
       });
+
       response = data;
     }
+
     return { data: response };
   },
   examplePayload: convertPdfToHtmlExamplePayload,

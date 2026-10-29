@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { postWorkerBusinessTitleChangeExamplePayload } from "../../examplePayloads";
 import { postWorkerBusinessTitleChangeInputs } from "../../inputs";
 import { postWorkerBusinessTitleChangeOutputSchema } from "../../outputSchemas";
+
 export const postWorkerBusinessTitleChange = action({
   display: {
     label: "Create Worker Business Title Change",

@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { listSharesInputs } from "../../inputs";
 import { listSharesExamplePayload } from "../../examplePayloads";
+
 export const listShares = action({
   display: {
     label: "List Shares",

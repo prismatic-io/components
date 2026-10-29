@@ -5,9 +5,11 @@ jest.mock("@slack/webhook", () => {
     })),
   };
 });
+
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { postSlackMessage } from "./actions/messages";
 import { webhookUrlConnection } from "./connections";
+
 describe("postSlackMessage", () => {
   test("calls webhook send", async () => {
     const { result } = await invoke(postSlackMessage, {

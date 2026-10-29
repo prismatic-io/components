@@ -7,6 +7,7 @@ import type {
   AddGuestToListBody,
   AddGuestToListQueryParams,
 } from "../../types";
+
 export const addGuestToList = action({
   display: {
     label: "Add Guest to List",
@@ -32,11 +33,13 @@ export const addGuestToList = action({
     const params: AddGuestToListQueryParams = {
       include_shared: includeShared,
     };
+
     const { data } = await client.post(
       `/list/${listId}/guest/${guestId}`,
       body,
       { params },
     );
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { withFirestore } from "../../client";
 import { bulkCreateDocumentsExamplePayload } from "../../examplePayloads";
 import { bulkCreateDocumentsInputs } from "../../inputs";
+
 export const bulkCreateDocuments = action({
   display: {
     label: "Bulk Create Documents",
@@ -12,7 +13,9 @@ export const bulkCreateDocuments = action({
   perform: async (_context, params) => {
     await withFirestore(params, async (db) => {
       const collectionRef = db.collection(params.collection);
+
       const batch = db.batch();
+
       if (typeof params.documents === "string") {
         try {
           params.documents = JSON.parse(params.documents);
@@ -22,11 +25,13 @@ export const bulkCreateDocuments = action({
           );
         }
       }
+
       if (Array.isArray(params.documents)) {
         params.documents.forEach((document) => {
           const docRef = collectionRef.doc();
           batch.set(docRef, document);
         });
+
         await batch.commit();
       } else {
         throw new Error(
@@ -34,13 +39,13 @@ export const bulkCreateDocuments = action({
         );
       }
     });
+
     return {
       data: "Documents created successfully.",
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => bulkCreateDocumentsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    bulkCreateDocumentsExamplePayload,
   inputs: bulkCreateDocumentsInputs,
   examplePayload: bulkCreateDocumentsExamplePayload,
 });

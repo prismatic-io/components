@@ -4,6 +4,7 @@ import { updateUserExamplePayload } from "../../examplePayloads";
 import { updateUserInputs } from "../../inputs";
 import { updateUserOutputSchema } from "../../outputSchemas";
 import { isRole } from "../../util";
+
 export const updateUser = action({
   display: {
     label: "Update User",
@@ -16,6 +17,7 @@ export const updateUser = action({
       debug: context.debug.enabled,
     });
     const userRoleString = params.accountSettings.userRole;
+
     const { result } = await client.users.update(
       util.types.toInt(params.userId),
       {
@@ -35,16 +37,12 @@ export const updateUser = action({
         },
       },
     );
+
     return {
       data: result,
     };
   },
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const { userRole: role } = params.accountSettings;
     const {
       userName: name,
@@ -53,6 +51,7 @@ export const updateUser = action({
     } = params.contactInfo;
     const { userAlias: alias } = params.profileDetails;
     const organizationId = params.organizationId;
+
     return {
       data: {
         ...updateUserExamplePayload.data,

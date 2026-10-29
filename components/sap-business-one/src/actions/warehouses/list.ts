@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { fetchAllData } from "../../util";
 import { defaultPaginationInputs, connection } from "../../inputs/general";
 import { listWarehousesExamplePayload } from "../../examplePayloads/warehouses";
+
 export const listWarehouses = action({
   display: {
     label: "List Warehouses",
@@ -31,6 +32,7 @@ export const listWarehouses = action({
       context,
       context.debug.enabled,
     );
+
     const data = await fetchAllData(
       client,
       "Warehouses",

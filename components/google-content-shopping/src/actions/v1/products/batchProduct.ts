@@ -7,6 +7,7 @@ import {
   accountResourceName,
   dataSourceResourceName,
 } from "../../../util/resourceNames";
+
 export const batchProductMerchant = action({
   display: {
     description:
@@ -21,6 +22,7 @@ export const batchProductMerchant = action({
     const client = createClientMerchant(connectionInput, context.debug.enabled);
     const parent = accountResourceName(account);
     const dataSourceName = dataSourceResourceName(account, dataSource);
+
     const results = await runBulk(entries as unknown[], async (entry) => {
       const { data } = await client.post(
         `/products/v1/${parent}/productInputs:insert`,
@@ -29,6 +31,7 @@ export const batchProductMerchant = action({
       );
       return data;
     });
+
     return { data: { results } };
   },
   examplePayload: batchProductExamplePayload,

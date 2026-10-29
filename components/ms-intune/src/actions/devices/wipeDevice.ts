@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { wipeDeviceExamplePayload } from "../../examplePayloads";
 import { wipeDeviceInputs } from "../../inputs";
+
 export const wipeDevice = action({
   display: {
     label: "Wipe Device",

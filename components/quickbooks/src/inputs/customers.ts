@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+
 export const customerId = input({
   label: "Customer ID",
   placeholder: "Enter customer ID",
@@ -10,6 +11,7 @@ export const customerId = input({
   comments: "The ID of the customer to attach to the receipt.",
   clean: cleanStringInput,
 });
+
 export const customerName = input({
   label: "Customer Name",
   placeholder: "Enter customer name",
@@ -19,6 +21,7 @@ export const customerName = input({
   comments: "The name of the customer that will show on the receipt.",
   clean: cleanStringInput,
 });
+
 export const customerDisplayName = input({
   label: "Customer Display Name",
   placeholder: "Enter customer display name",

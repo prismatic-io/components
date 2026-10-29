@@ -8,6 +8,7 @@ import {
   offset,
 } from "./common";
 import { columns } from "./datasets";
+
 export const streamId = input({
   label: "Stream ID",
   comments: "The ID of the Stream of data being imported into a DataSet.",
@@ -18,6 +19,7 @@ export const streamId = input({
   dataSource: "streams",
   clean: util.types.toString,
 });
+
 export const executionId = input({
   label: "Execution ID",
   comments:
@@ -29,6 +31,7 @@ export const executionId = input({
   dataSource: "selectStreamExecution",
   clean: util.types.toString,
 });
+
 export const partId = input({
   label: "Part ID",
   comments:
@@ -39,6 +42,7 @@ export const partId = input({
   example: "1",
   clean: util.types.toString,
 });
+
 export const dataSet = input({
   label: "DataSet Object",
   comments: "The DataSet object associated with this Stream.",
@@ -52,6 +56,7 @@ export const dataSet = input({
       util.types.toString(string),
     ),
 });
+
 export const updateMethod = input({
   label: "Update Method",
   type: "string",
@@ -72,6 +77,7 @@ export const updateMethod = input({
   ],
   clean: util.types.toString,
 });
+
 export const updateMethodString = input({
   label: "Update Method",
   type: "string",
@@ -81,6 +87,7 @@ export const updateMethodString = input({
   example: "REPLACE",
   clean: util.types.toString,
 });
+
 export const updateMethodBody = input({
   label: "Update Method Body",
   type: "code",
@@ -96,6 +103,7 @@ export const updateMethodBody = input({
   ),
   clean: util.types.toString,
 });
+
 export const fields = input({
   label: "Fields",
   type: "string",
@@ -106,6 +114,7 @@ export const fields = input({
   example: "all",
   clean: util.types.toString,
 });
+
 export const qualifiers = input({
   label: "Qualifiers",
   type: "string",
@@ -116,11 +125,13 @@ export const qualifiers = input({
   example: "dataSource.id:123",
   clean: util.types.toString,
 });
+
 export const abortStreamExecutionInputs = {
   connection,
   streamId,
   executionId,
 };
+
 export const commitStreamExecutionInputs = {
   connection,
   streamId,
@@ -129,6 +140,7 @@ export const commitStreamExecutionInputs = {
     comments: "The ID of the Stream execution within the Stream",
   }),
 };
+
 export const createStreamInputs = {
   connection,
   dataSet,
@@ -151,6 +163,7 @@ export const createStreamInputs = {
     comments: "Update method for body.",
   }),
 };
+
 export const createStreamExecutionInputs = {
   connection,
   streamId: input({
@@ -159,6 +172,7 @@ export const createStreamExecutionInputs = {
     comments: "The ID of the Stream.",
   }),
 };
+
 export const deleteStreamInputs = {
   connection,
   streamId: input({
@@ -167,6 +181,7 @@ export const deleteStreamInputs = {
     comments: "The ID of the Stream to delete.",
   }),
 };
+
 export const getStreamInputs = {
   connection,
   streamId: input({
@@ -176,6 +191,7 @@ export const getStreamInputs = {
   }),
   fields,
 };
+
 export const getStreamExecutionInputs = {
   connection,
   streamId: input({
@@ -189,6 +205,7 @@ export const getStreamExecutionInputs = {
     comments: "The ID of the Stream execution within the Stream.",
   }),
 };
+
 export const listStreamExecutionInputs = {
   connection,
   fetchAll,
@@ -217,6 +234,7 @@ export const listStreamExecutionInputs = {
     },
   }),
 };
+
 export const listStreamsInputs = {
   connection,
   fetchAll,
@@ -240,11 +258,13 @@ export const listStreamsInputs = {
     },
   }),
 };
+
 export const searchStreamInputs = {
   connection,
   qualifiers,
   fields,
 };
+
 export const updateStreamInputs = {
   connection,
   streamId: input({
@@ -255,6 +275,7 @@ export const updateStreamInputs = {
   updateMethodString,
   updateMethodBody,
 };
+
 export const uploadDataPartInputs = {
   connection,
   streamId,

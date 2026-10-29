@@ -4,6 +4,7 @@ import { listTasksExamplePayload } from "../../examplePayloads";
 import { listTasksInputs } from "../../inputs";
 import { listTasksOutputSchema } from "../../outputSchemas";
 import type { ListTasksQueryParams } from "../../types";
+
 export const listTasks = action({
   display: {
     label: "List Tasks",
@@ -33,6 +34,7 @@ export const listTasks = action({
     if (filters?.customFieldsCode?.length) {
       customFields = JSON.parse(filters.customFieldsCode).custom_fields || [];
     }
+
     const params: ListTasksQueryParams = {
       archived: filters?.archived,
       ...(page !== undefined && { page }),
@@ -68,9 +70,11 @@ export const listTasks = action({
       ...(assignees?.length && { assignees }),
       ...(customFields.length && { custom_fields: customFields }),
     };
+
     const { data } = await client.get(`/list/${listId}/task`, {
       params,
     });
+
     return {
       data: data,
     };

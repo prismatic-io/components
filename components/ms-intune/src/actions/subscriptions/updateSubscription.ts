@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { getSubscriptionExamplePayload as updateSubscriptionExamplePayload } from "../../examplePayloads";
 import { updateSubscriptionInputs } from "../../inputs";
 import { getExpirationDate } from "../../util";
+
 export const updateSubscription = action({
   display: {
     label: "Update Subscription",
@@ -14,6 +15,7 @@ export const updateSubscription = action({
     { connection, subscriptionId, expirationDateTime, notificationUrl },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const currentExpirationDateTime = getExpirationDate(expirationDateTime);
     const { data } = await client.patch(
       `${ENDPOINTS.SUBSCRIPTIONS}/${subscriptionId}`,
@@ -22,6 +24,7 @@ export const updateSubscription = action({
         notificationUrl,
       },
     );
+
     return {
       data,
     };

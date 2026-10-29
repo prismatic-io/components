@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const appointmentSchema = {
   type: "object" as const,
   properties: {
@@ -118,6 +119,9 @@ const appointmentSchema = {
     "active",
   ],
 };
+
 export const createAppointmentOutputSchema = appointmentSchema;
+
 export const getAppointmentOutputSchema = appointmentSchema;
+
 export const listAppointmentsOutputSchema = listEnvelope(appointmentSchema);

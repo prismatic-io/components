@@ -31,6 +31,7 @@ import {
 import { budgetAlertTrigger } from "./budgetAlertTrigger";
 import { campaignChangesTrigger } from "./campaignChangesTrigger";
 import { changeHistoryTrigger } from "./changeHistoryTrigger";
+
 test.each([
   ["New and Updated Campaigns", campaignChangesTrigger],
   ["Account Change History", changeHistoryTrigger],
@@ -40,6 +41,7 @@ test.each([
   expect(trigger.batchConfig).toEqual({ batchSize: 50 });
   expect(trigger.triggerResolver?.resolveItems).toBeInstanceOf(Function);
 });
+
 describe("resolveCampaignChanges", () => {
   const change: CampaignChange = {
     changeType: "created",
@@ -55,6 +57,7 @@ describe("resolveCampaignChanges", () => {
     },
     changedAt: "2026-01-01 12:00:00",
   };
+
   test("wraps individual change records in tagged envelopes", () => {
     const data: CampaignChangesObject = {
       changes: [change],
@@ -66,6 +69,7 @@ describe("resolveCampaignChanges", () => {
       { changeType: "created", record: change },
     ]);
   });
+
   test("returns [] for empty or undefined changes", () => {
     expect(
       resolveCampaignChanges({
@@ -78,6 +82,7 @@ describe("resolveCampaignChanges", () => {
     expect(resolveCampaignChanges(undefined)).toEqual([]);
   });
 });
+
 describe("resolveChangeHistoryItems", () => {
   const event: ChangeEventResponse = {
     changeEvent: {
@@ -96,6 +101,7 @@ describe("resolveChangeHistoryItems", () => {
       resourceChangeOperation: "CREATE",
     },
   };
+
   test("wraps individual change event records in tagged envelopes", () => {
     const data: ChangeHistoryChangesObject = {
       changes: [event],
@@ -106,6 +112,7 @@ describe("resolveChangeHistoryItems", () => {
       { changeType: "created", record: event },
     ]);
   });
+
   test("returns [] for empty or undefined changes", () => {
     expect(
       resolveChangeHistoryItems({
@@ -117,6 +124,7 @@ describe("resolveChangeHistoryItems", () => {
     expect(resolveChangeHistoryItems(undefined)).toEqual([]);
   });
 });
+
 describe("resolveBudgetAlerts", () => {
   const alert: BudgetStatus = {
     campaignId: "23302011123",
@@ -130,6 +138,7 @@ describe("resolveBudgetAlerts", () => {
     severity: "warning" as BudgetStatus["severity"],
     message: "Campaign approaching daily budget limit",
   };
+
   test("wraps individual budget alert records in tagged envelopes", () => {
     const data: BudgetAlertChangesObject = {
       alerts: [alert],
@@ -140,6 +149,7 @@ describe("resolveBudgetAlerts", () => {
       { changeType: "warning", record: alert },
     ]);
   });
+
   test("returns [] for empty or undefined changes", () => {
     expect(
       resolveBudgetAlerts({
@@ -151,6 +161,7 @@ describe("resolveBudgetAlerts", () => {
     expect(resolveBudgetAlerts(undefined)).toEqual([]);
   });
 });
+
 test("campaignChangesTrigger resolveItems flattens the payload shape perform returns", () => {
   const change: CampaignChange = {
     changeType: "budget",
@@ -178,6 +189,7 @@ test("campaignChangesTrigger resolveItems flattens the payload shape perform ret
     }),
   ).toEqual([{ changeType: "budget", record: change }]);
 });
+
 test("changeHistoryTrigger resolveItems flattens the payload shape perform returns", () => {
   const event: ChangeEventResponse = {
     changeEvent: {
@@ -207,6 +219,7 @@ test("changeHistoryTrigger resolveItems flattens the payload shape perform retur
     }),
   ).toEqual([{ changeType: "created", record: event }]);
 });
+
 test("budgetAlertTrigger resolveItems flattens the payload shape perform returns", () => {
   const alert: BudgetStatus = {
     campaignId: "23302011123",
@@ -236,6 +249,7 @@ test("budgetAlertTrigger resolveItems flattens the payload shape perform returns
     }),
   ).toEqual([{ changeType: "warning", record: alert }]);
 });
+
 describe("trigger performs", () => {
   const CUSTOMER_ID = "1234567890";
   const SEARCH_PATH = `/${GOOGLE_ADS_API_VERSION}${googleAdsSearchPath(CUSTOMER_ID)}`;
@@ -245,11 +259,14 @@ describe("trigger performs", () => {
     { developerToken: "test-developer-token" },
     { access_token: "test-access-token" },
   );
+
   const mockTimezone = () =>
     nock(GOOGLE_ADS_BASE_URL)
       .post(SEARCH_PATH, { query: TIMEZONE_QUERY })
       .reply(200, { results: [{ customer: { timeZone: "UTC" } }] });
+
   const asTrigger = (trigger: unknown) => trigger as never;
+
   const pollingContext = (state: Record<string, unknown>) => {
     const setState = vi.fn();
     const context = {
@@ -257,14 +274,17 @@ describe("trigger performs", () => {
     } as never;
     return { context, setState };
   };
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-03-15T12:00:00Z"));
   });
+
   afterEach(() => {
     vi.useRealTimers();
     nock.cleanAll();
   });
+
   test("changeHistoryTrigger clamps a cursor older than the change_event window", async () => {
     const staleCursor = getGAQLDateTime("UTC", 40 * 24);
     let changeQuery = "";
@@ -281,6 +301,7 @@ describe("trigger performs", () => {
       errorCount: 0,
       consecutiveErrors: 0,
     });
+
     await invokeTrigger(asTrigger(changeHistoryTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -288,12 +309,14 @@ describe("trigger performs", () => {
       resourceTypes: [],
       includeUserInfo: false,
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     const lowerBound = /change_date_time >= '([^']+)'/.exec(changeQuery)?.[1];
     expect(lowerBound).not.toBe(staleCursor);
     expect(lowerBound).toBe(clampToChangeEventWindow(staleCursor, "UTC"));
   });
+
   test("campaignChangesTrigger: with no polling state, a look-back date seeds the initial sync (clamped to the 30-day window)", async () => {
     const lookBackDate = "2025-01-01";
     let capturedQuery = "";
@@ -306,6 +329,7 @@ describe("trigger performs", () => {
       })
       .reply(200, { results: [] });
     const { context } = pollingContext({});
+
     await invokeTrigger(asTrigger(campaignChangesTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -313,6 +337,7 @@ describe("trigger performs", () => {
       lookBackDate,
       changeTypes: ["all"],
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -322,6 +347,7 @@ describe("trigger performs", () => {
       clampToChangeEventWindow(`${lookBackDate} 00:00:00`, "UTC"),
     );
   });
+
   test("campaignChangesTrigger: with existing polling state, the look-back date is ignored", async () => {
     const persistedCursor = getGAQLDateTime("UTC", 2);
     let capturedQuery = "";
@@ -338,6 +364,7 @@ describe("trigger performs", () => {
       errorCount: 0,
       consecutiveErrors: 0,
     });
+
     await invokeTrigger(asTrigger(campaignChangesTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -345,6 +372,7 @@ describe("trigger performs", () => {
       lookBackDate: "2020-01-01",
       changeTypes: ["all"],
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -352,6 +380,7 @@ describe("trigger performs", () => {
     )?.[1];
     expect(lowerBound).toBe(persistedCursor);
   });
+
   test("changeHistoryTrigger: with no polling state, a look-back date seeds the initial sync (clamped to the 30-day window)", async () => {
     const lookBackDate = "2025-01-01";
     let capturedQuery = "";
@@ -364,6 +393,7 @@ describe("trigger performs", () => {
       })
       .reply(200, { results: [] });
     const { context } = pollingContext({});
+
     await invokeTrigger(asTrigger(changeHistoryTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -372,6 +402,7 @@ describe("trigger performs", () => {
       resourceTypes: [],
       includeUserInfo: false,
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -381,6 +412,7 @@ describe("trigger performs", () => {
       clampToChangeEventWindow(`${lookBackDate} 00:00:00`, "UTC"),
     );
   });
+
   test("changeHistoryTrigger: with existing polling state, the look-back date is ignored", async () => {
     const persistedCursor = getGAQLDateTime("UTC", 2);
     let capturedQuery = "";
@@ -397,6 +429,7 @@ describe("trigger performs", () => {
       errorCount: 0,
       consecutiveErrors: 0,
     });
+
     await invokeTrigger(asTrigger(changeHistoryTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -405,6 +438,7 @@ describe("trigger performs", () => {
       resourceTypes: [],
       includeUserInfo: false,
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -412,6 +446,7 @@ describe("trigger performs", () => {
     )?.[1];
     expect(lowerBound).toBe(persistedCursor);
   });
+
   test("budgetAlertTrigger reports the default threshold when none is set", async () => {
     const timezoneScope = mockTimezone();
     const searchScope = nock(GOOGLE_ADS_BASE_URL)
@@ -422,6 +457,7 @@ describe("trigger performs", () => {
       errorCount: 0,
       consecutiveErrors: 0,
     });
+
     const { result } = await invokeTrigger(
       asTrigger(budgetAlertTrigger),
       context,
@@ -434,11 +470,13 @@ describe("trigger performs", () => {
         includeSharedBudgets: false,
       },
     );
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     const data = result?.payload.body.data as BudgetAlertChangesObject;
     expect(data.alertThreshold).toBe(DEFAULT_ALERT_THRESHOLD);
   });
+
   test("campaignChangesTrigger: first poll sends the default bounds and persists the new cursor", async () => {
     const invokePoll = (state: Record<string, unknown>) => {
       let capturedQuery = "";
@@ -473,8 +511,10 @@ describe("trigger performs", () => {
       );
       return result;
     };
+
     const first = invokePoll({});
     const firstResult = await runTrigger(first.context);
+
     expect(first.timezoneScope.isDone()).toBe(true);
     expect(first.searchScope.isDone()).toBe(true);
     const lower1 = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -491,6 +531,7 @@ describe("trigger performs", () => {
       consecutiveErrors: 0,
     });
     expect(firstResult?.polledNoChanges).toBe(true);
+
     vi.setSystemTime(new Date("2026-03-15T13:00:00Z"));
     const persisted = first.setState.mock.calls[0][0] as Record<
       string,
@@ -498,6 +539,7 @@ describe("trigger performs", () => {
     >;
     const second = invokePoll(persisted);
     const secondResult = await runTrigger(second.context);
+
     expect(second.timezoneScope.isDone()).toBe(true);
     expect(second.searchScope.isDone()).toBe(true);
     const lower2 = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -506,6 +548,7 @@ describe("trigger performs", () => {
     expect(lower2).toBe(upper1);
     expect(secondResult?.polledNoChanges).toBe(true);
   });
+
   test("changeHistoryTrigger: first poll sends the default bounds and persists the new cursor", async () => {
     const invokePoll = (state: Record<string, unknown>) => {
       let capturedQuery = "";
@@ -541,8 +584,10 @@ describe("trigger performs", () => {
       );
       return result;
     };
+
     const first = invokePoll({});
     const firstResult = await runTrigger(first.context);
+
     expect(first.timezoneScope.isDone()).toBe(true);
     expect(first.searchScope.isDone()).toBe(true);
     const lower1 = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -560,6 +605,7 @@ describe("trigger performs", () => {
       consecutiveErrors: 0,
     });
     expect(firstResult?.polledNoChanges).toBe(true);
+
     vi.setSystemTime(new Date("2026-03-15T13:00:00Z"));
     const persisted = first.setState.mock.calls[0][0] as Record<
       string,
@@ -567,6 +613,7 @@ describe("trigger performs", () => {
     >;
     const second = invokePoll(persisted);
     const secondResult = await runTrigger(second.context);
+
     expect(second.timezoneScope.isDone()).toBe(true);
     expect(second.searchScope.isDone()).toBe(true);
     const lower2 = /change_event\.change_date_time >= '([^']+)'/.exec(
@@ -575,6 +622,7 @@ describe("trigger performs", () => {
     expect(lower2).toBe(upper1);
     expect(secondResult?.polledNoChanges).toBe(true);
   });
+
   test("budgetAlertTrigger: first poll sends the default bounds and persists the new cursor", async () => {
     const invokePoll = (state: Record<string, unknown>) => {
       let capturedQuery = "";
@@ -610,8 +658,10 @@ describe("trigger performs", () => {
       );
       return result;
     };
+
     const first = invokePoll({});
     const firstResult = await runTrigger(first.context);
+
     expect(first.timezoneScope.isDone()).toBe(true);
     expect(first.searchScope.isDone()).toBe(true);
     expect(first.getQuery()).toContain("segments.date DURING TODAY");
@@ -621,6 +671,7 @@ describe("trigger performs", () => {
       consecutiveErrors: 0,
     });
     expect(firstResult?.polledNoChanges).toBe(true);
+
     vi.setSystemTime(new Date("2026-03-16T12:00:00Z"));
     const persisted = first.setState.mock.calls[0][0] as Record<
       string,
@@ -628,10 +679,12 @@ describe("trigger performs", () => {
     >;
     const second = invokePoll(persisted);
     await runTrigger(second.context);
+
     expect(second.timezoneScope.isDone()).toBe(true);
     expect(second.searchScope.isDone()).toBe(true);
     expect(second.getQuery()).toContain("segments.date DURING TODAY");
   });
+
   test("budgetAlertTrigger: the daily comparison always queries today's spend, regardless of the persisted cursor", async () => {
     const staleCursor = getPreviousDate("UTC");
     let capturedQuery = "";
@@ -648,6 +701,7 @@ describe("trigger performs", () => {
       errorCount: 0,
       consecutiveErrors: 0,
     });
+
     await invokeTrigger(asTrigger(budgetAlertTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -655,6 +709,7 @@ describe("trigger performs", () => {
       alertThreshold: undefined,
       includeSharedBudgets: false,
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     expect(capturedQuery).toContain("segments.date DURING TODAY");
@@ -662,6 +717,7 @@ describe("trigger performs", () => {
       "campaign_budget.explicitly_shared = FALSE",
     );
   });
+
   test("budgetAlertTrigger: includeSharedBudgets true (the default) does not filter out shared budgets", async () => {
     let capturedQuery = "";
     const timezoneScope = mockTimezone();
@@ -673,6 +729,7 @@ describe("trigger performs", () => {
       })
       .reply(200, { results: [] });
     const { context } = pollingContext({});
+
     await invokeTrigger(asTrigger(budgetAlertTrigger), context, undefined, {
       connection,
       customerId: CUSTOMER_ID,
@@ -680,6 +737,7 @@ describe("trigger performs", () => {
       alertThreshold: undefined,
       includeSharedBudgets: true,
     });
+
     expect(timezoneScope.isDone()).toBe(true);
     expect(searchScope.isDone()).toBe(true);
     expect(capturedQuery).not.toContain("explicitly_shared");

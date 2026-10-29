@@ -3,6 +3,7 @@ import { createDataSourceOutputSchema } from "../../outputSchemas";
 import { createDataSourceInputs } from "../../inputs";
 import { createClient } from "../../client";
 import { createDataSourceExamplePayload } from "../../examplePayloads";
+
 export const createDataSource = action({
   display: {
     label: "Create Data Source",
@@ -20,6 +21,7 @@ export const createDataSource = action({
     { connection, databaseId, title, properties, icon },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const payload = {
       parent: {
         database_id: databaseId,
@@ -29,15 +31,14 @@ export const createDataSource = action({
       title,
       icon,
     };
+
     const { data } = await client.post("/data_sources", payload);
     return { data };
   },
   examplePerform: async (
     _context,
     { databaseId, title, properties, icon },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createDataSourceExamplePayload.data,
       parent: {

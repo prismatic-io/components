@@ -4,6 +4,7 @@ const contactEnvelope = {
   ProviderName: "Acme Corp",
   DateTimeUTC: "/Date(1650000000000)/",
 };
+
 const sampleContact = {
   ContactID: "a4c2f1e8-3d56-4b91-9f07-2e8a1c6d5b34",
   ContactStatus: "ACTIVE",
@@ -36,6 +37,7 @@ const sampleContact = {
   HasAttachments: false,
   HasValidationErrors: false,
 };
+
 export const listContactsExamplePayload = {
   data: {
     ...contactEnvelope,
@@ -48,24 +50,28 @@ export const listContactsExamplePayload = {
     Contacts: [sampleContact],
   },
 };
+
 export const getContactExamplePayload = {
   data: {
     ...contactEnvelope,
     Contacts: [sampleContact],
   },
 };
+
 export const createContactExamplePayload = {
   data: {
     ...contactEnvelope,
     Contacts: [sampleContact],
   },
 };
+
 export const updateContactExamplePayload = {
   data: {
     ...contactEnvelope,
     Contacts: [sampleContact],
   },
 };
+
 export const archiveContactExamplePayload = {
   data: {
     ...contactEnvelope,
@@ -77,6 +83,7 @@ export const archiveContactExamplePayload = {
     ],
   },
 };
+
 export const getContactHistoryExamplePayload = {
   data: {
     ...contactEnvelope,

@@ -16,30 +16,35 @@ export const getObjectSelectionExamplePayload = {
     },
   ],
 };
+
 export const selectAssociationTypeExamplePayload = {
   result: [
     { label: "Decision Maker", key: "8" },
     { label: "Type 279", key: "279" },
   ],
 };
+
 export const selectCompanyExamplePayload = {
   result: [
     { label: "Acme Corporation", key: "98765432101" },
     { label: "TechStart Industries", key: "98765432103" },
   ],
 };
+
 export const selectContactExamplePayload = {
   result: [
     { label: "John Doe (john.doe@example.com)", key: "65059681027" },
     { label: "Jane Smith (jane.smith@example.com)", key: "65059681029" },
   ],
 };
+
 export const selectCustomObjectExamplePayload = {
   result: [
     { label: "Equipment", key: "2-116144016" },
     { label: "Service Contract", key: "2-117255127" },
   ],
 };
+
 export const selectObjectTypeExamplePayload = {
   result: [
     { label: "Contacts", key: "0-1" },
@@ -48,24 +53,28 @@ export const selectObjectTypeExamplePayload = {
     { label: "Equipment", key: "2-116144016" },
   ],
 };
+
 export const selectDealExamplePayload = {
   result: [
     { label: "Q1 2024 Enterprise Contract", key: "87654321098" },
     { label: "Software License Renewal", key: "87654321101" },
   ],
 };
+
 export const selectEngagementExamplePayload = {
   result: [
     { label: "Follow up call (Tasks)", key: "47231018154" },
     { label: "Send proposal (Tasks)", key: "47231018317" },
   ],
 };
+
 export const selectImportExamplePayload = {
   result: [
     { label: "Import 9876543", key: "9876543" },
     { label: "Import 9876544", key: "9876544" },
   ],
 };
+
 export const selectLineItemExamplePayload = {
   result: [
     {
@@ -78,6 +87,7 @@ export const selectLineItemExamplePayload = {
     },
   ],
 };
+
 export const selectProductExamplePayload = {
   result: [
     {
@@ -91,12 +101,14 @@ export const selectProductExamplePayload = {
     },
   ],
 };
+
 export const selectPropertyExamplePayload = {
   result: [
     { label: "Email (email)", key: "email" },
     { label: "Lifecycle Stage (lifecyclestage)", key: "lifecyclestage" },
   ],
 };
+
 export const selectWebhookExamplePayload = {
   result: [
     { label: "contact.propertyChange (lifecyclestage)", key: "98765432" },

@@ -3,6 +3,7 @@ import { queryDocs } from "../util";
 import { withFirestore } from "../client";
 import { selectDocumentExamplePayload } from "../examplePayloads";
 import { selectDocumentInputs } from "../inputs";
+
 export const selectDocument = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -21,6 +22,7 @@ export const selectDocument = dataSource({
         queryOperatorCode: queryOperatorCode,
         orderBy: orderBy,
       });
+
       return docs.map(
         (item): Element => ({
           key: item.id,
@@ -28,6 +30,7 @@ export const selectDocument = dataSource({
         }),
       );
     });
+
     return {
       result,
     };

@@ -4,6 +4,7 @@ import { createWebhookInputs } from "../../inputs";
 import { createWebhook as createWebhookFn } from "../../util";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookOutputSchema } from "../../outputSchemas";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",

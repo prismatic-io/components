@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 export const metaFieldId = input({
   label: "Metafield ID",
   type: "string",
@@ -9,6 +10,7 @@ export const metaFieldId = input({
   placeholder: "Enter metafield ID",
   clean: util.types.toString,
 });
+
 export const namespace = input({
   label: "Namespace",
   type: "string",
@@ -19,6 +21,7 @@ export const namespace = input({
   placeholder: "Enter namespace",
   clean: util.types.toString,
 });
+
 export const key = input({
   label: "Key",
   type: "string",
@@ -28,6 +31,7 @@ export const key = input({
   placeholder: "Enter key",
   clean: util.types.toString,
 });
+
 export const value = input({
   label: "Value",
   type: "string",
@@ -38,6 +42,7 @@ export const value = input({
   placeholder: "Enter value",
   clean: util.types.toString,
 });
+
 export const valueType = input({
   label: "Value Type",
   type: "string",
@@ -51,6 +56,7 @@ export const valueType = input({
   ],
   clean: util.types.toString,
 });
+
 export const type = input({
   label: "Metafield Type",
   type: "string",
@@ -61,6 +67,7 @@ export const type = input({
   placeholder: "Enter metafield type",
   clean: util.types.toString,
 });
+
 export const description = input({
   label: "Description",
   type: "string",

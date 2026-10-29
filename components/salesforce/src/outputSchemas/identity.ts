@@ -1,4 +1,5 @@
 const nstr = { type: ["string", "null"] };
+
 export const getCurrentUserOutputSchema = {
   type: "object" as const,
   properties: {

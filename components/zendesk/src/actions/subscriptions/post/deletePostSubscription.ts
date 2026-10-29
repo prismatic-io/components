@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../../auth";
 import { deletePostSubscriptionExamplePayload } from "../../../examplePayloads";
 import { deletePostSubscriptionInputs } from "../../../inputs";
 import { deletePostSubscriptionOutputSchema } from "../../../outputSchemas";
+
 export const deletePostSubscription = action({
   display: {
     label: "Delete Post Subscription",
@@ -14,6 +15,7 @@ export const deletePostSubscription = action({
     const { data } = await client.delete(
       `/community/posts/${postId}/subscriptions/${subscriptionId}`,
     );
+
     return {
       data,
     };

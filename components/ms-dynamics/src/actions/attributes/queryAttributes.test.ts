@@ -1,19 +1,25 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { queryAttributesExamplePayload } from "../../examplePayloads";
 import { createMockConnection, createMockContext } from "../../testHelpers";
+
 const { mockRetrieveAttributes } = vi.hoisted(() => ({
   mockRetrieveAttributes: vi.fn(),
 }));
+
 vi.mock("../../client", () => ({
   createCrmClient: vi
     .fn()
     .mockResolvedValue({ retrieveAttributes: mockRetrieveAttributes }),
 }));
+
 import { queryAttributes } from "./queryAttributes";
+
 const conn = createMockConnection();
 const ctx = createMockContext();
+
 describe("queryAttributes", () => {
   afterEach(() => vi.clearAllMocks());
+
   test("happy path returns attributes", async () => {
     mockRetrieveAttributes.mockResolvedValueOnce(
       queryAttributesExamplePayload.data,
@@ -28,6 +34,7 @@ describe("queryAttributes", () => {
     } as any);
     expect(result.data).toEqual(queryAttributesExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     mockRetrieveAttributes.mockRejectedValueOnce(new Error("SDK error"));
     await expect(

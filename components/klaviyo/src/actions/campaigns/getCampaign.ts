@@ -5,6 +5,7 @@ import { getApi } from "../../api";
 import { getCampaignExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 import { toCampaignFields } from "../../util";
+
 export const getCampaign = action({
   display: {
     label: "Get Campaign",
@@ -17,6 +18,7 @@ export const getCampaign = action({
     if (debug) {
       context.logger.debug({ connection, campaignId, fieldsCampaign, debug });
     }
+
     const { body } = await campaignsApi.getCampaign(campaignId, {
       fieldsCampaign: toCampaignFields(fieldsCampaign),
     });

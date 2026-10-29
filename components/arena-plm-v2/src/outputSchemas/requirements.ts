@@ -478,6 +478,7 @@ export const addRequirementQualityOutputSchema = {
     },
   },
 };
+
 export const addRequirementTicketOutputSchema = {
   type: "object" as const,
   properties: {
@@ -682,16 +683,19 @@ export const addRequirementTicketOutputSchema = {
     getGuid: { type: "string" },
   },
 };
+
 export const deleteRequirementOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteRequirementTraceOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const requirementFileAssociationSchema = {
   type: "object" as const,
   properties: {
@@ -766,6 +770,7 @@ export const requirementFileAssociationSchema = {
     latestEditionAssociation: { type: "boolean" },
   },
 };
+
 export const listRequirementFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -773,6 +778,7 @@ export const listRequirementFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const relationshipTypeSchema = {
   type: "object" as const,
   properties: {
@@ -784,6 +790,7 @@ export const relationshipTypeSchema = {
     description: { type: "string" },
   },
 };
+
 export const listRequirementRelationshipTypesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -791,6 +798,7 @@ export const listRequirementRelationshipTypesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requirementTemplateSchema = {
   type: "object" as const,
   properties: {
@@ -857,6 +865,7 @@ export const requirementTemplateSchema = {
     },
   },
 };
+
 export const listRequirementTemplatesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -864,6 +873,7 @@ export const listRequirementTemplatesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const requirementTraceSchema = {
   type: "object" as const,
   properties: {
@@ -978,6 +988,7 @@ export const requirementTraceSchema = {
     },
   },
 };
+
 export const listRequirementTracesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -985,26 +996,31 @@ export const listRequirementTracesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const removeRequirementChildOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeRequirementFileAssociationOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeRequirementQualityAssociationOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeRequirementTicketAssociationOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const requirementSchema = {
   type: "object" as const,
   properties: {
@@ -1088,6 +1104,7 @@ export const requirementSchema = {
     },
   },
 };
+
 export const requirementListSchema = {
   type: "object" as const,
   properties: {

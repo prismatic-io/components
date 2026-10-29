@@ -1,4 +1,5 @@
 import { firestoreReferenceProperties } from "./shared";
+
 export const listCollectionsOutputSchema = {
   type: "array" as const,
   items: {

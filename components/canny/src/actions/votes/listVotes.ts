@@ -4,6 +4,7 @@ import { listVotesExamplePayload } from "../../examplePayloads";
 import { listVotesInputs } from "../../inputs";
 import { listVotesOutputSchema } from "../../outputSchemas";
 import { paginateCursor } from "../../util";
+
 export const listVotes = action({
   display: {
     label: "List Votes",
@@ -45,8 +46,7 @@ export const listVotes = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listVotesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listVotesExamplePayload,
   examplePayload: listVotesExamplePayload,
 });

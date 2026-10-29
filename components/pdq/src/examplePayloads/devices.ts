@@ -38,11 +38,13 @@ const deviceExampleRecord = {
   timezone: "America/Chicago",
   updatedAt: "2024-01-01T06:32:11.000000Z",
 };
+
 export const getDeviceExamplePayload = {
   data: {
     data: deviceExampleRecord,
   },
 };
+
 export const listDevicesExamplePayload = {
   data: {
     data: [deviceExampleRecord],

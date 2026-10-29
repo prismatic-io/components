@@ -11,6 +11,7 @@ import {
   forwardCursorPagination,
   timeout,
 } from "./common";
+
 export const customerName = input({
   label: "Full Name",
   type: "string",
@@ -21,6 +22,7 @@ export const customerName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerPhone = input({
   label: "Phone",
   type: "string",
@@ -31,6 +33,7 @@ export const customerPhone = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerAddress1 = input({
   label: "Street Address",
   type: "string",
@@ -41,6 +44,7 @@ export const customerAddress1 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerAddress2 = input({
   label: "Street Address Line 2",
   type: "string",
@@ -51,6 +55,7 @@ export const customerAddress2 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerCity = input({
   label: "City",
   type: "string",
@@ -60,6 +65,7 @@ export const customerCity = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerCountry = input({
   label: "Country",
   type: "string",
@@ -70,6 +76,7 @@ export const customerCountry = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerPostal = input({
   label: "Zip/Postal Code",
   type: "string",
@@ -79,6 +86,7 @@ export const customerPostal = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerState = input({
   label: "State/Province",
   type: "string",
@@ -89,6 +97,7 @@ export const customerState = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerBalance = input({
   label: "Balance",
   type: "string",
@@ -99,6 +108,7 @@ export const customerBalance = input({
   required: false,
   clean: cleanAmountInput,
 });
+
 export const customerPaymentId = input({
   label: "Default Payment Method ID",
   type: "string",
@@ -108,6 +118,7 @@ export const customerPaymentId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerDescription = input({
   label: "Description",
   type: "string",
@@ -117,6 +128,7 @@ export const customerDescription = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerEmail = input({
   label: "Email",
   type: "string",
@@ -127,6 +139,7 @@ export const customerEmail = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const customerMetadata = input({
   label: "Metadata",
   type: "string",
@@ -138,6 +151,7 @@ export const customerMetadata = input({
   required: false,
   clean: cleanMetadataInput,
 });
+
 export const customerAddress = structuredObjectInput({
   label: "Address",
   comments: "Street, city, state, postal code, and country.",
@@ -150,11 +164,13 @@ export const customerAddress = structuredObjectInput({
     customerCountry,
   },
 });
+
 export const customerContactInfo = structuredObjectInput({
   label: "Name & Contact Information",
   comments: "Full name, email, and phone contact details.",
   inputs: { customerName, customerEmail, customerPhone },
 });
+
 export const createCustomerInputs = {
   contactInfo: customerContactInfo,
   address: customerAddress,
@@ -165,21 +181,25 @@ export const createCustomerInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const deleteCustomerInputs = {
   customerId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getCustomerInputs = {
   customerId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listCustomersInputs = {
   timeout,
   pagination: forwardCursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const updateCustomerInputs = {
   customerId: { ...customerId, required: false },
   contactInfo: customerContactInfo,

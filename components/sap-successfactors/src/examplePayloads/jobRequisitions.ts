@@ -17,9 +17,11 @@ export const createJobRequisitionExamplePayload = {
     lastModifiedDateTime: "/Date(1673884433000+0000)/",
   },
 };
+
 export const listJobRequisitionsExamplePayload = {
   data: [createJobRequisitionExamplePayload.data],
 };
+
 export const deleteJobRequisitionExamplePayload = {
   data: "",
 };

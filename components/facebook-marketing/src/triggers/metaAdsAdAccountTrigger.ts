@@ -7,6 +7,7 @@ import {
   performFunction,
   validateFields,
 } from "../util";
+
 export const metaAdsAdAccountTrigger = trigger({
   display: {
     label: "Ad Account",

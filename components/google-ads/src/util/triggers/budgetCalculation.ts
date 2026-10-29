@@ -9,6 +9,7 @@ import type {
   BudgetStatus,
   CampaignQueryRow,
 } from "../../types";
+
 export const calculateBudgetStatus = (
   campaign: CampaignQueryRow,
   alertThreshold: number,
@@ -17,14 +18,18 @@ export const calculateBudgetStatus = (
     campaign?.campaignBudget?.amountMicros,
   );
   const costMicros = util.types.toNumber(campaign?.metrics?.costMicros);
+
   const budgetAmount = budgetMicros / MICROS_TO_DOLLARS_CONVERSION_FACTOR;
   const spent = costMicros / MICROS_TO_DOLLARS_CONVERSION_FACTOR;
   const percentSpent = budgetAmount > 0 ? (spent / budgetAmount) * 100 : 0;
   const remaining = budgetAmount - spent;
+
   let severity: BudgetSeverity = BUDGET_SEVERITY.INFO;
   let shouldAlert = false;
   let message = "";
+
   const period = campaign.campaignBudget?.period?.toLowerCase() || "budget";
+
   if (percentSpent >= 100) {
     severity = BUDGET_SEVERITY.CRITICAL;
     shouldAlert = true;
@@ -38,6 +43,7 @@ export const calculateBudgetStatus = (
     shouldAlert = true;
     message = `Campaign has spent ${percentSpent.toFixed(1)}% of ${period}`;
   }
+
   return {
     campaignId: campaign.campaign.id,
     campaignName: campaign.campaign.name,

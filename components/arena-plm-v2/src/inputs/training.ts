@@ -16,6 +16,7 @@ import {
   stepGuidInput,
   userGuidInput,
 } from "./common";
+
 const trainingGuidInput = input({
   label: "Training GUID",
   type: "string",
@@ -25,6 +26,7 @@ const trainingGuidInput = input({
   example: "TR1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const managerGuidInput = input({
   label: "Manager GUID",
   type: "string",
@@ -34,6 +36,7 @@ const managerGuidInput = input({
   example: "TR1AB2CD3EF4GH5IJ6KL7MN8",
   clean: toOptionalString,
 });
+
 const managerFullNameInput = input({
   label: "Manager Full Name",
   type: "string",
@@ -43,6 +46,7 @@ const managerFullNameInput = input({
   example: "John Doe",
   clean: toOptionalString,
 });
+
 const daysToCompleteInput = input({
   label: "Days to Complete",
   type: "string",
@@ -52,6 +56,7 @@ const daysToCompleteInput = input({
   example: "30",
   clean: toOptionalNumber,
 });
+
 const trainingFileAssociationGuidInput = input({
   label: "Training File Association GUID",
   type: "string",
@@ -61,6 +66,7 @@ const trainingFileAssociationGuidInput = input({
   example: "TN29ZKZ6A3F58PSI8QGWXDS5",
   clean: util.types.toString,
 });
+
 const trainingItemAssociationGuidInput = input({
   label: "Training Item Association GUID",
   type: "string",
@@ -70,6 +76,7 @@ const trainingItemAssociationGuidInput = input({
   example: "TN6AYSAL5W4CUBQKQK6LXEPW",
   clean: util.types.toString,
 });
+
 const trainingDescriptionInput = input({
   label: "Description",
   type: "text",
@@ -79,6 +86,7 @@ const trainingDescriptionInput = input({
   example: "Comprehensive safety training for all employees",
   clean: toOptionalString,
 });
+
 const referenceGuidInput = input({
   label: "Reference GUID",
   type: "string",
@@ -88,6 +96,7 @@ const referenceGuidInput = input({
   example: "TNCBDJS2ZQEVHYYXBDYYIGCQ",
   clean: util.types.toString,
 });
+
 export const addFileToTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
@@ -97,6 +106,7 @@ export const addFileToTrainingPlanInputs = {
   },
   latestEditionAssociation: latestEditionAssociationInput,
 };
+
 export const addItemToTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
@@ -105,6 +115,7 @@ export const addItemToTrainingPlanInputs = {
     comments: "GUID of the item to add to the training plan.",
   },
 };
+
 export const addQualityToTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
@@ -119,6 +130,7 @@ export const addQualityToTrainingPlanInputs = {
     example: "step123-456-789-abc-def567890",
   },
 };
+
 export const addUserToTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
@@ -136,6 +148,7 @@ export const addUserToTrainingPlanInputs = {
     example: "2024-12-31T00:00:00Z",
   },
 };
+
 export const changeTrainingPlanStatusInputs = {
   connection: connectionInput,
   trainingGuid: {
@@ -160,25 +173,31 @@ export const changeTrainingPlanStatusInputs = {
     example: "Training completed by all required personnel",
   },
 };
+
 export const listTrainingManagersInputs = {
   connection: connectionInput,
 };
+
 export const listTrainingPlanFilesInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
 };
+
 export const listTrainingPlanItemsInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
 };
+
 export const listTrainingPlanQualityInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
 };
+
 export const listTrainingPlanRecordsInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
 };
+
 export const listTrainingPlansInputs = {
   connection: connectionInput,
   number: {
@@ -210,25 +229,30 @@ export const listTrainingPlansInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listTrainingPlanUsersInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
 };
+
 export const removeFileFromTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
   trainingFileAssociationGuid: trainingFileAssociationGuidInput,
 };
+
 export const removeItemFromTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
   trainingItemAssociationGuid: trainingItemAssociationGuidInput,
 };
+
 export const removeQualityFromTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: trainingGuidInput,
   referenceGuid: referenceGuidInput,
 };
+
 export const updateTrainingPlanInputs = {
   connection: connectionInput,
   trainingGuid: {

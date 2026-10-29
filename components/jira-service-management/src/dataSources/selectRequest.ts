@@ -4,6 +4,7 @@ import { selectRequestExamplePayload } from "../examplePayloads";
 import { selectRequestInputs } from "../inputs";
 import type { PagedResponse, ServiceRequest } from "../types";
 import { getPaginatedData, toSortedPicklist } from "../util";
+
 export const selectRequest = dataSource({
   display: {
     label: "Select Request",
@@ -14,13 +15,10 @@ export const selectRequest = dataSource({
   inputs: selectRequestInputs,
   perform: async (_context, { connection, serviceDeskId }) => {
     const { client } = await createClient(connection, false);
-    const {
-      data,
-    }: {
-      data: PagedResponse<ServiceRequest>;
-    } = await getPaginatedData<ServiceRequest>(client, "/request", true, {
-      params: { serviceDeskId },
-    });
+    const { data }: { data: PagedResponse<ServiceRequest> } =
+      await getPaginatedData<ServiceRequest>(client, "/request", true, {
+        params: { serviceDeskId },
+      });
     const result = toSortedPicklist(
       data.values,
       (req) =>

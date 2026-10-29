@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { NO_CONTENT_RESPONSE } from "../../constants";
 import { noContentExamplePayload } from "../../examplePayloads";
 import { deleteSubscriptionInputs } from "../../inputs/subscriptions";
+
 export const deleteSubscription = action({
   display: {
     label: "Delete Subscription",

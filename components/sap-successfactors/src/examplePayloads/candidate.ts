@@ -17,6 +17,7 @@ export const createCandidateExamplePayload = {
     lastModifiedDateTime: "/Date(1673884433000+0000)/",
   },
 };
+
 export const listCandidatesExamplePayload = {
   data: [createCandidateExamplePayload.data],
 };

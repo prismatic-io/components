@@ -7,21 +7,26 @@ import {
   fetchAll,
   pagination,
 } from "./common";
+
 const assetsDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#asset_attributes) for more information.";
+
 const assetsAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${assetsDocumentationComments}`,
 });
+
 const usageTypeOptions = [
   { label: "Loaner", value: "loaner" },
   { label: "Permanent", value: "permanent" },
 ];
+
 const impactOptions = [
   { label: "Low", value: "low" },
   { label: "Medium", value: "medium" },
   { label: "High", value: "high" },
 ];
+
 const name = input({
   label: "Name",
   comments: "The display name used to identify the asset.",
@@ -31,6 +36,7 @@ const name = input({
   placeholder: "Enter asset name",
   clean: util.types.toString,
 });
+
 const assetTypeId = input({
   label: "Asset Type ID",
   comments: "The unique identifier for the asset type classification.",
@@ -40,6 +46,7 @@ const assetTypeId = input({
   placeholder: "Enter asset type ID",
   clean: util.types.toNumber,
 });
+
 const assetTag = input({
   label: "Asset Tag",
   comments: "The tracking label assigned to the asset for inventory purposes.",
@@ -49,6 +56,7 @@ const assetTag = input({
   placeholder: "Enter asset tag",
   clean: cleanStringInput,
 });
+
 const impact = input({
   label: "Impact",
   comments: "The business impact level if the asset becomes unavailable.",
@@ -59,6 +67,7 @@ const impact = input({
   model: impactOptions,
   clean: cleanStringInput,
 });
+
 const usageType = input({
   label: "Usage Type",
   comments: "Whether the asset is permanently assigned or a loaner.",
@@ -69,6 +78,7 @@ const usageType = input({
   placeholder: "Select a usage type",
   clean: cleanStringInput,
 });
+
 const description = input({
   label: "Description",
   comments: "A detailed summary of the asset specifications or purpose.",
@@ -79,6 +89,7 @@ const description = input({
   placeholder: "Enter asset description",
   clean: cleanStringInput,
 });
+
 const locationId = input({
   label: "Location ID",
   comments:
@@ -89,6 +100,7 @@ const locationId = input({
   placeholder: "Enter location ID",
   clean: cleanNumberInput,
 });
+
 const agentId = input({
   label: "Agent ID",
   comments: "The unique identifier for the agent managing the asset.",
@@ -99,6 +111,7 @@ const agentId = input({
   dataSource: "selectAgent",
   clean: cleanNumberInput,
 });
+
 const departmentId = input({
   label: "Department ID",
   comments: "The unique identifier for the department assigned to the asset.",
@@ -108,6 +121,7 @@ const departmentId = input({
   placeholder: "Enter department ID",
   clean: cleanNumberInput,
 });
+
 const groupId = input({
   label: "Group ID",
   comments: "The unique identifier for the agent group managing the asset.",
@@ -117,6 +131,7 @@ const groupId = input({
   placeholder: "Enter group ID",
   clean: cleanNumberInput,
 });
+
 const workspaceId = input({
   label: "Workspace ID",
   comments:
@@ -128,6 +143,7 @@ const workspaceId = input({
   dataSource: "selectWorkspace",
   clean: cleanNumberInput,
 });
+
 const searchQuery = input({
   label: "Search Query",
   comments:
@@ -138,6 +154,7 @@ const searchQuery = input({
   placeholder: "Enter search query",
   clean: util.types.toString,
 });
+
 const assetDisplayId = input({
   label: "Asset Display ID",
   comments: "The unique display identifier for the asset.",
@@ -148,6 +165,7 @@ const assetDisplayId = input({
   dataSource: "selectAsset",
   clean: util.types.toNumber,
 });
+
 const createAssetAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
@@ -159,6 +177,7 @@ const createAssetAdditionalFields = structuredObjectInput({
     description,
   },
 });
+
 export const createAssetInputs = {
   connection,
   name,
@@ -171,6 +190,7 @@ export const createAssetInputs = {
   workspaceId,
   assetsAdditionalFields,
 };
+
 export const deleteAssetInputs = {
   connection,
   assetDisplayId: input({
@@ -178,6 +198,7 @@ export const deleteAssetInputs = {
     comments: "Display ID of the asset to delete.",
   }),
 };
+
 export const getAssetInputs = {
   connection,
   assetDisplayId: input({
@@ -185,12 +206,14 @@ export const getAssetInputs = {
     comments: "Display ID of the asset to retrieve.",
   }),
 };
+
 export const listAssetsInputs = {
   connection,
   fetchAll,
   pagination,
   additionalQueryParams,
 };
+
 export const moveAssetInputs = {
   connection,
   assetDisplayId: input({
@@ -212,11 +235,13 @@ export const moveAssetInputs = {
     comments: "ID of the new asset agent.",
   }),
 };
+
 export const searchAssetInputs = {
   connection,
   searchQuery,
   additionalQueryParams,
 };
+
 const updateAssetAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -234,6 +259,7 @@ const updateAssetAdditionalFields = structuredObjectInput({
     description,
   },
 });
+
 export const updateAssetInputs = {
   connection,
   assetDisplayId,

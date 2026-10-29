@@ -124,6 +124,7 @@ export const categorySchema = {
     systemDefined: { type: "boolean" },
   },
 };
+
 export const deleteFileOutputSchema = {
   type: "object" as const,
   properties: {
@@ -134,6 +135,7 @@ export const deleteFileOutputSchema = {
   },
   required: ["success", "message", "fileGuid", "statusCode"],
 };
+
 export const downloadFileContentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -144,6 +146,7 @@ export const downloadFileContentOutputSchema = {
   },
   required: ["content", "contentType", "filename", "size"],
 };
+
 export const fileAssociationMarkupSchema = {
   type: "object" as const,
   properties: {
@@ -196,6 +199,7 @@ export const fileAssociationMarkupSchema = {
     },
   },
 };
+
 export const fileCorrectionSchema = {
   type: "object" as const,
   properties: {
@@ -280,6 +284,7 @@ export const fileCorrectionSchema = {
     },
   },
 };
+
 export const fileDetailSchema = {
   type: "object" as const,
   properties: {
@@ -344,6 +349,7 @@ export const fileDetailSchema = {
     private: { type: "boolean" },
   },
 };
+
 export const fileFullSchema = {
   type: "object" as const,
   properties: {
@@ -363,6 +369,7 @@ export const fileFullSchema = {
     title: { type: "string" },
   },
 };
+
 export const getFileWatermarkContentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -373,6 +380,7 @@ export const getFileWatermarkContentOutputSchema = {
   },
   required: ["content", "contentType", "filename", "size"],
 };
+
 export const listFileCategoriesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -380,6 +388,7 @@ export const listFileCategoriesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listFileCorrectionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -387,6 +396,7 @@ export const listFileCorrectionsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listFileEditionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -394,6 +404,7 @@ export const listFileEditionsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listFileMarkupsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -401,6 +412,7 @@ export const listFileMarkupsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -408,5 +420,7 @@ export const listFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const changeFileCheckoutStatusOutputSchema = fileDetailSchema;
+
 export const updateFileContentOutputSchema = fileDetailSchema;

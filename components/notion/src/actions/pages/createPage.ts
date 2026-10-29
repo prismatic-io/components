@@ -3,6 +3,7 @@ import { createPageOutputSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { createPageExamplePayload } from "../../examplePayloads";
 import { createPageInputs } from "../../inputs";
+
 export const createPage = action({
   display: {
     label: "Create Page",
@@ -32,9 +33,7 @@ export const createPage = action({
   examplePerform: async (
     _context,
     { parent, icon, coverImage },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createPageExamplePayload.data,
       ...(parent ? { parent } : {}),

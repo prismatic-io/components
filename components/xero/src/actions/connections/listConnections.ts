@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getUnauthorizedClient } from "../../client";
 import { listConnectionsInputs } from "../../inputs";
 import { listConnectionsExamplePayload } from "../../examplePayloads";
+
 export const listConnections = action({
   display: {
     label: "List Connections",

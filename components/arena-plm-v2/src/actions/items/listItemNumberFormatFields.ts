@@ -4,6 +4,7 @@ import { listItemNumberFormatFieldsExamplePayload } from "../../examplePayloads"
 import { listItemNumberFormatFieldsInputs } from "../../inputs";
 import { listItemNumberFormatFieldsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listItemNumberFormatFields = action({
   display: {
     label: "List Item Number Format Fields",
@@ -24,13 +25,17 @@ export const listItemNumberFormatFields = action({
           formatGuid,
         },
       );
+
       const client = await createArenaClient(context, connection);
+
       const { data } = await client.get(
         `/settings/items/numberformats/${formatGuid}/fields`,
       );
+
       context.logger.info("Retrieved item number format fields", {
         formatGuid,
       });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

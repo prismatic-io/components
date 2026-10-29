@@ -28,4 +28,5 @@ export const toastClientCredentials = connection({
     },
   },
 });
+
 export default [toastClientCredentials];

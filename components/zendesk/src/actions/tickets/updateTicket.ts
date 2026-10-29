@@ -4,6 +4,7 @@ import { updateTicketExamplePayload } from "../../examplePayloads";
 import { updateTicketInputs } from "../../inputs";
 import { updateTicketOutputSchema } from "../../outputSchemas";
 import { isPriority, isStatus, isType, validateComment } from "../../util";
+
 export const updateTicket = action({
   display: {
     label: "Update Ticket",
@@ -15,10 +16,13 @@ export const updateTicket = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const ticketPriorityString = params.classification.ticketPriority;
     const ticketStatusString = params.classification.ticketStatus;
     const ticketTypeString = params.classification.ticketType;
+
     let attachment: Record<string, Record<string, unknown>> | undefined;
+
     if (params.file) {
       if (!params.fileName) {
         throw new Error("Must specify a file name when you attach a file");
@@ -28,6 +32,7 @@ export const updateTicket = action({
         binary: true,
       })) as Record<string, Record<string, unknown>>;
     }
+
     const { result } = await client.tickets.update(
       util.types.toInt(params.ticketId),
       {
@@ -40,11 +45,13 @@ export const updateTicket = action({
             ? ticketPriorityString
             : undefined) as undefined,
           organization_id: params.requesterOrganization,
+
           comment: validateComment({
             bodyValue: params.ticketComment,
             htmlValue: params.ticketCommentHTML,
             attachment,
           }),
+
           status: (isStatus(ticketStatusString)
             ? ticketStatusString
             : undefined) as undefined,
@@ -56,16 +63,12 @@ export const updateTicket = action({
         },
       },
     );
+
     return {
       data: result,
     };
   },
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const {
       ticketPriority: priority,
       ticketStatus: status,
@@ -73,6 +76,7 @@ export const updateTicket = action({
     } = params.classification;
     const subject = params.ticketSubject;
     const organizationId = params.requesterOrganization;
+
     return {
       data: {
         ...updateTicketExamplePayload.data,

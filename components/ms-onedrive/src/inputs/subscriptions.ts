@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { cleanExpirationDateTime } from "ms-utils";
 import { cleanExpirationDays } from "../util/clean";
 import { oneDriveConnection } from "./common";
+
 export const changeType = input({
   label: "Change Type",
   type: "string",
@@ -13,6 +14,7 @@ export const changeType = input({
   default: "updated",
   clean: util.types.toString,
 });
+
 const notificationUrl = input({
   label: "Notification URL",
   type: "string",
@@ -23,6 +25,7 @@ const notificationUrl = input({
   placeholder: "Enter notification URL",
   clean: util.types.toString,
 });
+
 export const resource = input({
   label: "Resource",
   type: "string",
@@ -33,6 +36,7 @@ export const resource = input({
   placeholder: "Enter resource path",
   clean: util.types.toString,
 });
+
 export const expirationDateTime = input({
   label: "Expiration Date Time",
   type: "string",
@@ -43,6 +47,7 @@ export const expirationDateTime = input({
   placeholder: "Enter expiration date (ISO 8601)",
   clean: cleanExpirationDateTime,
 });
+
 export const clientState = input({
   label: "Client State",
   type: "string",
@@ -53,6 +58,7 @@ export const clientState = input({
   placeholder: "Enter client state token",
   clean: util.types.toString,
 });
+
 export const subscriptionId = input({
   label: "Subscription Id",
   type: "string",
@@ -63,6 +69,7 @@ export const subscriptionId = input({
   dataSource: "selectSubscription",
   clean: util.types.toString,
 });
+
 const allowDuplicates = input({
   label: "Allow Duplicates",
   type: "boolean",
@@ -71,6 +78,7 @@ const allowDuplicates = input({
   comments: "When true, allows multiple subscriptions for the same endpoint.",
   clean: util.types.toBool,
 });
+
 const showInstanceSubscriptions = input({
   label: "Show Instance Subscriptions",
   type: "boolean",
@@ -80,6 +88,7 @@ const showInstanceSubscriptions = input({
     "When true, shows only subscriptions associated with this instance.",
   clean: util.types.toBool,
 });
+
 const expirationDays = input({
   label: "Expiration Days",
   type: "string",
@@ -91,6 +100,7 @@ const expirationDays = input({
   required: false,
   clean: cleanExpirationDays,
 });
+
 export const createSubscriptionInputs = {
   oneDriveConnection,
   changeType,
@@ -100,17 +110,21 @@ export const createSubscriptionInputs = {
   clientState,
   allowDuplicates,
 };
+
 export const deleteSubscriptionInputs = {
   oneDriveConnection,
   subscriptionId,
 };
+
 export const deleteSubscriptionsInputs = {
   oneDriveConnection,
 };
+
 export const listSubscriptionsInputs = {
   oneDriveConnection,
   showInstanceSubscriptions,
 };
+
 export const renewSubscriptionInputs = {
   oneDriveConnection,
   subscriptionId,

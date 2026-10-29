@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createOpsManagementClient } from "../../client";
 import { closeOpsAlertExamplePayload } from "../../examplePayloads";
 import { closeOpsAlertInputs } from "../../inputs";
+
 export const closeOpsAlert = action({
   display: {
     label: "Close Ops Alert",

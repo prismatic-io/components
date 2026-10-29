@@ -3,6 +3,7 @@ import { createAsanaClient } from "../client";
 import { selectTeamInputs } from "../inputs";
 import type { DataSource } from "../types/resources";
 import { mapToLabelKey } from "../util";
+
 const selectTeam = dataSource({
   display: {
     label: "Select Team",
@@ -11,14 +12,17 @@ const selectTeam = dataSource({
   inputs: selectTeamInputs,
   perform: async (_context, { connection, workspaceId }) => {
     const client = await createAsanaClient(connection, false);
-    const { data } = await client.get<{
-      data: DataSource[];
-    }>(`/workspaces/${workspaceId}/teams`);
+    const { data } = await client.get<{ data: DataSource[] }>(
+      `/workspaces/${workspaceId}/teams`,
+    );
+
     const result = mapToLabelKey(data.data);
+
     return { result };
   },
   dataSourceType: "picklist",
 });
+
 export default {
   selectTeam,
 };

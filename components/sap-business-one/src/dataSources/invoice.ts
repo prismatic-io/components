@@ -8,6 +8,7 @@ import {
   validateArray,
 } from "../util";
 import { orderDataSourceExamplePayload as invoiceDataSourceExamplePayload } from "../examplePayloads/datasources";
+
 export const selectInvoice = dataSource({
   display: {
     label: "Select Invoice",
@@ -20,6 +21,7 @@ export const selectInvoice = dataSource({
   perform: async (context, { connection, $filter }) => {
     const DOC_ENTRY = "DocEntry";
     const client = await createClient(connection, context, true);
+
     const data = await fetchAllData(
       client,
       "Invoices",
@@ -30,13 +32,16 @@ export const selectInvoice = dataSource({
       true,
       1000,
     );
+
     const array = validateArray(data);
+
     const objects = mapPicklistArray({
       data: array,
       keyName: DOC_ENTRY,
       keyLabel: DOC_ENTRY,
       orderKey: DOC_ENTRY,
     });
+
     return { result: mapLabel(objects, "Invoice #") };
   },
   dataSourceType: "picklist",

@@ -4,6 +4,7 @@ import { listAccountsExamplePayload } from "../../examplePayloads";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput, odataParams } from "../../inputs/general";
 import type { Account, MultipleItemsResponse } from "../../interfaces";
+
 export const listAccounts = action({
   display: {
     label: "List Accounts",
@@ -14,6 +15,7 @@ export const listAccounts = action({
     context,
     {
       $search,
+
       $top,
       connection,
       $skip,
@@ -44,12 +46,14 @@ export const listAccounts = action({
       $count,
       $filter,
     };
+
     const { data } = await client.get<MultipleItemsResponse<Account[]>>(
       `/companies(${companyId})/accounts`,
       {
         params,
       },
     );
+
     return { data };
   },
   inputs: {

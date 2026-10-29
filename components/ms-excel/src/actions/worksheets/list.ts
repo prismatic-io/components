@@ -4,6 +4,7 @@ import { connection } from "../../inputs/general";
 import { getDriveOrSiteBaseUrl, paginateResults } from "../../helpers";
 import { listWorksheetsInputs } from "../../inputs/worksheets/list";
 import { listWorksheetsExamplePayload } from "../../examplePayloads/worksheets";
+
 export const listWorksheets = action({
   display: {
     label: "List Worksheets",
@@ -25,12 +26,14 @@ export const listWorksheets = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     const data = await paginateResults(
       client,
       `${baseUrl}/worksheets`,
       fetchAll,
       { ...pagination, ...filters, $select, $expand, $format },
     );
+
     return {
       data,
     };

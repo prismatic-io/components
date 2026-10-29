@@ -5,6 +5,7 @@ import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import { salesOrderId } from "../../inputs/salesOrders/updateSalesOrderInputs";
 import type { SalesOrder } from "../../interfaces";
+
 export const getSalesOrder = action({
   display: {
     label: "Get Sales Order",
@@ -17,9 +18,11 @@ export const getSalesOrder = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get<SalesOrder>(
       `/companies(${companyId})/salesOrders(${salesOrderId})`,
     );
+
     return { data };
   },
   inputs: {

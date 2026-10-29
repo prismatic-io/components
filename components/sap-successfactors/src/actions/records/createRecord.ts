@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createRecordExamplePayload } from "../../examplePayloads";
 import { createRecordInputs } from "../../inputs";
 import { cleanResultFromResponse } from "../../util";
+
 export const createRecord = action({
   display: {
     label: "Create Record",

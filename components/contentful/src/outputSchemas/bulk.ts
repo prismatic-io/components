@@ -1,4 +1,5 @@
 import { linkSchema } from "./shared";
+
 const bulkActionSchema = {
   type: "object" as const,
   properties: {
@@ -63,6 +64,9 @@ const bulkActionSchema = {
     },
   },
 };
+
 export const getBulkActionOutputSchema = bulkActionSchema;
+
 export const publishBulkActionOutputSchema = bulkActionSchema;
+
 export const unpublishBulkActionOutputSchema = bulkActionSchema;

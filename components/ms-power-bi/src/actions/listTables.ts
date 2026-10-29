@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection, datasetId, skipToken, top } from "../inputs";
 import { listTablesExamplePayload } from "../examplePayloads";
+
 export const listTables = action({
   display: {
     label: "List Tables",
@@ -16,6 +17,7 @@ export const listTables = action({
     const { data } = await client.get(`/datasets/${params.datasetId}/tables`, {
       params: { $top: params.top, $skipToken: params.skipToken },
     });
+
     return {
       data,
     };

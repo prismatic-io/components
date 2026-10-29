@@ -9,6 +9,7 @@ import {
   name,
   quality,
 } from "../../inputs";
+
 export const generateDynamicTransformation = action({
   display: {
     label: "Generate Dynamic Asset Transformation",

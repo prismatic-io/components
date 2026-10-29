@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanStringInput } from "../util";
 import { connection, fetchAll, odataParams } from "./common";
+
 const createAccountEnabled = input({
   label: "Account Enabled",
   type: "boolean",
@@ -10,6 +11,7 @@ const createAccountEnabled = input({
     "When true, enables the user account. When false, the account is disabled and the user cannot sign in.",
   clean: util.types.toBool,
 });
+
 const createDisplayName = input({
   label: "Display Name",
   type: "string",
@@ -19,6 +21,7 @@ const createDisplayName = input({
   example: "John Doe",
   clean: cleanStringInput,
 });
+
 const forceChangePasswordNextSignIn = input({
   label: "Force Change Password Next Sign In",
   type: "boolean",
@@ -28,6 +31,7 @@ const forceChangePasswordNextSignIn = input({
     "When true, forces the user to change their password on next sign in.",
   clean: util.types.toBool,
 });
+
 const password = input({
   label: "Password",
   type: "password",
@@ -37,6 +41,7 @@ const password = input({
   placeholder: "Enter password",
   clean: cleanStringInput,
 });
+
 const createUserPrincipalName = input({
   label: "User Principal Name",
   type: "string",
@@ -47,6 +52,7 @@ const createUserPrincipalName = input({
   placeholder: "Enter username",
   clean: cleanStringInput,
 });
+
 const createDomain = input({
   label: "Domain",
   type: "string",
@@ -57,6 +63,7 @@ const createDomain = input({
   placeholder: "Enter domain",
   clean: cleanStringInput,
 });
+
 const createAdditionalProperties = input({
   label: "Additional Properties",
   type: "code",
@@ -66,6 +73,7 @@ const createAdditionalProperties = input({
     "Additional properties that are not covered by the other inputs. This should be a JSON object and will be merged with the other inputs. See [Microsoft Graph API user properties](https://learn.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0#json-representation) for available fields.",
   clean: cleanCodeInput,
 });
+
 export const createUserInputs = {
   connection,
   accountEnabled: createAccountEnabled,
@@ -76,6 +84,7 @@ export const createUserInputs = {
   domain: createDomain,
   additionalProperties: createAdditionalProperties,
 };
+
 const deleteUserId = input({
   label: "User ID",
   comments:
@@ -86,10 +95,12 @@ const deleteUserId = input({
   required: true,
   clean: cleanStringInput,
 });
+
 export const deleteUserInputs = {
   connection,
   userId: deleteUserId,
 };
+
 const getUserId = input({
   label: "User ID",
   comments:
@@ -101,11 +112,13 @@ const getUserId = input({
   clean: cleanStringInput,
   dataSource: "selectUser",
 });
+
 export const getUserInputs = {
   connection,
   userId: getUserId,
   $select: odataParams.$select,
 };
+
 const listPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -116,6 +129,7 @@ const listPagination = structuredObjectInput({
     $skipToken: odataParams.$skipToken,
   },
 });
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -130,12 +144,14 @@ const listFilters = structuredObjectInput({
     $format: odataParams.$format,
   },
 });
+
 export const listUsersInputs = {
   connection,
   fetchAll,
   pagination: listPagination,
   filters: listFilters,
 };
+
 const reprocessUserId = input({
   label: "User ID",
   comments:
@@ -146,10 +162,12 @@ const reprocessUserId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const reprocessLicenseAssignmentInputs = {
   connection,
   userId: reprocessUserId,
 };
+
 const updateUserId = input({
   label: "User ID",
   comments:
@@ -160,6 +178,7 @@ const updateUserId = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const updateAccountEnabled = input({
   label: "Account Enabled",
   type: "boolean",
@@ -169,6 +188,7 @@ const updateAccountEnabled = input({
     "When true, enables the user account. When false, the account is disabled and the user cannot sign in.",
   clean: util.types.toBool,
 });
+
 const updateDisplayName = input({
   label: "Display Name",
   type: "string",
@@ -178,6 +198,7 @@ const updateDisplayName = input({
   example: "John Doe",
   clean: cleanStringInput,
 });
+
 const updateUserPrincipalName = input({
   label: "User Principal Name",
   type: "string",
@@ -188,6 +209,7 @@ const updateUserPrincipalName = input({
   placeholder: "Enter username",
   clean: cleanStringInput,
 });
+
 const updateDomain = input({
   label: "Domain",
   type: "string",
@@ -198,6 +220,7 @@ const updateDomain = input({
   placeholder: "Enter domain",
   clean: cleanStringInput,
 });
+
 const givenName = input({
   label: "First Name",
   type: "string",
@@ -207,6 +230,7 @@ const givenName = input({
   example: "John",
   clean: cleanStringInput,
 });
+
 const surname = input({
   label: "Last Name",
   type: "string",
@@ -216,6 +240,7 @@ const surname = input({
   example: "Doe",
   clean: cleanStringInput,
 });
+
 const jobTitle = input({
   label: "Job Title",
   type: "string",
@@ -225,6 +250,7 @@ const jobTitle = input({
   example: "Software Engineer",
   clean: cleanStringInput,
 });
+
 const updateAdditionalProperties = input({
   label: "Additional Properties",
   type: "code",
@@ -234,6 +260,7 @@ const updateAdditionalProperties = input({
     "Additional properties to update that are not covered by the other inputs. This should be a JSON object and will be merged with the other inputs. See [Microsoft Graph API user properties](https://learn.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0#json-representation) for available fields.",
   clean: cleanCodeInput,
 });
+
 const name = structuredObjectInput({
   label: "Name",
   required: false,
@@ -243,6 +270,7 @@ const name = structuredObjectInput({
     surname,
   },
 });
+
 export const updateUserInputs = {
   connection,
   userId: updateUserId,

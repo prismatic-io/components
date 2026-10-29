@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
 import { getCatalogSummaryExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, storeHash } from "../../inputs";
+
 export const getCatalogSummaryAction = action({
   display: {
     label: "Get Catalog Summary",
@@ -16,6 +17,7 @@ export const getCatalogSummaryAction = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/summary`;
+
     try {
       const response = await client.get(endpoint);
       return {
@@ -27,6 +29,7 @@ export const getCatalogSummaryAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash: storeHash,

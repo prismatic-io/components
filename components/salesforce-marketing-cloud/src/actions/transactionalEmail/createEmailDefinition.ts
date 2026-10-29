@@ -4,6 +4,7 @@ import { EMAIL_DEFINITIONS_PATH } from "../../constants";
 import { createEmailDefinitionExamplePayload } from "../../examplePayloads";
 import { createEmailDefinitionInputs } from "../../inputs";
 import { emailDefinitionOutputSchema } from "../../outputSchemas";
+
 export const createEmailDefinition = action({
   examplePayload: createEmailDefinitionExamplePayload,
   display: {
@@ -28,6 +29,7 @@ export const createEmailDefinition = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       definitionKey: emailDefinitionKey,
       name: emailDefinitionName,
@@ -35,7 +37,9 @@ export const createEmailDefinition = action({
       content: { customerKey: emailContentCustomerKey },
       ...emailDefinitionExtraBody,
     };
+
     const { data } = await client.post(EMAIL_DEFINITIONS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
@@ -46,9 +50,7 @@ export const createEmailDefinition = action({
       emailDefinitionDescription,
       emailContentCustomerKey,
     },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createEmailDefinitionExamplePayload.data,
       definitionKey: emailDefinitionKey,

@@ -1,5 +1,6 @@
 import { DEFAULT_PAGE_SIZE } from "../constants";
 import type { PaginatedResponse, PaginateOptions } from "../interfaces";
+
 export const paginateResults = async ({
   client,
   endpoint,
@@ -11,6 +12,7 @@ export const paginateResults = async ({
   if (fetchAll) {
     const allResults: unknown[] = [];
     let nextToken: string | undefined = pageToken || undefined;
+
     do {
       const { data } = await client.get<PaginatedResponse>(endpoint, {
         params: {
@@ -22,8 +24,10 @@ export const paginateResults = async ({
       allResults.push(...(data.results || []));
       nextToken = data.nextPageToken || undefined;
     } while (nextToken);
+
     return { data: allResults };
   }
+
   const { data } = await client.get(endpoint, {
     params: {
       ...params,
@@ -31,5 +35,6 @@ export const paginateResults = async ({
       pageToken,
     },
   });
+
   return { data };
 };

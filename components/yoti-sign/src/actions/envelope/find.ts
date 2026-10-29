@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { findEnvelopesResponse } from "../../examplePayloads";
 import { connectionInput, envelopeIds } from "../../inputs";
+
 export const findEnvelopes = action({
   display: {
     label: `Find Envelopes`,
@@ -17,6 +18,7 @@ export const findEnvelopes = action({
     const { data } = await client.post(`/organisations/envelopes/find`, {
       envelope_ids: envelopeIds,
     });
+
     return { data };
   },
   examplePayload: {

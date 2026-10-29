@@ -5,6 +5,7 @@ import { listSupplierItemsInputs } from "../../inputs";
 import { listSupplierItemsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listSupplierItems = action({
   display: {
     label: "List Supplier Items",
@@ -31,6 +32,7 @@ export const listSupplierItems = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         number,
         name,
@@ -39,16 +41,19 @@ export const listSupplierItems = action({
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       context.logger.info("Searching for supplier items", {
         queryParamNames: Object.keys(queryParams),
         endpoint: "/supplieritems",
       });
+
       const data = await fetchArenaList(
         client,
         "/supplieritems",
         queryParams,
         fetchAll,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} supplier items`,
         {
@@ -56,6 +61,7 @@ export const listSupplierItems = action({
           returnedCount: data?.results?.length || 0,
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Supplier Items");

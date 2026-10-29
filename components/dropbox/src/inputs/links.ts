@@ -10,6 +10,7 @@ import {
   userType,
 } from "./common";
 import { urlToSave } from "./files";
+
 export const audience = input({
   label: "Audience",
   comments:
@@ -25,6 +26,7 @@ export const audience = input({
   clean: cleanStringWithTag,
   default: "",
 });
+
 export const link_password = input({
   label: "Link Password",
   placeholder: "Enter the shared link password",
@@ -34,6 +36,7 @@ export const link_password = input({
   example: "anExamplePassword",
   clean: toOptionalString,
 });
+
 export const expires = input({
   label: "Expires",
   placeholder: "Enter the expiration timestamp",
@@ -44,6 +47,7 @@ export const expires = input({
   example: "2030-01-01T00:00:00Z",
   clean: toOptionalString,
 });
+
 export const require_password = input({
   label: "Require Password",
   type: "boolean",
@@ -53,6 +57,7 @@ export const require_password = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const direct_only = input({
   label: "Direct Only",
   type: "boolean",
@@ -62,6 +67,7 @@ export const direct_only = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const access = input({
   label: "Access",
   type: "string",
@@ -78,6 +84,7 @@ export const access = input({
   ],
   default: "",
 });
+
 export const allow_download = input({
   label: "Allow Download",
   type: "boolean",
@@ -87,6 +94,7 @@ export const allow_download = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const linkSettings = structuredObjectInput({
   label: "Link Settings",
   required: false,
@@ -100,6 +108,7 @@ export const linkSettings = structuredObjectInput({
     allow_download,
   },
 });
+
 export const duration = input({
   label: "Duration",
   placeholder: "Enter the link duration in seconds",
@@ -109,6 +118,7 @@ export const duration = input({
   default: "3600",
   clean: (value) => util.types.toNumber(value, 3600),
 });
+
 export const createSharedLinkInputs = {
   dropboxConnection: connectionInput,
   path,
@@ -117,6 +127,7 @@ export const createSharedLinkInputs = {
   userType,
   teamMemberId,
 };
+
 export const getSharedLinkFileInputs = {
   dropboxConnection: connectionInput,
   urlToSave: {
@@ -138,6 +149,7 @@ export const getSharedLinkFileInputs = {
   userType,
   teamMemberId,
 };
+
 export const getTemporaryLinkInputs = {
   dropboxConnection: connectionInput,
   path: {
@@ -150,11 +162,13 @@ export const getTemporaryLinkInputs = {
     comments: "Used to specify the user to act on behalf of.",
   },
 };
+
 export const getTemporaryUploadLinkInputs = {
   dropboxConnection: connectionInput,
   path,
   duration,
 };
+
 export const listSharedLinksInputs = {
   dropboxConnection: connectionInput,
   path: directoryPath,

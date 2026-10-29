@@ -14,6 +14,7 @@ import {
   fetchMessagesInWindow,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Messages",
@@ -40,15 +41,18 @@ export const pollChangesTrigger = pollingTrigger({
       nowMs,
       params.lookBackDate,
     );
+
     const client = createAuthorizedClient(params.sendGridConnection);
     const { records, truncated } = await fetchMessagesInWindow(
       client,
       fromIso,
       toIso,
     );
+
     const updated: SendgridMessageRecord[] =
       isBackfill || params.showUpdatedRecords !== false ? records : [];
     const created: SendgridMessageRecord[] = [];
+
     const fromMs = Date.parse(fromIso);
     const toMs = Date.parse(toIso);
     const nextCursorMs = truncated ? fromMs + POLL_WINDOW_STEP_MS : toMs;
@@ -57,6 +61,7 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt: new Date(nextCursorMs).toISOString(),
       ...(isBackfill && !caughtUp ? { backfillActive: true } : {}),
     });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled SendGrid /v3/messages window [${fromIso}, ${toIso}]: ` +
@@ -64,6 +69,7 @@ export const pollChangesTrigger = pollingTrigger({
           `nextCursor=${new Date(nextCursorMs).toISOString()}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

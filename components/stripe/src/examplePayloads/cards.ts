@@ -45,15 +45,20 @@ export const getCardExamplePayload = {
     type: "card",
   } as unknown,
 };
+
 export const createCardExamplePayload = getCardExamplePayload;
+
 export const updateCardExamplePayload = getCardExamplePayload;
+
 export const attachCardExamplePayload = getCardExamplePayload;
+
 export const detachCardExamplePayload = {
   data: {
     ...(getCardExamplePayload.data as Record<string, unknown>),
     customer: null,
   } as unknown,
 };
+
 export const listCardsExamplePayload = {
   data: {
     object: "list",

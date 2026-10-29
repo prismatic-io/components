@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Airtable connection to use.",
 });
+
 export const baseIdInput = input({
   label: "Base ID",
   type: "string",
@@ -16,6 +18,7 @@ export const baseIdInput = input({
   clean: util.types.toString,
   dataSource: "selectBase",
 });
+
 export const tableName = input({
   label: "Table Name",
   type: "string",

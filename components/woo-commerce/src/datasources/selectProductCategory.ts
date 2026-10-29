@@ -10,6 +10,7 @@ import {
 import type { ProductCategory } from "../interfaces/ProductCategory";
 import type { WooCommerceResponse } from "../interfaces/WooComerResponse";
 import { paginateRecords } from "../util";
+
 export const selectProductCategory = dataSource({
   display: {
     label: "Select Product Category",
@@ -41,6 +42,7 @@ export const selectProductCategory = dataSource({
         },
         true,
       );
+
     return {
       result: data.map(({ id, name }) => ({
         label: name,

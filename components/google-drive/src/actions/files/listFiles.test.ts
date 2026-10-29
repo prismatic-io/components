@@ -2,12 +2,14 @@ import nock from "nock";
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { connection as connectionDefinition } from "../../connections";
 import { listFiles } from "./listFiles";
+
 const connection = createConnection(
   connectionDefinition,
   {},
   { access_token: "test-token" },
 );
 const DRIVE = "https://www.googleapis.com";
+
 const baseParams = {
   connection,
   driveId: undefined,
@@ -15,8 +17,10 @@ const baseParams = {
   fields: undefined,
   query: undefined,
 };
+
 describe("listFiles", () => {
   afterEach(() => nock.cleanAll());
+
   test("fetchAll false returns the raw page body, envelope included", async () => {
     nock(DRIVE)
       .get("/drive/v3/files")
@@ -31,10 +35,12 @@ describe("listFiles", () => {
           },
         ],
       });
+
     const { result } = await invoke(listFiles, {
       ...baseParams,
       fetchAll: false,
     });
+
     expect(result.data).toEqual({
       kind: "drive#fileList",
       nextPageToken: "~!!~AI9FV7RiPMAcQBBrmZFOMt0lBHzXBQvpqYMTNQ",
@@ -46,6 +52,7 @@ describe("listFiles", () => {
       ],
     });
   });
+
   test("fetchAll true walks every page and returns only the collected files", async () => {
     nock(DRIVE)
       .get("/drive/v3/files")
@@ -62,10 +69,12 @@ describe("listFiles", () => {
         kind: "drive#fileList",
         files: [{ id: "2", name: "Two" }],
       });
+
     const { result } = await invoke(listFiles, {
       ...baseParams,
       fetchAll: true,
     });
+
     expect(result.data).toEqual({
       files: [
         { id: "1", name: "One" },
@@ -73,11 +82,13 @@ describe("listFiles", () => {
       ],
     });
   });
+
   test("surfaces an API error", async () => {
     nock(DRIVE)
       .get("/drive/v3/files")
       .query(true)
       .reply(500, { error: { message: "Server error" } });
+
     await expect(
       invoke(listFiles, { ...baseParams, fetchAll: false }),
     ).rejects.toThrow();

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listTicketCustomFieldsExamplePayload as examplePayload } from "../../examplePayloads/tickets";
 import { listTicketCustomFieldsInputs as inputs } from "../../inputs/tickets";
 import type { ListTicketCustomFieldsResponse } from "../../interfaces/tickets";
+
 export const listTicketCustomFields = action({
   display: {
     label: "List Ticket Custom Fields",
@@ -15,6 +16,7 @@ export const listTicketCustomFields = action({
     }).get<ListTicketCustomFieldsResponse>(
       `/tickets/${ticket_id}/custom-fields`,
     );
+
     return {
       data,
     };

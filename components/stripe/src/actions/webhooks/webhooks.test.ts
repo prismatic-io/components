@@ -12,17 +12,23 @@ import { deleteWebhooks } from "./deleteWebhooks";
 import { getWebhook } from "./getWebhook";
 import { listWebhooks } from "./listWebhooks";
 import { updateWebhook } from "./updateWebhook";
+
 const BASE = "https://api.stripe.com";
 const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
+
 const params = (values: Record<string, unknown>) => values as never;
+
 const WEBHOOK_ID = getWebhookExamplePayload.data.id;
 const WEBHOOK_URL = getWebhookExamplePayload.data.url;
+
 afterEach(() => nock.cleanAll());
+
 describe("createWebhook", () => {
   it("creates the endpoint and returns it", async () => {
     const scope = nock(BASE)
       .post("/v1/webhook_endpoints")
       .reply(200, getWebhookExamplePayload.data);
+
     const { result } = await invoke(
       createWebhook,
       params({
@@ -31,9 +37,11 @@ describe("createWebhook", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(getWebhookExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/webhook_endpoints")
@@ -43,6 +51,7 @@ describe("createWebhook", () => {
           message: "Invalid URL: must be an absolute URL",
         },
       });
+
     await expect(
       invoke(
         createWebhook,
@@ -55,18 +64,22 @@ describe("createWebhook", () => {
     ).rejects.toThrow("Invalid URL");
   });
 });
+
 describe("getWebhook", () => {
   it("returns the endpoint for the supplied ID", async () => {
     const scope = nock(BASE)
       .get(`/v1/webhook_endpoints/${WEBHOOK_ID}`)
       .reply(200, getWebhookExamplePayload.data);
+
     const { result } = await invoke(
       getWebhook,
       params({ webhookId: WEBHOOK_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(getWebhookExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/webhook_endpoints/we_missing")
@@ -76,6 +89,7 @@ describe("getWebhook", () => {
           message: "No such webhook endpoint",
         },
       });
+
     await expect(
       invoke(
         getWebhook,
@@ -84,12 +98,14 @@ describe("getWebhook", () => {
     ).rejects.toThrow("No such webhook endpoint");
   });
 });
+
 describe("listWebhooks", () => {
   it("returns a single page of endpoints", async () => {
     const scope = nock(BASE)
       .get("/v1/webhook_endpoints")
       .query({ limit: "10" })
       .reply(200, listWebhooksExamplePayload.data);
+
     const { result } = await invoke(
       listWebhooks,
       params({
@@ -98,9 +114,11 @@ describe("listWebhooks", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(listWebhooksExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/webhook_endpoints")
@@ -108,6 +126,7 @@ describe("listWebhooks", () => {
       .reply(400, {
         error: { type: "invalid_request_error", message: "Invalid limit" },
       });
+
     await expect(
       invoke(
         listWebhooks,
@@ -116,11 +135,13 @@ describe("listWebhooks", () => {
     ).rejects.toThrow("Invalid limit");
   });
 });
+
 describe("updateWebhook", () => {
   it("updates the endpoint and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/webhook_endpoints/${WEBHOOK_ID}`)
       .reply(200, getWebhookExamplePayload.data);
+
     const { result } = await invoke(
       updateWebhook,
       params({
@@ -130,9 +151,11 @@ describe("updateWebhook", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(getWebhookExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/webhook_endpoints/we_missing")
@@ -142,6 +165,7 @@ describe("updateWebhook", () => {
           message: "No such webhook endpoint",
         },
       });
+
     await expect(
       invoke(
         updateWebhook,
@@ -154,18 +178,22 @@ describe("updateWebhook", () => {
     ).rejects.toThrow("No such webhook endpoint");
   });
 });
+
 describe("deleteWebhook", () => {
   it("deletes the endpoint and returns the deletion confirmation", async () => {
     const scope = nock(BASE)
       .delete(`/v1/webhook_endpoints/${WEBHOOK_ID}`)
       .reply(200, deleteWebhookExamplePayload.data);
+
     const { result } = await invoke(
       deleteWebhook,
       params({ webhookId: WEBHOOK_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(deleteWebhookExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .delete("/v1/webhook_endpoints/we_missing")
@@ -175,6 +203,7 @@ describe("deleteWebhook", () => {
           message: "No such webhook endpoint",
         },
       });
+
     await expect(
       invoke(
         deleteWebhook,
@@ -183,6 +212,7 @@ describe("deleteWebhook", () => {
     ).rejects.toThrow("No such webhook endpoint");
   });
 });
+
 describe("deleteWebhooks", () => {
   it("deletes only the endpoints matching the instance's flow URLs", async () => {
     const otherEndpoint = {
@@ -202,6 +232,7 @@ describe("deleteWebhooks", () => {
     const deletion = nock(BASE)
       .delete(`/v1/webhook_endpoints/${WEBHOOK_ID}`)
       .reply(200, deleteWebhookExamplePayload.data);
+
     const { result } = await invoke(
       deleteWebhooks,
       params({ stripeConnection: conn }),
@@ -209,10 +240,12 @@ describe("deleteWebhooks", () => {
         webhookUrls: { "Flow 1": WEBHOOK_URL },
       },
     );
+
     expect(result.data).toEqual([deleteWebhookExamplePayload.data]);
     expect(list.isDone()).toBe(true);
     expect(deletion.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/webhook_endpoints")
@@ -223,6 +256,7 @@ describe("deleteWebhooks", () => {
           message: "Invalid API Key provided",
         },
       });
+
     await expect(
       invoke(deleteWebhooks, params({ stripeConnection: conn }), {
         webhookUrls: { "Flow 1": WEBHOOK_URL },

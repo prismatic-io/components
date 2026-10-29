@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./general";
+
 export const topicHostName = input({
   label: "Topic Host Name",
   type: "string",
@@ -9,6 +10,7 @@ export const topicHostName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const topicAccessKey = input({
   label: "Topic Access Key",
   type: "password",
@@ -20,6 +22,7 @@ export const topicAccessKey = input({
     "AzVWk42YmQlshLB7o5pxJqBTBYmkS1SAEGldtYeLcWAu5gzk5YKpJQQJ99AKACYesed1SSsd1s",
   clean: util.types.toString,
 });
+
 export const events = input({
   label: "Events",
   type: "code",
@@ -46,6 +49,7 @@ export const events = input({
   required: true,
   clean: util.types.toObject,
 });
+
 export const publishEventsInputs = {
   connection,
   topicHostName,

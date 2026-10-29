@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateProjectExamplePayload } from "../../examplePayloads";
 import { updateProjectInputs } from "../../inputs";
 import { updateProjectOutputSchema } from "../../outputSchemas";
+
 export const updateProject = action({
   display: {
     label: "Update Project",

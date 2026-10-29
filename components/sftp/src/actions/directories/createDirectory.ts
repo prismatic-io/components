@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getSftpClient } from "../../client";
 import { connection, path, recursive } from "../../inputs";
 import { createDirectoryExamplePayload } from "../../examplePayloads";
+
 const createDirectory = action({
   display: {
     label: "Create Directory",
@@ -10,6 +11,7 @@ const createDirectory = action({
   },
   perform: async (context, { connection, path, recursive }) => {
     const sftp = await getSftpClient(connection, context.debug.enabled);
+
     try {
       const newDirectory = await sftp.mkdir(path, recursive);
       return {
@@ -22,4 +24,5 @@ const createDirectory = action({
   inputs: { connection, path, recursive },
   examplePayload: createDirectoryExamplePayload,
 });
+
 export default createDirectory;

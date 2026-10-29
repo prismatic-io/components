@@ -49,6 +49,7 @@ export const getOrderExamplePayload = {
     ElectronicInvoiceStatus: null,
   },
 };
+
 export const listOrdersExamplePayload = {
   data: {
     Orders: [
@@ -109,6 +110,7 @@ export const listOrdersExamplePayload = {
     CreatedBefore: "2024-01-15T23:59:59Z",
   },
 };
+
 export const getOrderAddressExamplePayload = {
   data: {
     AmazonOrderId: "902-3159896-1390916",
@@ -129,6 +131,7 @@ export const getOrderAddressExamplePayload = {
     },
   },
 };
+
 export const getOrderBuyerInfoExamplePayload = {
   data: {
     AmazonOrderId: "902-3159896-1390916",
@@ -143,6 +146,7 @@ export const getOrderBuyerInfoExamplePayload = {
     PurchaseOrderNumber: null,
   },
 };
+
 export const getOrderItemsExamplePayload = {
   data: {
     AmazonOrderId: "902-3159896-1390916",
@@ -221,6 +225,7 @@ export const getOrderItemsExamplePayload = {
     NextToken: null,
   },
 };
+
 export const getOrderItemsBuyerInfoExamplePayload = {
   data: {
     AmazonOrderId: "902-3159896-1390916",
@@ -245,6 +250,7 @@ export const getOrderItemsBuyerInfoExamplePayload = {
     NextToken: null,
   },
 };
+
 export const confirmOrderShipmentExamplePayload = {
   data: {},
 };

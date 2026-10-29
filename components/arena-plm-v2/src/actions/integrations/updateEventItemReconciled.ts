@@ -4,6 +4,7 @@ import { updateEventItemReconciledExamplePayload } from "../../examplePayloads";
 import { updateEventItemReconciledInputs } from "../../inputs";
 import { eventItemSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const updateEventItemReconciled = action({
   display: {
     label: "Update Event Item Reconciled",
@@ -22,13 +23,16 @@ export const updateEventItemReconciled = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const requestPayload = {
         reconciled: reconciled,
       };
+
       const { data } = await client.put(
         `/outboundintegrations/${integrationGuid}/events/${eventGuid}/items/${eventItemGuid}`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Update Event Item Reconciled");

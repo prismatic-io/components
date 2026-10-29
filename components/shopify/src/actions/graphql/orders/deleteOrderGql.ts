@@ -3,7 +3,9 @@ import { getShopifyGraphQlClient } from "../../../client";
 import { deleteOrderExamplePayload as examplePayload } from "../../../examplePayloads";
 import { deleteOrderInputs as inputs } from "../../../inputsGql";
 import { deleteOrderGqlOutputSchema } from "../../../outputSchemas";
+
 import deleteOrderQuery from "../queries/orders/DeleteOrder.gql";
+
 export const deleteOrderGql = action({
   display: {
     label: "Delete Order",
@@ -17,11 +19,14 @@ export const deleteOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      orderDelete: Record<string, unknown>;
-    } = await client.request(deleteOrderQuery, {
-      orderId,
-    });
+
+    const data: { orderDelete: Record<string, unknown> } = await client.request(
+      deleteOrderQuery,
+      {
+        orderId,
+      },
+    );
+
     return {
       data: data.orderDelete,
     };

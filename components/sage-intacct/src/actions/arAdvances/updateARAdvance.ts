@@ -8,6 +8,7 @@ import {
 } from "../../util";
 import { updateARAdvanceExamplePayload } from "../../examplePayloads";
 import { updateARAdvanceOutputSchema } from "../../outputSchemas";
+
 export const updateARAdvance = action({
   display: {
     label: "Update AR Advance",
@@ -53,12 +54,15 @@ export const updateARAdvance = action({
     ${additionalXmlTagsInput}
   </ARADVANCE>
 </update>`;
+
     const responseFromSage = await executeXmlRequest(
       connection,
       action,
       context.debug.enabled,
     );
+
     handleSageError(responseFromSage);
+
     return {
       data: responseFromSage,
     };

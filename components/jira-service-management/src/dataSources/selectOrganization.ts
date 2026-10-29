@@ -4,6 +4,7 @@ import { selectOrganizationExamplePayload } from "../examplePayloads";
 import { selectOrganizationInputs } from "../inputs";
 import type { Organization, PagedResponse } from "../types";
 import { getPaginatedData, toSortedPicklist } from "../util";
+
 export const selectOrganization = dataSource({
   display: {
     label: "Select Organization",
@@ -13,11 +14,8 @@ export const selectOrganization = dataSource({
   inputs: selectOrganizationInputs,
   perform: async (_context, { connection }) => {
     const { client } = await createClient(connection, false);
-    const {
-      data,
-    }: {
-      data: PagedResponse<Organization>;
-    } = await getPaginatedData<Organization>(client, "/organization", true);
+    const { data }: { data: PagedResponse<Organization> } =
+      await getPaginatedData<Organization>(client, "/organization", true);
     const result = toSortedPicklist(
       data.values,
       (org) => org.name,

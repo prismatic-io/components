@@ -13,6 +13,7 @@ import {
   processMetadataResult,
   toFullNameIdentifier,
 } from "./flows";
+
 const addPropertiesToObject = (params) => {
   const object = {};
   for (const key in params) {
@@ -22,15 +23,18 @@ const addPropertiesToObject = (params) => {
   }
   return object;
 };
+
 export const processOutboundMessageActions = (
   outboundMessages: unknown[],
 ): WorkflowAction[] => {
   if (!outboundMessages) {
     return undefined;
   }
+
   if (Array.isArray(outboundMessages) && outboundMessages.length === 0) {
     return [];
   }
+
   return outboundMessages.map((v) => {
     const { name } = parseFullNameIdentifier(util.types.toString(v));
     return {
@@ -39,6 +43,7 @@ export const processOutboundMessageActions = (
     };
   });
 };
+
 export const processOutboundMessageFields = (
   fieldsValue: unknown,
   dynamicFieldsValue: unknown,
@@ -47,10 +52,12 @@ export const processOutboundMessageFields = (
   const dynamicFields = Array.isArray(dynamicFieldsValue)
     ? dynamicFieldsValue
     : [];
+
   const combined = [...fields, ...dynamicFields];
   const strFields = combined.map((v) => util.types.toString(v));
   return [...new Set(strFields)];
 };
+
 export const listWorkflowOutboundMessagesFunction = async (
   client: Connection<Schema>,
 ) => {
@@ -58,9 +65,11 @@ export const listWorkflowOutboundMessagesFunction = async (
     type: "WorkflowOutboundMessage",
   });
 };
+
 export const listWorkflowRulesFunction = async (client: Connection<Schema>) => {
   return await client.metadata.list({ type: "WorkflowRule" });
 };
+
 export const findWorkflowOutboundMessage = (
   workflowOutboundMessageArray: FileProperties[],
   fullName: string,
@@ -69,6 +78,7 @@ export const findWorkflowOutboundMessage = (
     (workflowOutboundMessage) => workflowOutboundMessage.fullName === fullName,
   );
 };
+
 export const findWorkflowRule = (
   workflowRules: FileProperties[],
   fullName: string,
@@ -77,6 +87,7 @@ export const findWorkflowRule = (
     (workflowRule) => workflowRule.fullName === fullName,
   );
 };
+
 export const createWorkflowOutboundMessageFunction = async (
   client: Connection<Schema>,
   params: CreateWorkflowOutboundMessage,
@@ -99,6 +110,7 @@ export const createWorkflowOutboundMessageFunction = async (
     ),
   );
 };
+
 export const createWorkflowRuleFunction = async (
   client: Connection<Schema>,
   params: CreateWorkflowRule,
@@ -116,6 +128,7 @@ export const createWorkflowRuleFunction = async (
     await client.metadata.create("WorkflowRule", workflowRule),
   );
 };
+
 export const deleteWorkflowOutboundMessageFunction = async (
   client: Connection<Schema>,
   fullName: string,
@@ -124,6 +137,7 @@ export const deleteWorkflowOutboundMessageFunction = async (
     await client.metadata.delete("WorkflowOutboundMessage", fullName),
   );
 };
+
 export const deleteWorkflowRuleFunction = async (
   client: Connection<Schema>,
   fullName: string,
@@ -132,6 +146,7 @@ export const deleteWorkflowRuleFunction = async (
     await client.metadata.delete("WorkflowRule", fullName),
   );
 };
+
 export const getIntegrationUser = async (
   client: Connection<Schema>,
   integrationUserInput: string | undefined,
@@ -142,6 +157,7 @@ export const getIntegrationUser = async (
   }
   return integrationUserInput;
 };
+
 export const onInstanceDeployFunction = async (
   context,
   {
@@ -157,18 +173,22 @@ export const onInstanceDeployFunction = async (
 ) => {
   const endpoint = context.webhookUrls[context.flow.name];
   const client = await createSalesforceClient(connection, version);
+
   const [{ username }, workflowOutboundMessages] = await Promise.all([
     client.identity(),
     listWorkflowOutboundMessagesFunction(client),
   ]);
+
   const outboundMessageFullName = toFullNameIdentifier(
     recordType,
     outboundMessageName,
   );
+
   const existingWorkflowOutboundMessage = findWorkflowOutboundMessage(
     workflowOutboundMessages,
     outboundMessageFullName,
   );
+
   const outboundResult =
     existingWorkflowOutboundMessage ||
     (await createWorkflowOutboundMessageFunction(client, {
@@ -181,15 +201,19 @@ export const onInstanceDeployFunction = async (
       integrationUser: username,
       fields: processOutboundMessageFields(fields, []),
     }));
+
   const workflowRules = await listWorkflowRulesFunction(client);
+
   const workflowRuleFullName = toFullNameIdentifier(
     recordType,
     workflowRuleName,
   );
+
   const existingWorkflowRule = findWorkflowRule(
     workflowRules,
     workflowRuleFullName,
   );
+
   const ruleResult =
     existingWorkflowRule ||
     (await createWorkflowRuleFunction(client, {
@@ -208,9 +232,11 @@ export const onInstanceDeployFunction = async (
       ),
       actions: processOutboundMessageActions([outboundMessageFullName]),
     }));
+
   context.logger.info("ruleResult", ruleResult);
   context.logger.info("outboundResult", outboundResult);
 };
+
 export const onInstanceDeleteFunction = async (
   _context,
   { recordType, outboundMessageName, workflowRuleName, connection, version },
@@ -220,18 +246,22 @@ export const onInstanceDeleteFunction = async (
     listWorkflowOutboundMessagesFunction(client),
     listWorkflowRulesFunction(client),
   ]);
+
   const outboundMessageFullName = toFullNameIdentifier(
     recordType,
     outboundMessageName,
   );
+
   const workflowRuleFullName = toFullNameIdentifier(
     recordType,
     workflowRuleName,
   );
+
   const existingWorkflowOutboundMessage = findWorkflowOutboundMessage(
     worflowOutboundMessages,
     outboundMessageFullName,
   );
+
   if (existingWorkflowOutboundMessage) {
     const namespacePrefix =
       existingWorkflowOutboundMessage.namespacePrefix || "";
@@ -246,10 +276,12 @@ export const onInstanceDeleteFunction = async (
       toDeleteOutboundMessageFullName,
     );
   }
+
   const existingWorkflowRule = findWorkflowRule(
     workflowRules,
     workflowRuleFullName,
   );
+
   if (existingWorkflowRule) {
     const namespacePrefix = existingWorkflowRule.namespacePrefix || "";
     const toDeleteWorkflowRuleFullName = toFullNameIdentifier(

@@ -4,6 +4,7 @@ import { listContactsInputs } from "../../inputs";
 import type { Contact } from "../../interfaces/Contact";
 import { fetchAllData } from "../../util";
 import { listContactsExamplePayload } from "../../examplePayloads";
+
 export const listContacts = action({
   display: {
     label: "List Contacts",

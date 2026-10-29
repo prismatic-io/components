@@ -1,9 +1,12 @@
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { connectionInput, teamMemberId, userType } from "./common";
+
 const { debugRequest, ...httpInputs } = httpClientInputs;
+
 export const getCurrentAccountInputs = {
   dropboxConnection: connectionInput,
 };
+
 export const rawRequestInputs = {
   connection: connectionInput,
   userType,

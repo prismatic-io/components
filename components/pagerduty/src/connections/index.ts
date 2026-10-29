@@ -3,6 +3,7 @@ import {
   OAuth2Type,
   oauth2Connection,
 } from "@prismatic-io/spectral";
+
 export const apiKey = connection({
   key: "pagerduty-api-key",
   display: {
@@ -18,6 +19,7 @@ export const apiKey = connection({
     },
   },
 });
+
 export const oauth = oauth2Connection({
   key: "pagerduty-oauth",
   display: {
@@ -73,4 +75,5 @@ export const oauth = oauth2Connection({
     },
   },
 });
+
 export default [oauth, apiKey];

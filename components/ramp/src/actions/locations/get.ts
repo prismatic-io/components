@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getLocationResponse } from "../../examplePayloads/locations";
 import { connection, locationId } from "../../inputs";
 import { getLocationOutputSchema } from "../../outputSchemas";
+
 export const getLocation = action({
   display: {
     label: "Get Location",
@@ -19,6 +20,7 @@ export const getLocation = action({
   performSafety: "safe",
   perform: async (context, { connection, locationId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/locations/${locationId}`);
     return {
       data,

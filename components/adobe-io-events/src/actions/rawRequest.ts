@@ -8,7 +8,9 @@ import { API_BASE_URL } from "../constants";
 import { rawRequestExamplePayload } from "../examplePayloads";
 import { requestErrorHandler } from "../helpers";
 import { connection } from "../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",

@@ -7,6 +7,7 @@ import type {
   QBTimeRecordChange,
   QBTimeRecordChanges,
 } from "./types";
+
 export const injectQueryParams = (
   url: string,
   queryParams: KeyValuePair[],
@@ -15,8 +16,10 @@ export const injectQueryParams = (
     (result, { key, value }) => ({ ...result, [key]: value }),
     {},
   );
+
   return `${url}?${queryString.stringify(paramObject)}`;
 };
+
 export const fetchRecords = async (
   client: HttpClient,
   object: string,
@@ -25,6 +28,7 @@ export const fetchRecords = async (
   const allRecords: QBTimeRecord[] = [];
   let page = 1;
   let hasMore = true;
+
   while (hasMore) {
     const params = new URLSearchParams({
       ...queryParams,
@@ -39,8 +43,10 @@ export const fetchRecords = async (
     hasMore = data?.more === true;
     page++;
   }
+
   return allRecords;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -49,6 +55,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -57,6 +64,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -71,11 +79,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const filterCreatedOnOrAfter = (
   records: QBTimeRecord[],
   since: string,
@@ -87,6 +98,7 @@ export const filterCreatedOnOrAfter = (
       Date.parse(record.created) >= threshold,
   );
 };
+
 export const resolveQBTimeRecordChanges = (
   data: QBTimeRecordChanges | undefined,
 ): QBTimeRecordChange[] => {

@@ -3,6 +3,7 @@ import { ClientType, createClient } from "../../client";
 import { enableNotificationExamplePayload } from "../../examplePayloads/notifications";
 import { notificationEnableInputs } from "../../inputs";
 import { enableNotificationChannel } from "../../util/notifications";
+
 export const crmEnableNotification = action({
   display: {
     label: "CRM - Enable Notification",
@@ -29,6 +30,7 @@ export const crmEnableNotification = action({
       ClientType.CRM,
       context.debug.enabled,
     );
+
     const data = await enableNotificationChannel(crmClient, {
       channelId,
       events,
@@ -39,6 +41,7 @@ export const crmEnableNotification = action({
       notifyOnRelatedAction,
       notificationCondition,
     });
+
     return { data };
   },
   examplePayload: enableNotificationExamplePayload,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getBookingByTenantExamplePayload } from "../../examplePayloads";
 import { getBookingByTenantInputs } from "../../inputs";
 import { getBookingByTenantOutputSchema } from "../../outputSchemas";
+
 export const getBookingByTenant = action({
   display: {
     label: "Get Booking by Tenant",

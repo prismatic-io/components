@@ -8,6 +8,7 @@ import {
   searchString,
 } from "../../inputs";
 import { DEFAULT_ISSUE_FIELDS } from "../constants";
+
 export const searchIssues = action({
   display: {
     label: "Search Issues",
@@ -18,10 +19,12 @@ export const searchIssues = action({
       params.jiraConnection,
       context.debug.enabled,
     );
+
     let jql = `summary ~ "${params.searchString}"`;
     if (params.projectKey) {
       jql += `and project = "${params.projectKey}"`;
     }
+
     const { data } = await client.get("/search/jql", {
       params: {
         jql: jql || undefined,

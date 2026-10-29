@@ -4,6 +4,7 @@ import { removeGuestFromListExamplePayload } from "../../examplePayloads";
 import { removeGuestFromListInputs } from "../../inputs";
 import { removeGuestFromListOutputSchema } from "../../outputSchemas";
 import type { RemoveGuestFromListQueryParams } from "../../types";
+
 export const removeGuestFromList = action({
   display: {
     label: "Remove Guest from List",
@@ -23,12 +24,15 @@ export const removeGuestFromList = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const params: RemoveGuestFromListQueryParams = {
       include_shared: includeShared,
     };
+
     const { data } = await client.delete(`/list/${listId}/guest/${guestId}`, {
       params,
     });
+
     return {
       data,
     };

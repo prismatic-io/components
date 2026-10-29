@@ -4,11 +4,15 @@ import {
   toOptionalObject,
   toOptionalString,
 } from "../../util/clean";
+
 import { connectionInput, per_page } from "../v1/common";
+
 export { connectionInput };
+
 export const connectionOnlyInputs = {
   connection: connectionInput,
 };
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -18,12 +22,14 @@ export const fetchAll = input({
     "When true, fetches all pages of results by following the response Link headers. Page Size and Cursor are ignored.",
   clean: util.types.toBool,
 });
+
 export const perPage = {
   ...per_page,
   comments:
     "The maximum number of results to return per page. Must be an integer between 1 and 500. Defaults to 100.",
   clean: toOptionalNumber,
 };
+
 export const cursor = input({
   label: "Cursor",
   type: "string",
@@ -34,16 +40,19 @@ export const cursor = input({
   example: "eyJwYWdlIjoyfQ",
   clean: toOptionalString,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page-size and cursor controls for the results list.",
   inputs: { perPage, cursor },
 });
+
 export const cursorPaginationInputs = {
   fetchAll,
   pagination,
 };
+
 export const createTimestampOperatorInput = (
   field: string,
   label: string,
@@ -59,6 +68,7 @@ export const createTimestampOperatorInput = (
       operator === "gte" ? "2026-01-01T00:00:00Z" : "2026-01-15T10:30:00Z",
     clean: toOptionalString,
   });
+
 export const createdAtGte = createTimestampOperatorInput(
   "created_at",
   "Created",
@@ -79,6 +89,7 @@ export const updatedAtLte = createTimestampOperatorInput(
   "Updated",
   "lte",
 );
+
 export const customFieldsV3 = input({
   label: "Custom Fields",
   type: "code",

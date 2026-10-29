@@ -12,6 +12,7 @@ import {
   listCompanyAdminsExamplePayload,
 } from "../examplePayloads";
 import { fetchAllPages } from "../util";
+
 const listCompanies = action({
   display: {
     label: "List Companies",
@@ -25,10 +26,12 @@ const listCompanies = action({
   },
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     if (params.fetchAll) {
       const data = await fetchAllPages(client, "/companies");
       return { data: { data, headers: {} } };
     }
+
     const { data, headers } = await client.get("/companies", {
       params: { page: params.page },
     });
@@ -36,6 +39,7 @@ const listCompanies = action({
   },
   examplePayload: listCompaniesExamplePayload,
 });
+
 const getCompany = action({
   display: {
     label: "Get Company by ID",
@@ -54,6 +58,7 @@ const getCompany = action({
   },
   examplePayload: getCompanyExamplePayload,
 });
+
 const listCompanyAdmins = action({
   display: {
     label: "List Company Admins",
@@ -67,6 +72,7 @@ const listCompanyAdmins = action({
   },
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     if (params.fetchAll) {
       const data = await fetchAllPages(
         client,
@@ -74,6 +80,7 @@ const listCompanyAdmins = action({
       );
       return { data: { data, headers: {} } };
     }
+
     const { data, headers } = await client.get(
       `/companies/${params.companyId}/admins`,
       {
@@ -84,4 +91,5 @@ const listCompanyAdmins = action({
   },
   examplePayload: listCompanyAdminsExamplePayload,
 });
+
 export default { getCompany, listCompanies, listCompanyAdmins };

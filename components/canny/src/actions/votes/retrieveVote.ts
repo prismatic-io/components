@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrieveVoteExamplePayload } from "../../examplePayloads";
 import { retrieveVoteInputs } from "../../inputs";
 import { retrieveVoteOutputSchema } from "../../outputSchemas";
+
 export const retrieveVote = action({
   display: {
     label: "Retrieve Vote",

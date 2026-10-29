@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, signatureId, imageType } from "../inputs";
+
 export const getAccountSignatureImage = action({
   display: {
     label: "Get Account Signature Image",

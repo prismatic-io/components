@@ -1,8 +1,10 @@
 import { action } from "@prismatic-io/spectral";
+
 import { createDuroClient } from "../../client";
 import { gql } from "graphql-request";
 import { getCurrentUserInputs } from "../../inputs/users";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",

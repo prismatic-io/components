@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { getObjectAttributesExamplePayload } from "../../examplePayloads";
 import { getObjectAttributesInputs } from "../../inputs";
 import { getObjectAttributesOutputSchema } from "../../outputSchemas";
+
 export const getObjectAttributes = action({
   display: {
     label: "Get Object Attributes",
@@ -41,6 +42,7 @@ export const getObjectAttributes = action({
       VersionId: versionId,
     });
     const data = await s3.send(command);
+
     return {
       data,
     };

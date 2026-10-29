@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs";
+
 interface Workspace {
   requestId: string;
   workspaces: {
@@ -9,6 +10,7 @@ interface Workspace {
     description: string;
   }[];
 }
+
 export const workspaces = dataSource({
   display: {
     label: "Select Workspace",
@@ -24,6 +26,7 @@ export const workspaces = dataSource({
       label: workspace.name,
       key: workspace.id.toString(),
     }));
+
     return { result };
   },
   dataSourceType: "picklist",

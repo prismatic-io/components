@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { updateManagedAppExamplePayload } from "../../examplePayloads";
 import { updateManagedAppInputs } from "../../inputs";
+
 export const updateManagedApp = action({
   display: {
     label: "Update Managed App",
@@ -48,6 +49,7 @@ export const updateManagedApp = action({
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}`,
       payload,
     );
+
     return {
       data,
     };

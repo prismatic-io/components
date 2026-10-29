@@ -5,6 +5,7 @@ import { listAutomationsExamplePayload } from "../../examplePayloads";
 import { listAutomationsInputs } from "../../inputs";
 import { listAutomationsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listAutomations = action({
   examplePayload: listAutomationsExamplePayload,
   display: {
@@ -19,21 +20,22 @@ export const listAutomations = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(
       client,
       AUTOMATIONS_PATH,
       fetchAll,
       params,
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listAutomationsExamplePayload.data,
   }),
 });

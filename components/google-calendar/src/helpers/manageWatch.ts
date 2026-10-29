@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import type { CalendarWatch, ManageWatchParams } from "../types";
 import { stopWatchWithErrorHandling } from "./stopWatch";
+
 export const manageWatch = async ({
   calendar,
   calendarId,
@@ -30,10 +31,13 @@ export const manageWatch = async ({
         expiration: util.types.toString(expiration),
       },
     });
+
     logger.info("New Calendar watch created successfully");
+
     if (!res.data.id || !res.data.resourceId || !res.data.expiration) {
       throw new Error("Calendar watch creation returned incomplete data");
     }
+
     return {
       channelId: res.data.id,
       resourceId: res.data.resourceId,

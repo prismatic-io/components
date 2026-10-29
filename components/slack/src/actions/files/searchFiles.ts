@@ -3,6 +3,7 @@ import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { searchFilesExamplePayload } from "../../examplePayloads";
 import { searchFilesInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const searchFiles = action({
   display: {
     label: "Search Files",
@@ -38,14 +39,10 @@ export const searchFiles = action({
       page,
       team_id,
     });
+
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { query },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { query }): Promise<{ data: unknown }> => ({
     data: { ...searchFilesExamplePayload, query },
   }),
   examplePayload: {

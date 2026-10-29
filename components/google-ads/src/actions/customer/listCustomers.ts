@@ -4,6 +4,7 @@ import { listCustomersExamplePayload } from "../../examplePayloads";
 import { listCustomersInputs } from "../../inputs";
 import { listCustomersOutputSchema } from "../../outputSchemas";
 import { searchGoogleAds } from "../../util";
+
 export const listCustomers = action({
   display: {
     label: "List Customers by Manager",
@@ -24,6 +25,7 @@ export const listCustomers = action({
       debugEnabled: context.debug.enabled,
       logger: context.logger,
     });
+
     const data = await searchGoogleAds(client, {
       customerId: managerCustomerId,
       params: {
@@ -42,8 +44,7 @@ export const listCustomers = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCustomersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCustomersExamplePayload,
   examplePayload: listCustomersExamplePayload,
 });

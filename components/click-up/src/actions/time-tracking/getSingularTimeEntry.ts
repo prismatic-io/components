@@ -5,6 +5,7 @@ import { getSingularTimeEntryInputs } from "../../inputs";
 import { getSingularTimeEntryOutputSchema } from "../../outputSchemas";
 import type { SingularTimeEntryQueryParams } from "../../types";
 import { addToObjectIfContent, booleanToString } from "../../util";
+
 export const getSingularTimeEntry = action({
   display: {
     label: "Get Time Entry",
@@ -34,12 +35,14 @@ export const getSingularTimeEntry = action({
       include_task_tags: booleanToString(includeTaskTags),
       include_location_names: booleanToString(includeLocationNames),
     });
+
     const { data } = await client.get(
       `/team/${teamId}/time_entries/${timerId}`,
       {
         params: queryParams,
       },
     );
+
     return {
       data,
     };

@@ -2,10 +2,12 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createMixpanelClient } from "../client";
 import { funnelsInputs } from "../inputs";
 import { Authorization } from "../enums/authorization";
+
 interface Funnel {
   funnel_id: string;
   name: string;
 }
+
 export const funnels = dataSource({
   display: {
     label: "Fetch Funnels",
@@ -35,6 +37,7 @@ export const funnels = dataSource({
       }));
       return { result };
     }
+
     return { result: [] };
   },
   dataSourceType: "picklist",

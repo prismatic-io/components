@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createContactExamplePayload } from "../../examplePayloads";
 import { createContactInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createContact = action({
   display: {
     label: "Create Contact",
@@ -18,17 +19,20 @@ export const createContact = action({
       contactFirstName,
       contactlastName,
       timeout,
+
       fieldValues,
       dynamicValues,
       hubspotConnection,
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const { data } = await client.post(hubspotPaths.objects("contacts"), {
       properties: {
         company: contactCompany,
@@ -41,6 +45,7 @@ export const createContact = action({
         ...dynamicValues,
       },
     });
+
     return { data };
   },
   inputs: createContactInputs,

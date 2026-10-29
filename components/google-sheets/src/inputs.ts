@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Google Sheets connection to use.",
 });
+
 export const spreadsheetId = input({
   label: "Spreadsheet ID",
   placeholder: "Enter Spreadsheet ID",
@@ -16,6 +18,7 @@ export const spreadsheetId = input({
     "The unique identifier of the spreadsheet. You can find the spreadsheet ID in the URL: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit",
   clean: util.types.toString,
 });
+
 export const offset = input({
   label: "Offset",
   placeholder: "Enter offset",
@@ -26,6 +29,7 @@ export const offset = input({
   comments: "The number of rows to skip from the top of the worksheet.",
   clean: util.types.toNumber,
 });
+
 export const limit = input({
   label: "Limit",
   placeholder: "Enter limit",
@@ -36,6 +40,7 @@ export const limit = input({
   comments: "The maximum number of rows to retrieve.",
   clean: util.types.toNumber,
 });
+
 export const rows = input({
   label: "Rows",
   placeholder: "Enter rows data",
@@ -54,6 +59,7 @@ export const rows = input({
     'An array of row data. Can be an array of arrays (e.g., [[1,2,3], [4,5,6]]) or an array of objects where keys are column headers (e.g., [{"Column 1": "a"}]).',
   clean: util.types.toObject,
 });
+
 export const values = input({
   label: "Values",
   placeholder: "Enter cell values",
@@ -72,6 +78,7 @@ export const values = input({
     "An object where keys are row numbers and values are objects mapping column names to cell values.",
   clean: util.types.toObject,
 });
+
 export const headers = input({
   label: "Column Headings",
   placeholder: "Enter column headings",
@@ -82,6 +89,7 @@ export const headers = input({
   comments: "An array of strings representing the column header names.",
   clean: util.types.toObject,
 });
+
 export const title = input({
   label: "Worksheet Title",
   placeholder: "Enter worksheet title",
@@ -92,6 +100,7 @@ export const title = input({
   dataSource: "selectWorksheet",
   clean: util.types.toString,
 });
+
 export const storeRawValues = input({
   label: "Store Raw Values",
   type: "boolean",
@@ -101,6 +110,7 @@ export const storeRawValues = input({
     'When true, stores values exactly as provided without conversion. When false, values are converted as if typed into the spreadsheet (e.g., "=SUM(A1:A5)" becomes a formula).',
   clean: util.types.toBool,
 });
+
 export const worksheetReturnName = input({
   label: "Worksheet Return",
   type: "string",
@@ -114,6 +124,7 @@ export const worksheetReturnName = input({
     "Select whether to return the worksheet ID (numeric) or name (title) in the response.",
   clean: util.types.toBool,
 });
+
 export const spreadsheetChangeEventsInputs = {
   connection: connectionInput,
   spreadsheetId: {

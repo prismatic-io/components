@@ -3,6 +3,7 @@ export interface Workspace {
   name: string;
   resource_type: string;
 }
+
 export interface User {
   gid: string;
   name: string;
@@ -10,11 +11,13 @@ export interface User {
   resource_type: string;
   workspaces: Workspace[];
 }
+
 export interface Team {
   gid: string;
   name: string;
   resource_type: string;
 }
+
 export type Task = {
   gid: string;
   assignee: Record<string, unknown> | null;
@@ -46,6 +49,7 @@ export type Task = {
   resource_subtype: string;
   workspace: Record<string, unknown>;
 };
+
 export interface Tag {
   gid: string;
   name: string;
@@ -53,10 +57,12 @@ export interface Tag {
   created_at: string;
   resource_type: string;
 }
+
 export interface DataSource {
   gid: string;
   name: string;
 }
+
 export interface PaginatedResponse<T> {
   data: {
     data: T[];

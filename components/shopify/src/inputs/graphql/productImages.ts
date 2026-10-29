@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { getAlldata, pagination, productId, shopifyConnection } from "./common";
+
 export const imageURL = input({
   label: "Image URL",
   type: "string",
@@ -9,6 +10,7 @@ export const imageURL = input({
   comments: "Provide the URL of the image.",
   clean: util.types.toString,
 });
+
 export const imageAlt = input({
   label: "Image Alt Text",
   type: "string",
@@ -18,6 +20,7 @@ export const imageAlt = input({
   comments: "Provide the alt text for the image.",
   clean: util.types.toString,
 });
+
 const imageId = input({
   label: "Image ID",
   type: "string",
@@ -27,27 +30,32 @@ const imageId = input({
   placeholder: "Enter image ID",
   clean: util.types.toString,
 });
+
 export const countProductImagesInputs = {
   shopifyConnection,
   productId,
 };
+
 export const createProductImageInputs = {
   shopifyConnection,
   productId,
   imageURL,
   imageAlt,
 };
+
 export const deleteProductImageInputs = {
   shopifyConnection,
   productId,
   imageId,
 };
+
 export const listProductImagesInputs = {
   shopifyConnection,
   productId,
   getAlldata,
   pagination,
 };
+
 export const getProductImageInputs = {
   shopifyConnection,
   productId,

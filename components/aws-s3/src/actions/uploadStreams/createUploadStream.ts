@@ -7,6 +7,7 @@ import { createUploadStreamExamplePayload } from "../../examplePayloads";
 import { createUploadStreamInputs } from "../../inputs";
 import { createUploadStreamOutputSchema } from "../../outputSchemas";
 import { encodeTags } from "../../utils";
+
 export const createUploadStream = action({
   display: {
     label: "Create Upload Stream",
@@ -26,8 +27,11 @@ export const createUploadStream = action({
       dynamicSecretAccessKey: params.dynamicSecretAccessKey,
       dynamicSessionToken: params.dynamicSessionToken,
     });
+
     const uploadId = uuidv4();
+
     const fileStream = new PassThrough({ highWaterMark: 1024 * 1024 });
+
     const upload = new Upload({
       client: s3,
       params: {
@@ -38,10 +42,12 @@ export const createUploadStream = action({
         Tagging: encodeTags(params.tagging),
       },
     });
+
     executionState[uploadId] = {
       uploadFinisher: upload.done(),
       fileStream,
     };
+
     return { data: uploadId };
   },
   examplePerform: async () => createUploadStreamExamplePayload,

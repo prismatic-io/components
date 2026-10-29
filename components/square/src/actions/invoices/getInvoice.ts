@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { getInvoiceExamplePayload } from "../../examplePayloads";
 import { getInvoiceInputs } from "../../inputs";
+
 export const getInvoice = action({
   display: {
     label: "Get Invoice",
@@ -12,7 +13,9 @@ export const getInvoice = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.get(`/v2/invoices/${invoiceId}`);
+
     return {
       data: response.data,
     };

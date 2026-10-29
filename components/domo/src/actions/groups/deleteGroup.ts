@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { deleteGroupExamplePayload } from "../../examplePayloads";
 import { deleteGroupInputs } from "../../inputs";
+
 export const deleteGroup = action({
   display: {
     label: "Delete Group",
@@ -15,4 +16,5 @@ export const deleteGroup = action({
   },
   inputs: deleteGroupInputs,
 });
+
 export default { deleteGroup };

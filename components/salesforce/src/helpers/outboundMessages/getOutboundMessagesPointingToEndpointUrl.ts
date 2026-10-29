@@ -1,7 +1,9 @@
 import type { ActionLogger } from "@prismatic-io/spectral/dist/types";
+
 import { listWorkflowOutboundMessagesFunction } from "../../util";
 import type { WorkflowOutboundMessage } from "../../types";
 import type { Connection, Schema } from "jsforce";
+
 const processBatch = async <T>(
   promises: Promise<T>[],
   batchSize: number = 10,
@@ -14,6 +16,7 @@ const processBatch = async <T>(
   }
   return results;
 };
+
 export const getOutboundMessagesPointingToEndpointUrl = async (
   client: Connection<Schema>,
   endpointUrl: string,
@@ -21,6 +24,7 @@ export const getOutboundMessagesPointingToEndpointUrl = async (
 ) => {
   const listWorkflowOutboundMessagesResult =
     await listWorkflowOutboundMessagesFunction(client);
+
   if (
     !listWorkflowOutboundMessagesResult ||
     listWorkflowOutboundMessagesResult.length === 0
@@ -28,6 +32,7 @@ export const getOutboundMessagesPointingToEndpointUrl = async (
     logger.info("No outbound messages found.");
     return [];
   }
+
   const toRetrieveWorkflowOutboundMessagesData =
     listWorkflowOutboundMessagesResult.map(
       (msg) =>
@@ -39,12 +44,15 @@ export const getOutboundMessagesPointingToEndpointUrl = async (
     toRetrieveWorkflowOutboundMessagesData,
     10,
   );
+
   const matchingMessages = workflowOutboundMessagesDataResult.filter(
     (msg) => msg?.Metadata?.endpointUrl === endpointUrl,
   );
+
   if (matchingMessages.length === 0) {
     logger.info("No outbound messages pointing to this endpoint found.");
     return [];
   }
+
   return matchingMessages;
 };

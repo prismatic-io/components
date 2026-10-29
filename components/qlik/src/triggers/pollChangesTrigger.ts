@@ -12,6 +12,7 @@ import {
   filterByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -30,32 +31,40 @@ export const pollChangesTrigger = pollingTrigger({
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+
     const isInitialSync = !state?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
+
     const client = createClient(params.connection, context.debug.enabled);
     const allRecords = await fetchAllSince(
       client,
       params.pollResourceType,
       lastPolledAt,
     );
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       config,
       lastPolledAt,
     );
+
     const filteredCreated =
       isInitialSync || params.showNewRecords ? created : [];
     const filteredUpdated =
       isInitialSync || params.showUpdatedRecords ? updated : [];
     const totalMatched = filteredCreated.length + filteredUpdated.length;
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${allRecords.length} ${params.pollResourceType} records, ${totalMatched} matched (${created.length} new, ${updated.length} updated) since last poll.`,
       );
     }
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

@@ -6,6 +6,7 @@ import {
   cleanStringInput,
 } from "../util";
 import { GRAPHQL_EXAMPLE } from "../constants";
+
 const query = input({
   label: "Query or Mutation",
   type: "code",
@@ -18,6 +19,7 @@ const query = input({
   example: GRAPHQL_EXAMPLE,
   clean: cleanStringInput,
 });
+
 const variables = input({
   label: "Variables",
   type: "string",
@@ -29,6 +31,7 @@ const variables = input({
   placeholder: "Enter key-value pairs",
   clean: cleanKeyValueListInput,
 });
+
 const variablesObject = input({
   label: "Variables Object",
   type: "code",
@@ -40,6 +43,7 @@ const variablesObject = input({
   required: false,
   clean: cleanCodeInput,
 });
+
 export const rawRequestInputs = {
   connection,
   query,

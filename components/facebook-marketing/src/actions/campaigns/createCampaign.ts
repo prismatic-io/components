@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createCampaignResponse } from "../../examplePayloads";
 import { createCampaignInputs } from "../../inputs";
+
 export const createCampaign = action({
   display: {
     label: "Create Campaign",
@@ -24,6 +25,7 @@ export const createCampaign = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await client.post(
       `/${adAccountId}/campaigns`,
       {},
@@ -57,6 +59,7 @@ export const createCampaign = action({
         },
       },
     );
+
     return {
       data,
     };

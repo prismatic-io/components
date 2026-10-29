@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../client";
 import { selectSiteInputs } from "../inputs";
+
 export const selectSite = dataSource({
   display: {
     label: "Select Site",
@@ -12,6 +13,7 @@ export const selectSite = dataSource({
     const {
       data: { value },
     } = await client.get("/sites");
+
     return value.map((record: Record<string, unknown>) => {
       return {
         label: record.displayName,

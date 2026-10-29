@@ -9,6 +9,7 @@ import {
   resourceGroupName,
   subscriptionId,
 } from "../inputs";
+
 export const listNamespacesByResourceGroup = action({
   display: {
     label: "List Namespaces By Resource Group",
@@ -21,6 +22,7 @@ export const listNamespacesByResourceGroup = action({
   ) => {
     const client = getAzureServiceBusClient(connection, context.debug.enabled);
     const endpoint = `/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.ServiceBus/namespaces?api-version=2021-11-01`;
+
     try {
       return await paginateResults({
         client,
@@ -40,4 +42,5 @@ export const listNamespacesByResourceGroup = action({
     fetchAll,
   },
 });
+
 export default { listNamespacesByResourceGroup };

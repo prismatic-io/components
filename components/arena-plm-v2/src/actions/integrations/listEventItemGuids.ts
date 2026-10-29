@@ -4,6 +4,7 @@ import { listEventItemGuidsExamplePayload } from "../../examplePayloads";
 import { listEventItemGuidsInputs } from "../../inputs";
 import { listEventItemGuidsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listEventItemGuids = action({
   display: {
     label: "List Event Item GUIDs",
@@ -22,9 +23,13 @@ export const listEventItemGuids = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const params = { reconciled };
+
       const path = `/outboundintegrations/${integrationGuid}/events/${eventGuid}/itemguids`;
+
       const { data } = await client.get(path, { params });
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Event Item GUIDs");

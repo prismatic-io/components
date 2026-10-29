@@ -8,6 +8,7 @@ import type {
   PollingChangesObject,
   PollingRecordChange,
 } from "../types";
+
 export const filterByTimestamp = (
   records: KlaviyoRecord[],
   lastPolledAt: string,
@@ -15,17 +16,16 @@ export const filterByTimestamp = (
   updatedAtField: string,
   includeNew: boolean,
   includeUpdated: boolean,
-): {
-  created: KlaviyoRecord[];
-  updated: KlaviyoRecord[];
-} => {
+): { created: KlaviyoRecord[]; updated: KlaviyoRecord[] } => {
   const lastPolledAtDate = new Date(lastPolledAt);
   const created: KlaviyoRecord[] = [];
   const updated: KlaviyoRecord[] = [];
+
   for (const record of records) {
     const attrs = record.attributes;
     const rawCreatedAt = attrs[createdAtField];
     const rawUpdatedAt = attrs[updatedAtField];
+
     const createdAtDate =
       rawCreatedAt instanceof Date
         ? rawCreatedAt
@@ -38,17 +38,21 @@ export const filterByTimestamp = (
         : typeof rawUpdatedAt === "string"
           ? new Date(rawUpdatedAt)
           : null;
+
     const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
     const isUpdated =
       !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
+
     if (isNew && includeNew) {
       created.push(record);
     } else if (isUpdated && includeUpdated) {
       updated.push(record);
     }
   }
+
   return { created, updated };
 };
+
 export const fetchProfileOrListRecords = async (
   conn: Parameters<typeof getApi>[0],
   resourceType: KlaviyoPollableResource,
@@ -73,6 +77,7 @@ export const fetchProfileOrListRecords = async (
   } while (next);
   return all;
 };
+
 export const fetchCampaignRecords = async (
   conn: Parameters<typeof getApi>[0],
   filter: string,
@@ -87,6 +92,7 @@ export const fetchCampaignRecords = async (
   );
   return result.data as unknown as KlaviyoRecord[];
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

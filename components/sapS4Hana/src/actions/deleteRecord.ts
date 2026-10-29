@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
 import { connectionInput, recordId, recordType } from "../inputs";
+
 export const deleteRecord = action({
   display: {
     label: "Delete Record",

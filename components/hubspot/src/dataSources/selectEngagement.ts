@@ -14,6 +14,7 @@ import {
   getAllPaginatedData,
   getEngagementObjectLabel,
 } from "../util";
+
 export const selectEngagement = dataSource({
   display: {
     label: "Select Engagement",
@@ -25,6 +26,7 @@ export const selectEngagement = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
+
     const allEngagements = ENGAGEMENT_OBJECTS.map((engagementObject) => {
       return getAllPaginatedData<Engagement>(
         client,
@@ -42,6 +44,7 @@ export const selectEngagement = dataSource({
         },
       );
     });
+
     const engagements = (await Promise.all(allEngagements)) as Engagement[][];
     const allResults: Element[] = [];
     ENGAGEMENT_OBJECTS.forEach(({ label }, index) => {
@@ -49,6 +52,7 @@ export const selectEngagement = dataSource({
         label: `${getEngagementObjectLabel(engagement.properties)} (${label})`,
         key: util.types.toString(engagement.id),
       }));
+
       if (result.length > 0) {
         allResults.push(...result);
       }

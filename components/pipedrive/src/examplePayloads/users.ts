@@ -19,12 +19,14 @@ const userRecord = {
   icon_url: null,
   is_you: true,
 };
+
 export const getUsersExamplePayload = {
   data: {
     success: true,
     data: [userRecord],
   },
 };
+
 export const findUsersByNameExamplePayload = {
   data: {
     success: true,
@@ -38,6 +40,7 @@ export const findUsersByNameExamplePayload = {
     ],
   },
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     success: true,
@@ -54,12 +57,14 @@ export const getCurrentUserExamplePayload = {
     },
   },
 };
+
 export const getUserExamplePayload = {
   data: {
     success: true,
     data: userRecord,
   },
 };
+
 export const getUserFollowersExamplePayload = {
   data: {
     success: true,
@@ -75,6 +80,7 @@ export const getUserFollowersExamplePayload = {
     },
   },
 };
+
 export const getUserPermissionsExamplePayload = {
   data: {
     success: true,
@@ -107,6 +113,7 @@ export const getUserPermissionsExamplePayload = {
     },
   },
 };
+
 export const getUserRoleAssignmentsExamplePayload = {
   data: {
     success: true,
@@ -128,6 +135,7 @@ export const getUserRoleAssignmentsExamplePayload = {
     },
   },
 };
+
 export const getUserRoleSettingsExamplePayload = {
   data: {
     success: true,

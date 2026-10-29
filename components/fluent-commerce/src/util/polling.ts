@@ -9,6 +9,7 @@ import type {
   PollingWindow,
   RelayOrdersResponse,
 } from "../types";
+
 export const fetchFluentOrdersInWindow = async (
   connection: Connection,
   window: PollingWindow,
@@ -51,6 +52,7 @@ export const fetchFluentOrdersInWindow = async (
   }
   return { records, truncated: true, after };
 };
+
 export const resolveFluentOrderChanges = (
   data: FluentOrderChangesObject | undefined,
 ): FluentOrderChange[] => {

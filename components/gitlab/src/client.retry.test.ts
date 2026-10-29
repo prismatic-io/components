@@ -6,11 +6,14 @@ import {
   GITLAB_URL,
   onPremConnectionValue,
 } from "./testHelpers";
+
 vi.mock("./constants", async (importOriginal) => ({
   ...(await importOriginal<typeof import("./constants")>()),
   RETRY_BASE_DELAY_MS: 1,
 }));
+
 afterEach(() => nock.cleanAll());
+
 test("appends the tunnel hint once even after every retry fails", async () => {
   const scope = nock("https://tunnel.internal:8443")
     .get("/api/v4/user")
@@ -30,6 +33,7 @@ test("appends the tunnel hint once even after every retry fails", async () => {
     error.message.match(/on-prem agent tunnel is unreachable/g),
   ).toHaveLength(1);
 });
+
 test("logs a retried-then-successful response once", async () => {
   const debug = vi.fn();
   const logger = {
@@ -53,6 +57,7 @@ test("logs a retried-then-successful response once", async () => {
   );
   expect(responses).toHaveLength(1);
 });
+
 test("redacts the webhook secret from a retried PUT whose body is already serialized", async () => {
   const debug = vi.fn();
   const logger = {

@@ -5,6 +5,7 @@ import { updateBomSubstituteInputs } from "../../inputs";
 import { bomSubstituteSchema } from "../../outputSchemas";
 import type { BomSubstituteUpdateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateBomSubstitute = action({
   display: {
     label: "Update BOM Substitute",
@@ -31,11 +32,13 @@ export const updateBomSubstitute = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const substituteUpdatePayload: BomSubstituteUpdateVo = {
         quantity,
         notes,
         rank,
       };
+
       context.logger.info(
         `Updating substitute ${substituteGuid} for BOM line ${bomLineGuid} in item ${itemGuid}`,
         {
@@ -47,11 +50,14 @@ export const updateBomSubstitute = action({
           rank,
         },
       );
+
       const { data } = await client.put(
         `/items/${itemGuid}/bom/${bomLineGuid}/substitutes/${substituteGuid}`,
         substituteUpdatePayload,
       );
+
       context.logger.info("Successfully updated BOM substitute");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update BOM Substitute");

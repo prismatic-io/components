@@ -3,6 +3,7 @@ import {
   requestChargedSchema,
   retentionModeSchema,
 } from "./shared";
+
 export const getObjectLockConfigurationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -31,6 +32,7 @@ export const getObjectLockConfigurationOutputSchema = {
   },
   required: ["ObjectLockConfiguration"],
 };
+
 export const getObjectRetentionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -45,6 +47,7 @@ export const getObjectRetentionOutputSchema = {
   },
   required: ["Retention"],
 };
+
 export const putObjectLockConfigurationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -52,6 +55,7 @@ export const putObjectLockConfigurationOutputSchema = {
   },
   required: [],
 };
+
 export const putObjectRetentionOutputSchema = {
   type: "object" as const,
   properties: {

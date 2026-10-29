@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { getWarehouseExamplePayload } from "../../examplePayloads";
 import { getWarehouseInputs } from "../../inputs";
+
 export const getWarehouse = action({
   display: {
     label: "Get Warehouse",
@@ -13,6 +14,7 @@ export const getWarehouse = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/warehouses/${warehouseId}`);
     return { data };
   },

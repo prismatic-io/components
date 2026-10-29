@@ -34,7 +34,9 @@ export const getWarehouseExamplePayload = {
     isDefault: true,
   },
 };
+
 export const updateWarehouseExamplePayload = getWarehouseExamplePayload;
+
 export const listWarehousesExamplePayload = {
   data: [
     {
@@ -103,6 +105,7 @@ export const listWarehousesExamplePayload = {
     },
   ],
 };
+
 export const createWarehouseExamplePayload = {
   data: {
     warehouseId: 17977,
@@ -137,6 +140,7 @@ export const createWarehouseExamplePayload = {
     isDefault: false,
   },
 };
+
 export const deleteWarehouseExamplePayload = {
   data: {
     success: true,

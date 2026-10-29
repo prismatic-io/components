@@ -1,5 +1,6 @@
 export const getClosestS3EndpointResponse =
   "https://bynder-public-eu-central-1.s3.amazonaws.com/";
+
 export const initialiseUploadResponse = {
   s3file: {
     uploadid: "A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890",
@@ -19,9 +20,11 @@ export const initialiseUploadResponse = {
     "x-amz-date": "20160216T100755Z",
   },
 };
+
 export const registerUploadedChunkResponse = {
   status: "ok",
 };
+
 export const finaliseCompleteUploadResponse = {
   output: "final/C3D4E5F6-A7B8-9012-C3D4-E5F6A7B89012/",
   batchId: "D4E5F6A7-B8C9-0123-D4E5F6A7B8C90123",
@@ -35,14 +38,17 @@ export const finaliseCompleteUploadResponse = {
   locationType: "s3",
   success: 1,
 };
+
 export const finaliseCompleteUploadAndSaveAsNewAssetResponse = {
   itemId: "F6A7B8C9-D0E1-2345-F6A7B8C9D0E12345",
 };
+
 export const retrievePollStateResponse = {
   itemsDone: ["A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890"],
   itemsFailed: [],
   itemsRejected: [],
 };
+
 export const saveAsNewAssetResponse = {
   accessRequestId: "B2C3D4E5-F6A7-8901-B2C3D4E5F6A78901",
   mediaid: "C3D4E5F6-A7B8-9012-C3D4E5F6A7B89012",
@@ -66,6 +72,7 @@ export const saveAsNewAssetResponse = {
     },
   ],
 };
+
 export const uploadChunkResponse = {
   PostResponse: {
     Location: [

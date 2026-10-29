@@ -6,6 +6,7 @@ export const selectGroupExamplePayload = {
     },
   ],
 };
+
 export const selectDeviceExamplePayload = {
   result: [
     {
@@ -14,6 +15,7 @@ export const selectDeviceExamplePayload = {
     },
   ],
 };
+
 export const selectPackageExamplePayload = {
   result: [
     {

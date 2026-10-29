@@ -1,6 +1,7 @@
 import rawRequest from "./actions/rawRequest";
 import { postmarkConnection } from "./connections";
 import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
+
 describe("test Postmark rawRequest action", () => {
   test("verify the return value of rawRequest action", async () => {
     const { result } = await invoke(rawRequest, {
@@ -23,6 +24,7 @@ describe("test Postmark rawRequest action", () => {
       maxRetries: 0,
       useExponentialBackoff: false,
     });
+
     const data = JSON.parse(result.data);
     expect(data.ID).toBe(9363760);
     expect(typeof data.Name).toBe("string");

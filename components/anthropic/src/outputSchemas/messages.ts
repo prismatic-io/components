@@ -70,6 +70,7 @@ export const chatOutputSchema = {
     "usage",
   ],
 };
+
 export const countTokensOutputSchema = {
   type: "object" as const,
   properties: {

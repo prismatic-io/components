@@ -4,6 +4,7 @@ import { findWorkspaceByNameExamplePayload } from "../../examplePayloads";
 import { findWorkspaceByNameInputs } from "../../inputs";
 import { findWorkspaceByNameOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Workspace } from "../../types";
+
 export const findWorkspaceByName = action({
   display: {
     label: "Find Workspace by Name",

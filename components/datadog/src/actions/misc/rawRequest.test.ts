@@ -5,16 +5,20 @@ import { apiKeyConnection } from "../../connections";
 import { DEFAULT_DATADOG_SITE } from "../../constants";
 import { listMetricsExamplePayload } from "../../examplePayloads";
 import { rawRequest } from "./rawRequest";
+
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
   apiKey: "test-api-key",
   applicationKey: "test-application-key",
 });
+
 const CONSOLE_METHODS = ["log", "info", "debug", "warn", "error"] as const;
+
 describe("rawRequest", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("forwards the method, path and auth headers and returns the response untouched", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE, {
       reqheaders: {
@@ -25,6 +29,7 @@ describe("rawRequest", () => {
       .get("/api/v1/metrics")
       .query({ from: "1636629071" })
       .reply(200, listMetricsExamplePayload.data);
+
     const { result } = await invoke(rawRequest, {
       connection: testConnection,
       method: "GET",
@@ -43,9 +48,11 @@ describe("rawRequest", () => {
       maxRetries: 0,
       useExponentialBackoff: false,
     });
+
     expect(result.data).toEqual(listMetricsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("never logs the API or application key when Debug Mode is on", async () => {
     nock(DEFAULT_DATADOG_SITE)
       .get("/api/v1/metrics")
@@ -53,6 +60,7 @@ describe("rawRequest", () => {
     const spies = CONSOLE_METHODS.map((method) =>
       vi.spyOn(console, method).mockImplementation(() => undefined),
     );
+
     try {
       await invoke(
         rawRequest,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { batchProductExamplePayload } from "../../../examplePayloads/v2_1";
 import { batchProductInputs } from "../../../inputs/v2_1";
+
 export const batchProduct = action({
   display: {
     description:

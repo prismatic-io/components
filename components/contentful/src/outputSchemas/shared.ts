@@ -11,12 +11,14 @@ export const linkSchema = {
     },
   },
 };
+
 export const tagsMetadataSchema = {
   type: "object" as const,
   properties: {
     tags: { type: "array", items: linkSchema },
   },
 };
+
 export const draftSysProperties = {
   createdAt: { type: "string", format: "date-time" },
   createdBy: linkSchema,
@@ -28,6 +30,7 @@ export const draftSysProperties = {
   updatedBy: linkSchema,
   version: { type: "number" },
 };
+
 export const publishSysProperties = {
   firstPublishedAt: { type: "string", format: "date-time" },
   publishedAt: { type: "string", format: "date-time" },
@@ -35,6 +38,7 @@ export const publishSysProperties = {
   publishedCounter: { type: "number" },
   publishedVersion: { type: "number" },
 };
+
 export const emptyResultSchema = {
   type: "object" as const,
   properties: {},

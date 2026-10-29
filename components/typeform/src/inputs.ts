@@ -9,11 +9,13 @@ import {
   mapObjectModel,
 } from "./util";
 import { BOOLEAN_VALUES, FORM_TYPES } from "./constants";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const customQueryParams = input({
   label: "Custom Query Params",
   type: "string",
@@ -24,6 +26,7 @@ export const customQueryParams = input({
   placeholder: "key1=value1",
   clean: cleanKeyValueList,
 });
+
 export const id = input({
   label: "Id",
   type: "string",
@@ -33,6 +36,7 @@ export const id = input({
   placeholder: "123",
   clean: util.types.toString,
 });
+
 export const accountId = input({
   label: "Account Id",
   type: "string",
@@ -42,6 +46,7 @@ export const accountId = input({
   placeholder: "ABCD1234",
   clean: util.types.toString,
 });
+
 export const formId = input({
   label: "Form Id",
   type: "string",
@@ -52,6 +57,7 @@ export const formId = input({
   dataSource: "selectForm",
   clean: util.types.toString,
 });
+
 export const responseId = input({
   label: "Response Id",
   type: "string",
@@ -62,6 +68,7 @@ export const responseId = input({
   dataSource: "selectResponse",
   clean: util.types.toString,
 });
+
 export const fieldId = input({
   label: "Field Id",
   type: "string",
@@ -71,6 +78,7 @@ export const fieldId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -80,6 +88,7 @@ export const page = input({
   placeholder: "1",
   clean: cleanNumber,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -90,6 +99,7 @@ export const pageSize = input({
     "Number of results to retrieve per page. Default is 10. Maximum is 200.",
   clean: cleanNumber,
 });
+
 export const search = input({
   label: "Search",
   type: "string",
@@ -99,6 +109,7 @@ export const search = input({
   comments: "Returns items that contain the specified string.",
   clean: cleanString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -107,16 +118,19 @@ export const fetchAll = input({
     "If true, it will fetch all the records ignoring the rest of the parameters.",
   clean: cleanBoolean,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page, page-size, and search controls.",
   inputs: { page, pageSize, search },
 });
+
 export const commonListInputs = {
   fetchAll,
   pagination,
 };
+
 export const operations = input({
   label: "Operations",
   type: "code",
@@ -126,6 +140,7 @@ export const operations = input({
   comments: "Operations to perform on the data.",
   clean: cleanCode,
 });
+
 export const workspaceName = input({
   label: "Workspace Name",
   type: "string",
@@ -135,6 +150,7 @@ export const workspaceName = input({
   comments: "The name of the workspace.",
   clean: util.types.toString,
 });
+
 export const orderBy = input({
   label: "Order By",
   type: "string",
@@ -152,6 +168,7 @@ export const orderBy = input({
   ],
   clean: cleanString,
 });
+
 export const sortBy = input({
   label: "Sort By",
   type: "string",
@@ -160,12 +177,14 @@ export const sortBy = input({
   model: mapModel(["created_at", "last_updated_at"]),
   clean: cleanString,
 });
+
 export const listFormsPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page, page-size, search, and sorting controls.",
   inputs: { page, pageSize, search, sortBy, orderBy },
 });
+
 export const jsonData = input({
   label: "JSON Data",
   type: "string",
@@ -174,6 +193,7 @@ export const jsonData = input({
   comments: "The JSON data to send.",
   clean: cleanCode,
 });
+
 export const title = input({
   label: "Title",
   type: "string",
@@ -183,6 +203,7 @@ export const title = input({
   comments: "Title to use for the typeform.",
   clean: util.types.toString,
 });
+
 export const workspaceUrl = input({
   label: "Workspace URL",
   type: "string",
@@ -193,6 +214,7 @@ export const workspaceUrl = input({
     "URL of the workspace to use for the typeform. If you don't specify a URL for the workspace, Typeform saves the form in the default workspace.",
   clean: cleanString,
 });
+
 export const themeUrl = input({
   label: "Theme",
   type: "string",
@@ -203,6 +225,7 @@ export const themeUrl = input({
     "URL of the workspace to use for the typeform. If you don't specify a URL for the workspace, Typeform saves the form in the default workspace.",
   clean: cleanString,
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -211,6 +234,7 @@ export const type = input({
   model: mapObjectModel(FORM_TYPES),
   clean: util.types.toString,
 });
+
 export const tag = input({
   label: "Tag",
   type: "string",
@@ -219,6 +243,7 @@ export const tag = input({
   example: "phoenix",
   clean: util.types.toString,
 });
+
 export const enabled = input({
   label: "Enabled",
   type: "string",
@@ -229,6 +254,7 @@ export const enabled = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const formResponsePartial = input({
   label: "Form Response Partial",
   type: "string",
@@ -238,6 +264,7 @@ export const formResponsePartial = input({
   model: mapObjectModel(BOOLEAN_VALUES),
   clean: util.types.toBool,
 });
+
 export const formResponse = input({
   label: "Form Response",
   type: "string",
@@ -247,6 +274,7 @@ export const formResponse = input({
   model: mapObjectModel(BOOLEAN_VALUES),
   clean: util.types.toBool,
 });
+
 export const secret = input({
   label: "Secret",
   type: "string",
@@ -256,6 +284,7 @@ export const secret = input({
   example: "phoenix",
   clean: util.types.toString,
 });
+
 export const url = input({
   label: "URL",
   type: "string",
@@ -264,6 +293,7 @@ export const url = input({
   example: "https://test.com",
   clean: cleanString,
 });
+
 export const deliverySettings = structuredObjectInput({
   label: "Delivery Settings",
   required: false,
@@ -271,6 +301,7 @@ export const deliverySettings = structuredObjectInput({
     "Optional delivery controls: destination URL, enabled state, and response event toggles.",
   inputs: { url, enabled, formResponse, formResponsePartial },
 });
+
 export const verifySsl = input({
   label: "Verify SSL",
   type: "string",
@@ -280,6 +311,7 @@ export const verifySsl = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const includedResponseIds = input({
   label: "Included Response Ids",
   type: "string",
@@ -290,6 +322,7 @@ export const includedResponseIds = input({
   placeholder: "ABCD1234, ABCD1234",
   clean: util.types.toString,
 });
+
 export const filename = input({
   label: "Filename",
   type: "string",

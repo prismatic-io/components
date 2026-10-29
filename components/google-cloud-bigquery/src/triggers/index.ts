@@ -1,5 +1,6 @@
 import { trigger } from "@prismatic-io/spectral";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 export const myTrigger = trigger({
   display: {
     label: "PubSub Notification",
@@ -16,5 +17,7 @@ export const myTrigger = trigger({
   synchronousResponseSupport: "valid",
   scheduleSupport: "valid",
 });
+
 export { pollChangesTrigger };
+
 export default { myTrigger, pollChangesTrigger };

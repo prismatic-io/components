@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getIDVSessionResultResponse } from "../../examplePayloads";
 import { connectionInput, recipientId } from "../../inputs";
+
 export const getIDVSessionResult = action({
   display: {
     label: "Get IDV Session Result",
@@ -17,6 +18,7 @@ export const getIDVSessionResult = action({
     const { data } = await client.get(
       `/idv/recipients/${recipientId}/sessions/signed/json`,
     );
+
     return { data };
   },
   examplePayload: {

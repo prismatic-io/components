@@ -1,4 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
+
 export const msIntuneClientCredentials = oauth2Connection({
   key: "oauth2-client-credentials",
   oauth2Type: OAuth2Type.ClientCredentials,

@@ -13,7 +13,9 @@ export const createRecordExamplePayload = {
     lastModifiedDateTime: "/Date(1673884433000+0000)/",
   },
 };
+
 export const getRecordExamplePayload = createRecordExamplePayload;
+
 export const listRecordsExamplePayload = {
   data: [
     createRecordExamplePayload.data,
@@ -32,6 +34,7 @@ export const listRecordsExamplePayload = {
     },
   ],
 };
+
 export const deleteRecordExamplePayload = {
   data: "",
 };

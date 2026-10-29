@@ -27,11 +27,14 @@ import {
   WATERMARK_SKEW_MARGIN_MS,
   WEBHOOK_RESOURCE_CONFIG,
 } from "../constants";
+
 export const filterFalsyValuesFromArray = (array: unknown[]) => {
   return array.filter((value) => !isEmpty(value));
 };
+
 export const cleanFunctionForBccAndCcInputs = (values: unknown): string[] => {
   if (!values) return [];
+
   const filteredValues = filterFalsyValuesFromArray(
     values as unknown[],
   ) as string[];
@@ -40,6 +43,7 @@ export const cleanFunctionForBccAndCcInputs = (values: unknown): string[] => {
     return acc.concat(address.split(","));
   }, [] as string[]);
 };
+
 export const cleanAttachments = (
   values: unknown,
   inputName: string,
@@ -74,6 +78,7 @@ export const cleanAttachments = (
   }
   throw new Error(`${inputName} must be an array of files`);
 };
+
 export const fetchAllData = async <T>(
   client: HttpClient,
   url: string,
@@ -83,6 +88,7 @@ export const fetchAllData = async <T>(
   const results: T[] = [];
   let nextLink: string | undefined;
   let firstResponse: PaginatedResponse<T> | undefined;
+
   do {
     const { data } = await client.get<PaginatedResponse<T>>(
       nextLink || url,
@@ -98,35 +104,45 @@ export const fetchAllData = async <T>(
               : params,
           },
     );
+
     if (!firstResponse) {
       firstResponse = data;
     }
+
     results.push(...data.value);
     nextLink = data["@odata.nextLink"];
+
     if (!fetchAll) {
       break;
     }
   } while (nextLink);
+
   if (!firstResponse) {
     throw new Error("No response received from the API");
   }
+
   const response = {
     "@odata.context": firstResponse["@odata.context"],
     value: results,
   };
+
   if (fetchAll) {
     return response;
   }
+
   if (firstResponse["@odata.nextLink"]) {
     return {
       ...response,
       "@odata.nextLink": firstResponse["@odata.nextLink"],
     };
   }
+
   return response;
 };
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const validateConnection = (connection: Connection) => {
   if (!connections.map((c) => c.key).includes(connection.key)) {
     throw new ConnectionError(
@@ -136,6 +152,7 @@ export const validateConnection = (connection: Connection) => {
   }
   return true;
 };
+
 export const computeEndpointBasedOnConnection = (
   connection: Connection,
   endpoint: string,
@@ -143,21 +160,26 @@ export const computeEndpointBasedOnConnection = (
   if (connection.key !== oauthClientCredentials.key) {
     return endpoint;
   }
+
   return endpoint.replace("/me", `/users/${connection.fields.userId}`);
 };
+
 const toWholeSecond = (value: string | number | Date): string => {
   const date = new Date(value);
   date.setUTCMilliseconds(0);
   return date.toISOString();
 };
+
 const modifiedStamp = (message: Message): string | undefined => {
   const parsed = message.lastModifiedDateTime
     ? Date.parse(message.lastModifiedDateTime)
     : Number.NaN;
   return Number.isNaN(parsed) ? undefined : toWholeSecond(parsed);
 };
+
 const safeHorizon = (now: Date): string =>
   toWholeSecond(now.getTime() - WATERMARK_SKEW_MARGIN_MS);
+
 const fetchMessagesWindow = async (
   client: HttpClient,
   connection: Connection,
@@ -169,9 +191,11 @@ const fetchMessagesWindow = async (
       ? POLLING_ENDPOINTS.MAIL_FOLDER_MESSAGES(folderId)
       : POLLING_ENDPOINTS.MESSAGES,
   );
+
   const messages: Message[] = [];
   let { watermark } = position;
   let boundaryIds = [...position.boundaryIds];
+
   const take = (rows: Message[]) => {
     for (const row of rows) {
       const stamp = modifiedStamp(row);
@@ -191,6 +215,7 @@ const fetchMessagesWindow = async (
       messages.push(row);
     }
   };
+
   let drained = false;
   for (let page = 0; page < maxPages && !drained; page++) {
     const startWatermark = watermark;
@@ -203,6 +228,7 @@ const fetchMessagesWindow = async (
       },
     });
     take(data.value ?? []);
+
     const noProgress =
       watermark === startWatermark && boundaryIds.length === startCount;
     if (
@@ -221,15 +247,14 @@ const fetchMessagesWindow = async (
   }
   return { messages, position: { watermark, boundaryIds }, drained };
 };
+
 const pollWindowBounds = (
   batching: boolean,
-): {
-  pageSize: number;
-  maxPages: number;
-} => ({
+): { pageSize: number; maxPages: number } => ({
   pageSize: POLL_PAGE_SIZE,
   maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
 });
+
 export const readPollingWindow = async (
   connection: Connection,
   { position, folderId, skipFetch, batching, debug, now }: PollingWindowRequest,
@@ -252,14 +277,12 @@ export const readPollingWindow = async (
     ...pollWindowBounds(batching),
   });
 };
+
 export const resolvePollingStart = (
   state: PollingState,
   lookBackDate: string | undefined,
   now: Date,
-): {
-  sinceDate: Date;
-  isBackfill: boolean;
-} => {
+): { sinceDate: Date; isBackfill: boolean } => {
   const seedSince = lookBackDate ? new Date(lookBackDate) : now;
   return {
     sinceDate: state.lastPolledAt ? new Date(state.lastPolledAt) : seedSince,
@@ -268,6 +291,7 @@ export const resolvePollingStart = (
       (!state.lastPolledAt && Boolean(lookBackDate)),
   };
 };
+
 export const resolvePollingStream = (
   state: PollingState,
   incoming: Partial<PollingCursor> | undefined,
@@ -297,6 +321,7 @@ export const resolvePollingStream = (
     classifySince: sinceDate.toISOString(),
   };
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -305,6 +330,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -313,6 +339,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -327,11 +354,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolveMessageChanges = (
   data: MessageChangesObject | undefined,
 ): MessageChange[] => {
@@ -345,6 +375,7 @@ export const resolveMessageChanges = (
     ),
   ];
 };
+
 export const partitionMessagesByTimestamp = (
   messages: import("@microsoft/microsoft-graph-types").Message[],
   since: Date,
@@ -367,10 +398,12 @@ export const partitionMessagesByTimestamp = (
   }
   return { created, updated };
 };
+
 export const createWebhookPerformFN = (resourceType?: string) => {
   const resourceConfig = resourceType
     ? WEBHOOK_RESOURCE_CONFIG[resourceType]
     : undefined;
+
   return createMsWebhookPerformFN({
     createClient,
     renewalExpirationMinutes: RENEWAL_EXPIRATION_MINUTES,

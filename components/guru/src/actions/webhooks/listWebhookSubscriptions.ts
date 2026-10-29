@@ -4,6 +4,7 @@ import { listWebhookSubscriptionsPayload } from "../../examplePayloads";
 import { listWebhookSubscriptionsInputs } from "../../inputs";
 import type { GuruWebhookSubscription } from "../../types";
 import { fetchGuruResults } from "../../util";
+
 export const listWebhookSubscriptions = action({
   display: {
     label: "List Webhook Subscriptions",
@@ -17,6 +18,7 @@ export const listWebhookSubscriptions = action({
       true,
       {},
     );
+
     return { data };
   },
   inputs: listWebhookSubscriptionsInputs,

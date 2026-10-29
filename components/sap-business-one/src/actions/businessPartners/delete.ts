@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_DELETE_RESPONSE } from "../../constants";
 import { cardCode } from "../../inputs/businessPartners/general";
+
 export const deleteBusinessPartner = action({
   display: {
     label: "Delete Business Partner",
@@ -19,6 +20,7 @@ export const deleteBusinessPartner = action({
       context,
       context.debug.enabled,
     );
+
     await client.delete(`/BusinessPartners('${cardCode}')`);
     return {
       data: DEFAULT_DELETE_RESPONSE,

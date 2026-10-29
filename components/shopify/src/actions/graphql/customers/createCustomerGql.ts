@@ -5,6 +5,7 @@ import { createCustomerInputs as inputs } from "../../../inputsGql";
 import type { Customer } from "../../../types";
 import { customerMapper } from "../mappers/customerMapper";
 import createCustomerQuery from "../queries/customers/CreateCustomer.gql";
+
 export const createCustomerGql = action({
   display: {
     label: "Create Customer",
@@ -32,24 +33,23 @@ export const createCustomerGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      customerCreate: {
-        customer: Customer;
-      };
-    } = await client.request(createCustomerQuery, {
-      input: {
-        email,
-        phone,
-        firstName,
-        lastName,
-        note: notes,
-        addresses: addressListGql,
-        tags,
-        taxExempt,
-        metafields,
-        ...additionalFields,
-      },
-    });
+
+    const data: { customerCreate: { customer: Customer } } =
+      await client.request(createCustomerQuery, {
+        input: {
+          email,
+          phone,
+          firstName,
+          lastName,
+          note: notes,
+          addresses: addressListGql,
+          tags,
+          taxExempt,
+          metafields,
+          ...additionalFields,
+        },
+      });
+
     return {
       data: {
         customer: customerMapper(data.customerCreate.customer),

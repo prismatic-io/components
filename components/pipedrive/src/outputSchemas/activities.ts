@@ -58,6 +58,7 @@ const activityRecordSchema = {
     note: { type: "string" },
   },
 };
+
 export const getActivitiesOutputSchema = {
   type: "object",
   properties: {
@@ -76,6 +77,7 @@ export const getActivitiesOutputSchema = {
     },
   },
 };
+
 export const deleteActivityOutputSchema = {
   type: "object",
   properties: {
@@ -93,6 +95,7 @@ export const deleteActivityOutputSchema = {
     },
   },
 };
+
 export const getActivityOutputSchema = {
   type: "object",
   properties: {

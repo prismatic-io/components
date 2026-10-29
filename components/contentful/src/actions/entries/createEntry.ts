@@ -9,6 +9,7 @@ import { createEntryExamplePayload } from "../../examplePayloads";
 import { createEntryInputs } from "../../inputs";
 import { createEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const createEntry = action({
   display: {
     label: "Create Entry",
@@ -35,9 +36,8 @@ export const createEntry = action({
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createEntryExamplePayload,
   inputs: createEntryInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

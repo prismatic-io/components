@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listDeviceConfigurationsExamplePayload } from "../../examplePayloads";
 import { listDeviceConfigurationsInputs } from "../../inputs";
+
 export const listDeviceConfigurations = action({
   display: {
     label: "List Device Configurations",
@@ -11,6 +12,7 @@ export const listDeviceConfigurations = action({
   perform: async (context, { connection }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(ENDPOINTS.DEVICE_CONFIGURATIONS);
+
     return {
       data,
     };

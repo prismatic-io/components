@@ -3,8 +3,10 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { API_VERSIONS } from "../../constants";
 import { rawRequest } from "./rawRequest";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -16,15 +18,19 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const responseBody = { value: [{ id: "detected-app-1" }] };
+
 describe("rawRequest", () => {
   afterEach(() => nock.cleanAll());
+
   test("forwards the method, path, and Authorization header and returns the response untouched", async () => {
     const scope = nock(HOST, {
       reqheaders: { authorization: `Bearer ${ACCESS_TOKEN}` },
     })
       .get("/v1.0/deviceManagement/detectedApps")
       .reply(200, responseBody);
+
     const { result } = await invoke(rawRequest, {
       connection,
       apiVersion: API_VERSIONS.v1,
@@ -44,6 +50,7 @@ describe("rawRequest", () => {
       retryAllErrors: false,
       debugRequest: false,
     });
+
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(responseBody);
   });

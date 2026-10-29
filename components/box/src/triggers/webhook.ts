@@ -5,6 +5,7 @@ import {
 } from "../constants";
 import { webhookInputs } from "../inputs";
 import { validateBoxWebhookSignature } from "../util";
+
 export const webhook = trigger({
   display: {
     label: "Manual Webhook",
@@ -21,10 +22,12 @@ export const webhook = trigger({
         payload,
       });
     }
+
     const { rawBody, headers } = payload;
     const lowerHeaders = util.types.lowerCaseHeaders(headers);
     const primarySignature = lowerHeaders[BOX_SIGNATURE_PRIMARY_HEADER];
     const secondarySignature = lowerHeaders[BOX_SIGNATURE_SECONDARY_HEADER];
+
     if (primarySignature || secondarySignature) {
       const isValid = validateBoxWebhookSignature({
         body: util.types.toString(rawBody.data),
@@ -36,12 +39,14 @@ export const webhook = trigger({
           secondarySignatureKey ||
           (context.crossFlowState.secondarySignatureKey as string | undefined),
       });
+
       if (!isValid) {
         throw new Error(
           "The request has failed Box signature validation. Rejecting.",
         );
       }
     }
+
     return Promise.resolve({
       payload,
     });

@@ -8,6 +8,7 @@ import {
   notes,
   resourceName,
 } from "../../inputs";
+
 export const createDraftProjectResources = action({
   display: {
     label: "Create Draft Project Resources",
@@ -31,10 +32,12 @@ export const createDraftProjectResources = action({
         },
       },
     );
+
     return {
       data,
     };
   },
   inputs: { connection, guId, notes, email, account, resourceName },
 });
+
 export default createDraftProjectResources;

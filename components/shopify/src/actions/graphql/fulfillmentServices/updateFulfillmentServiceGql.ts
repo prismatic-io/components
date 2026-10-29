@@ -4,6 +4,7 @@ import { updateFulfillmentServiceExamplePayload as examplePayload } from "../../
 import { updateFulfillmentServiceInputs as inputs } from "../../../inputsGql";
 import { updateFulfillmentServiceGqlOutputSchema } from "../../../outputSchemas";
 import updateFulfillmentServiceQuery from "../queries/fulfillmentServices/UpdateFulfillmentService.gql";
+
 export const updateFulfillmentServiceGql = action({
   display: {
     label: "Update Fulfillment Service",
@@ -32,15 +33,16 @@ export const updateFulfillmentServiceGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      fulfillmentServiceUpdate: Record<string, unknown>;
-    } = await client.request(updateFulfillmentServiceQuery, {
-      id: fulfillmentServiceId,
-      name: fulfillmentServiceName,
-      callbackUrl,
-      inventoryManagement,
-      trackingSupport,
-    });
+
+    const data: { fulfillmentServiceUpdate: Record<string, unknown> } =
+      await client.request(updateFulfillmentServiceQuery, {
+        id: fulfillmentServiceId,
+        name: fulfillmentServiceName,
+        callbackUrl,
+        inventoryManagement,
+        trackingSupport,
+      });
+
     return {
       data: data.fulfillmentServiceUpdate,
     };

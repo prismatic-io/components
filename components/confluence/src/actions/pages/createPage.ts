@@ -3,6 +3,7 @@ import { pageSingleSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { createPageInputs } from "../../inputs";
 import { createPageExamplePayload } from "../../examplePayloads";
+
 export const createPage = action({
   display: {
     label: "Create Page",
@@ -53,9 +54,7 @@ export const createPage = action({
   examplePerform: async (
     _context,
     { title, spaceId, parentId, status },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createPageExamplePayload,
       ...(title ? { title } : {}),

@@ -1,6 +1,8 @@
 import type { WorkdayEndpoint } from "../types";
+
 const REST_API_ENDPOINT =
   /^(https:\/\/[^/?#]+)(\/[^?#]*?)?\/api\/v\d+\/([^/?#]+)\/?$/i;
+
 export const parseRestApiEndpoint = (value: string): WorkdayEndpoint => {
   const match = REST_API_ENDPOINT.exec(value.trim());
   if (!match) {
@@ -11,10 +13,13 @@ export const parseRestApiEndpoint = (value: string): WorkdayEndpoint => {
   const [, origin, prefix = "", tenant] = match;
   return { baseUrl: `${origin}${prefix}`, tenant: decodeURIComponent(tenant) };
 };
+
 export const buildTokenUrl = ({ baseUrl, tenant }: WorkdayEndpoint): string =>
   `${baseUrl}/oauth2/${encodeURIComponent(tenant)}/token`;
+
 export const buildWqlPath = (tenant: string): string =>
   `/api/wql/v1/${encodeURIComponent(tenant)}`;
+
 export const parseReportUrl = (reportUrl: string, baseUrl: string): URL => {
   let url: URL;
   try {

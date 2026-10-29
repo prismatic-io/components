@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getAsposeClient } from "../../client";
 import { createDocumentExamplePayload } from "../../examplePayloads";
 import { connection, fileName } from "../../inputs";
+
 export const createDocument = action({
   display: {
     label: "Create Document",
@@ -15,11 +16,13 @@ export const createDocument = action({
   },
   perform: async (context, { connection, fileName }) => {
     const client = await getAsposeClient(connection, context.debug.enabled);
+
     const { data } = await client.put(`/words/create`, null, {
       params: {
         FileName: fileName || undefined,
       },
     });
+
     return { data };
   },
   examplePayload: createDocumentExamplePayload,

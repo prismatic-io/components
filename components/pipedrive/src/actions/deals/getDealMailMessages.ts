@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDealMailMessagesInputs } from "../../inputs";
 import { getDealMailMessagesExamplePayload } from "../../examplePayloads";
 import { getDealMailMessagesOutputSchema } from "../../outputSchemas";
+
 export const getDealMailMessages = action({
   display: {
     label: "Get Deal Mail Messages",

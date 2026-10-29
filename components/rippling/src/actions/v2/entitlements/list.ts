@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listEntitlementsExamplePayload } from "../../../examplePayloads";
 import { listEntitlementsInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listEntitlements = action({
   display: {
     label: "List Entitlements (V2)",

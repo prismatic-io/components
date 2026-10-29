@@ -3,6 +3,7 @@ import { completeUploadBulkJobOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { completeUploadBulkJobInputs } from "../../inputs";
 import { getBulkJobExamplePayload } from "../../examplePayloads";
+
 export const completeUploadBulkJob = action({
   display: {
     label: "Complete Upload Bulk Job",
@@ -24,9 +25,8 @@ export const completeUploadBulkJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getBulkJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getBulkJobExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: completeUploadBulkJobOutputSchema,

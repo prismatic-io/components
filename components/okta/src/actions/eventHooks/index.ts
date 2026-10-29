@@ -6,6 +6,7 @@ import { deleteEventHook } from "./deleteEventHook";
 import { getEventHook } from "./getEventHook";
 import { listEventHooks } from "./listEventHooks";
 import { verifyEventHook } from "./verifyEventHook";
+
 export default {
   activateEventHook,
   createEventHook,

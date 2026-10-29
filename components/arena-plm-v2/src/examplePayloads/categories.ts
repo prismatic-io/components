@@ -4,11 +4,13 @@ import type {
   CategoryFullResultRep,
   UserCompactVo,
 } from "../types";
+
 const sampleUser: UserCompactVo = {
   guid: "9ZY87XW65VU43TS21RQ09PO8",
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 export const listBomAttributesExamplePayload: {
   data: AttributeDefinitionFullRepResultRep;
 } = {
@@ -43,9 +45,8 @@ export const listBomAttributesExamplePayload: {
     count: 2,
   },
 };
-export const listCategoriesExamplePayload: {
-  data: CategoryFullResultRep;
-} = {
+
+export const listCategoriesExamplePayload: { data: CategoryFullResultRep } = {
   data: {
     results: [
       {
@@ -81,6 +82,7 @@ export const listCategoriesExamplePayload: {
     count: 2,
   },
 };
+
 export const listCategoryAttributesExamplePayload: {
   data: CategoryAttributeDefinitionResultRep;
 } = {

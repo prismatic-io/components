@@ -4,6 +4,7 @@ import { createSNSClient } from "../client";
 import { awsRegion } from "aws-utils";
 import { topicArn, protocol, endpoint, connectionInput } from "../inputs";
 import { subscribeExamplePayload } from "../examplePayloads";
+
 export const subscribe = action({
   display: {
     label: "Subscribe to Topic",
@@ -39,4 +40,5 @@ export const subscribe = action({
   },
   examplePayload: subscribeExamplePayload,
 });
+
 export default subscribe;

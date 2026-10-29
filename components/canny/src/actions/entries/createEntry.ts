@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createEntryExamplePayload } from "../../examplePayloads";
 import { createEntryInputs } from "../../inputs";
 import { createEntryOutputSchema } from "../../outputSchemas";
+
 export const createEntry = action({
   display: {
     label: "Create Changelog Entry",
@@ -29,8 +30,7 @@ export const createEntry = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createEntryExamplePayload,
   examplePayload: createEntryExamplePayload,
 });

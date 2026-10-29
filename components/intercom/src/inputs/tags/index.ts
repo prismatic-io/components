@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const nameInput = input({
   label: "Name",
   type: "string",
@@ -6,6 +7,7 @@ export const nameInput = input({
   clean: util.types.toString,
   comments: "Name of the tag",
 });
+
 export const idInput = input({
   label: "Tag ID",
   type: "string",

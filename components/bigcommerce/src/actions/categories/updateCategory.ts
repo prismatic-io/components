@@ -21,6 +21,7 @@ import {
   storeHash,
   views,
 } from "../../inputs";
+
 export const updateCategory = action({
   display: {
     label: "Update Category",
@@ -53,7 +54,9 @@ export const updateCategory = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/categories/${categoryId}`;
+
     const body = {
       parent_id: Number(parentId),
       name: categoryName,
@@ -70,8 +73,10 @@ export const updateCategory = action({
       image_url: imageUrl,
       custom_url: customUrl,
     };
+
     try {
       const response = await client.put(endpoint, body);
+
       return {
         data: response.data,
       };

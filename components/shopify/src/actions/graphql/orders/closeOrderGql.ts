@@ -4,6 +4,7 @@ import { closeOrderExamplePayload as examplePayload } from "../../../examplePayl
 import { closeOrderInputs as inputs } from "../../../inputsGql";
 import { closeOrderGqlOutputSchema } from "../../../outputSchemas";
 import closeOrderQuery from "../queries/orders/CloseOrder.gql";
+
 export const closeOrderGql = action({
   display: {
     label: "Close Order",
@@ -17,13 +18,14 @@ export const closeOrderGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      orderClose: Record<string, unknown>;
-    } = await client.request(closeOrderQuery, {
-      input: {
-        id: orderId,
+    const data: { orderClose: Record<string, unknown> } = await client.request(
+      closeOrderQuery,
+      {
+        input: {
+          id: orderId,
+        },
       },
-    });
+    );
     return { data: data.orderClose };
   },
   inputs,

@@ -3,6 +3,7 @@ import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/
 import { BASE_URL_V1 } from "../constants";
 import { toOptionalNumber, toOptionalString } from "../utils";
 import { connection, fetchAll } from "./general";
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -12,6 +13,7 @@ export const limit = input({
   clean: toOptionalNumber,
   comments: "Sets a limit on the number of returned values.",
 });
+
 export const offset = input({
   label: "Offset",
   type: "string",
@@ -21,22 +23,27 @@ export const offset = input({
   clean: toOptionalNumber,
   comments: "Number of results to skip before returning values.",
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { limit, offset },
 });
+
 export const v1PaginationInputs = {
   fetchAll,
   pagination,
 };
+
 export const v1PaginationOnlyInputs = {
   pagination,
 };
+
 export const getCompaniesInputs = {
   connection,
 };
+
 const employeeId = input({
   label: "Employee ID",
   type: "string",
@@ -46,6 +53,7 @@ const employeeId = input({
   clean: util.types.toNumber,
   comments: "The unique identifier for the employee in Rippling.",
 });
+
 const ein = input({
   label: "EIN",
   type: "string",
@@ -56,48 +64,60 @@ const ein = input({
   comments:
     "Employer Identification Number (EIN), also known as the Federal Employer Identification Number or Federal Tax Identification Number.",
 });
+
 export const getEmployeesInputs = {
   connection,
   ...v1PaginationInputs,
 };
+
 export const getEmployeesEmployeeIdInputs = {
   connection,
   employeeId,
 };
+
 export const getEmployeesIncludeTerminatedInputs = {
   connection,
   ein,
   ...v1PaginationInputs,
 };
+
 export const getDepartmentsInputs = {
   connection,
   ...v1PaginationInputs,
 };
+
 export const getTeamsInputs = {
   connection,
   ...v1PaginationInputs,
 };
+
 export const getWorkLocationsInputs = {
   connection,
   ...v1PaginationInputs,
 };
+
 export const getCustomFieldsInputs = {
   connection,
   ...v1PaginationInputs,
 };
+
 export const getLevelsInputs = {
   connection,
   ...v1PaginationInputs,
 };
+
 export const getMeInputs = {
   connection,
 };
+
 export const getSamlIdpMetadataInputs = {
   connection,
 };
+
 export const postMarkAppInstalledInputs = {
   connection,
 };
+
 const startDate = input({
   label: "Start Date",
   type: "string",
@@ -107,6 +127,7 @@ const startDate = input({
   clean: toOptionalString,
   comments: "ISO 8601 timestamp to list activity after (inclusive).",
 });
+
 const endDate = input({
   label: "End Date",
   type: "string",
@@ -116,6 +137,7 @@ const endDate = input({
   clean: toOptionalString,
   comments: "ISO 8601 timestamp to list activity before (inclusive).",
 });
+
 const next = input({
   label: "Next",
   type: "string",
@@ -125,6 +147,7 @@ const next = input({
   clean: toOptionalString,
   comments: "Pagination cursor token for retrieving the next page of results.",
 });
+
 const activityLimit = input({
   label: "Limit",
   type: "string",
@@ -134,12 +157,14 @@ const activityLimit = input({
   clean: toOptionalString,
   comments: "Maximum number of results per page. Maximum: 1000. Default: 1000.",
 });
+
 const companyActivityPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { next, limit: activityLimit },
 });
+
 export const getCompanyActivityInputs = {
   connection,
   startDate,
@@ -147,6 +172,7 @@ export const getCompanyActivityInputs = {
   fetchAll,
   pagination: companyActivityPagination,
 };
+
 const leaveRequestId = input({
   label: "ID",
   type: "string",
@@ -156,6 +182,7 @@ const leaveRequestId = input({
   clean: toOptionalString,
   comments: "The unique identifier of the leave request.",
 });
+
 const role = input({
   label: "Role",
   type: "string",
@@ -165,6 +192,7 @@ const role = input({
   clean: toOptionalString,
   comments: "The role associated with the leave request.",
 });
+
 const requestedBy = input({
   label: "Requested By",
   type: "string",
@@ -174,6 +202,7 @@ const requestedBy = input({
   clean: toOptionalString,
   comments: "The identifier or email of the person who requested the leave.",
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -183,6 +212,7 @@ const status = input({
   clean: toOptionalString,
   comments: "The status of the leave request.",
 });
+
 const leaveStartDate = input({
   label: "Start Date",
   type: "string",
@@ -192,6 +222,7 @@ const leaveStartDate = input({
   clean: toOptionalString,
   comments: "The start date of the leave in YYYY-MM-DD format.",
 });
+
 const leaveEndDate = input({
   label: "End Date",
   type: "string",
@@ -201,6 +232,7 @@ const leaveEndDate = input({
   clean: toOptionalString,
   comments: "The end date of the leave in YYYY-MM-DD format.",
 });
+
 const leavePolicy = input({
   label: "Leave Policy",
   type: "string",
@@ -210,6 +242,7 @@ const leavePolicy = input({
   clean: toOptionalString,
   comments: "The leave policy identifier or name.",
 });
+
 const processedBy = input({
   label: "Processed By",
   type: "string",
@@ -220,6 +253,7 @@ const processedBy = input({
   comments:
     "The identifier or email of the person who processed the leave request.",
 });
+
 const from = input({
   label: "From",
   type: "string",
@@ -230,6 +264,7 @@ const from = input({
   comments:
     "Filter start date to capture leave requests that overlap with this date range.",
 });
+
 const to = input({
   label: "To",
   type: "string",
@@ -240,6 +275,7 @@ const to = input({
   comments:
     "Filter end date to capture leave requests that overlap with this date range.",
 });
+
 const leaveRequestIdRequired = input({
   label: "ID",
   type: "string",
@@ -249,6 +285,7 @@ const leaveRequestIdRequired = input({
   clean: util.types.toString,
   comments: "The unique identifier of the leave request to be processed.",
 });
+
 const leaveAction = input({
   label: "Action",
   type: "string",
@@ -261,6 +298,7 @@ const leaveAction = input({
   clean: util.types.toString,
   comments: "The action to take on the leave request.",
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -272,6 +310,7 @@ const dateRangeFilters = structuredObjectInput({
     to,
   },
 });
+
 export const getLeaveRequestsInputs = {
   connection,
   id: leaveRequestId,
@@ -282,11 +321,13 @@ export const getLeaveRequestsInputs = {
   processedBy,
   dateRangeFilters,
 };
+
 export const processLeaveRequestsInputs = {
   connection,
   id: leaveRequestIdRequired,
   action: leaveAction,
 };
+
 const groupId = input({
   label: "Group ID",
   type: "string",
@@ -296,6 +337,7 @@ const groupId = input({
   clean: util.types.toNumber,
   comments: "The unique identifier for the group in Rippling.",
 });
+
 const groupName = input({
   label: "Name",
   type: "string",
@@ -305,6 +347,7 @@ const groupName = input({
   clean: toOptionalString,
   comments: "The name of the group.",
 });
+
 const spokeId = input({
   label: "Spoke ID",
   type: "string",
@@ -315,6 +358,7 @@ const spokeId = input({
   comments:
     "The external unique identifier for the group entity in your application.",
 });
+
 const users = input({
   label: "Users",
   type: "string",
@@ -324,6 +368,7 @@ const users = input({
   clean: toOptionalString,
   comments: "An array of Rippling user IDs to include in the group.",
 });
+
 const version = input({
   label: "Version",
   type: "string",
@@ -333,15 +378,18 @@ const version = input({
   clean: toOptionalString,
   comments: "The version identifier of the group.",
 });
+
 export const getGroupsInputs = {
   connection,
 };
+
 export const postGroupsInputs = {
   connection,
   name: groupName,
   spokeId,
   users,
 };
+
 const putGroupsAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -354,6 +402,7 @@ const putGroupsAdditionalFields = structuredObjectInput({
     version,
   },
 });
+
 const patchGroupsAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -366,20 +415,24 @@ const patchGroupsAdditionalFields = structuredObjectInput({
     version,
   },
 });
+
 export const putGroupsGroupIdInputs = {
   connection,
   groupId,
   additionalFields: putGroupsAdditionalFields,
 };
+
 export const patchGroupsGroupIdInputs = {
   connection,
   groupId,
   additionalFields: patchGroupsAdditionalFields,
 };
+
 export const deleteGroupsGroupIdInputs = {
   connection,
   groupId,
 };
+
 const candidateName = input({
   label: "Name",
   type: "string",
@@ -389,6 +442,7 @@ const candidateName = input({
   clean: toOptionalString,
   comments: "The candidate's full name.",
 });
+
 const email = input({
   label: "Email",
   type: "string",
@@ -398,6 +452,7 @@ const email = input({
   clean: toOptionalString,
   comments: "The candidate's email address.",
 });
+
 const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -407,6 +462,7 @@ const phoneNumber = input({
   clean: toOptionalString,
   comments: "The candidate's phone number.",
 });
+
 const jobTitle = input({
   label: "Job Title",
   type: "string",
@@ -416,6 +472,7 @@ const jobTitle = input({
   clean: toOptionalString,
   comments: "The job title for the candidate's position.",
 });
+
 const candidateId = input({
   label: "Candidate ID",
   type: "string",
@@ -426,6 +483,7 @@ const candidateId = input({
   comments:
     "The unique identifier of the candidate from your ATS (Applicant Tracking System).",
 });
+
 const candidateStartDate = input({
   label: "Start Date",
   type: "string",
@@ -435,6 +493,7 @@ const candidateStartDate = input({
   clean: toOptionalString,
   comments: "The expected start date for the candidate in YYYY-MM-DD format.",
 });
+
 const department = input({
   label: "Department",
   type: "string",
@@ -444,6 +503,7 @@ const department = input({
   clean: toOptionalString,
   comments: "The name of the department the candidate will join.",
 });
+
 const salaryUnit = input({
   label: "Salary Unit",
   type: "string",
@@ -459,6 +519,7 @@ const salaryUnit = input({
   clean: toOptionalString,
   comments: "The frequency at which the candidate will be paid.",
 });
+
 const salaryPerUnit = input({
   label: "Salary Per Unit",
   type: "string",
@@ -468,6 +529,7 @@ const salaryPerUnit = input({
   clean: toOptionalNumber,
   comments: "The monetary amount the candidate will be paid per salary unit.",
 });
+
 const signingBonus = input({
   label: "Signing Bonus",
   type: "string",
@@ -477,6 +539,7 @@ const signingBonus = input({
   clean: toOptionalNumber,
   comments: "The one-time signing bonus amount given to the candidate.",
 });
+
 const equityShares = input({
   label: "Equity Shares",
   type: "string",
@@ -486,6 +549,7 @@ const equityShares = input({
   clean: toOptionalNumber,
   comments: "The number of equity shares to be granted to the candidate.",
 });
+
 const currency = input({
   label: "Currency",
   type: "string",
@@ -496,6 +560,7 @@ const currency = input({
   comments:
     "The currency code in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format (e.g., USD, EUR, GBP).",
 });
+
 const employmentType = input({
   label: "Employment Type",
   type: "string",
@@ -512,6 +577,7 @@ const employmentType = input({
   clean: toOptionalString,
   comments: "The type of employment for the candidate.",
 });
+
 const attachments = input({
   label: "Attachments",
   type: "string",
@@ -521,12 +587,14 @@ const attachments = input({
   clean: toOptionalString,
   comments: "URLs or identifiers for attachments related to the candidate.",
 });
+
 const contactInfo = structuredObjectInput({
   label: "Name & Contact Information",
   required: false,
   comments: "Name, email, and phone contact details.",
   inputs: { name: candidateName, email, phoneNumber },
 });
+
 const compensation = structuredObjectInput({
   label: "Compensation",
   required: false,
@@ -534,6 +602,7 @@ const compensation = structuredObjectInput({
     "Optional compensation package details: salary, bonus, equity, and currency.",
   inputs: { salaryUnit, salaryPerUnit, signingBonus, equityShares, currency },
 });
+
 const candidateAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -547,6 +616,7 @@ const candidateAdditionalFields = structuredObjectInput({
     attachments,
   },
 });
+
 export const postAtsCandidatesPushCandidateInputs = {
   connection,
   contactInfo,
@@ -554,7 +624,9 @@ export const postAtsCandidatesPushCandidateInputs = {
   compensation,
   additionalFields: candidateAdditionalFields,
 };
+
 const { debugRequest, ...httpInputsWithoutDebug } = httpClientInputs;
+
 export const rawRequestV1Inputs = {
   connection,
   ...httpInputsWithoutDebug,

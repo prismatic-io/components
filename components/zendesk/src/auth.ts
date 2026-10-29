@@ -15,6 +15,7 @@ import {
 } from "./connections";
 import type { CreateClientProps, ZendeskConnectionProps } from "./types";
 import { cleanZendeskDomain } from "./util";
+
 export const getConnectionProps = ({
   zendeskConnection,
   username,
@@ -33,6 +34,7 @@ export const getConnectionProps = ({
       }
       const url = new URL(tokenUrl);
       const subdomain = url.hostname.split(".")[0];
+
       return {
         username: username ? username : "",
         token: util.types.toString(zendeskConnection.token?.access_token),
@@ -47,6 +49,7 @@ export const getConnectionProps = ({
       );
       const username = util.types.toString(zendeskConnection.fields.username);
       const password = util.types.toString(zendeskConnection.fields.apiToken);
+
       return {
         remoteUri: `${zendeskDomain}/api/v2`,
         username: util.types.toString(zendeskConnection.fields.username),
@@ -55,6 +58,7 @@ export const getConnectionProps = ({
         subdomain: new URL(zendeskDomain).hostname.split(".")[0],
       };
     }
+
     default:
       throw new ConnectionError(
         zendeskConnection,
@@ -62,6 +66,7 @@ export const getConnectionProps = ({
       );
   }
 };
+
 export const createClient = ({
   zendeskConnection,
   username,
@@ -74,13 +79,16 @@ export const createClient = ({
     }),
     debug,
   };
+
   return createZendeskClient(clientOptions);
 };
+
 export const rawHttpClient = (
   zendeskConnection: Connection,
   debug = false,
 ): HttpClient => {
   const { token, remoteUri, oauth } = getConnectionProps({ zendeskConnection });
+
   return createHttpClient({
     baseUrl: remoteUri,
     headers: {

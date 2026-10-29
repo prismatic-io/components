@@ -5,6 +5,7 @@ import { listJobsInputs } from "../../inputs";
 import { listJobsOutputSchema } from "../../outputSchemas";
 import type { Job } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listJobs = action({
   display: {
     label: "List Jobs",
@@ -21,6 +22,7 @@ export const listJobs = action({
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
   ) => {
     const client = createClient(connection, "jpm", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<Job>(client, "/jobs", {
         includeTotal,

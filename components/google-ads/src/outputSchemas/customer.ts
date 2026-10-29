@@ -1,10 +1,12 @@
 import { mutateResourceNameResultSchema } from "./common";
+
 export const listAccessibleCustomersOutputSchema = {
   type: "object" as const,
   properties: {
     resourceNames: { type: "array", items: { type: "string" } },
   },
 };
+
 export const listCustomersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -33,6 +35,7 @@ export const listCustomersOutputSchema = {
     queryResourceConsumption: { type: "string" },
   },
 };
+
 export const getCustomerOutputSchema = {
   type: "object" as const,
   properties: {
@@ -72,6 +75,7 @@ export const getCustomerOutputSchema = {
     queryResourceConsumption: { type: "string" },
   },
 };
+
 export const getConversionActionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +102,7 @@ export const getConversionActionOutputSchema = {
     queryResourceConsumption: { type: "string" },
   },
 };
+
 export const createClientLinkOutputSchema = {
   type: "object" as const,
   properties: {
@@ -108,6 +113,7 @@ export const createClientLinkOutputSchema = {
   },
   required: ["resourceName", "managerCustomerId", "clientCustomerId"],
 };
+
 export const confirmClientLinkOutputSchema = {
   type: "object" as const,
   properties: {

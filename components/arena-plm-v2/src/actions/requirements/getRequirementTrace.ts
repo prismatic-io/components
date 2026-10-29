@@ -4,6 +4,7 @@ import { getRequirementTraceExamplePayload } from "../../examplePayloads";
 import { getRequirementTraceInputs } from "../../inputs";
 import { requirementTraceSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirementTrace = action({
   display: {
     label: "Get Requirement Trace",

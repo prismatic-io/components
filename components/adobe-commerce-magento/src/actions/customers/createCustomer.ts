@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
 import { asJsonObject } from "../../utils";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -13,7 +14,9 @@ export const createCustomer = action({
   examplePerform: async () => createCustomerExamplePayload,
   perform: async (context, { connection, customer, password, redirectUrl }) => {
     const client = await getClient(connection, context.debug.enabled);
+
     const body = asJsonObject(customer, "Customer");
+
     if (password) {
       body.password = password;
     }

@@ -2,19 +2,24 @@ import { vi } from "vitest";
 import { createStripeClient } from "../client";
 import type { CreatedWebhook } from "../types";
 import { onInstanceDelete, onInstanceDeploy } from "./webhooks";
+
 vi.mock("../client");
+
 const FLOW = "Stripe Events";
 const FLOW_URL = "https://hooks.example.com/instance-abc/stripe-events";
 const OTHER_FLOW_URL = "https://hooks.example.com/instance-xyz/other-flow";
+
 interface FakeEndpoint {
   id: string;
   url: string;
   enabled_events: string[];
   secret: string;
 }
+
 const makeStripe = (initial: FakeEndpoint[] = []) => {
   const store: FakeEndpoint[] = initial.map((endpoint) => ({ ...endpoint }));
   let nextId = initial.length + 1;
+
   return {
     store,
     webhookEndpoints: {
@@ -53,57 +58,74 @@ const makeStripe = (initial: FakeEndpoint[] = []) => {
     },
   };
 };
+
 const makeContext = () => ({
   flow: { name: FLOW },
   webhookUrls: { [FLOW]: FLOW_URL },
   crossFlowState: {} as Record<string, unknown>,
 });
+
 type Context = ReturnType<typeof makeContext>;
+
 const deploy = (context: Context, webhookEvents: string[]) =>
   onInstanceDeploy(context as never, { connection: {}, webhookEvents });
+
 const teardown = (context: Context, webhookEvents: string[]) => {
   const inputs = { connection: {}, webhookEvents };
   return onInstanceDelete(context as never, inputs);
 };
+
 const storedWebhook = (context: Context) =>
   (context.crossFlowState[FLOW] as CreatedWebhook | undefined)?.webhook;
+
 const useStripe = (stripe: ReturnType<typeof makeStripe>) => {
   (createStripeClient as ReturnType<typeof vi.fn>).mockReturnValue(stripe);
 };
+
 beforeEach(() => {
   vi.clearAllMocks();
 });
+
 describe("onInstanceDeploy", () => {
   it("does not create a second endpoint when the event set changes", async () => {
     const stripe = makeStripe();
     useStripe(stripe);
     const context = makeContext();
+
     await deploy(context, ["charge.succeeded"]);
     await deploy(context, ["charge.succeeded", "charge.failed"]);
+
     expect(stripe.store).toHaveLength(1);
     expect(stripe.store[0].enabled_events).toEqual([
       "charge.succeeded",
       "charge.failed",
     ]);
   });
+
   it("creates one endpoint on first deploy and stores its signing secret", async () => {
     const stripe = makeStripe();
     useStripe(stripe);
     const context = makeContext();
+
     await deploy(context, ["charge.succeeded"]);
+
     expect(stripe.store).toHaveLength(1);
     expect(storedWebhook(context)?.secret).toBe("whsec_1");
   });
+
   it("leaves the endpoint alone when redeployed with an unchanged event set", async () => {
     const stripe = makeStripe();
     useStripe(stripe);
     const context = makeContext();
+
     await deploy(context, ["charge.succeeded"]);
     stripe.webhookEndpoints.create.mockClear();
     await deploy(context, ["charge.succeeded"]);
+
     expect(stripe.webhookEndpoints.create).not.toHaveBeenCalled();
     expect(stripe.webhookEndpoints.update).not.toHaveBeenCalled();
   });
+
   it("adopts a pre-existing endpoint without inventing a signing secret", async () => {
     const stripe = makeStripe([
       {
@@ -115,7 +137,9 @@ describe("onInstanceDeploy", () => {
     ]);
     useStripe(stripe);
     const context = makeContext();
+
     await deploy(context, ["charge.succeeded", "charge.failed"]);
+
     expect(stripe.store).toHaveLength(1);
     expect(stripe.store[0].enabled_events).toEqual([
       "charge.succeeded",
@@ -123,17 +147,22 @@ describe("onInstanceDeploy", () => {
     ]);
     expect(storedWebhook(context)?.secret).toBeUndefined();
   });
+
   it("keeps the signing secret when the event set changes", async () => {
     const stripe = makeStripe();
     useStripe(stripe);
     const context = makeContext();
+
     await deploy(context, ["charge.succeeded"]);
     const originalSecret = storedWebhook(context)?.secret;
+
     await deploy(context, ["charge.succeeded", "charge.failed"]);
+
     expect(originalSecret).toBe("whsec_1");
     expect(storedWebhook(context)?.secret).toBe(originalSecret);
   });
 });
+
 describe("onInstanceDelete", () => {
   it("removes the flow's endpoint even when the event set has changed since deploy", async () => {
     const stripe = makeStripe([
@@ -145,9 +174,12 @@ describe("onInstanceDelete", () => {
       },
     ]);
     useStripe(stripe);
+
     await teardown(makeContext(), ["charge.succeeded", "charge.failed"]);
+
     expect(stripe.store).toHaveLength(0);
   });
+
   it("leaves endpoints belonging to other flows untouched", async () => {
     const stripe = makeStripe([
       {
@@ -164,7 +196,9 @@ describe("onInstanceDelete", () => {
       },
     ]);
     useStripe(stripe);
+
     await teardown(makeContext(), ["charge.succeeded"]);
+
     expect(stripe.store.map(({ id }) => id)).toEqual(["we_2"]);
   });
 });

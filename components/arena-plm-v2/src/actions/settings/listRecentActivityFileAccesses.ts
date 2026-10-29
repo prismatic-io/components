@@ -5,6 +5,7 @@ import { listRecentActivityFileAccessesInputs } from "../../inputs";
 import { listRecentActivityFileAccessesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listRecentActivityFileAccesses = action({
   display: {
     label: "List Recent File Access Activities",
@@ -22,25 +23,30 @@ export const listRecentActivityFileAccesses = action({
   ) => {
     try {
       context.logger.info("Getting recent file access activities");
+
       const client = await createArenaClient(context, connection);
+
       const params = {
         dateTimeFrom,
         dateTimeTo,
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       const data = await fetchArenaList(
         client,
         "/settings/recentactivities/fileaccesses",
         params,
         fetchAll,
       );
+
       context.logger.info(
         `Retrieved ${data?.count || 0} file access activities`,
         {
           count: data?.count,
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

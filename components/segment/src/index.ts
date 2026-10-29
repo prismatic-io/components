@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions";
 import { apiKey } from "./connections";
 import dataSources from "./datasources";
+
 export default component({
   key: "segment",
   public: true,

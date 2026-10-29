@@ -4,6 +4,7 @@ import { connection, id, operations } from "../../inputs";
 import { genericUpdateResponse } from "../../examplePayloads/general";
 import { updateWorkspaceInput } from "../../exampleInputs/workspaces";
 import { OPERATIONS_APPLIED } from "../../constants";
+
 export const updateWorkspace = action({
   display: {
     label: "Update Workspace",
@@ -24,6 +25,7 @@ export const updateWorkspace = action({
   },
   perform: async (context, { connection, id, operations }) => {
     const client = createClient(connection, context.debug.enabled);
+
     await client.patch(`/workspaces/${id}`, operations);
     return {
       data: {

@@ -26,6 +26,7 @@ const itamDeviceBaseProperties = {
       },
     },
   },
+
   hardware_id: { type: ["number", "null"] },
   hardware: { type: ["string", "null"] },
   physicalsubtype_id: { type: ["number", "null"] },
@@ -37,6 +38,7 @@ const itamDeviceBaseProperties = {
   ram: { type: ["number", "string", "null"] },
   hard_disk_count: { type: ["number", "null"] },
   hard_disk_size: { type: ["number", "string", "null"] },
+
   virtual_host: { type: ["string", "null"] },
   blade_chassis: { type: ["string", "null"] },
   blade_slot_no: { type: ["number", "string", "null"] },
@@ -44,19 +46,23 @@ const itamDeviceBaseProperties = {
   device_cluster_id: { type: ["number", "null"] },
   virtualsubtype_id: { type: ["number", "null"] },
   virtualsubtype: { type: ["string", "null"] },
+
   os_id: { type: ["number", "null"] },
   os_name: { type: ["string", "null"] },
   os_version: { type: ["string", "null"] },
   os_architecture: { type: ["string", "null"] },
+
   data_center: { type: ["string", "null"] },
   building_id: { type: ["number", "null"] },
   storage_room: { type: ["string", "null"] },
   rack_id: { type: ["number", "null"] },
   location_id: { type: ["number", "null"] },
   additional_location_info: { type: ["string", "null"] },
+
   impact: { type: ["string", "null"] },
   state: { type: ["string", "null"] },
   usage_type: { type: ["string", "null"] },
+
   workspace_id: { type: ["number", "null"] },
   workspace: { type: ["string", "null"] },
   department_id: { type: ["number", "null"] },
@@ -75,11 +81,13 @@ const itamDeviceBaseProperties = {
   customers: { type: ["array", "string", "null"] },
   in_service: { type: ["string", "boolean", "null"] },
 };
+
 export const itamDeviceOutputSchema = {
   type: "object" as const,
   properties: { ...itamDeviceBaseProperties },
   required: ["device_id"],
 };
+
 export const itamDevicesListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -103,6 +111,7 @@ export const itamDevicesListOutputSchema = {
   },
   required: ["meta", "devices"],
 };
+
 export const itamDeviceWriteOutputSchema = {
   type: "object" as const,
   properties: {

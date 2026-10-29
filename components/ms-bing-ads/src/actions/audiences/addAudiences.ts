@@ -3,6 +3,7 @@ import { addAudiencesExamplePayload } from "../../examplePayloads";
 import { addAudiencesInputs } from "../../inputs/audiences";
 import { getRestClient } from "../../restClient";
 import type { AddRestResponse } from "../../types";
+
 export const addAudiences = action({
   display: {
     label: "Add Audiences",
@@ -13,9 +14,11 @@ export const addAudiences = action({
     { connection, accountId, customerId, audiences },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<AddRestResponse>("/Audiences", {
       Audiences: audiences,
     });
+
     return { data };
   },
   inputs: addAudiencesInputs,

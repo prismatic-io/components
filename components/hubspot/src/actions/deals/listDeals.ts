@@ -5,6 +5,7 @@ import { listDealsExamplePayload } from "../../examplePayloads";
 import { listDealsInputs } from "../../inputs";
 import { getAllPaginatedData, getProps } from "../../util";
 import { DEAL_PROPS, hubspotPaths } from "../../constants";
+
 export const listDeals = action({
   display: {
     label: "List Deals",
@@ -18,10 +19,12 @@ export const listDeals = action({
       timeout: params.timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       DEAL_PROPS,
       params.additionalProperties || [],
     );
+
     const data = await getAllPaginatedData(
       client,
       hubspotPaths.objects("deals"),
@@ -37,6 +40,7 @@ export const listDeals = action({
         },
       },
     );
+
     return {
       data,
     };

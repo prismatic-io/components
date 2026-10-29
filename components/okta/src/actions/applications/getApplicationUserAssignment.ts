@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getApplicationUserAssignmentsExamplePayload } from "../../examplePayloads/applications";
 import { getApplicationUserAssignmentsInputs } from "../../inputs/applications";
+
 export const getApplicationUserAssignment = action({
   display: {
     label: "Get Application User Assignment",
@@ -16,6 +17,7 @@ export const getApplicationUserAssignment = action({
         params: { expand },
       },
     );
+
     return { data };
   },
   examplePayload: getApplicationUserAssignmentsExamplePayload,

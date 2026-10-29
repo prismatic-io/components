@@ -5,6 +5,7 @@ import { createRequestEvaluationIssueInputs } from "../../inputs";
 import { requestIssueSchema } from "../../outputSchemas";
 import type { RequestIssueCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createRequestEvaluationIssue = action({
   display: {
     label: "Create Request Evaluation Issue",
@@ -23,22 +24,28 @@ export const createRequestEvaluationIssue = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const requestPayload: RequestIssueCreateVo = {
         issue,
       };
+
       if (supplierVisibility !== undefined) {
         requestPayload.supplierVisibility = supplierVisibility;
       }
+
       context.logger.info(
         `Creating evaluation issue for request: ${requestGuid}`,
       );
+
       const { data } = await client.post(
         `/requests/${requestGuid}/evaluationissues`,
         requestPayload,
       );
+
       context.logger.info(
         `Successfully created evaluation issue: ${data?.guid || "N/A"}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

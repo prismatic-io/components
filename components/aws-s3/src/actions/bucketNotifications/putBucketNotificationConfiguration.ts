@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { putBucketNotificationConfigurationExamplePayload } from "../../examplePayloads";
 import { putBucketNotificationConfigurationInputs } from "../../inputs";
 import { putBucketNotificationConfiguration as putBucketNotificationConfigurationFn } from "../../utils";
+
 export const putBucketNotificationConfiguration = action({
   display: {
     label: "Put Bucket Notification Configuration",
@@ -46,6 +47,7 @@ export const putBucketNotificationConfiguration = action({
       bucket,
       notificationConfiguration,
     );
+
     return {
       data,
     };

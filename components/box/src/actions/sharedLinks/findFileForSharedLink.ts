@@ -4,6 +4,7 @@ import { SHARED_ITEMS_PATH } from "../../constants";
 import { findFileForSharedLinkExamplePayload } from "../../examplePayloads";
 import { findFileForSharedLinkInputs } from "../../inputs";
 import { findFileForSharedLinkOutputSchema } from "../../outputSchemas";
+
 export const findFileForSharedLink = action({
   display: {
     label: "Find File for Shared Link",
@@ -18,6 +19,7 @@ export const findFileForSharedLink = action({
       params.boxConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(SHARED_ITEMS_PATH, {
       headers: {
         boxapi: `shared_link=${sharedLink}&shared_link_password=${sharedLinkPassword}`,

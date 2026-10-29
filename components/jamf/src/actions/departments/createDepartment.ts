@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createDepartmentExamplePayload } from "../../examplePayloads";
 import { createDepartmentInputs } from "../../inputs";
 import type { JamfCreateResponse } from "../../types";
+
 export const createDepartment = action({
   display: {
     label: "Create Department",

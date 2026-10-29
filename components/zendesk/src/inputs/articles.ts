@@ -30,12 +30,14 @@ import {
   title,
   userSegmentId,
 } from "./common";
+
 export const associateAttachmentsInBulkToArticleInputs = {
   zendeskConnection: connectionInput,
   locale,
   articleId,
   attachmentIds,
 };
+
 export const createArticleInputs = {
   zendeskConnection: connectionInput,
   locale,
@@ -52,6 +54,7 @@ export const createArticleInputs = {
   isDraft,
   notifySubscribers,
 };
+
 export const listArticlesInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -78,6 +81,7 @@ export const listArticlesInputs = {
   }),
   articleLabels,
 };
+
 export const showArticleInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -86,6 +90,7 @@ export const showArticleInputs = {
   },
   articleId,
 };
+
 export const updateArticleInputs = {
   zendeskConnection: connectionInput,
   locale: {

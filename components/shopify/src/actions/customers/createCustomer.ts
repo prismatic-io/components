@@ -9,6 +9,7 @@ import type { RestAddress } from "../../types";
 import { cleanArrayCodeInput, cleanValueListInput } from "../../util";
 import { createCustomerGql } from "../graphql/customers/createCustomerGql";
 import { addressMapper } from "../graphql/mappers/addressMapper";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -52,9 +53,7 @@ export const createCustomer = action({
     type: "actionOutput",
     schema: createCustomerOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: customerExamplePayload,
   }),
   examplePayload: createCustomerPayload,

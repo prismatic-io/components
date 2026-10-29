@@ -80,6 +80,7 @@ const eventResource = {
     "updated_at",
   ],
 };
+
 export const getEventOutputSchema = {
   type: "object",
   properties: {
@@ -87,10 +88,12 @@ export const getEventOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listEventsOutputSchema = {
   type: "array",
   items: eventResource,
 };
+
 export const cancelEventOutputSchema = {
   type: "object",
   properties: {
@@ -107,6 +110,7 @@ export const cancelEventOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const deleteScheduledEventDataOutputSchema = {
   type: "object",
   properties: {},

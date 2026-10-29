@@ -11,6 +11,7 @@ import type {
   SearchVisibility,
 } from "../types";
 import { connection, externalId, groupId, pageSize } from "./common";
+
 const ownershipScope = input({
   label: "Ownership Scope",
   placeholder: "Select ownership scope",
@@ -26,6 +27,7 @@ const ownershipScope = input({
   clean: util.types.toString,
   required: true,
 });
+
 const dateLessThanExpirationDate = input({
   label: "Expiration Less Than Date",
   type: "string",
@@ -36,6 +38,7 @@ const dateLessThanExpirationDate = input({
     "The maximum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateGreaterThanExpirationDate = input({
   label: "Expiration Greater Than Date",
   type: "string",
@@ -46,6 +49,7 @@ const dateGreaterThanExpirationDate = input({
     "The minimum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateMaxExpirationDate = input({
   label: "Expiration Max Date",
   type: "string",
@@ -56,6 +60,7 @@ const dateMaxExpirationDate = input({
     "The maximum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateMinExpirationDate = input({
   label: "Expiration Min Date",
   type: "string",
@@ -66,6 +71,7 @@ const dateMinExpirationDate = input({
     "The minimum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateLessThanCreatedDate = input({
   label: "Created Less Than Date",
   type: "string",
@@ -76,6 +82,7 @@ const dateLessThanCreatedDate = input({
     "The maximum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateGreaterThanCreatedDate = input({
   label: "Created Greater Than Date",
   type: "string",
@@ -86,6 +93,7 @@ const dateGreaterThanCreatedDate = input({
     "The minimum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateMaxCreatedDate = input({
   label: "Created Max Date",
   type: "string",
@@ -96,6 +104,7 @@ const dateMaxCreatedDate = input({
     "The maximum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
   clean: util.types.toString,
 });
+
 const dateMinCreatedDate = input({
   label: "Created Min Date",
   type: "string",
@@ -106,6 +115,7 @@ const dateMinCreatedDate = input({
     "The minimum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard. Range terms can be defined as less-than/greater-than or min/max.",
   clean: util.types.toString,
 });
+
 const dateLessThanModifiedDate = input({
   label: "Modified Less Than Date",
   type: "string",
@@ -116,6 +126,7 @@ const dateLessThanModifiedDate = input({
     "The maximum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard.",
   clean: util.types.toString,
 });
+
 const dateGreaterThanModifiedDate = input({
   label: "Modified Greater Than Date",
   type: "string",
@@ -126,6 +137,7 @@ const dateGreaterThanModifiedDate = input({
     "The minimum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard.",
   clean: util.types.toString,
 });
+
 const dateMaxModifiedDate = input({
   label: "Modified Max Date",
   type: "string",
@@ -136,6 +148,7 @@ const dateMaxModifiedDate = input({
     "The maximum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard.",
   clean: util.types.toString,
 });
+
 const dateMinModifiedDate = input({
   label: "Modified Min Date",
   type: "string",
@@ -146,6 +159,7 @@ const dateMinModifiedDate = input({
     "The minimum allowed date-time that is allowed in the result set. Values for each range field must adhere to the ISO-8601 standard.",
   clean: util.types.toString,
 });
+
 export const modifiedDate = input({
   label: "Modified Date",
   type: "string",
@@ -156,6 +170,7 @@ export const modifiedDate = input({
   comments:
     "A range filter against the last date the agreement was modified by user action (signing, cancelling, etc.). The modified value updates with every action until the agreement reaches a terminal status (Completed/Canceled/Expired). Format would be date-time with an offset from UTC/Greenwich in the ISO-8601 calendar system, such as 2007-12-03T10:15:30+01:00. Range terms can be defined as less-than/greater-than or min/max. If terms are mixed the JSON will be considered malformed.",
 });
+
 const assetId = input({
   label: "Asset ID(s)",
   type: "string",
@@ -167,6 +182,7 @@ const assetId = input({
     "A filter against case-sensitive agreement asset ID for which you would like to retrieve the information.",
   clean: cleanFunctionValueList,
 });
+
 const libraryDocumentId = input({
   label: "Library Document ID",
   type: "string",
@@ -177,6 +193,7 @@ const libraryDocumentId = input({
   comments:
     "A filter against case-sensitive library document ID that was used to create an agreement. This filter will only apply for the sender of the agreement since signers don't have the knowledge of how the agreement was created. Also, this filter only applies to library documents with type DOCUMENT but not FORM_FIELD_LAYER.",
 });
+
 const parentId = input({
   collection: "valuelist",
   label: "Parent ID",
@@ -188,6 +205,7 @@ const parentId = input({
   comments:
     "A filter against case-sensitive parent ID for which you would like to retrieve agreement asset information.",
 });
+
 const participantEmail = input({
   collection: "valuelist",
   label: "Participant Email",
@@ -199,6 +217,7 @@ const participantEmail = input({
   comments:
     "A filter against participant emails for which you would like to retrieve agreement asset information.",
 });
+
 const queryableFields = input({
   label: "Queryable Fields",
   type: "string",
@@ -209,6 +228,7 @@ const queryableFields = input({
   comments:
     "A list of field names against which string query specified in the 'query' field above is executed. For more information, see the <a href=\"https://helpx.adobe.com/sign/using/adobesign-search-users-agreements.html#NamePrefix\">Acrobat Sign search documentation</a>.",
 });
+
 const searchRole = input({
   label: "Role",
   type: "string",
@@ -223,6 +243,7 @@ const searchRole = input({
   clean: cleanFunctionValueList,
   comments: "A filter against the roles the user has on agreement assets.",
 });
+
 const sortByField = input({
   label: "Sort By Field",
   type: "string",
@@ -237,6 +258,7 @@ const sortByField = input({
   clean: util.types.toString,
   comments: "Defines the field by which the results will be ordered.",
 });
+
 const sortOrder = input({
   label: "Sort Order",
   type: "string",
@@ -253,6 +275,7 @@ const sortOrder = input({
   },
   comments: "Sets the direction of the order.",
 });
+
 const startIndex = input({
   label: "Start Index",
   type: "string",
@@ -263,6 +286,7 @@ const startIndex = input({
   comments:
     "0-based first row (offset) of the search results to return. The value must be greater than or equal to 0 and less than 10000. If not provided, the default value is 0 and returns results from the very first row, without offset.",
 });
+
 const searchStatus = input({
   label: "Status",
   type: "string",
@@ -278,6 +302,7 @@ const searchStatus = input({
   comments:
     "A filter against the detailed status of the agreement asset. <strong>Note:</strong> PARTIAL and DRAFT agreements are not supported for search.",
 });
+
 const subTypes = input({
   label: "Sub Types",
   type: "string",
@@ -295,6 +320,7 @@ const subTypes = input({
   comments:
     "A filter against the agreement asset sub types. Only agreement assets with type LIBRARY_TEMPLATE currently have this field populated.",
 });
+
 const searchType = input({
   label: "Type",
   type: "string",
@@ -316,6 +342,7 @@ const searchType = input({
   }),
   comments: "A filter against the agreement asset type.",
 });
+
 const searchUserId = input({
   label: "User ID",
   type: "string",
@@ -326,6 +353,7 @@ const searchUserId = input({
   collection: "valuelist",
   comments: "A filter against the user for account sharing.",
 });
+
 const visibility = input({
   label: "Visibility",
   type: "string",
@@ -343,6 +371,7 @@ const visibility = input({
   comments:
     "A filter indicating the visibility level of agreements that get returned in the response.",
 });
+
 const searchWorkflowId = input({
   label: "Workflow ID",
   type: "string",
@@ -354,6 +383,7 @@ const searchWorkflowId = input({
   comments:
     "A filter against case-sensitive workflow ID for which you would like to retrieve agreement asset information. Workflow ID is passed in the call to the agreement asset creation API.",
 });
+
 const searchQuery = input({
   label: "Query",
   type: "string",
@@ -364,6 +394,7 @@ const searchQuery = input({
   comments:
     'This field provides text search capability against terms in the field values of agreements that are visible to the user making the request. For more information about how text searching works, see the <a href="https://helpx.adobe.com/sign/using/adobesign-search-users-agreements.html#HowSearchWorks">Acrobat Sign search documentation</a>.',
 });
+
 export const searchScope = input({
   label: "Scope",
   type: "string",
@@ -379,6 +410,7 @@ export const searchScope = input({
   comments:
     "A resource scope. 'AGREEMENT_ASSETS' is the only value that is supported right now which includes the following resources: agreements, megaSigns, libraryDocuments and widgets.",
 });
+
 export const searchResourcesInputs = {
   connection,
   ownershipScope,

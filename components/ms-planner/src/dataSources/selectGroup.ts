@@ -5,6 +5,7 @@ import { selectGroupExamplePayload } from "../examplePayloads";
 import { DIRECTORY_PAGE_SIZE, PLANNER_ENDPOINTS } from "../constants";
 import { fetchAllDirectory, isClientCredentials } from "../utils";
 import { selectGroupInputs } from "../inputs";
+
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",
@@ -13,6 +14,7 @@ export const selectGroup = dataSource({
   inputs: selectGroupInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const { value } = isClientCredentials(connection)
       ? await fetchAllDirectory<Group>(client, PLANNER_ENDPOINTS.GROUPS, {
           $filter: "groupTypes/any(c:c eq 'Unified')",
@@ -27,6 +29,7 @@ export const selectGroup = dataSource({
             $top: DIRECTORY_PAGE_SIZE,
           },
         );
+
     const result = value.map<Element>((group) => ({
       label: util.types.toString(group.displayName),
       key: util.types.toString(group.id),

@@ -5,6 +5,7 @@ import type { UsersPollingState } from "../interfaces/polling";
 import type { User } from "../interfaces/user";
 import { TRIGGER_BATCH_SIZE } from "../util/constants";
 import { resolveUserChanges, usersPollParams } from "../util/polling";
+
 export const updatedUsersPollingTrigger = pollingTrigger({
   display: {
     label: "Updated Users",
@@ -30,9 +31,11 @@ export const updatedUsersPollingTrigger = pollingTrigger({
           )
         ).data as User[])
       : [];
+
     context.polling.setState({
       lastUpdated: pollStartedAt,
     } satisfies UsersPollingState);
+
     return {
       payload: { ...payload, body: { data: users } },
       polledNoChanges: users.length === 0,

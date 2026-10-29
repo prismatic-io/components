@@ -1,6 +1,7 @@
 import { trigger } from "@prismatic-io/spectral";
 import { pushNotificationWebhookExamplePayload } from "../examplePayloads";
 import { pushNotificationWebhookInputs } from "../inputs";
+
 export const pushNotificationWebhook = trigger({
   display: {
     label: "Push Notification Webhook",

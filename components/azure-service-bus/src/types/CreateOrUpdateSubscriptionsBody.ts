@@ -1,5 +1,6 @@
 import type { EntityStatus } from "./EntityStatus";
 import type { SBClientAffineProperties } from "./SBClientAffineProperties";
+
 export interface CreateOrUpdateSubscriptionsBody {
   properties?: {
     autoDeleteOnIdle?: string;

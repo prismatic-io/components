@@ -4,6 +4,7 @@ import { listUserSegmentsDataSourceExamplePayload } from "../examplePayloads";
 import { listUserSegmentsDataSourceInputs } from "../inputs";
 import type { UserSegment } from "../types";
 import { paginateResults } from "../util";
+
 export const listUserSegmentsDataSource = dataSource({
   display: {
     label: "Select User Segments",
@@ -19,6 +20,7 @@ export const listUserSegmentsDataSource = dataSource({
       results,
       "user_segments",
     );
+
     return {
       result: paginatedResults.map((usegment: UserSegment) => ({
         label: usegment.name,

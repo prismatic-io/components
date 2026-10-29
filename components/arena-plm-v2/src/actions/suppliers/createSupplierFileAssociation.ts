@@ -5,6 +5,7 @@ import { createSupplierFileAssociationInputs } from "../../inputs";
 import { fileAssociationSchema } from "../../outputSchemas";
 import type { FileAssociationVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createSupplierFileAssociation = action({
   display: {
     label: "Create Supplier File Association",
@@ -20,18 +21,23 @@ export const createSupplierFileAssociation = action({
   perform: async (context, { connection, supplierGuid, fileGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const payload = { file: { guid: fileGuid } };
+
       context.logger.info("Creating supplier file association", {
         supplierGuid,
         fileGuid,
       });
+
       const { data } = await client.post<FileAssociationVo>(
         `/suppliers/${supplierGuid}/files`,
         payload,
       );
+
       context.logger.info(
         `Successfully associated file ${fileGuid} with supplier ${supplierGuid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

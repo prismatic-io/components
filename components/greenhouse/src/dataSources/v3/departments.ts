@@ -4,6 +4,7 @@ import { departmentsV3DataSourceExamplePayload } from "../../examplePayloads/v3/
 import { connectionOnlyInputs } from "../../inputs/v3/common";
 import type { V3Department } from "../../types";
 import { fetchAllV3 } from "../../util/v3";
+
 export const departmentsV3 = dataSource({
   display: {
     label: "Fetch Departments",

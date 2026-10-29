@@ -8,6 +8,7 @@ import {
   pagination,
   searchQuery,
 } from "./common";
+
 export const folderName = input({
   label: "Folder Name",
   placeholder: "Enter folder name",
@@ -17,11 +18,13 @@ export const folderName = input({
   comments: "The name of the folder.",
   clean: util.types.toString,
 });
+
 export const createFolderInputs = {
   connection,
   folderName,
   parentFolderId: { ...folderId, label: "Parent Folder ID" },
 };
+
 export const listFoldersInputs = {
   connection,
   driveId,
@@ -30,6 +33,7 @@ export const listFoldersInputs = {
   fields,
   folderId,
 };
+
 export const searchFoldersInputs = {
   connection,
   driveId,

@@ -7,6 +7,7 @@ import { assignTaskOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { buildAssignments, patchWithEtag } from "../../utils";
 import { assignTaskInputs } from "../../inputs";
+
 export const assignTask = action({
   display: {
     label: "Assign Task",
@@ -20,6 +21,7 @@ export const assignTask = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, taskId, assignment, etag }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const assignments = buildAssignments(
       assignment?.assignTo,
       assignment?.unassign,
@@ -29,6 +31,7 @@ export const assignTask = action({
         "Select at least one user to assign or unassign before running the Assign Task action.",
       );
     }
+
     const data = await patchWithEtag<PlannerTask & Etagged>(
       client,
       PLANNER_ENDPOINTS.TASK(taskId),
@@ -40,11 +43,10 @@ export const assignTask = action({
   examplePerform: async (
     _context,
     { assignment },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const exampleAssignments = assignTaskExamplePayload.data.assignments ?? {};
     const exampleEntry = Object.values(exampleAssignments)[0];
+
     const assignments: Record<string, unknown> = { ...exampleAssignments };
     for (const userId of assignment?.assignTo ?? []) {
       assignments[userId] = exampleEntry;
@@ -52,6 +54,7 @@ export const assignTask = action({
     for (const userId of assignment?.unassign ?? []) {
       delete assignments[userId];
     }
+
     return { data: { ...assignTaskExamplePayload.data, assignments } };
   },
   examplePayload: assignTaskExamplePayload,

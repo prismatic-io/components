@@ -21,6 +21,7 @@ export const absenceOutputSchema = {
     "legalEntityId",
   ],
 };
+
 export const listAbsencesOutputSchema = {
   type: "object" as const,
   properties: {

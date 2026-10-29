@@ -15,6 +15,7 @@ import {
   resolvePollingStart,
 } from "../../util";
 import { toZohoTimestamp } from "../../util/general";
+
 export const bookContactsPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Books Contacts",
@@ -32,6 +33,7 @@ export const bookContactsPollingTrigger = pollingTrigger({
     const now = new Date();
     const state = (context.polling.getState() ?? {}) as PollingState;
     const { sinceDate } = resolvePollingStart(state, lookBackDate, now);
+
     const { data: records } = await booksGetRecords.perform(context, {
       connection,
       recordType: "contacts",
@@ -49,7 +51,9 @@ export const bookContactsPollingTrigger = pollingTrigger({
       (records as unknown as BookContactsRecords).contacts,
       sinceDate.toISOString(),
     );
+
     context.polling.setState({ lastPolledAt: now.toISOString() });
+
     return Promise.resolve({
       payload: { ...payload, body: { data: filteredRecords } },
       polledNoChanges: polledChanges(filteredRecords),

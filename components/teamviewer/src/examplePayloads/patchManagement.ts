@@ -11,6 +11,7 @@ export const listPatchManagementDevicesExamplePayload = {
     continuation_token: "string",
   },
 };
+
 export const getMissingPatchesExamplePayload = {
   data: {
     device_id: 0,
@@ -38,6 +39,7 @@ export const getMissingPatchesExamplePayload = {
     ],
   },
 };
+
 export const scanResultsCountExamplePayload = {
   data: {
     DeviceMissingPatchesCountInfoList: [

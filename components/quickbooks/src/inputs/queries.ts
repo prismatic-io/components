@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const queryString = input({
   label: "Query String",
   placeholder: "Enter query string",
@@ -9,6 +10,7 @@ export const queryString = input({
   example: "select * from department",
   clean: util.types.toString,
 });
+
 export const queryParams = input({
   label: "Query Params",
   type: "string",

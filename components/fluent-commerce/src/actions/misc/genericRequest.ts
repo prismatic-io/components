@@ -3,6 +3,7 @@ import merge from "lodash.merge";
 import { createFluentClient } from "../../client";
 import { genericRequestExamplePayload } from "../../examplePayloads";
 import { genericRequestInputs } from "../../inputs";
+
 export const genericRequest = action({
   display: {
     label: "Generic GraphQL Request",

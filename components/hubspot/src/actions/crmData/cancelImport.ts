@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { cancelImportExamplePayload } from "../../examplePayloads";
 import { cancelImportInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const cancelImport = action({
   display: {
     label: "Cancel Import",
@@ -18,9 +19,11 @@ export const cancelImport = action({
       debugRequest,
       headers: { "Content-Type": "application/json" },
     });
+
     const { data } = await client.post(
       hubspotPaths.imports(`/${importId}/cancel`),
     );
+
     return { data };
   },
   inputs: cancelImportInputs,

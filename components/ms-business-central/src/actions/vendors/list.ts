@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { listVendorsExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "ms-utils";
 import { listVendorsInputs } from "../../inputs/vendors";
+
 export const listVendors = action({
   display: {
     label: "List Vendors",
@@ -29,6 +30,7 @@ export const listVendors = action({
       $orderBy: odataQueryParams.$orderBy,
       $select: odataQueryParams.$select,
     };
+
     return await paginateResults<
       (typeof listVendorsExamplePayload)["data"]["value"][number]
     >({

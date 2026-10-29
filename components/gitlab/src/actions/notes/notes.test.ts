@@ -6,10 +6,13 @@ import { createIssueNote } from "./createIssueNote";
 import { createMergeRequestNote } from "./createMergeRequestNote";
 import { listIssueNotes } from "./listIssueNotes";
 import { listMergeRequestNotes } from "./listMergeRequestNotes";
+
 const exampleNote = createIssueNoteExamplePayload.data;
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
 const project = "278964";
+
 test("List Issue Notes", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/issues/42/notes`)
@@ -24,6 +27,7 @@ test("List Issue Notes", async () => {
   });
   expect(result?.data).toEqual([exampleNote]);
 });
+
 test("Create Issue Note sends body and internal flag", async () => {
   nock(GITLAB_URL)
     .post(`/api/v4/projects/${project}/issues/42/notes`, {
@@ -40,6 +44,7 @@ test("Create Issue Note sends body and internal flag", async () => {
   });
   expect(result?.data).toEqual(exampleNote);
 });
+
 test("List and Create Merge Request Notes", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/merge_requests/17/notes`)
@@ -72,6 +77,7 @@ test("List and Create Merge Request Notes", async () => {
     ).result?.data,
   ).toEqual(exampleNote);
 });
+
 test("Create Merge Request Note sends the internal flag", async () => {
   nock(GITLAB_URL)
     .post(`/api/v4/projects/${project}/merge_requests/17/notes`, {
@@ -88,6 +94,7 @@ test("Create Merge Request Note sends the internal flag", async () => {
   });
   expect(result?.data).toEqual(exampleNote);
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Not Found" };
@@ -95,6 +102,7 @@ describe("error paths", () => {
     fetchAll: false,
     pagination: { perPage: 0, page: undefined },
   };
+
   test("List Issue Notes rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/issues/999/notes`)
@@ -104,6 +112,7 @@ describe("error paths", () => {
       invoke(listIssueNotes, { connection, project, issueIid: 999, ...paging }),
     ).rejects.toThrow();
   });
+
   test("Create Issue Note rejects on 400", async () => {
     nock(GITLAB_URL)
       .post(`/api/v4/projects/${project}/issues/42/notes`)
@@ -118,6 +127,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("List Merge Request Notes rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/merge_requests/999/notes`)
@@ -132,6 +142,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Create Merge Request Note rejects on 400", async () => {
     nock(GITLAB_URL)
       .post(`/api/v4/projects/${project}/merge_requests/17/notes`)

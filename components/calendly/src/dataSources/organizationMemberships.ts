@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { organizationMembershipsInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { getOrganizationMemberships, extractUuidFromUri } from "../util";
+
 export const organizationMemberships = dataSource({
   display: {
     label: "Select Organization Membership",
@@ -13,6 +14,7 @@ export const organizationMemberships = dataSource({
     { connection, email, organization, user, returnUuidOnly },
   ) => {
     const client = getCalendlyClient(connection, false);
+
     const data = await getOrganizationMemberships(
       client,
       email,
@@ -21,12 +23,7 @@ export const organizationMemberships = dataSource({
     );
     return {
       result: data.map(
-        (membership: {
-          user: {
-            uri: string;
-            name: string;
-          };
-        }) => ({
+        (membership: { user: { uri: string; name: string } }) => ({
           key: returnUuidOnly
             ? extractUuidFromUri(membership.user.uri)
             : membership.user.uri,

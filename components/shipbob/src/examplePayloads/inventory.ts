@@ -54,12 +54,15 @@ const inventoryItemData = {
     },
   ],
 };
+
 export const getInventoryItemExamplePayload = {
   data: inventoryItemData,
 };
+
 export const listInventoryItemsExamplePayload = {
   data: [inventoryItemData],
 };
+
 export const listByProductIdExamplePayload = {
   data: [inventoryItemData],
 };

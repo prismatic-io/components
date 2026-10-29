@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { selectAppointmentExamplePayload } from "../examplePayloads";
 import { selectAppointmentInputs } from "../inputs";
 import type { Appointment } from "../types";
+
 export const selectAppointment = dataSource({
   display: {
     label: "Select Appointment",
@@ -15,6 +16,7 @@ export const selectAppointment = dataSource({
     let appointments: Appointment[] = [];
     let cursor = false;
     let page = 1;
+
     do {
       const { data } = await client.get(`/appointments`, {
         params: {
@@ -27,12 +29,14 @@ export const selectAppointment = dataSource({
       cursor = data.hasMore;
       page++;
     } while (cursor && page < 10);
+
     const objects = appointments
       .sort((a, b) => (a.id < b.id ? -1 : 1))
       .map<Element>((appointment) => ({
         key: appointment.id.toString(),
         label: `#${appointment.appointmentNumber} (ID: ${appointment.id})`,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

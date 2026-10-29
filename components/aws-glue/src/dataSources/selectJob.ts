@@ -2,6 +2,7 @@ import { ListJobsCommand } from "@aws-sdk/client-glue";
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { awsRegion, connectionInput } from "../inputs";
+
 export const selectJob = dataSource({
   display: {
     label: "Select Job",
@@ -13,8 +14,10 @@ export const selectJob = dataSource({
   },
   perform: async (_context, { awsRegion, awsConnection }) => {
     const glue = await createClient({ awsRegion, awsConnection });
+
     const allJobNames: string[] = [];
     let nextToken: string | undefined;
+
     do {
       const command = new ListJobsCommand({
         MaxResults: 50,
@@ -26,6 +29,7 @@ export const selectJob = dataSource({
       }
       nextToken = response.NextToken || undefined;
     } while (nextToken);
+
     return {
       result: allJobNames
         .map<Element>((name) => ({

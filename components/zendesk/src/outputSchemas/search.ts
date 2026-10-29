@@ -4,6 +4,7 @@ import {
   offsetPaginationProperties,
 } from "./pagination";
 import { postSchema } from "./posts";
+
 export const searchArticlesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -47,6 +48,7 @@ export const searchArticlesOutputSchema = {
   },
   required: ["results"],
 };
+
 export const searchPostsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -55,6 +57,7 @@ export const searchPostsOutputSchema = {
   },
   required: ["results"],
 };
+
 export const unifiedSearchOutputSchema = {
   type: "object" as const,
   properties: {

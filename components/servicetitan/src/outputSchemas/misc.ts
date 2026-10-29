@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const businessUnitSchema = {
   type: "object" as const,
   properties: {
@@ -190,6 +191,7 @@ const businessUnitSchema = {
   },
   required: ["id", "active", "name", "createdOn", "modifiedOn"],
 };
+
 const userRoleSchema = {
   type: "object" as const,
   properties: {
@@ -218,5 +220,7 @@ const userRoleSchema = {
   },
   required: ["id", "active", "name", "createdOn", "employeeType", "roleSource"],
 };
+
 export const listBusinessUnitsOutputSchema = listEnvelope(businessUnitSchema);
+
 export const listUserRolesOutputSchema = listEnvelope(userRoleSchema);

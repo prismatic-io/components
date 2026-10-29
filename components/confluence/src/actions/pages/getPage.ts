@@ -3,6 +3,7 @@ import { pageSingleSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { getPageInputs } from "../../inputs";
 import { getPageExamplePayload } from "../../examplePayloads";
+
 export const getPage = action({
   display: {
     label: "Get Page",

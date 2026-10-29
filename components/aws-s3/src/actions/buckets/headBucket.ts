@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { headBucketExamplePayload } from "../../examplePayloads";
 import { headBucketInputs } from "../../inputs";
 import { headBucketOutputSchema } from "../../outputSchemas";
+
 export const headBucket = action({
   display: {
     label: "Head Bucket",

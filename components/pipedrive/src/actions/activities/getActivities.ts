@@ -4,6 +4,7 @@ import { getActivitiesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getActivitiesExamplePayload } from "../../examplePayloads";
 import { getActivitiesOutputSchema } from "../../outputSchemas";
+
 export const getActivities = action({
   display: {
     label: "Get Activities",

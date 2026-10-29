@@ -4,6 +4,7 @@ import { hubspotPaths } from "../constants";
 import { selectImportExamplePayload } from "../examplePayloads";
 import { selectImportInputs } from "../inputs";
 import { getAllPaginatedData } from "../util";
+
 export const selectImport = dataSource({
   display: {
     label: "Select Import",
@@ -15,6 +16,7 @@ export const selectImport = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
+
     const imports = await getAllPaginatedData(
       client,
       hubspotPaths.imports(),
@@ -22,6 +24,7 @@ export const selectImport = dataSource({
       true,
       {},
     );
+
     const result = (imports as Record<string, unknown>[]).map<Element>(
       (item) => ({
         label: `Import ${util.types.toString(item.id)}`,

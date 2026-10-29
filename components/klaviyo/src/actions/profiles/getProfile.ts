@@ -5,6 +5,7 @@ import { getProfileInputs as inputs } from "../../inputs";
 import { getProfileExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 import type { AdditionalFieldsProfile, FieldsProfile } from "../../types";
+
 export const getProfile = action({
   display: {
     label: "Get Profile",

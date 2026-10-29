@@ -1,8 +1,10 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import connections from "../connections";
 import { LEGACY_CONNECTION_KEY } from "../constants";
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
+
   if (!connectionKeys.includes(connection.key)) {
     throw new ConnectionError(
       connection,
@@ -10,6 +12,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const requireApiKeyConnection = (connection: Connection): void => {
   if (connection.key === LEGACY_CONNECTION_KEY) {
     throw new ConnectionError(

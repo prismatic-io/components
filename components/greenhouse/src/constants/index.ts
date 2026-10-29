@@ -1,14 +1,20 @@
 export const HARVEST_BASE_URL = "https://harvest.greenhouse.io";
+
 export const V3_AUTH_BASE_URL = "https://auth.greenhouse.io";
 export const V3_BASE_URL = `${HARVEST_BASE_URL}/v3`;
+
 export const V1_MAX_PER_PAGE = 500;
 export const V3_MAX_PER_PAGE = 500;
+
 export const V3_POLL_MAX_PAGES = 10;
 export const V3_BATCHED_PER_PAGE = 100;
 export const V3_BATCHED_POLL_MAX_PAGES = 1;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const V3_DEFAULT_RETRY_AFTER_SECONDS = 30;
 export const V3_MAX_RETRY_AFTER_SECONDS = 60;
+
 export const ATTACHMENT_TYPE_MODEL = [
   { label: "Resume", value: "resume" },
   { label: "Cover Letter", value: "cover_letter" },
@@ -21,11 +27,13 @@ export const ATTACHMENT_TYPE_MODEL = [
   { label: "Automated Agreement", value: "automated_agreement" },
   { label: "Other", value: "other" },
 ];
+
 export const ATTACHMENT_VISIBILITY_MODEL = [
   { label: "Admin Only", value: "admin_only" },
   { label: "Private", value: "private" },
   { label: "Public", value: "public" },
 ];
+
 export const CUSTOM_FIELD_TYPE_MODEL = [
   { label: "Job", value: "job" },
   { label: "Opening", value: "opening" },
@@ -40,4 +48,5 @@ export const CUSTOM_FIELD_TYPE_MODEL = [
   { label: "Agency Question", value: "agency_question" },
   { label: "User Attribute", value: "user_attribute" },
 ];
+
 export const DEFAULT_BATCH_SIZE = 50;

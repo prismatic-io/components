@@ -1,5 +1,6 @@
 import { OAuth2Type, onPremConnection } from "@prismatic-io/spectral";
 import { DEFAULT_GITLAB_URL } from "../constants";
+
 export const oauth2 = onPremConnection({
   key: "oauth2",
   display: {

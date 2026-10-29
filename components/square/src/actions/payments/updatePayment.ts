@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { updatePaymentExamplePayload } from "../../examplePayloads";
 import { updatePaymentInputs } from "../../inputs";
+
 export const updatePayment = action({
   display: {
     label: "Update Payment",
@@ -12,7 +13,9 @@ export const updatePayment = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.put(`/v2/payments/${paymentId}`, payment);
+
     return {
       data: response.data,
     };

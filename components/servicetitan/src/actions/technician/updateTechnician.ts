@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateTechnicianExamplePayload } from "../../examplePayloads";
 import { updateTechnicianInputs } from "../../inputs";
 import { updateTechnicianOutputSchema } from "../../outputSchemas";
+
 export const updateTechnician = action({
   display: {
     label: "Update Technician",

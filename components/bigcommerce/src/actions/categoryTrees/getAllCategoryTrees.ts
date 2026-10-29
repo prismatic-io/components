@@ -9,6 +9,7 @@ import {
   channelId_in,
   storeHash,
 } from "../../inputs";
+
 export const getAllCategoryTrees = action({
   display: {
     label: "List Category Trees",
@@ -24,12 +25,15 @@ export const getAllCategoryTrees = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/trees`;
+
     const queryParams = querystring.stringify({
       "id:in": category_id_in as string,
       "channel_id:in": channelId_in as string,
     });
+
     try {
       const response = await client.get(`${endpoint}?${queryParams}`);
+
       return {
         data: response.data,
       };
@@ -39,6 +43,7 @@ export const getAllCategoryTrees = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

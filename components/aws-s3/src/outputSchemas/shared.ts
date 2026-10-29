@@ -1,13 +1,17 @@
 export const dateTimeSchema = { type: "string", format: "date-time" };
+
 export const requestChargedSchema = { type: "string", enum: ["requester"] };
+
 export const checksumTypeSchema = {
   type: "string",
   enum: ["COMPOSITE", "FULL_OBJECT"],
 };
+
 export const retentionModeSchema = {
   type: "string",
   enum: ["GOVERNANCE", "COMPLIANCE"],
 };
+
 export const checksumValueProperties = {
   ChecksumCRC32: { type: "string" },
   ChecksumCRC32C: { type: "string" },
@@ -20,6 +24,7 @@ export const checksumValueProperties = {
   ChecksumXXHASH3: { type: "string" },
   ChecksumXXHASH128: { type: "string" },
 };
+
 export const serverSideEncryptionProperties = {
   ServerSideEncryption: { type: "string" },
   SSECustomerAlgorithm: { type: "string" },
@@ -27,6 +32,7 @@ export const serverSideEncryptionProperties = {
   SSEKMSKeyId: { type: "string" },
   BucketKeyEnabled: { type: "boolean" },
 };
+
 export const ownerSchema = {
   type: "object" as const,
   properties: {
@@ -35,6 +41,7 @@ export const ownerSchema = {
   },
   required: [],
 };
+
 export const initiatorSchema = {
   type: "object" as const,
   properties: {
@@ -43,6 +50,7 @@ export const initiatorSchema = {
   },
   required: [],
 };
+
 export const commonPrefixSchema = {
   type: "object" as const,
   properties: {

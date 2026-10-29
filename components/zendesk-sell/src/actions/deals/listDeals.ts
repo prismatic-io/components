@@ -4,6 +4,7 @@ import { getZendeskClient } from "../../client";
 import { listDealsExamplePayload } from "../../examplePayloads";
 import { listDealsInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listDeals = action({
   display: {
     label: "List Deals",
@@ -72,6 +73,7 @@ export const listDeals = action({
           inclusive: additionalFields.inclusive === "true",
         }),
       };
+
       const data: unknown = await fetchAllPages(
         client,
         "/deals",

@@ -5,6 +5,7 @@ import {
   publishSysProperties,
   tagsMetadataSchema,
 } from "./shared";
+
 const localizedTextSchema = {
   type: "object" as const,
   properties: {
@@ -13,6 +14,7 @@ const localizedTextSchema = {
   required: [],
   additionalProperties: true,
 };
+
 const entrySchema = {
   type: "object" as const,
   properties: {
@@ -36,17 +38,28 @@ const entrySchema = {
     },
   },
 };
+
 export const archiveEntryOutputSchema = entrySchema;
+
 export const createEntryOutputSchema = entrySchema;
+
 export const getEntryOutputSchema = entrySchema;
+
 export const patchEntryOutputSchema = entrySchema;
+
 export const publishEntryOutputSchema = entrySchema;
+
 export const putEntryOutputSchema = entrySchema;
+
 export const unarchiveEntryOutputSchema = entrySchema;
+
 export const unpublishEntryOutputSchema = entrySchema;
+
 export const listEntriesOutputSchema = {
   type: "array" as const,
   items: entrySchema,
 };
+
 export const listPublishedEntriesOutputSchema = listEntriesOutputSchema;
+
 export const deleteEntryOutputSchema = emptyResultSchema;

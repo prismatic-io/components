@@ -4,6 +4,7 @@ import { addRequirementTicketExamplePayload } from "../../examplePayloads";
 import { addRequirementTicketInputs } from "../../inputs";
 import { addRequirementTicketOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const addRequirementTicket = action({
   display: {
     label: "Add Requirement Ticket",

@@ -5,6 +5,7 @@ import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import { checkDeveloperApiKeyAndAppId } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -30,6 +31,7 @@ export const listWebhooks = action({
         params: { hapikey: developerApiKey },
       },
     );
+
     return { data };
   },
   inputs: listWebhooksInputs,

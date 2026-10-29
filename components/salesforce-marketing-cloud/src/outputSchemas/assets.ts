@@ -40,6 +40,7 @@ export const assetOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listAssetsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -51,4 +52,5 @@ export const listAssetsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const queryAssetsOutputSchema = listAssetsOutputSchema;

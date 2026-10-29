@@ -4,6 +4,7 @@ import { getEmployeeJobHistoryExamplePayload } from "../../examplePayloads";
 import { getEmployeeJobHistoryInputs } from "../../inputs";
 import type { EmployeeJobHistoryDetails } from "../../types";
 import { fetchWithPagination } from "../../util";
+
 export const getEmployeeJobHistory = action({
   display: {
     label: "Get Employee Job History",
@@ -15,12 +16,14 @@ export const getEmployeeJobHistory = action({
     { connection, employeeId, pagination, fetchAll },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
+
     const { data } = await fetchWithPagination<EmployeeJobHistoryDetails>(
       client,
       "/employee-job-history-details",
       { employeeId, page: pagination.page, per_page: pagination.perPage },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: getEmployeeJobHistoryExamplePayload,

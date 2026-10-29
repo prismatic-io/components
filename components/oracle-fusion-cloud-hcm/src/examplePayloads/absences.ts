@@ -1,4 +1,5 @@
 import type { Absence, OracleHcmListResponse } from "../types";
+
 const absenceExample: Absence = {
   personAbsenceEntryId: 300100012340020,
   personId: 300100012345678,
@@ -13,6 +14,7 @@ const absenceExample: Absence = {
   unitOfMeasure: "DAYS",
   assignmentId: 300100012340003,
 };
+
 export const listAbsencesExamplePayload: {
   data: OracleHcmListResponse<Absence>;
 } = {
@@ -24,28 +26,25 @@ export const listAbsencesExamplePayload: {
     offset: 0,
   },
 };
-export const getAbsenceExamplePayload: {
-  data: Absence;
-} = { data: absenceExample };
-export const createAbsenceExamplePayload: {
-  data: Absence;
-} = {
+
+export const getAbsenceExamplePayload: { data: Absence } = {
+  data: absenceExample,
+};
+
+export const createAbsenceExamplePayload: { data: Absence } = {
   data: {
     ...absenceExample,
     personAbsenceEntryId: 300100099990020,
     approvalStatusCd: "AWAIT",
   },
 };
-export const updateAbsenceExamplePayload: {
-  data: Absence;
-} = {
+
+export const updateAbsenceExamplePayload: { data: Absence } = {
   data: { ...absenceExample, approvalStatusCd: "APPROVED" },
 };
+
 export const deleteAbsenceExamplePayload: {
-  data: {
-    id: string;
-    status: string;
-  };
+  data: { id: string; status: string };
 } = {
   data: { id: "300100123456789", status: "DELETED" },
 };

@@ -3,6 +3,7 @@ const sampleUser = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleIntegration = {
   guid: "1BE22GR33AT44IO55NS66ID7",
   name: "ERP Sync — Manufacturing",
@@ -15,6 +16,7 @@ const sampleIntegration = {
   creator: sampleUser,
   modifyUser: sampleUser,
 };
+
 const sampleEvent = {
   guid: "2EV33NT44EV55NT66EV77NT8",
   eventType: "CHANGE_EFFECTIVE",
@@ -27,6 +29,7 @@ const sampleEvent = {
     title: "Update capacitor tolerance on main board",
   },
 };
+
 const sampleEventItem = {
   guid: "3IT44EM55IT66EM77IT88EM9",
   reconciled: false,
@@ -49,6 +52,7 @@ const sampleEventItem = {
     },
   },
 };
+
 const sampleOutboundEventIntegration = {
   guid: "7OB88EV99OB00EV11OB22EV3",
   name: "Webhook Bridge — Downstream Systems",
@@ -59,6 +63,7 @@ const sampleOutboundEventIntegration = {
   creator: sampleUser,
   modifyUser: sampleUser,
 };
+
 const sampleOutboundEvent = {
   guid: "8OE99VN00OE11VN22OE33VN4",
   eventType: "ITEM_REVISION_EFFECTIVE",
@@ -66,6 +71,7 @@ const sampleOutboundEvent = {
   resourcesReconciled: false,
   creationDateTime: "2026-03-20T10:15:00Z",
 };
+
 const sampleOutboundEventResource = {
   guid: "5RS66RC77RS88RC99RS00RC1",
   reconciled: false,
@@ -80,6 +86,7 @@ const sampleOutboundEventResource = {
   preEvents: [],
   postEvents: [],
 };
+
 const sampleOutboundEventTrigger = {
   guid: "6TR77IG88TR99IG00TR11IG2",
   name: "Item Revision Effective",
@@ -88,7 +95,9 @@ const sampleOutboundEventTrigger = {
   action: "REVISION_EFFECTIVE",
   enabled: true,
 };
+
 export const getEventExamplePayload = { data: sampleEvent };
+
 export const listEventAssociationsExamplePayload = {
   data: {
     results: [
@@ -109,13 +118,16 @@ export const listEventAssociationsExamplePayload = {
     count: 2,
   },
 };
+
 export const getEventItemExamplePayload = { data: sampleEventItem };
+
 export const listEventItemGuidsExamplePayload = {
   data: {
     results: ["4RV55IS66RV77IS88RV99IS0", "5SW66JT77SW88JT99SW00JT1"],
     count: 2,
   },
 };
+
 export const listEventItemsExamplePayload = {
   data: {
     results: [
@@ -146,6 +158,7 @@ export const listEventItemsExamplePayload = {
     count: 2,
   },
 };
+
 export const getIntegrationExamplePayload = {
   data: {
     guid: sampleIntegration.guid,
@@ -160,6 +173,7 @@ export const getIntegrationExamplePayload = {
     modifyDateTime: sampleIntegration.lastModifiedDateTime,
   },
 };
+
 export const listIntegrationAdministratorsExamplePayload = {
   data: {
     results: [
@@ -173,6 +187,7 @@ export const listIntegrationAdministratorsExamplePayload = {
     count: 2,
   },
 };
+
 export const listIntegrationFiltersExamplePayload = {
   data: {
     lifecyclePhases: [
@@ -211,6 +226,7 @@ export const listIntegrationFiltersExamplePayload = {
     ],
   },
 };
+
 export const listIntegrationsExamplePayload = {
   data: {
     results: [
@@ -231,6 +247,7 @@ export const listIntegrationsExamplePayload = {
     count: 2,
   },
 };
+
 export const listOutboundEventIntegrationAdministratorsExamplePayload = {
   data: {
     results: [
@@ -244,6 +261,7 @@ export const listOutboundEventIntegrationAdministratorsExamplePayload = {
     count: 2,
   },
 };
+
 export const listOutboundEventIntegrationEventsExamplePayload = {
   data: {
     results: [
@@ -259,6 +277,7 @@ export const listOutboundEventIntegrationEventsExamplePayload = {
     count: 2,
   },
 };
+
 export const listOutboundEventIntegrationsExamplePayload = {
   data: {
     results: [
@@ -277,6 +296,7 @@ export const listOutboundEventIntegrationsExamplePayload = {
     count: 2,
   },
 };
+
 export const listOutboundEventIntegrationTriggersExamplePayload = {
   data: {
     results: [
@@ -294,6 +314,7 @@ export const listOutboundEventIntegrationTriggersExamplePayload = {
     count: 2,
   },
 };
+
 export const listOutboundEventResourcesExamplePayload = {
   data: {
     results: [
@@ -316,6 +337,7 @@ export const listOutboundEventResourcesExamplePayload = {
     count: 2,
   },
 };
+
 export const updateEventItemReconciledExamplePayload = {
   data: {
     ...sampleEventItem,
@@ -323,12 +345,14 @@ export const updateEventItemReconciledExamplePayload = {
     reconciledDateTime: "2026-03-22T10:00:00Z",
   },
 };
+
 export const updateOutboundEventReconciliationExamplePayload = {
   data: {
     ...sampleOutboundEvent,
     resourcesReconciled: true,
   },
 };
+
 export const updateOutboundEventResourceReconciliationExamplePayload = {
   data: {
     ...sampleOutboundEventResource,

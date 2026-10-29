@@ -33,6 +33,7 @@ import type { PullRequest } from "./interfaces/PullRequest";
 import type { Repository } from "./interfaces/Repository";
 import type { User } from "./interfaces/User";
 import { paginateResults, sortBy } from "./utils";
+
 const listReposForAuthenticatedUser = dataSource({
   display: {
     label: "List Repos",
@@ -45,10 +46,12 @@ const listReposForAuthenticatedUser = dataSource({
       `/user/repos`,
       true,
     );
+
     const objects = repos.sort(sortBy("name")).map<Element>((repo) => ({
       key: util.types.toString(repo.name),
       label: util.types.toString(repo.name),
     }));
+
     return { result: objects };
   },
   inputs: {
@@ -57,6 +60,7 @@ const listReposForAuthenticatedUser = dataSource({
   dataSourceType: "picklist",
   examplePayload: listReposForAuthenticatedUserExamplePayload,
 });
+
 const selectOrganizationsForAuthenticatedUser = dataSource({
   display: {
     label: "Select Organization",
@@ -70,10 +74,12 @@ const selectOrganizationsForAuthenticatedUser = dataSource({
       `/user/orgs`,
       true,
     );
+
     const result = orgs.sort(sortBy("url")).map<Element>(({ id, url }) => ({
       key: util.types.toString(id),
       label: url,
     }));
+
     return { result };
   },
   inputs: {
@@ -82,6 +88,7 @@ const selectOrganizationsForAuthenticatedUser = dataSource({
   examplePayload: selectOrganizationsForAuthenticatedUserExamplePayload,
   dataSourceType: "picklist",
 });
+
 const selectIssueForAuthenticatedUser = dataSource({
   display: {
     label: "Select Issue",
@@ -108,12 +115,14 @@ const selectIssueForAuthenticatedUser = dataSource({
       true,
       { assignee, state, labels, sort, direction, since },
     );
+
     const result = issues
       .sort(sortBy("title"))
       .map<Element>(({ number, title }) => ({
         key: util.types.toString(number),
         label: title,
       }));
+
     return { result };
   },
   inputs: {
@@ -135,6 +144,7 @@ const selectIssueForAuthenticatedUser = dataSource({
         { label: "Updated", value: "updated" },
         { label: "Comments", value: "comments" },
       ],
+
       "created",
     ),
     direction,
@@ -143,6 +153,7 @@ const selectIssueForAuthenticatedUser = dataSource({
   examplePayload: selectIssueForAuthenticatedUserExamplePayload,
   dataSourceType: "picklist",
 });
+
 export const selectPullRequestFromRepo = dataSource({
   display: {
     label: "Select Pull Request from Repo",
@@ -160,12 +171,14 @@ export const selectPullRequestFromRepo = dataSource({
       true,
       { state, head, base, sort, direction },
     );
+
     const result = pulls
       .sort(sortBy("title"))
       .map<Element>(({ id, title }) => ({
         key: util.types.toString(id),
         label: title,
       }));
+
     return { result };
   },
   inputs: {
@@ -195,6 +208,7 @@ export const selectPullRequestFromRepo = dataSource({
   examplePayload: selectPullRequestFromRepoExamplePayload,
   dataSourceType: "picklist",
 });
+
 export const selectUserFromOrganization = dataSource({
   display: {
     label: "Select User from Organization",
@@ -208,6 +222,7 @@ export const selectUserFromOrganization = dataSource({
       `/orgs/${organization}/members`,
       true,
     );
+
     const result = users
       .sort(sortBy("login"))
       .map<Element>(({ login: label }) => ({

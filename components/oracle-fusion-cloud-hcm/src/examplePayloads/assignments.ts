@@ -1,4 +1,5 @@
 import type { Assignment, OracleHcmListResponse } from "../types";
+
 const assignmentExample: Assignment = {
   AssignmentId: 300100551559732,
   AssignmentName: "Software Engineer - E955160008186257",
@@ -19,6 +20,7 @@ const assignmentExample: Assignment = {
   WorkerType: "E",
   FullPartTime: "F",
 };
+
 export const listAssignmentsExamplePayload: {
   data: OracleHcmListResponse<Assignment>;
 } = {
@@ -30,8 +32,7 @@ export const listAssignmentsExamplePayload: {
     offset: 0,
   },
 };
-export const getAssignmentExamplePayload: {
-  data: Assignment;
-} = {
+
+export const getAssignmentExamplePayload: { data: Assignment } = {
   data: assignmentExample,
 };

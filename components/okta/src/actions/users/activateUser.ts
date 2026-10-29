@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { activateUserExamplePayload } from "../../examplePayloads/users";
 import { deactivateUserInputs as activateUserInputs } from "../../inputs/users";
+
 export const activateUser = action({
   display: {
     label: "Activate User",
@@ -16,6 +17,7 @@ export const activateUser = action({
         sendEmail,
       },
     );
+
     return { data };
   },
   examplePayload: activateUserExamplePayload,

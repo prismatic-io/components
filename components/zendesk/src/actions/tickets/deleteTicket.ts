@@ -4,6 +4,7 @@ import { SUCCESS_MESSAGE } from "../../constants";
 import { deleteTicketExamplePayload } from "../../examplePayloads";
 import { deleteTicketInputs } from "../../inputs";
 import { deleteTicketOutputSchema } from "../../outputSchemas";
+
 export const deleteTicket = action({
   display: {
     label: "Delete Ticket",
@@ -15,7 +16,9 @@ export const deleteTicket = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     await client.tickets.delete(util.types.toInt(params.ticketId));
+
     return {
       data: SUCCESS_MESSAGE,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listEventsExamplePayload } from "../../examplePayloads";
 import { listEventsInputs } from "../../inputs";
+
 export const listEvents = action({
   display: {
     label: "List Events",

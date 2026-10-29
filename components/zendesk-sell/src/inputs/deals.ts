@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const createUpdateValue = input({
   label: "Value",
   comments: "Value of the deal in decimal format (e.g., two decimal places).",
@@ -9,6 +10,7 @@ const createUpdateValue = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createUpdateCurrency = input({
   label: "Currency",
   comments:
@@ -19,6 +21,7 @@ const createUpdateCurrency = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createUpdateTags = input({
   label: "Tags",
   comments: "Tags to apply.",
@@ -28,6 +31,7 @@ const createUpdateTags = input({
   required: false,
   example: "important",
 });
+
 const lastStageChangeAt = input({
   label: "Last Stage Change At",
   comments:
@@ -38,6 +42,7 @@ const lastStageChangeAt = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addedAt = input({
   label: "Added At",
   comments: "Date and time that the deal was started in UTC (ISO8601 format).",
@@ -47,6 +52,7 @@ const addedAt = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createUpdateEstimatedCloseDate = input({
   label: "Estimated Close Date",
   comments: "Expected date when the deal will close.",
@@ -56,6 +62,7 @@ const createUpdateEstimatedCloseDate = input({
   required: false,
   clean: util.types.toString,
 });
+
 const customizedWinLikelihood = input({
   label: "Customized Win Likelihood",
   comments: "User-provided win likelihood with value range 0-100.",
@@ -65,6 +72,7 @@ const customizedWinLikelihood = input({
   required: false,
   clean: util.types.toString,
 });
+
 const createUpdateSourceId = input({
   label: "Source ID",
   placeholder: "Enter Source ID",
@@ -74,6 +82,7 @@ const createUpdateSourceId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const lossReasonId = input({
   label: "Loss Reason ID",
   placeholder: "Enter Loss Reason ID",
@@ -83,6 +92,7 @@ const lossReasonId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const unqualifiedReasonId = input({
   label: "Unqualified Reason ID",
   placeholder: "Enter Unqualified Reason ID",
@@ -92,6 +102,7 @@ const unqualifiedReasonId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments: "A field to sort by. Filterable custom fields can also be used.",
@@ -101,6 +112,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of deal IDs to be returned in a request.",
@@ -110,6 +122,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const includes = input({
   label: "Includes",
   comments:
@@ -120,6 +133,7 @@ const includes = input({
   required: false,
   clean: util.types.toString,
 });
+
 const creatorId = input({
   label: "Creator ID",
   comments:
@@ -130,6 +144,7 @@ const creatorId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerId = input({
   label: "Owner ID",
   placeholder: "Enter Owner ID",
@@ -139,6 +154,7 @@ const ownerId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerIdFilter = input({
   label: "Owner ID",
   placeholder: "Enter Owner ID",
@@ -149,6 +165,7 @@ const ownerIdFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const contactId = input({
   label: "Contact ID",
   placeholder: "Enter Contact ID",
@@ -159,6 +176,7 @@ const contactId = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const organizationId = input({
   label: "Organization ID",
   comments: "Unique identifier of an organization.",
@@ -169,6 +187,7 @@ const organizationId = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const hot = input({
   label: "Hot",
   comments: "Indicator of whether or not the deal is hot.",
@@ -183,6 +202,7 @@ const hot = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sourceId = input({
   label: "Source ID",
   placeholder: "Enter Source ID",
@@ -192,6 +212,7 @@ const sourceId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const stageId = input({
   label: "Stage ID",
   placeholder: "Enter Stage ID",
@@ -202,6 +223,7 @@ const stageId = input({
   clean: util.types.toString,
   dataSource: "selectStage",
 });
+
 const stageIdFilter = input({
   label: "Stage ID",
   placeholder: "Enter Stage ID",
@@ -212,6 +234,7 @@ const stageIdFilter = input({
   clean: util.types.toString,
   dataSource: "selectStage",
 });
+
 const name = input({
   label: "Name",
   placeholder: "Enter name",
@@ -221,6 +244,7 @@ const name = input({
   required: false,
   clean: util.types.toString,
 });
+
 const nameFilter = input({
   label: "Name",
   placeholder: "Enter name",
@@ -230,6 +254,7 @@ const nameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const value = input({
   label: "Value",
   comments: "Value of the deal. Use a string with two decimal places.",
@@ -239,6 +264,7 @@ const value = input({
   required: false,
   clean: util.types.toString,
 });
+
 const estimatedCloseDate = input({
   label: "Estimated Close Date",
   comments: "Estimated close date of the deal.",
@@ -248,6 +274,7 @@ const estimatedCloseDate = input({
   required: false,
   clean: util.types.toString,
 });
+
 const inclusive = input({
   label: "Inclusive",
   comments:
@@ -262,6 +289,7 @@ const inclusive = input({
   required: false,
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -272,6 +300,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -282,6 +311,7 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const customFields = input({
   label: "Custom Fields",
   comments: "Custom field key-value pairs.",
@@ -291,6 +321,7 @@ const customFields = input({
   required: false,
   example: "key: external_id value: SKU01",
 });
+
 const createDealName = input({
   label: "Name",
   placeholder: "Enter name",
@@ -300,6 +331,7 @@ const createDealName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const createDealContactId = input({
   label: "Contact ID",
   comments:
@@ -311,6 +343,7 @@ const createDealContactId = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 const dealId = input({
   label: "Deal ID",
   comments: "The unique identifier of the deal.",
@@ -321,6 +354,7 @@ const dealId = input({
   clean: util.types.toString,
   dataSource: "selectDeal",
 });
+
 const streamPosition = input({
   label: "Position",
   comments:
@@ -331,6 +365,7 @@ const streamPosition = input({
   required: true,
   clean: util.types.toString,
 });
+
 const streamLimit = input({
   label: "Limit",
   comments: "The maximum number of events to return in a single response.",
@@ -340,12 +375,14 @@ const streamLimit = input({
   required: false,
   clean: util.types.toString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, perPage },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -360,39 +397,55 @@ const additionalFields = structuredObjectInput({
     estimatedCloseDate,
   },
 });
+
 export const createDealInputs = {
   connection,
   name: createDealName,
+
   value: createUpdateValue,
+
   currency: createUpdateCurrency,
+
   customFields,
+
   tags: createUpdateTags,
+
   hot,
   lastStageChangeAt,
   addedAt,
   estimatedCloseDate: createUpdateEstimatedCloseDate,
   customizedWinLikelihood,
+
   contactId: createDealContactId,
+
   ownerId,
+
   stageId,
+
   sourceId: createUpdateSourceId,
+
   lossReasonId,
+
   unqualifiedReasonId,
 };
+
 export const deleteDealInputs = {
   connection,
   id: dealId,
 };
+
 export const getDealInputs = {
   connection,
   id: dealId,
   includes,
 };
+
 export const getDealsStreamInputs = {
   connection,
   position: streamPosition,
   limit: streamLimit,
 };
+
 export const listDealsInputs = {
   connection,
   fetchAll,
@@ -408,23 +461,35 @@ export const listDealsInputs = {
   pagination,
   additionalFields,
 };
+
 export const updateDealInputs = {
   connection,
   id: dealId,
   name,
+
   value: createUpdateValue,
+
   currency: createUpdateCurrency,
+
   customFields,
+
   tags: createUpdateTags,
+
   hot,
   lastStageChangeAt,
   addedAt,
   estimatedCloseDate: createUpdateEstimatedCloseDate,
   customizedWinLikelihood,
+
   contactId,
+
   ownerId,
+
   stageId,
+
   sourceId: createUpdateSourceId,
+
   lossReasonId,
+
   unqualifiedReasonId,
 };

@@ -2,16 +2,15 @@ import type {
   GetEventResponseCollectionCompoundDocument,
   GetEventResponseCompoundDocument,
 } from "klaviyo-api";
-export const bulkCreateEventsExamplePayload: {
-  data: string;
-} = {
+
+export const bulkCreateEventsExamplePayload: { data: string } = {
   data: "Events created successfully.",
 };
-export const createEventExamplePayload: {
-  data: string;
-} = {
+
+export const createEventExamplePayload: { data: string } = {
   data: "Event created successfully.",
 };
+
 export const getEventExamplePayload: {
   data: GetEventResponseCompoundDocument;
 } = {
@@ -168,6 +167,7 @@ export const getEventExamplePayload: {
     ],
   },
 };
+
 export const listEventsExamplePayload: {
   data: GetEventResponseCollectionCompoundDocument;
 } = {
@@ -331,6 +331,7 @@ export const listEventsExamplePayload: {
     ],
   },
 };
+
 export const selectEventExamplePayload = {
   result: [{ label: "Placed Order", key: "01HABCDEF0123456789EVENT01" }],
 };

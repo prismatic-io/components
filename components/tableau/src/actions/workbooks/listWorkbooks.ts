@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { listWorkbooksExamplePayload } from "../../examplePayloads";
 import { listWorkbooksInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const listWorkbooks = action({
   display: {
     label: "List Workbooks",
@@ -21,6 +22,7 @@ export const listWorkbooks = action({
           util.types.toNumber(params.pagination?.pageNumber) || undefined,
       },
     });
+
     return {
       data: response.data,
     };

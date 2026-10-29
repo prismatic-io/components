@@ -1,17 +1,22 @@
 import { type Connection, util } from "@prismatic-io/spectral";
 import { azureEventGridOauth } from "./connections";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanNumber = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanCode = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const validAzureOAuthConnection = (connection: Connection) => {
   if (azureEventGridOauth.key !== connection.key) {
     throw new Error(`Connection must be of type ${azureEventGridOauth.key}`);
   }
 };
+
 export const paginateResults = async (
   client: HttpClient,
   url: string,
@@ -49,6 +54,7 @@ export const paginateResults = async (
   });
   return data;
 };
+
 export const getEventSubscriptionUrl = (
   subscriptionId: string,
   resourceGroupName: string,
@@ -58,6 +64,7 @@ export const getEventSubscriptionUrl = (
   eventSubscriptionName
     ? `subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.EventGrid/topics/${topicName}/providers/Microsoft.EventGrid/eventSubscriptions/${eventSubscriptionName}`
     : `subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.EventGrid/topics/${topicName}/providers/Microsoft.EventGrid/eventSubscriptions`;
+
 export const cleanValueList = (value: unknown) => {
   if (Array.isArray(value)) {
     return value.map(cleanString).filter(Boolean) as string[];

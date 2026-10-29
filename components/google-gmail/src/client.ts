@@ -5,6 +5,7 @@ import Gmail = gmail_v1.Gmail;
 import { gmailOauth, gmailServiceAccountAuth } from "./connections";
 import type { GoogleKeyFile } from "./interfaces/KeyFile";
 import type { OAuth2Client, JWT } from "google-auth-library";
+
 export const createClient = async (connection: Connection): Promise<Gmail> => {
   let client: OAuth2Client | JWT;
   switch (connection.key) {
@@ -13,9 +14,12 @@ export const createClient = async (connection: Connection): Promise<Gmail> => {
       if (!token) {
         throw new ConnectionError(connection, "Did not receive a valid token.");
       }
+
       const oauth2Client = new auth.OAuth2();
       oauth2Client.setCredentials({ access_token: token });
+
       client = oauth2Client;
+
       break;
     }
     case gmailServiceAccountAuth.key: {
@@ -29,6 +33,7 @@ export const createClient = async (connection: Connection): Promise<Gmail> => {
           "Did not receive a valid key file.",
         );
       }
+
       const jwtClient = new auth.JWT({
         keyId: keyFile.private_key_id,
         key: keyFile.private_key.replace(/\\n/g, "\n"),
@@ -36,19 +41,23 @@ export const createClient = async (connection: Connection): Promise<Gmail> => {
         scopes: util.types.toString(connection.fields.scopes),
         subject: user,
       });
+
       const credentials = await jwtClient.authorize();
       jwtClient.setCredentials(credentials);
+
       client = jwtClient;
       break;
     }
     default:
       throw new Error("Invalid connection key.");
   }
+
   return gmail({
     version: "v1",
     auth: client,
   });
 };
+
 export const createPubSubClient = async (connection: Connection) => {
   switch (connection.key) {
     case gmailOauth.key: {
@@ -56,10 +65,12 @@ export const createPubSubClient = async (connection: Connection) => {
         util.types.toString(connection.fields.clientId),
         util.types.toString(connection.fields.clientSecret),
       );
+
       const token = util.types.toString(connection.token?.access_token);
       oauth2Client.setCredentials({
         access_token: token,
       });
+
       return pubsub({
         version: "v1",
         auth: oauth2Client,
@@ -76,6 +87,7 @@ export const createPubSubClient = async (connection: Connection) => {
           "Did not receive a valid key file.",
         );
       }
+
       const jwtClient = new pubsubAuth.JWT({
         keyId: keyFile.private_key_id,
         key: keyFile.private_key.replace(/\\n/g, "\n"),
@@ -83,17 +95,21 @@ export const createPubSubClient = async (connection: Connection) => {
         scopes: util.types.toString(connection.fields.scopes),
         subject: user,
       });
+
       const credentials = await jwtClient.authorize();
       jwtClient.setCredentials(credentials);
+
       return pubsub({
         version: "v1",
         auth: jwtClient,
       });
     }
+
     default:
       throw new Error("Invalid connection key.");
   }
 };
+
 export const getToken = async (connection: Connection) => {
   switch (connection.key) {
     case gmailOauth.key: {
@@ -114,6 +130,7 @@ export const getToken = async (connection: Connection) => {
           "Did not receive a valid key file.",
         );
       }
+
       const jwtClient = new auth.JWT({
         keyId: keyFile.private_key_id,
         key: keyFile.private_key.replace(/\\n/g, "\n"),
@@ -121,13 +138,16 @@ export const getToken = async (connection: Connection) => {
         scopes: util.types.toString(connection.fields.scopes),
         subject: user,
       });
+
       const tokenResponse = await jwtClient.authorize();
+
       if (!tokenResponse.access_token) {
         throw new ConnectionError(
           connection,
           "Failed to obtain access token from service account.",
         );
       }
+
       return tokenResponse.access_token;
     }
     default:

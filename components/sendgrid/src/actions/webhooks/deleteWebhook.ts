@@ -4,6 +4,7 @@ import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
 import { deleteWebhookHelper } from "../../util";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -13,9 +14,11 @@ export const deleteWebhook = action({
   performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, webhookId }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const data = await deleteWebhookHelper(client, {
       webhookId,
     });
+
     return {
       data,
     };
@@ -24,9 +27,7 @@ export const deleteWebhook = action({
     type: "actionOutput",
     schema: deleteWebhookOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteWebhookExamplePayload.data,
   }),
   examplePayload: deleteWebhookExamplePayload,

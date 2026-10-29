@@ -14,6 +14,7 @@ import type {
   PollingRecordChange,
   PollingState,
 } from "../types";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
@@ -44,8 +45,11 @@ export const pollChangesTrigger = pollingTrigger({
       lastState?.lastPolledAt === undefined &&
       Boolean(lookBackDate);
     const lastPolledAt = lastState?.lastPolledAt ?? (lookBackDate || now);
+
     const client = createClient(connection, context.debug.enabled);
+
     let created: GongRecord[];
+
     if (resourceType === PollResource.CALLS) {
       created = await fetchAllCalls(client, lastPolledAt, now);
     } else {
@@ -66,23 +70,28 @@ export const pollChangesTrigger = pollingTrigger({
       }
       const knownSet = new Set(lastState.knownIds);
       created = records.filter((r) => !knownSet.has(r.id));
+
       const newState: PollingState = {
         lastPolledAt: now,
         knownIds: records.map((r) => r.id),
       };
       context.polling.setState(newState as unknown as Record<string, unknown>);
     }
+
     if (resourceType === PollResource.CALLS) {
       context.polling.setState({
         lastPolledAt: now,
       } as unknown as Record<string, unknown>);
     }
+
     const filteredCreated = showNewRecords || isInitialSync ? created : [];
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${filteredCreated.length} new`,
       );
     }
+
     return {
       payload: {
         ...payload,

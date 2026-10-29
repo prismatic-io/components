@@ -7,6 +7,7 @@ import {
   type PublishBatchRequestEntry,
 } from "@aws-sdk/client-sns";
 import { publishBatchMessagesExamplePayload } from "../examplePayloads";
+
 const processBinaryValueIfPresent = (
   parsedEntries,
 ): PublishBatchRequestEntry[] =>
@@ -27,6 +28,7 @@ const processBinaryValueIfPresent = (
     }
     return entry;
   });
+
 export const publishBatchMessages = action({
   display: {
     label: "Publish Batch Messages",
@@ -65,4 +67,5 @@ export const publishBatchMessages = action({
   },
   examplePayload: publishBatchMessagesExamplePayload,
 });
+
 export default publishBatchMessages;

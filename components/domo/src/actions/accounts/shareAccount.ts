@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { shareAccountExamplePayload } from "../../examplePayloads";
 import { shareAccountInputs } from "../../inputs";
+
 export const shareAccount = action({
   display: {
     label: "Share Account",
@@ -26,4 +27,5 @@ export const shareAccount = action({
   },
   inputs: shareAccountInputs,
 });
+
 export default { shareAccount };

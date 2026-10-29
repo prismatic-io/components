@@ -5,6 +5,7 @@ import type {
   MobileDeviceInventory,
   PagedResponse,
 } from "../types";
+
 const mobileDeviceExample: MobileDevice = {
   id: "5",
   managementId: "mgmt-abc-123",
@@ -19,9 +20,8 @@ const mobileDeviceExample: MobileDevice = {
   modelIdentifier: "iPad14,3",
   softwareUpdateDeviceId: null,
 };
-export const getMobileDeviceExamplePayload: {
-  data: MobileDeviceDetail;
-} = {
+
+export const getMobileDeviceExamplePayload: { data: MobileDeviceDetail } = {
   data: {
     ...mobileDeviceExample,
     osVersion: "17.4",
@@ -31,6 +31,7 @@ export const getMobileDeviceExamplePayload: {
     department: "Engineering",
   },
 };
+
 const mobileDeviceInventoryExample: MobileDeviceInventory = {
   mobileDeviceId: "5",
   deviceType: "iOS",
@@ -118,6 +119,7 @@ const mobileDeviceInventoryExample: MobileDeviceInventory = {
     lostModeEnabled: false,
   },
 };
+
 export const listMobileDevicesExamplePayload: {
   data: PagedResponse<MobileDeviceInventory>;
 } = {
@@ -126,8 +128,7 @@ export const listMobileDevicesExamplePayload: {
     totalCount: 1,
   },
 };
-export const selectMobileDeviceExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectMobileDeviceExamplePayload: { result: Element[] } = {
   result: [{ key: "5", label: "iPad-001" }],
 };

@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { POLL_RESOURCE_LABELS, POLL_RESOURCE_TYPES } from "../constants";
 import { lookBackDateClean } from "../utils";
 import { connectionInput } from "./common";
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -15,6 +16,7 @@ const pollResourceType = input({
     "The Magento resource collection to poll for new and updated records.",
   clean: util.types.toString,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -25,6 +27,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -34,6 +37,7 @@ const showNewRecords = input({
     "When true, records whose `created_at` falls after the last poll are included in the payload's `body.data.created` array.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -43,6 +47,7 @@ const showUpdatedRecords = input({
     "When true, records whose `updated_at` falls after the last poll but were created earlier are included in the payload's `body.data.updated` array.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   pollResourceType,
@@ -50,4 +55,5 @@ export const pollChangesInputs = {
   showNewRecords,
   showUpdatedRecords,
 };
+
 export const myTriggerInputs = {};

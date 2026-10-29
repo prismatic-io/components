@@ -7,6 +7,7 @@ import { listVariantsGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listVariantsQuery from "../queries/variants/ListVariants.gql";
+
 export const listVariantsGql = action({
   display: {
     label: "List Variants",
@@ -34,9 +35,8 @@ export const listVariantsGql = action({
         first: getAlldata ? MAX_LIMIT : pagination.limit,
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
-    )) as Record<"productVariants", unknown[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"productVariants", unknown[]> & { pageInfo: PageInfo };
+
     return {
       data,
     };

@@ -14,6 +14,7 @@ import {
   groupId,
   pageSize,
 } from "./common";
+
 const showHiddenAgreements = input({
   label: "Show Hidden Agreements",
   type: "boolean",
@@ -21,6 +22,7 @@ const showHiddenAgreements = input({
     "When true, fetches all the hidden agreements along with the visible agreements. Default value is false.",
   clean: util.types.toBool,
 });
+
 const agreementId = input({
   label: "Agreement ID",
   type: "string",
@@ -32,6 +34,7 @@ const agreementId = input({
   comments:
     "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
 });
+
 const expirationDate = input({
   label: "Expiration Date",
   type: "string",
@@ -42,6 +45,7 @@ const expirationDate = input({
   clean: util.types.toString,
   required: false,
 });
+
 const transientDocumentId = input({
   label: "Transient Document ID",
   type: "string",
@@ -51,6 +55,7 @@ const transientDocumentId = input({
   clean: util.types.toString,
   comments: "ID for a transient document that will be added to the agreement.",
 });
+
 const agreementName = input({
   label: "Agreement Name",
   type: "string",
@@ -60,6 +65,7 @@ const agreementName = input({
   clean: util.types.toString,
   comments: "Name of the Agreement that will be used to identify it.",
 });
+
 const participantsSetInfoRole = input({
   label: "Participant Set Info Role",
   type: "string",
@@ -75,6 +81,7 @@ const participantsSetInfoRole = input({
   comments:
     "Role assumed by all participants in this set (signer, approver, etc.).",
 });
+
 const signatureType = input({
   label: "Signature Type",
   type: "string",
@@ -92,6 +99,7 @@ const signatureType = input({
   comments:
     "The type of signature you would like to request - written or e-signature.",
 });
+
 const agreementState = input({
   label: "Agreement State",
   type: "string",
@@ -108,6 +116,7 @@ const agreementState = input({
   },
   comments: "State of the agreement.",
 });
+
 const participantMemberInfoEmail = input({
   label: "Participant Member Info Email",
   type: "string",
@@ -117,6 +126,7 @@ const participantMemberInfoEmail = input({
   clean: util.types.toString,
   comments: "Email address of the participant.",
 });
+
 const additionalAgreementParticipants = input({
   label: "Additional Agreement Participants",
   type: "code",
@@ -139,6 +149,7 @@ const additionalAgreementParticipants = input({
   ),
   clean: cleanJsonArrayInput,
 });
+
 export const createAgreementInputs = {
   connection,
   transientDocumentId: {
@@ -152,10 +163,12 @@ export const createAgreementInputs = {
   agreementState,
   additionalAgreementParticipants,
 };
+
 export const getAgreementInputs = {
   connection,
   agreementId,
 };
+
 export const listAgreementsInputs = {
   connection,
   fetchAll,
@@ -176,6 +189,7 @@ export const listAgreementsInputs = {
   groupId,
   showHiddenAgreements,
 };
+
 export const updateAgreementInputs = {
   connection,
   transientDocumentId,
@@ -193,10 +207,12 @@ export const updateAgreementInputs = {
     required: true,
   },
 };
+
 export const deleteAgreementDocumentsInputs = {
   connection,
   agreementId,
 };
+
 export const downloadAgreementFileInputs = {
   connection,
   agreementId: {
@@ -204,6 +220,7 @@ export const downloadAgreementFileInputs = {
     required: true,
   },
 };
+
 export const selectAgreementsInputs = {
   connection,
   filterQuery,

@@ -1,7 +1,9 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { connection, model } from "./common";
+
 const { debugRequest: _debug, ...rawHttpRequestBase } = httpClientInputs;
+
 export const rawHttpRequestInputs = {
   connection,
   ...rawHttpRequestBase,
@@ -12,6 +14,7 @@ export const rawHttpRequestInputs = {
     example: "/json/2/res.partner/search_read",
   },
 };
+
 const method = input({
   label: "Method",
   type: "string",
@@ -22,6 +25,7 @@ const method = input({
   placeholder: "Enter the method to execute",
   clean: util.types.toString,
 });
+
 const parameters = input({
   label: "Parameters",
   type: "code",
@@ -34,6 +38,7 @@ const parameters = input({
     "A JSON array of positional arguments to pass to `execute_kw`. See the Odoo XML-RPC documentation for argument shapes.",
   example: JSON.stringify([["read"]]),
 });
+
 export const rawRequestInputs = {
   connection,
   model,

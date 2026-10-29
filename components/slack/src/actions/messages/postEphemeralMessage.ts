@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { postEphemeralMessageExamplePayload } from "../../examplePayloads";
 import { postEphemeralMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const postEphemeralMessage = action({
   display: {
     label: "Post Ephemeral Message",
@@ -24,11 +25,10 @@ export const postEphemeralMessage = action({
       username: username || undefined,
       text: message || undefined,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: postEphemeralMessageExamplePayload,
   }),
   examplePayload: {

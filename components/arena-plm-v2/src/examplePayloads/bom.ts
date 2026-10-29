@@ -5,6 +5,7 @@ import type {
   ItemBomVo,
   ItemBomVoResultRep,
 } from "../types";
+
 const sampleBomItemShort = {
   guid: "2MM33NN44OO55PP66QQ77RR8",
   name: "Ceramic Capacitor 10uF",
@@ -16,6 +17,7 @@ const sampleBomItemShort = {
     app: "https://app.bom.com/items/2MM33NN44OO55PP66QQ77RR8",
   },
 };
+
 const sampleSubstituteItemShort = {
   guid: "3NN44OO55PP66QQ77RR88SS9",
   name: "Ceramic Capacitor 10uF (Alt Vendor)",
@@ -27,6 +29,7 @@ const sampleSubstituteItemShort = {
     app: "https://app.bom.com/items/3NN44OO55PP66QQ77RR88SS9",
   },
 };
+
 const sampleBomSubstitute: BomSubstituteVo = {
   guid: "4SB55SB66SB77SB88SB99SB0",
   item: sampleSubstituteItemShort,
@@ -34,6 +37,7 @@ const sampleBomSubstitute: BomSubstituteVo = {
   quantity: 2,
   rank: 1,
 };
+
 const sampleBomLine: ItemBomVo = {
   guid: "1BL22BL33BL44BL55BL66BL7",
   item: sampleBomItemShort,
@@ -52,25 +56,24 @@ const sampleBomLine: ItemBomVo = {
     },
   ],
 };
-export const createBomLineExamplePayload: {
-  data: ItemBomVo;
-} = {
+
+export const createBomLineExamplePayload: { data: ItemBomVo } = {
   data: sampleBomLine,
 };
-export const createBomSubstituteExamplePayload: {
-  data: BomSubstituteVo;
-} = {
+
+export const createBomSubstituteExamplePayload: { data: BomSubstituteVo } = {
   data: sampleBomSubstitute,
 };
+
 export const deleteBomLineExamplePayload = {
   data: { success: true, message: "BOM line deleted successfully" },
 };
+
 export const deleteBomSubstituteExamplePayload = {
   data: { success: true, message: "BOM substitute deleted successfully" },
 };
-export const listBomExamplePayload: {
-  data: ItemBomVoResultRep;
-} = {
+
+export const listBomExamplePayload: { data: ItemBomVoResultRep } = {
   data: {
     results: [
       {
@@ -116,24 +119,22 @@ export const listBomExamplePayload: {
     count: 2,
   },
 };
-export const getBomLineExamplePayload: {
-  data: ItemBomVo;
-} = {
+
+export const getBomLineExamplePayload: { data: ItemBomVo } = {
   data: sampleBomLine,
 };
-export const getBomSettingsExamplePayload: {
-  data: BomSettingVo;
-} = {
+
+export const getBomSettingsExamplePayload: { data: BomSettingVo } = {
   data: {
     automaticallyGenerateLineNumbers: true,
     checkReferenceDesignators: false,
   },
 };
-export const getBomSubstituteExamplePayload: {
-  data: BomSubstituteVo;
-} = {
+
+export const getBomSubstituteExamplePayload: { data: BomSubstituteVo } = {
   data: sampleBomSubstitute,
 };
+
 export const listBomSubstitutesExamplePayload: {
   data: BomSubstituteVoResultRep;
 } = {
@@ -161,26 +162,23 @@ export const listBomSubstitutesExamplePayload: {
     count: 2,
   },
 };
-export const updateBomLineExamplePayload: {
-  data: ItemBomVo;
-} = {
+
+export const updateBomLineExamplePayload: { data: ItemBomVo } = {
   data: {
     ...sampleBomLine,
     quantity: 3,
     notes: "Decoupling capacitor for the 3.3V rail (quantity revised).",
   },
 };
-export const updateBomSettingsExamplePayload: {
-  data: BomSettingVo;
-} = {
+
+export const updateBomSettingsExamplePayload: { data: BomSettingVo } = {
   data: {
     automaticallyGenerateLineNumbers: false,
     checkReferenceDesignators: true,
   },
 };
-export const updateBomSubstituteExamplePayload: {
-  data: BomSubstituteVo;
-} = {
+
+export const updateBomSubstituteExamplePayload: { data: BomSubstituteVo } = {
   data: {
     ...sampleBomSubstitute,
     rank: 2,

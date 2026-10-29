@@ -14,6 +14,7 @@ import {
   runDataInput,
   statusInput,
 } from "./common";
+
 const exportGuidInput = input({
   label: "Export GUID",
   type: "string",
@@ -23,6 +24,7 @@ const exportGuidInput = input({
   example: "EX4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const exportRunGuidInput = input({
   label: "Export Run GUID",
   type: "string",
@@ -32,6 +34,7 @@ const exportRunGuidInput = input({
   example: "EX4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const exportDataInput = input({
   label: "Export Data",
   type: "data",
@@ -39,6 +42,7 @@ const exportDataInput = input({
   comments: "Export definition data including name, description, etc.",
   clean: util.types.toObject,
 });
+
 const latestCompletedInput = input({
   label: "Latest Completed",
   type: "string",
@@ -48,6 +52,7 @@ const latestCompletedInput = input({
     "Filters export runs by the latest completed flag. Accepted values are true and false; any other value omits the filter.",
   clean: toOptionalBoolean,
 });
+
 const viewInput = input({
   label: "View",
   type: "string",
@@ -57,16 +62,19 @@ const viewInput = input({
     "Optional view parameter (e.g., 'withFiles' to include file information).",
   clean: toOptionalString,
 });
+
 export const createExportInputs = {
   connection: connectionInput,
   exportData: exportDataInput,
 };
+
 export const downloadExportRunFileContentInputs = {
   connection: connectionInput,
   exportGuid: exportGuidInput,
   exportRunGuid: exportRunGuidInput,
   fileGuid: { ...fileGuidInput, comments: "The GUID of the file to download." },
 };
+
 export const getExportInputs = {
   connection: connectionInput,
   exportGuid: {
@@ -75,6 +83,7 @@ export const getExportInputs = {
     clean: util.types.toString,
   },
 };
+
 export const getExportRunInputs = {
   connection: connectionInput,
   exportGuid: exportGuidInput,
@@ -83,6 +92,7 @@ export const getExportRunInputs = {
     comments: "The GUID of the export run to retrieve.",
   },
 };
+
 export const listExportRunsInputs = {
   connection: connectionInput,
   exportGuid: exportGuidInput,
@@ -100,6 +110,7 @@ export const listExportRunsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listExportsInputs = {
   connection: connectionInput,
   number: {
@@ -124,11 +135,13 @@ export const listExportsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const getLatestCompletedExportRunInputs = {
   connection: connectionInput,
   exportGuid: exportGuidInput,
   view: viewInput,
 };
+
 export const runExportInputs = {
   connection: connectionInput,
   exportGuid: {

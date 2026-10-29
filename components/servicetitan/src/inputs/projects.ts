@@ -1,4 +1,5 @@
 import { input, structuredObjectInput } from "@prismatic-io/spectral";
+
 import {
   cleanNumberInput,
   cleanNumberValueListInput,
@@ -20,6 +21,7 @@ import {
   start,
   summary,
 } from "./common";
+
 const projectManagerIds = input({
   label: "Project Manager IDs",
   type: "string",
@@ -30,6 +32,7 @@ const projectManagerIds = input({
   placeholder: "Enter a project manager ID",
   clean: cleanNumberValueListInput,
 });
+
 const statusId = input({
   label: "Status ID",
   type: "string",
@@ -39,6 +42,7 @@ const statusId = input({
   placeholder: "Enter a project status ID",
   clean: cleanStringInput,
 });
+
 const subStatusId = input({
   label: "Sub Status ID",
   type: "string",
@@ -48,6 +52,7 @@ const subStatusId = input({
   placeholder: "Enter a project sub-status ID",
   clean: cleanStringInput,
 });
+
 const targetCompletionDate = input({
   label: "Target Completion Date",
   type: "string",
@@ -57,6 +62,7 @@ const targetCompletionDate = input({
   placeholder: "Enter the target completion date and time in UTC",
   clean: cleanStringInput,
 });
+
 const actualCompletionDate = input({
   label: "Actual Completion Date",
   type: "string",
@@ -66,6 +72,7 @@ const actualCompletionDate = input({
   placeholder: "Enter the actual completion date and time in UTC",
   clean: cleanStringInput,
 });
+
 const jobsIds = input({
   label: "Job IDs",
   type: "string",
@@ -77,6 +84,7 @@ const jobsIds = input({
   clean: cleanNumberValueListInput,
   dataSource: "selectJob",
 });
+
 export const createProjectInputs = {
   connection,
   locationId,
@@ -111,6 +119,7 @@ export const createProjectInputs = {
       "External data items to attach to the project, grouped under an application GUID.",
   },
 };
+
 export const getProjectInputs = {
   connection,
   projectId: {
@@ -119,6 +128,7 @@ export const getProjectInputs = {
     comments: "The ID of the project to retrieve",
   },
 };
+
 export const listProjectsInputs = {
   connection,
   fetchAll,
@@ -127,6 +137,7 @@ export const listProjectsInputs = {
   sort,
   customQueryParams,
 };
+
 export const updateProjectInputs = {
   connection,
   projectId: {

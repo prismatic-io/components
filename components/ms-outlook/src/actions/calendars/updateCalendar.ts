@@ -5,6 +5,7 @@ import { updateCalendarExamplePayload } from "../../examplePayloads";
 import { updateCalendarInputs } from "../../inputs";
 import type { ODataAttrs } from "../../types";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const updateCalendar = action({
   display: {
     label: "Update Calendar",

@@ -1,10 +1,12 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, version } from "../inputs";
+
 interface Inventory {
   inventoryId: number;
   name: string;
 }
+
 export const inventory = dataSource({
   display: {
     label: "Fetch Inventory",

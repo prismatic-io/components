@@ -1,4 +1,5 @@
 import { pageInfoSchema, userErrorsArraySchema } from "./shared";
+
 const inventoryItemSchema = {
   type: "object" as const,
   properties: {
@@ -26,12 +27,14 @@ const inventoryItemSchema = {
     },
   },
 };
+
 export const getInventoryItemsGqlOutputSchema = {
   type: "object" as const,
   properties: {
     inventoryItem: inventoryItemSchema,
   },
 };
+
 export const listInventoryItemsGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +42,7 @@ export const listInventoryItemsGqlOutputSchema = {
     pageInfo: pageInfoSchema,
   },
 };
+
 export const updateInventoryItemsGqlOutputSchema = {
   type: "object" as const,
   properties: {

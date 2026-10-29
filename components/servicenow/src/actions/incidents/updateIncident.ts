@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { updateIncidentInputs } from "../../inputs";
 import { updateTableRecord } from "../tables/records/updateTableRecord";
+
 export const updateIncident = action({
   display: {
     label: "Update Incident",
@@ -16,9 +17,7 @@ export const updateIncident = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: {} },
   }),
   inputs: updateIncidentInputs,

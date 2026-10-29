@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { selectEventHookExamplePayload } from "../examplePayloads/dataSources";
 import { connection } from "../inputs/general";
 import { listAllEventHooksFN } from "../util/eventHooks";
+
 export const selectEventHook = dataSource({
   display: {
     label: "Select Event Hook",
@@ -14,10 +15,12 @@ export const selectEventHook = dataSource({
   perform: async (_context, { connection }) => {
     const client = await createClient(connection, false);
     const data = await listAllEventHooksFN(client);
+
     const result = data.map<Element>((eventHook) => ({
       label: eventHook.name,
       key: eventHook.id,
     }));
+
     return {
       result,
     };

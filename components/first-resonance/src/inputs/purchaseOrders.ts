@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { CREATE_PO } from "../constants";
 import { print } from "graphql";
 import { connection, graphQLVariables } from "./general";
+
 export const queryInput = input({
   label: "Query",
   type: "code",
@@ -13,6 +14,7 @@ export const queryInput = input({
   placeholder: "Enter GraphQL query or mutation",
   clean: util.types.toString,
 });
+
 export const createPurchaseOrderFromQuickbooksInputs = {
   connection,
   variables: graphQLVariables,

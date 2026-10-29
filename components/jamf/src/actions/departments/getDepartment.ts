@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDepartmentExamplePayload } from "../../examplePayloads";
 import { getDepartmentInputs } from "../../inputs";
 import type { Department } from "../../types";
+
 export const getDepartment = action({
   display: {
     label: "Get Department",

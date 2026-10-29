@@ -1,32 +1,38 @@
 import { util } from "@prismatic-io/spectral";
 import { MAX_LIST_FOLDER_LIMIT } from "../constants";
 import type { StringTag } from "../types";
+
 export const cleanString = (value: unknown): string =>
   util.types.toString(value).replace(/\/$/, "");
+
 export const cleanActionArray = (value: unknown): StringTag[] | undefined => {
   if (Array.isArray(value) && value.length > 0) {
     return value.map((item) => ({ ".tag": util.types.toString(item) }));
   }
   return undefined;
 };
+
 export const cleanPathArray = (value: unknown): string[] | undefined => {
   if (!Array.isArray(value) || value.length === 0) {
     return undefined;
   }
   return value.map((item) => util.types.toString(item));
 };
+
 export const cleanStringWithTag = (value: unknown): StringTag | undefined => {
   if (value) {
     return { ".tag": util.types.toString(value) };
   }
   return undefined;
 };
+
 export const toOptionalString = (value: unknown): string | undefined => {
   if (value) {
     return util.types.toString(value);
   }
   return undefined;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (!raw) {
@@ -46,6 +52,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return raw;
 };
+
 export const cleanInitialSyncPageSize = (value: unknown): number => {
   const parsed = util.types.toNumber(value);
   if (!Number.isFinite(parsed) || parsed <= 0) {

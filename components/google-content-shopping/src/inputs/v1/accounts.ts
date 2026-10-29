@@ -7,6 +7,7 @@ import {
   paginationGroupedInputs,
   updateMask,
 } from "./common";
+
 const accountName = input({
   label: "Account Name",
   type: "string",
@@ -16,6 +17,7 @@ const accountName = input({
   placeholder: "Enter Account Name",
   required: false,
 });
+
 const adultContent = input({
   label: "Adult Content",
   type: "boolean",
@@ -23,6 +25,7 @@ const adultContent = input({
   comments: "When true, indicates the merchant sells adult content.",
   required: true,
 });
+
 const timeZone = input({
   label: "Time Zone ID",
   type: "string",
@@ -33,6 +36,7 @@ const timeZone = input({
   placeholder: "America/Los_Angeles",
   required: false,
 });
+
 const languageCode = input({
   label: "Language Code",
   type: "string",
@@ -43,6 +47,7 @@ const languageCode = input({
   placeholder: "Enter Language Code",
   required: false,
 });
+
 const users = structuredObjectInput({
   label: "Users",
   collection: "valuelist",
@@ -88,6 +93,7 @@ const users = structuredObjectInput({
     }),
   },
 });
+
 const service = structuredObjectInput({
   label: "Service",
   collection: "valuelist",
@@ -124,6 +130,7 @@ const service = structuredObjectInput({
     }),
   },
 });
+
 export const createAccountInputs = {
   ...connectionOnlyInputs,
   accountName: { ...accountName, clean: util.types.toString, required: true },
@@ -133,18 +140,22 @@ export const createAccountInputs = {
   languageCode,
   users,
 };
+
 export const deleteAccountInputs = {
   ...connectionOnlyInputs,
   account,
 };
+
 export const getAccountInputs = {
   ...connectionOnlyInputs,
   account,
 };
+
 export const listAccountsInputs = {
   ...connectionOnlyInputs,
   ...paginationGroupedInputs,
 };
+
 export const updateAccountInputs = {
   ...connectionOnlyInputs,
   account,
@@ -158,6 +169,7 @@ export const updateAccountInputs = {
     example: "accountName,timeZone",
   },
 };
+
 export const selectAccountMerchantInputs = {
   connection: connectionInput,
 };

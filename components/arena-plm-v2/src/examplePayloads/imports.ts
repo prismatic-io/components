@@ -3,6 +3,7 @@ const sampleCreator = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleImport = {
   guid: "1IM22IM33IM44IM55IM66IM7",
   url: {
@@ -18,6 +19,7 @@ const sampleImport = {
   creationDateTime: "2026-03-14T10:00:00Z",
   lastModifiedDateTime: "2026-03-18T14:30:00Z",
 };
+
 const sampleImportRun = {
   guid: "2IR33IR44IR55IR66IR77IR8",
   url: {
@@ -34,7 +36,9 @@ const sampleImportRun = {
   rowsFailed: 2,
   committed: true,
 };
+
 export const createImportExamplePayload = { data: sampleImport };
+
 export const updateImportExamplePayload = {
   data: {
     ...sampleImport,
@@ -44,7 +48,9 @@ export const updateImportExamplePayload = {
     lastModifiedDateTime: "2026-03-20T09:15:00Z",
   },
 };
+
 export const getImportExamplePayload = { data: sampleImport };
+
 export const listImportsExamplePayload = {
   data: {
     results: [
@@ -69,6 +75,7 @@ export const listImportsExamplePayload = {
     count: 2,
   },
 };
+
 export const runImportExamplePayload = {
   data: {
     ...sampleImportRun,
@@ -80,6 +87,7 @@ export const runImportExamplePayload = {
     committed: false,
   },
 };
+
 export const rerunImportExamplePayload = {
   data: {
     ...sampleImportRun,
@@ -94,6 +102,7 @@ export const rerunImportExamplePayload = {
     committed: false,
   },
 };
+
 export const forceCompleteImportExamplePayload = {
   data: {
     ...sampleImportRun,
@@ -103,7 +112,9 @@ export const forceCompleteImportExamplePayload = {
     committed: true,
   },
 };
+
 export const getImportRunExamplePayload = { data: sampleImportRun };
+
 export const listImportRunsExamplePayload = {
   data: {
     results: [
@@ -128,18 +139,21 @@ export const listImportRunsExamplePayload = {
     count: 2,
   },
 };
+
 export const getImportRunSubmitContentExamplePayload = {
   data:
     "Item Number,Name,Category,Quantity\n" +
     "PRT-002045,Ceramic Capacitor 10uF,Capacitors,2\n" +
     "PRT-002110,Resistor 4.7k Ohm,Resistors,1\n",
 };
+
 export const getImportRunResultContentExamplePayload = {
   data:
     "Item Number,Name,Status,Message\n" +
     "PRT-002045,Ceramic Capacitor 10uF,SUCCESS,Created\n" +
     "PRT-002110,Resistor 4.7k Ohm,SUCCESS,Updated\n",
 };
+
 export const getImportRunErrorContentExamplePayload = {
   data:
     "Row,Item Number,Error\n" +

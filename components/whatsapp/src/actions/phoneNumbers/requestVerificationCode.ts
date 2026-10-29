@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { requestVerificationCodeInputs } from "../../inputs";
 import { requestVerificationCodeExamplePayload } from "../../examplePayloads";
 import FormData from "form-data";
+
 export const requestVerificationCode = action({
   display: {
     label: "Request Verification Code",
@@ -13,9 +14,11 @@ export const requestVerificationCode = action({
     { connection, phoneNumberId, codeMethod, language },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     const formData = new FormData();
     formData.append("code_method", codeMethod);
     formData.append("language", language);
+
     const { data } = await client.post(
       `/${phoneNumberId}/request_code`,
       formData,

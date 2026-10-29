@@ -12,6 +12,7 @@ const brandObject = {
     is_customized: false,
   },
 };
+
 const paginationMeta = {
   pagination: {
     total: 15,
@@ -24,33 +25,39 @@ const paginationMeta = {
     },
   },
 };
+
 export const listBrandsExamplePayload = {
   data: {
     data: [brandObject],
     meta: paginationMeta,
   },
 };
+
 export const getBrandExamplePayload = {
   data: {
     data: brandObject,
     meta: {},
   },
 };
+
 export const createBrandExamplePayload = {
   data: {
     data: brandObject,
     meta: {},
   },
 };
+
 export const updateBrandExamplePayload = {
   data: {
     data: brandObject,
     meta: {},
   },
 };
+
 export const deleteBrandExamplePayload = {
   data: null,
 };
+
 export const createBrandImageExamplePayload = {
   data: {
     data: {
@@ -60,6 +67,7 @@ export const createBrandImageExamplePayload = {
     meta: {},
   },
 };
+
 export const deleteBrandImageExamplePayload = {
   data: null,
 };

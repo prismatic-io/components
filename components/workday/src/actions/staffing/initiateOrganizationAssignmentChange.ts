@@ -5,6 +5,7 @@ import { initiateOrganizationAssignmentChangeExamplePayload } from "../../exampl
 import { initiateOrganizationAssignmentChangeInputs } from "../../inputs";
 import { getIdObject } from "../../util";
 import { initiateOrganizationAssignmentChangeOutputSchema } from "../../outputSchemas";
+
 export const initiateOrganizationAssignmentChange = action({
   display: {
     label: "Initiate Organization Assignment Change",

@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export interface PollingState {
   lastPolledAt?: string;
 }
@@ -12,35 +13,30 @@ export interface NewOrUpdatedFilesResult<T> {
     polledNoChanges: boolean;
   };
 }
+
 export interface BoxChangesObject {
-  newFiles?: {
-    data: Record<string, unknown>[];
-    polledNoChanges: boolean;
-  };
-  updatedFiles?: {
-    data: Record<string, unknown>[];
-    polledNoChanges: boolean;
-  };
+  newFiles?: { data: Record<string, unknown>[]; polledNoChanges: boolean };
+  updatedFiles?: { data: Record<string, unknown>[]; polledNoChanges: boolean };
 }
+
 export interface BoxRecordChange {
   changeType: "new" | "updated";
   record: Record<string, unknown>;
 }
+
 export interface BoxFolderChangesObject {
-  newFolders?: {
-    data: Record<string, unknown>[];
-    polledNoChanges: boolean;
-  };
+  newFolders?: { data: Record<string, unknown>[]; polledNoChanges: boolean };
 }
+
 export interface BoxFolderChange {
   changeType: "new";
   record: Record<string, unknown>;
 }
+
 export interface BoxCommentChangesObject {
-  newComments?: {
-    data: Record<string, unknown>[];
-  };
+  newComments?: { data: Record<string, unknown>[] };
 }
+
 export interface BoxCommentChange {
   changeType: "new";
   record: Record<string, unknown>;

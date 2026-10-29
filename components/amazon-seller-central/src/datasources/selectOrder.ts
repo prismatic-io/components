@@ -12,6 +12,7 @@ import {
 } from "../inputs";
 import type { Order } from "../interfaces";
 import { paginateResults } from "../util";
+
 export const selectOrder = dataSource({
   display: {
     label: "Select Order",
@@ -50,10 +51,12 @@ export const selectOrder = dataSource({
       "Orders",
       true,
     );
+
     const result: Element[] = orders.map((order) => ({
       label: `${order.billToParty.name} - ${order.OrderStatus} - ${order.purchaseOrderNumber} - ${order.PurchaseDate}`,
       key: util.types.toString(order.purchaseOrderNumber),
     }));
+
     return { result };
   },
   dataSourceType: "picklist",

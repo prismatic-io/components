@@ -5,6 +5,7 @@ import { listCustomersContactInputs } from "../../inputs";
 import { listCustomersContactOutputSchema } from "../../outputSchemas";
 import type { ContactCustomer } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listCustomersContact = action({
   display: {
     label: "List Customer Contacts",
@@ -33,6 +34,7 @@ export const listCustomersContact = action({
         ? `/customers/contacts?customerIds=${customerId}`
         : `/customers/${customerId}/contacts`;
     const client = createClient(connection, "crm", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<ContactCustomer>(
         client,

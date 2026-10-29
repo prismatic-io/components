@@ -5,6 +5,7 @@ import {
   cleanNumberInput,
   cleanStringInput,
 } from "../../utils";
+
 export const itemId = input({
   label: "Item Id",
   comments: "The id of the item.",
@@ -15,6 +16,7 @@ export const itemId = input({
   dataSource: "listItems",
   clean: util.types.toString,
 });
+
 export const itemType = input({
   label: "Type",
   comments: "The type of the item.",
@@ -28,6 +30,7 @@ export const itemType = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const itemCategoryId = input({
   label: "Item Category Id",
   comments: "The id of the item category in the item.",
@@ -37,6 +40,7 @@ export const itemCategoryId = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const itemCategoryCode = input({
   label: "Item Category Code",
   comments: "The code of the item category in the item.",
@@ -46,6 +50,7 @@ export const itemCategoryCode = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const itemIsBlocked = input({
   label: "Blocked",
   comments:
@@ -56,6 +61,7 @@ export const itemIsBlocked = input({
   type: "string",
   clean: cleanBooleanInput,
 });
+
 export const gtin = input({
   label: "Global Trade Item Number",
   comments: "The Global Trade Item Number (GTIN) of the item.",
@@ -65,6 +71,7 @@ export const gtin = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const unitPrice = input({
   label: "Unit Price",
   comments: "The unit price of the item.",
@@ -74,6 +81,7 @@ export const unitPrice = input({
   type: "string",
   clean: cleanNumberInput,
 });
+
 export const priceIncludesTax = input({
   label: "Price Includes Tax",
   comments: "Specifies whether the price includes tax.",
@@ -83,6 +91,7 @@ export const priceIncludesTax = input({
   type: "string",
   clean: cleanBooleanInput,
 });
+
 export const unitCost = input({
   label: "Unit Cost",
   comments: "The unit cost of the item.",
@@ -92,6 +101,7 @@ export const unitCost = input({
   type: "string",
   clean: cleanNumberInput,
 });
+
 export const taxGroupId = input({
   label: "Tax Group Id",
   comments: "The id of the tax group in the item.",
@@ -101,6 +111,7 @@ export const taxGroupId = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const taxGroupCode = input({
   label: "Tax Group Code",
   comments: "The code of the tax group in the item.",
@@ -110,6 +121,7 @@ export const taxGroupCode = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const baseUnitOfMeasureId = input({
   label: "Base Unit Of Measure Id",
   comments: "Specifies the ID of the unit of measure.",
@@ -119,6 +131,7 @@ export const baseUnitOfMeasureId = input({
   type: "string",
   clean: cleanStringInput,
 });
+
 export const baseUnitOfMeasureCode = input({
   label: "Base Unit Of Measure Code",
   comments: "The item's base unit of measure code.",

@@ -4,6 +4,7 @@ import { deletePipelineInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deletePipelineExamplePayload } from "../../examplePayloads";
 import { deletePipelineOutputSchema } from "../../outputSchemas";
+
 export const deletePipeline = action({
   display: {
     label: "Delete Pipeline",

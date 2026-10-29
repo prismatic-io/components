@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { locationId, squareConnection } from "./common";
+
 const locationUpdate = input({
   label: "Location Update",
   type: "code",
@@ -55,13 +56,16 @@ const locationUpdate = input({
     return JSON.parse(util.types.toString(locationUpdateInput));
   },
 });
+
 export const listLocationsInputs = {
   squareConnection,
 };
+
 export const retrieveLocationInputs = {
   squareConnection,
   locationId,
 };
+
 export const updateLocationInputs = {
   squareConnection,
   locationId,

@@ -6,6 +6,7 @@ import { createTagInputs } from "../../inputs";
 import { createTagOutputSchema } from "../../outputSchemas";
 import type { QpsServiceResponse, QualysTag } from "../../types";
 import { parseXml } from "../../util";
+
 export const createTag = action({
   display: {
     label: "Create Tag",
@@ -31,6 +32,7 @@ export const createTag = action({
     },
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
+
     const tagElements = [
       `<name>${tagName}</name>`,
       parentTagId ? `<parentTagId>${parentTagId}</parentTagId>` : "",
@@ -43,26 +45,28 @@ export const createTag = action({
     ]
       .filter(Boolean)
       .join("");
+
     const requestBody = `<?xml version="1.0" encoding="UTF-8"?>
 <ServiceRequest>
   <data>
     <Tag>${tagElements}</Tag>
   </data>
 </ServiceRequest>`;
+
     const response = await client.post<string>(
       "/qps/rest/2.0/create/am/tag",
       requestBody,
       { headers: XML_HEADERS },
     );
+
     const parsed = await parseXml<QpsServiceResponse<QualysTag>>(response.data);
+
     return { data: parsed };
   },
   examplePerform: async (
     _context,
     { tagName, color, criticalityScore, ruleText },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...(createTagExamplePayload.data as Record<string, unknown>),
       ServiceResponse: {
@@ -76,9 +80,7 @@ export const createTag = action({
             ...(
               createTagExamplePayload.data as Record<string, unknown> & {
                 ServiceResponse: Record<string, unknown> & {
-                  data: {
-                    Tag: Record<string, unknown>;
-                  };
+                  data: { Tag: Record<string, unknown> };
                 };
               }
             ).ServiceResponse.data.Tag,

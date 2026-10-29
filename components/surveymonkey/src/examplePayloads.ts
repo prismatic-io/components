@@ -12,9 +12,8 @@ import type {
   PaginatedResponse,
 } from "./types";
 import type { Element, TriggerPayload } from "@prismatic-io/spectral";
-export const listSurveysExamplePayload: {
-  data: PaginatedResponse<Survey>;
-} = {
+
+export const listSurveysExamplePayload: { data: PaginatedResponse<Survey> } = {
   data: {
     data: [
       {
@@ -41,9 +40,8 @@ export const listSurveysExamplePayload: {
     },
   },
 };
-export const getSurveyExamplePayload: {
-  data: Survey;
-} = {
+
+export const getSurveyExamplePayload: { data: Survey } = {
   data: {
     id: "123456789",
     title: "Customer Satisfaction Survey",
@@ -56,9 +54,8 @@ export const getSurveyExamplePayload: {
     href: "https://api.surveymonkey.com/v3/surveys/123456789",
   },
 };
-export const getSurveyDetailsExamplePayload: {
-  data: SurveyDetails;
-} = {
+
+export const getSurveyDetailsExamplePayload: { data: SurveyDetails } = {
   data: {
     id: "123456789",
     title: "Customer Satisfaction Survey",
@@ -129,9 +126,8 @@ export const getSurveyDetailsExamplePayload: {
     ],
   },
 };
-export const createSurveyExamplePayload: {
-  data: Survey;
-} = {
+
+export const createSurveyExamplePayload: { data: Survey } = {
   data: {
     id: "123456789",
     title: "Customer Satisfaction Survey",
@@ -144,15 +140,13 @@ export const createSurveyExamplePayload: {
     href: "https://api.surveymonkey.com/v3/surveys/123456789",
   },
 };
-export const deleteSurveyExamplePayload: {
-  data: {
-    success: boolean;
-  };
-} = {
+
+export const deleteSurveyExamplePayload: { data: { success: boolean } } = {
   data: {
     success: true,
   },
 };
+
 export const listCollectorsExamplePayload: {
   data: PaginatedResponse<Collector>;
 } = {
@@ -185,9 +179,8 @@ export const listCollectorsExamplePayload: {
     },
   },
 };
-export const getCollectorExamplePayload: {
-  data: Collector;
-} = {
+
+export const getCollectorExamplePayload: { data: Collector } = {
   data: {
     id: "111111111",
     name: "Web Link",
@@ -199,9 +192,8 @@ export const getCollectorExamplePayload: {
     url: "https://www.surveymonkey.com/r/EXAMPLE",
   },
 };
-export const getCollectorStatsExamplePayload: {
-  data: CollectorStats;
-} = {
+
+export const getCollectorStatsExamplePayload: { data: CollectorStats } = {
   data: {
     id: "111111111",
     total: 150,
@@ -212,9 +204,8 @@ export const getCollectorStatsExamplePayload: {
     unique_clicks: 250,
   },
 };
-export const createCollectorExamplePayload: {
-  data: Collector;
-} = {
+
+export const createCollectorExamplePayload: { data: Collector } = {
   data: {
     id: "333333333",
     name: "New Web Link",
@@ -226,9 +217,8 @@ export const createCollectorExamplePayload: {
     url: "https://www.surveymonkey.com/r/NEWLINK",
   },
 };
-export const updateCollectorExamplePayload: {
-  data: Collector;
-} = {
+
+export const updateCollectorExamplePayload: { data: Collector } = {
   data: {
     id: "111111111",
     name: "Updated Web Link",
@@ -239,15 +229,13 @@ export const updateCollectorExamplePayload: {
     href: "https://api.surveymonkey.com/v3/surveys/123456789/collectors/111111111",
   },
 };
-export const deleteCollectorExamplePayload: {
-  data: {
-    success: boolean;
-  };
-} = {
+
+export const deleteCollectorExamplePayload: { data: { success: boolean } } = {
   data: {
     success: true,
   },
 };
+
 export const listResponsesExamplePayload: {
   data: PaginatedResponse<SurveyResponse>;
 } = {
@@ -285,9 +273,8 @@ export const listResponsesExamplePayload: {
     },
   },
 };
-export const getResponseExamplePayload: {
-  data: SurveyResponse;
-} = {
+
+export const getResponseExamplePayload: { data: SurveyResponse } = {
   data: {
     id: "5555555555",
     survey_id: "123456789",
@@ -302,47 +289,48 @@ export const getResponseExamplePayload: {
     total_time: 300,
   },
 };
-export const getResponseDetailsExamplePayload: {
-  data: SurveyResponseDetails;
-} = {
-  data: {
-    id: "5555555555",
-    survey_id: "123456789",
-    collector_id: "111111111",
-    response_status: "completed",
-    date_created: "2026-01-20T10:15:00+00:00",
-    date_modified: "2026-01-20T10:30:00+00:00",
-    href: "https://api.surveymonkey.com/v3/surveys/123456789/responses/5555555555",
-    analyze_url: "https://www.surveymonkey.com/analyze/response",
-    ip_address: "192.168.1.1",
-    recipient_id: "",
-    total_time: 300,
-    pages: [
-      {
-        id: "111111",
-        questions: [
-          {
-            id: "222222",
-            answers: [
-              {
-                choice_id: "333333",
-                text: "Very Satisfied",
-              },
-            ],
-          },
-          {
-            id: "888888",
-            answers: [
-              {
-                text: "Great service! Very happy with the experience.",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-};
+
+export const getResponseDetailsExamplePayload: { data: SurveyResponseDetails } =
+  {
+    data: {
+      id: "5555555555",
+      survey_id: "123456789",
+      collector_id: "111111111",
+      response_status: "completed",
+      date_created: "2026-01-20T10:15:00+00:00",
+      date_modified: "2026-01-20T10:30:00+00:00",
+      href: "https://api.surveymonkey.com/v3/surveys/123456789/responses/5555555555",
+      analyze_url: "https://www.surveymonkey.com/analyze/response",
+      ip_address: "192.168.1.1",
+      recipient_id: "",
+      total_time: 300,
+      pages: [
+        {
+          id: "111111",
+          questions: [
+            {
+              id: "222222",
+              answers: [
+                {
+                  choice_id: "333333",
+                  text: "Very Satisfied",
+                },
+              ],
+            },
+            {
+              id: "888888",
+              answers: [
+                {
+                  text: "Great service! Very happy with the experience.",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  };
+
 export const listResponsesBulkExamplePayload: {
   data: PaginatedResponse<SurveyResponseDetails>;
 } = {
@@ -382,9 +370,8 @@ export const listResponsesBulkExamplePayload: {
     },
   },
 };
-export const updateResponseExamplePayload: {
-  data: SurveyResponse;
-} = {
+
+export const updateResponseExamplePayload: { data: SurveyResponse } = {
   data: {
     id: "5555555555",
     survey_id: "123456789",
@@ -395,46 +382,42 @@ export const updateResponseExamplePayload: {
     href: "https://api.surveymonkey.com/v3/surveys/123456789/responses/5555555555",
   },
 };
-export const deleteResponseExamplePayload: {
-  data: {
-    success: boolean;
-  };
-} = {
+
+export const deleteResponseExamplePayload: { data: { success: boolean } } = {
   data: {
     success: true,
   },
 };
-export const listContactsExamplePayload: {
-  data: PaginatedResponse<Contact>;
-} = {
-  data: {
-    data: [
-      {
-        id: "1111111111",
-        email: "john.doe@example.com",
-        first_name: "John",
-        last_name: "Doe",
-        href: "https://api.surveymonkey.com/v3/contacts/1111111111",
+
+export const listContactsExamplePayload: { data: PaginatedResponse<Contact> } =
+  {
+    data: {
+      data: [
+        {
+          id: "1111111111",
+          email: "john.doe@example.com",
+          first_name: "John",
+          last_name: "Doe",
+          href: "https://api.surveymonkey.com/v3/contacts/1111111111",
+        },
+        {
+          id: "2222222222",
+          email: "jane.smith@example.com",
+          first_name: "Jane",
+          last_name: "Smith",
+          href: "https://api.surveymonkey.com/v3/contacts/2222222222",
+        },
+      ],
+      page: 1,
+      per_page: 2,
+      total: 2,
+      links: {
+        self: "https://api.surveymonkey.com/v3/contacts?page=1",
       },
-      {
-        id: "2222222222",
-        email: "jane.smith@example.com",
-        first_name: "Jane",
-        last_name: "Smith",
-        href: "https://api.surveymonkey.com/v3/contacts/2222222222",
-      },
-    ],
-    page: 1,
-    per_page: 2,
-    total: 2,
-    links: {
-      self: "https://api.surveymonkey.com/v3/contacts?page=1",
     },
-  },
-};
-export const getContactExamplePayload: {
-  data: Contact;
-} = {
+  };
+
+export const getContactExamplePayload: { data: Contact } = {
   data: {
     id: "1111111111",
     email: "john.doe@example.com",
@@ -447,9 +430,8 @@ export const getContactExamplePayload: {
     href: "https://api.surveymonkey.com/v3/contacts/1111111111",
   },
 };
-export const createContactExamplePayload: {
-  data: Contact;
-} = {
+
+export const createContactExamplePayload: { data: Contact } = {
   data: {
     id: "3333333333",
     email: "new.contact@example.com",
@@ -458,12 +440,9 @@ export const createContactExamplePayload: {
     href: "https://api.surveymonkey.com/v3/contacts/3333333333",
   },
 };
+
 export const createBulkContactsExamplePayload: {
-  data: {
-    succeeded: Contact[];
-    failed: any[];
-    invalids: any[];
-  };
+  data: { succeeded: Contact[]; failed: any[]; invalids: any[] };
 } = {
   data: {
     succeeded: [
@@ -486,9 +465,8 @@ export const createBulkContactsExamplePayload: {
     invalids: [],
   },
 };
-export const updateContactExamplePayload: {
-  data: Contact;
-} = {
+
+export const updateContactExamplePayload: { data: Contact } = {
   data: {
     id: "1111111111",
     email: "john.doe@example.com",
@@ -497,15 +475,13 @@ export const updateContactExamplePayload: {
     href: "https://api.surveymonkey.com/v3/contacts/1111111111",
   },
 };
-export const deleteContactExamplePayload: {
-  data: {
-    success: boolean;
-  };
-} = {
+
+export const deleteContactExamplePayload: { data: { success: boolean } } = {
   data: {
     success: true,
   },
 };
+
 export const listContactListsExamplePayload: {
   data: PaginatedResponse<ContactList>;
 } = {
@@ -530,77 +506,70 @@ export const listContactListsExamplePayload: {
     },
   },
 };
-export const getContactListExamplePayload: {
-  data: ContactList;
-} = {
+
+export const getContactListExamplePayload: { data: ContactList } = {
   data: {
     id: "111111",
     name: "Customer List",
     href: "https://api.surveymonkey.com/v3/contact_lists/111111",
   },
 };
-export const createContactListExamplePayload: {
-  data: ContactList;
-} = {
+
+export const createContactListExamplePayload: { data: ContactList } = {
   data: {
     id: "333333",
     name: "New Contact List",
     href: "https://api.surveymonkey.com/v3/contact_lists/333333",
   },
 };
-export const updateContactListExamplePayload: {
-  data: ContactList;
-} = {
+
+export const updateContactListExamplePayload: { data: ContactList } = {
   data: {
     id: "111111",
     name: "Updated Customer List",
     href: "https://api.surveymonkey.com/v3/contact_lists/111111",
   },
 };
-export const deleteContactListExamplePayload: {
-  data: {
-    success: boolean;
-  };
-} = {
+
+export const deleteContactListExamplePayload: { data: { success: boolean } } = {
   data: {
     success: true,
   },
 };
-export const listWebhooksExamplePayload: {
-  data: PaginatedResponse<Webhook>;
-} = {
-  data: {
-    data: [
-      {
-        id: "111111",
-        name: "Response Webhook",
-        href: "https://api.surveymonkey.com/v3/webhooks/111111",
-        event_type: "response_completed",
-        object_type: "survey",
-        object_ids: ["123456789"],
-        subscription_url: "https://example.com/webhook",
+
+export const listWebhooksExamplePayload: { data: PaginatedResponse<Webhook> } =
+  {
+    data: {
+      data: [
+        {
+          id: "111111",
+          name: "Response Webhook",
+          href: "https://api.surveymonkey.com/v3/webhooks/111111",
+          event_type: "response_completed",
+          object_type: "survey",
+          object_ids: ["123456789"],
+          subscription_url: "https://example.com/webhook",
+        },
+        {
+          id: "222222",
+          name: "Collector Webhook",
+          href: "https://api.surveymonkey.com/v3/webhooks/222222",
+          event_type: "collector_created",
+          object_type: "survey",
+          object_ids: ["987654321"],
+          subscription_url: "https://example.com/webhook",
+        },
+      ],
+      page: 1,
+      per_page: 2,
+      total: 2,
+      links: {
+        self: "https://api.surveymonkey.com/v3/webhooks?page=1",
       },
-      {
-        id: "222222",
-        name: "Collector Webhook",
-        href: "https://api.surveymonkey.com/v3/webhooks/222222",
-        event_type: "collector_created",
-        object_type: "survey",
-        object_ids: ["987654321"],
-        subscription_url: "https://example.com/webhook",
-      },
-    ],
-    page: 1,
-    per_page: 2,
-    total: 2,
-    links: {
-      self: "https://api.surveymonkey.com/v3/webhooks?page=1",
     },
-  },
-};
-export const getWebhookExamplePayload: {
-  data: Webhook;
-} = {
+  };
+
+export const getWebhookExamplePayload: { data: Webhook } = {
   data: {
     id: "111111",
     name: "Response Webhook",
@@ -611,9 +580,8 @@ export const getWebhookExamplePayload: {
     subscription_url: "https://example.com/webhook",
   },
 };
-export const createWebhookExamplePayload: {
-  data: Webhook;
-} = {
+
+export const createWebhookExamplePayload: { data: Webhook } = {
   data: {
     id: "333333",
     name: "New Webhook",
@@ -624,9 +592,8 @@ export const createWebhookExamplePayload: {
     subscription_url: "https://example.com/new-webhook",
   },
 };
-export const updateWebhookExamplePayload: {
-  data: Webhook;
-} = {
+
+export const updateWebhookExamplePayload: { data: Webhook } = {
   data: {
     id: "111111",
     name: "Updated Response Webhook",
@@ -637,18 +604,14 @@ export const updateWebhookExamplePayload: {
     subscription_url: "https://example.com/updated-webhook",
   },
 };
-export const deleteWebhookExamplePayload: {
-  data: {
-    success: boolean;
-  };
-} = {
+
+export const deleteWebhookExamplePayload: { data: { success: boolean } } = {
   data: {
     success: true,
   },
 };
-export const getMeExamplePayload: {
-  data: User;
-} = {
+
+export const getMeExamplePayload: { data: User } = {
   data: {
     id: "12345678",
     username: "SurveyUser123",
@@ -660,45 +623,38 @@ export const getMeExamplePayload: {
     href: "https://api.surveymonkey.com/v3/users/12345678",
   },
 };
-export const rawRequestExamplePayload: {
-  data: {
-    message: string;
-  };
-} = {
+
+export const rawRequestExamplePayload: { data: { message: string } } = {
   data: {
     message: "Raw request executed successfully",
   },
 };
-export const selectSurveyExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectSurveyExamplePayload: { result: Element[] } = {
   result: [
     { label: "Customer Satisfaction Survey", key: "123456789" },
     { label: "Employee Feedback Q1 2026", key: "987654321" },
     { label: "Product Research Survey", key: "456789123" },
   ],
 };
-export const selectCollectorExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectCollectorExamplePayload: { result: Element[] } = {
   result: [
     { label: "Web Link - January (weblink)", key: "111111111" },
     { label: "Email Campaign (email)", key: "222222222" },
     { label: "Social Media (social)", key: "333333333" },
   ],
 };
-export const selectContactListExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectContactListExamplePayload: { result: Element[] } = {
   result: [
     { label: "Customer List", key: "111111" },
     { label: "Employee List", key: "222222" },
     { label: "VIP Customers", key: "333333" },
   ],
 };
-export const selectWebhookEventTypeExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectWebhookEventTypeExamplePayload: { result: Element[] } = {
   result: [
     { label: "Response Completed", key: "response_completed" },
     { label: "Response Created", key: "response_created" },
@@ -714,9 +670,8 @@ export const selectWebhookEventTypeExamplePayload: {
     { label: "Collector Deleted", key: "collector_deleted" },
   ],
 };
-export const eventsWebhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const eventsWebhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "Content-Type": "application/json",
@@ -801,9 +756,8 @@ export const eventsWebhookExamplePayload: {
     globalDebug: false,
   },
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

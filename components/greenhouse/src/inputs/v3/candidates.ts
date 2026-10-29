@@ -28,42 +28,50 @@ import {
   updatedAtGte,
   updatedAtLte,
 } from "./common";
+
 export const candidateId = {
   ...candidate_id,
   required: true,
   dataSource: "candidatesV3",
   clean: util.types.toString,
 };
+
 export const candidateIds = {
   ...candidate_ids,
   comments:
     "The comma-separated list of candidate IDs to return (e.g. '123,456,789'). A maximum of 50 candidates can be returned this way.",
 };
+
 export const candidateEmail = {
   ...email,
   comments:
     "Return only candidates who have this email address on their profile (exact match).",
 };
+
 export const firstName = {
   ...first_name,
   comments: "The candidate's legal first name.",
 };
+
 export const lastName = {
   ...last_name,
   comments: "The candidate's legal last name.",
 };
+
 export const firstNameOptional = {
   ...first_name,
   required: false,
   comments: "The candidate's legal first name. If provided, cannot be blank.",
   clean: toOptionalString,
 };
+
 export const lastNameOptional = {
   ...last_name,
   required: false,
   comments: "The candidate's legal last name. If provided, cannot be blank.",
   clean: toOptionalString,
 };
+
 export const tag = input({
   label: "Tag",
   type: "string",
@@ -73,6 +81,7 @@ export const tag = input({
   example: "Senior",
   clean: toOptionalString,
 });
+
 export const isPrivate = input({
   label: "Include Private Candidates",
   type: "boolean",
@@ -82,6 +91,7 @@ export const isPrivate = input({
     "When true (default), private candidates are included in results. Set to false to return only non-private candidates.",
   clean: toOptionalBoolean,
 });
+
 export const preferredName = input({
   label: "Preferred Name",
   type: "string",
@@ -92,6 +102,7 @@ export const preferredName = input({
   example: "Jay",
   clean: toOptionalString,
 });
+
 export const timeZone = input({
   label: "Time Zone",
   type: "string",
@@ -102,6 +113,7 @@ export const timeZone = input({
   example: "Eastern Time (US & Canada)",
   clean: toOptionalString,
 });
+
 export const canEmail = input({
   label: "Can Email",
   type: "boolean",
@@ -110,6 +122,7 @@ export const canEmail = input({
     "Whether the candidate consented to receive email communication. Defaults to true when omitted.",
   clean: toOptionalBoolean,
 });
+
 export const linkedUserIds = input({
   label: "Linked User IDs",
   type: "string",
@@ -121,6 +134,7 @@ export const linkedUserIds = input({
   example: "92120",
   clean: toNumberArray,
 });
+
 export const application = input({
   label: "Application",
   type: "code",
@@ -131,12 +145,14 @@ export const application = input({
   example: JSON.stringify({ job_id: 215725, recruiter_id: 92120 }, null, 2),
   clean: toOptionalObject,
 });
+
 const nameInformation = structuredObjectInput({
   label: "Name Information",
   required: false,
   comments: "The candidate's first name, last name, and preferred name.",
   inputs: { firstNameOptional, lastNameOptional, preferredName },
 });
+
 const contactInformation = structuredObjectInput({
   label: "Contact Information",
   required: false,
@@ -150,6 +166,7 @@ const contactInformation = structuredObjectInput({
     socialMediaAddresses: social_media_addresses,
   },
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -157,6 +174,7 @@ const dateRangeFilters = structuredObjectInput({
     "Optional inclusive date-range filters. Narrow results by when candidates were created or last updated.",
   inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
 });
+
 export const listCandidatesV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
@@ -166,10 +184,12 @@ export const listCandidatesV3Inputs = {
   isPrivate,
   dateRangeFilters,
 };
+
 export const getCandidateV3Inputs = {
   connection: connectionInput,
   candidateId,
 };
+
 export const createCandidateV3Inputs = {
   connection: connectionInput,
   firstName,
@@ -185,6 +205,7 @@ export const createCandidateV3Inputs = {
   customFields: customFieldsV3,
   application,
 };
+
 export const editCandidateV3Inputs = {
   connection: connectionInput,
   candidateId,
@@ -199,6 +220,7 @@ export const editCandidateV3Inputs = {
   linkedUserIds,
   customFields: customFieldsV3,
 };
+
 export const deleteCandidateV3Inputs = {
   connection: connectionInput,
   candidateId,

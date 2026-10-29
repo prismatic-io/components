@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { listItemLedgerEntriesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "ms-utils";
 import { listItemLedgerEntriesInputs } from "../../inputs/itemLedgerEntries";
+
 export const listItemLedgerEntries = action({
   display: {
     label: "List Item Ledger Entries",
@@ -30,6 +31,7 @@ export const listItemLedgerEntries = action({
       $orderBy: odataQueryParams.$orderBy,
       $select: odataQueryParams.$select,
     };
+
     return await paginateResults<
       (typeof listItemLedgerEntriesExamplePayload)["data"]["value"][number]
     >({

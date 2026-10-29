@@ -17,6 +17,7 @@ const webhookRecord = {
   last_http_status: 200,
   version: "1.0",
 };
+
 export const createWebhookExamplePayload = {
   data: {
     status: "ok",
@@ -24,6 +25,7 @@ export const createWebhookExamplePayload = {
     data: webhookRecord,
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {
     success: true,
@@ -32,6 +34,7 @@ export const deleteWebhookExamplePayload = {
     },
   },
 };
+
 export const listWebhooksExamplePayload = {
   data: {
     status: "ok",

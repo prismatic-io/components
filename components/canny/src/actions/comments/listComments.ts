@@ -4,6 +4,7 @@ import { listCommentsExamplePayload } from "../../examplePayloads";
 import { listCommentsInputs } from "../../inputs";
 import { listCommentsOutputSchema } from "../../outputSchemas";
 import { paginateCursor } from "../../util";
+
 export const listComments = action({
   display: {
     label: "List Comments",
@@ -45,8 +46,7 @@ export const listComments = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCommentsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCommentsExamplePayload,
   examplePayload: listCommentsExamplePayload,
 });

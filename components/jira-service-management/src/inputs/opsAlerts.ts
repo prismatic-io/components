@@ -6,6 +6,7 @@ import {
   connection,
   fetchAll,
 } from "./common";
+
 const opsAlertId = input({
   label: "Alert Identifier",
   type: "string",
@@ -15,6 +16,7 @@ const opsAlertId = input({
   example: "70413a06-38d6-4c85-92b8-5ebc900d42e2",
   clean: util.types.toString,
 });
+
 const opsAlertQuery = input({
   label: "Query",
   type: "string",
@@ -25,6 +27,7 @@ const opsAlertQuery = input({
   example: "status: open",
   clean: toOptionalString,
 });
+
 const opsAlertOffset = input({
   label: "Offset",
   type: "string",
@@ -35,6 +38,7 @@ const opsAlertOffset = input({
   example: "0",
   clean: toOptionalNumber,
 });
+
 const opsAlertSize = input({
   label: "Size",
   type: "string",
@@ -45,12 +49,14 @@ const opsAlertSize = input({
   example: "20",
   clean: toOptionalNumber,
 });
+
 const opsAlertPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Offset and page size controls.",
   inputs: { opsAlertOffset, opsAlertSize },
 });
+
 const opsAlertSort = input({
   label: "Sort",
   type: "string",
@@ -60,6 +66,7 @@ const opsAlertSort = input({
   example: "createdAt",
   clean: toOptionalString,
 });
+
 const opsAlertOrder = input({
   label: "Order",
   type: "string",
@@ -72,6 +79,7 @@ const opsAlertOrder = input({
   comments: "Sort order applied alongside the Sort field.",
   clean: toOptionalString,
 });
+
 const opsAlertMessage = input({
   label: "Message",
   type: "string",
@@ -81,6 +89,7 @@ const opsAlertMessage = input({
   example: "Disk usage at 95% on web-prod-01",
   clean: util.types.toString,
 });
+
 const opsAlertDescription = input({
   label: "Description",
   type: "string",
@@ -91,6 +100,7 @@ const opsAlertDescription = input({
   example: "Disk /var has crossed the 95% threshold and continues to grow.",
   clean: toOptionalString,
 });
+
 const opsAlertPriority = input({
   label: "Priority",
   type: "string",
@@ -106,6 +116,7 @@ const opsAlertPriority = input({
   comments: "Priority level of the alert. Defaults to P3.",
   clean: toOptionalString,
 });
+
 const opsAlertAlias = input({
   label: "Alias",
   type: "string",
@@ -116,6 +127,7 @@ const opsAlertAlias = input({
   example: "disk-usage-web-prod-01",
   clean: toOptionalString,
 });
+
 const opsAlertTags = input({
   label: "Tags",
   type: "code",
@@ -126,6 +138,7 @@ const opsAlertTags = input({
   example: JSON.stringify(["production", "disk"], null, 2),
   clean: toOptionalArray,
 });
+
 const opsAlertSnoozeEndTime = input({
   label: "Snooze Until",
   type: "string",
@@ -136,6 +149,7 @@ const opsAlertSnoozeEndTime = input({
   example: "2026-05-04T18:30:00Z",
   clean: util.types.toString,
 });
+
 export const listOpsAlertsInputs = {
   connection,
   opsAlertQuery,
@@ -145,27 +159,33 @@ export const listOpsAlertsInputs = {
   opsAlertPagination,
   additionalQueryParams,
 };
+
 export const getOpsAlertInputs = {
   connection,
   opsAlertId,
 };
+
 export const deleteOpsAlertInputs = {
   connection,
   opsAlertId,
 };
+
 export const acknowledgeOpsAlertInputs = {
   connection,
   opsAlertId,
 };
+
 export const closeOpsAlertInputs = {
   connection,
   opsAlertId,
 };
+
 export const snoozeOpsAlertInputs = {
   connection,
   opsAlertId,
   opsAlertSnoozeEndTime,
 };
+
 export const createOpsAlertInputs = {
   connection,
   opsAlertMessage,

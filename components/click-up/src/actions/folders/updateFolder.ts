@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { updateFolderExamplePayload } from "../../examplePayloads";
 import { updateFolderInputs } from "../../inputs";
 import { updateFolderOutputSchema } from "../../outputSchemas";
+
 export const updateFolder = action({
   display: {
     label: "Update Folder",
@@ -16,9 +17,11 @@ export const updateFolder = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, folderId, folderName }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
+
     const { data } = await client.put(`/folder/${folderId}`, {
       name: folderName,
     });
+
     return {
       data,
     };

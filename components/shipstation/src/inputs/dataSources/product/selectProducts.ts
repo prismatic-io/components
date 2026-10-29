@@ -15,6 +15,7 @@ import {
   productTypeId,
   sku,
 } from "../../products/common";
+
 export const selectProductsInputs = {
   connectionInput,
   sku: { ...sku, required: false },

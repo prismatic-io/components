@@ -11,6 +11,7 @@ import {
   topicId,
   userId,
 } from "./common";
+
 export const createArticleSubscriptionInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -30,6 +31,7 @@ export const createArticleSubscriptionInputs = {
     required: false,
   },
 };
+
 export const createPostSubscriptionInputs = {
   zendeskConnection: connectionInput,
   postId,
@@ -40,6 +42,7 @@ export const createPostSubscriptionInputs = {
     required: false,
   },
 };
+
 export const createSectionSubscriptionInputs = {
   zendeskConnection: connectionInput,
   sectionId,
@@ -60,6 +63,7 @@ export const createSectionSubscriptionInputs = {
   },
   includeComments,
 };
+
 export const createTopicSubscriptionInputs = {
   zendeskConnection: connectionInput,
   topicId,
@@ -71,6 +75,7 @@ export const createTopicSubscriptionInputs = {
   },
   includeComments,
 };
+
 export const deleteArticleSubscriptionInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -88,11 +93,13 @@ export const deleteArticleSubscriptionInputs = {
     dataSource: "selectArticleSubscription",
   },
 };
+
 export const deletePostSubscriptionInputs = {
   zendeskConnection: connectionInput,
   postId,
   subscriptionId: { ...subscriptionId, dataSource: "selectPostSubscription" },
 };
+
 export const deleteSectionSubscriptionInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -108,6 +115,7 @@ export const deleteSectionSubscriptionInputs = {
     dataSource: "selectSectionSubscription",
   },
 };
+
 export const deleteTopicSubscriptionInputs = {
   zendeskConnection: connectionInput,
   topicId,
@@ -116,6 +124,7 @@ export const deleteTopicSubscriptionInputs = {
     dataSource: "selectTopicSubscription",
   },
 };
+
 export const getArticleSubscriptionInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -133,11 +142,13 @@ export const getArticleSubscriptionInputs = {
     dataSource: "selectArticleSubscription",
   },
 };
+
 export const getPostSubscriptionInputs = {
   postId,
   subscriptionId: { ...subscriptionId, dataSource: "selectPostSubscription" },
   zendeskConnection: connectionInput,
 };
+
 export const getSectionSubscriptionInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -153,6 +164,7 @@ export const getSectionSubscriptionInputs = {
     dataSource: "selectSectionSubscription",
   },
 };
+
 export const getTopicSubscriptionInputs = {
   zendeskConnection: connectionInput,
   topicId,
@@ -161,6 +173,7 @@ export const getTopicSubscriptionInputs = {
     dataSource: "selectTopicSubscription",
   },
 };
+
 export const listArticleSubscriptionsInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -173,11 +186,13 @@ export const listArticleSubscriptionsInputs = {
   articleId,
   pagination,
 };
+
 export const listPostSubscriptionsInputs = {
   zendeskConnection: connectionInput,
   postId,
   pagination,
 };
+
 export const listSectionSubscriptionsInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -190,6 +205,7 @@ export const listSectionSubscriptionsInputs = {
   sectionId,
   pagination,
 };
+
 export const listTopicSubscriptionsInputs = {
   zendeskConnection: connectionInput,
   topicId,

@@ -4,6 +4,7 @@ import { getDealsSummaryInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getDealsSummaryExamplePayload } from "../../examplePayloads";
 import { getDealsSummaryOutputSchema } from "../../outputSchemas";
+
 export const getDealsSummary = action({
   display: {
     label: "Get Deals Summary",

@@ -4,6 +4,7 @@ import { googleStorageClient } from "../client";
 import { listFilesExamplePayload } from "../examplePayloads";
 import { listFilesInputs } from "../inputs";
 import { paginateGCSResults } from "../util";
+
 const listFilesV2 = action({
   display: {
     label: "List Files",
@@ -14,6 +15,7 @@ const listFilesV2 = action({
     const storage = googleStorageClient(params.connection);
     const bucket = storage.bucket(util.types.toString(params.bucketName));
     const prefixValue = util.types.toString(params.prefix);
+
     const result = await paginateGCSResults<File>(
       async ({ maxResults, pageToken }) =>
         bucket.getFiles({
@@ -27,6 +29,7 @@ const listFilesV2 = action({
         pageToken: params.pageToken,
       },
     );
+
     return {
       data: {
         files: result.items.map((f) => f.name).filter((f) => !f.endsWith("/")),
@@ -40,4 +43,5 @@ const listFilesV2 = action({
   },
   examplePayload: listFilesExamplePayload,
 });
+
 export default { listFilesV2 };

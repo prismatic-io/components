@@ -6,6 +6,7 @@ import {
   connection,
   fetchAll,
 } from "./common";
+
 const assetObjectId = input({
   label: "Object ID",
   type: "string",
@@ -16,6 +17,7 @@ const assetObjectId = input({
   example: "425",
   clean: util.types.toString,
 });
+
 const assetObjectTypeId = input({
   label: "Object Type ID",
   type: "string",
@@ -27,6 +29,7 @@ const assetObjectTypeId = input({
   dataSource: "selectAssetObjectType",
   clean: util.types.toString,
 });
+
 const assetSchemaId = input({
   label: "Schema ID",
   type: "string",
@@ -38,6 +41,7 @@ const assetSchemaId = input({
   dataSource: "selectAssetSchema",
   clean: util.types.toString,
 });
+
 const assetAttributes = input({
   label: "Attributes",
   type: "code",
@@ -58,6 +62,7 @@ const assetAttributes = input({
   ),
   clean: util.types.toObject,
 });
+
 const assetQL = input({
   label: "AQL Query",
   type: "string",
@@ -68,6 +73,7 @@ const assetQL = input({
   example: 'objectType = "Computer"',
   clean: util.types.toString,
 });
+
 const assetIncludeAttributes = input({
   label: "Include Attributes",
   type: "boolean",
@@ -77,6 +83,7 @@ const assetIncludeAttributes = input({
     "When true, full attribute values are returned for each object. Disable to reduce payload size.",
   clean: util.types.toBool,
 });
+
 const assetStartAt = input({
   label: "Start At",
   type: "string",
@@ -87,6 +94,7 @@ const assetStartAt = input({
   example: "0",
   clean: toOptionalNumber,
 });
+
 const assetMaxResults = input({
   label: "Max Results",
   type: "string",
@@ -97,16 +105,19 @@ const assetMaxResults = input({
   example: "50",
   clean: toOptionalNumber,
 });
+
 const assetPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Start index and page size controls.",
   inputs: { assetStartAt, assetMaxResults },
 });
+
 export const getAssetObjectInputs = {
   connection,
   assetObjectId,
 };
+
 export const createAssetObjectInputs = {
   connection,
   assetSchemaId,
@@ -114,6 +125,7 @@ export const createAssetObjectInputs = {
   assetAttributes,
   additionalFields,
 };
+
 export const updateAssetObjectInputs = {
   connection,
   assetObjectId,
@@ -121,26 +133,31 @@ export const updateAssetObjectInputs = {
   assetAttributes,
   additionalFields,
 };
+
 export const deleteAssetObjectInputs = {
   connection,
   assetObjectId,
 };
+
 export const searchAssetObjectsInputs = {
   connection,
   assetQL,
   assetIncludeAttributes,
   assetPagination,
 };
+
 export const listAssetSchemasInputs = {
   connection,
   fetchAll,
   assetPagination,
   additionalQueryParams,
 };
+
 export const getAssetSchemaInputs = {
   connection,
   assetSchemaId,
 };
+
 export const listSchemaObjectTypesInputs = {
   connection,
   assetSchemaId,

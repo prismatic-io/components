@@ -13,18 +13,22 @@ import type {
   SOQLQueryParams,
 } from "../types";
 import { coerceObjectValues } from "./cleanFunctions";
+
 export const toFindOptions = <S extends Schema, N extends SObjectNames<S>>(
   pageSizeValue: unknown,
   pageNumberValue: unknown,
 ): FindOptions<S, N> => {
   const pageSize = util.types.toInt(pageSizeValue) || undefined;
   const pageNumber = util.types.toInt(pageNumberValue) || undefined;
+
   if (!pageSize || !pageNumber) {
     return undefined;
   }
+
   const offset = pageNumber === 1 ? 0 : pageSize * (pageNumber - 1);
   return { limit: pageSize, offset };
 };
+
 export const getFindQuery = ({
   dynamicValues,
   fetchAll,
@@ -51,6 +55,7 @@ export const getFindQuery = ({
   query = query.sort(sortValue);
   return query;
 };
+
 export const addPaginationToQuery = ({
   fetchAll,
   maxRecordsToFetch,
@@ -75,6 +80,7 @@ export const addPaginationToQuery = ({
   }
   return query;
 };
+
 export const executeSFAction = async (
   context: ActionContext | DataSourceContext,
   command,
@@ -93,6 +99,7 @@ export const executeSFAction = async (
     throw error;
   }
 };
+
 export const mapToElement = (
   objects: Record<string, unknown>[],
   labelKey: string,
@@ -103,11 +110,13 @@ export const mapToElement = (
     key: util.types.toString(object[valueKey]),
   }));
 };
+
 const escapeSOQLValue = (value: unknown): string => {
   if (typeof value === "boolean") return util.types.toString(value);
   if (typeof value === "number") return util.types.toString(value);
   return `'${util.types.toString(value).replace(/'/g, "\\'")}'`;
 };
+
 export const formatSOQLDateTime = (value: Date | string): string => {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -115,7 +124,9 @@ export const formatSOQLDateTime = (value: Date | string): string => {
   }
   return `${date.toISOString().slice(0, 19)}Z`;
 };
+
 const SALESFORCE_ID_PATTERN = /^[a-zA-Z0-9]+$/;
+
 export const formatSOQLId = (value: string): string => {
   if (!SALESFORCE_ID_PATTERN.test(value)) {
     throw new Error(
@@ -124,6 +135,7 @@ export const formatSOQLId = (value: string): string => {
   }
   return `'${value}'`;
 };
+
 const buildSOQLWhereClause = (
   filters: Record<string, unknown>,
   conditions: string[] = [],
@@ -136,6 +148,7 @@ const buildSOQLWhereClause = (
   ];
   return clauses.length > 0 ? ` WHERE ${clauses.join(" AND ")}` : "";
 };
+
 const buildSOQLOrderBy = (sortValue: string): string => {
   if (!sortValue?.trim()) return "";
   const parts = sortValue.trim().split(/\s+/);
@@ -145,6 +158,7 @@ const buildSOQLOrderBy = (sortValue: string): string => {
   });
   return ` ORDER BY ${orderClauses.join(", ")}`;
 };
+
 export const buildSOQLQuery = ({
   recordType,
   fields,
@@ -154,6 +168,7 @@ export const buildSOQLQuery = ({
   conditions,
 }: SOQLQueryParams): string => {
   const allFields = [...new Set([...REQUIRED_POLL_FIELDS, ...fields])];
+
   let soql = `SELECT ${allFields.join(", ")} FROM ${recordType}`;
   soql += buildSOQLWhereClause(filters, conditions);
   soql += buildSOQLOrderBy(sortValue);

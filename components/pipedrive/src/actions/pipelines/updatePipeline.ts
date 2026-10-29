@@ -4,6 +4,7 @@ import { updatePipelineInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { updatePipelineExamplePayload } from "../../examplePayloads";
 import { updatePipelineOutputSchema } from "../../outputSchemas";
+
 export const updatePipeline = action({
   display: {
     label: "Update Pipeline",

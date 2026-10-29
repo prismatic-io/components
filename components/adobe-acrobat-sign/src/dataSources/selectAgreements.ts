@@ -3,6 +3,7 @@ import { selectAgreementsInputs } from "../inputs";
 import { getAdobeSignClient } from "../client";
 import type { AgreementResponse } from "../types";
 import { fetchAdobeSignResults, filterAndSort } from "../util";
+
 export const selectAgreements = dataSource({
   display: {
     label: "Select Agreements",
@@ -16,6 +17,7 @@ export const selectAgreements = dataSource({
     { connection, filterQuery, externalId, groupId, showHiddenAgreements },
   ) => {
     const client = getAdobeSignClient(connection);
+
     const agreements = await fetchAdobeSignResults<
       AgreementResponse,
       "userAgreementList",
@@ -31,10 +33,12 @@ export const selectAgreements = dataSource({
       },
       "userAgreementList",
     );
+
     const elements = agreements.map((agreement) => ({
       label: `${agreement.name} - ${agreement.displayDate}`,
       key: agreement.id,
     }));
+
     return {
       result: filterAndSort(elements, filterQuery),
     };

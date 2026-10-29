@@ -29,12 +29,14 @@ export const contactDetailsOutputSchema = {
   },
   required: ["id", "list_ids", "created_at", "updated_at"],
 };
+
 export const addOrUpdateContactOutputSchema = {
   type: "object" as const,
   properties: {
     job_id: { type: "string" },
   },
 };
+
 export const getContactsByEmailsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +52,7 @@ export const getContactsByEmailsOutputSchema = {
     },
   },
 };
+
 export const getImportStatusOutputSchema = {
   type: "object" as const,
   properties: {
@@ -74,6 +77,7 @@ export const getImportStatusOutputSchema = {
     finished_at: { type: "string" },
   },
 };
+
 export const initiateContactsImportOutputSchema = {
   type: "object" as const,
   properties: {

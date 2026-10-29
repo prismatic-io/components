@@ -14,6 +14,7 @@ import {
 } from "../../inputs/companies/updateCompanyInformationInputs";
 import { connectionInput } from "../../inputs/general";
 import type { CompanyInformation } from "../../interfaces";
+
 export const updateCompanyInformation = action({
   display: {
     label: "Update Company Information",
@@ -57,9 +58,11 @@ export const updateCompanyInformation = action({
       addressLine1: address.companyAddressLine1,
       addressLine2: address.companyAddressLine2,
     };
+
     const headers = {
       "If-Match": "*",
     };
+
     const { data } = await client.patch<CompanyInformation>(
       `/companies(${companyId})/companyInformation(${companyInformationId})`,
       payload,
@@ -67,6 +70,7 @@ export const updateCompanyInformation = action({
         headers,
       },
     );
+
     return { data };
   },
   inputs: {

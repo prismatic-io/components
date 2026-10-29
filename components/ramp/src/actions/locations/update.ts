@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getLocationResponse as updateLocationResponse } from "../../examplePayloads/locations";
 import { connection, entityId, locationId, name } from "../../inputs";
 import { updateLocationOutputSchema } from "../../outputSchemas";
+
 export const updateLocation = action({
   display: {
     label: "Update Location",
@@ -31,6 +32,7 @@ export const updateLocation = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, locationId, name, entityId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.patch(`/locations/${locationId}`, {
       name,
       entity_id: entityId,
@@ -42,9 +44,7 @@ export const updateLocation = action({
   examplePerform: async (
     _context,
     { locationId, name, entityId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateLocationResponse,
       entity_id: entityId || updateLocationResponse.entity_id,

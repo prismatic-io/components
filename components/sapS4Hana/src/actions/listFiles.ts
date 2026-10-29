@@ -2,6 +2,7 @@ import { action, input, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
 import { connectionInput, filter, inlinecount } from "../inputs";
+
 export const listFilesSelect = input({
   label: "Select",
   type: "string",
@@ -16,6 +17,7 @@ export const listFilesSelect = input({
   ],
   clean: util.types.toString,
 });
+
 export const listFiles = action({
   display: {
     label: "List Files",
@@ -27,13 +29,18 @@ export const listFiles = action({
     { connectionInput, filter, inlinecount, select },
   ) => {
     const selectArray = select ? select.split(",") : [];
+
     const headers = {
       Accept: "application/json",
     };
     const client = getSapClient(connectionInput, headers);
     try {
       const { data } = await client.get(
-        `/sap/opu/odata/sap/API_CDR_FILE_DOWNLOAD_SRV/ListFiles?${filter.length ? `$filter=${filter}&` : ""}${inlinecount.length ? `$inlinecount=${inlinecount}&` : ""}${selectArray.length ? `$select=${selectArray.join(",")}&` : ""}`,
+        `/sap/opu/odata/sap/API_CDR_FILE_DOWNLOAD_SRV/ListFiles?${
+          filter.length ? `$filter=${filter}&` : ""
+        }${inlinecount.length ? `$inlinecount=${inlinecount}&` : ""}${
+          selectArray.length ? `$select=${selectArray.join(",")}&` : ""
+        }`,
       );
       return { data };
     } catch (error) {

@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { CATEGORIES_PATH } from "../constants";
 import { connection } from "../inputs/common";
 import { paginateResults } from "../util/pagination";
+
 export const selectCategory = dataSource({
   display: {
     label: "Select Category",
@@ -14,16 +15,20 @@ export const selectCategory = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const response = await paginateResults(client, CATEGORIES_PATH, true, {
       $pageSize: 500,
     });
+
     const items = response.items ?? [];
+
     const result = items
       .map<Element>((item) => ({
         label: util.types.toString(item.name),
         key: util.types.toString(item.id),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
     return { result };
   },
   dataSourceType: "picklist",

@@ -5,6 +5,7 @@ import { getAllListsExamplePayload } from "../../examplePayloads";
 import { getAllListsInputs } from "../../inputs";
 import { getAllListsOutputSchema } from "../../outputSchemas";
 import { fetchPaginatedData } from "../../util";
+
 export const getAllLists = action({
   display: {
     label: "Get All Lists",
@@ -14,12 +15,14 @@ export const getAllLists = action({
   performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, pagination, fetchAll }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const data = await fetchPaginatedData(
       client,
       `/${API_VERSION}/marketing/lists`,
       fetchAll,
       { page_size: pagination.page_size, page_token: pagination.page_token },
     );
+
     return {
       data,
     };
@@ -28,9 +31,7 @@ export const getAllLists = action({
     type: "actionOutput",
     schema: getAllListsOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: getAllListsExamplePayload.data,
   }),
   examplePayload: getAllListsExamplePayload,

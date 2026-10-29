@@ -1,4 +1,5 @@
 import { oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
+
 export const googleDocsOauth2 = oauth2Connection({
   key: "googleDocsOauth2",
   display: {
@@ -54,4 +55,5 @@ export const googleDocsOauth2 = oauth2Connection({
     },
   },
 });
+
 export default [googleDocsOauth2];

@@ -25,6 +25,7 @@ import {
   ocurrenceIds,
 } from "../../inputs";
 import { addWebinarRegistrantExamplePayload } from "../../examplePayloads";
+
 export const addWebinarRegistrant = action({
   display: {
     label: "Add Webinar Registrant",
@@ -57,6 +58,7 @@ export const addWebinarRegistrant = action({
     },
   ) => {
     const client = createZoomClient({ connection, debug });
+
     const { data } = await client.post(
       `/webinars/${webinarId}/registrants`,
       {
@@ -82,6 +84,7 @@ export const addWebinarRegistrant = action({
       },
       { params: { occurrence_ids: ocurrenceIds } },
     );
+
     return {
       data,
     };

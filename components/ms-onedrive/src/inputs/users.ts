@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
 import { oneDriveConnection } from "./common";
+
 export const userId = input({
   label: "User",
   type: "string",
@@ -11,6 +12,7 @@ export const userId = input({
   dataSource: "listUsers",
   clean: cleanString,
 });
+
 export const searchUserInputs = {
   connection: oneDriveConnection,
   userId,

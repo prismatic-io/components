@@ -8,6 +8,7 @@ import { removeSharedLinkFromFile } from "./removeSharedLinkFromFile";
 import { removeSharedLinkFromFolder } from "./removeSharedLinkFromFolder";
 import { updateSharedLinkOnFolder } from "./updateSharedLinkOnFolder";
 import { updateSharedLinkToFile } from "./updateSharedLinkToFile";
+
 export default {
   addSharedLinkToFile,
   addSharedLinkToFolder,

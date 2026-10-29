@@ -3,6 +3,7 @@ import { getBulkJobOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { getBulkJobInputs } from "../../inputs";
 import { getBulkJobExamplePayload } from "../../examplePayloads";
+
 export const getBulkJob = action({
   display: {
     label: "Get Bulk Job Information",

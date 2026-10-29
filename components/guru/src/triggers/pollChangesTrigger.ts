@@ -14,6 +14,7 @@ import {
   resolvePollingRecordChanges,
   toGuruDateFilter,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Cards",
@@ -32,10 +33,12 @@ export const pollChangesTrigger = pollingTrigger({
     const now = new Date().toISOString();
     const isInitialSync =
       !pollState?.lastPolledAt && Boolean(params.lookBackDate);
+
     const lastPolledAt =
       pollState?.lastPolledAt ??
       (params.lookBackDate ? new Date(params.lookBackDate).toISOString() : now);
     const client = getGuruClient(params.connection, context.debug.enabled);
+
     const q = `lastModified > ${toGuruDateFilter(lastPolledAt)}`;
     const cards = await fetchGuruResults<GuruCard>(
       client,
@@ -43,18 +46,22 @@ export const pollChangesTrigger = pollingTrigger({
       true,
       { q },
     );
+
     const { created, updated } = classifyCardsByPollDate(cards, lastPolledAt);
     const emittedCreated =
       isInitialSync || params.showNewRecords ? created : [];
     const emittedUpdated =
       isInitialSync || params.showUpdatedRecords ? updated : [];
     const totalMatched = emittedCreated.length + emittedUpdated.length;
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Guru cards: ${cards.length} fetched, ${emittedCreated.length} created, ${emittedUpdated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

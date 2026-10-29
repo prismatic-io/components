@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getAccountExamplePayload as examplePayload } from "../../examplePayloads/account";
 import { getAccountInputs as inputs } from "../../inputs/account";
 import type { GetAccountResponse } from "../../interfaces/account";
+
 export const getAccount = action({
   display: {
     label: "Get Account",
@@ -13,6 +14,7 @@ export const getAccount = action({
       connection,
       debug: context.debug.enabled,
     }).get<GetAccountResponse>("/account");
+
     return {
       data,
     };

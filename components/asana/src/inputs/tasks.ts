@@ -28,6 +28,7 @@ import {
   taskId,
   workspaceId,
 } from "./common";
+
 const approvalStatus = input({
   label: "Approval Status",
   type: "string",
@@ -42,6 +43,7 @@ const approvalStatus = input({
   required: true,
   clean: toOptionalString,
 });
+
 const assigneeSectionId = input({
   label: "Assignee Section ID",
   type: "string",
@@ -52,6 +54,7 @@ const assigneeSectionId = input({
   required: false,
   clean: toOptionalId,
 });
+
 const assigneeStatus = input({
   label: "Assignee Status",
   type: "string",
@@ -62,6 +65,7 @@ const assigneeStatus = input({
   required: false,
   clean: toOptionalString,
 });
+
 const isCompleted = input({
   label: "Completed",
   type: "string",
@@ -76,6 +80,7 @@ const isCompleted = input({
   required: false,
   clean: toOptionalBool,
 });
+
 const completedBy = input({
   label: "Completed By",
   type: "string",
@@ -86,6 +91,7 @@ const completedBy = input({
   required: false,
   clean: toOptionalTrimmedString,
 });
+
 const isLiked = input({
   label: "Is Liked",
   type: "string",
@@ -100,6 +106,7 @@ const isLiked = input({
     "Whether the task is marked as 'liked' for the authenticated user. Select 'Do not change' to leave the existing value untouched.",
   clean: toOptionalBool,
 });
+
 const parentId = input({
   label: "Parent ID",
   type: "string",
@@ -109,6 +116,7 @@ const parentId = input({
   required: false,
   clean: toOptionalId,
 });
+
 const resourceSubtype = input({
   label: "Resource Subtype",
   type: "string",
@@ -119,6 +127,7 @@ const resourceSubtype = input({
   required: false,
   clean: toOptionalString,
 });
+
 const dueAt = input({
   label: "Due At",
   type: "string",
@@ -129,6 +138,7 @@ const dueAt = input({
   required: false,
   clean: toOptionalDate,
 });
+
 const startAt = input({
   label: "Start At",
   type: "string",
@@ -139,6 +149,7 @@ const startAt = input({
   required: false,
   clean: toOptionalString,
 });
+
 const projectList = input({
   label: "Project List",
   type: "string",
@@ -150,18 +161,21 @@ const projectList = input({
   required: false,
   clean: toOptionalStringArray,
 });
+
 const scheduling = structuredObjectInput({
   label: "Scheduling",
   required: false,
   comments: "Due date, due timestamp, start date, and start timestamp.",
   inputs: { dueAt, dueOn, startAt, startOn },
 });
+
 const createTaskStatus = structuredObjectInput({
   label: "Task Status",
   required: false,
   comments: "Assignee Status, Completed By, Completed, and Is Liked.",
   inputs: { assigneeStatus, completedBy, isCompleted, isLiked },
 });
+
 const updateTaskStatus = structuredObjectInput({
   label: "Task Status",
   required: false,
@@ -175,6 +189,7 @@ const updateTaskStatus = structuredObjectInput({
     isLiked,
   },
 });
+
 export const createTaskInputs = {
   asanaConnection: connectionInput,
   approvalStatus,
@@ -192,6 +207,7 @@ export const createTaskInputs = {
   taskStatus: createTaskStatus,
   workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
+
 export const updateTaskInputs = {
   asanaConnection: connectionInput,
   assigneeId: { ...assigneeId, required: false },
@@ -207,6 +223,7 @@ export const updateTaskInputs = {
   taskStatus: updateTaskStatus,
   workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
+
 export const listTasksInputs = {
   asanaConnection: connectionInput,
   assigneeId: { ...assigneeId, required: false },
@@ -215,26 +232,31 @@ export const listTasksInputs = {
   projectId: { ...projectId, required: false, clean: toOptionalId },
   workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
+
 export const getTaskInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: TASK_OPT_FIELDS },
   taskId,
 };
+
 export const deleteTaskInputs = {
   asanaConnection: connectionInput,
   taskId,
 };
+
 export const addTagToTaskInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
   tagId,
   taskId,
 };
+
 export const removeTagFromTaskInputs = {
   asanaConnection: connectionInput,
   tagId,
   taskId,
 };
+
 export const addFollowersToTaskInputs = {
   asanaConnection: connectionInput,
   followersList,
@@ -244,6 +266,7 @@ export const addFollowersToTaskInputs = {
   },
   taskId,
 };
+
 export const removeFollowersFromTaskInputs = {
   asanaConnection: connectionInput,
   followersList,
@@ -253,6 +276,7 @@ export const removeFollowersFromTaskInputs = {
   },
   taskId,
 };
+
 export const removeAssigneeFromTaskInputs = {
   asanaConnection: connectionInput,
   taskId,

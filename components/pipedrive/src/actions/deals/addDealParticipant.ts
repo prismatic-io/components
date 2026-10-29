@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { addDealParticipantInputs } from "../../inputs";
 import { addDealParticipantExamplePayload } from "../../examplePayloads";
 import { addDealParticipantOutputSchema } from "../../outputSchemas";
+
 export const addDealParticipant = action({
   display: {
     label: "Add Deal Participant",

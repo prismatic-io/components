@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { downloadAgreementFileInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import { downloadAgreementFileExamplePayload } from "../../examplePayloads";
+
 export const downloadAgreementFile = action({
   display: {
     label: "Download Agreement PDF",
@@ -14,9 +15,11 @@ export const downloadAgreementFile = action({
       context.debug.enabled,
       "arraybuffer",
     );
+
     const { data } = await client.get(
       `/agreements/${agreementId}/combinedDocument`,
     );
+
     return { data };
   },
   examplePayload: downloadAgreementFileExamplePayload,

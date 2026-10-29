@@ -1,4 +1,5 @@
 import type { Element } from "@prismatic-io/spectral";
+
 const byLabel = (a: Element, b: Element): number => {
   const left = a.label ?? "";
   const right = b.label ?? "";
@@ -6,6 +7,7 @@ const byLabel = (a: Element, b: Element): number => {
   if (left > right) return 1;
   return 0;
 };
+
 export const toSortedElements = <T>(
   rows: T[] | undefined,
   toElement: (row: T) => Element,

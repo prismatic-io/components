@@ -7,6 +7,7 @@ import {
   extraParameters,
   workerId,
 } from "./common";
+
 const actionId = input({
   label: "Action ID",
   comments: "Identifies the action to take on the business process.",
@@ -16,6 +17,7 @@ const actionId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const overallBusinessProcessId = input({
   label: "Overall Business Process ID",
   comments: "Identifies the parent business process instance.",
@@ -25,6 +27,7 @@ const overallBusinessProcessId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const balanceId = input({
   label: "Balance ID",
   comments: "Identifies the time-off balance to retrieve.",
@@ -34,6 +37,7 @@ const balanceId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const days = input({
   label: "Days",
   comments: `The days for which the time off request is being made. An array of objects. See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.absenceManagement.slice(1)}/post-/workers/-ID-/requestTimeOff) for more information.`,
@@ -61,6 +65,7 @@ const days = input({
   required: true,
   clean: (value: unknown) => cleanArrayCodeInput(value, "Days"),
 });
+
 const timeOffComment = input({
   label: "Time Off Comment",
   comments: "Free-text comment attached to the time-off entry.",
@@ -70,6 +75,7 @@ const timeOffComment = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const transactionStatusId = input({
   label: "Transaction Status ID",
   comments: "Identifies the current status of the transaction.",
@@ -79,6 +85,7 @@ const transactionStatusId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const timeOffAttachments = input({
   label: "Time Off Attachments",
   comments:
@@ -110,6 +117,7 @@ const timeOffAttachments = input({
   required: false,
   clean: (value: unknown) => cleanArrayCodeInput(value, "Time Off Attachments"),
 });
+
 const timeOffForId = input({
   label: "Time Off For ID",
   comments:
@@ -120,6 +128,7 @@ const timeOffForId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const businessProcessParameters = structuredObjectInput({
   label: "Business Process Parameters",
   required: false,
@@ -134,7 +143,9 @@ const businessProcessParameters = structuredObjectInput({
     timeOffForId,
   },
 });
+
 export const getTimeOffBalanceByIdInputs = { connection, balanceId };
+
 export const getTimeOffDetailsInputs = {
   connection,
   workerId,
@@ -144,6 +155,7 @@ export const getTimeOffDetailsInputs = {
     comments: `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.absenceManagement.slice(1)}/get-/workers/-ID-/timeOffDetails).`,
   },
 };
+
 export const postTimeOffRequestInputs = {
   connection,
   workerId,

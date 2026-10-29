@@ -4,6 +4,7 @@ import { getOrganizationPersonsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getOrganizationPersonsExamplePayload } from "../../examplePayloads";
 import { getOrganizationPersonsOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationPersons = action({
   display: {
     label: "Get Organization Persons",

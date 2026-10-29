@@ -8811,6 +8811,7 @@ export const invoiceOutputSchema = {
     "total",
   ],
 };
+
 export const listInvoicesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -8821,6 +8822,7 @@ export const listInvoicesOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const deleteInvoiceOutputSchema = {
   type: "object" as const,
   properties: {

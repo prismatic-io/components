@@ -6,6 +6,7 @@ import {
   repo,
   webhookSecretInput,
 } from "./common";
+
 const hookIdInput = input({
   label: "Hook ID",
   type: "string",
@@ -15,6 +16,7 @@ const hookIdInput = input({
   clean: util.types.toNumber,
   comments: "The unique identifier of the webhook.",
 });
+
 const callbackUrl = input({
   label: "Callback URL",
   type: "string",
@@ -24,6 +26,7 @@ const callbackUrl = input({
   clean: util.types.toString,
   comments: "The URL where webhook events will be sent.",
 });
+
 const showOnlyInstanceWebhooks = input({
   label: "Show Only Instance Webhooks",
   comments: "When true, shows only webhooks that point to this instance.",
@@ -31,12 +34,14 @@ const showOnlyInstanceWebhooks = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const reposListWebhooksInputs = {
   connection: connectionInput,
   owner,
   repo,
   showOnlyInstanceWebhooks,
 };
+
 export const reposCreateWebhookInputs = {
   connection: connectionInput,
   owner,
@@ -45,12 +50,14 @@ export const reposCreateWebhookInputs = {
   events,
   webhookSecret: webhookSecretInput,
 };
+
 export const reposDeleteWebhookInputs = {
   connection: connectionInput,
   owner,
   repo,
   hookId: hookIdInput,
 };
+
 export const reposDeleteInstanceWebhooksInputs = {
   connection: connectionInput,
   owner,

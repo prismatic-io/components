@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
+
 export const includeInActive = input({
   label: "Include Inactive",
   type: "boolean",
@@ -7,6 +8,7 @@ export const includeInActive = input({
   comments: "When true, includes inactive users in the list of results.",
   clean: util.types.toBool,
 });
+
 export const username = input({
   label: "Username",
   type: "string",
@@ -17,6 +19,7 @@ export const username = input({
   placeholder: "Enter username",
   clean: cleanString,
 });
+
 export const password = input({
   label: "Password",
   type: "password",
@@ -26,6 +29,7 @@ export const password = input({
   placeholder: "Enter password",
   clean: cleanString,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -35,6 +39,7 @@ export const email = input({
   placeholder: "Enter email address",
   clean: cleanString,
 });
+
 export const profileId = input({
   label: "Profile ID",
   type: "string",
@@ -46,6 +51,7 @@ export const profileId = input({
   dataSource: "selectSecurityProfile",
   clean: cleanString,
 });
+
 export const firstname = input({
   label: "First Name",
   type: "string",
@@ -55,6 +61,7 @@ export const firstname = input({
   placeholder: "Enter first name",
   clean: cleanString,
 });
+
 export const lastname = input({
   label: "Last Name",
   type: "string",

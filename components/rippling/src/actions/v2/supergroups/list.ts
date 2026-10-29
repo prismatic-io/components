@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listSupergroupsExamplePayload } from "../../../examplePayloads";
 import { listSupergroupsInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listSupergroups = action({
   display: {
     label: "List Supergroups (V2)",

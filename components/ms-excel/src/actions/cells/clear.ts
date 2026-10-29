@@ -4,6 +4,7 @@ import { connection } from "../../inputs/general";
 import { clearCellInputs } from "../../inputs/cells/clear";
 import { CLEAR_CONTENT_RESPONSE } from "../../examplePayloads/general";
 import { getDriveOrSiteBaseUrl } from "../../helpers";
+
 export const clearCellRange = action({
   display: {
     label: "Clear Cell Range",
@@ -15,12 +16,14 @@ export const clearCellRange = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     await client.post(
       `${baseUrl}/worksheets/${worksheetId}/range(address='${address}')/clear`,
       {
         applyTo,
       },
     );
+
     return {
       data: CLEAR_CONTENT_RESPONSE,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { withFirestore } from "../../client";
 import { getDocumentExamplePayload } from "../../examplePayloads";
 import { getDocumentInputs } from "../../inputs";
+
 export const getDocument = action({
   display: {
     label: "Get Document",
@@ -15,6 +16,7 @@ export const getDocument = action({
         .collection(params.collection)
         .doc(params.document)
         .get();
+
       return {
         data: result.data(),
         id: result.id,
@@ -24,6 +26,7 @@ export const getDocument = action({
         readTime: result.readTime?.toDate(),
       };
     });
+
     return {
       data,
     };

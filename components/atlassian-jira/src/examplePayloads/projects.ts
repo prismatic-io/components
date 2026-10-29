@@ -25,6 +25,7 @@ export const getProjectExamplePayload = {
     },
   },
 };
+
 export const listProjectsExamplePayload = {
   data: {
     self: "https://your-domain.atlassian.net/rest/api/3/project/search",
@@ -58,6 +59,7 @@ export const listProjectsExamplePayload = {
     ],
   },
 };
+
 export const findProjectExamplePayload = {
   data: [
     {
@@ -72,6 +74,7 @@ export const findProjectExamplePayload = {
     },
   ],
 };
+
 export const searchProjectsExamplePayload = {
   data: [
     {

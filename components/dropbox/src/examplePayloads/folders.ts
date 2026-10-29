@@ -1,6 +1,7 @@
 import type { DropboxResponse, files } from "dropbox";
 import type { ListChangesResult } from "../types";
 import { searchFilesExamplePayload } from "./files";
+
 export const createFolderExamplePayload: DropboxResponse<files.CreateFolderResult> =
   {
     status: 200,
@@ -9,6 +10,7 @@ export const createFolderExamplePayload: DropboxResponse<files.CreateFolderResul
       metadata: { id: "id:wX5yZ6aB7cDAAAAAAAAAFg", name: "Homework" },
     },
   };
+
 export const listChangesExamplePayload: ListChangesResult = {
   entries: [
     {
@@ -35,6 +37,7 @@ export const listChangesExamplePayload: ListChangesResult = {
   cursor: "AAFCBKRdVxEXAMPLE",
   has_more: false,
 };
+
 export const listFolderExamplePayload: DropboxResponse<files.ListFolderResult> =
   {
     status: 200,
@@ -63,4 +66,5 @@ export const listFolderExamplePayload: DropboxResponse<files.ListFolderResult> =
       has_more: true,
     },
   };
+
 export const searchFoldersExamplePayload = searchFilesExamplePayload;

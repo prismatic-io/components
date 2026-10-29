@@ -12,6 +12,7 @@ import {
   subscriptionId,
   timeout,
 } from "./common";
+
 export const collectionMethod = input({
   label: "Collection Method",
   type: "string",
@@ -24,6 +25,7 @@ export const collectionMethod = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const autoAdvance = input({
   label: "Auto Advance",
   type: "boolean",
@@ -32,6 +34,7 @@ export const autoAdvance = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const dueDate = input({
   label: "Due Date",
   type: "string",
@@ -41,6 +44,7 @@ export const dueDate = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 export const coupon = input({
   label: "Coupon",
   type: "string",
@@ -50,6 +54,7 @@ export const coupon = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const discount = input({
   label: "Discount",
   type: "string",
@@ -59,6 +64,7 @@ export const discount = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const invoiceId = input({
   label: "Invoice ID",
   type: "string",
@@ -69,6 +75,7 @@ export const invoiceId = input({
   dataSource: "selectInvoice",
   clean: util.types.toString,
 });
+
 export const createInvoiceInputs = {
   timeout,
   customerId,
@@ -82,27 +89,32 @@ export const createInvoiceInputs = {
   dueDate,
   stripeConnection: connectionInput,
 };
+
 export const deleteInvoiceInputs = {
   invoiceId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getInvoiceInputs = {
   invoiceId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listInvoicesInputs = {
   timeout,
   pagination: forwardCursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const updateInvoiceAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   comments:
     "Additional optional fields: includes Auto Advance, Application Fee Amount, Coupon, and Discount.",
   inputs: { autoAdvance, applicationFeeAmount, coupon, discount },
 });
+
 export const updateInvoiceInputs = {
   invoiceId,
   customerId,

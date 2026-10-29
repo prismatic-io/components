@@ -10,6 +10,7 @@ import {
   properties,
   startCursorInput,
 } from "./common";
+
 const pageIdInput = input({
   label: "Page ID",
   required: true,
@@ -21,6 +22,7 @@ const pageIdInput = input({
   clean: util.types.toString,
   dataSource: "selectPage",
 });
+
 const filterPropertiesInputPage = input({
   type: "string",
   label: "Filter Properties",
@@ -31,16 +33,19 @@ const filterPropertiesInputPage = input({
     "Comma-separated list of page property IDs to include in the response. Use this to limit the response to specific page properties.",
   clean: toOptionalString,
 });
+
 export const getPageInputs = {
   connection: connectionInput,
   pageId: pageIdInput,
   filterProperties: filterPropertiesInputPage,
 };
+
 export const listPagesInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
   startCursor: startCursorInput,
 };
+
 export const createPageInputs = {
   connection: connectionInput,
   parent,

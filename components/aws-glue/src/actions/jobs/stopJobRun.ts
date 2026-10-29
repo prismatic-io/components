@@ -3,6 +3,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { stopJobRunExamplePayload } from "../../examplePayloads";
 import { stopJobRunInputs } from "../../inputs";
+
 export const stopJobRun = action({
   display: {
     label: "Stop Job Run",
@@ -24,5 +25,6 @@ export const stopJobRun = action({
     };
   },
   inputs: stopJobRunInputs,
+
   examplePayload: stopJobRunExamplePayload,
 });

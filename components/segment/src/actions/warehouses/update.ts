@@ -9,6 +9,7 @@ import {
   warehouseId,
 } from "../../inputs";
 import { updateWarehouseExamplePayload } from "../../examplePayloads";
+
 export const updateWarehouse = action({
   display: {
     label: "Update Warehouse",

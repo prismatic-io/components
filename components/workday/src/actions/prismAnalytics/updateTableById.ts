@@ -5,6 +5,7 @@ import { updateTableByIdExamplePayload } from "../../examplePayloads";
 import { updateTableByIdInputs } from "../../inputs";
 import { updateTableByIdOutputSchema } from "../../outputSchemas";
 import { compactRows } from "../../util";
+
 export const updateTableById = action({
   display: {
     label: "Update Table by ID",

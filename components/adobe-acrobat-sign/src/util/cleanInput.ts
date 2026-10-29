@@ -1,18 +1,23 @@
 import { util } from "@prismatic-io/spectral";
+
 export const cleanFunctionValueList = (value: unknown): string[] => {
   if (Array.isArray(value)) {
     return value
       .map((item) => (item ? util.types.toString(item) : undefined))
       .filter(Boolean) as string[];
   }
+
   return [] as string[];
 };
+
 export const cleanFunctionForString = (value: unknown): string | undefined => {
   if (!value) {
     return undefined;
   }
+
   return util.types.toString(value);
 };
+
 export const cleanFunctionForBoolean = (
   value: unknown,
 ): boolean | undefined => {
@@ -21,6 +26,7 @@ export const cleanFunctionForBoolean = (
   }
   return util.types.toBool(value);
 };
+
 export const cleanFunctionForBooleanValueList = (
   value: unknown,
 ): Record<string, boolean>[] | undefined => {
@@ -32,10 +38,13 @@ export const cleanFunctionForBooleanValueList = (
       };
     });
   }
+
   return undefined;
 };
+
 export const cleanNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanJsonArrayInput = (value: unknown): unknown[] | undefined => {
   if (!value) return undefined;
   const parsed = util.types.toObject(value);

@@ -30,7 +30,9 @@ export const getAccountExamplePayload = {
     social_login_identity_issuer: "string",
   },
 };
+
 export const createAccountExamplePayload = getAccountExamplePayload;
+
 export const getAccountTenantIdsExamplePayload = {
   data: ["00000000-0000-0000-0000-000000000000"],
 };

@@ -5,6 +5,7 @@ import { connectionInput } from "../inputs/general";
 import { purchaseOrderId } from "../inputs/purchaseOrders/shared";
 import type { MultipleItemsResponse, PurchaseOrderLine } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const selectPurchaseOrderLine = dataSource({
   display: {
     label: "Select Purchase Order Line",
@@ -23,6 +24,7 @@ export const selectPurchaseOrderLine = dataSource({
     >(
       `/companies(${companyId})/purchaseOrders(${purchaseOrderId})/purchaseOrderLines`,
     );
+
     return {
       result: toSortedPicklist(data.value, (line) => ({
         key: line.id,

@@ -1,34 +1,43 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN, STANDARD_OBJECT_TYPES } from "../constants";
 import { toStringList } from "./helpers";
+
 export const toOptionalString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalInt = (value: unknown): number | undefined =>
   value ? util.types.toInt(value) : undefined;
+
 export const toOptionalObject = (value: unknown): object | undefined =>
   value ? util.types.toObject(value) : undefined;
+
 export const toKeyValueObject = (
   dynamicFields: unknown,
 ): Record<string, unknown> =>
   Array.isArray(dynamicFields)
     ? util.types.keyValPairListToObject(dynamicFields)
     : {};
+
 export const toKeyValueListObject = (
   values: unknown,
 ): Record<string, unknown> =>
   util.types.keyValPairListToObject(values as KeyValuePair[]);
+
 export const toSearchLimit = (value: unknown): number =>
   util.types.toInt(value, 100);
+
 export const toTrimmedStringList = (value: unknown): string[] =>
   util.types.isPicklist(value)
     ? (value as string[]).map((name) => name.trim())
     : [];
+
 export const valueListInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1 && value[0] !== "000xxx") {
     return value as string[];
   }
   return undefined;
 };
+
 export const getDynamicValues = (dynamicValues: unknown) => {
   let dynamicValuesToUse = dynamicValues;
   if (dynamicValuesToUse) {
@@ -40,28 +49,34 @@ export const getDynamicValues = (dynamicValues: unknown) => {
       }
     if (!Array.isArray(dynamicValuesToUse))
       throw new Error("Dynamic Fields should be an array");
+
     for (const pair of dynamicValuesToUse) {
       if (!("key" in pair) || !("value" in pair))
         throw new Error(
           "Each item in Dynamic Fields should be a key-value pair",
         );
     }
+
     return util.types.keyValPairListToObject(dynamicValuesToUse);
   }
   return {};
 };
+
 export const toCommaSeparatedList = (value: unknown): string | undefined => {
   const result = toStringList((value as unknown[]) || []).join(",");
   return result || undefined;
 };
+
 const singularOf = (key: string): string =>
   key.endsWith("ies") ? `${key.slice(0, -3)}y` : key.slice(0, -1);
+
 const STANDARD_OBJECT_TYPE_ALIASES = new Map(
   STANDARD_OBJECT_TYPES.flatMap(({ key, name }) => [
     [name, key],
     [singularOf(name), key],
   ]),
 );
+
 export const toObjectTypeKey = (value: unknown): string => {
   const raw = util.types.toString(value);
   const alias = raw
@@ -70,6 +85,7 @@ export const toObjectTypeKey = (value: unknown): string => {
     .replace(/[\s-]+/g, "_");
   return STANDARD_OBJECT_TYPE_ALIASES.get(alias) ?? raw;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -78,6 +94,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw =
     typeof value === "string" ? value.trim() : util.types.toString(value);
   const match =
@@ -87,6 +104,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = util.types.toNumber(yearStr);
   const month = util.types.toNumber(monthStr);
@@ -101,6 +119,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }

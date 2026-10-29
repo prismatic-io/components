@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listMobileAppAssignmentsExamplePayload } from "../../examplePayloads";
 import { listMobileAppAssignmentsInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listMobileAppAssignments = action({
   display: {
     label: "List Mobile App Assignments",
@@ -28,6 +29,7 @@ export const listMobileAppAssignments = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $filter,
       $select,
@@ -40,12 +42,14 @@ export const listMobileAppAssignments = action({
       $format,
       $skipToken,
     };
+
     const data = await paginateResults(
       client,
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments`,
       fetchAll,
       params,
     );
+
     return {
       data,
     };

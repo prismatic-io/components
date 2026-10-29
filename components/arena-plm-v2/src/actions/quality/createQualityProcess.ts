@@ -5,6 +5,7 @@ import { createQualityProcessInputs } from "../../inputs";
 import { qualityProcessSchema } from "../../outputSchemas";
 import type { QualityProcessCreateVo } from "../../types";
 import { handleArenaError, toOptionalString } from "../../util";
+
 export const createQualityProcess = action({
   display: {
     label: "Create Quality Process",
@@ -19,6 +20,7 @@ export const createQualityProcess = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: QualityProcessCreateVo = {
         name: toOptionalString(params.name),
         description: toOptionalString(params.description),
@@ -36,7 +38,9 @@ export const createQualityProcess = action({
             }
           : undefined,
       };
+
       const { data } = await client.post("/qualityprocesses", requestPayload);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Quality Process");

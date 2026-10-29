@@ -19,13 +19,16 @@ import { listSupplierInvoiceRequests } from "./listSupplierInvoiceRequests";
 import { postSupplierInvoiceRequests } from "./postSupplierInvoiceRequests";
 import { postSupplierInvoiceRequestsAttachments } from "./postSupplierInvoiceRequestsAttachments";
 import { submitSupplierInvoiceRequest } from "./submitSupplierInvoiceRequest";
+
 const SERVICE = "/ccx/accountsPayable/v1";
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
   expect(nock.isDone()).toBe(true);
   nock.cleanAll();
 });
+
 describe("getSupplierInvoiceRequestAttachments", () => {
   const params = {
     connection: oauthTestConnection(),
@@ -33,48 +36,58 @@ describe("getSupplierInvoiceRequestAttachments", () => {
     fetchAll: false,
     pagination: { limit: 10, offset: 0 },
   };
+
   it("returns one page of attachments", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/supplierInvoiceRequests/sir-1/attachments`)
       .query({ limit: 10, offset: 0 })
       .reply(200, getSupplierInvoiceRequestAttachmentsExamplePayload.data);
+
     const { result } = await invoke(
       getSupplierInvoiceRequestAttachments,
       params,
     );
     expect(result).toEqual(getSupplierInvoiceRequestAttachmentsExamplePayload);
   });
+
   it("surfaces a Workday error", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/supplierInvoiceRequests/sir-1/attachments`)
       .query(true)
       .reply(404, { error: "not found" });
+
     await expect(
       invoke(getSupplierInvoiceRequestAttachments, params),
     ).rejects.toThrow();
   });
 });
+
 describe("getSupplierInvoiceRequestsById", () => {
   const params = {
     connection: oauthTestConnection(),
     supplierInvoiceRequestId: "sir-1",
   };
+
   it("returns the supplier invoice request", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/supplierInvoiceRequests/sir-1`)
       .reply(200, getSupplierInvoiceRequestsByIdExamplePayload.data);
+
     const { result } = await invoke(getSupplierInvoiceRequestsById, params);
     expect(result).toEqual(getSupplierInvoiceRequestsByIdExamplePayload);
   });
+
   it("surfaces a Workday error", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/supplierInvoiceRequests/sir-1`)
       .reply(404, { error: "not found" });
+
     await expect(
       invoke(getSupplierInvoiceRequestsById, params),
     ).rejects.toThrow();
   });
 });
+
 describe("listSupplierInvoiceRequests", () => {
   const params = {
     connection: oauthTestConnection(),
@@ -82,22 +95,27 @@ describe("listSupplierInvoiceRequests", () => {
     pagination: { limit: 10, offset: 20 },
     extraParameters: { status: "Draft" },
   };
+
   it("returns one page with the query parameters", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/supplierInvoiceRequests`)
       .query({ status: "Draft", limit: 10, offset: 20 })
       .reply(200, listSupplierInvoiceRequestsExamplePayload.data);
+
     const { result } = await invoke(listSupplierInvoiceRequests, params);
     expect(result).toEqual(listSupplierInvoiceRequestsExamplePayload);
   });
+
   it("surfaces a Workday error", async () => {
     nock(TEST_HOST)
       .get(`${SERVICE}/supplierInvoiceRequests`)
       .query(true)
       .reply(500, { error: "server error" });
+
     await expect(invoke(listSupplierInvoiceRequests, params)).rejects.toThrow();
   });
 });
+
 describe("postSupplierInvoiceRequests", () => {
   const params = {
     connection: oauthTestConnection(),
@@ -117,6 +135,7 @@ describe("postSupplierInvoiceRequests", () => {
     supplierInvoiceDescriptor: "Invoice 1",
     extraBody: { referenceNumber: "PO-000456" },
   };
+
   it("sends the required company, supplier, and invoice date with the mapped body and Extra Body", async () => {
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests`, {
@@ -135,27 +154,33 @@ describe("postSupplierInvoiceRequests", () => {
         referenceNumber: "PO-000456",
       })
       .reply(200, postSupplierInvoiceRequestsExamplePayload.data);
+
     const { result } = await invoke(postSupplierInvoiceRequests, params);
     expect(result).toEqual(postSupplierInvoiceRequestsExamplePayload);
   });
+
   it("does not throw when amount is not set", async () => {
     const { amount: _unset, ...withoutKey } = params;
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests`)
       .reply(200, postSupplierInvoiceRequestsExamplePayload.data);
+
     const { result } = await invoke(
       postSupplierInvoiceRequests,
       withoutKey as typeof params,
     );
     expect(result).toEqual(postSupplierInvoiceRequestsExamplePayload);
   });
+
   it("surfaces a Workday error", async () => {
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests`)
       .reply(400, { error: "invalid" });
+
     await expect(invoke(postSupplierInvoiceRequests, params)).rejects.toThrow();
   });
 });
+
 describe("postSupplierInvoiceRequestsAttachments", () => {
   const file = {
     data: Buffer.from("%PDF-1.4 invoice"),
@@ -174,6 +199,7 @@ describe("postSupplierInvoiceRequestsAttachments", () => {
     contentTypeId: "ct-1",
     supplierInvoiceRequestAttachmentId: "att-1",
   };
+
   it("uploads the metadata as the jsonData part and the binary as the file part", async () => {
     nock(TEST_HOST, {
       reqheaders: { "content-type": /^multipart\/form-data; boundary=/ },
@@ -193,6 +219,7 @@ describe("postSupplierInvoiceRequestsAttachments", () => {
           body.includes("%PDF-1.4 invoice"),
       )
       .reply(201, postSupplierInvoiceRequestsAttachmentsExamplePayload.data);
+
     const { result } = await invoke(
       postSupplierInvoiceRequestsAttachments,
       params,
@@ -201,6 +228,7 @@ describe("postSupplierInvoiceRequestsAttachments", () => {
       postSupplierInvoiceRequestsAttachmentsExamplePayload,
     );
   });
+
   it("defaults the file name and length from the file", async () => {
     nock(TEST_HOST)
       .post(
@@ -213,6 +241,7 @@ describe("postSupplierInvoiceRequestsAttachments", () => {
             }) && body.includes('filename="attachment.pdf"'),
       )
       .reply(201, postSupplierInvoiceRequestsAttachmentsExamplePayload.data);
+
     await invoke(postSupplierInvoiceRequestsAttachments, {
       ...params,
       attachmentDetails: {
@@ -224,11 +253,13 @@ describe("postSupplierInvoiceRequestsAttachments", () => {
       supplierInvoiceRequestAttachmentId: undefined,
     });
   });
+
   it("does not throw when attachmentDetails is not set", async () => {
     const { attachmentDetails: _unset, ...withoutKey } = params;
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests/sir-1/attachments`)
       .reply(201, postSupplierInvoiceRequestsAttachmentsExamplePayload.data);
+
     const { result } = await invoke(
       postSupplierInvoiceRequestsAttachments,
       withoutKey as typeof params,
@@ -237,15 +268,18 @@ describe("postSupplierInvoiceRequestsAttachments", () => {
       postSupplierInvoiceRequestsAttachmentsExamplePayload,
     );
   });
+
   it("surfaces a Workday error", async () => {
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests/sir-1/attachments`)
       .reply(400, { error: "invalid" });
+
     await expect(
       invoke(postSupplierInvoiceRequestsAttachments, params),
     ).rejects.toThrow();
   });
 });
+
 describe("submitSupplierInvoiceRequest", () => {
   const params = {
     connection: oauthTestConnection(),
@@ -253,6 +287,7 @@ describe("submitSupplierInvoiceRequest", () => {
     supplierInvoiceInstanceId: "inst-1",
     supplierInvoiceInstanceDescriptor: "Invoice 1",
   };
+
   it("submits the request and returns the result", async () => {
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests/sir-1/submit`, {
@@ -260,13 +295,16 @@ describe("submitSupplierInvoiceRequest", () => {
         descriptor: "Invoice 1",
       })
       .reply(200, submitSupplierInvoiceRequestExamplePayload.data);
+
     const { result } = await invoke(submitSupplierInvoiceRequest, params);
     expect(result).toEqual(submitSupplierInvoiceRequestExamplePayload);
   });
+
   it("surfaces a Workday error", async () => {
     nock(TEST_HOST)
       .post(`${SERVICE}/supplierInvoiceRequests/sir-1/submit`)
       .reply(409, { error: "conflict" });
+
     await expect(
       invoke(submitSupplierInvoiceRequest, params),
     ).rejects.toThrow();

@@ -1,6 +1,7 @@
 export const addFlagsExamplePayload = {
   data: true,
 };
+
 export const appendMessageExamplePayload = {
   data: {
     destination: "INBOX",
@@ -9,6 +10,7 @@ export const appendMessageExamplePayload = {
     seq: 61,
   },
 };
+
 export const copyMessageExamplePayload = {
   data: {
     path: "My-Source-Mailbox",
@@ -17,15 +19,18 @@ export const copyMessageExamplePayload = {
     uidMap: new Map([[1, 2]]),
   },
 };
+
 export const createMailboxExamplePayload = {
   data: {
     path: "New-Mailbox",
     created: true,
   },
 };
+
 export const deleteMessageExamplePayload = {
   data: true,
 };
+
 export const downloadMessageExamplePayload = {
   data: {
     meta: {
@@ -41,12 +46,7 @@ export const downloadMessageExamplePayload = {
         subject: "Example Subject",
         date: "2025-07-21T12:00:00.000Z",
       } as Record<string, unknown>,
-      attachments: [] as {
-        file: {
-          contentType: string;
-          data: Buffer;
-        };
-      }[],
+      attachments: [] as { file: { contentType: string; data: Buffer } }[],
       attachmentsMetadata: [] as {
         filename: string | undefined;
         size: number;
@@ -59,6 +59,7 @@ export const downloadMessageExamplePayload = {
     },
   },
 };
+
 export const getStatusExamplePayload = {
   data: {
     path: "INBOX",
@@ -70,6 +71,7 @@ export const getStatusExamplePayload = {
     unseen: 41,
   },
 };
+
 export const listMailboxesExamplePayload = {
   data: [
     {
@@ -99,21 +101,26 @@ export const listMailboxesExamplePayload = {
     },
   ],
 };
+
 export const removeFlagsExamplePayload = {
   data: true,
 };
+
 export const renameMailboxExamplePayload = {
   data: {
     path: "Old-Mailbox",
     newPath: "New-Mailbox",
   },
 };
+
 export const searchMailboxExamplePayload = {
   data: [1, 5, 12, 45, 78],
 };
+
 export const setFlagsExamplePayload = {
   data: true,
 };
+
 export const newEmailsPollingTriggerExamplePayload = {
   data: [
     {

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { updateProductExamplePayload } from "../../../examplePayloads/v2_1";
 import { updateProductInputs } from "../../../inputs/v2_1";
+
 export const updateProduct = action({
   display: {
     description:

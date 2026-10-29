@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listGroupUsersExamplePayload } from "../../examplePayloads/groups";
 import { listGroupUsersInputs } from "../../inputs/groups";
 import { paginateRecordsWithLink } from "../../util/util";
+
 export const listGroupMembers = action({
   display: {
     label: "List Group Members",
@@ -14,6 +15,7 @@ export const listGroupMembers = action({
     { connection, groupId, fetchAll, pagination = {} },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
+
     const data = await paginateRecordsWithLink(
       client,
       `/groups/${encodeURIComponent(groupId)}/users`,
@@ -23,6 +25,7 @@ export const listGroupMembers = action({
         limit: pagination.limit,
       },
     );
+
     return {
       data,
     };

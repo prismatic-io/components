@@ -5,6 +5,7 @@ import { runImportExamplePayload } from "../../examplePayloads";
 import { runImportInputs } from "../../inputs";
 import { runResponseWithGuidSchema } from "../../outputSchemas";
 import { appendFilePart, handleArenaError } from "../../util";
+
 export const runImport = action({
   display: {
     label: "Run Import",
@@ -20,8 +21,11 @@ export const runImport = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       context.logger.info(`Running import ${params.importGuid}`);
+
       const formData = new FormData();
+
       appendFilePart(
         formData,
         "submitContent",
@@ -34,6 +38,7 @@ export const runImport = action({
         params.fileContent,
         "file_content",
       );
+
       const queryParams = {
         submitFileType: params.submitFileType,
         commit: params.commit,
@@ -41,16 +46,20 @@ export const runImport = action({
         debug: params.debug,
         actor: params.actor,
       };
+
       const endpoint = `/imports/${params.importGuid}/runs`;
+
       const { data } = await client.post(endpoint, formData, {
         params: queryParams,
         headers: {
           ...formData.getHeaders(),
         },
       });
+
       context.logger.info(
         `Successfully started import run with GUID: ${data?.guid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Run Import");

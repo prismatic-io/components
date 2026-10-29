@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
 import { emptyExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateUserInputs as inputs } from "../../inputs/user";
+
 export const updateUser = action({
   display: {
     label: "Update User",
@@ -13,6 +14,7 @@ export const updateUser = action({
     { connection, userId, userFields, additionalProperties },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const {
       userPrincipalName,
       domain,
@@ -22,19 +24,25 @@ export const updateUser = action({
       surname,
       jobTitle,
     } = userFields;
+
     const lacksDomainWithPrincipalName = userPrincipalName && !domain;
     const lacksPrincipalNameWithDomain = !userPrincipalName && domain;
+
     const condition =
       lacksDomainWithPrincipalName || lacksPrincipalNameWithDomain;
+
     if (condition) {
       throw new Error(
         "'Domain' and 'User Principal Name' inputs must be provided together.",
       );
     }
+
     const userPrincipalNameProvided = userPrincipalName && domain;
+
     const updatedUserPrincipalName = userPrincipalNameProvided
       ? `${userPrincipalName}@${domain}`
       : undefined;
+
     const payload = {
       accountEnabled,
       displayName,

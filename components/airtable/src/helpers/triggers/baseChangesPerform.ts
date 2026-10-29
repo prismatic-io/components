@@ -13,6 +13,7 @@ import type {
 } from "../../interfaces";
 import { getBase64FromUrl } from "../../util";
 import { webhookExists as webhookExistsHelper } from "./webhookExists";
+
 export const baseChangesPerform = async (
   { flow, webhookUrls, crossFlowState, logger, debug }: ActionContext,
   payload: TriggerPayload,
@@ -23,6 +24,7 @@ export const baseChangesPerform = async (
   const baseChangesState =
     (crossFlowState?.[encodedId] as unknown as BaseChangesState) ||
     ({} as BaseChangesState);
+
   if (debug) {
     logger.debug(
       "Base changes state",
@@ -35,12 +37,15 @@ export const baseChangesPerform = async (
     cursor: lastCursor,
     macSecret,
   } = baseChangesState;
+
   if (!webhookId || !expirationTime || !macSecret) {
     throw new Error(
       "Missing required instance state properties, cannot process payload",
     );
   }
+
   const client = createAirtableClient(airtableConnection, debug.enabled);
+
   const webhookExists = await webhookExistsHelper({
     client,
     baseId,
@@ -51,6 +56,7 @@ export const baseChangesPerform = async (
       `Webhook ${webhookId} is deleted or expired, cannot process payload`,
     );
   }
+
   const headers = util.types.lowerCaseHeaders(payload.headers);
   const invokeType = headers["prismatic-invoke-type"];
   if (invokeType === "Scheduled") {
@@ -65,6 +71,7 @@ export const baseChangesPerform = async (
       logger,
       debug: debug.enabled,
     });
+
     crossFlowState[encodedId] = {
       ...baseChangesState,
       expirationTime: newExpirationTime,
@@ -82,12 +89,14 @@ export const baseChangesPerform = async (
       branch: "Refresh",
     };
   }
+
   validateMacSignature({
     macSecret,
     payload,
     logger,
     debug: debug.enabled,
   });
+
   const { allPayloads, currentCursor } = await listWebhookPayloads({
     client,
     baseId,
@@ -96,6 +105,7 @@ export const baseChangesPerform = async (
     logger,
     debug: debug.enabled,
   });
+
   const newExpirationTime = await autoRefreshWebhook({
     client,
     baseId,
@@ -104,16 +114,19 @@ export const baseChangesPerform = async (
     logger,
     debug: debug.enabled,
   });
+
   crossFlowState[encodedId] = {
     ...baseChangesState,
     cursor: currentCursor,
     expirationTime: newExpirationTime,
   };
+
   if (debug) {
     logger.info(
       `Retrieved ${allPayloads.length} total payloads, stored cursor: ${currentCursor}`,
     );
   }
+
   const transformedPayload = {
     ...payload,
     body: {
@@ -125,6 +138,7 @@ export const baseChangesPerform = async (
       },
     },
   };
+
   return {
     payload: transformedPayload,
     branch: "Notification",

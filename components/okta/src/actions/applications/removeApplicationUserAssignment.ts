@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { removeApplicationUserAssignmentExamplePayload } from "../../examplePayloads/applications";
 import { deleteApplicationUserAssignmentsInputs } from "../../inputs/applications";
+
 export const removeApplicationUserAssignment = action({
   display: {
     label: "Remove Application User Assignment",
@@ -20,6 +21,7 @@ export const removeApplicationUserAssignment = action({
         params: { sendEmail },
       },
     );
+
     return {
       data: {
         id: userId,

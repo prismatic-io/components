@@ -16,24 +16,28 @@ export const listIndexesExamplePayload = {
     nbPages: 1,
   },
 };
+
 export const deleteIndexExamplePayload = {
   data: {
     deletedAt: "2013-01-18T15:33:13.556Z",
     taskID: 721,
   },
 };
+
 export const moveIndexExamplePayload = {
   data: {
     updatedAt: "2013-08-21T13:20:18.960Z",
     taskID: 10210332,
   },
 };
+
 export const copyIndexExamplePayload = {
   data: {
     updatedAt: "2013-08-21T13:20:18.960Z",
     taskID: 10210332,
   },
 };
+
 export const updateBatchIndicesExamplePayload = {
   data: {
     taskID: {
@@ -43,6 +47,7 @@ export const updateBatchIndicesExamplePayload = {
     objectIDs: ["6891", "6892"],
   },
 };
+
 export const getSettingsExamplePayload = {
   data: {
     minWordSizefor1Typo: 4,
@@ -66,12 +71,14 @@ export const getSettingsExamplePayload = {
     queryType: "prefixAll",
   },
 };
+
 export const setSettingsExamplePayload = {
   data: {
     updatedAt: "2013-08-21T13:20:18.960Z",
     taskID: 10210332,
   },
 };
+
 export const copySettingsExamplePayload = {
   data: {
     updatedAt: "2013-08-21T13:20:18.960Z",

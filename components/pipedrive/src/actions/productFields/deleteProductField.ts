@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteProductFieldInputs } from "../../inputs";
 import { deleteProductFieldExamplePayload } from "../../examplePayloads";
 import { deleteProductFieldOutputSchema } from "../../outputSchemas";
+
 export const deleteProductField = action({
   display: {
     label: "Delete Product Field",

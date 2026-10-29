@@ -11,6 +11,7 @@ import {
   pagination,
   version,
 } from "./common";
+
 export const creativeId = input({
   label: "Creative Id",
   type: "string",
@@ -21,6 +22,7 @@ export const creativeId = input({
   clean: cleanString,
   dataSource: "selectAdCreative",
 });
+
 const objectStoryId = input({
   label: "Object Story Id",
   type: "string",
@@ -30,6 +32,7 @@ const objectStoryId = input({
   placeholder: "1051738543535_10636436633230",
   clean: cleanString,
 });
+
 const urlTags = input({
   label: "URL Tags",
   type: "string",
@@ -39,6 +42,7 @@ const urlTags = input({
   placeholder: "key1=val1&key2=val2",
   clean: cleanString,
 });
+
 const body = input({
   label: "Body",
   type: "string",
@@ -48,6 +52,7 @@ const body = input({
   placeholder: "This is an example description body.",
   clean: cleanString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -57,6 +62,7 @@ export const name = input({
   placeholder: "My Ad Creative",
   clean: cleanString,
 });
+
 export const getAdCreativeInputs = {
   connection: myConnectionField,
   adCreativeId: {
@@ -71,6 +77,7 @@ export const getAdCreativeInputs = {
   },
   version,
 };
+
 export const updateAdCreativeInputs = {
   connection: myConnectionField,
   adCreativeId: {
@@ -87,6 +94,7 @@ export const updateAdCreativeInputs = {
   optionalValues,
   version,
 };
+
 export const listAdCreativesInputs = {
   connection: myConnectionField,
   adAccountId,
@@ -95,6 +103,7 @@ export const listAdCreativesInputs = {
   fields: { ...fields, default: AD_CREATIVE_DEFAULTS },
   version,
 };
+
 export const addUrlTagsToCreativeInputs = {
   connection: myConnectionField,
   adAccountId,

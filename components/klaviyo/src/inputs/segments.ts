@@ -6,11 +6,14 @@ import {
   cleanBooleanInput,
   cleanStringInput,
 } from "../util";
+
 const fieldsSegment = input({ ...fields, model: FIELDS_SEGMENT_MODEL });
+
 export const listSegmentsInputs = {
   connection,
   fieldsSegment,
 };
+
 const segmentName = input({
   type: "string",
   required: true,
@@ -20,6 +23,7 @@ const segmentName = input({
   placeholder: "Enter a segment name",
   clean: util.types.toString,
 });
+
 const segmentConditionGroups = input({
   type: "code",
   language: "json",
@@ -50,6 +54,7 @@ const segmentConditionGroups = input({
   ),
   clean: (value) => cleanArrayCodeInput(value, "Segment Condition Groups"),
 });
+
 const isStarredSegment = input({
   type: "boolean",
   required: false,
@@ -59,12 +64,14 @@ const isStarredSegment = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const createSegmentInputs = {
   connection,
   segmentName,
   segmentConditionGroups,
   isStarredSegment,
 };
+
 const segmentId = input({
   type: "string",
   required: true,
@@ -75,11 +82,13 @@ const segmentId = input({
   clean: util.types.toString,
   dataSource: "selectSegment",
 });
+
 export const getSegmentInputs = {
   connection,
   segmentId,
   fieldsSegment,
 };
+
 const isStarredSegmentOptional = input({
   label: "Is Starred Segment",
   type: "string",
@@ -92,6 +101,7 @@ const isStarredSegmentOptional = input({
   })),
   clean: cleanBooleanInput,
 });
+
 export const updateSegmentInputs = {
   connection,
   segmentId,
@@ -103,6 +113,7 @@ export const updateSegmentInputs = {
   segmentConditionGroups: input({ ...segmentConditionGroups, required: false }),
   isStarredSegmentOptional,
 };
+
 export const deleteSegmentInputs = {
   connection,
   segmentId,

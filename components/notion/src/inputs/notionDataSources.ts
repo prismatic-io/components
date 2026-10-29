@@ -11,6 +11,7 @@ import {
   startCursorInput,
 } from "./common";
 import { databaseIdInput } from "./databases";
+
 export const dataSourceIdInput = input({
   label: "Data Source ID",
   required: true,
@@ -22,6 +23,7 @@ export const dataSourceIdInput = input({
   clean: util.types.toString,
   dataSource: "selectDataSource",
 });
+
 const resultTypeInput = input({
   label: "Result Type",
   type: "string",
@@ -35,6 +37,7 @@ const resultTypeInput = input({
   ],
   clean: toOptionalString,
 });
+
 const filterPropertiesInput = input({
   type: "code",
   label: "Filter Properties",
@@ -53,6 +56,7 @@ const filterPropertiesInput = input({
   comments:
     "Limit the properties included in the response. Provide an object where keys are property names and values are property values or arrays of values.",
 });
+
 const sortInput = input({
   type: "code",
   label: "Sort",
@@ -64,6 +68,7 @@ const sortInput = input({
   comments:
     "Array of sort objects defining the order of query results. Earlier sorts take precedence. See [Notion API Sort Documentation](https://developers.notion.com/reference/post-database-query-sort).",
 });
+
 const dataSourcePropertiesInput = input({
   type: "code",
   label: "Properties",
@@ -75,10 +80,12 @@ const dataSourcePropertiesInput = input({
   comments:
     "Property schema of the data source. The keys are the names of properties as they appear in Notion.",
 });
+
 export const retrieveDataSourceInputs = {
   connection: connectionInput,
   dataSourceId: dataSourceIdInput,
 };
+
 export const queryDataSourceInputs = {
   connection: connectionInput,
   dataSourceId: dataSourceIdInput,
@@ -89,6 +96,7 @@ export const queryDataSourceInputs = {
   resultType: resultTypeInput,
   filterProperties: filterPropertiesInput,
 };
+
 export const updateDataSourceInputs = {
   connection: connectionInput,
   dataSourceId: dataSourceIdInput,
@@ -102,11 +110,13 @@ export const updateDataSourceInputs = {
       "If provided, the parent of the data source will be changed to the specified database ID.",
   },
 };
+
 export const listDataSourcesInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
   startCursor: startCursorInput,
 };
+
 export const createDataSourceInputs = {
   connection: connectionInput,
   databaseId: databaseIdInput,

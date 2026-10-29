@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../utils/cleanStringInput";
 import { cleanValueListInput } from "../utils/cleanValueListInput";
 import { brandId, connection, libraryId } from "./sharedInputs";
+
 export const createFolderInputs = {
   connection,
   parentId: input({
@@ -32,6 +33,7 @@ export const createFolderInputs = {
     clean: cleanStringInput,
   }),
 };
+
 export const deleteFoldersInputs = {
   connection,
   brandId: { ...brandId, required: false },
@@ -48,6 +50,7 @@ export const deleteFoldersInputs = {
     dataSource: "selectLibraryFolder",
   }),
 };
+
 export const moveFoldersInputs = {
   connection,
   brandId: { ...brandId, required: false },
@@ -66,6 +69,7 @@ export const moveFoldersInputs = {
     clean: util.types.toString,
   }),
 };
+
 export const updateFolderInputs = {
   connection,
   brandId: { ...brandId, required: false },

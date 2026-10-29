@@ -5,6 +5,7 @@ export const CUSTOM_ATTRIBUTES_DEFAULT = [
     value: "1",
   },
 ];
+
 export const PHONE_NUMBERS_DEFAULT = [
   {
     code: "+1",
@@ -13,17 +14,20 @@ export const PHONE_NUMBERS_DEFAULT = [
     number: "5550100",
   },
 ];
+
 export const SETTINGS_EXTRA_FIELDS_DEFAULT = {
   additional_data_center_regions: ["TY"],
   allow_multiple_devices: true,
   alternative_hosts: "jchill@example.com;thill@example.com",
   alternative_hosts_email_notification: true,
+
   approved_or_denied_countries_or_regions: {
     approved_list: ["CX"],
     denied_list: ["CA"],
     enable: true,
     method: "approve",
   },
+
   audio_conference_info: "test",
   authentication_domains: "example.com",
   authentication_exception: [
@@ -33,6 +37,7 @@ export const SETTINGS_EXTRA_FIELDS_DEFAULT = {
     },
   ],
   authentication_option: "signIn_D8cJuqWVQ623CI4Q8yQK0Q",
+
   breakout_room: {
     enable: true,
     rooms: [
@@ -49,7 +54,9 @@ export const SETTINGS_EXTRA_FIELDS_DEFAULT = {
   email_notification: true,
   encryption_type: "enhanced_encryption",
   focus_mode: true,
+
   jbh_time: 0,
+
   language_interpretation: {
     enable: true,
     interpreters: [
@@ -74,10 +81,14 @@ export const SETTINGS_EXTRA_FIELDS_DEFAULT = {
       email: "jchill@example.com",
     },
   ],
+
   private_meeting: false,
   registrants_confirmation_email: true,
+
   show_share_button: true,
+
   waiting_room: false,
+
   host_save_video_order: true,
   alternative_host_update_polls: true,
   internal_meeting: false,
@@ -97,6 +108,7 @@ export const SETTINGS_EXTRA_FIELDS_DEFAULT = {
   auto_start_meeting_summary: false,
   auto_start_ai_companion_questions: false,
 };
+
 export const TRACKING_FIELDS_DEFAULT = [
   {
     field: "field1",
@@ -107,6 +119,7 @@ export const ZOOM_ONE_TYPE_OFF = {
   label: "Turn off Zoom One license.",
   value: "0",
 };
+
 export const ZOOM_ONE_TYPES = [
   { label: "Zoom One Business Plus with US/CA Unlimited.", value: "16" },
   { label: "Zoom One Business Plus with UK/IR Unlimited.", value: "32" },
@@ -191,6 +204,7 @@ export const ZOOM_ONE_TYPES = [
     value: "68719476736",
   },
 ];
+
 export const ZOOM_UNITED_PLANS = [
   { label: "Zoom United Pro-United with US/CA Unlimited.", value: "1" },
   { label: "Zoom United Pro-United with UK/IR Unlimited.", value: "2" },
@@ -211,10 +225,12 @@ export const ZOOM_UNITED_PLANS = [
   { label: "Zoom United Biz-United with JP Unlimited.", value: "65536" },
   { label: "Zoom United Ent-United with JP Unlimited.", value: "131072" },
 ];
+
 export const ZOOM_UNITED_PLAN_OFF = {
   label: "Turn off Zoom United type.",
   value: "none",
 };
+
 export const LOGIN_TYPES = [
   { label: "Facebook OAuth", value: "0" },
   { label: "Google OAuth", value: "1" },

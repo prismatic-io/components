@@ -5,15 +5,21 @@ import type {
   ticketTypes,
   userRoles,
 } from "../constants";
+
 export type TicketPriority = (typeof ticketPriorities)[number];
+
 export type TicketStatus = (typeof ticketStatuses)[number];
+
 export type TicketType = (typeof ticketTypes)[number];
+
 export type UserRole = (typeof userRoles)[number];
+
 export interface CreateClientProps {
   zendeskConnection: Connection;
   username?: string;
   debug?: boolean | undefined;
 }
+
 export interface ZendeskConnectionProps {
   username: string;
   token: string;
@@ -21,15 +27,18 @@ export interface ZendeskConnectionProps {
   subdomain: string;
   oauth: boolean;
 }
+
 export interface ValidateCommentParams {
   bodyValue: unknown;
   htmlValue: unknown;
   attachment?: Record<string, Record<string, unknown>>;
 }
+
 export interface Tag {
   count: number;
   name: string;
 }
+
 export interface UserSegment {
   id: string;
   name: string;
@@ -42,6 +51,7 @@ export interface UserSegment {
   updated_at: string;
   user_type: string;
 }
+
 export interface PermissionGroup {
   id: number;
   name: string;

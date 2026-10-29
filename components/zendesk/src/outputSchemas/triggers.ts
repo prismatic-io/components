@@ -95,11 +95,13 @@ export const triggerSchema = {
   },
   required: ["actions", "title"],
 };
+
 export const createWebhookTriggerOutputSchema = {
   type: "object" as const,
   properties: { trigger: triggerSchema },
   required: ["trigger"],
 };
+
 export const listTriggersOutputSchema = {
   type: "array" as const,
   items: triggerSchema,

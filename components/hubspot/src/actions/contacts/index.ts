@@ -7,6 +7,7 @@ import { getContact } from "./getContact";
 import { listContacts } from "./listContacts";
 import { updateBatchContacts } from "./updateBatchContacts";
 import { updateContact } from "./updateContact";
+
 export default {
   listContacts,
   getContact,

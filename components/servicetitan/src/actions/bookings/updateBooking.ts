@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateBookingExamplePayload } from "../../examplePayloads";
 import { updateBookingInputs } from "../../inputs";
 import { updateBookingOutputSchema } from "../../outputSchemas";
+
 export const updateBooking = action({
   display: {
     label: "Update Booking",

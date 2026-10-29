@@ -28,6 +28,7 @@ export const complianceSchema = {
     enabled: { type: "boolean" },
   },
 };
+
 export const deleteSourcingRelationshipOutputSchema = {
   type: "object" as const,
   properties: {
@@ -45,6 +46,7 @@ export const deleteSourcingRelationshipOutputSchema = {
     "statusCode",
   ],
 };
+
 export const deleteSupplierAddressOutputSchema = {
   type: "object" as const,
   properties: {
@@ -55,6 +57,7 @@ export const deleteSupplierAddressOutputSchema = {
   },
   required: ["success", "message", "supplierGuid", "addressGuid"],
 };
+
 export const deleteSupplierFileAssociationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -70,6 +73,7 @@ export const deleteSupplierFileAssociationOutputSchema = {
     "supplierFileAssociationGuid",
   ],
 };
+
 export const deleteSupplierItemOutputSchema = {
   type: "object" as const,
   properties: {
@@ -79,6 +83,7 @@ export const deleteSupplierItemOutputSchema = {
   },
   required: ["success", "message", "guid"],
 };
+
 export const deleteSupplierOutputSchema = {
   type: "object" as const,
   properties: {
@@ -88,6 +93,7 @@ export const deleteSupplierOutputSchema = {
   },
   required: ["success", "message", "supplierGuid"],
 };
+
 export const deleteSupplierPhoneNumberOutputSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +104,7 @@ export const deleteSupplierPhoneNumberOutputSchema = {
   },
   required: ["success", "message", "supplierGuid", "phoneNumberGuid"],
 };
+
 export const itemSourcingSchema = {
   type: "object" as const,
   properties: {
@@ -148,6 +155,7 @@ export const itemSourcingSchema = {
     vendorItemConversionFactor: { type: "integer", format: "int32" },
   },
 };
+
 export const itemSourcingListSchema = {
   type: "object" as const,
   properties: {
@@ -155,6 +163,7 @@ export const itemSourcingListSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierAddressCompactSchema = {
   type: "object" as const,
   properties: {
@@ -791,6 +800,7 @@ export const supplierAddressCompactSchema = {
     },
   },
 };
+
 export const listSupplierAddressesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -798,6 +808,7 @@ export const listSupplierAddressesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierApprovalStatusFullSchema = {
   type: "object" as const,
   properties: {
@@ -811,6 +822,7 @@ export const supplierApprovalStatusFullSchema = {
     guid: { type: "string" },
   },
 };
+
 export const listSupplierApprovalStatusesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -818,6 +830,7 @@ export const listSupplierApprovalStatusesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierItemComplianceSchema = {
   type: "object" as const,
   properties: {
@@ -842,6 +855,7 @@ export const supplierItemComplianceSchema = {
     type: { type: "string" },
   },
 };
+
 export const listSupplierItemComplianceOutputSchema = {
   type: "object" as const,
   properties: {
@@ -849,6 +863,7 @@ export const listSupplierItemComplianceOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierItemFileSchema = {
   type: "object" as const,
   properties: {
@@ -923,6 +938,7 @@ export const supplierItemFileSchema = {
     primary: { type: "boolean" },
   },
 };
+
 export const listSupplierItemFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -930,6 +946,7 @@ export const listSupplierItemFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listSupplierItemRequirementsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -937,6 +954,7 @@ export const listSupplierItemRequirementsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierItemFullSchema = {
   type: "object" as const,
   properties: {
@@ -998,6 +1016,7 @@ export const supplierItemFullSchema = {
     },
   },
 };
+
 export const listSupplierItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1005,6 +1024,7 @@ export const listSupplierItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierPhoneNumberSchema = {
   type: "object" as const,
   properties: {
@@ -1015,6 +1035,7 @@ export const supplierPhoneNumberSchema = {
     guid: { type: "string" },
   },
 };
+
 export const listSupplierPhoneNumbersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1022,6 +1043,7 @@ export const listSupplierPhoneNumbersOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const supplierFullSchema = {
   type: "object" as const,
   properties: {
@@ -1738,6 +1760,7 @@ export const supplierFullSchema = {
     website: { type: "string" },
   },
 };
+
 export const listSuppliersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1745,6 +1768,7 @@ export const listSuppliersOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const updateSupplierFileAssociationOutputSchema = {
   type: "object" as const,
   properties: {

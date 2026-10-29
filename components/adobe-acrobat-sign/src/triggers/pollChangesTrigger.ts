@@ -15,6 +15,7 @@ import {
   partitionAgreementsByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Agreements",
@@ -40,6 +41,7 @@ export const pollChangesTrigger = pollingTrigger({
     const incoming = payload.paginationState as PollingCursor | undefined;
     const isBatching = context.batch?.enabled === true;
     const maxPages = isBatching ? MAX_BATCHED_POLL_PAGES : undefined;
+
     const lastPolledAt =
       state.lastPolledAt ??
       (lookBackDate
@@ -50,21 +52,25 @@ export const pollChangesTrigger = pollingTrigger({
       incoming?.isBackfilling ??
       state.isBackfilling ??
       (!state.lastPolledAt && Boolean(lookBackDate));
+
     const client = getAdobeSignClient(connection, context.debug.enabled);
     const { records, truncated, latestModifiedDate, nextStartIndex } =
       await fetchAgreementsModifiedSince(client, lastPolledAt, {
         maxPages,
         resumeStartIndex: incoming?.resumeStartIndex ?? state.resumeStartIndex,
       });
+
     const { created, updated } = partitionAgreementsByTimestamp(
       records,
       sinceDate,
     );
+
     const drained = !truncated;
     const nearCeiling = nextStartIndex + POLL_PAGE_SIZE >= 10000;
     const shouldRebase = truncated && (!isBatching || nearCeiling);
     const rebasedPolledAt =
       shouldRebase && latestModifiedDate ? latestModifiedDate : lastPolledAt;
+
     const nextPaginationState: PollingCursor | null = drained
       ? null
       : shouldRebase
@@ -73,20 +79,24 @@ export const pollChangesTrigger = pollingTrigger({
             resumeStartIndex: nextStartIndex,
             isBackfilling: isBackfill || undefined,
           };
+
     context.polling.setState({
       lastPolledAt: drained ? now.toISOString() : rebasedPolledAt,
       resumeStartIndex: drained || shouldRebase ? undefined : nextStartIndex,
       isBackfilling: drained ? undefined : isBackfill || undefined,
     } as PollingState);
+
     const result = {
       created: isBackfill || showNewRecords ? created : [],
       updated: isBackfill || showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled agreements: ${records.length} fetched → ${created.length} new, ${updated.length} updated, ${drained ? "stream drained" : "more pending"}`,
       );
     }
+
     const totalMatched = result.created.length + result.updated.length;
     return {
       payload: {

@@ -4,6 +4,7 @@ import { addPersonInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { addPersonExamplePayload } from "../../examplePayloads";
 import { singlePersonV2OutputSchema } from "../../outputSchemas";
+
 export const addPerson = action({
   display: {
     label: "Add Person",

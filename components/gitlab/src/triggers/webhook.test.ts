@@ -3,10 +3,12 @@ import {
   invokeTrigger,
 } from "@prismatic-io/spectral/dist/testing";
 import { webhook } from "./webhook";
+
 const payloadWith = (headers: Record<string, string>) => ({
   ...defaultTriggerPayload(),
   headers,
 });
+
 test("routes by X-Gitlab-Event when no secret is configured", async () => {
   const { result } = await invokeTrigger(
     webhook,
@@ -16,6 +18,7 @@ test("routes by X-Gitlab-Event when no secret is configured", async () => {
   );
   expect(result?.branch).toBe("Issue");
 });
+
 test("rejects a mismatched token when a secret is configured", async () => {
   await expect(
     invokeTrigger(
@@ -26,6 +29,7 @@ test("rejects a mismatched token when a secret is configured", async () => {
     ),
   ).rejects.toThrow(/X-Gitlab-Token/);
 });
+
 test("accepts a matching token", async () => {
   const { result } = await invokeTrigger(
     webhook,
@@ -36,6 +40,7 @@ test("accepts a matching token", async () => {
   expect(result?.branch).toBe("Push");
   expect(result?.payload.headers).toEqual({ "X-Gitlab-Event": "Push Hook" });
 });
+
 test("a simulated test execution skips token verification even with a secret configured", async () => {
   const { result } = await invokeTrigger(
     webhook,
@@ -45,6 +50,7 @@ test("a simulated test execution skips token verification even with a secret con
   );
   expect(result?.branch).toBe("Merge Request");
 });
+
 test("a simulated test execution also passes a wrong token through", async () => {
   const { result } = await invokeTrigger(
     webhook,

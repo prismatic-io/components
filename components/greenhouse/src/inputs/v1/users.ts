@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../../util/clean";
+
 export const user_attributes = input({
   label: "Include User Attributes",
   type: "boolean",
@@ -8,6 +9,7 @@ export const user_attributes = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const send_email_invite = input({
   label: "Send Email Invite",
   type: "boolean",
@@ -16,6 +18,7 @@ export const send_email_invite = input({
     "When true, an email is sent to the user alerting them of any new job permissions that have been assigned to them. Emails are never sent when permissions are removed.",
   clean: util.types.toBool,
 });
+
 export const employee_id = input({
   label: "Employee ID",
   type: "string",

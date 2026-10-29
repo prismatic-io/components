@@ -3,6 +3,7 @@ import { getClient } from "../client";
 import { listAllRegistrationsExamplePayload } from "../examplePayloads";
 import { requestErrorHandler } from "../helpers";
 import { connection, consumerOrgId, projectId, workspaceId } from "../inputs";
+
 export const listAllRegistrations = action({
   display: {
     label: "List All Registrations",

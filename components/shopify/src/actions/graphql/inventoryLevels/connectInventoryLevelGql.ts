@@ -4,6 +4,7 @@ import { connectInventoryLevelExamplePayload as examplePayload } from "../../../
 import { connectInventoryLevelInputs as inputs } from "../../../inputsGql";
 import { connectInventoryLevelGqlOutputSchema } from "../../../outputSchemas";
 import connectInventoryLevelQuery from "../queries/inventoryLevels/ConnectInventoryLevel.gql";
+
 export const connectInventoryLevelGql = action({
   display: {
     label: "Connect Inventory Item To Location",
@@ -17,12 +18,12 @@ export const connectInventoryLevelGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      inventoryActivate: Record<string, unknown>;
-    } = await client.request(connectInventoryLevelQuery, {
-      locationId,
-      inventoryItemId: itemId,
-    });
+    const data: { inventoryActivate: Record<string, unknown> } =
+      await client.request(connectInventoryLevelQuery, {
+        locationId,
+        inventoryItemId: itemId,
+      });
+
     return {
       data: data.inventoryActivate,
     };

@@ -4,6 +4,7 @@ import linksActions from "./links";
 import miscActions from "./misc";
 import sharingActions from "./sharing";
 import teamActions from "./team";
+
 export default {
   ...filesActions,
   ...foldersActions,

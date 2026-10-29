@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
 import { createFolderPayload } from "../../examplePayloads";
 import { createFolderInputs } from "../../inputs";
+
 export const createFolder = action({
   display: {
     label: "Create Folder",
@@ -12,6 +13,7 @@ export const createFolder = action({
     { connection, folderTitle, collectionId, folderDescription, parentFolder },
   ) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const requestBody = {
       title: folderTitle,
       collection: {
@@ -24,7 +26,9 @@ export const createFolder = action({
           }
         : undefined,
     };
+
     const { data } = await client.post("/folders", requestBody);
+
     return { data };
   },
   inputs: createFolderInputs,

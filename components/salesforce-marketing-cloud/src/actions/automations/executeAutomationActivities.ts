@@ -4,6 +4,7 @@ import { AUTOMATIONS_PATH } from "../../constants";
 import { executeAutomationActivitiesExamplePayload } from "../../examplePayloads";
 import { executeAutomationActivitiesInputs } from "../../inputs";
 import { executeAutomationActivitiesOutputSchema } from "../../outputSchemas";
+
 export const executeAutomationActivities = action({
   examplePayload: executeAutomationActivitiesExamplePayload,
   display: {
@@ -23,11 +24,10 @@ export const executeAutomationActivities = action({
       `${AUTOMATIONS_PATH}/${encodeURIComponent(automationId)}/actions/runallonce`,
       {},
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: executeAutomationActivitiesExamplePayload.data,
   }),
 });

@@ -5,6 +5,7 @@ import { listModelsInputs } from "../../inputs";
 import { listModelsOutputSchema } from "../../outputSchemas";
 import type { Model } from "../../types";
 import { getPaginatedResponse } from "../../util";
+
 export const listModels = action({
   display: {
     label: "List Models",
@@ -30,9 +31,7 @@ export const listModels = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listModelsExamplePayload.data,
   }),
   examplePayload: listModelsExamplePayload,

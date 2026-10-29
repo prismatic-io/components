@@ -1,5 +1,6 @@
 import { connection } from "@prismatic-io/spectral";
 import { DATADOG_SITES, DEFAULT_DATADOG_SITE } from "../constants";
+
 export const apiKeyConnection = connection({
   key: "apiKey",
   display: {

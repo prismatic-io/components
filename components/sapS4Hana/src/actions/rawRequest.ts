@@ -6,7 +6,9 @@ import {
   inputs as httpClientInputs,
   sendRawRequest,
 } from "@prismatic-io/spectral/dist/clients/http";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -41,4 +43,5 @@ export const rawRequest = action({
     }
   },
 });
+
 export default rawRequest;

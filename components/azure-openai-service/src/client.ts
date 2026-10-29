@@ -1,10 +1,13 @@
 import { type Connection, util } from "@prismatic-io/spectral";
 import OpenAI, { AzureOpenAI } from "openai";
+
 export const createClient = (connection: Connection): OpenAI => {
   const {
     fields: { apiKey, organization, isOpenAIKey, apiVersion },
   } = connection;
+
   if (!apiKey) throw new Error("API Key is required");
+
   if (util.types.toBool(isOpenAIKey)) {
     return new OpenAI({
       apiKey: util.types.toString(apiKey),
@@ -13,6 +16,7 @@ export const createClient = (connection: Connection): OpenAI => {
         : undefined,
     });
   }
+
   if (!organization) throw new Error("Organization is required");
   return new AzureOpenAI({
     apiKey: util.types.toString(apiKey),

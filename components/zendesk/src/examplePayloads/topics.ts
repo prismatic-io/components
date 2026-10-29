@@ -1,5 +1,6 @@
 import type { Topic } from "../types";
 import { paginationAttributes } from "./general";
+
 const createTopicRaw = {
   topic: {
     name: "How to make fish stew",
@@ -7,7 +8,9 @@ const createTopicRaw = {
     description: "A guide to making the perfect fish stew",
   },
 };
+
 const getTopicRaw = createTopicRaw;
+
 const listTopicsRaw = {
   ...paginationAttributes,
   topics: [
@@ -27,27 +30,21 @@ const listTopicsRaw = {
     },
   ],
 };
+
 const updateTopicRaw = createTopicRaw;
-export const createTopicExamplePayload: {
-  data: {
-    topic: Topic;
-  };
-} = {
+
+export const createTopicExamplePayload: { data: { topic: Topic } } = {
   data: createTopicRaw,
 };
+
 export const deleteTopicExamplePayload = { data: "" };
-export const getTopicExamplePayload: {
-  data: {
-    topic: Topic;
-  };
-} = {
+
+export const getTopicExamplePayload: { data: { topic: Topic } } = {
   data: getTopicRaw,
 };
+
 export const listTopicsExamplePayload = { data: listTopicsRaw };
-export const updateTopicExamplePayload: {
-  data: {
-    topic: Topic;
-  };
-} = {
+
+export const updateTopicExamplePayload: { data: { topic: Topic } } = {
   data: updateTopicRaw,
 };

@@ -5,6 +5,7 @@ import { getCustomerInputs as inputs } from "../../../inputsGql";
 import type { Customer } from "../../../types";
 import { customerMapper } from "../mappers/customerMapper";
 import getCustomerQuery from "../queries/customers/GetCustomer.gql";
+
 export const getCustomerGql = action({
   display: {
     label: "Get Customer",
@@ -17,11 +18,14 @@ export const getCustomerGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      customer: Customer;
-    } = await client.request(getCustomerQuery, {
-      id: customerIdGql,
-    });
+
+    const data: { customer: Customer } = await client.request(
+      getCustomerQuery,
+      {
+        id: customerIdGql,
+      },
+    );
+
     return {
       data: {
         customer: customerMapper(data.customer),

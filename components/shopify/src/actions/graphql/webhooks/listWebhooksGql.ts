@@ -5,6 +5,7 @@ import { listWebhooksInputs as inputs } from "../../../inputsGql";
 import { listWebhooksGqlOutputSchema } from "../../../outputSchemas";
 import { listWebhooks } from "../../../util";
 import { webhookMapper } from "../mappers/webhookMapper";
+
 export const listWebhooksGql = action({
   display: {
     label: "List Webhooks",
@@ -32,6 +33,7 @@ export const listWebhooksGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const { webhookSubscriptions } = await listWebhooks(
       client,
       getAlldata,
@@ -41,6 +43,7 @@ export const listWebhooksGql = action({
       pagination.endCursor,
       callbackUrl,
     );
+
     return {
       data: webhookSubscriptions.map(webhookMapper),
     };

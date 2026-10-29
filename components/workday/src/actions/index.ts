@@ -10,6 +10,7 @@ import prismAnalytics from "./prismAnalytics";
 import reports from "./reports";
 import staffing from "./staffing";
 import timeTracking from "./timeTracking";
+
 export default {
   ...absenceManagement,
   ...accountsPayable,

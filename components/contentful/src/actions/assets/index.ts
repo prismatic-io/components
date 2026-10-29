@@ -6,6 +6,7 @@ import { processAsset } from "./processAsset";
 import { publishAnAsset } from "./publishAnAsset";
 import { unpublishAnAsset } from "./unpublishAnAsset";
 import { updateAsset } from "./updateAsset";
+
 export default {
   listAssets,
   createAsset,

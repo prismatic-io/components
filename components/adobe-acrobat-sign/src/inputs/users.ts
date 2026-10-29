@@ -14,6 +14,7 @@ import {
   phone,
   title,
 } from "./common";
+
 const isAccountAdmin = input({
   label: "Account Admin",
   type: "boolean",
@@ -21,6 +22,7 @@ const isAccountAdmin = input({
   comments: "When true, the user is an account admin.",
   clean: util.types.toBool,
 });
+
 const initials = input({
   label: "Initials",
   type: "string",
@@ -30,6 +32,7 @@ const initials = input({
   comments: "The initials of the user.",
   clean: util.types.toString,
 });
+
 const userId = input({
   label: "User ID",
   type: "string",
@@ -41,6 +44,7 @@ const userId = input({
   dataSource: "selectUsers",
   clean: util.types.toString,
 });
+
 const userStatus = input({
   label: "Status",
   type: "string",
@@ -55,6 +59,7 @@ const userStatus = input({
   }),
   comments: "Status of the user.",
 });
+
 export const createUserInputs = {
   connection,
   isAccountAdmin,
@@ -75,6 +80,7 @@ export const createUserInputs = {
     },
   }),
 };
+
 export const getUserInputs = {
   connection,
   userId: {
@@ -82,6 +88,7 @@ export const getUserInputs = {
     required: true,
   },
 };
+
 export const listUsersInputs = {
   connection,
   fetchAll,
@@ -95,6 +102,7 @@ export const listUsersInputs = {
     },
   }),
 };
+
 export const updateUserInputs = {
   connection,
   email,
@@ -115,6 +123,7 @@ export const updateUserInputs = {
     },
   }),
 };
+
 export const selectUsersInputs = {
   connection,
   filterQuery,

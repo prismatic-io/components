@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getFavoritesExamplePayload } from "../../examplePayloads";
 import { getFavoritesInputs } from "../../inputs";
+
 export const getFavorites = action({
   display: {
     label: "List Favorites",

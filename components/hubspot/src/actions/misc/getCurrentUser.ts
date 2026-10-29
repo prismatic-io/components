@@ -8,6 +8,7 @@ import {
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserOutputSchema } from "../../outputSchemas";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -21,8 +22,10 @@ export const getCurrentUser = action({
       timeout,
       debugRequest,
     });
+
     const { data: details } = await client.get(hubspotPaths.accountDetails);
     const userData = { ...details, currency: details.companyCurrency };
+
     if (hubspotConnection.key === hubspotOAuth.key) {
       const token = (client.defaults.headers.Authorization as string).slice(
         TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START,
@@ -43,6 +46,7 @@ export const getCurrentUser = action({
           },
         },
       );
+
       return {
         data: {
           ...userData,
@@ -64,4 +68,5 @@ export const getCurrentUser = action({
     schema: getCurrentUserOutputSchema,
   }),
 });
+
 export default getCurrentUser;

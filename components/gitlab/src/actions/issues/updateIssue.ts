@@ -4,6 +4,7 @@ import { updateIssueExamplePayload } from "../../examplePayloads";
 import { updateIssueInputs } from "../../inputs";
 import { updateIssueOutputSchema } from "../../outputSchemas";
 import { requireAnyUpdate } from "../../utils";
+
 export const updateIssue = action({
   display: {
     label: "Update Issue",
@@ -47,9 +48,8 @@ export const updateIssue = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateIssueExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateIssueExamplePayload,
   examplePayload: updateIssueExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

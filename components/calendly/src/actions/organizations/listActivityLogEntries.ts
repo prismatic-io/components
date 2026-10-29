@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listActivityLogEntriesInputs } from "../../inputs";
 import { listActivityLogEntriesExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
+
 export const listActivityLogEntries = action({
   display: {
     label: "List Activity Log Entries",
@@ -35,11 +36,10 @@ export const listActivityLogEntries = action({
       search_term: searchTerm,
       sort: sortList.length ? sortList : undefined,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listActivityLogEntriesExamplePayload.data,
   }),
   inputs: listActivityLogEntriesInputs,

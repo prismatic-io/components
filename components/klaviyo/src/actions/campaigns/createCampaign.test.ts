@@ -8,22 +8,29 @@ import { getApi } from "../../api";
 import { klaviyoApiKeyConnection } from "../../connections/klaviyoApiKeyConnection";
 import { createCampaignExamplePayload } from "../../examplePayloads";
 import { createCampaign } from "./createCampaign";
+
 vi.mock("../../api", () => ({ getApi: vi.fn() }));
+
 const connection = createConnection(klaviyoApiKeyConnection, {
   apiKey: "pk_test",
 });
+
 const stubApi = (createCampaignMock: ReturnType<typeof vi.fn>) => {
   vi.mocked(getApi).mockReturnValue({
     createCampaign: createCampaignMock,
   } as unknown as ReturnType<typeof getApi>);
 };
+
 type Params = Parameters<typeof createCampaign.perform>[1];
+
 describe("createCampaign", () => {
   afterEach(() => vi.clearAllMocks());
+
   it("converts legacy inputs to the current revision and returns the body", async () => {
     const body = structuredClone(createCampaignExamplePayload.data);
     const createCampaignMock = vi.fn().mockResolvedValue({ body });
     stubApi(createCampaignMock);
+
     const { result } = await invoke(
       createCampaign,
       {
@@ -60,6 +67,7 @@ describe("createCampaign", () => {
       } as unknown as Params,
       { logger: loggerMock() },
     );
+
     expect(createCampaignMock).toHaveBeenCalledTimes(1);
     expect(createCampaignMock).toHaveBeenCalledWith({
       data: {
@@ -98,10 +106,12 @@ describe("createCampaign", () => {
     });
     expect(result).toEqual({ data: body });
   });
+
   it("passes current-revision inputs through unchanged", async () => {
     const body = structuredClone(createCampaignExamplePayload.data);
     const createCampaignMock = vi.fn().mockResolvedValue({ body });
     stubApi(createCampaignMock);
+
     const sendStrategy = {
       method: "static",
       datetime: "2026-11-01T00:00:00+00:00",
@@ -126,6 +136,7 @@ describe("createCampaign", () => {
         },
       },
     ];
+
     await invoke(
       createCampaign,
       {
@@ -142,6 +153,7 @@ describe("createCampaign", () => {
       } as unknown as Params,
       { logger: loggerMock() },
     );
+
     const [query] = createCampaignMock.mock.calls[0];
     expect(query.data.attributes.sendStrategy).toEqual(sendStrategy);
     expect(query.data.attributes.trackingOptions).toEqual(trackingOptions);
@@ -153,11 +165,13 @@ describe("createCampaign", () => {
       excluded: ["Y8NZgF"],
     });
   });
+
   it("propagates an API error", async () => {
     const error = Object.assign(new Error("Bad Request"), {
       response: { status: 400 },
     });
     stubApi(vi.fn().mockRejectedValue(error));
+
     await expect(
       invoke(
         createCampaign,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { batchRetrieveOrdersExamplePayload } from "../../examplePayloads";
 import { batchRetrieveOrdersInputs } from "../../inputs";
+
 export const batchRetrieveOrders = action({
   display: {
     label: "Batch Retrieve Orders",
@@ -12,14 +13,17 @@ export const batchRetrieveOrders = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       locationId,
       orderIds,
     };
+
     const response = await client.post(
       "/v2/orders/batch-retrieve",
       requestBody,
     );
+
     return {
       data: response.data,
     };

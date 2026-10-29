@@ -5,6 +5,7 @@ import { selectProductExamplePayload } from "../examplePayloads";
 import { selectProductInputs } from "../inputs";
 import type { Product } from "../types";
 import { getAllPaginatedData } from "../util";
+
 export const selectProduct = dataSource({
   display: {
     label: "Select Product",
@@ -16,6 +17,7 @@ export const selectProduct = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
+
     const products = (await getAllPaginatedData<Product>(
       client,
       hubspotPaths.objects("products"),
@@ -28,6 +30,7 @@ export const selectProduct = dataSource({
         },
       },
     )) as Product[];
+
     const result = products.map<Element>((product) => ({
       label: `${product.properties.name} $${product.properties.price} (SKU: ${product.properties.hs_sku})`,
       key: util.types.toString(product.id),

@@ -3,9 +3,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { createUserExamplePayload } from "../../examplePayloads";
 import { createUser } from "./createUser";
+
 const HOST = "https://graph.microsoft.com";
 const PATH = "/v1.0/users";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -17,7 +19,9 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const createdUser = createUserExamplePayload.data;
+
 const baseParams = {
   connection,
   accountEnabled: true,
@@ -28,8 +32,10 @@ const baseParams = {
   domain: "contoso.com",
   additionalProperties: { jobTitle: "Product Marketing Manager" },
 };
+
 describe("createUser", () => {
   afterEach(() => nock.cleanAll());
+
   test("builds the password profile, joins the principal name to the domain, and returns the new user", async () => {
     const scope = nock(HOST)
       .post(PATH, {
@@ -44,14 +50,18 @@ describe("createUser", () => {
         jobTitle: "Product Marketing Manager",
       })
       .reply(201, createdUser);
+
     const { result } = await invoke(createUser, baseParams);
+
     expect(scope.isDone()).toBe(true);
     expect(result.data).toEqual(createdUser);
   });
+
   test("surfaces the failure when the API rejects the new user", async () => {
     nock(HOST)
       .post(PATH)
       .reply(400, { error: { code: "Request_BadRequest" } });
+
     await expect(invoke(createUser, baseParams)).rejects.toThrow();
   });
 });

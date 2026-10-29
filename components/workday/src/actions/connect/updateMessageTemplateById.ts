@@ -5,6 +5,7 @@ import { updateMessageTemplateByIdExamplePayload } from "../../examplePayloads";
 import { updateMessageTemplateByIdInputs } from "../../inputs";
 import { compactObject, getIdObject } from "../../util";
 import { updateMessageTemplateByIdOutputSchema } from "../../outputSchemas";
+
 export const updateMessageTemplateById = action({
   display: {
     label: "Update Message Template by ID",

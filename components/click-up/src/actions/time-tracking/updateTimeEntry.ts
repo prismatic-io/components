@@ -6,6 +6,7 @@ import type {
   CreateTimeEntryQueryParams,
   UpdateTimeEntryBody,
 } from "../../types";
+
 export const updateTimeEntry = action({
   display: {
     label: "Update Time Entry",
@@ -49,6 +50,7 @@ export const updateTimeEntry = action({
       tag_action: tagAction,
       end,
     };
+
     const { data } = await client.put(
       `/team/${teamId}/time_entries/${timerId}`,
       body,
@@ -56,6 +58,7 @@ export const updateTimeEntry = action({
         params: queryParams,
       },
     );
+
     return {
       data,
     };

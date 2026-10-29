@@ -6,6 +6,7 @@ import {
   squareConnection,
   version,
 } from "./common";
+
 const jobId = input({
   label: "Job ID",
   placeholder: "Enter Job ID",
@@ -16,6 +17,7 @@ const jobId = input({
   dataSource: "selectJob",
   clean: util.types.toString,
 });
+
 const jobTitle = input({
   label: "Job Title",
   placeholder: "Enter job title",
@@ -26,6 +28,7 @@ const jobTitle = input({
   example: "Cashier",
   clean: util.types.toString,
 });
+
 const isTipEligible = input({
   label: "Is Tip Eligible",
   type: "boolean",
@@ -36,10 +39,12 @@ const isTipEligible = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const retrieveJobInputs = {
   squareConnection,
   jobId,
 };
+
 export const createJobInputs = {
   squareConnection,
   jobTitle,
@@ -50,11 +55,13 @@ export const createJobInputs = {
   },
   isTipEligible,
 };
+
 export const listJobsInputs = {
   squareConnection,
   fetchAll,
   cursor,
 };
+
 export const updateJobInputs = {
   squareConnection,
   jobId,

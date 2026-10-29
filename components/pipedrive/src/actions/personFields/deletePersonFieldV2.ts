@@ -4,6 +4,7 @@ import { deletePersonFieldV2Inputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deletePersonFieldV2ExamplePayload } from "../../examplePayloads";
 import { deletePersonFieldV2OutputSchema } from "../../outputSchemas";
+
 export const deletePersonFieldV2 = action({
   display: {
     label: "Delete Person Field (V2)",

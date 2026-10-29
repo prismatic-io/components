@@ -4,6 +4,7 @@ import { getWarehouse } from "./get";
 import { listWarehouses } from "./list";
 import warehouseLocations from "./locations";
 import { updateWarehouse } from "./update";
+
 export default {
   listWarehouses,
   getWarehouse,

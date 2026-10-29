@@ -8,6 +8,7 @@ import { createClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -17,6 +18,7 @@ export const listWebhooks = action({
   perform: async (context, { connection, spaceId }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
+
     const data: CollectionProp<WebhookProps> = (
       await space.getWebhooks()
     ).toPlainObject();
@@ -25,9 +27,8 @@ export const listWebhooks = action({
       data: items,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listWebhooksExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listWebhooksExamplePayload,
   inputs: listWebhooksInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

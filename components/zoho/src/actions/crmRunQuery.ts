@@ -2,6 +2,7 @@ import { action, input, util } from "@prismatic-io/spectral";
 import { ClientType, createClient } from "../client";
 import { crmRunQueryExamplePayload } from "../examplePayloads/crm";
 import { connectionInput } from "../inputs";
+
 const crmRunQuery = action({
   display: {
     label: "CRM - COQL Query",
@@ -27,16 +28,20 @@ const crmRunQuery = action({
       ClientType.CRM,
       context.debug.enabled,
     );
+
     const payload = {
       select_query: query,
     };
+
     const { data } = await crmClient.request({
       method: "POST",
       url: "/coql",
       data: payload,
     });
+
     return data;
   },
   examplePayload: crmRunQueryExamplePayload,
 });
+
 export default crmRunQuery;

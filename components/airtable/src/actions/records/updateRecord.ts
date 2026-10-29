@@ -4,6 +4,7 @@ import { updateRecordExamplePayload } from "../../examplePayloads";
 import { updateRecordInputs } from "../../inputs";
 import type { AirtableRecord } from "../../types";
 import { getBaseId } from "../../util";
+
 export const updateRecord = action({
   display: {
     label: "Update Record",
@@ -30,6 +31,7 @@ export const updateRecord = action({
       Object.keys(dynamicFields)?.length > NO_RECORDS
         ? dynamicFields
         : recordFields;
+
     const { data } = await client.patch<AirtableRecord>(
       `/v0/${retrievedBaseId}/${tableName}/${record}`,
       {

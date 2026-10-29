@@ -32,6 +32,7 @@ export const listRemediationTicketsOutputSchema = {
     lastTicketId: { type: "string" },
   },
 };
+
 export const editRemediationTicketsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -40,6 +41,7 @@ export const editRemediationTicketsOutputSchema = {
     response: { type: "object" },
   },
 };
+
 export const getRemediationTicketInfoOutputSchema = {
   type: "object" as const,
   properties: {
@@ -56,6 +58,7 @@ export const getRemediationTicketInfoOutputSchema = {
     },
   },
 };
+
 export const deleteRemediationTicketsOutputSchema = {
   type: "object" as const,
   properties: {

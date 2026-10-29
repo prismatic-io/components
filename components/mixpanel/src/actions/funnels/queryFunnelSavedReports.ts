@@ -4,6 +4,7 @@ import { queryFunnelSavedReportsInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { queryFunnelSavedReportsExamplePayload } from "../../examplePayloads";
 import { queryFunnelSavedReportsOutputSchema } from "../../outputSchemas";
+
 export const queryFunnelSavedReports = action({
   display: {
     label: "Query Funnel Saved Reports",

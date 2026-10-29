@@ -4,6 +4,7 @@ import { selectAccountExamplePayload } from "../../examplePayloads/v2_1";
 import { selectAccountInputs } from "../../inputs/v2_1";
 import { fetchAllPages } from "../../util/pagination";
 import { toPicklist } from "../../util/picklist";
+
 export const selectAccount = dataSource({
   display: {
     label: "Select Account (Legacy v2.1)",
@@ -12,6 +13,7 @@ export const selectAccount = dataSource({
   inputs: selectAccountInputs,
   perform: async (_context, { connection, merchantId }) => {
     const client = createClient(connection);
+
     const allResources = await fetchAllPages(async (pageToken) => {
       const { data } = await client.accounts.list({ merchantId, pageToken });
       return {
@@ -19,6 +21,7 @@ export const selectAccount = dataSource({
         nextPageToken: data.nextPageToken ?? undefined,
       };
     });
+
     return toPicklist(allResources, (account) => ({
       label: account.name || account.id?.toString() || "Unknown",
       key: account.id?.toString() || "",

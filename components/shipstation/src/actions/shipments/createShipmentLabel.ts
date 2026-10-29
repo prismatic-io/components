@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { createShipmentLabelExamplePayload } from "../../examplePayloads";
 import { createShipmentLabelInputs } from "../../inputs";
+
 export const createShipmentLabel = action({
   display: {
     label: "Create Shipment Label",
@@ -26,6 +27,7 @@ export const createShipmentLabel = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const body = {
       carrierCode,
       serviceCode,
@@ -36,6 +38,7 @@ export const createShipmentLabel = action({
       shipFrom,
       ...additionalFields,
     };
+
     const { data } = await client.post("/shipments/createlabel", body);
     return { data };
   },

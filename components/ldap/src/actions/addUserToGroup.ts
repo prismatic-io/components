@@ -3,6 +3,7 @@ import { Attribute, Change } from "ldapts";
 import { getLdapClient } from "../client";
 import { addUserToGroupExamplePayload as examplePayload } from "../examplePayloads";
 import { addUserToGroupInputs as inputs } from "../inputs";
+
 export const addUserToGroup = action({
   display: {
     label: "Add User to Group",
@@ -10,9 +11,11 @@ export const addUserToGroup = action({
   },
   perform: async (context, { connection, groupDn, userDnToAdd }) => {
     const client = await getLdapClient(connection);
+
     if (context.debug.enabled) {
       context.logger.debug({ groupDn, userDnToAdd });
     }
+
     const change = new Change({
       operation: "add",
       modification: new Attribute({
@@ -20,8 +23,10 @@ export const addUserToGroup = action({
         values: [userDnToAdd],
       }),
     });
+
     try {
       await client.modify(groupDn, change);
+
       return {
         data: `User ${userDnToAdd} added to group ${groupDn}.`,
       };

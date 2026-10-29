@@ -8,6 +8,7 @@ import {
   paymentId,
   timeout,
 } from "./common";
+
 export const cardNumber = input({
   label: "Card Number",
   type: "string",
@@ -17,6 +18,7 @@ export const cardNumber = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const expMonth = input({
   label: "Expiration Month",
   type: "string",
@@ -26,6 +28,7 @@ export const expMonth = input({
   required: true,
   clean: util.types.toNumber,
 });
+
 export const expYear = input({
   label: "Expiration Year",
   type: "string",
@@ -35,6 +38,7 @@ export const expYear = input({
   required: true,
   clean: util.types.toNumber,
 });
+
 export const cvc = input({
   label: "CVC",
   type: "string",
@@ -44,6 +48,7 @@ export const cvc = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const billingCity = input({
   label: "City",
   type: "string",
@@ -54,6 +59,7 @@ export const billingCity = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const billingCountry = input({
   label: "Country",
   type: "string",
@@ -63,6 +69,7 @@ export const billingCountry = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const billingAddress1 = input({
   label: "Street Address",
   type: "string",
@@ -73,6 +80,7 @@ export const billingAddress1 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const billingAddress2 = input({
   label: "Street Address Line 2",
   type: "string",
@@ -83,6 +91,7 @@ export const billingAddress2 = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const postalCode = input({
   label: "Zip/Postal Code",
   type: "string",
@@ -93,6 +102,7 @@ export const postalCode = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const state = input({
   label: "State/Province",
   type: "string",
@@ -102,6 +112,7 @@ export const state = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const billingEmail = input({
   label: "Email",
   type: "string",
@@ -112,6 +123,7 @@ export const billingEmail = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const billingName = input({
   label: "Full Name",
   type: "string",
@@ -122,6 +134,7 @@ export const billingName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const phone = input({
   label: "Phone",
   type: "string",
@@ -132,6 +145,7 @@ export const phone = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const cardBillingAddress = structuredObjectInput({
   label: "Billing Address",
   comments: "Billing street, city, state, postal code, and country.",
@@ -144,17 +158,20 @@ export const cardBillingAddress = structuredObjectInput({
     billingCountry,
   },
 });
+
 export const cardContactInfo = structuredObjectInput({
   label: "Name & Contact Information",
   comments: "Full name, email, and phone contact details.",
   inputs: { billingName, billingEmail, phone },
 });
+
 export const attachCardInputs = {
   customerId,
   paymentId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const createCardInputs = {
   customerId,
   cardNumber,
@@ -167,24 +184,28 @@ export const createCardInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const detachCardInputs = {
   timeout,
   customerId,
   paymentId,
   stripeConnection: connectionInput,
 };
+
 export const getCardInputs = {
   timeout,
   customerId,
   paymentId,
   stripeConnection: connectionInput,
 };
+
 export const listCardsInputs = {
   timeout,
   customerId,
   pagination: cursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const updateCardInputs = {
   customerId,
   paymentId: {

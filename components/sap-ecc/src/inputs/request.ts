@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./common";
+
 const soapBody = input({
   label: "SOAP Body",
   type: "code",
@@ -24,6 +25,7 @@ const soapBody = input({
   placeholder: "Enter SOAP XML envelope",
   clean: util.types.toString,
 });
+
 const soapAction = input({
   label: "SOAP Action",
   type: "string",
@@ -34,6 +36,7 @@ const soapAction = input({
   placeholder: "Enter SOAP action URI",
   clean: util.types.toString,
 });
+
 const endpoint = input({
   label: "Endpoint",
   type: "string",
@@ -44,6 +47,7 @@ const endpoint = input({
   placeholder: "Enter endpoint path",
   clean: util.types.toString,
 });
+
 const responseAsJson = input({
   label: "Response as JSON",
   type: "boolean",
@@ -52,6 +56,7 @@ const responseAsJson = input({
   comments: "When true, the XML response will be parsed and returned as JSON.",
   clean: util.types.toBool,
 });
+
 const commitTransaction = input({
   label: "Commit Transaction",
   type: "boolean",
@@ -61,6 +66,7 @@ const commitTransaction = input({
     "When true, automatically calls BAPI_TRANSACTION_COMMIT after the SOAP request succeeds, using the same HTTP session.",
   clean: util.types.toBool,
 });
+
 const waitOnCommit = input({
   label: "Wait on Commit",
   type: "boolean",
@@ -70,6 +76,7 @@ const waitOnCommit = input({
     "When true, passes WAIT='X' to BAPI_TRANSACTION_COMMIT, which waits for the update task to complete before returning.",
   clean: util.types.toBool,
 });
+
 export const sendSoapRequestInputs = {
   connection,
   endpoint,

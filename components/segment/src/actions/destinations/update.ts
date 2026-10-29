@@ -9,6 +9,7 @@ import {
   settings,
 } from "../../inputs";
 import { getDestinationExamplePayload } from "../../examplePayloads";
+
 export const updateDestination = action({
   display: {
     label: "Update Destination",

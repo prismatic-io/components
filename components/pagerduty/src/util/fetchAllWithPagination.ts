@@ -1,5 +1,6 @@
 import { PAGINATION_MAX_OFFSET, PAGINATION_MAX_PAGE_SIZE } from "../constants";
 import type { FetchAllWithPaginationProps, PaginatedParams } from "../types";
+
 export const fetchAllWithPagination = async ({
   client,
   configVars,
@@ -8,6 +9,7 @@ export const fetchAllWithPagination = async ({
 }: FetchAllWithPaginationProps) => {
   delete configVars.limit;
   delete configVars.offset;
+
   let collectedData: unknown[] = [];
   let currentOffset = 0;
   let more = false;
@@ -16,6 +18,7 @@ export const fetchAllWithPagination = async ({
     offset: currentOffset,
     ...configVars,
   };
+
   do {
     const { data } = await client.get(endpoint, { params: pageParams });
     collectedData = collectedData.concat(data[objectKey]);
@@ -27,6 +30,7 @@ export const fetchAllWithPagination = async ({
       ...configVars,
     };
   } while (more && currentOffset <= PAGINATION_MAX_OFFSET);
+
   return {
     [objectKey]: collectedData,
   };

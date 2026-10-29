@@ -72,12 +72,15 @@ export const createEnvironmentTemplateExamplePayload = {
     },
   },
 };
+
 export const updateEnvironmentTemplateExamplePayload = {
   data: createEnvironmentTemplateExamplePayload.data,
 };
+
 export const getEnvironmentTemplateExamplePayload = {
   data: createEnvironmentTemplateExamplePayload.data,
 };
+
 export const listEnvironmentTemplatesExamplePayload = {
   data: {
     sys: {
@@ -88,7 +91,9 @@ export const listEnvironmentTemplatesExamplePayload = {
     pages: {},
   },
 };
+
 export const deleteEnvironmentTemplateExamplePayload = { data: {} };
+
 export const installTemplateExamplePayload = {
   data: {
     sys: {

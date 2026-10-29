@@ -4,6 +4,7 @@ import { updateSectionExamplePayload } from "../../examplePayloads";
 import { updateSectionInputs } from "../../inputs";
 import { updateSectionOutputSchema } from "../../outputSchemas";
 import type { Section } from "../../types";
+
 export const updateSection = action({
   display: {
     label: "Update Section",
@@ -33,9 +34,12 @@ export const updateSection = action({
         parent_section_id: parentSectionId,
       },
     };
-    const { data } = await client.put<{
-      section: Section;
-    }>(`/help_center/${locale}/sections/${sectionId}`, payload);
+
+    const { data } = await client.put<{ section: Section }>(
+      `/help_center/${locale}/sections/${sectionId}`,
+      payload,
+    );
+
     return { data };
   },
   examplePerform: async (

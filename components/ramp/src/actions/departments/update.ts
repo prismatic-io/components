@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDepartmentResponse as updateDepartmentResponse } from "../../examplePayloads/departments";
 import { connection, departmentId, name } from "../../inputs";
 import { updateDepartmentOutputSchema } from "../../outputSchemas";
+
 export const updateDepartment = action({
   display: {
     label: "Update Department",
@@ -27,6 +28,7 @@ export const updateDepartment = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, departmentId, name }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.patch(`/departments/${departmentId}`, {
       name,
     });
@@ -37,9 +39,7 @@ export const updateDepartment = action({
   examplePerform: async (
     _context,
     { departmentId, name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...updateDepartmentResponse,
       id: departmentId,

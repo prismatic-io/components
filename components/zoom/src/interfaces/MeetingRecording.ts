@@ -1,5 +1,6 @@
 import type { AudioFile } from "./AudioFile";
 import type { RecordingFile } from "./RecordingFile";
+
 export interface MeetingRecording {
   account_id: string;
   duration: number;

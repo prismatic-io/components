@@ -75,10 +75,12 @@ export const importSchema = {
     "updatedAt",
   ],
 };
+
 export const listActiveImportsOutputSchema = {
   type: "array" as const,
   items: importSchema,
 };
+
 export const cancelImportOutputSchema = {
   type: "object" as const,
   properties: {

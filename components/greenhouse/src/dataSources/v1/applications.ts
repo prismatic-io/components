@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { applicationsV1DataSourceExamplePayload } from "../../examplePayloads/v1/dataSources";
 import { connectionInput, version } from "../../inputs";
 import type { CandidateApplication as Application } from "../../types";
+
 export const applications = dataSource({
   display: {
     label: "Fetch Applications (Harvest v1/v2)",

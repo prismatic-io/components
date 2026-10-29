@@ -4,6 +4,7 @@ const invoiceEnvelope = {
   ProviderName: "Acme Corp",
   DateTimeUTC: "/Date(1637616068092)/",
 };
+
 const sampleInvoice = {
   Type: "ACCREC",
   InvoiceID: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -46,24 +47,28 @@ const sampleInvoice = {
   UpdatedDateUTC: "/Date(1751404400000+0000)/",
   CurrencyCode: "USD",
 };
+
 export const listInvoicesExamplePayload = {
   data: {
     ...invoiceEnvelope,
     Invoices: [sampleInvoice],
   },
 };
+
 export const getInvoiceExamplePayload = {
   data: {
     ...invoiceEnvelope,
     Invoices: [sampleInvoice],
   },
 };
+
 export const createInvoiceExamplePayload = {
   data: {
     ...invoiceEnvelope,
     Invoices: [sampleInvoice],
   },
 };
+
 export const deleteInvoiceExamplePayload = {
   data: {
     ...invoiceEnvelope,
@@ -75,6 +80,7 @@ export const deleteInvoiceExamplePayload = {
     ],
   },
 };
+
 export const voidInvoiceExamplePayload = {
   data: {
     ...invoiceEnvelope,
@@ -86,9 +92,11 @@ export const voidInvoiceExamplePayload = {
     ],
   },
 };
+
 export const sendInvoiceExamplePayload = {
   data: null,
 };
+
 export const getInvoiceHistoryExamplePayload = {
   data: {
     ...invoiceEnvelope,
@@ -103,6 +111,7 @@ export const getInvoiceHistoryExamplePayload = {
     ],
   },
 };
+
 export const addNoteToInvoiceExamplePayload = {
   data: {
     ...invoiceEnvelope,

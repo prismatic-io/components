@@ -6,6 +6,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSNSClient } from "../../client";
 import { updateTopicPolicyExamplePayload } from "../../examplePayloads";
 import { updateTopicPolicyInputs } from "../../inputs";
+
 export const updateTopicPolicy = action({
   display: {
     label: "Update SNS Topic Policy for S3 Event Notification",
@@ -33,6 +34,7 @@ export const updateTopicPolicy = action({
       dynamicSecretAccessKey,
       dynamicSessionToken,
     });
+
     const policy = {
       Version: "2012-10-17",
       Id: "allow-s3-to-publish",
@@ -56,6 +58,7 @@ export const updateTopicPolicy = action({
         },
       ],
     };
+
     const input: SetTopicAttributesCommandInput = {
       TopicArn: snsTopicArn,
       AttributeName: "Policy",
@@ -63,6 +66,7 @@ export const updateTopicPolicy = action({
     };
     const command = new SetTopicAttributesCommand(input);
     const response = await sns.send(command);
+
     return {
       data: response,
     };

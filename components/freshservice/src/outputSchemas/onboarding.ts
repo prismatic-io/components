@@ -31,6 +31,7 @@ export const createOnboardingRequestOutputSchema = {
   required: ["onboarding_request"],
   additionalProperties: false,
 };
+
 export const viewOnboardingRequestOutputSchema = {
   type: "object" as const,
   properties: {

@@ -4,6 +4,7 @@ import { connection } from "../../inputs/general";
 import { listColumnsInputs } from "../../inputs/columns/list";
 import { listColumnsExamplePayload } from "../../examplePayloads/columns";
 import { getDriveOrSiteBaseUrl, paginateResults } from "../../helpers";
+
 export const listColumns = action({
   display: {
     label: "List Columns",
@@ -27,12 +28,14 @@ export const listColumns = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     const data = await paginateResults(
       client,
       `${baseUrl}/worksheets/${worksheetId}/tables/${tableId}/columns`,
       fetchAll,
       { ...pagination, ...filters, $select, $expand, $format },
     );
+
     return {
       data,
     };

@@ -6,6 +6,7 @@ export interface CreateWebhookBody {
   list_id?: number;
   task_id?: string;
 }
+
 export interface UpdateWebhookBody {
   endpoint: string;
   status: string;

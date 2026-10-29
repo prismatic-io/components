@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { updateWorkbookExamplePayload } from "../../examplePayloads";
 import { updateWorkbookInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const updateWorkbook = action({
   display: {
     label: "Update Workbook",
@@ -15,6 +16,7 @@ export const updateWorkbook = action({
       timeout: util.types.toInt(params.timeout),
       debug: context.debug.enabled,
     });
+
     const response = await client.put(`/workbooks/${params.workbookId}`, {
       workbook: {
         name: params.workbookName,
@@ -27,6 +29,7 @@ export const updateWorkbook = action({
         },
       },
     });
+
     return {
       data: response.data,
     };

@@ -9,6 +9,7 @@ import {
   pagination,
   personId,
 } from "./common";
+
 const NameType = input({
   label: "Name Type",
   type: "string",
@@ -20,6 +21,7 @@ const NameType = input({
   example: "GLOBAL",
   clean: cleanString,
 });
+
 const LastName = input({
   label: "Last Name",
   type: "string",
@@ -30,6 +32,7 @@ const LastName = input({
   example: "Smith",
   clean: cleanString,
 });
+
 const LegislationCode = input({
   label: "Legislation Code",
   type: "string",
@@ -40,6 +43,7 @@ const LegislationCode = input({
   example: "US",
   clean: cleanString,
 });
+
 const FirstName = input({
   label: "First Name",
   type: "string",
@@ -49,6 +53,7 @@ const FirstName = input({
   example: "Jane",
   clean: cleanString,
 });
+
 const MiddleNames = input({
   label: "Middle Names",
   type: "string",
@@ -58,6 +63,7 @@ const MiddleNames = input({
   example: "Marie",
   clean: cleanString,
 });
+
 const Title = input({
   label: "Title",
   type: "string",
@@ -67,6 +73,7 @@ const Title = input({
   example: "Ms.",
   clean: cleanString,
 });
+
 const PersonNumber = input({
   label: "Person Number",
   type: "string",
@@ -77,6 +84,7 @@ const PersonNumber = input({
   example: "100000012345678",
   clean: cleanString,
 });
+
 const ApplicantNumber = input({
   label: "Applicant Number",
   type: "string",
@@ -86,6 +94,7 @@ const ApplicantNumber = input({
   example: "955160008186257",
   clean: cleanString,
 });
+
 const DateOfBirth = input({
   label: "Date of Birth",
   type: "string",
@@ -95,6 +104,7 @@ const DateOfBirth = input({
   example: "1990-01-15",
   clean: cleanString,
 });
+
 const DateOfDeath = input({
   label: "Date of Death",
   type: "string",
@@ -104,6 +114,7 @@ const DateOfDeath = input({
   example: "2024-01-15",
   clean: cleanString,
 });
+
 const CountryOfBirth = input({
   label: "Country of Birth",
   type: "string",
@@ -113,6 +124,7 @@ const CountryOfBirth = input({
   example: "US",
   clean: cleanString,
 });
+
 const RegionOfBirth = input({
   label: "Region of Birth",
   type: "string",
@@ -122,6 +134,7 @@ const RegionOfBirth = input({
   example: "California",
   clean: cleanString,
 });
+
 const TownOfBirth = input({
   label: "Town of Birth",
   type: "string",
@@ -131,6 +144,7 @@ const TownOfBirth = input({
   example: "San Francisco",
   clean: cleanString,
 });
+
 const BloodType = input({
   label: "Blood Type",
   type: "string",
@@ -140,6 +154,7 @@ const BloodType = input({
   example: "A+",
   clean: cleanString,
 });
+
 const CorrespondenceLanguage = input({
   label: "Correspondence Language",
   type: "string",
@@ -149,6 +164,7 @@ const CorrespondenceLanguage = input({
   example: "en",
   clean: cleanString,
 });
+
 const workerInfo = structuredObjectInput({
   label: "Worker Information",
   required: false,
@@ -163,6 +179,7 @@ const workerInfo = structuredObjectInput({
     CorrespondenceLanguage,
   },
 });
+
 const AddressLine1 = input({
   label: "Street Address",
   type: "string",
@@ -172,6 +189,7 @@ const AddressLine1 = input({
   example: "123 Main St",
   clean: cleanString,
 });
+
 const AddressLine2 = input({
   label: "Street Address Line 2",
   type: "string",
@@ -181,6 +199,7 @@ const AddressLine2 = input({
   example: "Suite 400",
   clean: cleanString,
 });
+
 const TownOrCity = input({
   label: "City",
   type: "string",
@@ -190,6 +209,7 @@ const TownOrCity = input({
   example: "San Francisco",
   clean: cleanString,
 });
+
 const Region1 = input({
   label: "State/Province",
   type: "string",
@@ -199,6 +219,7 @@ const Region1 = input({
   example: "CA",
   clean: cleanString,
 });
+
 const PostalCode = input({
   label: "Zip/Postal Code",
   type: "string",
@@ -208,6 +229,7 @@ const PostalCode = input({
   example: "94105",
   clean: cleanString,
 });
+
 const Country = input({
   label: "Country",
   type: "string",
@@ -217,6 +239,7 @@ const Country = input({
   example: "US",
   clean: cleanString,
 });
+
 const addresses = structuredObjectInput({
   label: "Addresses",
   collection: "valuelist",
@@ -231,6 +254,7 @@ const addresses = structuredObjectInput({
     Country,
   },
 });
+
 const EmailType = input({
   label: "Email Type",
   type: "string",
@@ -241,6 +265,7 @@ const EmailType = input({
   example: "W1",
   clean: cleanString,
 });
+
 const EmailAddress = input({
   label: "Email Address",
   type: "string",
@@ -250,6 +275,7 @@ const EmailAddress = input({
   example: "jane.smith@example.com",
   clean: cleanString,
 });
+
 const EmailPrimaryFlag = input({
   label: "Is Primary",
   type: "boolean",
@@ -258,6 +284,7 @@ const EmailPrimaryFlag = input({
   comments: "When true, marks this as the worker's primary email.",
   clean: util.types.toBool,
 });
+
 const emails = structuredObjectInput({
   label: "Emails",
   collection: "valuelist",
@@ -269,6 +296,7 @@ const emails = structuredObjectInput({
     PrimaryFlag: EmailPrimaryFlag,
   },
 });
+
 const PhoneType = input({
   label: "Phone Type",
   type: "string",
@@ -279,6 +307,7 @@ const PhoneType = input({
   example: "W1",
   clean: cleanString,
 });
+
 const PhoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -288,6 +317,7 @@ const PhoneNumber = input({
   example: "555-0100",
   clean: cleanString,
 });
+
 const CountryCodeNumber = input({
   label: "Country Code",
   type: "string",
@@ -297,6 +327,7 @@ const CountryCodeNumber = input({
   example: "1",
   clean: cleanString,
 });
+
 const AreaCode = input({
   label: "Area Code",
   type: "string",
@@ -306,6 +337,7 @@ const AreaCode = input({
   example: "415",
   clean: cleanString,
 });
+
 const Extension = input({
   label: "Extension",
   type: "string",
@@ -315,6 +347,7 @@ const Extension = input({
   example: "1234",
   clean: cleanString,
 });
+
 const phones = structuredObjectInput({
   label: "Phones",
   collection: "valuelist",
@@ -328,6 +361,7 @@ const phones = structuredObjectInput({
     Extension,
   },
 });
+
 const NationalIdentifierType = input({
   label: "National Identifier Type",
   type: "string",
@@ -338,6 +372,7 @@ const NationalIdentifierType = input({
   example: "SSN",
   clean: cleanString,
 });
+
 const NationalIdentifierNumber = input({
   label: "National Identifier Number",
   type: "string",
@@ -348,6 +383,7 @@ const NationalIdentifierNumber = input({
   example: "555-55-5555",
   clean: cleanString,
 });
+
 const NationalIdentifierLegislationCode = input({
   label: "Legislation Code",
   type: "string",
@@ -358,6 +394,7 @@ const NationalIdentifierLegislationCode = input({
   example: "US",
   clean: cleanString,
 });
+
 const nationalIdentifiers = structuredObjectInput({
   label: "National Identifiers",
   collection: "valuelist",
@@ -369,6 +406,7 @@ const nationalIdentifiers = structuredObjectInput({
     LegislationCode: NationalIdentifierLegislationCode,
   },
 });
+
 const LegalEntityId = input({
   label: "Legal Entity ID",
   type: "string",
@@ -379,6 +417,7 @@ const LegalEntityId = input({
   example: "300100000000001",
   clean: cleanString,
 });
+
 const StartDate = input({
   label: "Start Date",
   type: "string",
@@ -389,6 +428,7 @@ const StartDate = input({
   example: "2024-01-01",
   clean: cleanString,
 });
+
 const WorkerType = input({
   label: "Worker Type",
   type: "string",
@@ -399,6 +439,7 @@ const WorkerType = input({
   example: "E",
   clean: cleanString,
 });
+
 const LegalEmployerName = input({
   label: "Legal Employer Name",
   type: "string",
@@ -408,6 +449,7 @@ const LegalEmployerName = input({
   example: "Acme Corporation",
   clean: cleanString,
 });
+
 const WorkerNumber = input({
   label: "Worker Number",
   type: "string",
@@ -417,6 +459,7 @@ const WorkerNumber = input({
   example: "100000012345678",
   clean: cleanString,
 });
+
 const WorkRelationshipPrimaryFlag = input({
   label: "Is Primary",
   type: "boolean",
@@ -425,6 +468,7 @@ const WorkRelationshipPrimaryFlag = input({
   comments: "When true, marks this as the worker's primary work relationship.",
   clean: util.types.toBool,
 });
+
 const EnterpriseSeniorityDate = input({
   label: "Enterprise Seniority Date",
   type: "string",
@@ -434,6 +478,7 @@ const EnterpriseSeniorityDate = input({
   example: "2024-01-01",
   clean: cleanString,
 });
+
 const LegalEmployerSeniorityDate = input({
   label: "Legal Employer Seniority Date",
   type: "string",
@@ -443,6 +488,7 @@ const LegalEmployerSeniorityDate = input({
   example: "2024-01-01",
   clean: cleanString,
 });
+
 const ProjectedTerminationDate = input({
   label: "Projected Termination Date",
   type: "string",
@@ -452,6 +498,7 @@ const ProjectedTerminationDate = input({
   example: "2025-12-31",
   clean: cleanString,
 });
+
 const workRelationshipChildren = {
   LegalEntityId,
   StartDate,
@@ -463,6 +510,7 @@ const workRelationshipChildren = {
   LegalEmployerSeniorityDate,
   ProjectedTerminationDate,
 };
+
 const createWorkRelationships = structuredObjectInput({
   label: "Work Relationships",
   collection: "valuelist",
@@ -476,6 +524,7 @@ const createWorkRelationships = structuredObjectInput({
     WorkerType: { ...WorkerType, required: true },
   },
 });
+
 const updateWorkRelationships = structuredObjectInput({
   label: "Work Relationships",
   collection: "valuelist",
@@ -484,7 +533,9 @@ const updateWorkRelationships = structuredObjectInput({
     "The worker's work relationship(s) with a legal employer. Add a row per relationship.",
   inputs: workRelationshipChildren,
 });
+
 const workerPersonId = { ...personId, dataSource: "selectPersonId" };
+
 export const createWorkerInputs = {
   connection,
   NameType: { ...NameType, required: true },
@@ -502,12 +553,14 @@ export const createWorkerInputs = {
   nationalIdentifiers,
   workRelationships: createWorkRelationships,
 };
+
 export const getPublicWorkerInputs = {
   connection,
   personId,
   expand,
   includeMetadataLinks,
 };
+
 export const listPublicWorkersInputs = {
   connection,
   fetchAll,
@@ -516,12 +569,14 @@ export const listPublicWorkersInputs = {
   expand,
   includeMetadataLinks,
 };
+
 export const getWorkerInputs = {
   connection,
   personId: workerPersonId,
   expand,
   includeMetadataLinks,
 };
+
 export const listWorkersInputs = {
   connection,
   fetchAll,
@@ -530,6 +585,7 @@ export const listWorkersInputs = {
   expand,
   includeMetadataLinks,
 };
+
 export const updateWorkerInputs = {
   connection,
   personId: workerPersonId,

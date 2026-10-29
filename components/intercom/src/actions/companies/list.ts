@@ -15,6 +15,7 @@ import { segmentId } from "../../inputs/general";
 import { idInput } from "../../inputs/tags";
 import type { Company } from "../../interfaces";
 import { paginateRecords } from "../../util";
+
 export const listCompanies = action({
   display: {
     label: "List Companies",

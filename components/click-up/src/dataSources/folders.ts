@@ -3,6 +3,7 @@ import { createClickUpClient as createClient } from "../client";
 import { foldersExamplePayload } from "../examplePayloads";
 import { foldersInputs } from "../inputs";
 import type { GetFoldersResponse } from "../types";
+
 export const folders = dataSource({
   display: {
     label: "Select Folder",

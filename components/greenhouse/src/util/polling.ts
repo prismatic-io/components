@@ -10,6 +10,7 @@ import type {
   V3PollingCursor,
   V3PollWindowStart,
 } from "../types";
+
 export const resolveV3PollStart = (
   resume: V3PollingCursor | undefined,
   lastPolledAt: string | undefined,
@@ -26,18 +27,17 @@ export const resolveV3PollStart = (
     backfill: !lastPolledAt && Boolean(lookBackDate),
   };
 };
+
 export const v3PollWindowBounds = (
   isBatching: boolean,
-): {
-  perPage: number;
-  maxPages: number;
-} =>
+): { perPage: number; maxPages: number } =>
   isBatching
     ? {
         perPage: Math.min(V3_MAX_PER_PAGE, V3_BATCHED_PER_PAGE),
         maxPages: V3_BATCHED_POLL_MAX_PAGES,
       }
     : { perPage: V3_MAX_PER_PAGE, maxPages: V3_POLL_MAX_PAGES };
+
 export const resolveV3ApplicationChanges = (
   data: V3ApplicationChangesObject | undefined,
 ): V3ApplicationChange[] => {

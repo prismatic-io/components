@@ -7,6 +7,7 @@ import {
   pageSize,
   teamIdInput,
 } from "./common";
+
 const elementId = input({
   label: "Element ID",
   type: "string",
@@ -17,6 +18,7 @@ const elementId = input({
   clean: util.types.toNumber,
   dataSource: "selectElementProfile",
 });
+
 const elementProfileName = input({
   label: "Element Profile Name",
   type: "string",
@@ -27,6 +29,7 @@ const elementProfileName = input({
   example: "ACP Server - SW - 11TB",
   clean: util.types.toString,
 });
+
 const content = input({
   label: "Content",
   type: "code",
@@ -62,6 +65,7 @@ const content = input({
     2,
   ),
 });
+
 const accessories = input({
   label: "Accessories",
   type: "code",
@@ -88,6 +92,7 @@ const accessories = input({
     2,
   ),
 });
+
 export const listElementProfilesInputs = {
   ssvConnection: connectionInput,
   teamId: teamIdInput,
@@ -95,11 +100,13 @@ export const listElementProfilesInputs = {
   pageNumber,
   pageSize,
 };
+
 export const getElementProfileAccessoriesInputs = {
   ssvConnection: connectionInput,
   teamId: teamIdInput,
   elementId,
 };
+
 export const syncElementProfileInputs = {
   ssvConnection: connectionInput,
   teamId: teamIdInput,

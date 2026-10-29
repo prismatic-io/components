@@ -5,6 +5,7 @@ import { listIntegrationsInputs } from "../../inputs";
 import { listIntegrationsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listIntegrations = action({
   display: {
     label: "List Integrations",
@@ -23,14 +24,18 @@ export const listIntegrations = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const params = {
         name,
         enabled,
         offset: pagination.offset,
         limit: pagination.limit,
       };
+
       const path = "/outboundintegrations";
+
       const data = await fetchArenaList(client, path, params, fetchAll);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Integrations");

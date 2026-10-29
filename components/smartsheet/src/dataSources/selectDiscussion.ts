@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectDiscussionInputs } from "../inputs";
+
 export const selectDiscussion = dataSource({
   display: {
     label: "Select Discussion",
@@ -15,13 +16,16 @@ export const selectDiscussion = dataSource({
     } = await client.get(`/sheets/${sheetId}/discussions`, {
       params: { includeAll: true },
     });
+
     if (!discussions || !Array.isArray(discussions)) {
       return { result: [] };
     }
+
     const result: Element[] = discussions.map(({ title: label, id: key }) => ({
       label,
       key: util.types.toString(key),
     }));
+
     return { result };
   },
 });

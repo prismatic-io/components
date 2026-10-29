@@ -5,6 +5,7 @@ import { createTicketInputs } from "../../inputs";
 import { ticketSchema } from "../../outputSchemas";
 import type { TicketCreateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createTicket = action({
   display: {
     label: "Create Ticket",
@@ -19,6 +20,7 @@ export const createTicket = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: TicketCreateVo = {
         template: { guid: params.templateGuid },
         title: params.title,
@@ -28,6 +30,7 @@ export const createTicket = action({
           : undefined,
         additionalAttributes: resolveAdditionalAttributes(params, context),
       };
+
       context.logger.info("Creating ticket in Arena", {
         ticketTitle: params.title,
         hasTemplate: !!params.templateGuid,
@@ -43,7 +46,9 @@ export const createTicket = action({
           ? params.attributeDefinitions.length
           : 0,
       });
+
       const { data } = await client.post("/tickets", requestPayload);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Ticket");

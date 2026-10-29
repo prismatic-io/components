@@ -23,6 +23,7 @@ export {
   updateDealProductOutputSchema,
   deleteDealProductOutputSchema,
 } from "./deals";
+
 export {
   getPersonsOutputSchema,
   singlePersonV2OutputSchema,
@@ -41,6 +42,7 @@ export {
   getPersonUsersOutputSchema,
   deletePersonPictureOutputSchema,
 } from "./persons";
+
 export {
   getOrganizationsOutputSchema,
   singleOrganizationV2OutputSchema,
@@ -58,6 +60,7 @@ export {
   getOrganizationUsersOutputSchema,
   getOrganizationPersonsOutputSchema,
 } from "./organizations";
+
 export * from "./activities";
 export * from "./activityFields";
 export * from "./activityTypes";

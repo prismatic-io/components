@@ -18,6 +18,7 @@ import {
   statusInput,
   titleInput,
 } from "./common";
+
 const requirementGuidInput = input({
   label: "Requirement GUID",
   type: "string",
@@ -27,6 +28,7 @@ const requirementGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTemplateGuidInput = input({
   label: "Requirement Template GUID",
   type: "string",
@@ -36,6 +38,7 @@ const requirementTemplateGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const requirementTemplateGuidCreateInput = input({
   label: "Requirement Template GUID",
   type: "string",
@@ -45,6 +48,7 @@ const requirementTemplateGuidCreateInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTitleInput = input({
   label: "Title",
   type: "string",
@@ -53,6 +57,7 @@ const requirementTitleInput = input({
   comments: "The title of the requirement.",
   clean: util.types.toString,
 });
+
 const requirementUpdateTitleInput = input({
   label: "Title",
   type: "string",
@@ -61,6 +66,7 @@ const requirementUpdateTitleInput = input({
   comments: "The title of the requirement.",
   clean: toOptionalString,
 });
+
 const requirementDescriptionInput = input({
   label: "Description",
   type: "string",
@@ -69,6 +75,7 @@ const requirementDescriptionInput = input({
   comments: "The description of the requirement.",
   clean: toOptionalString,
 });
+
 const requirementPriorityInput = input({
   label: "Priority",
   type: "string",
@@ -78,6 +85,7 @@ const requirementPriorityInput = input({
     "The priority of the requirement. The accepted values come from the priority attribute configured in Arena, for example High or Medium.",
   clean: toOptionalString,
 });
+
 const requirementAssigneeGuidInput = input({
   label: "Assignee GUID",
   type: "string",
@@ -87,6 +95,7 @@ const requirementAssigneeGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const requirementNumberInput = input({
   label: "Number",
   type: "string",
@@ -95,6 +104,7 @@ const requirementNumberInput = input({
   comments: "Custom requirement number (optional).",
   clean: toOptionalString,
 });
+
 const requirementNumberSequencePrefixInput = input({
   label: "Number Sequence Prefix",
   type: "string",
@@ -104,6 +114,7 @@ const requirementNumberSequencePrefixInput = input({
   example: "ECO",
   clean: toOptionalString,
 });
+
 const requirementStatusInput = input({
   label: "Status",
   type: "string",
@@ -112,6 +123,7 @@ const requirementStatusInput = input({
   comments: "The new status value for the requirement.",
   clean: util.types.toString,
 });
+
 const childRequirementGuidInput = input({
   label: "Child Requirement GUID",
   type: "string",
@@ -121,6 +133,7 @@ const childRequirementGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTraceLinkGuidInput = input({
   label: "Trace Link GUID",
   type: "string",
@@ -130,6 +143,7 @@ const requirementTraceLinkGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const traceDirectionInput = input({
   label: "Trace Direction",
   type: "string",
@@ -142,6 +156,7 @@ const traceDirectionInput = input({
   ],
   clean: toOptionalString,
 });
+
 const traceObjectTypeInput = input({
   label: "Trace Object Type",
   type: "string",
@@ -154,6 +169,7 @@ const traceObjectTypeInput = input({
   ],
   clean: toOptionalString,
 });
+
 const requirementFileAssocGuidInput = input({
   label: "File Association GUID",
   type: "string",
@@ -163,6 +179,7 @@ const requirementFileAssocGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementQualityAssocGuidInput = input({
   label: "Quality Association GUID",
   type: "string",
@@ -172,6 +189,7 @@ const requirementQualityAssocGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTicketAssocGuidInput = input({
   label: "Ticket Association GUID",
   type: "string",
@@ -181,6 +199,7 @@ const requirementTicketAssocGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTreeViewInput = input({
   label: "View",
   type: "string",
@@ -193,6 +212,7 @@ const requirementTreeViewInput = input({
   ],
   clean: toOptionalString,
 });
+
 const requirementTraceSuspectInput = input({
   label: "Suspect",
   type: "boolean",
@@ -201,6 +221,7 @@ const requirementTraceSuspectInput = input({
     "When true, only requirements with a suspected trace status are returned.",
   clean: util.types.toBool,
 });
+
 const requirementTraceRelationshipTypeGuidInput = input({
   label: "Relationship Type GUID",
   type: "string",
@@ -210,6 +231,7 @@ const requirementTraceRelationshipTypeGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const requirementTraceItemGuidInput = input({
   label: "Trace Item GUID",
   type: "string",
@@ -219,6 +241,7 @@ const requirementTraceItemGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const requirementTraceRequirementGuidInput = input({
   label: "Trace Target Requirement GUID",
   type: "string",
@@ -229,6 +252,7 @@ const requirementTraceRequirementGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const qualityGuidInput = input({
   label: "Quality Process GUID",
   type: "string",
@@ -238,6 +262,7 @@ const qualityGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementQualityStepGuidInput = input({
   label: "Quality Step GUID",
   type: "string",
@@ -247,6 +272,7 @@ const requirementQualityStepGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTicketGuidInput = input({
   label: "Ticket GUID",
   type: "string",
@@ -256,6 +282,7 @@ const requirementTicketGuidInput = input({
   example: "RM4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const requirementTemplateNameFilterInput = input({
   label: "Name Filter",
   type: "string",
@@ -264,6 +291,7 @@ const requirementTemplateNameFilterInput = input({
   comments: "Optional filter by requirement template name.",
   clean: toOptionalString,
 });
+
 const requirementTemplateActiveFilterInput = input({
   label: "Active",
   type: "boolean",
@@ -272,6 +300,7 @@ const requirementTemplateActiveFilterInput = input({
   comments: "When true, only active templates are returned.",
   clean: util.types.toBool,
 });
+
 const requirementTemplateIncludePossibleValuesInput = input({
   label: "Include Possible Values",
   type: "boolean",
@@ -281,6 +310,7 @@ const requirementTemplateIncludePossibleValuesInput = input({
     "When true, possible values for dropdown or list attributes are included.",
   clean: util.types.toBool,
 });
+
 const requirementTemplateCreatableOnlyInput = input({
   label: "Creatable Only",
   type: "boolean",
@@ -290,6 +320,7 @@ const requirementTemplateCreatableOnlyInput = input({
     "When true, only attributes that can be set during creation are returned.",
   clean: util.types.toBool,
 });
+
 const requirementTemplateEditableOnlyInput = input({
   label: "Editable Only",
   type: "boolean",
@@ -298,6 +329,7 @@ const requirementTemplateEditableOnlyInput = input({
   comments: "When true, only editable attributes are returned.",
   clean: util.types.toBool,
 });
+
 const requirementTemplateSearchableOnlyInput = input({
   label: "Searchable Only",
   type: "boolean",
@@ -306,6 +338,7 @@ const requirementTemplateSearchableOnlyInput = input({
   comments: "When true, only searchable attributes are returned.",
   clean: util.types.toBool,
 });
+
 const requirementAssigneeFullNameInput = input({
   label: "Assignee Full Name",
   type: "string",
@@ -315,6 +348,7 @@ const requirementAssigneeFullNameInput = input({
   example: "Alex Chen",
   clean: toOptionalString,
 });
+
 const requirementModificationDateTimeInput = input({
   label: "Modification Date Time",
   type: "string",
@@ -324,6 +358,7 @@ const requirementModificationDateTimeInput = input({
   example: "2026-05-10T09:15:00Z",
   clean: toOptionalString,
 });
+
 const requirementAnySearchInput = input({
   label: "Any",
   type: "string",
@@ -332,27 +367,32 @@ const requirementAnySearchInput = input({
   comments: "Full-text search across all fields.",
   clean: toOptionalString,
 });
+
 export const addRequirementChildInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   childRequirementGuid: childRequirementGuidInput,
 };
+
 export const addRequirementFileInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   fileGuid: fileGuidInput,
 };
+
 export const addRequirementQualityInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   qualityGuid: qualityGuidInput,
   stepGuid: requirementQualityStepGuidInput,
 };
+
 export const addRequirementTicketInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   ticketGuid: requirementTicketGuidInput,
 };
+
 export const addRequirementTraceInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
@@ -362,11 +402,13 @@ export const addRequirementTraceInputs = {
   itemGuid: requirementTraceItemGuidInput,
   targetRequirementGuid: requirementTraceRequirementGuidInput,
 };
+
 export const changeRequirementStatusInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   status: requirementStatusInput,
 };
+
 export const createRequirementInputs = {
   connection: connectionInput,
   templateGuid: requirementTemplateGuidCreateInput,
@@ -380,53 +422,65 @@ export const createRequirementInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const deleteRequirementInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const deleteRequirementTraceInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   traceLinkGuid: requirementTraceLinkGuidInput,
 };
+
 export const getRequirementInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const listRequirementChildrenInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   view: requirementTreeViewInput,
 };
+
 export const getRequirementFileAssociationInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   fileAssociationGuid: requirementFileAssocGuidInput,
 };
+
 export const listRequirementFilesInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const listRequirementHistoryInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const getRequirementParentInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const listRequirementQualityInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const getRequirementQualityAssociationInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   associationGuid: requirementQualityAssocGuidInput,
 };
+
 export const listRequirementRelationshipTypesInputs = {
   connection: connectionInput,
 };
+
 export const listRequirementsInputs = {
   connection: connectionInput,
   number: {
@@ -462,10 +516,12 @@ export const listRequirementsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const getRequirementTemplateInputs = {
   connection: connectionInput,
   requirementTemplateGuid: requirementTemplateGuidInput,
 };
+
 export const listRequirementTemplateAttributesInputs = {
   connection: connectionInput,
   templateGuid: requirementTemplateGuidInput,
@@ -474,51 +530,61 @@ export const listRequirementTemplateAttributesInputs = {
   editableOnly: requirementTemplateEditableOnlyInput,
   searchableOnly: requirementTemplateSearchableOnlyInput,
 };
+
 export const listRequirementTemplatesInputs = {
   connection: connectionInput,
   name: requirementTemplateNameFilterInput,
   active: requirementTemplateActiveFilterInput,
 };
+
 export const getRequirementTicketAssociationInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   associationGuid: requirementTicketAssocGuidInput,
 };
+
 export const listRequirementTicketsInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
 };
+
 export const getRequirementTraceInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   traceLinkGuid: requirementTraceLinkGuidInput,
 };
+
 export const listRequirementTracesInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   direction: traceDirectionInput,
   suspect: requirementTraceSuspectInput,
 };
+
 export const removeRequirementChildInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   childRequirementGuid: childRequirementGuidInput,
 };
+
 export const removeRequirementFileAssociationInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   fileAssociationGuid: requirementFileAssocGuidInput,
 };
+
 export const removeRequirementQualityAssociationInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   associationGuid: requirementQualityAssocGuidInput,
 };
+
 export const removeRequirementTicketAssociationInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
   associationGuid: requirementTicketAssocGuidInput,
 };
+
 export const updateRequirementInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,
@@ -531,6 +597,7 @@ export const updateRequirementInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const updateRequirementTraceInputs = {
   connection: connectionInput,
   requirementGuid: requirementGuidInput,

@@ -8,6 +8,7 @@ import {
   version,
 } from "../../../inputs";
 import { generatePayload } from "../../util";
+
 export const listByProductId = action({
   display: {
     label: "Get a list of Inventory Items by Product ID",

@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connection } from "../inputs";
 import type { Records } from "../types";
 import { sortArray } from "../util";
+
 export const selectBrand = dataSource({
   display: {
     label: "Select Brand",
@@ -14,6 +15,7 @@ export const selectBrand = dataSource({
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const { data } = await client.get("/brands");
+
     if (Array.isArray(data)) {
       const objects = sortArray<Records>(data, "name").map<Element>(
         (brand) => ({
@@ -21,6 +23,7 @@ export const selectBrand = dataSource({
           label: `${brand.name} (ID: ${brand.id})`,
         }),
       );
+
       return { result: objects };
     }
     return { result: [] };

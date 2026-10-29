@@ -1,4 +1,5 @@
 import type { SlackChangesObject, SlackRecordChange } from "../types";
+
 export const resolvePollingRecordChanges = (
   data: SlackChangesObject | undefined,
 ): SlackRecordChange[] => {

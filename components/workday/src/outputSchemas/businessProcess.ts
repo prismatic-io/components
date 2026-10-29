@@ -3,6 +3,7 @@ import {
   idDescriptorReferenceSchema,
   instanceReferenceSchema,
 } from "./shared";
+
 export const eventDetailsSchema = {
   type: "object" as const,
   properties: {
@@ -38,6 +39,7 @@ export const eventDetailsSchema = {
     },
   },
 };
+
 export const getEventAttachmentsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -54,7 +56,9 @@ export const getEventAttachmentsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getEventByIdOutputSchema = eventDetailsSchema;
+
 export const listEventsOutputSchema = {
   type: ["object", "array"],
   properties: {

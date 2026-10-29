@@ -5,6 +5,7 @@ import {
   richTextItemSchema,
   userReferenceSchema,
 } from "./shared";
+
 export const notionDataSourceObjectSchema = {
   type: "object" as const,
   properties: {
@@ -41,9 +42,13 @@ export const notionDataSourceObjectSchema = {
   },
   required: [],
 };
+
 export const createDataSourceOutputSchema = notionDataSourceObjectSchema;
+
 export const retrieveDataSourceOutputSchema = notionDataSourceObjectSchema;
+
 export const updateDataSourceOutputSchema = notionDataSourceObjectSchema;
+
 export const listDataSourcesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -56,6 +61,7 @@ export const listDataSourcesOutputSchema = {
   },
   required: [],
 };
+
 export const queryDataSourceOutputSchema = {
   type: "object" as const,
   properties: {

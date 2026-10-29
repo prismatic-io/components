@@ -2,6 +2,7 @@ export const createDatabaseParent = {
   type: "page_id",
   page_id: "d9824bdc84454327be8b5b47500af6ce",
 };
+
 export const createDatabasePayload = {
   Name: {
     title: {},
@@ -81,6 +82,7 @@ export const createDatabasePayload = {
     files: {},
   },
 };
+
 export const listPagesExamplePayload = {
   data: {
     object: "list",
@@ -127,6 +129,7 @@ export const listPagesExamplePayload = {
     type: "page",
   },
 };
+
 export const createPageExamplePayload = {
   data: {
     object: "page",
@@ -197,6 +200,7 @@ export const createPageExamplePayload = {
     url: "https://www.notion.so/Tuscan-Kale-598337872cf94fdf8782e53db20768a5",
   },
 };
+
 export const propertiesInputsExample = {
   Name: {
     title: {},
@@ -205,12 +209,14 @@ export const propertiesInputsExample = {
     rich_text: {},
   },
 };
+
 export const sortInputExample = [
   {
     property: "Last ordered",
     direction: "ascending",
   },
 ];
+
 export const descriptionInputExample = [
   {
     annotations: {
@@ -223,6 +229,7 @@ export const descriptionInputExample = [
     },
   },
 ];
+
 export const getUserExamplePayload = {
   data: {
     object: "user",
@@ -235,6 +242,7 @@ export const getUserExamplePayload = {
     avatar_url: "https://secure.notion-static.com/avatar.jpg",
   },
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     object: "user",
@@ -259,6 +267,7 @@ export const getCurrentUserExamplePayload = {
     },
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     object: "list",
@@ -293,6 +302,7 @@ export const listUsersExamplePayload = {
     type: "user",
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     object: "user",
@@ -305,5 +315,7 @@ export const rawRequestExamplePayload = {
     avatar_url: "https://secure.notion-static.com/avatar.jpg",
   },
 };
+
 export const createDatabaseItemExamplePayload = createPageExamplePayload;
+
 export const getPageExamplePayload = createPageExamplePayload;

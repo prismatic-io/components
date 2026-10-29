@@ -4,6 +4,7 @@ import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
 import { deleteInstanceWebhooksOutputSchema } from "../../outputSchemas";
 import { fetchWebhooks } from "../../util";
+
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",

@@ -5,6 +5,7 @@ export interface NotionPage {
   last_edited_time: string;
   [key: string]: unknown;
 }
+
 export interface NotionUser {
   id: string;
   name?: string;

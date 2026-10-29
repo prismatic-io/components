@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { CannyPostChangesObject } from "../types";
+
 const exampleBoard = {
   id: "553c3ef8b8cdcd1501ba1234",
   created: "2026-04-16T01:07:22.189Z",
@@ -10,6 +11,7 @@ const exampleBoard = {
   token: "b2b4d0d4-2b8e-4a1b-9c1d-6f0b3a5e7c21",
   url: "https://your-company.canny.io/admin/board/feature-requests",
 };
+
 const exampleAuthor = {
   id: "553c3ef8b8cdcd1501ba123a",
   created: "2026-04-16T01:07:22.189Z",
@@ -19,6 +21,7 @@ const exampleAuthor = {
   url: "https://your-company.canny.io/admin/users/sally-doe",
   userID: "1234",
 };
+
 const exampleAdmin = {
   id: "524c3ef8b8cdcd1501ba246b",
   created: "2026-04-16T01:07:22.189Z",
@@ -28,6 +31,7 @@ const exampleAdmin = {
   url: "https://your-company.canny.io/admin/users/john-doe",
   userID: "5678",
 };
+
 const exampleTriggerAttributes = {
   headers: {},
   queryParameters: {},
@@ -59,11 +63,10 @@ const exampleTriggerAttributes = {
   startedAt: "2026-04-16T00:00:00.000Z",
   globalDebug: false,
 };
+
 export const pollChangesTriggerExamplePayload: {
   payload: Omit<TriggerPayload, "body"> & {
-    body: {
-      data: CannyPostChangesObject;
-    };
+    body: { data: CannyPostChangesObject };
   };
   polledNoChanges: boolean;
 } = {
@@ -129,9 +132,8 @@ export const pollChangesTriggerExamplePayload: {
   },
   polledNoChanges: false,
 };
-export const webhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const webhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     ...exampleTriggerAttributes,
     headers: {

@@ -20,6 +20,7 @@ import {
   permissionReminder,
   connectionInput,
 } from "../../inputs";
+
 export const updateList = action({
   display: {
     label: "Update List",
@@ -72,4 +73,5 @@ export const updateList = action({
     connection: connectionInput,
   },
 });
+
 export default updateList;

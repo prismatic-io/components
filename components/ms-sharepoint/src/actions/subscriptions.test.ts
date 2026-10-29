@@ -2,12 +2,15 @@ import { oauth } from "../connections";
 import component from "..";
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import { createHarness } from "@prismatic-io/spectral/dist/testing";
+
 const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   ? describe
   : describe.skip;
+
 describeIntegrationTest("subscriptions", () => {
   const harness = createHarness(component);
   const connection = createConnection(oauth, {});
+
   it("should create subscription", async () => {
     const result = await harness.action("createSiteListSubscription", {
       connection,
@@ -20,6 +23,7 @@ describeIntegrationTest("subscriptions", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("should list subscriptions", async () => {
     const result = await harness.action("listSubscriptions", {
       connection,
@@ -27,6 +31,7 @@ describeIntegrationTest("subscriptions", () => {
     });
     expect(result).toBeDefined();
   });
+
   it.skip("should update subscription", async () => {
     const result = await harness.action(
       "updateSiteListSubscriptionExpiration",
@@ -37,6 +42,7 @@ describeIntegrationTest("subscriptions", () => {
     );
     expect(result).toBeDefined();
   });
+
   it.skip("should delete subscriptions", async () => {
     const result = await harness.action("deleteSubscription", {
       connection,
@@ -44,6 +50,7 @@ describeIntegrationTest("subscriptions", () => {
     });
     expect(result).toBeDefined();
   });
+
   it.skip("should delete all instance subscriptions", async () => {
     const result = await harness.action(
       "deleteAllInstanceSubscriptions",

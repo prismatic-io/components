@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const consumerOrgId = input({
   label: "Consumer Organization ID",
   type: "string",
@@ -6,11 +7,13 @@ export const consumerOrgId = input({
   comments: "Your consumer organization Id",
   clean: util.types.toString,
 });
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const eventmetadata = input({
   label: "Event Metadata",
   type: "boolean",
@@ -20,6 +23,7 @@ export const eventmetadata = input({
     "The optional boolean to fetch or not this provider's event metadata",
   clean: util.types.toBool,
 });
+
 export const id = input({
   label: "Provider ID",
   type: "string",
@@ -28,6 +32,7 @@ export const id = input({
   dataSource: "selectProvider",
   clean: util.types.toString,
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -35,6 +40,7 @@ export const projectId = input({
   comments: "The project Id",
   clean: util.types.toString,
 });
+
 export const workspaceId = input({
   label: "Workspace ID",
   type: "string",
@@ -42,6 +48,7 @@ export const workspaceId = input({
   comments: "The workspace Id",
   clean: util.types.toString,
 });
+
 export const label = input({
   label: "Provider Label",
   type: "string",
@@ -50,6 +57,7 @@ export const label = input({
     "The label of this Events Provider, as shown on the Adobe Developer Console",
   clean: util.types.toString,
 });
+
 export const description = input({
   label: "Provider Description",
   type: "string",
@@ -58,6 +66,7 @@ export const description = input({
     "The description of this Events Provider, as shown on the Adobe Developer Console",
   clean: util.types.toString,
 });
+
 export const docsUrl = input({
   label: "Provider Documentation URL",
   type: "string",
@@ -66,6 +75,7 @@ export const docsUrl = input({
     "The documentation url of this Events Provider, as shown on the Adobe Developer Console",
   clean: util.types.toString,
 });
+
 export const providerId = input({
   label: "Provider ID",
   type: "string",
@@ -74,6 +84,7 @@ export const providerId = input({
   dataSource: "selectProvider",
   clean: util.types.toString,
 });
+
 export const name = input({
   label: "Registration Name",
   type: "string",
@@ -82,6 +93,7 @@ export const name = input({
     "The name of the webhook registration which will be displayed on Developer Console",
   clean: util.types.toString,
 });
+
 export const webhookUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -89,6 +101,7 @@ export const webhookUrl = input({
   comments: "The URL where the events will be delivered",
   clean: util.types.toString,
 });
+
 export const eventsOfInterest = input({
   label: "Events of Interest",
   type: "code",
@@ -105,6 +118,7 @@ export const eventsOfInterest = input({
     "The events of interest for this registration. You can get the provider_id (provider not required) and event_code from the list of registrations available for your workspace by using the List All Registrations action.",
   clean: util.types.toString,
 });
+
 export const deliveryType = input({
   label: "Delivery Type",
   type: "string",
@@ -118,6 +132,7 @@ export const deliveryType = input({
   comments: "The delivery type of this registration.",
   clean: util.types.toString,
 });
+
 export const runtimeAction = input({
   label: "Runtime Action",
   type: "string",
@@ -125,6 +140,7 @@ export const runtimeAction = input({
   comments: "Runtime action to be invoked by the published events",
   clean: util.types.toString,
 });
+
 export const enabled = input({
   label: "Enabled",
   type: "boolean",
@@ -133,6 +149,7 @@ export const enabled = input({
   comments: "Enable or disable the registration",
   clean: util.types.toBool,
 });
+
 export const registrationId = input({
   label: "Registration ID",
   type: "string",

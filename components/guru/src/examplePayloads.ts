@@ -84,12 +84,14 @@ export const createCardPayload = {
     nextVerificationDate: "2025-11-20T19:33:23.074+0000",
   },
 };
+
 export const deleteCardPayload = {
   data: {
     message: "Card deleted successfully",
     cardId: "12345678-1234-1234-1234-123456789abc",
   },
 };
+
 export const getCardPayload = {
   data: {
     verificationReasons: [],
@@ -194,9 +196,11 @@ export const getCardPayload = {
     nextVerificationDate: "2025-11-20T19:33:23.074+0000",
   },
 };
+
 export const getCardFoldersPayload = {
   data: [],
 };
+
 export const listCardVerifiersPayload = {
   data: [
     {
@@ -213,6 +217,7 @@ export const listCardVerifiersPayload = {
     },
   ],
 };
+
 export const unverifyCardPayload = {
   data: {
     verificationInitiationDate: "2025-08-22T19:33:23.846+0000",
@@ -226,6 +231,7 @@ export const unverifyCardPayload = {
     },
   },
 };
+
 export const updateCardPayload = {
   data: {
     version: 2,
@@ -313,12 +319,14 @@ export const updateCardPayload = {
     nextVerificationDate: "2025-11-20T19:33:24.277+0000",
   },
 };
+
 export const verifyCardPayload = {
   data: {
     message: "Card verified successfully",
     cardId: "12345678-1234-1234-1234-123456789abc",
   },
 };
+
 export const getCollectionPayload = {
   data: {
     collectionStats: {
@@ -382,6 +390,7 @@ export const getCollectionPayload = {
     collectionTypeDetail: "USER",
   },
 };
+
 export const listCollectionGroupAccessPayload = {
   data: [
     {
@@ -427,6 +436,7 @@ export const listCollectionGroupAccessPayload = {
     },
   ],
 };
+
 export const listCollectionsPayload = {
   data: [
     {
@@ -492,6 +502,7 @@ export const listCollectionsPayload = {
     },
   ],
 };
+
 export const createFolderPayload = {
   data: {
     type: "folder",
@@ -528,12 +539,14 @@ export const createFolderPayload = {
     numberOfFacts: 0,
   },
 };
+
 export const deleteFolderPayload = {
   data: {
     message: "Folder deleted successfully",
     folderId: "55555555-5555-5555-5555-555555555555",
   },
 };
+
 export const getFolderPayload = {
   data: {
     description: "updated description",
@@ -570,9 +583,11 @@ export const getFolderPayload = {
     numberOfFacts: 0,
   },
 };
+
 export const getFolderItemsPayload = {
   data: [],
 };
+
 export const listFoldersPayload = {
   data: [
     {
@@ -610,6 +625,7 @@ export const listFoldersPayload = {
     },
   ],
 };
+
 export const searchFoldersPayload = {
   data: [
     {
@@ -647,6 +663,7 @@ export const searchFoldersPayload = {
     },
   ],
 };
+
 export const updateFolderPayload = {
   data: {
     description: "updated description",
@@ -683,6 +700,7 @@ export const updateFolderPayload = {
     numberOfFacts: 0,
   },
 };
+
 export const addUserGroupMemberPayload = {
   data: [
     {
@@ -696,6 +714,7 @@ export const addUserGroupMemberPayload = {
     },
   ],
 };
+
 export const deleteUserGroupMemberPayload = {
   data: {
     message: "User removed from group successfully",
@@ -703,6 +722,7 @@ export const deleteUserGroupMemberPayload = {
     memberId: "newuser@example.com",
   },
 };
+
 export const listUserGroupsPayload = {
   data: [
     {
@@ -729,6 +749,7 @@ export const listUserGroupsPayload = {
     },
   ],
 };
+
 export const whoAmIPayload = {
   data: {
     tokenType: "API",
@@ -766,6 +787,7 @@ export const whoAmIPayload = {
     },
   },
 };
+
 export const searchCardsPayload = {
   data: [
     {
@@ -837,12 +859,14 @@ export const searchCardsPayload = {
     },
   ],
 };
+
 export const pollCardsExamplePayload = {
   data: {
     created: [],
     updated: searchCardsPayload.data,
   },
 };
+
 export const getTeamAnalyticsPayload = {
   data: [
     {
@@ -858,6 +882,7 @@ export const getTeamAnalyticsPayload = {
     },
   ],
 };
+
 export const listTeamMembersPayload = {
   data: [
     {
@@ -922,6 +947,7 @@ export const listTeamMembersPayload = {
     },
   ],
 };
+
 export const createWebhookSubscriptionPayload = {
   data: {
     id: "15151515-1515-1515-1515-151515151515",
@@ -954,6 +980,7 @@ export const createWebhookSubscriptionPayload = {
     dateLastModified: "2025-08-22T19:59:50.845+0000",
   },
 };
+
 export const deleteAllWebhookSubscriptionsPayload = {
   data: {
     message: "Successfully deleted 2 webhook subscriptions",
@@ -967,12 +994,14 @@ export const deleteAllWebhookSubscriptionsPayload = {
     failedSubscriptions: [],
   },
 };
+
 export const deleteWebhookSubscriptionPayload = {
   data: {
     message: "Webhook subscription deleted successfully",
     webhookId: "44444444-4444-4444-4444-444444444444",
   },
 };
+
 export const getWebhookSubscriptionPayload = {
   data: {
     id: "44444444-4444-4444-4444-444444444444",
@@ -1005,6 +1034,7 @@ export const getWebhookSubscriptionPayload = {
     dateLastModified: "2025-08-22T19:29:56.106+0000",
   },
 };
+
 export const listWebhookSubscriptionsPayload = {
   data: [
     {
@@ -1039,12 +1069,14 @@ export const listWebhookSubscriptionsPayload = {
     },
   ],
 };
+
 export const testWebhookPayload = {
   data: {
     message: "Test webhook sent successfully",
     webhookId: "44444444-4444-4444-4444-444444444444",
   },
 };
+
 export const updateWebhookSubscriptionPayload = {
   data: {
     id: "44444444-4444-4444-4444-444444444444",

@@ -4,6 +4,7 @@ import { listTagsExamplePayload } from "../../examplePayloads";
 import { listTagsInputs } from "../../inputs";
 import { listTagsOutputSchema } from "../../outputSchemas";
 import { paginateOffset } from "../../util";
+
 export const listTags = action({
   display: {
     label: "List Tags",
@@ -26,8 +27,7 @@ export const listTags = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listTagsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listTagsExamplePayload,
   examplePayload: listTagsExamplePayload,
 });

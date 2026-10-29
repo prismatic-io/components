@@ -12,6 +12,7 @@ import {
   saveOptions,
   storageName,
 } from "../../inputs";
+
 export const saveDocumentAs = action({
   display: {
     label: "Save Document As",
@@ -72,6 +73,7 @@ export const saveDocumentAs = action({
         },
       },
     );
+
     return { data };
   },
   examplePayload: saveDocumentAsExamplePayload,

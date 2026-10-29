@@ -1,4 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
+
 export const businessCentralConnection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "businessCentralOauth2",
@@ -73,6 +74,7 @@ export const businessCentralConnection = oauth2Connection({
     },
   },
 });
+
 export const businessClientCredentials = oauth2Connection({
   key: "businessCentralClientCredentials",
   display: {
@@ -135,4 +137,5 @@ export const businessClientCredentials = oauth2Connection({
     },
   },
 });
+
 export default [businessCentralConnection, businessClientCredentials];

@@ -15,7 +15,9 @@ export const createUserExamplePayload = {
     userPrincipalName: "AdeleV@contoso.com",
   },
 };
+
 export const emptyExamplePayload = { data: { success: true } };
+
 export const getUserExamplePayload = {
   data: {
     businessPhones: ["+1 425 555 0109"],
@@ -31,12 +33,14 @@ export const getUserExamplePayload = {
     id: "87d349ed-44d7-43e1-9a83-5f2406dee5bd",
   },
 };
+
 export const listUsersExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users",
     value: [getUserExamplePayload.data],
   },
 };
+
 export const createGroupExamplePayload = {
   data: {
     id: "b320ee12-b1cd-4cca-b648-a437be61c5cd",
@@ -62,6 +66,7 @@ export const createGroupExamplePayload = {
     onPremisesProvisioningErrors: [],
   },
 };
+
 export const getGroupExamplePayload = {
   data: {
     "@odata.context":
@@ -103,6 +108,7 @@ export const getGroupExamplePayload = {
     onPremisesProvisioningErrors: [],
   },
 };
+
 export const listGroupExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#groups",
@@ -175,6 +181,7 @@ export const listGroupExamplePayload = {
     ],
   },
 };
+
 export const listGroupMembersExamplePayload = {
   data: {
     "@odata.context":
@@ -187,6 +194,7 @@ export const listGroupMembersExamplePayload = {
     ],
   },
 };
+
 export const createApplicationExamplePayload = {
   data: {
     "@odata.context":
@@ -244,6 +252,7 @@ export const createApplicationExamplePayload = {
     },
   },
 };
+
 export const listApplicationsExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#applications",
@@ -258,8 +267,11 @@ export const listApplicationsExamplePayload = {
     ],
   },
 };
+
 export const upsertApplicationExamplePayload = createApplicationExamplePayload;
+
 export const getApplicationExamplePayload = createApplicationExamplePayload;
+
 export const listChangesExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users",
@@ -282,6 +294,7 @@ export const listChangesExamplePayload = {
     ],
   },
 };
+
 export const createSubscriptionExamplePayload = {
   data: {
     "@odata.context":
@@ -299,6 +312,7 @@ export const createSubscriptionExamplePayload = {
     notificationContentType: "application/json",
   },
 };
+
 export const getSubscriptionExamplePayload = {
   data: {
     id: "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
@@ -319,6 +333,7 @@ export const getSubscriptionExamplePayload = {
     notificationContentType: "application/json",
   },
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     "@odata.context":
@@ -326,7 +341,9 @@ export const listSubscriptionsExamplePayload = {
     value: [getSubscriptionExamplePayload.data],
   },
 };
+
 export const updateSubscriptionExamplePayload = getSubscriptionExamplePayload;
+
 export const deleteInstancedSubscriptionsExamplePayload = {
   data: {
     subscriptionsRemoved: [

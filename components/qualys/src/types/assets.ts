@@ -1,4 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
+
 export interface FetchGatewayAssetsOptions {
   connection: Connection;
   debug: boolean;
@@ -6,6 +7,7 @@ export interface FetchGatewayAssetsOptions {
   fetchAll: boolean;
   extraParams?: Record<string, string | number>;
 }
+
 export interface QualysAsset {
   assetId: number;
   assetUUID?: string;
@@ -30,6 +32,7 @@ export interface QualysAsset {
   criticality?: unknown;
   sensor?: unknown;
 }
+
 export interface SyncAssetsResponse {
   message: string;
   responseCode: string;

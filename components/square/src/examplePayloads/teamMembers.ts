@@ -17,6 +17,7 @@ export const createTeamMemberExamplePayload = {
     },
   },
 };
+
 export const searchTeamMembersExamplePayload = {
   data: {
     team_members: [
@@ -35,6 +36,7 @@ export const searchTeamMembersExamplePayload = {
     cursor: "MTY1Njk2OTU5NjEzMjAwMDAwMA==",
   },
 };
+
 export const retrieveTeamMemberExamplePayload = {
   data: {
     team_member: {
@@ -54,6 +56,7 @@ export const retrieveTeamMemberExamplePayload = {
     },
   },
 };
+
 export const updateTeamMemberExamplePayload = {
   data: {
     team_member: {

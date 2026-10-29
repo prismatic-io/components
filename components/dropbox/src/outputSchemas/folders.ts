@@ -4,6 +4,7 @@ import {
   metadataSchema,
   withDropboxEnvelope,
 } from "./shared";
+
 export const listFolderResultSchema = {
   type: "object" as const,
   properties: {
@@ -13,14 +14,18 @@ export const listFolderResultSchema = {
   },
   required: ["entries", "cursor", "has_more"],
 };
+
 export const createFolderOutputSchema = withDropboxEnvelope({
   type: "object",
   properties: { metadata: folderMetadataSchema },
   required: ["metadata"],
 });
+
 export const listFolderOutputSchema = withDropboxEnvelope(
   listFolderResultSchema,
 );
+
 export const searchFoldersOutputSchema =
   withDropboxEnvelope(searchV2ResultSchema);
+
 export const listChangesOutputSchema = listFolderResultSchema;

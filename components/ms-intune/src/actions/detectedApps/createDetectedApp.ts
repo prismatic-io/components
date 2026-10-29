@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS, ODATA_TYPES } from "../../constants";
 import { createDetectedAppExamplePayload } from "../../examplePayloads";
 import { createDetectedAppInputs } from "../../inputs";
+
 export const createDetectedApp = action({
   display: {
     label: "Create Detected App",

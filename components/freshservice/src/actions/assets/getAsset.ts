@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { getAssetExamplePayload as examplePayload } from "../../examplePayloads";
 import { getAssetInputs as inputs } from "../../inputs";
 import { assetOutputSchema } from "../../outputSchemas";
+
 export const getAsset = action({
   display: {
     label: "Get Asset (Deprecated)",
@@ -14,7 +15,9 @@ export const getAsset = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await client.get(`/assets/${assetDisplayId}`);
+
     return {
       data,
     };

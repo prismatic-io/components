@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalBool, toOptionalString, webhookEventOptions } from "../util";
 import { connection, resourceId } from "./common";
+
 const optionalBoolean = (label: string, comments: string) =>
   input({
     label,
@@ -13,6 +14,7 @@ const optionalBoolean = (label: string, comments: string) =>
     comments,
     clean: toOptionalBool,
   });
+
 const webhookName = input({
   label: "Name",
   type: "string",
@@ -22,6 +24,7 @@ const webhookName = input({
   placeholder: "Enter webhook name",
   example: "New Computer Notifier",
 });
+
 const webhookEvent = input({
   label: "Event",
   type: "string",
@@ -32,6 +35,7 @@ const webhookEvent = input({
   placeholder: "Select an event",
   example: "ComputerAdded",
 });
+
 const webhookUrl = input({
   label: "URL",
   type: "string",
@@ -41,6 +45,7 @@ const webhookUrl = input({
   placeholder: "https://example.com/webhook",
   example: "https://example.com/webhook",
 });
+
 const webhookContentType = input({
   label: "Content Type",
   type: "string",
@@ -54,6 +59,7 @@ const webhookContentType = input({
   clean: util.types.toString,
   example: "application/json",
 });
+
 const webhookEnabled = input({
   label: "Enabled",
   type: "boolean",
@@ -62,6 +68,7 @@ const webhookEnabled = input({
   comments: "Whether the webhook is active and delivering events.",
   clean: util.types.toBool,
 });
+
 const webhookAuthType = input({
   label: "Authentication Type",
   type: "string",
@@ -75,6 +82,7 @@ const webhookAuthType = input({
     "How Jamf Pro authenticates to the destination URL. Header authentication sends a custom header with every event.",
   clean: util.types.toString,
 });
+
 const webhookAuthHeaderName = input({
   label: "Auth Header Name",
   type: "string",
@@ -85,6 +93,7 @@ const webhookAuthHeaderName = input({
   placeholder: "X-Jamf-Signature",
   example: "X-Jamf-Signature",
 });
+
 const webhookAuthHeaderValue = input({
   label: "Auth Header Value",
   type: "string",
@@ -94,12 +103,14 @@ const webhookAuthHeaderValue = input({
   clean: toOptionalString,
   placeholder: "Enter the header value",
 });
+
 const webhookResourceId = {
   ...resourceId,
   label: "Webhook",
   comments: "The unique identifier of the webhook.",
   dataSource: "selectWebhook",
 };
+
 const createWebhookAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -113,6 +124,7 @@ const createWebhookAdditionalFields = structuredObjectInput({
     webhookAuthHeaderValue,
   },
 });
+
 export const createWebhookInputs = {
   connection,
   webhookName,
@@ -127,6 +139,7 @@ export const deleteWebhookInputs = {
   connection,
   resourceId: webhookResourceId,
 };
+
 const updateWebhookName = {
   ...webhookName,
   required: false,
@@ -151,6 +164,7 @@ const updateWebhookEnabled = optionalBoolean(
   "Enabled",
   "Whether the webhook is active and delivering events.",
 );
+
 const updateWebhookAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -164,6 +178,7 @@ const updateWebhookAdditionalFields = structuredObjectInput({
     webhookEnabled: updateWebhookEnabled,
   },
 });
+
 export const updateWebhookInputs = {
   connection,
   resourceId: webhookResourceId,

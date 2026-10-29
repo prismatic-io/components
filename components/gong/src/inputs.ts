@@ -7,11 +7,13 @@ import {
   valueListInputClean,
 } from "./util";
 import { pollResourceModel } from "./constants";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const callId = input({
   label: "Call Id",
   type: "string",
@@ -22,6 +24,7 @@ export const callId = input({
   placeholder: "Enter call ID",
   dataSource: "calls",
 });
+
 export const userId = input({
   label: "User Id",
   type: "string",
@@ -32,6 +35,7 @@ export const userId = input({
   placeholder: "Enter user ID",
   dataSource: "users",
 });
+
 export const folderId = input({
   label: "Folder Id",
   type: "string",
@@ -43,6 +47,7 @@ export const folderId = input({
   placeholder: "Enter folder ID",
   dataSource: "folders",
 });
+
 export const cursor = input({
   label: "Cursor",
   type: "string",
@@ -54,6 +59,7 @@ export const cursor = input({
     "eyJhbGciOiJIUzI1NiJ9.eyJjYWxsSWQiM1M30.6qKwpOcvnuweTZmFRzYdtjs_YwJphJU4QIwWFM",
   placeholder: "Enter pagination cursor",
 });
+
 export const startTime = input({
   label: "Start Time",
   type: "string",
@@ -64,6 +70,7 @@ export const startTime = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T02:30:00-07:00",
 });
+
 export const endTime = input({
   label: "End Time",
   type: "string",
@@ -74,6 +81,7 @@ export const endTime = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T03:30:00-07:00",
 });
+
 export const fromDateTime = input({
   label: "From Date Time",
   type: "string",
@@ -84,6 +92,7 @@ export const fromDateTime = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T02:30:00-07:00",
 });
+
 export const toDateTime = input({
   label: "To Date Time",
   type: "string",
@@ -94,6 +103,7 @@ export const toDateTime = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-20T02:30:00-07:00",
 });
+
 export const workspaceId = input({
   label: "Workspace Id",
   type: "string",
@@ -105,6 +115,7 @@ export const workspaceId = input({
   placeholder: "Enter workspace ID",
   dataSource: "workspaces",
 });
+
 export const clientUniqueId = input({
   label: "Client Unique Id",
   type: "string",
@@ -115,6 +126,7 @@ export const clientUniqueId = input({
   example: "1230788881967087399",
   placeholder: "Enter unique identifier",
 });
+
 export const title = input({
   label: "Title",
   type: "string",
@@ -125,6 +137,7 @@ export const title = input({
   example: "Example call",
   placeholder: "Enter call title",
 });
+
 export const purpose = input({
   label: "Purpose",
   type: "string",
@@ -135,6 +148,7 @@ export const purpose = input({
   example: "Demo call",
   placeholder: "Enter call purpose",
 });
+
 export const scheduledStart = input({
   label: "Scheduled Start",
   type: "string",
@@ -145,6 +159,7 @@ export const scheduledStart = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T02:30:00-07:00",
 });
+
 export const scheduledEnd = input({
   label: "Scheduled End",
   type: "string",
@@ -155,6 +170,7 @@ export const scheduledEnd = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T03:30:00-07:00",
 });
+
 export const actualStart = input({
   label: "Actual Start",
   type: "string",
@@ -165,6 +181,7 @@ export const actualStart = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T02:30:00-07:00",
 });
+
 export const duration = input({
   label: "Duration",
   type: "string",
@@ -174,6 +191,7 @@ export const duration = input({
   example: "125.8",
   placeholder: "Enter duration in seconds",
 });
+
 export const parties = input({
   label: "Parties",
   type: "code",
@@ -214,6 +232,7 @@ export const parties = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const direction = input({
   label: "Direction",
   type: "string",
@@ -241,6 +260,7 @@ export const direction = input({
   required: true,
   example: "Inbound",
 });
+
 export const disposition = input({
   label: "Disposition",
   type: "string",
@@ -251,6 +271,7 @@ export const disposition = input({
   example: "No Answer",
   placeholder: "Enter call disposition",
 });
+
 export const context = input({
   label: "Context",
   type: "code",
@@ -281,6 +302,7 @@ export const context = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const customData = input({
   label: "Custom Data",
   type: "string",
@@ -291,6 +313,7 @@ export const customData = input({
   example: "Optional data",
   placeholder: "Enter custom metadata",
 });
+
 export const speakersTimeline = input({
   label: "Speakers Timeline",
   type: "code",
@@ -314,6 +337,7 @@ export const speakersTimeline = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const meetingUrl = input({
   label: "Meeting URL",
   type: "string",
@@ -323,6 +347,7 @@ export const meetingUrl = input({
   example: "https://example.com/meeting/john.smith",
   placeholder: "https://example.com/meeting",
 });
+
 export const callProviderCode = input({
   label: "Call Provider Code",
   type: "string",
@@ -333,6 +358,7 @@ export const callProviderCode = input({
   example: "clearslide",
   placeholder: "Enter provider code",
 });
+
 export const downloadMediaUrl = input({
   label: "Download Media URL",
   type: "string",
@@ -343,6 +369,7 @@ export const downloadMediaUrl = input({
   example: "https://example.com/media/sample-call.mp3",
   placeholder: "https://example.com/media.mp3",
 });
+
 export const languageCode = input({
   label: "Language Code",
   type: "string",
@@ -353,6 +380,7 @@ export const languageCode = input({
   example: "en-US",
   placeholder: "en-US",
 });
+
 export const primaryUser = input({
   label: "Primary User",
   type: "string",
@@ -362,6 +390,7 @@ export const primaryUser = input({
   example: "234599484848423",
   placeholder: "Enter user ID",
 });
+
 export const fileInput = input({
   label: "File",
   type: "data",
@@ -369,6 +398,7 @@ export const fileInput = input({
   clean: util.types.toData,
   example: "Some binary file",
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -378,6 +408,7 @@ export const fileName = input({
   example: "some-file-name.txt",
   placeholder: "Enter file name",
 });
+
 export const callIds = input({
   label: "Call Ids",
   type: "string",
@@ -390,6 +421,7 @@ export const callIds = input({
   example: "7782342274025937895",
   dataSource: "calls",
 });
+
 export const includeAvatars = input({
   label: "Include Avatars",
   type: "boolean",
@@ -399,6 +431,7 @@ export const includeAvatars = input({
     "Avatars are synthetic users representing Gong employees (CSMs and support providers) when they access your instance. References to avatars' IDs may be found in the outputs of other API endpoints. This parameter is optional, if not provided avatars will not be included in the results.",
   example: "false",
 });
+
 export const invitees = input({
   label: "Invitees",
   type: "code",
@@ -418,6 +451,7 @@ export const invitees = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const externalId = input({
   label: "External ID",
   type: "string",
@@ -427,6 +461,7 @@ export const externalId = input({
   example: "7JEHFRGXDDZFEW2FC4U",
   placeholder: "Enter external ID",
 });
+
 export const organizerEmail = input({
   label: "Organizer Email",
   type: "string",
@@ -437,6 +472,7 @@ export const organizerEmail = input({
   example: "test@test.com",
   placeholder: "user@company.com",
 });
+
 export const meetingId = input({
   label: "Meeting ID",
   type: "string",
@@ -446,6 +482,7 @@ export const meetingId = input({
   example: "7782342274025937895",
   placeholder: "Enter meeting ID",
 });
+
 export const logType = input({
   label: "Log Type",
   type: "string",
@@ -475,6 +512,7 @@ export const logType = input({
   ],
   required: true,
 });
+
 export const emailAddress = input({
   label: "Email Address",
   type: "string",
@@ -484,6 +522,7 @@ export const emailAddress = input({
   example: "test@test.com",
   placeholder: "user@company.com",
 });
+
 export const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -494,6 +533,7 @@ export const phoneNumber = input({
   example: "+1 425 555 2671",
   placeholder: "+1 425 555 2671",
 });
+
 export const reportingSystem = input({
   label: "Reporting System",
   type: "string",
@@ -504,6 +544,7 @@ export const reportingSystem = input({
   example: "abc123",
   placeholder: "Enter system ID",
 });
+
 export const eventTimestamp = input({
   label: "Event Timestamp",
   type: "string",
@@ -514,6 +555,7 @@ export const eventTimestamp = input({
   example: "2018-02-18T02:30:00-07:00",
   placeholder: "2018-02-18T02:30:00-07:00",
 });
+
 export const eventId = input({
   label: "Event Id",
   type: "string",
@@ -524,6 +566,7 @@ export const eventId = input({
   example: "7782342274025932395",
   placeholder: "Enter event ID",
 });
+
 export const contentId = input({
   label: "Content Id",
   type: "string",
@@ -533,6 +576,7 @@ export const contentId = input({
   example: "7782342223025937895",
   placeholder: "Enter content ID",
 });
+
 export const contentUrl = input({
   label: "Content Url",
   type: "string",
@@ -543,6 +587,7 @@ export const contentUrl = input({
   example: "https://example.com/doc_123456789",
   placeholder: "https://example.com/document",
 });
+
 export const contentTitle = input({
   label: "Content Title",
   type: "string",
@@ -552,6 +597,7 @@ export const contentTitle = input({
   example: "Features & Spec V.1",
   placeholder: "Enter content title",
 });
+
 export const shareInfoUrl = input({
   label: "Share Info Url",
   type: "string",
@@ -562,6 +608,7 @@ export const shareInfoUrl = input({
   example: "https://example.com/path/to/a/page",
   placeholder: "https://example.com/info",
 });
+
 export const actionName = input({
   label: "Action Name",
   type: "string",
@@ -572,6 +619,7 @@ export const actionName = input({
   example: "Document Viewed",
   placeholder: "Enter action name",
 });
+
 export const eventInfoUrl = input({
   label: "Event Info Url",
   type: "string",
@@ -582,6 +630,7 @@ export const eventInfoUrl = input({
   example: "https://example.com/path/to/a/page",
   placeholder: "https://example.com/event",
 });
+
 export const userAgent = input({
   label: "User Agent",
   type: "string",
@@ -591,6 +640,7 @@ export const userAgent = input({
   example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
   placeholder: "Mozilla/5.0 (compatible; Browser)",
 });
+
 export const mobileAppId = input({
   label: "Mobile App Id",
   type: "string",
@@ -601,6 +651,7 @@ export const mobileAppId = input({
   example: "com.example.app",
   placeholder: "com.yourcompany.app",
 });
+
 export const moreInfoUrl = input({
   label: "More Info Url",
   type: "string",
@@ -609,6 +660,7 @@ export const moreInfoUrl = input({
   example: "https://example.com/path/to/a/page",
   placeholder: "https://example.com/info",
 });
+
 export const shareId = input({
   label: "Share Id",
   type: "string",
@@ -617,6 +669,7 @@ export const shareId = input({
   example: "7782342223025937895",
   placeholder: "Enter share ID",
 });
+
 export const sharingMessageSubject = input({
   label: "Sharing Message Subject",
   type: "string",
@@ -626,6 +679,7 @@ export const sharingMessageSubject = input({
   example: "Check out this document",
   placeholder: "Enter message subject",
 });
+
 export const sharingMessageBody = input({
   label: "Sharing Message Body",
   type: "string",
@@ -636,6 +690,7 @@ export const sharingMessageBody = input({
   example: "Check out this document",
   placeholder: "Enter message body",
 });
+
 export const actor = input({
   label: "Actor",
   type: "code",
@@ -669,6 +724,7 @@ export const actor = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const crmContext = input({
   label: "CRM Context",
   type: "code",
@@ -697,6 +753,7 @@ export const crmContext = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const contentProperties = input({
   label: "Content Properties",
   type: "code",
@@ -715,6 +772,7 @@ export const contentProperties = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const eventProperties = input({
   label: "Event Properties",
   type: "code",
@@ -733,6 +791,7 @@ export const eventProperties = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const nonCompanyParticipants = input({
   label: "Non Company Participants",
   type: "code",
@@ -768,6 +827,7 @@ export const nonCompanyParticipants = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const sharer = input({
   label: "Sharer",
   type: "code",
@@ -780,6 +840,7 @@ export const sharer = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const recipients = input({
   label: "Recipients",
   type: "code",
@@ -815,6 +876,7 @@ export const recipients = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const agentPlatform = input({
   label: "Agent Platform",
   type: "string",
@@ -845,6 +907,7 @@ export const agentPlatform = input({
   required: false,
   example: "Windows",
 });
+
 export const viewActionTitle = input({
   label: "View Action Title",
   type: "string",
@@ -855,6 +918,7 @@ export const viewActionTitle = input({
   example: "Document Viewed",
   placeholder: "Enter action title",
 });
+
 export const viewInfoUrl = input({
   label: "View Info URL",
   type: "string",
@@ -865,6 +929,7 @@ export const viewInfoUrl = input({
   example: "https://example.com/path/to/a/page",
   placeholder: "https://example.com/info",
 });
+
 export const viewer = input({
   label: "Viewer",
   type: "code",
@@ -898,6 +963,7 @@ export const viewer = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -906,6 +972,7 @@ export const pollResourceType = input({
   model: pollResourceModel,
   clean: util.types.toString,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -916,6 +983,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",

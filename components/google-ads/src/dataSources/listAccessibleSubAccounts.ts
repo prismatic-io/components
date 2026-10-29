@@ -8,6 +8,7 @@ import { listAccessibleSubAccountsExamplePayload } from "../examplePayloads";
 import { listAccessibleSubAccountsInputs } from "../inputs";
 import type { CustomerClientResult } from "../types";
 import { formatAccountNumber, searchGoogleAds } from "../util";
+
 export const listAccessibleSubAccounts = dataSource({
   display: {
     label: "List Accessible Sub Accounts",
@@ -28,7 +29,9 @@ export const listAccessibleSubAccounts = dataSource({
       },
       fetchAll: true,
     });
+
     const results = data.results ?? [];
+
     return {
       result: results.map(({ customerClient }) => {
         return {

@@ -1,5 +1,6 @@
 import type { AxiosInstance } from "axios";
 import type { AdpListResponse, PaginatedResult } from "../types";
+
 async function fetchData(
   client: AxiosInstance,
   url: string,
@@ -10,6 +11,7 @@ async function fetchData(
   });
   return data;
 }
+
 export async function fetchAllRecords<T>(
   client: AxiosInstance,
   url: string,
@@ -61,6 +63,7 @@ export async function fetchAllRecords<T>(
     confirmMessage: data.confirmMessage,
   };
 }
+
 export async function fetchAllRecordsNoCount<T>(
   client: AxiosInstance,
   url: string,

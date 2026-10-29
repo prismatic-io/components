@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../../client";
 import { getLibraryExamplePayload as examplePayload } from "../../examplePayloads";
 import { getLibraryInputs as inputs } from "../../inputs/libraries";
+
 export const getLibrary = action({
   display: {
     label: "Get Library",
@@ -56,6 +57,7 @@ export const getLibrary = action({
       connection,
       debug: context.debug.enabled,
     }).request(query, { libraryId });
+
     return {
       data: response,
     };

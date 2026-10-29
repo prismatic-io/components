@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAlgoliaClient } from "../../client";
 import { deleteIndexExamplePayload } from "../../examplePayloads";
 import { connectionInput, indexName } from "../../inputs";
+
 export const deleteIndex = action({
   display: {
     label: "Delete Index",
@@ -14,6 +15,7 @@ export const deleteIndex = action({
       isGoingToRead: false,
       debug: context.debug.enabled,
     });
+
     try {
       const { data } = await client.delete(`/1/indexes/${indexName}`);
       return { data };

@@ -5,6 +5,7 @@ import { selectPersonIdExamplePayload } from "../examplePayloads";
 import { selectPersonIdInputs } from "../inputs";
 import type { Worker } from "../types";
 import { mapToElements } from "../util";
+
 export const selectPersonId = dataSource({
   display: {
     label: "Select Person ID",
@@ -18,9 +19,7 @@ export const selectPersonId = dataSource({
   ) => {
     const client = createClient(connection, false);
     const resource = usePublicWorkers ? "/publicWorkers" : "/workers";
-    const { data } = await client.get<{
-      items: Worker[];
-    }>(resource, {
+    const { data } = await client.get<{ items: Worker[] }>(resource, {
       params: { limit: DATASOURCE_PAGE_SIZE, onlyData: "true", effectiveDate },
     });
     const result = mapToElements(

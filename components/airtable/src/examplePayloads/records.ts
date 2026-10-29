@@ -1,4 +1,5 @@
 import type { AirtableRecord } from "../types";
+
 export const recordExamplePayload = {
   data: {
     id: "recZ6qSLw0OCA6Xul",
@@ -14,9 +15,11 @@ export const recordExamplePayload = {
     },
   } as AirtableRecord,
 };
+
 export const createRecordExamplePayload = recordExamplePayload;
 export const getRecordExamplePayload = recordExamplePayload;
 export const updateRecordExamplePayload = recordExamplePayload;
+
 export const listRecordsExamplePayload = {
   data: [
     {
@@ -47,6 +50,7 @@ export const listRecordsExamplePayload = {
     },
   ] as AirtableRecord[],
 };
+
 export const deleteRecordExamplePayload = {
   data: {
     deleted: true,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { downloadSpecificAssetItemResponse } from "../../examplePayloads";
 import { connection, hash, id } from "../../inputs";
+
 export const downloadSpecificAssetItem = action({
   display: {
     label: "Download Specific Asset Item",

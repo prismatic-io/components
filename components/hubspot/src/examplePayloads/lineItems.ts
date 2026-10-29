@@ -1,4 +1,5 @@
 import { BASE_URL } from "../constants";
+
 export const listLineItemsExamplePayload = {
   data: {
     results: [
@@ -27,6 +28,7 @@ export const listLineItemsExamplePayload = {
     },
   },
 };
+
 export const getLineItemExamplePayload = {
   data: {
     id: "54321098765",
@@ -45,7 +47,9 @@ export const getLineItemExamplePayload = {
     archived: false,
   },
 };
+
 export const deleteLineItemExamplePayload = { data: "" };
+
 export const createLineItemExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:31:42.469Z",
@@ -76,6 +80,7 @@ export const createLineItemExamplePayload = {
     updatedAt: "2024-01-15T00:31:42.469Z",
   },
 };
+
 export const updateLineItemExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:31:42.485Z",

@@ -5,6 +5,7 @@ import { getTag } from "./getTag";
 import { listTags } from "./listTags";
 import { listTagsInTask } from "./listTagsInTask";
 import { updateTag } from "./updateTag";
+
 export default {
   createTag,
   deleteTag,

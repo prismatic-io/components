@@ -2,6 +2,7 @@ import { dataSource, input } from "@prismatic-io/spectral";
 import type { ListPagesQueryParams } from "../actions/types/ListPagesQueryParams";
 import { getDomoClient } from "../client";
 import { connection, limit, offset } from "../inputs";
+
 const pages = dataSource({
   display: {
     label: "Select Page",
@@ -13,6 +14,7 @@ const pages = dataSource({
     const queryParams: ListPagesQueryParams = {};
     if (limit.length) queryParams.limit = limit;
     if (offset.length) queryParams.offset = offset;
+
     const { data } = await client.get(`/pages`, {
       params: queryParams,
       headers: { Accept: "application/json" },
@@ -40,4 +42,5 @@ const pages = dataSource({
     }),
   },
 });
+
 export default { pages };

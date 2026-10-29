@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const clickUpApiKeyConnection = connection({
   key: "apiKey",
   display: {

@@ -8,6 +8,7 @@ export const statusRefSchema = {
     type: { type: "string" },
   },
 };
+
 export const userRefSchema = {
   type: "object" as const,
   properties: {
@@ -19,6 +20,7 @@ export const userRefSchema = {
     profilePicture: { type: "string" },
   },
 };
+
 export const creatorSchema = {
   type: "object" as const,
   properties: {
@@ -29,6 +31,7 @@ export const creatorSchema = {
     profilePicture: { type: ["string", "null"] },
   },
 };
+
 export const taskUserSchema = {
   type: "object" as const,
   properties: {
@@ -40,6 +43,7 @@ export const taskUserSchema = {
     profilePicture: { type: ["string", "null"] },
   },
 };
+
 export const prioritySchema = {
   type: ["object", "null"] as ("object" | "null")[],
   properties: {
@@ -49,6 +53,7 @@ export const prioritySchema = {
     priority: { type: "string" },
   },
 };
+
 export const taskCustomFieldSchema = {
   type: "object" as const,
   properties: {
@@ -64,6 +69,7 @@ export const taskCustomFieldSchema = {
     required: { type: "boolean" },
   },
 };
+
 export const taskTagSchema = {
   type: "object" as const,
   properties: {
@@ -73,6 +79,7 @@ export const taskTagSchema = {
     creator: { type: "integer" },
   },
 };
+
 export const taskDependencySchema = {
   type: "object" as const,
   properties: {
@@ -85,6 +92,7 @@ export const taskDependencySchema = {
     chain_id: { type: ["string", "null"] },
   },
 };
+
 export const taskLocationSchema = {
   type: "object" as const,
   properties: {
@@ -92,6 +100,7 @@ export const taskLocationSchema = {
     name: { type: "string" },
   },
 };
+
 export const sharingSchema = {
   type: "object" as const,
   properties: {
@@ -102,6 +111,7 @@ export const sharingSchema = {
     seo_optimized: { type: "boolean" },
   },
 };
+
 export const listRefSchema = {
   type: "object" as const,
   properties: {
@@ -110,6 +120,7 @@ export const listRefSchema = {
     access: { type: "boolean" },
   },
 };
+
 export const folderRefSchema = {
   type: "object" as const,
   properties: {
@@ -119,16 +130,19 @@ export const folderRefSchema = {
     access: { type: "boolean" },
   },
 };
+
 export const spaceIdRefSchema = {
   type: "object" as const,
   properties: {
     id: { type: "string" },
   },
 };
+
 export const requiredFolderRefSchema = {
   ...folderRefSchema,
   required: ["id", "name", "hidden", "access"],
 };
+
 export const requiredSpaceRefSchema = {
   type: "object" as const,
   properties: {
@@ -138,6 +152,7 @@ export const requiredSpaceRefSchema = {
   },
   required: ["id", "name", "access"],
 };
+
 export const folderListItemSchema = {
   type: "object" as const,
   properties: {
@@ -186,6 +201,7 @@ export const folderListItemSchema = {
     "permission_level",
   ],
 };
+
 export const invitedBySchema = {
   type: "object" as const,
   properties: {
@@ -197,6 +213,7 @@ export const invitedBySchema = {
     profilePicture: { type: "string" },
   },
 };
+
 const guestUserProperties = {
   id: { type: "integer" },
   username: { type: ["string", "null"] },
@@ -209,6 +226,7 @@ const guestUserProperties = {
   date_joined: { type: ["string", "null"] },
   date_invited: { type: "string" },
 };
+
 const guestUserRequired = [
   "id",
   "username",
@@ -221,11 +239,13 @@ const guestUserRequired = [
   "date_joined",
   "date_invited",
 ];
+
 export const guestUserSchema = {
   type: "object" as const,
   properties: guestUserProperties,
   required: guestUserRequired,
 };
+
 export const workspaceMemberUserSchema = {
   type: "object" as const,
   properties: {
@@ -241,6 +261,7 @@ export const workspaceMemberUserSchema = {
   },
   required: [...guestUserRequired, "custom_role"],
 };
+
 export const roleSchema = {
   type: "object" as const,
   properties: {
@@ -251,6 +272,7 @@ export const roleSchema = {
   },
   required: ["id", "name", "custom"],
 };
+
 export const invitedUserMemberSchema = {
   type: "object" as const,
   properties: {
@@ -259,6 +281,7 @@ export const invitedUserMemberSchema = {
   },
   required: ["user", "invited_by"],
 };
+
 export const invitedGuestMemberSchema = {
   type: "object" as const,
   properties: {
@@ -279,6 +302,7 @@ export const invitedGuestMemberSchema = {
     "can_create_views",
   ],
 };
+
 export const workspaceTeamUserSchema = {
   type: "object" as const,
   properties: {
@@ -293,6 +317,7 @@ export const workspaceTeamUserSchema = {
     timezeone: { type: "string" },
   },
 };
+
 export const memberWithProfileSchema = {
   type: "object" as const,
   properties: {
@@ -334,6 +359,7 @@ export const memberWithProfileSchema = {
     "profileInfo",
   ],
 };
+
 export const sharedTaskSchema = {
   type: "object" as const,
   properties: {
@@ -393,6 +419,7 @@ export const sharedTaskSchema = {
     "space",
   ],
 };
+
 export const sharedListSchema = {
   type: "object" as const,
   properties: {
@@ -426,6 +453,7 @@ export const sharedListSchema = {
     "permission_level",
   ],
 };
+
 export const sharedFolderSchema = {
   type: "object" as const,
   properties: {
@@ -453,9 +481,11 @@ export const sharedFolderSchema = {
     "permission_level",
   ],
 };
+
 export const weakSharedTaskItems = { ...sharedTaskSchema, required: [] };
 export const weakSharedListItems = { ...sharedListSchema, required: [] };
 export const weakSharedFolderItems = { ...sharedFolderSchema, required: [] };
+
 export const optionalSharedSchema = {
   type: "object" as const,
   properties: {
@@ -464,12 +494,14 @@ export const optionalSharedSchema = {
     folders: { type: "array", items: weakSharedFolderItems },
   },
 };
+
 export const workspaceTeamProperties = {
   id: { type: "string" },
   name: { type: "string" },
   color: { type: "string" },
   avatar: { type: ["string", "null"] },
 };
+
 export const timeEntryTaskSchema = {
   type: "object" as const,
   properties: {
@@ -480,6 +512,7 @@ export const timeEntryTaskSchema = {
   },
   required: ["id", "name", "status", "custom_type"],
 };
+
 export const timeEntryTagsSchema = {
   type: "array",
   items: {
@@ -491,6 +524,7 @@ export const timeEntryTagsSchema = {
     },
   },
 };
+
 export const timeEntryRunningSchema = {
   type: "object" as const,
   properties: {
@@ -522,6 +556,7 @@ export const timeEntryRunningSchema = {
     "at",
   ],
 };
+
 export const userGroupSchema = {
   type: "object" as const,
   properties: {
@@ -577,6 +612,7 @@ export const userGroupSchema = {
     "avatar",
   ],
 };
+
 export const webhookSchema = {
   type: "object" as const,
   properties: {

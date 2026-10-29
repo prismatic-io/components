@@ -4,6 +4,7 @@ import {
   cleanProductIdForVariant,
 } from "../../util";
 import { getAlldata, pagination, productId, shopifyConnection } from "./common";
+
 const variant = input({
   label: "Variant",
   type: "code",
@@ -26,6 +27,7 @@ const variant = input({
   ),
   clean: (value) => cleanCodeInputEmptyObject(value, "Variant"),
 });
+
 const variantId = input({
   label: "Variant ID",
   type: "string",
@@ -35,6 +37,7 @@ const variantId = input({
   placeholder: "Enter variant ID",
   clean: util.types.toString,
 });
+
 const updateVariant = input({
   label: "Update Variant",
   type: "code",
@@ -52,6 +55,7 @@ const updateVariant = input({
   ),
   clean: (value) => cleanCodeInputEmptyObject(value, "Update Variant"),
 });
+
 export const listVariantsInputs = {
   shopifyConnection,
   productId: input({
@@ -62,23 +66,28 @@ export const listVariantsInputs = {
   getAlldata,
   pagination,
 };
+
 export const countVariantsInputs = {
   shopifyConnection,
 };
+
 export const createVariantInputs = {
   shopifyConnection,
   productId,
   variant,
 };
+
 export const deleteVariantInputs = {
   shopifyConnection,
   productId,
   variantId,
 };
+
 export const getVariantInputs = {
   shopifyConnection,
   variantId,
 };
+
 export const updateVariantInputs = {
   shopifyConnection,
   productId,

@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { getWorkerDemographicsExamplePayload } from "../../../examplePayloads";
 import { getWorkerDemographicsInputs } from "../../../inputs";
 import { getWorkerDemographicsOutputSchema } from "../../../outputSchemas";
+
 export const getWorkerDemographics = action({
   display: {
     label: "Get Worker Demographics",

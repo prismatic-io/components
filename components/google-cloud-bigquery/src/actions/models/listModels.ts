@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listModelsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
+
 export const listModels = action({
   display: {
     description:

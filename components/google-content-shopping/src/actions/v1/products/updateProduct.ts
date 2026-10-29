@@ -6,6 +6,7 @@ import {
   dataSourceResourceName,
   productInputResourceName,
 } from "../../../util/resourceNames";
+
 export const updateProductMerchant = action({
   display: {
     description:
@@ -41,6 +42,7 @@ export const updateProductMerchant = action({
         },
       },
     );
+
     return { data };
   },
   examplePayload: updateProductExamplePayload,

@@ -3,6 +3,7 @@ import { searchResourcesInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import { searchResourcesExamplePayload } from "../../examplePayloads";
 import type { SearchRequestBody } from "../../types";
+
 export const searchResources = action({
   display: {
     label: "Search Resources",
@@ -97,11 +98,13 @@ export const searchResources = action({
         workflowId: searchWorkflowId,
       },
     };
+
     const { data } = await client.post("/search", payload, {
       headers: {
         ["x-ownership-scope"]: ownershipScope,
       },
     });
+
     return {
       data,
     };

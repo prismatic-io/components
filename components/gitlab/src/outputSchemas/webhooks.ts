@@ -1,4 +1,5 @@
 import { bool, list, nullableStr, num, obj, str } from "./shared";
+
 export const hookSchema = obj({
   id: num,
   url: str,
@@ -32,9 +33,13 @@ export const hookSchema = obj({
   token_present: bool,
   signing_token_present: bool,
 });
+
 export const hookListSchema = list(hookSchema);
+
 export const listProjectWebhooksOutputSchema = hookListSchema;
+
 export const deletedHooksSchema = obj({
   deleted: list(obj({ projectId: str, hookId: num })),
 });
+
 export const deleteInstancedWebhooksOutputSchema = deletedHooksSchema;

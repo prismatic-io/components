@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, folderId, workspaceIdOptional } from "./common";
+
 const folderName = input({
   label: "Folder Name",
   type: "string",
@@ -10,6 +11,7 @@ const folderName = input({
   placeholder: "Enter folder name",
   dataSource: "selectFolder",
 });
+
 export const createFolderInputs = {
   connection: connectionInput,
   folderId: {
@@ -25,14 +27,17 @@ export const createFolderInputs = {
   },
   folderName,
 };
+
 export const deleteFolderInputs = {
   connection: connectionInput,
   folderId,
 };
+
 export const getFolderInputs = {
   connection: connectionInput,
   folderId,
 };
+
 export const listFoldersInputs = {
   connection: connectionInput,
   folderId: {
@@ -47,11 +52,13 @@ export const listFoldersInputs = {
       "The unique identifier of the workspace whose folders should be listed. Omit to list folders outside of a workspace.",
   },
 };
+
 export const moveFolderInputs = {
   connection: connectionInput,
   folderId,
   destinationId: { ...folderId, label: "Destination Folder ID" },
 };
+
 export const updateFolderInputs = {
   connection: connectionInput,
   folderId,

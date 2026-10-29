@@ -5,6 +5,7 @@ import { addItemToRequestInputs } from "../../inputs";
 import { requestItemSchema } from "../../outputSchemas";
 import type { RequestItemCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const addItemToRequest = action({
   display: {
     label: "Add Item to Request",
@@ -19,20 +20,26 @@ export const addItemToRequest = action({
   perform: async (context, { connection, requestGuid, itemGuid, notes }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const requestPayload: RequestItemCreateVo = {
         item: { guid: itemGuid },
       };
+
       if (notes) {
         requestPayload.notes = notes;
       }
+
       context.logger.info(`Adding item ${itemGuid} to request ${requestGuid}`);
+
       const { data } = await client.post(
         `/requests/${requestGuid}/items`,
         requestPayload,
       );
+
       context.logger.info(
         `Successfully added item to request: ${data?.guid || "N/A"}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Add Item to Request");

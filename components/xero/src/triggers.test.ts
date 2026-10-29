@@ -1,6 +1,7 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { webhook } from "./triggers/webhook";
 import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+
 describe("test Xero webhook trigger", () => {
   test("returns 401 upon incorrect signature", async () => {
     const myPayload: TriggerPayload = {
@@ -49,6 +50,7 @@ describe("test Xero webhook trigger", () => {
       startedAt: "",
       globalDebug: false,
     };
+
     const { result } = await invokeTrigger(webhook, {}, myPayload, {
       webhookKey: "notMyKey",
     });

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { queryDataSetExamplePayload } from "../../examplePayloads";
 import { queryDataSetInputs } from "../../inputs";
+
 export const queryDataSet = action({
   display: {
     label: "Query Data Set",
@@ -24,4 +25,5 @@ export const queryDataSet = action({
   },
   inputs: queryDataSetInputs,
 });
+
 export default { queryDataSet };

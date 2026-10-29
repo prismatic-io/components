@@ -13,6 +13,7 @@ export const getRaasReportExamplePayload = {
     ],
   },
 };
+
 export const runWqlQueryExamplePayload = {
   data: {
     total: 1,
@@ -27,6 +28,7 @@ export const runWqlQueryExamplePayload = {
     ],
   },
 };
+
 export const verifyConnectionExamplePayload = {
   data: {
     tokenExchanged: true,

@@ -4,6 +4,7 @@ import { listOutboundEventIntegrationTriggersExamplePayload } from "../../exampl
 import { listOutboundEventIntegrationTriggersInputs } from "../../inputs";
 import { listOutboundEventIntegrationTriggersOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listOutboundEventIntegrationTriggers = action({
   display: {
     label: "List Outbound Event Integration Triggers",
@@ -22,10 +23,12 @@ export const listOutboundEventIntegrationTriggers = action({
         `/outboundevents/${integrationGuid}/triggers`,
       );
       const triggers = response.data;
+
       context.logger.info("Retrieved outbound event integration triggers", {
         integrationGuid,
         count: triggers.count || 0,
       });
+
       return { data: triggers };
     } catch (error) {
       handleArenaError(

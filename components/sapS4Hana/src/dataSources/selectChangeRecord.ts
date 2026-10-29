@@ -2,6 +2,7 @@ import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getSapClient } from "../client";
 import { connectionInput } from "../inputs";
+
 export const selectChangeRecord = dataSource({
   display: {
     label: "Select Change Record",
@@ -15,14 +16,17 @@ export const selectChangeRecord = dataSource({
       Accept: "application/json",
     };
     const client = getSapClient(connection, headers);
+
     try {
       const { data } = await client.get(
         "/sap/opu/odata/sap/API_CHANGE_RECORD/A_ChangeRecord?$select=ChangeRecordUUID,ChangeRecord,ChgRecordDescriptionText",
       );
+
       const results = (data?.d?.results ?? data?.value ?? []) as Record<
         string,
         string
       >[];
+
       const result: Element[] = results
         .map((record) => ({
           label: record.ChgRecordDescriptionText
@@ -32,6 +36,7 @@ export const selectChangeRecord = dataSource({
         }))
         .filter((item) => item.key)
         .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
       return { result };
     } catch (error) {
       const handled = handleErrors(error);

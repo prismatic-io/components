@@ -27,6 +27,7 @@ export const richTextItemSchema = {
   },
   required: [],
 };
+
 export const userReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -35,6 +36,7 @@ export const userReferenceSchema = {
   },
   required: [],
 };
+
 export const iconSchema = {
   type: ["object", "null"],
   properties: {
@@ -43,6 +45,7 @@ export const iconSchema = {
   },
   required: [],
 };
+
 export const coverSchema = {
   type: ["object", "null"],
   properties: {
@@ -55,6 +58,7 @@ export const coverSchema = {
   },
   required: [],
 };
+
 export const propertySchemaEntrySchema = {
   type: "object" as const,
   properties: {
@@ -109,6 +113,7 @@ export const propertySchemaEntrySchema = {
   },
   required: [],
 };
+
 export const pagePropertyValueSchema = {
   type: "object" as const,
   properties: {

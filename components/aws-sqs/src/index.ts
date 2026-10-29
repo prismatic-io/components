@@ -3,6 +3,7 @@ import dataSources from "./dataSources";
 import connections from "./connections";
 import triggers from "./triggers";
 import actions from "./actions";
+
 export default component({
   key: "aws-sqs",
   documentationUrl: "https://prismatic.io/docs/components/aws-sqs/",

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, fileIdInput, offsetPagination } from "./common";
 import { cleanString } from "../util";
+
 const file = input({
   label: "File",
   type: "data",
@@ -8,6 +9,7 @@ const file = input({
   comments: "The file to upload - either string contents or a binary file",
   clean: util.types.toBufferDataPayload,
 });
+
 const fileName = input({
   label: "File Name",
   type: "string",
@@ -17,6 +19,7 @@ const fileName = input({
   placeholder: "Enter file name",
   clean: util.types.toString,
 });
+
 const entityType = input({
   label: "Entity Type",
   comments: "The type of entity to attach the file to",
@@ -32,6 +35,7 @@ const entityType = input({
   ],
   clean: util.types.toString,
 });
+
 const entityId = input({
   label: "Entity ID",
   type: "string",
@@ -42,6 +46,7 @@ const entityId = input({
   placeholder: "Enter Entity ID",
   clean: util.types.toString,
 });
+
 const updateFileName = input({
   label: "File Name",
   type: "string",
@@ -50,6 +55,7 @@ const updateFileName = input({
   example: "updated-contract.pdf",
   placeholder: "Enter file name",
 });
+
 const description = input({
   label: "Description",
   type: "string",
@@ -58,6 +64,7 @@ const description = input({
   example: "Signed contract for Q1 deal",
   placeholder: "Enter file description",
 });
+
 export const addFileInputs = {
   connection: connectionInput,
   file,
@@ -65,24 +72,29 @@ export const addFileInputs = {
   entityType,
   entityId,
 };
+
 export const updateFileInputs = {
   connection: connectionInput,
   id: fileIdInput,
   name: updateFileName,
   description,
 };
+
 export const getFilesInputs = {
   connection: connectionInput,
   pagination: offsetPagination,
 };
+
 export const deleteFileInputs = {
   connection: connectionInput,
   id: fileIdInput,
 };
+
 export const getFileInputs = {
   connection: connectionInput,
   id: fileIdInput,
 };
+
 export const downloadFileInputs = {
   connection: connectionInput,
   id: fileIdInput,

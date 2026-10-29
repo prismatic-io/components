@@ -1,4 +1,5 @@
 import component from "./index";
+
 describe("Component", () => {
   it("should be a valid component", () => {
     expect(component).toBeDefined();

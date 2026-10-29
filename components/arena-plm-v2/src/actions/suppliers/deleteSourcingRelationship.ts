@@ -4,6 +4,7 @@ import { deleteSourcingRelationshipExamplePayload } from "../../examplePayloads"
 import { deleteSourcingRelationshipInputs } from "../../inputs";
 import { deleteSourcingRelationshipOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteSourcingRelationship = action({
   display: {
     label: "Delete Sourcing Relationship",
@@ -22,18 +23,22 @@ export const deleteSourcingRelationship = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting sourcing relationship from Arena", {
         itemGuid: itemGuid,
         sourcingRelationshipGuid: sourcingRelationshipGuid,
       });
+
       const response = await client.delete(
         `/items/${itemGuid}/sourcing/${sourcingRelationshipGuid}`,
       );
+
       context.logger.info("Sourcing relationship deleted successfully", {
         itemGuid: itemGuid,
         sourcingRelationshipGuid: sourcingRelationshipGuid,
         statusCode: response.status,
       });
+
       return {
         data: {
           success: true,

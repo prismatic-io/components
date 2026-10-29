@@ -4,12 +4,15 @@ import type {
   CampaignResponseObjectResourceAttributesTrackingOptions as TrackingOptions,
 } from "klaviyo-api";
 import type { FieldsCampaign, UnknownRecord } from "../types";
+
 const isRecord = (value: unknown): value is UnknownRecord =>
   typeof value === "object" && value !== null && !Array.isArray(value);
+
 const withoutNullish = (record: UnknownRecord): UnknownRecord =>
   Object.fromEntries(
     Object.entries(record).filter(([, value]) => value != null),
   );
+
 const LEGACY_CAMPAIGN_FIELDS: Record<string, FieldsCampaign[]> = {
   "send_strategy.options_static": [
     "send_strategy.datetime",
@@ -31,10 +34,12 @@ const LEGACY_CAMPAIGN_FIELDS: Record<string, FieldsCampaign[]> = {
   "send_strategy.options_sto": ["send_strategy.date"],
   "send_strategy.options_sto.date": ["send_strategy.date"],
 };
+
 const LEGACY_MESSAGE_KEYS_DROPPED: Record<string, string[]> = {
   email: ["renderOptions"],
   sms: ["label"],
 };
+
 export const toCampaignFields = (
   fields: string[] | undefined,
 ): FieldsCampaign[] | undefined => {
@@ -52,6 +57,7 @@ export const toCampaignFields = (
   }
   return Array.from(new Set(mapped));
 };
+
 export const toSendStrategy = (value: unknown): SendStrategy | undefined => {
   if (!isRecord(value)) {
     return undefined;
@@ -90,6 +96,7 @@ export const toSendStrategy = (value: unknown): SendStrategy | undefined => {
     ...withoutNullish(selected),
   } as unknown as SendStrategy;
 };
+
 export const toTrackingOptions = (
   value: unknown,
 ): TrackingOptions | undefined => {
@@ -113,6 +120,7 @@ export const toTrackingOptions = (
       : {}),
   } as unknown as TrackingOptions;
 };
+
 export const toCampaignMessages = (
   value: unknown[] | undefined,
 ): CampaignMessage[] | undefined => {

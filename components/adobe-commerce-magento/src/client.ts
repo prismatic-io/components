@@ -8,6 +8,7 @@ import { adobeCommerceOauth1 } from "./connections/adobeCommerceOauth1";
 import { DEFAULT_STORE_CODE, productionUrl, sandboxUrl } from "./constants";
 import type { Oauth1Credentials, StoreConfig } from "./types";
 import { buildAuthorizationHeader } from "./utils/oauth1";
+
 const validateConnection = (connection: Connection) => {
   if (
     ![adobeCommerceOauth1.key, adobeCommerceApiKey.key].includes(connection.key)
@@ -15,6 +16,7 @@ const validateConnection = (connection: Connection) => {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
 };
+
 export const normalizeStoreUrl = (
   connection: Connection,
   storeUrl: string,
@@ -33,6 +35,7 @@ export const normalizeStoreUrl = (
     );
   }
 };
+
 export const getStoreCode = (connection: Connection): string => {
   if (connection.key !== adobeCommerceOauth1.key) {
     return DEFAULT_STORE_CODE;
@@ -42,6 +45,7 @@ export const getStoreCode = (connection: Connection): string => {
     DEFAULT_STORE_CODE
   );
 };
+
 const getOauth1Credentials = (connection: Connection): Oauth1Credentials => {
   const required = {
     consumerKey: "Consumer Key",
@@ -49,28 +53,34 @@ const getOauth1Credentials = (connection: Connection): Oauth1Credentials => {
     accessToken: "Access Token",
     accessTokenSecret: "Access Token Secret",
   } as const;
+
   const credentials = Object.fromEntries(
     Object.keys(required).map((field) => [
       field,
       util.types.toString(connection.fields?.[field]).trim(),
     ]),
   ) as unknown as Oauth1Credentials;
+
   const missing = Object.entries(required)
     .filter(([field]) => !credentials[field as keyof Oauth1Credentials])
     .map(([, label]) => label);
+
   if (missing.length > 0) {
     throw new ConnectionError(
       connection,
       `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} required. Copy the value shown when the integration was activated in the Adobe Commerce Admin.`,
     );
   }
+
   return credentials;
 };
+
 export const getConfig = async (
   connection: Connection,
   debug: boolean,
 ): Promise<StoreConfig> => {
   validateConnection(connection);
+
   if (connection.key === adobeCommerceOauth1.key) {
     const credentials = getOauth1Credentials(connection);
     return {
@@ -82,6 +92,7 @@ export const getConfig = async (
         buildAuthorizationHeader({ method, url, params, credentials }),
     };
   }
+
   const useProductionEnvironment = connection?.fields?.productionEnvironment;
   const environmentUrl = useProductionEnvironment ? productionUrl : sandboxUrl;
   const sessionClient = createClient({
@@ -89,6 +100,7 @@ export const getConfig = async (
     headers: { "Content-Type": "application/json" },
     debug,
   });
+
   const auth = {
     username: util.types.toString(connection?.fields?.applicationId),
     password: util.types.toString(connection?.fields?.applicationSecret),
@@ -117,6 +129,7 @@ export const getConfig = async (
     throw new ConnectionError(connection, "Unable to obtain a session token.");
   }
 };
+
 export const resolveRequestUrl = (
   baseUrl: string,
   url: string | undefined,
@@ -127,6 +140,7 @@ export const resolveRequestUrl = (
   }
   return `${baseUrl.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 };
+
 export const toSignatureParams = (params: unknown): Array<[string, string]> => {
   if (!params || typeof params !== "object") {
     return [];
@@ -146,6 +160,7 @@ export const toSignatureParams = (params: unknown): Array<[string, string]> => {
     },
   );
 };
+
 export const toRawRequestParams = (
   queryParams: unknown,
 ): Array<[string, string]> => {
@@ -156,26 +171,26 @@ export const toRawRequestParams = (
     if (!entry || typeof entry !== "object" || !("key" in entry)) {
       return [];
     }
-    const { key, value } = entry as {
-      key: unknown;
-      value?: unknown;
-    };
+    const { key, value } = entry as { key: unknown; value?: unknown };
     return [
       [String(key), value === undefined || value === null ? "" : String(value)],
     ];
   });
 };
+
 export const getClient = async (
   connection: Connection,
   debug: boolean,
 ): Promise<HttpClient> => {
   const { environmentUrl, authorize } = await getConfig(connection, debug);
   const baseUrl = `${environmentUrl}/rest/${getStoreCode(connection)}/V1`;
+
   const client = createClient({
     baseUrl,
     headers: { "Content-Type": "application/json" },
     debug,
   });
+
   client.interceptors.request.use((config) => {
     const header = authorize({
       method: config.method ?? "get",
@@ -185,5 +200,6 @@ export const getClient = async (
     config.headers.set("Authorization", header);
     return config;
   });
+
   return client;
 };

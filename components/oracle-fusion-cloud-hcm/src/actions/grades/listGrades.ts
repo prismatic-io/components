@@ -5,6 +5,7 @@ import { listGradesInputs } from "../../inputs";
 import { listGradesOutputSchema } from "../../outputSchemas";
 import type { Grade } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listGrades = action({
   display: {
     label: "List Grades",

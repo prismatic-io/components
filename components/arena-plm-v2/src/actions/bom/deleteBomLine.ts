@@ -4,6 +4,7 @@ import { deleteBomLineExamplePayload } from "../../examplePayloads";
 import { deleteBomLineInputs } from "../../inputs";
 import { deleteBomLineOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteBomLine = action({
   display: {
     label: "Delete BOM Line",
@@ -18,6 +19,7 @@ export const deleteBomLine = action({
   perform: async (context, { connection, itemGuid, bomLineGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Deleting BOM line ${bomLineGuid} from item ${itemGuid}`,
         {
@@ -25,8 +27,11 @@ export const deleteBomLine = action({
           bomLineGuid,
         },
       );
+
       await client.delete(`/items/${itemGuid}/bom/${bomLineGuid}`);
+
       context.logger.info("Successfully deleted BOM line");
+
       return {
         data: { success: true, message: "BOM line deleted successfully" },
       };

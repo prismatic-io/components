@@ -10,9 +10,11 @@ export const getOrganizationExamplePayload = {
     name: "My organization",
   },
 };
+
 export const listOrganizationsExamplePayload = {
   data: [getOrganizationExamplePayload.data],
 };
+
 export const updateOrganizationExamplePayload = {
   data: {
     email: "example@gmail.com",

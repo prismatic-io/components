@@ -25,6 +25,7 @@ import {
   paymentPriorityInput,
   paymentTermInput,
 } from "./common";
+
 const vendorNameInput = input({
   label: "Vendor Name",
   type: "string",
@@ -34,6 +35,7 @@ const vendorNameInput = input({
   placeholder: "Enter vendor name",
   clean: util.types.toString,
 });
+
 const vendorTypeIdInput = input({
   label: "Vendor Type ID",
   type: "string",
@@ -43,6 +45,7 @@ const vendorTypeIdInput = input({
   placeholder: "Enter vendor type ID",
   clean: util.types.toString,
 });
+
 const parentVendorIdInput = input({
   label: "Parent Vendor ID",
   type: "string",
@@ -52,6 +55,7 @@ const parentVendorIdInput = input({
   placeholder: "Enter parent vendor ID",
   clean: util.types.toString,
 });
+
 const form1099NameInput = input({
   label: "Form 1099 Name",
   type: "string",
@@ -61,6 +65,7 @@ const form1099NameInput = input({
   placeholder: "Enter 1099 name",
   clean: util.types.toString,
 });
+
 const form1099TypeInput = input({
   label: "Form 1099 Type",
   type: "string",
@@ -70,6 +75,7 @@ const form1099TypeInput = input({
   placeholder: "Enter 1099 type",
   clean: util.types.toString,
 });
+
 const form1099BoxInput = input({
   label: "Form 1099 Box",
   type: "string",
@@ -79,6 +85,7 @@ const form1099BoxInput = input({
   placeholder: "Enter box number",
   clean: util.types.toString,
 });
+
 const doNotPayInput = input({
   label: "Do Not Pay",
   type: "string",
@@ -102,6 +109,7 @@ const doNotPayInput = input({
     },
   ],
 });
+
 const payToContactNameInput = input({
   label: "Pay To Contact Name",
   type: "string",
@@ -111,6 +119,7 @@ const payToContactNameInput = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+
 const returnToContactNameInput = input({
   label: "Return To Contact Name",
   type: "string",
@@ -120,6 +129,7 @@ const returnToContactNameInput = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+
 const preferredPaymentMethodInput = input({
   label: "Preferred Payment Method",
   type: "string",
@@ -130,6 +140,7 @@ const preferredPaymentMethodInput = input({
   placeholder: "Enter payment method",
   clean: util.types.toString,
 });
+
 const sendAutomaticPaymentNotificationInput = input({
   label: "Send Automatic Payment Notification",
   type: "string",
@@ -153,6 +164,7 @@ const sendAutomaticPaymentNotificationInput = input({
     },
   ],
 });
+
 const mergePaymentRequestsInput = input({
   label: "Merge Payment Requests",
   type: "string",
@@ -176,6 +188,7 @@ const mergePaymentRequestsInput = input({
     },
   ],
 });
+
 const vendorBillingTypeInput = input({
   label: "Vendor Billing Type",
   type: "string",
@@ -186,6 +199,7 @@ const vendorBillingTypeInput = input({
   placeholder: "Enter billing type",
   clean: util.types.toString,
 });
+
 const termDiscountDisplayedOnCheckStubInput = input({
   label: "Term Discount Displayed On Check Stub",
   type: "string",
@@ -209,6 +223,7 @@ const termDiscountDisplayedOnCheckStubInput = input({
     },
   ],
 });
+
 const achEnabledInput = input({
   label: "ACH Enabled",
   type: "string",
@@ -231,6 +246,7 @@ const achEnabledInput = input({
     },
   ],
 });
+
 const achBankRoutingNoInput = input({
   label: "ACH Bank Routing No",
   type: "string",
@@ -240,6 +256,7 @@ const achBankRoutingNoInput = input({
   placeholder: "Enter routing number",
   clean: util.types.toString,
 });
+
 const achBankAccountNoInput = input({
   label: "ACH Bank Account No",
   type: "string",
@@ -249,6 +266,7 @@ const achBankAccountNoInput = input({
   placeholder: "Enter account number",
   clean: util.types.toString,
 });
+
 const achBankAccountTypeInput = input({
   label: "ACH Bank Account Type",
   type: "string",
@@ -258,6 +276,7 @@ const achBankAccountTypeInput = input({
   placeholder: "Enter account type",
   clean: util.types.toString,
 });
+
 const achBankAccountClassInput = input({
   label: "ACH Bank Account Class",
   type: "string",
@@ -267,6 +286,7 @@ const achBankAccountClassInput = input({
   placeholder: "Enter account class",
   clean: util.types.toString,
 });
+
 const vendorAccountNoInput = input({
   label: "Vendor Account No",
   type: "string",
@@ -277,6 +297,7 @@ const vendorAccountNoInput = input({
   placeholder: "Enter vendor account number",
   clean: util.types.toString,
 });
+
 const locationAssignedAccountNoDisplayedOnCheckStubInput = input({
   label: "Location Assigned Account No Displayed On Check Stub",
   type: "string",
@@ -300,6 +321,7 @@ const locationAssignedAccountNoDisplayedOnCheckStubInput = input({
     },
   ],
 });
+
 const oneTimeVendorInput = input({
   label: "One Time",
   comments:
@@ -323,6 +345,7 @@ const oneTimeVendorInput = input({
     },
   ],
 });
+
 export const achDetails = structuredObjectInput({
   label: "ACH Banking",
   required: false,
@@ -335,6 +358,7 @@ export const achDetails = structuredObjectInput({
     achBankAccountClassInput,
   },
 });
+
 export const paymentSettings = structuredObjectInput({
   label: "Payment Settings",
   required: false,
@@ -350,6 +374,7 @@ export const paymentSettings = structuredObjectInput({
     termDiscountDisplayedOnCheckStubInput,
   },
 });
+
 export const form1099 = structuredObjectInput({
   label: "Form 1099",
   required: false,
@@ -360,6 +385,7 @@ export const form1099 = structuredObjectInput({
     form1099BoxInput,
   },
 });
+
 export const vendorContactRoles = structuredObjectInput({
   label: "Contact Roles",
   required: false,
@@ -370,6 +396,7 @@ export const vendorContactRoles = structuredObjectInput({
     returnToContactNameInput,
   },
 });
+
 export const createVendorInputs = {
   connection,
   vendorIdInput,
@@ -401,11 +428,13 @@ export const createVendorInputs = {
   restrictedDepartmentsInput,
   customFieldsInput,
 };
+
 export const getVendorInputs = {
   connection,
   fieldsInput,
   recordNoInput: { ...recordNoInput, dataSource: "selectVendor" },
 };
+
 export const updateVendorInputs = {
   connection,
   vendorIdInput: {

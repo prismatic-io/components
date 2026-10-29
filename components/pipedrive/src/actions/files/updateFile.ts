@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateFileInputs } from "../../inputs";
 import { updateFileExamplePayload } from "../../examplePayloads";
 import { updateFileOutputSchema } from "../../outputSchemas";
+
 export const updateFile = action({
   display: {
     label: "Update File",

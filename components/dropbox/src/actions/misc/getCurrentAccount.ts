@@ -4,6 +4,7 @@ import { getCurrentAccountExamplePayload } from "../../examplePayloads";
 import { getCurrentAccountInputs } from "../../inputs";
 import { getCurrentAccountOutputSchema } from "../../outputSchemas";
 import { handleDropboxError } from "../../util";
+
 export const getCurrentAccount = action({
   display: {
     label: "Get Current Account",

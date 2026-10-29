@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connection, fetchAll } from "./common";
+
 const customFields = input({
   label: "Custom Fields",
   comments: "Custom field key-value pairs.",
@@ -9,6 +10,7 @@ const customFields = input({
   required: false,
   example: "key: external_id value: SKU01",
 });
+
 const tags = input({
   label: "Tags",
   comments: "Tags to apply.",
@@ -18,6 +20,7 @@ const tags = input({
   required: false,
   example: "important",
 });
+
 const address = input({
   label: "Address",
   comments: "The physical address of the lead in JSON format.",
@@ -37,6 +40,7 @@ const address = input({
   required: false,
   clean: util.types.toString,
 });
+
 const organizationName = input({
   label: "Organization Name",
   placeholder: "Enter organization name",
@@ -47,6 +51,7 @@ const organizationName = input({
   required: false,
   clean: util.types.toString,
 });
+
 const organizationNameFilter = input({
   label: "Organization Name",
   placeholder: "Enter organization name",
@@ -56,6 +61,7 @@ const organizationNameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const firstName = input({
   label: "First Name",
   placeholder: "Enter first name",
@@ -65,6 +71,7 @@ const firstName = input({
   required: false,
   clean: util.types.toString,
 });
+
 const firstNameFilter = input({
   label: "First Name",
   placeholder: "Enter first name",
@@ -74,6 +81,7 @@ const firstNameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const lastName = input({
   label: "Last Name",
   placeholder: "Enter last name",
@@ -83,6 +91,7 @@ const lastName = input({
   required: false,
   clean: util.types.toString,
 });
+
 const lastNameFilter = input({
   label: "Last Name",
   placeholder: "Enter last name",
@@ -92,6 +101,7 @@ const lastNameFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const leadId = input({
   label: "Lead ID",
   comments: "The unique identifier of the lead.",
@@ -102,6 +112,7 @@ const leadId = input({
   clean: util.types.toString,
   dataSource: "selectLead",
 });
+
 const position = input({
   label: "Position",
   comments:
@@ -112,6 +123,7 @@ const position = input({
   required: true,
   clean: util.types.toString,
 });
+
 const limit = input({
   label: "Limit",
   comments: "The maximum number of events to return in a single response.",
@@ -121,6 +133,7 @@ const limit = input({
   required: false,
   clean: util.types.toString,
 });
+
 const status = input({
   label: "Status",
   comments: "The pipeline stage the lead is in, such as New or Working.",
@@ -130,6 +143,7 @@ const status = input({
   required: false,
   clean: util.types.toString,
 });
+
 const statusFilter = input({
   label: "Status",
   comments: "Filters results to leads in this status (e.g. New).",
@@ -139,6 +153,7 @@ const statusFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const title = input({
   label: "Title",
   placeholder: "Enter title",
@@ -148,6 +163,7 @@ const title = input({
   required: false,
   clean: util.types.toString,
 });
+
 const description = input({
   label: "Description",
   placeholder: "Enter description",
@@ -157,6 +173,7 @@ const description = input({
   required: false,
   clean: util.types.toString,
 });
+
 const industry = input({
   label: "Industry",
   placeholder: "Enter industry",
@@ -166,6 +183,7 @@ const industry = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sourceIdAdditional = input({
   label: "Source ID",
   comments: "The unique identifier of the lead source.",
@@ -175,6 +193,7 @@ const sourceIdAdditional = input({
   required: false,
   clean: util.types.toString,
 });
+
 const unqualifiedReasonId = input({
   label: "Unqualified Reason ID",
   comments: "The unique identifier of the reason the lead was unqualified.",
@@ -184,6 +203,7 @@ const unqualifiedReasonId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerId = input({
   label: "Owner ID",
   placeholder: "Enter Owner ID",
@@ -194,6 +214,7 @@ const ownerId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ownerIdFilter = input({
   label: "Owner ID",
   placeholder: "Enter Owner ID",
@@ -203,6 +224,7 @@ const ownerIdFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 const creatorId = input({
   label: "Creator ID",
   comments: "User ID. Returns all leads created by that user.",
@@ -212,6 +234,7 @@ const creatorId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const ids = input({
   label: "IDs",
   comments: "Comma-separated list of lead IDs to be returned in a request.",
@@ -221,6 +244,7 @@ const ids = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sourceId = input({
   label: "Source ID",
   placeholder: "Enter Source ID",
@@ -230,6 +254,7 @@ const sourceId = input({
   required: false,
   clean: util.types.toString,
 });
+
 const listEmail = input({
   label: "Email",
   comments: "Filters results to leads with this email address.",
@@ -239,6 +264,7 @@ const listEmail = input({
   required: false,
   clean: util.types.toString,
 });
+
 const listPhone = input({
   label: "Phone",
   comments: "Filters results to leads with this phone number.",
@@ -248,6 +274,7 @@ const listPhone = input({
   required: false,
   clean: util.types.toString,
 });
+
 const listMobile = input({
   label: "Mobile",
   comments: "Filters results to leads with this mobile number.",
@@ -257,6 +284,7 @@ const listMobile = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressCity = input({
   label: "City",
   comments: "Filters results to leads located in this city.",
@@ -266,6 +294,7 @@ const addressCity = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressPostalCode = input({
   label: "Zip/Postal Code",
   comments: "Filters results to leads with this postal or ZIP code.",
@@ -275,6 +304,7 @@ const addressPostalCode = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressState = input({
   label: "State/Province",
   comments: "Filters results to leads located in this state or region.",
@@ -284,6 +314,7 @@ const addressState = input({
   required: false,
   clean: util.types.toString,
 });
+
 const addressCountry = input({
   label: "Country",
   comments: "Filters results to leads located in this country.",
@@ -293,6 +324,7 @@ const addressCountry = input({
   required: false,
   clean: util.types.toString,
 });
+
 const page = input({
   label: "Page",
   comments:
@@ -303,6 +335,7 @@ const page = input({
   required: false,
   clean: util.types.toString,
 });
+
 const perPage = input({
   label: "Per Page",
   comments:
@@ -313,6 +346,7 @@ const perPage = input({
   required: false,
   clean: util.types.toString,
 });
+
 const sortBy = input({
   label: "Sort By",
   comments: "A field to sort by. Filterable custom fields can also be used.",
@@ -322,6 +356,7 @@ const sortBy = input({
   required: false,
   clean: util.types.toString,
 });
+
 const inclusive = input({
   label: "Inclusive",
   comments:
@@ -336,6 +371,7 @@ const inclusive = input({
   required: false,
   clean: util.types.toString,
 });
+
 const upsertInclusive = input({
   label: "Inclusive",
   comments:
@@ -350,6 +386,7 @@ const upsertInclusive = input({
   required: false,
   clean: util.types.toString,
 });
+
 const upsertAddressCity = input({
   label: "City",
   comments: "The city of the lead's physical address.",
@@ -359,6 +396,7 @@ const upsertAddressCity = input({
   required: false,
   clean: util.types.toString,
 });
+
 const upsertAddressPostalCode = input({
   label: "Zip/Postal Code",
   comments: "The postal or ZIP code of the lead's physical address.",
@@ -368,6 +406,7 @@ const upsertAddressPostalCode = input({
   required: false,
   clean: util.types.toString,
 });
+
 const upsertAddressCountry = input({
   label: "Country",
   comments: "The country of the lead's physical address.",
@@ -377,6 +416,7 @@ const upsertAddressCountry = input({
   required: false,
   clean: util.types.toString,
 });
+
 const filterableCustomFields = input({
   label: "Filters",
   comments: "Custom-field filters to match against.",
@@ -385,6 +425,7 @@ const filterableCustomFields = input({
   required: true,
   example: "key: custom_fields[referral_website] value: https://www.test.com",
 });
+
 const contactChannelInputs = {
   email: input({
     label: "Email",
@@ -396,6 +437,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   phone: input({
     label: "Phone",
     placeholder: "Enter phone number",
@@ -406,6 +448,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   mobile: input({
     label: "Mobile",
     placeholder: "Enter mobile phone number",
@@ -415,6 +458,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   fax: input({
     label: "Fax",
     placeholder: "Enter fax number",
@@ -425,6 +469,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   twitter: input({
     label: "Twitter",
     placeholder: "Enter Twitter username",
@@ -434,6 +479,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   facebook: input({
     label: "Facebook",
     placeholder: "Enter Facebook username",
@@ -443,6 +489,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   linkedin: input({
     label: "LinkedIn",
     placeholder: "Enter LinkedIn username",
@@ -453,6 +500,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   skype: input({
     label: "Skype",
     placeholder: "Enter Skype username",
@@ -462,6 +510,7 @@ const contactChannelInputs = {
     required: false,
     clean: util.types.toString,
   }),
+
   website: input({
     label: "Website",
     placeholder: "Enter website URL",
@@ -472,12 +521,14 @@ const contactChannelInputs = {
     clean: util.types.toString,
   }),
 };
+
 const contactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
   comments: "Email, phone, and other contact channel details.",
   inputs: contactChannelInputs,
 });
+
 const listContactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
@@ -488,6 +539,7 @@ const listContactInfo = structuredObjectInput({
     mobile: listMobile,
   },
 });
+
 const upsertContactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
@@ -498,6 +550,7 @@ const upsertContactInfo = structuredObjectInput({
     mobile: contactChannelInputs.mobile,
   },
 });
+
 const listAddress = structuredObjectInput({
   label: "Address",
   required: false,
@@ -509,6 +562,7 @@ const listAddress = structuredObjectInput({
     addressCountry,
   },
 });
+
 const upsertAddresses = structuredObjectInput({
   label: "Addresses",
   required: false,
@@ -519,6 +573,7 @@ const upsertAddresses = structuredObjectInput({
     addressCountry: upsertAddressCountry,
   },
 });
+
 const listPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -528,6 +583,7 @@ const listPagination = structuredObjectInput({
     perPage,
   },
 });
+
 const createUpdateAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -544,6 +600,7 @@ const createUpdateAdditionalFields = structuredObjectInput({
     unqualifiedReasonId,
   },
 });
+
 const listAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -554,6 +611,7 @@ const listAdditionalFields = structuredObjectInput({
     inclusive,
   },
 });
+
 const upsertAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -568,6 +626,7 @@ const upsertAdditionalFields = structuredObjectInput({
     sourceId: sourceIdAdditional,
   },
 });
+
 export const createLeadInputs = {
   connection,
   organizationName,
@@ -579,36 +638,55 @@ export const createLeadInputs = {
   tags,
   additionalFields: createUpdateAdditionalFields,
 };
+
 export const deleteLeadInputs = {
   connection,
   id: leadId,
 };
+
 export const getLeadInputs = {
   connection,
   id: leadId,
 };
+
 export const getLeadsStreamInputs = {
   connection,
   position,
   limit,
 };
+
 export const listLeadsInputs = {
   connection,
+
   fetchAll,
+
   organizationName: organizationNameFilter,
+
   firstName: firstNameFilter,
+
   lastName: lastNameFilter,
+
   status: statusFilter,
+
   ids,
+
   creatorId,
+
   ownerId: ownerIdFilter,
+
   sourceId,
+
   contactInfo: listContactInfo,
+
   address: listAddress,
+
   customFields,
+
   pagination: listPagination,
+
   additionalFields: listAdditionalFields,
 };
+
 export const updateLeadInputs = {
   connection,
   id: leadId,
@@ -621,6 +699,7 @@ export const updateLeadInputs = {
   tags,
   additionalFields: createUpdateAdditionalFields,
 };
+
 export const upsertLeadInputs = {
   connection,
   organizationName,

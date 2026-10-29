@@ -7,6 +7,7 @@ import {
   sourcePath,
   sourceStorageName,
 } from "../../inputs";
+
 export const moveFolder = action({
   display: {
     label: "Move Folder",
@@ -30,6 +31,7 @@ export const moveFolder = action({
     },
   ) => {
     const client = await getAsposeClient(connection, context.debug.enabled);
+
     await client.put(`/words/storage/folder/move/${sourcePath}`, null, {
       params: {
         DestPath: destinationPath,
@@ -37,6 +39,7 @@ export const moveFolder = action({
         DestStorageName: destinationStorageName || undefined,
       },
     });
+
     return { data: null };
   },
   examplePayload: { data: null },

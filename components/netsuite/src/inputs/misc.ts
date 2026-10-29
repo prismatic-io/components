@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { connectionInput } from "./common";
+
 const serviceType = input({
   label: "Service Type",
   type: "string",
@@ -15,7 +16,9 @@ const serviceType = input({
   required: true,
   clean: util.types.toString,
 });
+
 const { debugRequest: _, ...noDebugRawRequestInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   connection: connectionInput,
   ...noDebugRawRequestInputs,

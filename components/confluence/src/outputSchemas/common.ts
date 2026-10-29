@@ -9,6 +9,7 @@ export const versionSchema = {
   },
   required: ["createdAt", "number", "minorEdit"],
 };
+
 export const bodyRepresentationSchema = {
   type: "object" as const,
   properties: {

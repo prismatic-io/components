@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createDeviceInputs } from "../../inputs/devices";
 import { createDeviceExamplePayload } from "../../examplePayloads/devices";
+
 export const createDevice = action({
   display: {
     label: "Create Device",
@@ -12,6 +13,7 @@ export const createDevice = action({
     { connection, alias, description, groupid, password, remotecontrol_id },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       alias,
       description,
@@ -19,7 +21,9 @@ export const createDevice = action({
       password,
       remotecontrol_id,
     };
+
     const { data } = await client.post(`/devices`, body);
+
     return {
       data,
     };

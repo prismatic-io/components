@@ -4,6 +4,7 @@ import { SUCCESS_RESPONSE } from "../../constants";
 import { deleteProblemExamplePayload as examplePayload } from "../../examplePayloads";
 import { deleteProblemInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
+
 export const deleteProblem = action({
   display: {
     label: "Delete Problem",
@@ -14,7 +15,9 @@ export const deleteProblem = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(`/problems/${problemId}`);
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

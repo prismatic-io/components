@@ -9,6 +9,7 @@ import {
   cleanFunctionForSnowflakeUserInputs,
   generateJwtAuthToken,
 } from "./util";
+
 export const getClient = (
   connection: Connection,
   snowflakeUrl: string,
@@ -23,6 +24,7 @@ export const getClient = (
     "Content-Type": contentType,
     Accept: contentType,
   };
+
   if (connection.key === snowflakeKeyPairConnection.key) {
     const privateKey = util.types
       .toString(connection.fields.privateKey)
@@ -31,12 +33,14 @@ export const getClient = (
     const cleanAccountIdentifier = cleanFunctionForSnowflakeUserInputs(
       connection.fields.accountIdentifier,
     );
+
     const qualifiedUsername = `${cleanAccountIdentifier}.${connection.fields.username}`;
     const jwtToken = generateJwtAuthToken(
       privateKey,
       qualifiedUsername,
       passphrase,
     );
+
     headers = {
       authorization: `Bearer ${jwtToken}`,
       "X-Snowflake-Authorization-Token-Type": "KEYPAIR_JWT",
@@ -44,6 +48,7 @@ export const getClient = (
       Accept: contentType,
     };
   }
+
   return createClient({
     baseUrl: snowflakeUrl,
     headers,

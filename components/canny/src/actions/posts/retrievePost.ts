@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrievePostExamplePayload } from "../../examplePayloads";
 import { retrievePostInputs } from "../../inputs";
 import { retrievePostOutputSchema } from "../../outputSchemas";
+
 export const retrievePost = action({
   display: {
     label: "Retrieve Post",

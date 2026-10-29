@@ -3,6 +3,7 @@ import { createArenaClient } from "../../client";
 import { getSupplierItemFileContentExamplePayload } from "../../examplePayloads";
 import { getSupplierItemFileContentInputs } from "../../inputs";
 import { handleArenaError } from "../../util";
+
 export const getSupplierItemFileContent = action({
   display: {
     label: "Get Supplier Item File Content",
@@ -20,13 +21,16 @@ export const getSupplierItemFileContent = action({
         supplierItemGuid,
         supplierItemFileAssociationGuid,
       });
+
       const client = await createArenaClient(context, connection);
+
       const { data, headers } = await client.get(
         `/supplieritems/${supplierItemGuid}/files/${supplierItemFileAssociationGuid}/content`,
         {
           responseType: "arraybuffer",
         },
       );
+
       context.logger.info(
         "Supplier item file content downloaded successfully",
         {
@@ -36,7 +40,9 @@ export const getSupplierItemFileContent = action({
           contentLength: headers["content-length"],
         },
       );
+
       const buffer = Buffer.from(data);
+
       return {
         data: buffer,
         contentType: String(

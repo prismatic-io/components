@@ -4,10 +4,12 @@ import {
   SEARCH_ENDPOINTS,
   hubspotPaths,
 } from "./constants";
+
 describe("hubspotPaths", () => {
   test("pins the date-based API version", () => {
     expect(API_VERSION).toBe("2026-09");
   });
+
   test.each([
     [hubspotPaths.objects("contacts"), "/crm/objects/2026-09/contacts"],
     [hubspotPaths.objects("deals", "/123"), "/crm/objects/2026-09/deals/123"],
@@ -43,6 +45,7 @@ describe("hubspotPaths", () => {
     expect(actual).toBe(expected);
   });
 });
+
 describe("stored Search Endpoint dropdown values", () => {
   test("stay byte-identical so a stored configuration still matches the dropdown", () => {
     expect(SEARCH_ENDPOINTS.map((e) => e.value)).toContain(
@@ -53,6 +56,7 @@ describe("stored Search Endpoint dropdown values", () => {
     );
     expect(SEARCH_ENDPOINTS).toHaveLength(14);
   });
+
   test("every dropdown object type has a date-property entry, except custom objects", () => {
     const missing = SEARCH_ENDPOINTS.map((e) => e.value.split("/")[4]).filter(
       (type) => type !== "{objectType}" && !(type in HUBSPOT_DATE_PROPERTIES),

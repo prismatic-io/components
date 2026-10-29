@@ -4,6 +4,7 @@ import { listPagesExamplePayload } from "../../examplePayloads";
 import { listPagesInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 import type { ListPagesQueryParams } from "../types/ListPagesQueryParams";
+
 export const listPages = action({
   display: {
     label: "List Pages",
@@ -24,4 +25,5 @@ export const listPages = action({
   },
   inputs: listPagesInputs,
 });
+
 export default { listPages };

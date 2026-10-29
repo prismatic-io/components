@@ -4,6 +4,7 @@ import { getItemRevisionsExamplePayload } from "../../examplePayloads";
 import { getItemRevisionsInputs } from "../../inputs";
 import { getItemRevisionsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getItemRevisions = action({
   display: {
     label: "Get Item Revisions",

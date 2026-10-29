@@ -11,6 +11,7 @@ export interface QualysTag {
   created?: string;
   modified?: string;
 }
+
 export interface ParsedTagPage {
   tags: QualysTag[];
   hasMore: boolean;

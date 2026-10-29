@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS, ODATA_TYPES } from "../../constants";
 import { createManagedDeviceExamplePayload } from "../../examplePayloads";
 import { createManagedDeviceInputs } from "../../inputs";
+
 export const createManagedDevice = action({
   display: {
     label: "Create Managed Device",

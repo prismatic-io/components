@@ -4,6 +4,7 @@ import { removeFileFromTrainingPlanExamplePayload } from "../../examplePayloads"
 import { removeFileFromTrainingPlanInputs } from "../../inputs";
 import { removeFileFromTrainingPlanOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const removeFileFromTrainingPlan = action({
   display: {
     label: "Remove File from Training Plan",
@@ -21,14 +22,18 @@ export const removeFileFromTrainingPlan = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Removing file association ${trainingFileAssociationGuid} from training plan ${trainingGuid}`,
         { trainingGuid, trainingFileAssociationGuid },
       );
+
       await client.delete(
         `/trainingplans/${trainingGuid}/files/${trainingFileAssociationGuid}`,
       );
+
       context.logger.info("Successfully removed file from training plan");
+
       return {
         data: {
           success: true,

@@ -7,6 +7,7 @@ import {
   managerCustomerIdInput,
   validateOnly,
 } from "./common";
+
 const conversions = input({
   label: "Conversions",
   placeholder: "Enter conversions as a JSON array",
@@ -18,6 +19,7 @@ const conversions = input({
     "The click conversions to upload, each identifying the click (for example, by GCLID) and the conversion action, time, and value. See [Offline conversions documentation](https://developers.google.com/google-ads/api/docs/conversions/upload-offline).",
   clean: util.types.toObject,
 });
+
 const eventsInput = input({
   label: "Events",
   placeholder: "Enter conversion events as a JSON array",
@@ -47,6 +49,7 @@ const eventsInput = input({
     "The array of conversion events to ingest (max 2000 per request). See [Event resource](https://developers.google.com/data-manager/api/reference/rest/v1/events/ingest).",
   clean: util.types.toObject,
 });
+
 const destinationsInput = input({
   label: "Destinations",
   placeholder: "Enter destinations as a JSON array",
@@ -70,6 +73,7 @@ const destinationsInput = input({
     "The array of destinations that describe where each event should be ingested. See [Destination reference](https://developers.google.com/data-manager/api/reference/rest/v1/Destination).",
   clean: util.types.toObject,
 });
+
 const encodingInput = input({
   label: "Hash Encoding",
   type: "string",
@@ -83,6 +87,7 @@ const encodingInput = input({
     "The encoding format to select for hashed user data fields (such as email or phone). Required when `userData` fields are included in events.",
   clean: cleanString,
 });
+
 export const ingestOfflineConversionsInputs = {
   connection: connectionInput,
   events: eventsInput,
@@ -90,6 +95,7 @@ export const ingestOfflineConversionsInputs = {
   encoding: encodingInput,
   validateOnly,
 };
+
 export const uploadCallConversionsInputs = {
   connection: connectionInput,
   customerId: customerIdInput,
@@ -130,6 +136,7 @@ export const uploadCallConversionsInputs = {
   },
   validateOnly,
 };
+
 export const uploadClickConversionsInputs = {
   connection: connectionInput,
   customerId: customerIdInput,

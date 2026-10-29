@@ -16,6 +16,7 @@ import {
   salePrice,
   salePriceEffectiveDate,
 } from "./products";
+
 const storeCode = input({
   label: "Store Code",
   type: "string",
@@ -26,6 +27,7 @@ const storeCode = input({
   placeholder: "Enter Store Code",
   required: true,
 });
+
 const regionId = input({
   label: "Region ID",
   type: "string",
@@ -36,6 +38,7 @@ const regionId = input({
   placeholder: "Enter Region ID",
   required: true,
 });
+
 const instoreProductLocation = input({
   label: "Instore Product Location",
   type: "string",
@@ -46,6 +49,7 @@ const instoreProductLocation = input({
   placeholder: "Enter In-Store Location",
   required: false,
 });
+
 const entriesForBatchLocalInventory = input({
   label: "Entries for Batch Request",
   type: "code",
@@ -57,6 +61,7 @@ const entriesForBatchLocalInventory = input({
   clean: jsonInputClean,
   required: true,
 });
+
 const entriesForBatchRegionalInventory = input({
   label: "Entries for Batch Request",
   type: "code",
@@ -68,10 +73,12 @@ const entriesForBatchRegionalInventory = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const batchLocalInventoryInputs = {
   connectionInput,
   entries: entriesForBatchLocalInventory,
 };
+
 export const updateProductLocalInventoryInputs = {
   connectionInput,
   merchantId,
@@ -88,10 +95,12 @@ export const updateProductLocalInventoryInputs = {
   instoreProductLocation,
   customAttributes,
 };
+
 export const batchRegionalInventoryInputs = {
   connectionInput,
   entries: entriesForBatchRegionalInventory,
 };
+
 export const updateProductRegionalInventoryInputs = {
   connectionInput,
   merchantId,

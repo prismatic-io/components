@@ -5,6 +5,7 @@ import { listPeopleExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { listPeopleInputs } from "../../inputs";
 import { listPeopleOutputSchema } from "../../outputSchemas";
+
 export const listPeople = action({
   display: {
     label: "List People",

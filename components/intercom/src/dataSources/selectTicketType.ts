@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectTicketTypeInputs } from "../inputs";
 import type { TicketType } from "../interfaces";
+
 export const selectTicketType = dataSource({
   display: {
     label: "Select Ticket Type",
@@ -13,9 +14,8 @@ export const selectTicketType = dataSource({
     const client = createClient(connection, false);
     const {
       data: { data: ticketTypes },
-    } = await client.get<{
-      data: TicketType[];
-    }>("/ticket_types");
+    } = await client.get<{ data: TicketType[] }>("/ticket_types");
+
     const result = (ticketTypes || []).map(
       ({ id, name }: TicketType): Element => {
         return {
@@ -24,6 +24,7 @@ export const selectTicketType = dataSource({
         };
       },
     );
+
     return {
       result,
     };

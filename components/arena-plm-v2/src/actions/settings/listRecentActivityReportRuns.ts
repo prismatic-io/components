@@ -5,6 +5,7 @@ import { listRecentActivityReportRunsInputs } from "../../inputs";
 import { listRecentActivityReportRunsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listRecentActivityReportRuns = action({
   display: {
     label: "List Recent Report Run Activities",
@@ -22,25 +23,30 @@ export const listRecentActivityReportRuns = action({
   ) => {
     try {
       context.logger.info("Getting recent report run activities");
+
       const client = await createArenaClient(context, connection);
+
       const params = {
         dateTimeFrom,
         dateTimeTo,
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       const data = await fetchArenaList(
         client,
         "/settings/recentactivities/reportruns",
         params,
         fetchAll,
       );
+
       context.logger.info(
         `Retrieved ${data?.count || 0} report run activities`,
         {
           count: data?.count,
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

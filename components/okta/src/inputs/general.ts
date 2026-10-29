@@ -5,12 +5,14 @@ import {
   util,
 } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Okta connection to use.",
 });
+
 export const search = input({
   label: "Search",
   type: "string",
@@ -21,6 +23,7 @@ export const search = input({
   placeholder: "Enter a search string",
   clean: cleanString,
 });
+
 export const q = input({
   label: "Query",
   type: "string",
@@ -31,6 +34,7 @@ export const q = input({
   placeholder: "Enter a query string",
   clean: cleanString,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -41,6 +45,7 @@ export const filter = input({
   placeholder: "Enter a filter string",
   clean: cleanString,
 });
+
 export const after = input({
   label: "After",
   type: "string",
@@ -51,6 +56,7 @@ export const after = input({
   placeholder: "Enter a cursor value",
   clean: cleanString,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -60,6 +66,7 @@ export const limit = input({
   placeholder: "Enter a limit",
   clean: cleanString,
 });
+
 export const sortBy = input({
   label: "Sort By",
   type: "string",
@@ -70,6 +77,7 @@ export const sortBy = input({
   placeholder: "Enter a sort field",
   clean: cleanString,
 });
+
 export const sortOrder = input({
   label: "Sort Order",
   type: "string",
@@ -83,12 +91,14 @@ export const sortOrder = input({
   ],
   clean: cleanString,
 });
+
 export const sorting = structuredObjectInput({
   label: "Sorting",
   required: false,
   comments: "Field and direction to sort results by (for search queries only).",
   inputs: { sortBy, sortOrder },
 });
+
 export const extraParameters = input({
   label: "Extra Parameters",
   type: "string",
@@ -101,6 +111,7 @@ export const extraParameters = input({
     return util.types.keyValPairListToObject(value as KeyValuePair[]);
   },
 });
+
 export const extraBody = input({
   label: "Extra Body",
   type: "code",
@@ -111,6 +122,7 @@ export const extraBody = input({
   example: JSON.stringify({ key: "value" }, null, 2),
   clean: util.types.toObject,
 });
+
 export const expand = input({
   label: "Expand",
   type: "string",
@@ -121,6 +133,7 @@ export const expand = input({
   placeholder: "Enter expand parameter",
   clean: cleanString,
 });
+
 export const since = input({
   label: "Since",
   type: "string",
@@ -131,6 +144,7 @@ export const since = input({
   placeholder: "Enter since value",
   clean: cleanString,
 });
+
 export const until = input({
   label: "Until",
   type: "string",
@@ -141,6 +155,7 @@ export const until = input({
   placeholder: "Enter until value",
   clean: cleanString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -148,24 +163,28 @@ export const fetchAll = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and limit controls for paging through results.",
   inputs: { after, limit },
 });
+
 export const filters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Search, filter, and query controls to refine the results.",
   inputs: { search, filter, q },
 });
+
 export const systemLogFilters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Time bounds, filter, and query controls to refine the results.",
   inputs: { since, until, filter, q },
 });
+
 export const listInputs = {
   fetchAll,
   filters,
@@ -174,6 +193,7 @@ export const listInputs = {
   extraParameters,
   connection,
 };
+
 export const getSystemLogInputs = {
   fetchAll,
   filters: systemLogFilters,
@@ -181,6 +201,7 @@ export const getSystemLogInputs = {
   sortOrder,
   connection,
 };
+
 export const listRealmsInputs = {
   fetchAll,
   pagination,

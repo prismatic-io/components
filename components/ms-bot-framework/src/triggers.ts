@@ -9,9 +9,11 @@ import {
 import { JwksClient } from "jwks-rsa";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { botId } from "./inputs";
+
 const verify = promisify<string, Secret | GetPublicKeyOrSecret, VerifyOptions>(
   verifyCb,
 );
+
 const botTrigger = trigger({
   display: {
     label: "Bot Framework Trigger",
@@ -27,33 +29,40 @@ const botTrigger = trigger({
     if (bypassHeader) {
       return Promise.resolve({ payload, branch: "Management" });
     }
+
     if (context.isSimulatedTestExecution) {
       return { payload, branch: "Notification" };
     }
+
     const client = createHttpClient({
       baseUrl: "https://login.botframework.com/v1/.well-known",
     });
+
     const { data: openIdConfig } = await client.get("/openidconfiguration");
     const signingAlgorithms =
       openIdConfig.id_token_signing_alg_values_supported;
     if (!signingAlgorithms) {
       throw new Error("Error fetching Open ID Configuration.");
     }
+
     const jwksClient = new JwksClient({
       jwksUri: "https://login.botframework.com/v1/.well-known/keys",
     });
+
     const authorizationHeader = payload.headers.Authorization;
     if (!authorizationHeader) {
       throw new Error(
         "Error validating message signature: missing Authorization header.",
       );
     }
+
     const [scheme, token] = authorizationHeader.trim().split(" ");
     if (scheme !== "Bearer") {
       throw new Error(
         "Error validating message signature: invalid Authorization header.",
       );
     }
+
     const result = (await verify(
       token,
       (headers, callback) => {
@@ -71,16 +80,12 @@ const botTrigger = trigger({
         audience: params.botId,
         algorithms: signingAlgorithms,
       },
-    )) as unknown as {
-      serviceurl: string;
-      serviceUrl: string;
-    };
+    )) as unknown as { serviceurl: string; serviceUrl: string };
+
     const claimServiceUrl = result.serviceurl || result.serviceUrl;
-    const payloadServiceUrl = (
-      payload.body.data as {
-        serviceUrl: string;
-      }
-    ).serviceUrl;
+    const payloadServiceUrl = (payload.body.data as { serviceUrl: string })
+      .serviceUrl;
+
     if (
       !claimServiceUrl ||
       !payloadServiceUrl ||
@@ -90,6 +95,7 @@ const botTrigger = trigger({
         "Error validating message signature: serviceUrl mismatch.",
       );
     }
+
     return { payload, branch: "Notification" };
   },
   scheduleSupport: "invalid",
@@ -104,6 +110,7 @@ const botTrigger = trigger({
     },
   },
 });
+
 export default {
   botTrigger,
 };

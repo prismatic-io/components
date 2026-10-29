@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { getSsoMeExamplePayload } from "../../../examplePayloads";
 import { getSsoMeInputs } from "../../../inputs";
+
 export const getSsoMe = action({
   display: {
     label: "Get SSO Me (V2)",

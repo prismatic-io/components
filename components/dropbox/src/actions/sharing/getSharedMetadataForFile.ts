@@ -4,6 +4,7 @@ import { getSharedMetadataForFileExamplePayload } from "../../examplePayloads";
 import { getSharedMetadataForFileInputs, shared_folder_id } from "../../inputs";
 import { getSharedMetadataForFileOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const getSharedMetadataForFile = action({
   display: {
     label: "Get Shared Metadata for File",

@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, phoneNumber } from "../../inputs";
+
 export const listReferencesToAPhoneNumber = action({
   display: {
     label: "List References to a Phone Number",

@@ -4,6 +4,7 @@ import { searchAdsLocalServicesExamplePayload } from "../../examplePayloads";
 import { searchAdsLocalServicesInputs } from "../../inputs";
 import { searchAdsOutputSchema } from "../../outputSchemas";
 import { searchGoogleAds } from "../../util";
+
 export const searchAdsLocalServices = action({
   display: {
     label: "Search Ads",
@@ -47,8 +48,7 @@ export const searchAdsLocalServices = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => searchAdsLocalServicesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    searchAdsLocalServicesExamplePayload,
   examplePayload: searchAdsLocalServicesExamplePayload,
 });

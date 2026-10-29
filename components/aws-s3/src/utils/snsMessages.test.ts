@@ -5,14 +5,17 @@ import {
   buildSnsStringToSign,
   verifySnsMessageSignature,
 } from "./snsMessages";
+
 const CERT_URL =
   "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-example.pem";
+
 const { publicKey, privateKey } = generateKeyPairSync("rsa", {
   modulusLength: 2048,
 });
 const publicKeyPem = publicKey
   .export({ type: "spki", format: "pem" })
   .toString();
+
 const notification: SnsMessage = {
   Type: "Notification",
   MessageId: "22b80b92-fdea-4c2c-8f9d-bdfb0c7bf324",
@@ -24,6 +27,7 @@ const notification: SnsMessage = {
   Signature: "",
   SigningCertURL: CERT_URL,
 };
+
 const confirmation: SnsMessage = {
   Type: "SubscriptionConfirmation",
   MessageId: "165545c9-2a5c-472c-8df2-7ff2be2b3b1b",
@@ -37,6 +41,7 @@ const confirmation: SnsMessage = {
   Signature: "",
   SigningCertURL: CERT_URL,
 };
+
 const signed = (message: SnsMessage, version: "1" | "2" = "2"): SnsMessage => {
   const unsigned = { ...message, SignatureVersion: version };
   const algorithm = version === "1" ? "sha1" : "sha256";
@@ -47,6 +52,7 @@ const signed = (message: SnsMessage, version: "1" | "2" = "2"): SnsMessage => {
   );
   return { ...unsigned, Signature: signature.toString("base64") };
 };
+
 describe("buildSnsStringToSign", () => {
   test("builds a Notification string in byte-sort order with Subject and a single trailing newline", () => {
     expect(buildSnsStringToSign(notification)).toBe(
@@ -67,10 +73,12 @@ describe("buildSnsStringToSign", () => {
       ].join("\n"),
     );
   });
+
   test("omits Subject from a Notification that has none", () => {
     const { Subject: _subject, ...withoutSubject } = notification;
     expect(buildSnsStringToSign(withoutSubject)).not.toContain("Subject\n");
   });
+
   test("builds a SubscriptionConfirmation string with SubscribeURL and Token", () => {
     expect(buildSnsStringToSign(confirmation)).toBe(
       [
@@ -93,6 +101,7 @@ describe("buildSnsStringToSign", () => {
     );
   });
 });
+
 describe("assertSnsUrl", () => {
   test.each([
     ["https://sns.us-east-1.amazonaws.com/cert.pem"],
@@ -103,6 +112,7 @@ describe("assertSnsUrl", () => {
       new URL(url).hostname,
     );
   });
+
   test.each([
     ["http://sns.us-east-1.amazonaws.com/cert.pem"],
     ["https://attacker.example.com/cert.pem"],
@@ -117,11 +127,14 @@ describe("assertSnsUrl", () => {
     );
   });
 });
+
 describe("verifySnsMessageSignature", () => {
   const fetchCertificate = vi.fn(async () => publicKeyPem);
+
   beforeEach(() => {
     fetchCertificate.mockClear();
   });
+
   test.each([
     ["1"],
     ["2"],
@@ -134,30 +147,36 @@ describe("verifySnsMessageSignature", () => {
     ).resolves.toBeUndefined();
     expect(fetchCertificate).toHaveBeenCalledWith(CERT_URL);
   });
+
   test("accepts a signed SubscriptionConfirmation", async () => {
     await expect(
       verifySnsMessageSignature(signed(confirmation), fetchCertificate),
     ).resolves.toBeUndefined();
   });
+
   test("rejects a message whose content changed after signing", async () => {
     const tampered = {
       ...signed(notification),
       Message: '{"Records":["forged"]}',
     };
+
     await expect(
       verifySnsMessageSignature(tampered, fetchCertificate),
     ).rejects.toThrow("Amazon SNS message signature is invalid");
   });
+
   test("rejects an unsigned message", async () => {
     await expect(
       verifySnsMessageSignature(notification, fetchCertificate),
     ).rejects.toThrow("Amazon SNS message signature is invalid");
   });
+
   test("rejects a certificate URL outside Amazon SNS without downloading it", async () => {
     const foreignCert = {
       ...signed(notification),
       SigningCertURL: "https://attacker.example.com/cert.pem",
     };
+
     await expect(
       verifySnsMessageSignature(foreignCert, fetchCertificate),
     ).rejects.toThrow(
@@ -165,8 +184,10 @@ describe("verifySnsMessageSignature", () => {
     );
     expect(fetchCertificate).not.toHaveBeenCalled();
   });
+
   test("rejects an unsupported SignatureVersion", async () => {
     const unsupported = { ...signed(notification), SignatureVersion: "3" };
+
     await expect(
       verifySnsMessageSignature(unsupported, fetchCertificate),
     ).rejects.toThrow('Unsupported Amazon SNS SignatureVersion "3"');

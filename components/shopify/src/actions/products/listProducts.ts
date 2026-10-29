@@ -6,6 +6,7 @@ import {
 import { listProductsInputs } from "../../inputs";
 import { listProductsOutputSchema } from "../../outputSchemas";
 import { listProductsGql } from "../graphql/products/listProductsGql";
+
 export const listProducts = action({
   display: {
     label: "List Products",
@@ -23,6 +24,7 @@ export const listProducts = action({
       },
       getAlldata: params.getAlldata,
     });
+
     return {
       data,
     };
@@ -32,9 +34,7 @@ export const listProducts = action({
     type: "actionOutput",
     schema: listProductsOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: restListProductsExamplePayload,
   }),
   examplePayload: listProductsPayload,

@@ -1,5 +1,6 @@
 import type { Section } from "../types";
 import { paginationAttributes } from "./general";
+
 const createSectionRaw = {
   section: {
     description: "This section contains articles on flight instruments",
@@ -9,7 +10,9 @@ const createSectionRaw = {
     position: 2,
   },
 };
+
 const getSectionRaw = createSectionRaw;
+
 const updateSectionRaw = {
   section: {
     description: "This section contains articles on flight instruments",
@@ -19,6 +22,7 @@ const updateSectionRaw = {
     position: 2,
   },
 };
+
 const listSectionsRaw = {
   ...paginationAttributes,
   sections: [
@@ -38,26 +42,19 @@ const listSectionsRaw = {
     },
   ],
 };
-export const createSectionExamplePayload: {
-  data: {
-    section: Section;
-  };
-} = {
+
+export const createSectionExamplePayload: { data: { section: Section } } = {
   data: createSectionRaw,
 };
+
 export const deleteSectionExamplePayload = { data: "" };
-export const getSectionExamplePayload: {
-  data: {
-    section: Section;
-  };
-} = {
+
+export const getSectionExamplePayload: { data: { section: Section } } = {
   data: getSectionRaw,
 };
+
 export const listSectionsExamplePayload = { data: listSectionsRaw };
-export const updateSectionExamplePayload: {
-  data: {
-    section: Section;
-  };
-} = {
+
+export const updateSectionExamplePayload: { data: { section: Section } } = {
   data: updateSectionRaw,
 };

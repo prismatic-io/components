@@ -1,4 +1,5 @@
 import { batchErrorSchema } from "./shared";
+
 export const listAssociationTypesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +28,7 @@ export const listAssociationTypesOutputSchema = {
   },
   required: ["results"],
 };
+
 export const createAssociationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -71,6 +73,7 @@ export const createAssociationsOutputSchema = {
   },
   required: ["completedAt", "startedAt", "status", "results"],
 };
+
 export const readAssociationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -156,6 +159,7 @@ export const readAssociationsOutputSchema = {
   },
   required: ["completedAt", "startedAt", "status", "results"],
 };
+
 export const archiveAssociationsOutputSchema = {
   type: "object" as const,
   properties: {

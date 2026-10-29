@@ -4,6 +4,7 @@ import { createClient } from "../../../client";
 import { listProductsExamplePayload } from "../../../examplePayloads/v2_1";
 import { listProductsInputs } from "../../../inputs/v2_1";
 import { fetchAllProducts } from "../../../util/fetchAllProducts";
+
 export const listProducts = action({
   display: {
     description: "Lists the products in the Merchant Center account.",
@@ -15,12 +16,15 @@ export const listProducts = action({
     { connectionInput, pagination, merchantId, fetchAll },
   ) => {
     const client = createClient(connectionInput);
+
     const params: content_v2_1.Params$Resource$Products$List = {
       merchantId,
       maxResults: pagination.maxResults,
       pageToken: pagination.pageToken,
     };
+
     const { data } = await fetchAllProducts({ client, fetchAll, params });
+
     return {
       data,
     };

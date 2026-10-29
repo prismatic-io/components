@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getWorkbookExamplePayload } from "../../examplePayloads";
 import { getWorkbookInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const getWorkbook = action({
   display: {
     label: "Get Workbook",
@@ -15,6 +16,7 @@ export const getWorkbook = action({
       debug: context.debug.enabled,
     });
     const response = await client.get(`/workbooks/${params.workbookId}`);
+
     return {
       data: response.data,
     };

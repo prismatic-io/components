@@ -2,9 +2,8 @@ import { SUCCESS_MESSAGE } from "./constants";
 import type { Contact } from "./interfaces/Contact";
 import type { OdataObject } from "./interfaces/OdataObject";
 import type { WorkItem } from "./interfaces/WorkItem";
-export const createContactExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const createContactExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context:
@@ -98,9 +97,8 @@ export const createContactExamplePayload: {
     },
   },
 };
-export const listContactsExamplePayload: {
-  data: OdataObject<Contact>;
-} = {
+
+export const listContactsExamplePayload: { data: OdataObject<Contact> } = {
   data: {
     odata: {
       context:
@@ -126,14 +124,14 @@ export const listContactsExamplePayload: {
     ],
   },
 };
+
 export const pollChangesExamplePayload = {
   data: {
     updated: listContactsExamplePayload.data.value,
   },
 };
-export const getInvoiceExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const getInvoiceExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context: "https://api.karbonhq.com/v3/$metadata#Invoices/$entity",
@@ -169,6 +167,7 @@ export const getInvoiceExamplePayload: {
     ],
   },
 };
+
 export const listInvoicesExamplePayload = {
   data: {
     odata: {
@@ -218,9 +217,8 @@ export const listInvoicesExamplePayload = {
     ],
   },
 };
-export const createUserExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const createUserExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context: "https://api.karbonhq.com/v3/$metadata#Users/$entity",
@@ -230,9 +228,8 @@ export const createUserExamplePayload: {
     EmailAddress: "joe@samplecompany.com",
   },
 };
-export const listWorkItemsExamplePayload: {
-  data: OdataObject<WorkItem>;
-} = {
+
+export const listWorkItemsExamplePayload: { data: OdataObject<WorkItem> } = {
   data: {
     value: [
       {
@@ -263,6 +260,7 @@ export const listWorkItemsExamplePayload: {
         WorkScheduleKey: "4f3gHnLC323",
       },
     ],
+
     odata: {
       count: 323,
       context:
@@ -271,9 +269,8 @@ export const listWorkItemsExamplePayload: {
     },
   },
 };
-export const getContactExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const getContactExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context:
@@ -369,9 +366,11 @@ export const getContactExamplePayload: {
     },
   },
 };
+
 export const updateContactExamplePayload = {
   data: SUCCESS_MESSAGE,
 };
+
 export const listUsersExamplePayload = {
   data: {
     odata: {
@@ -379,6 +378,7 @@ export const listUsersExamplePayload = {
       count: 1,
       nextLink: "https://api.karbonhq.com/v3/Users?$skip=100",
     },
+
     value: [
       {
         Id: "4LR9qmR5NQ6T",
@@ -388,9 +388,8 @@ export const listUsersExamplePayload = {
     ],
   },
 };
-export const getUserExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const getUserExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context:
@@ -407,9 +406,8 @@ export const getUserExamplePayload: {
     Teams: ["Accountants", "Bookkeepers"],
   },
 };
-export const createWorkItemExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const createWorkItemExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context:
@@ -448,9 +446,8 @@ export const createWorkItemExamplePayload: {
     ClientTaskRecipient: null,
   },
 };
-export const getWorkItemExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const getWorkItemExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context:
@@ -489,15 +486,16 @@ export const getWorkItemExamplePayload: {
     ClientTaskRecipient: null,
   },
 };
+
 export const updateWorkItemExamplePayload = {
   data: SUCCESS_MESSAGE,
 };
+
 export const deleteAllWebhookSubscriptionsExamplePayload = {
   data: SUCCESS_MESSAGE,
 };
-export const getWebhookExamplePayload: {
-  data: OdataObject<unknown>;
-} = {
+
+export const getWebhookExamplePayload: { data: OdataObject<unknown> } = {
   data: {
     odata: {
       context:

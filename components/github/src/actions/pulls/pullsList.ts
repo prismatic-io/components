@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { pullsListExamplePayload } from "../../examplePayloads";
 import { pullsListInputs } from "../../inputs";
 import { pullsListOutputSchema } from "../../outputSchemas";
+
 export const pullsList = action({
   display: {
     label: "List Pull Requests",

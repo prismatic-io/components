@@ -5,6 +5,7 @@ import { listCheckoutSessionsInputs } from "../../inputs";
 import { listCheckoutSessionsOutputSchema } from "../../outputSchemas";
 import { paginateStripeRecords } from "../../util";
 import { listCheckoutSessionsExamplePayload } from "../../examplePayloads/checkoutSessions";
+
 export const listCheckoutSessions = action({
   display: {
     label: "List Checkout Sessions",
@@ -19,6 +20,7 @@ export const listCheckoutSessions = action({
       stripeConnection,
       timeout,
     });
+
     const sessions = (await paginateStripeRecords(
       client.checkout.sessions,
       fetchAll,
@@ -28,13 +30,12 @@ export const listCheckoutSessions = action({
         ending_before: pagination.endingBefore,
       },
     )) as Stripe.ApiList<Stripe.Checkout.Session>;
+
     return {
       data: sessions,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listCheckoutSessionsExamplePayload.data,
   }),
   inputs: listCheckoutSessionsInputs,
@@ -42,5 +43,6 @@ export const listCheckoutSessions = action({
     type: "actionOutput",
     schema: listCheckoutSessionsOutputSchema,
   }),
+
   examplePayload: listCheckoutSessionsExamplePayload,
 });

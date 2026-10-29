@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { asStringArray, toOptionalString } from "../util";
 import { connection, cursor, fetchAll, pageSize } from "./common";
+
 export const assetId = input({
   label: "Asset ID",
   type: "string",
@@ -10,6 +11,7 @@ export const assetId = input({
   placeholder: "Enter asset ID",
   example: "12345",
 });
+
 const lastModified = input({
   label: "Last Modified Since",
   type: "string",
@@ -20,6 +22,7 @@ const lastModified = input({
   placeholder: "Enter date in ISO 8601 format",
   example: "2024-01-01T00:00:00Z",
 });
+
 const includeFields = input({
   label: "Include Fields",
   type: "string",
@@ -29,6 +32,7 @@ const includeFields = input({
     "Fields to include in the response. When set, only these fields are returned.",
   clean: asStringArray,
 });
+
 const excludeFields = input({
   label: "Exclude Fields",
   type: "string",
@@ -38,6 +42,7 @@ const excludeFields = input({
     "Field names to omit from the response payload, reducing response size.",
   clean: asStringArray,
 });
+
 const connectorUuid = input({
   label: "Connector UUID",
   type: "string",
@@ -47,6 +52,7 @@ const connectorUuid = input({
   placeholder: "Enter connector UUID",
   example: "489e8429-2e82-4599-a2a8-xxxxxxxxxxxx",
 });
+
 const source = input({
   label: "Source",
   type: "string",
@@ -56,6 +62,7 @@ const source = input({
   placeholder: "Enter source identifier",
   example: "WEBHOOK",
 });
+
 const requestId = input({
   label: "Request ID",
   type: "string",
@@ -65,6 +72,7 @@ const requestId = input({
   placeholder: "Enter request ID",
   example: "6562e033-8456-4c13-989f-7f4f6fc67e3b",
 });
+
 const assetCount = input({
   label: "Asset Count",
   type: "string",
@@ -74,6 +82,7 @@ const assetCount = input({
   placeholder: "Enter asset count",
   example: "10",
 });
+
 const connectorMetaData = structuredObjectInput({
   label: "Connector Metadata",
   required: true,
@@ -86,6 +95,7 @@ const connectorMetaData = structuredObjectInput({
     assetCount,
   },
 });
+
 const assetData = input({
   label: "Asset Data",
   type: "code",
@@ -115,6 +125,7 @@ const assetData = input({
     2,
   ),
 });
+
 export const listAssetsInputs = {
   connection,
   fetchAll,
@@ -131,5 +142,7 @@ export const listAssetsInputs = {
   includeFields,
   excludeFields,
 };
+
 export const getAssetInputs = { connection, assetId };
+
 export const syncAssetInputs = { connection, connectorMetaData, assetData };

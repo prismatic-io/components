@@ -11,6 +11,7 @@ export interface WebhookNotification {
   subscriptionExpirationDateTime?: string;
   tenantId?: string;
 }
+
 export interface WebhookNotificationPayload {
   value: WebhookNotification[];
 }

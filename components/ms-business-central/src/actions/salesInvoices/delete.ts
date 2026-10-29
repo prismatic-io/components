@@ -4,6 +4,7 @@ import { SUCCESS_PAYLOAD } from "../../examplePayloads";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import { salesInvoiceId } from "../../inputs/salesInvoice/updateSalesInvoiceInputs";
+
 export const deleteSalesInvoice = action({
   display: {
     label: "Delete Sales Invoice",
@@ -19,6 +20,7 @@ export const deleteSalesInvoice = action({
     await client.delete(
       `/companies(${companyId})/salesInvoices(${salesInvoiceId})`,
     );
+
     return SUCCESS_PAYLOAD;
   },
   inputs: {

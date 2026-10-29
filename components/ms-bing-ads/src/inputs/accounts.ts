@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { ACCOUNT_LIFE_CYCLE_STATUS_MODEL, ORDERING_MODEL } from "../constants";
 import { cleanModelValue, cleanOptionalString } from "../util";
 import { accountIdInput, connectionInput, customerIdInput } from "./common";
+
 const accountLifeCycleStatusInput = input({
   label: "Account Life Cycle Status",
   comments:
@@ -17,6 +18,7 @@ const accountLifeCycleStatusInput = input({
     },
   ),
 });
+
 const accountNameInput = input({
   label: "Account Name",
   placeholder: "Enter account name",
@@ -26,6 +28,7 @@ const accountNameInput = input({
     "The name to search for in the Name element of the AdvertiserAccount.",
   clean: cleanOptionalString,
 });
+
 const accountNumberInput = input({
   label: "Account Number",
   placeholder: "Enter account number",
@@ -35,6 +38,7 @@ const accountNumberInput = input({
     "The number to search for in the Number element of the AdvertiserAccount.",
   clean: cleanOptionalString,
 });
+
 const orderingInput = input({
   label: "Ordering",
   comments:
@@ -44,6 +48,7 @@ const orderingInput = input({
   required: false,
   clean: cleanModelValue(ORDERING_MODEL, "order", { allowEmpty: true }),
 });
+
 const userIdInput = input({
   label: "User ID",
   placeholder: "Enter user ID",
@@ -52,6 +57,7 @@ const userIdInput = input({
   comments: "The unique identifier for the user to search for.",
   clean: cleanOptionalString,
 });
+
 export const getAccountsInfoInputs = {
   connection: connectionInput,
   customerId: {
@@ -60,6 +66,7 @@ export const getAccountsInfoInputs = {
       "The identifier of the customer used to get the account information. This request element is optional. If not set, the user's credentials are used to determine the customer.",
   },
 };
+
 export const searchAccountsInputs = {
   accountId: {
     ...accountIdInput,
@@ -77,6 +84,7 @@ export const searchAccountsInputs = {
   },
   userId: userIdInput,
 };
+
 export const selectAccountIdInputs = {
   connection: connectionInput,
   customerId: { ...customerIdInput, dataSource: undefined },

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listSupportedTimezonesExamplePayload } from "../../examplePayloads";
 import { listSupportedTimezonesInputs } from "../../inputs";
+
 export const listSupportedTimezones = action({
   display: {
     label: "List Supported Timezones",

@@ -1,4 +1,5 @@
 import { trigger } from "@prismatic-io/spectral";
+
 export const firstResonanceTrigger = trigger({
   display: {
     label: "Trigger",
@@ -13,4 +14,5 @@ export const firstResonanceTrigger = trigger({
   synchronousResponseSupport: "valid",
   scheduleSupport: "valid",
 });
+
 export default { firstResonanceTrigger };

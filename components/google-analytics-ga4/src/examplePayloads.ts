@@ -1,7 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
-export const listAccountsExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const listAccountsExamplePayload: { data: Record<string, unknown> } = {
   data: {
     accounts: [
       {
@@ -14,9 +13,8 @@ export const listAccountsExamplePayload: {
     ],
   },
 };
-export const listPropertiesExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const listPropertiesExamplePayload: { data: Record<string, unknown> } = {
   data: {
     properties: [
       {
@@ -35,6 +33,7 @@ export const listPropertiesExamplePayload: {
     ],
   },
 };
+
 export const getPropertyExamplePayload = {
   data: {
     name: "properties/111111111",
@@ -50,6 +49,7 @@ export const getPropertyExamplePayload = {
     propertyType: "PROPERTY_TYPE_ORDINARY",
   },
 };
+
 export const runReportExamplePayload = {
   data: {
     dimensionHeaders: [
@@ -97,20 +97,21 @@ export const runReportExamplePayload = {
     kind: "analyticsData#runReport",
   },
 };
+
 export const sendMeasurementProtocolEventsExamplePayload = {
   data: {
     message: "Event Sent Successfully",
   },
 };
+
 export const listAccountsDataSourceExamplePayload = {
   result: [
     { key: "accounts/000000000", label: "My Account 1" },
     { key: "accounts/000000001", label: "My Account 2" },
   ],
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

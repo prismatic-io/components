@@ -5,6 +5,7 @@ import { addSharedLinkToFileExamplePayload } from "../../examplePayloads";
 import { addSharedLinkToFileInputs } from "../../inputs";
 import { addSharedLinkToFileOutputSchema } from "../../outputSchemas";
 import { sharedLinkVanityUrl } from "../../util";
+
 export const addSharedLinkToFile = action({
   display: {
     label: "Add Shared Link to File",
@@ -21,10 +22,12 @@ export const addSharedLinkToFile = action({
       params.additionalFields.sharedLinkVanityName || null;
     const sharedLinkPermissions =
       params.additionalFields.sharedLinkPermissions || {};
+
     const client = createBoxHttpClient(
       params.boxConnection,
       context.debug.enabled,
     );
+
     const body = {
       shared_link: {
         access: sharedLinkAccess,
@@ -33,6 +36,7 @@ export const addSharedLinkToFile = action({
         vanity_name: sharedLinkVanityName,
       },
     };
+
     const { data } = await client.put(`/files/${fileId}`, body, {
       params: {
         sharedLink,
@@ -54,13 +58,12 @@ export const addSharedLinkToFile = action({
         sharedLinkVanityName,
       },
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const permissions = {
       ...addSharedLinkToFileExamplePayload.data.shared_link.permissions,
       ...(sharedLinkPermissions as Record<string, unknown>),
     };
+
     return {
       data: {
         ...addSharedLinkToFileExamplePayload.data,

@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { moveAssetExamplePayload as examplePayload } from "../../examplePayloads";
 import { moveAssetInputs as inputs } from "../../inputs";
 import { moveAssetOutputSchema } from "../../outputSchemas";
+
 export const moveAsset = action({
   display: {
     label: "Move Asset (Deprecated)",
@@ -17,15 +18,18 @@ export const moveAsset = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       workspace_id: workspaceId,
       group_id: groupId,
       agent_id: agentId,
     };
+
     const { data } = await client.put(
       `/assets/${assetDisplayId}/move_workspace`,
       payload,
     );
+
     return {
       data,
     };

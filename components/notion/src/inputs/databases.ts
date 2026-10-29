@@ -14,6 +14,7 @@ import {
   parent,
   properties,
 } from "./common";
+
 export const databaseIdInput = input({
   label: "Database ID",
   required: true,
@@ -25,6 +26,7 @@ export const databaseIdInput = input({
   dataSource: "selectDatabase",
   clean: util.types.toString,
 });
+
 export const databaseIdOptionalInput = input({
   label: "Database ID",
   required: false,
@@ -36,6 +38,7 @@ export const databaseIdOptionalInput = input({
   dataSource: "selectDatabase",
   clean: toOptionalString,
 });
+
 export const archivedInput = input({
   label: "Archived",
   type: "boolean",
@@ -44,6 +47,7 @@ export const archivedInput = input({
     "When true, archives the database/data source. When false, unarchives it.",
   clean: util.types.toBool,
 });
+
 const createDatabaseParentInput = input({
   type: "code",
   label: "Parent",
@@ -55,6 +59,7 @@ const createDatabaseParentInput = input({
   comments:
     'The parent page where the database will be created. Format: {"type": "page_id", "page_id": "..."} or {"type": "workspace", "workspace": true} for workspace-level.',
 });
+
 const initialDataSourcePropertiesInput = input({
   type: "code",
   label: "Initial Data Source Properties",
@@ -66,6 +71,7 @@ const initialDataSourcePropertiesInput = input({
   comments:
     "Property schema for the initial data source. The keys are the names of properties as they appear in Notion.",
 });
+
 const isInlineInput = input({
   label: "Is Inline",
   type: "string",
@@ -78,6 +84,7 @@ const isInlineInput = input({
   ],
   clean: toOptionalString,
 });
+
 const descriptionInput = input({
   label: "Description",
   type: "code",
@@ -89,10 +96,12 @@ const descriptionInput = input({
   comments:
     "The description of the data source formatted as a rich text array. See [Notion Rich Text Reference](https://developers.notion.com/reference/rich-text).",
 });
+
 export const retrieveDatabaseInputs = {
   connection: connectionInput,
   databaseId: databaseIdInput,
 };
+
 export const updatedCreateDatabaseInputs = {
   connection: connectionInput,
   parent: createDatabaseParentInput,
@@ -102,6 +111,7 @@ export const updatedCreateDatabaseInputs = {
   description: descriptionInput,
   cover: coverImage,
 };
+
 export const updatedUpdateDatabaseInputs = {
   connection: connectionInput,
   databaseId: databaseIdInput,
@@ -116,6 +126,7 @@ export const updatedUpdateDatabaseInputs = {
   icon,
   cover: coverImage,
 };
+
 export const createDatabaseItemInputs = {
   connection: connectionInput,
   parent: {

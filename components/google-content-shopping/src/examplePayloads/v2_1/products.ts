@@ -1,6 +1,4 @@
-export const getProductExamplePayload: {
-  data: unknown;
-} = {
+export const getProductExamplePayload: { data: unknown } = {
   data: {
     kind: "content#product",
     id: "online:en:US:1111111111",
@@ -137,10 +135,10 @@ export const getProductExamplePayload: {
     ],
   },
 };
+
 export const createProductExamplePayload = getProductExamplePayload;
-export const updateProductExamplePayload: {
-  data: unknown;
-} = {
+
+export const updateProductExamplePayload: { data: unknown } = {
   data: {
     ...(getProductExamplePayload.data as object),
     title: "Google Organic Cotton T-Shirt - Updated",
@@ -150,14 +148,12 @@ export const updateProductExamplePayload: {
     },
   },
 };
-export const deleteProductExamplePayload: {
-  data: unknown;
-} = {
+
+export const deleteProductExamplePayload: { data: unknown } = {
   data: {},
 };
-export const listProductsExamplePayload: {
-  data: unknown;
-} = {
+
+export const listProductsExamplePayload: { data: unknown } = {
   data: {
     kind: "content#productsListResponse",
     resources: [
@@ -191,9 +187,8 @@ export const listProductsExamplePayload: {
     nextPageToken: "CgwI4MSB3QYQ",
   },
 };
-export const batchProductExamplePayload: {
-  data: unknown;
-} = {
+
+export const batchProductExamplePayload: { data: unknown } = {
   data: {
     kind: "content#productsCustomBatchResponse",
     entries: [

@@ -9,6 +9,7 @@ import {
   getAllPaginatedData,
 } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const listEngagements = action({
   display: {
     label: "List Engagements",
@@ -21,11 +22,13 @@ export const listEngagements = action({
     { timeout, hubspotConnection, engagementObject, propertiesToReturn },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const engagementsList = await getAllPaginatedData(
       client,
       hubspotPaths.objects(engagementObject),
@@ -41,6 +44,7 @@ export const listEngagements = action({
           : undefined,
       },
     );
+
     return {
       data: engagementsList,
     };

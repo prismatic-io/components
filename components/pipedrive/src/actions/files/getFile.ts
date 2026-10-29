@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getFileInputs } from "../../inputs";
 import { getFileExamplePayload } from "../../examplePayloads";
 import { getFileOutputSchema } from "../../outputSchemas";
+
 export const getFile = action({
   display: {
     label: "Get File Metadata by ID",

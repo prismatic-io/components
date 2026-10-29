@@ -14,6 +14,7 @@ import {
   stageId,
 } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const dealPersonId = input({
   label: "Person ID",
   type: "string",
@@ -23,6 +24,7 @@ const dealPersonId = input({
   example: "123",
   placeholder: "Enter Person ID",
 });
+
 const dealOrgId = input({
   label: "Org ID",
   type: "string",
@@ -32,6 +34,7 @@ const dealOrgId = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const dealPipelineId = input({
   label: "Pipeline ID",
   type: "string",
@@ -41,6 +44,7 @@ const dealPipelineId = input({
   example: "123",
   placeholder: "Enter Pipeline ID",
 });
+
 const dealStageId = input({
   label: "Stage ID",
   type: "string",
@@ -50,6 +54,7 @@ const dealStageId = input({
   example: "123",
   placeholder: "Enter Stage ID",
 });
+
 const addDealTitle = input({
   label: "Title",
   type: "string",
@@ -59,6 +64,7 @@ const addDealTitle = input({
   example: "Q1 Software License Deal",
   placeholder: "Enter deal title",
 });
+
 const addDealAdditionalFieldsValue = input({
   label: "Value",
   type: "string",
@@ -69,6 +75,7 @@ const addDealAdditionalFieldsValue = input({
   example: "5000",
   placeholder: "Enter deal value",
 });
+
 const addDealAdditionalFieldsCurrency = input({
   label: "Currency",
   type: "string",
@@ -79,6 +86,7 @@ const addDealAdditionalFieldsCurrency = input({
   example: "USD",
   placeholder: "Enter currency code",
 });
+
 const addDealStatus = input({
   label: "Status",
   type: "string",
@@ -92,6 +100,7 @@ const addDealStatus = input({
   clean: cleanString,
   comments: "The current lifecycle status of the deal.",
 });
+
 const addDealExpectedCloseDate = input({
   label: "Expected Close Date",
   type: "string",
@@ -101,6 +110,7 @@ const addDealExpectedCloseDate = input({
   example: "2024-12-31",
   placeholder: "Enter date (YYYY-MM-DD)",
 });
+
 const addDealProbability = input({
   label: "Probability",
   type: "string",
@@ -110,6 +120,7 @@ const addDealProbability = input({
   example: "75",
   placeholder: "Enter probability percentage",
 });
+
 const addDealLostReason = input({
   label: "Lost Reason",
   type: "string",
@@ -120,6 +131,7 @@ const addDealLostReason = input({
   example: "Budget constraints",
   placeholder: "Enter reason for losing deal",
 });
+
 const addDealVisibleTo = input({
   label: "Visible To",
   type: "string",
@@ -134,6 +146,7 @@ const addDealVisibleTo = input({
   comments:
     "Controls which users can see this record. 1 = owner only, 3 = owner's group, 5 = owner's group and sub-groups, 7 = entire company.",
 });
+
 const addDealAddTime = input({
   label: "Add Time",
   type: "string",
@@ -143,6 +156,7 @@ const addDealAddTime = input({
   example: "2024-01-15T10:30:00Z",
   placeholder: "Enter date & time (ISO 8601 format)",
 });
+
 export const addDealInputs = {
   connection: connectionInput,
   title: addDealTitle,
@@ -166,6 +180,7 @@ export const addDealInputs = {
     },
   }),
 };
+
 const updateDealTitle = input({
   label: "Title",
   type: "string",
@@ -175,6 +190,7 @@ const updateDealTitle = input({
   example: "Q1 Software License Deal",
   placeholder: "Enter deal title",
 });
+
 const updateDealValue = input({
   label: "Value",
   type: "string",
@@ -185,6 +201,7 @@ const updateDealValue = input({
   example: "5000",
   placeholder: "Enter deal value",
 });
+
 const updateDealCurrency = input({
   label: "Currency",
   type: "string",
@@ -195,6 +212,7 @@ const updateDealCurrency = input({
   example: "USD",
   placeholder: "Enter currency code",
 });
+
 const updateDealStatus = input({
   label: "Status",
   type: "string",
@@ -208,6 +226,7 @@ const updateDealStatus = input({
   clean: cleanString,
   comments: "The current lifecycle status of the deal.",
 });
+
 const updateDealExpectedCloseDate = input({
   label: "Expected Close Date",
   type: "string",
@@ -217,6 +236,7 @@ const updateDealExpectedCloseDate = input({
   example: "2024-12-31",
   placeholder: "Enter date (YYYY-MM-DD)",
 });
+
 const updateDealProbability = input({
   label: "Probability",
   type: "string",
@@ -226,6 +246,7 @@ const updateDealProbability = input({
   example: "75",
   placeholder: "Enter probability percentage",
 });
+
 const updateDealLostReason = input({
   label: "Lost Reason",
   type: "string",
@@ -236,6 +257,7 @@ const updateDealLostReason = input({
   example: "Budget constraints",
   placeholder: "Enter reason for losing deal",
 });
+
 const updateDealVisibleTo = input({
   label: "Visible To",
   type: "string",
@@ -250,6 +272,7 @@ const updateDealVisibleTo = input({
   comments:
     "Controls which users can see this record. 1 = owner only, 3 = owner's group, 5 = owner's group and sub-groups, 7 = entire company.",
 });
+
 export const updateDealInputs = {
   connection: connectionInput,
   id: dealIdInput,
@@ -272,6 +295,7 @@ export const updateDealInputs = {
     },
   }),
 };
+
 const searchDealsTerm = input({
   label: "Term",
   type: "string",
@@ -281,6 +305,7 @@ const searchDealsTerm = input({
   example: "Software License",
   placeholder: "Enter search term",
 });
+
 const searchDealsFields = input({
   label: "Fields",
   type: "string",
@@ -291,6 +316,7 @@ const searchDealsFields = input({
   example: "custom_fields,notes,title",
   placeholder: "Enter fields (comma-separated)",
 });
+
 const searchDealsExactMatch = input({
   label: "Exact Match",
   type: "boolean",
@@ -298,6 +324,7 @@ const searchDealsExactMatch = input({
   comments:
     "When true, only full exact matches against the given term are returned",
 });
+
 const searchDealsPersonId = input({
   label: "Person ID",
   type: "string",
@@ -306,6 +333,7 @@ const searchDealsPersonId = input({
   example: "123",
   placeholder: "Enter Person ID",
 });
+
 const searchDealsOrganizationId = input({
   label: "Organization ID",
   type: "string",
@@ -314,6 +342,7 @@ const searchDealsOrganizationId = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const searchDealsStatus = input({
   label: "Status",
   type: "string",
@@ -325,6 +354,7 @@ const searchDealsStatus = input({
   clean: cleanString,
   comments: "Will filter deals by the provided specific status",
 });
+
 const searchDealsIncludeFields = input({
   label: "Include Fields",
   type: "string",
@@ -333,6 +363,7 @@ const searchDealsIncludeFields = input({
   comments:
     "Supports including optional fields in the results which are not provided by default",
 });
+
 export const searchDealsInputs = {
   connection: connectionInput,
   term: searchDealsTerm,
@@ -344,6 +375,7 @@ export const searchDealsInputs = {
   includeFields: searchDealsIncludeFields,
   pagination: cursorPagination,
 };
+
 const getDealsSummaryStatus = input({
   label: "Status",
   type: "string",
@@ -355,6 +387,7 @@ const getDealsSummaryStatus = input({
   clean: cleanString,
   comments: "Only fetch deals with a specific status",
 });
+
 const getDealsSummaryFilterId = input({
   label: "Filter ID",
   type: "string",
@@ -364,6 +397,7 @@ const getDealsSummaryFilterId = input({
   example: "123",
   placeholder: "Enter Filter ID",
 });
+
 const getDealsSummaryUserId = input({
   label: "User ID",
   type: "string",
@@ -372,6 +406,7 @@ const getDealsSummaryUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const getDealsSummaryStageId = input({
   label: "Stage ID",
   type: "string",
@@ -380,6 +415,7 @@ const getDealsSummaryStageId = input({
   example: "123",
   placeholder: "Enter Stage ID",
 });
+
 export const getDealsSummaryInputs = {
   connection: connectionInput,
   status: getDealsSummaryStatus,
@@ -387,6 +423,7 @@ export const getDealsSummaryInputs = {
   userId: getDealsSummaryUserId,
   stageId: getDealsSummaryStageId,
 };
+
 const getDealsTimelineStartDate = input({
   label: "Start Date",
   type: "string",
@@ -396,6 +433,7 @@ const getDealsTimelineStartDate = input({
   example: "2024-01-01",
   placeholder: "Enter start date (YYYY-MM-DD)",
 });
+
 const getDealsTimelineInterval = input({
   label: "Interval",
   type: "string",
@@ -409,6 +447,7 @@ const getDealsTimelineInterval = input({
   clean: util.types.toString,
   comments: "The type of the interval",
 });
+
 const getDealsTimelineAmount = input({
   label: "Amount",
   type: "string",
@@ -419,6 +458,7 @@ const getDealsTimelineAmount = input({
   example: "12",
   placeholder: "Enter number of intervals",
 });
+
 const getDealsTimelineFieldKey = input({
   label: "Field Key",
   type: "string",
@@ -428,6 +468,7 @@ const getDealsTimelineFieldKey = input({
   example: "close_time",
   placeholder: "Enter field key",
 });
+
 const getDealsTimelineUserId = input({
   label: "User ID",
   type: "string",
@@ -436,6 +477,7 @@ const getDealsTimelineUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const getDealsTimelinePipelineId = input({
   label: "Pipeline ID",
   type: "string",
@@ -445,6 +487,7 @@ const getDealsTimelinePipelineId = input({
   example: "123",
   placeholder: "Enter Pipeline ID",
 });
+
 const getDealsTimelineFilterId = input({
   label: "Filter ID",
   type: "string",
@@ -454,6 +497,7 @@ const getDealsTimelineFilterId = input({
   example: "123",
   placeholder: "Enter Filter ID",
 });
+
 const getDealsTimelineExcludeDeals = input({
   label: "Exclude Deals",
   type: "string",
@@ -464,6 +508,7 @@ const getDealsTimelineExcludeDeals = input({
   clean: cleanNumber,
   comments: "Whether to exclude deals list (1) or not (0)",
 });
+
 const getDealsTimelineTotalsConvertCurrency = input({
   label: "Totals Convert Currency",
   type: "string",
@@ -472,6 +517,7 @@ const getDealsTimelineTotalsConvertCurrency = input({
   example: "USD",
   placeholder: "Enter currency code (e.g. USD)",
 });
+
 export const getDealsTimelineInputs = {
   connection: connectionInput,
   startDate: getDealsTimelineStartDate,
@@ -484,6 +530,7 @@ export const getDealsTimelineInputs = {
   excludeDeals: getDealsTimelineExcludeDeals,
   totalsConvertCurrency: getDealsTimelineTotalsConvertCurrency,
 };
+
 const mergeDealsWithId = input({
   label: "Merge With ID",
   type: "string",
@@ -493,11 +540,13 @@ const mergeDealsWithId = input({
   example: "456",
   placeholder: "Enter Deal ID to merge with",
 });
+
 export const mergeDealsInputs = {
   connection: connectionInput,
   id: dealIdInput,
   mergeWithId: mergeDealsWithId,
 };
+
 const addDealFollowerUserId = input({
   label: "User ID",
   type: "string",
@@ -507,11 +556,13 @@ const addDealFollowerUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 export const addDealFollowerInputs = {
   connection: connectionInput,
   id: dealIdInput,
   userId: addDealFollowerUserId,
 };
+
 const deleteDealFollowerId = input({
   label: "Follower ID",
   type: "string",
@@ -521,11 +572,13 @@ const deleteDealFollowerId = input({
   example: "123",
   placeholder: "Enter Follower ID",
 });
+
 export const deleteDealFollowerInputs = {
   connection: connectionInput,
   id: dealIdInput,
   followerId: deleteDealFollowerId,
 };
+
 const addDealParticipantPersonId = input({
   label: "Person ID",
   type: "string",
@@ -535,11 +588,13 @@ const addDealParticipantPersonId = input({
   example: "123",
   placeholder: "Enter Person ID",
 });
+
 export const addDealParticipantInputs = {
   connection: connectionInput,
   id: dealIdInput,
   personId: addDealParticipantPersonId,
 };
+
 const deleteDealParticipantId = input({
   label: "Deal Participant ID",
   type: "string",
@@ -549,11 +604,13 @@ const deleteDealParticipantId = input({
   example: "123",
   placeholder: "Enter Deal Participant ID",
 });
+
 export const deleteDealParticipantInputs = {
   connection: connectionInput,
   id: dealIdInput,
   dealParticipantId: deleteDealParticipantId,
 };
+
 const deleteDealProductAttachmentId = input({
   label: "Product Attachment ID",
   type: "string",
@@ -563,11 +620,13 @@ const deleteDealProductAttachmentId = input({
   example: "123",
   placeholder: "Enter Product Attachment ID",
 });
+
 export const deleteDealProductInputs = {
   connection: connectionInput,
   id: dealIdInput,
   productAttachmentId: deleteDealProductAttachmentId,
 };
+
 const dealProductVariationId = input({
   label: "Product Variation ID",
   type: "string",
@@ -577,6 +636,7 @@ const dealProductVariationId = input({
   example: "123",
   placeholder: "Enter Product Variation ID",
 });
+
 const addDealProductItemPrice = input({
   label: "Item Price",
   type: "string",
@@ -586,6 +646,7 @@ const addDealProductItemPrice = input({
   example: "99.99",
   placeholder: "Enter item price",
 });
+
 const addDealProductQuantity = input({
   label: "Quantity",
   type: "string",
@@ -595,6 +656,7 @@ const addDealProductQuantity = input({
   example: "10",
   placeholder: "Enter quantity",
 });
+
 const addDealProductDiscount = input({
   label: "Discount Percentage",
   type: "string",
@@ -605,6 +667,7 @@ const addDealProductDiscount = input({
   placeholder: "Enter discount percentage",
   clean: cleanNumber,
 });
+
 const addDealProductDiscountType = input({
   label: "Discount Type",
   type: "string",
@@ -616,6 +679,7 @@ const addDealProductDiscountType = input({
   ],
   clean: cleanString,
 });
+
 const addDealProductComments = input({
   label: "Comments",
   type: "string",
@@ -625,6 +689,7 @@ const addDealProductComments = input({
   example: "Annual license, billed monthly",
   placeholder: "Enter comments",
 });
+
 const addDealProductTax = input({
   label: "Tax",
   type: "string",
@@ -635,6 +700,7 @@ const addDealProductTax = input({
   example: "10",
   placeholder: "Enter tax percentage",
 });
+
 const addDealProductIsEnabled = input({
   label: "Is Enabled",
   type: "boolean",
@@ -642,6 +708,7 @@ const addDealProductIsEnabled = input({
   comments: "Whether the product is enabled on the deal or not",
   clean: util.types.toBool,
 });
+
 export const addDealProductInputs = {
   connection: connectionInput,
   id: dealIdInput,
@@ -658,6 +725,7 @@ export const addDealProductInputs = {
   tax: addDealProductTax,
   isEnabled: addDealProductIsEnabled,
 };
+
 const updateDealProductAttachmentId = input({
   label: "Product Attachment ID",
   type: "string",
@@ -668,6 +736,7 @@ const updateDealProductAttachmentId = input({
   example: "123",
   placeholder: "Enter Product Attachment ID",
 });
+
 const updateDealProductItemPrice = input({
   label: "Item Price",
   type: "string",
@@ -677,6 +746,7 @@ const updateDealProductItemPrice = input({
   example: "99.99",
   placeholder: "Enter item price",
 });
+
 const updateDealProductQuantity = input({
   label: "Quantity",
   type: "string",
@@ -686,6 +756,7 @@ const updateDealProductQuantity = input({
   example: "10",
   placeholder: "Enter quantity",
 });
+
 const updateDealProductDiscount = input({
   label: "Discount Percentage",
   type: "string",
@@ -696,6 +767,7 @@ const updateDealProductDiscount = input({
   placeholder: "Enter discount percentage",
   clean: cleanNumber,
 });
+
 const updateDealProductDiscountType = input({
   label: "Discount Type",
   type: "string",
@@ -707,6 +779,7 @@ const updateDealProductDiscountType = input({
   ],
   clean: cleanString,
 });
+
 const updateDealProductComments = input({
   label: "Comments",
   type: "string",
@@ -716,6 +789,7 @@ const updateDealProductComments = input({
   example: "Annual license, billed monthly",
   placeholder: "Enter comments",
 });
+
 const updateDealProductTax = input({
   label: "Tax",
   type: "string",
@@ -726,6 +800,7 @@ const updateDealProductTax = input({
   example: "10",
   placeholder: "Enter tax percentage",
 });
+
 export const updateDealProductInputs = {
   connection: connectionInput,
   id: dealIdInput,
@@ -744,6 +819,7 @@ export const updateDealProductInputs = {
     },
   }),
 };
+
 const getDealFilesIncludeDeletedFiles = input({
   label: "Include Deleted Files",
   type: "string",
@@ -754,6 +830,7 @@ const getDealFilesIncludeDeletedFiles = input({
   clean: cleanNumber,
   comments: "When enabled, the list of files will also include deleted files",
 });
+
 export const getDealFilesInputs = {
   connection: connectionInput,
   id: dealIdInput,
@@ -761,12 +838,14 @@ export const getDealFilesInputs = {
   includeDeletedFiles: getDealFilesIncludeDeletedFiles,
   sort: sortInput,
 };
+
 const getDealActivitiesDone = input({
   label: "Done",
   type: "boolean",
   comments: "Whether the activity is done or not",
   clean: util.types.toBool,
 });
+
 export const getDealActivitiesInputs = {
   connection: connectionInput,
   id: dealIdInput,
@@ -775,6 +854,7 @@ export const getDealActivitiesInputs = {
   sortBy: sortBy,
   sortDirection: sortDirection,
 };
+
 export const getDealsInputs = {
   fetchAll,
   pagination: cursorPagination,
@@ -785,29 +865,35 @@ export const getDealsInputs = {
   status: dealStatus,
   connection: connectionInput,
 };
+
 export const getDealInputs = {
   connection: connectionInput,
   id: dealIdInput,
 };
+
 export const deleteDealInputs = {
   connection: connectionInput,
   id: dealIdInput,
 };
+
 export const getDealFollowersInputs = {
   connection: connectionInput,
   id: dealIdInput,
   pagination: cursorPagination,
 };
+
 export const getDealMailMessagesInputs = {
   connection: connectionInput,
   id: dealIdInput,
   pagination: mixedPagination,
 };
+
 export const getDealParticipantsInputs = {
   connection: connectionInput,
   id: dealIdInput,
   pagination: mixedPagination,
 };
+
 export const getDealProductsInputs = {
   connection: connectionInput,
   id: dealIdInput,
@@ -815,6 +901,7 @@ export const getDealProductsInputs = {
   sortBy: sortBy,
   sortDirection: sortDirection,
 };
+
 export const getDealUsersInputs = {
   connection: connectionInput,
   id: dealIdInput,

@@ -11,29 +11,38 @@ import { closeDispute } from "./closeDispute";
 import { getDispute } from "./getDispute";
 import { listDisputes } from "./listDisputes";
 import { updateDispute } from "./updateDispute";
+
 const BASE = "https://api.stripe.com";
 const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
+
 const params = (values: Record<string, unknown>) => values as never;
+
 const DISPUTE_ID = "dp_1MtJUT2eZvKYlo2CNaw2HvEv";
+
 afterEach(() => nock.cleanAll());
+
 describe("getDispute", () => {
   it("returns the dispute for the supplied ID", async () => {
     const scope = nock(BASE)
       .get(`/v1/disputes/${DISPUTE_ID}`)
       .reply(200, getDisputeExamplePayload.data);
+
     const { result } = await invoke(
       getDispute,
       params({ disputeId: DISPUTE_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(getDisputeExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/disputes/dp_missing")
       .reply(404, {
         error: { type: "invalid_request_error", message: "No such dispute" },
       });
+
     await expect(
       invoke(
         getDispute,
@@ -42,19 +51,23 @@ describe("getDispute", () => {
     ).rejects.toThrow("No such dispute");
   });
 });
+
 describe("listDisputes", () => {
   it("returns the dispute list", async () => {
     const scope = nock(BASE)
       .get("/v1/disputes")
       .query({ limit: "10" })
       .reply(200, listDisputesExamplePayload.data);
+
     const { result } = await invoke(
       listDisputes,
       params({ pagination: { limit: 10 }, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(listDisputesExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/disputes")
@@ -62,6 +75,7 @@ describe("listDisputes", () => {
       .reply(400, {
         error: { type: "invalid_request_error", message: "No such charge" },
       });
+
     await expect(
       invoke(
         listDisputes,
@@ -74,11 +88,13 @@ describe("listDisputes", () => {
     ).rejects.toThrow("No such charge");
   });
 });
+
 describe("updateDispute", () => {
   it("updates the dispute and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/disputes/${DISPUTE_ID}`)
       .reply(200, updateDisputeExamplePayload.data);
+
     const { result } = await invoke(
       updateDispute,
       params({
@@ -89,9 +105,11 @@ describe("updateDispute", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(updateDisputeExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/disputes/dp_missing")
@@ -101,6 +119,7 @@ describe("updateDispute", () => {
           message: "This dispute is already closed",
         },
       });
+
     await expect(
       invoke(
         updateDispute,
@@ -113,18 +132,22 @@ describe("updateDispute", () => {
     ).rejects.toThrow("already closed");
   });
 });
+
 describe("closeDispute", () => {
   it("closes the dispute and returns it", async () => {
     const scope = nock(BASE)
       .post(`/v1/disputes/${DISPUTE_ID}/close`)
       .reply(200, closeDisputeExamplePayload.data);
+
     const { result } = await invoke(
       closeDispute,
       params({ disputeId: DISPUTE_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(closeDisputeExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/disputes/dp_missing/close")
@@ -134,6 +157,7 @@ describe("closeDispute", () => {
           message: "This dispute is already closed",
         },
       });
+
     await expect(
       invoke(
         closeDispute,

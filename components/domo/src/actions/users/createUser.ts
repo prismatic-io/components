@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createUserExamplePayload } from "../../examplePayloads";
 import { createUserInputs } from "../../inputs";
 import type { User } from "../types/User";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -38,4 +39,5 @@ export const createUser = action({
   },
   inputs: createUserInputs,
 });
+
 export default { createUser };

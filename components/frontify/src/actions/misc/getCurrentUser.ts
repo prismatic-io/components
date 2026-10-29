@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../../client";
 import { getCurrentUserExamplePayload as examplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs as inputs } from "../../inputs/misc";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -19,10 +20,12 @@ export const getCurrentUser = action({
         }
       }
     `;
+
     const response = await createClient({
       connection,
       debug: context.debug.enabled,
     }).request(query);
+
     return {
       data: response,
     };

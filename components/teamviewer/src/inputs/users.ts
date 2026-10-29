@@ -1,9 +1,11 @@
 import { defaultInputs } from "./general";
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanCodeToArray, cleanString } from "../util";
+
 export const deleteCompanyUserInputs = {
   ...defaultInputs,
 };
+
 export const userId = input({
   label: "User ID",
   comments: "The ID of the user to retrieve.",
@@ -14,6 +16,7 @@ export const userId = input({
   dataSource: "selectUser",
   clean: util.types.toString,
 });
+
 export const isPermanentDelete = input({
   label: "Permanent Delete",
   comments: "Whether to permanently delete the user or just deactivate them.",
@@ -21,15 +24,18 @@ export const isPermanentDelete = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const getUserInputs = {
   userId,
   ...defaultInputs,
 };
+
 export const deleteUserInputs = {
   userId,
   isPermanentDelete,
   ...defaultInputs,
 };
+
 export const userEmail = input({
   label: "User Email",
   comments: "User email to query from.",
@@ -39,6 +45,7 @@ export const userEmail = input({
   example: "example@company.io",
   clean: cleanString,
 });
+
 export const userName = input({
   label: "User Name",
   comments: "User name to query from.",
@@ -48,6 +55,7 @@ export const userName = input({
   example: "example_user",
   clean: cleanString,
 });
+
 export const fullList = input({
   label: "Full List",
   comments: "Is detailed user information needed",
@@ -55,6 +63,7 @@ export const fullList = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const permissions = input({
   label: "User Permissions",
   comments:
@@ -65,6 +74,7 @@ export const permissions = input({
   example: "ADMIN, USER",
   clean: cleanString,
 });
+
 export const listUsersInputs = {
   userEmail: {
     ...userEmail,
@@ -80,6 +90,7 @@ export const listUsersInputs = {
   permissions,
   ...defaultInputs,
 };
+
 export const password = input({
   label: "User Password",
   comments: "User password.",
@@ -87,6 +98,7 @@ export const password = input({
   required: false,
   clean: cleanString,
 });
+
 export const userRoleId = input({
   label: "User Role ID",
   comments: "The ID of the user role to assign to the user.",
@@ -97,6 +109,7 @@ export const userRoleId = input({
   dataSource: "selectUserRole",
   clean: cleanString,
 });
+
 export const language = input({
   label: "User Language",
   comments: "User language.",
@@ -106,6 +119,7 @@ export const language = input({
   example: "en",
   clean: util.types.toString,
 });
+
 export const subscribeNewsletter = input({
   label: "Subscribe Newsletter",
   comments: "Should subscribe to the newsletter.",
@@ -113,6 +127,7 @@ export const subscribeNewsletter = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const logSessions = input({
   label: "Log Sessions",
   comments: "Should log user sessions.",
@@ -120,6 +135,7 @@ export const logSessions = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const showCommentWindow = input({
   label: "Show Comment Window",
   comments: "Should show comment window.",
@@ -127,6 +143,7 @@ export const showCommentWindow = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const customQuickSupportId = input({
   label: "Custom Quick Support ID",
   comments: "Custom Quick Support ID of the user",
@@ -136,6 +153,7 @@ export const customQuickSupportId = input({
   placeholder: "<your_custom_quick_support_id>",
   clean: cleanString,
 });
+
 export const customQuickJoinId = input({
   label: "Custom Quick Join ID",
   comments: "Custom Quick Join ID of the user",
@@ -145,6 +163,7 @@ export const customQuickJoinId = input({
   placeholder: "<your_custom_quick_join_id>",
   clean: cleanString,
 });
+
 export const licenseKey = input({
   label: "License Key",
   comments: "License key of the user",
@@ -154,6 +173,7 @@ export const licenseKey = input({
   placeholder: "<your_license_key>",
   clean: cleanString,
 });
+
 export const meetingLicenseKey = input({
   label: "Meeting License Key",
   comments: "Meeting License key of the user",
@@ -163,6 +183,7 @@ export const meetingLicenseKey = input({
   placeholder: "<your_meeting_license_key>",
   clean: cleanString,
 });
+
 export const ssoCustomerId = input({
   label: "SSO Customer ID",
   comments: "SSO Customer ID of the user",
@@ -172,6 +193,7 @@ export const ssoCustomerId = input({
   placeholder: "<your_sso_customer_id>",
   clean: cleanString,
 });
+
 export const ignorePredefinedRole = input({
   label: "Ignored Predefined Roles",
   comments: "Ignored Predefined Roles",
@@ -179,6 +201,7 @@ export const ignorePredefinedRole = input({
   required: false,
   clean: util.types.toBool,
 });
+
 const license = structuredObjectInput({
   label: "License",
   required: false,
@@ -188,6 +211,7 @@ const license = structuredObjectInput({
     meetingLicenseKey,
   },
 });
+
 const createUserAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -200,6 +224,7 @@ const createUserAdditionalFields = structuredObjectInput({
     ignorePredefinedRole,
   },
 });
+
 export const createUserInputs = {
   email: {
     ...userEmail,
@@ -221,6 +246,7 @@ export const createUserInputs = {
   additionalFields: createUserAdditionalFields,
   ...defaultInputs,
 };
+
 export const isUserActive = input({
   label: "Is User Active",
   comments: "Deactivates or Activates the user account.",
@@ -228,6 +254,7 @@ export const isUserActive = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const isTFAEnforced = input({
   label: "Is TFA Enforced",
   comments: "Enforces Two Factor Authentication for the user.",
@@ -235,6 +262,7 @@ export const isTFAEnforced = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const assignUserRoleIds = input({
   label: "Assign User Role IDs",
   comments: "Comma separated list of user role IDs to assign to the user.",
@@ -248,6 +276,7 @@ export const assignUserRoleIds = input({
   required: false,
   clean: cleanCodeToArray,
 });
+
 export const unassignUserRoleIds = input({
   label: "Unassign User Role IDs",
   comments: "Comma separated list of user role IDs to unassign to the user.",
@@ -261,6 +290,7 @@ export const unassignUserRoleIds = input({
   required: false,
   clean: cleanCodeToArray,
 });
+
 const updateUserAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -274,6 +304,7 @@ const updateUserAdditionalFields = structuredObjectInput({
     tfa_enforced: isTFAEnforced,
   },
 });
+
 export const updateUserInputs = {
   userId,
   email: {

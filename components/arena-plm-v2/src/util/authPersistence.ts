@@ -1,7 +1,9 @@
 import type { Connection } from "@prismatic-io/spectral";
 import type { ArenaAuthContext, PersistedArenaAuth } from "../types";
+
 const getAuthStateKey = (connection: Connection): string =>
   `Arena - ${connection.configVarKey}`;
+
 export const readPersistedAuth = (
   context: ArenaAuthContext,
   connection: Connection,
@@ -14,6 +16,7 @@ export const readPersistedAuth = (
     | undefined;
   return persisted?.credential;
 };
+
 export const writePersistedAuth = (
   context: ArenaAuthContext,
   connection: Connection,
@@ -25,6 +28,7 @@ export const writePersistedAuth = (
   const persisted: PersistedArenaAuth = { credential };
   context.executionState[getAuthStateKey(connection)] = persisted;
 };
+
 export const clearPersistedAuth = (
   context: ArenaAuthContext,
   connection: Connection,

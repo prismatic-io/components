@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { createFileExamplePayload } from "../../examplePayloads";
 import { createFileInputs } from "../../inputs";
 import { createFileOutputSchema } from "../../outputSchemas";
+
 export const createFile = action({
   display: {
     label: "Create File",
@@ -29,9 +30,8 @@ export const createFile = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createFileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createFileExamplePayload,
   examplePayload: createFileExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

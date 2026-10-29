@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhook, getTableauClient } from "../../util";
+
 export const deleteWebhookAction = action({
   display: {
     label: "Delete Webhook",
@@ -19,6 +20,7 @@ export const deleteWebhookAction = action({
       apiVersion,
     });
     const { data } = await deleteWebhook(client, webhookId);
+
     return {
       data,
     };

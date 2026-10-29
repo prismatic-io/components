@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { createRecordInputs } from "../../inputs/records/create";
+
 export const createRecord = action({
   display: {
     label: "Create Record",
@@ -17,6 +18,7 @@ export const createRecord = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/${recordType}`, {
       ...bodyFields,
     });

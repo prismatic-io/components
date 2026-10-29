@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listDestinationCatalogExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../helpers/pagination";
 import { connectionInput, count, cursor, fetchAll, region } from "../../inputs";
+
 export const listDestinationCatalog = action({
   display: {
     label: "Get Destination Catalog",

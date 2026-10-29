@@ -6,6 +6,7 @@ import {
   salesforceOAuth,
 } from "./connections";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const createSalesforceClient = async (
   connection: Connection,
   version: string,
@@ -47,6 +48,7 @@ export const createSalesforceClient = async (
     }
   }
 };
+
 export const createSalesforceHttpClient = async (
   version: string,
   connection: Connection,
@@ -62,5 +64,6 @@ export const createSalesforceHttpClient = async (
       Accept: "application/json",
     },
   });
+
   return httpClient;
 };

@@ -4,6 +4,7 @@ import { GOOGLE_ANALYTICS_COLLECT_EVENTS_URL } from "../consts";
 import { sendMeasurementProtocolEventsExamplePayload } from "../examplePayloads";
 import { apiSecret, appInstanceId, events, firebaseAppId } from "../inputs";
 import { sendMeasurementProtocolEventsOutputSchema } from "../outputSchemas";
+
 export const sendMeasurementProtocolEvents = action({
   display: {
     label: "Send Measurement Protocol Events",
@@ -19,6 +20,7 @@ export const sendMeasurementProtocolEvents = action({
       firebase_app_id: firebaseAppId,
       api_secret: apiSecret,
     };
+
     await createClient({
       baseUrl: GOOGLE_ANALYTICS_COLLECT_EVENTS_URL,
     }).post(
@@ -29,11 +31,10 @@ export const sendMeasurementProtocolEvents = action({
       },
       { params },
     );
+
     return { data: { message: "Event Sent Successfully" } };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...sendMeasurementProtocolEventsExamplePayload,
   }),
   inputs: {
@@ -48,4 +49,5 @@ export const sendMeasurementProtocolEvents = action({
   }),
   examplePayload: sendMeasurementProtocolEventsExamplePayload,
 });
+
 export default { sendMeasurementProtocolEvents };

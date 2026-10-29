@@ -42,6 +42,7 @@ const productRecordSchema = {
     followers_count: { type: "integer" },
   },
 };
+
 const productDealRecordSchema = {
   type: "object",
   properties: {
@@ -61,6 +62,7 @@ const productDealRecordSchema = {
     deleted: { type: "boolean" },
   },
 };
+
 const productFileRecordSchema = {
   type: "object",
   properties: {
@@ -88,6 +90,7 @@ const productFileRecordSchema = {
     url: { type: "string" },
   },
 };
+
 export const getProductsOutputSchema = {
   type: "object",
   properties: {
@@ -106,6 +109,7 @@ export const getProductsOutputSchema = {
     },
   },
 };
+
 export const addProductOutputSchema = {
   type: "object",
   properties: {
@@ -118,6 +122,7 @@ export const addProductOutputSchema = {
     },
   },
 };
+
 export const deleteProductOutputSchema = {
   type: "object",
   properties: {
@@ -135,6 +140,7 @@ export const deleteProductOutputSchema = {
     },
   },
 };
+
 export const getProductOutputSchema = {
   type: "object",
   properties: {
@@ -147,6 +153,7 @@ export const getProductOutputSchema = {
     },
   },
 };
+
 export const updateProductOutputSchema = {
   type: "object",
   properties: {
@@ -159,6 +166,7 @@ export const updateProductOutputSchema = {
     },
   },
 };
+
 export const getProductDealsOutputSchema = {
   type: "object",
   properties: {
@@ -184,6 +192,7 @@ export const getProductDealsOutputSchema = {
     },
   },
 };
+
 export const getProductFilesOutputSchema = {
   type: "object",
   properties: {
@@ -209,6 +218,7 @@ export const getProductFilesOutputSchema = {
     },
   },
 };
+
 export const getProductFollowersOutputSchema = {
   type: "object",
   properties: {
@@ -238,6 +248,7 @@ export const getProductFollowersOutputSchema = {
     },
   },
 };
+
 export const addProductFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -258,6 +269,7 @@ export const addProductFollowerOutputSchema = {
     },
   },
 };
+
 export const deleteProductFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -275,6 +287,7 @@ export const deleteProductFollowerOutputSchema = {
     },
   },
 };
+
 export const getProductUsersOutputSchema = {
   type: "object",
   properties: {

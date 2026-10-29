@@ -6,6 +6,7 @@ import { listTagsInputs } from "../../inputs";
 import { listTagsOutputSchema } from "../../outputSchemas";
 import type { FilterCriteria } from "../../types";
 import { fetchTags } from "../../util";
+
 export const listTags = action({
   display: {
     label: "List Tags",
@@ -24,6 +25,7 @@ export const listTags = action({
   ) => {
     const client = createClassicClient(connection, context.debug.enabled);
     const criteria: FilterCriteria[] = [];
+
     if (tagNameFilter) {
       criteria.push({
         field: "name",
@@ -38,11 +40,13 @@ export const listTags = action({
         value: parentTagId,
       });
     }
+
     const allTags = await fetchTags(client, {
       fetchAll,
       pageSize,
       criteria,
     });
+
     return {
       data: {
         ServiceResponse: {

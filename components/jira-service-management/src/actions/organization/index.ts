@@ -12,6 +12,7 @@ import { listServiceDeskOrganizations } from "./listServiceDeskOrganizations";
 import { removeOrganizationUsers } from "./removeOrganizationUsers";
 import { removeServiceDeskOrganization } from "./removeServiceDeskOrganization";
 import { setOrganizationProperty } from "./setOrganizationProperty";
+
 export default {
   listOrganizations,
   createOrganization,

@@ -9,6 +9,7 @@ import {
   resourceId,
   sort,
 } from "./common";
+
 const scriptName = input({
   label: "Name",
   type: "string",
@@ -18,6 +19,7 @@ const scriptName = input({
   placeholder: "Enter script name",
   example: "Install Chrome",
 });
+
 const scriptContents = input({
   label: "Script Contents",
   type: "text",
@@ -28,6 +30,7 @@ const scriptContents = input({
   placeholder: "Enter script contents",
   example: "#!/bin/bash\n/usr/local/bin/install-app.sh",
 });
+
 const scriptCategoryId = input({
   label: "Category ID",
   type: "string",
@@ -38,6 +41,7 @@ const scriptCategoryId = input({
   placeholder: "Enter category ID",
   example: "3",
 });
+
 const scriptPriority = input({
   label: "Priority",
   type: "string",
@@ -53,6 +57,7 @@ const scriptPriority = input({
   placeholder: "Enter priority",
   example: "AFTER",
 });
+
 const scriptInfo = input({
   label: "Info",
   type: "string",
@@ -63,6 +68,7 @@ const scriptInfo = input({
   placeholder: "Enter script info",
   example: "Installs Google Chrome from the vendor CDN.",
 });
+
 const scriptNotes = input({
   label: "Notes",
   type: "string",
@@ -72,6 +78,7 @@ const scriptNotes = input({
   placeholder: "Enter notes",
   example: "Updated 2026-01-15 to support macOS 15.",
 });
+
 const createScriptAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -84,6 +91,7 @@ const createScriptAdditionalFields = structuredObjectInput({
     scriptNotes,
   },
 });
+
 export const createScriptInputs = {
   connection,
   scriptName,
@@ -96,6 +104,7 @@ const scriptResourceId = {
   comments: "The unique identifier of the script.",
   dataSource: "selectScript",
 };
+
 export const deleteScriptInputs = { connection, resourceId: scriptResourceId };
 export const getScriptInputs = { connection, resourceId: scriptResourceId };
 const pagination = structuredObjectInput({
@@ -104,6 +113,7 @@ const pagination = structuredObjectInput({
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const listScriptsInputs = {
   connection,
   fetchAll,
@@ -117,6 +127,7 @@ const updateScriptName = {
   clean: toOptionalString,
 };
 const updateScriptPriority = { ...scriptPriority, default: undefined };
+
 const updateScriptAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -130,6 +141,7 @@ const updateScriptAdditionalFields = structuredObjectInput({
     scriptNotes,
   },
 });
+
 export const updateScriptInputs = {
   connection,
   resourceId: scriptResourceId,

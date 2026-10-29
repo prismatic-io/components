@@ -3,6 +3,7 @@ import { createApiClient } from "../../client";
 import { updateOrganizationExamplePayload } from "../../examplePayloads";
 import { updateOrganizationInputs } from "../../inputs";
 import { updateOrganizationOutputSchema } from "../../outputSchemas";
+
 export const updateOrganization = action({
   display: {
     label: "Update Organization",
@@ -18,9 +19,8 @@ export const updateOrganization = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateOrganizationExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateOrganizationExamplePayload,
   inputs: updateOrganizationInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

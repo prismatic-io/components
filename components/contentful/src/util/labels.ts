@@ -8,6 +8,7 @@ import type {
   OrganizationProp,
   SpaceProps,
 } from "contentful-management";
+
 export const getAssetLabel = (asset: AssetProps): string => {
   const { fields } = asset;
   if (fields?.title) {
@@ -18,6 +19,7 @@ export const getAssetLabel = (asset: AssetProps): string => {
   }
   return asset.sys.id;
 };
+
 export const getEntryLabel = (entry: EntryProps<KeyValueMap>): string => {
   const { fields } = entry;
   if (fields?.title) {
@@ -34,6 +36,7 @@ export const getEntryLabel = (entry: EntryProps<KeyValueMap>): string => {
   }
   return entry.sys.id;
 };
+
 export const mapItemsForPicklist = (
   allItems:
     | SpaceProps[]

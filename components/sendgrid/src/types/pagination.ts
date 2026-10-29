@@ -4,6 +4,7 @@ export interface PaginationMetadata {
   prev?: string;
   count?: number;
 }
+
 export interface FetchPaginatedDataQueryParams {
   page_size?: string;
   page_token?: string;

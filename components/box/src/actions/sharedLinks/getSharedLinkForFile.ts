@@ -4,6 +4,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { getSharedLinkForFileExamplePayload } from "../../examplePayloads";
 import { getSharedLinkForFileInputs } from "../../inputs";
 import { getSharedLinkForFileOutputSchema } from "../../outputSchemas";
+
 export const getSharedLinkForFile = action({
   display: {
     label: "Get Shared Link for File",
@@ -12,6 +13,7 @@ export const getSharedLinkForFile = action({
   performSafety: "safe",
   perform: async (context, { fileId, boxConnection }) => {
     const client = createBoxHttpClient(boxConnection, context.debug.enabled);
+
     const { data } = await client.get(`/files/${fileId}`, {
       params: {
         fields: SHARED_LINK_FIELD,

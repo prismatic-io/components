@@ -1,4 +1,5 @@
 import { BASE_URL } from "../constants";
+
 export const listAssociationTypesExamplePayload = {
   data: {
     results: [
@@ -26,6 +27,7 @@ export const listAssociationTypesExamplePayload = {
     ],
   },
 };
+
 export const createAssociationsExamplePayload = {
   data: {
     completedAt: "2024-01-15T23:59:28.273Z",
@@ -51,6 +53,7 @@ export const createAssociationsExamplePayload = {
     status: "COMPLETE",
   },
 };
+
 export const readAssociationsExamplePayload = {
   data: {
     completedAt: "2024-01-15T23:59:28.283Z",
@@ -89,6 +92,7 @@ export const readAssociationsExamplePayload = {
     status: "COMPLETE",
   },
 };
+
 export const archiveAssociationsExamplePayload = {
   data: {
     completedAt: "2024-01-15T23:59:28.273Z",

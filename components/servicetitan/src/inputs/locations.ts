@@ -1,4 +1,5 @@
 import { input } from "@prismatic-io/spectral";
+
 import { cleanNumberInput } from "../util";
 import {
   active,
@@ -17,6 +18,7 @@ import {
   sort,
   tagTypeIds,
 } from "./common";
+
 const taxZoneId = input({
   label: "Tax Zone ID",
   type: "string",
@@ -26,6 +28,7 @@ const taxZoneId = input({
   placeholder: "Enter a tax zone ID",
   clean: cleanNumberInput,
 });
+
 export const createLocationInputs = {
   connection,
   name: {
@@ -47,6 +50,7 @@ export const createLocationInputs = {
   tagTypeIds,
   externalData,
 };
+
 export const getLocationInputs = {
   connection,
   locationId: {
@@ -54,6 +58,7 @@ export const getLocationInputs = {
     comments: "The ID of the location to retrieve",
   },
 };
+
 export const listLocationsInputs = {
   connection,
   fetchAll,
@@ -62,6 +67,7 @@ export const listLocationsInputs = {
   sort,
   customQueryParams,
 };
+
 export const updateLocationInputs = {
   connection,
   locationId,

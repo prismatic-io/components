@@ -29,17 +29,22 @@ export const getUserExamplePayload = {
     },
   },
 };
+
 export const listUsersExamplePayload = {
   data: [getUserExamplePayload.data],
 };
+
 export const createUserExamplePayload = getUserExamplePayload;
+
 export const updateUserExamplePayload = getUserExamplePayload;
+
 export const activateUserExamplePayload = {
   data: {
     activationToken: "XE6wE17zmphl3KqAPFxO",
     activationUrl: "https://{yourOktaDomain}/welcome/XE6wE17zmphl3KqAPFxO",
   },
 };
+
 export const resetUserPasswordExamplePayload = {
   data: {
     summary: "Reset password without sending email",
@@ -47,6 +52,7 @@ export const resetUserPasswordExamplePayload = {
       "https://{yourOktaDomain}/reset_password/XE6wE17zmphl3KqAPFxO",
   },
 };
+
 export const setUserPasswordExamplePayload = {
   data: {
     password: {},
@@ -59,6 +65,7 @@ export const setUserPasswordExamplePayload = {
     },
   },
 };
+
 export const listUserGroupsExamplePayload = {
   data: [
     {
@@ -77,31 +84,37 @@ export const listUserGroupsExamplePayload = {
     },
   ],
 };
+
 export const deactivateUserExamplePayload = {
   data: {
     id: "userId",
     status: "DEPROVISIONED",
   },
 };
+
 export const deleteUserExamplePayload = {
   data: {
     id: "userId",
     status: "DELETED",
   },
 };
+
 export const unlockUserExamplePayload = {
   data: {
     id: "userId",
     status: "ACTIVE",
   },
 };
+
 export const unsuspendUserExamplePayload = unlockUserExamplePayload;
+
 export const suspendUserExamplePayload = {
   data: {
     id: "userId",
     status: "SUSPENDED",
   },
 };
+
 export const listUserApplicationsExamplePayload = {
   data: [
     {
@@ -155,12 +168,14 @@ export const listUserApplicationsExamplePayload = {
     },
   ],
 };
+
 export const clearUserSessionsExamplePayload = {
   data: {
     id: "userId",
     status: "SESSIONS_CLEARED",
   },
 };
+
 export const getUserFactorsExamplePayload = {
   data: [
     {
@@ -238,12 +253,14 @@ export const getUserFactorsExamplePayload = {
     },
   ],
 };
+
 export const unenrollUserFactorExamplePayload = {
   data: {
     id: "opf1abcd2EFGHijkL3m4",
     status: "UNENROLLED",
   },
 };
+
 export const listUserTypesExamplePayload = {
   data: [
     {

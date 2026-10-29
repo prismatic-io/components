@@ -8,6 +8,7 @@ import {
   uniqueName,
   useAsUpsert,
 } from "./common";
+
 const displayName = input({
   label: "Display Name",
   type: "string",
@@ -17,6 +18,7 @@ const displayName = input({
   placeholder: "Enter display name",
   clean: util.types.toString,
 });
+
 export const createApplicationInputs = {
   connection,
   displayName,
@@ -25,6 +27,7 @@ export const createApplicationInputs = {
     comments: `${additionalProperties.comments} See [Create Application API](https://learn.microsoft.com/en-us/graph/api/application-post-applications).`,
   }),
 };
+
 const applicationObjectId = input({
   label: "Application Object ID",
   type: "string",
@@ -35,10 +38,12 @@ const applicationObjectId = input({
   clean: util.types.toString,
   dataSource: "selectApplication",
 });
+
 export const deleteApplicationInputs = {
   connection,
   applicationObjectId,
 };
+
 export const getApplicationInputs = {
   connection,
   applicationObjectId: input({
@@ -46,12 +51,14 @@ export const getApplicationInputs = {
     comments: "The ID of the application to read.",
   }),
 };
+
 export const listApplicationsInputs = {
   connection,
   getAllPaginatedResults,
   odataQueryParams,
   eventualConsistencyLevelHeader,
 };
+
 export const upsertApplicationInputs = {
   connection,
   uniqueName: input({

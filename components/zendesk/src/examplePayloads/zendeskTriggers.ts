@@ -29,8 +29,11 @@ const createWebhookTriggerRaw = {
     category_id: "4558610559259",
   },
 };
+
 const listTriggersRaw = [createWebhookTriggerRaw.trigger];
+
 export const createWebhookTriggerExamplePayload = {
   data: createWebhookTriggerRaw,
 };
+
 export const listTriggersExamplePayload = { data: listTriggersRaw as unknown };

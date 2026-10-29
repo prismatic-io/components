@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection, workspaceId } from "../inputs";
+
 interface Folders {
   requestId: string;
   folders: {
@@ -11,6 +12,7 @@ interface Folders {
     updated: number;
   }[];
 }
+
 export const folders = dataSource({
   display: {
     label: "Select Folder",
@@ -31,6 +33,7 @@ export const folders = dataSource({
         workspaceId,
       },
     });
+
     const result = data.folders.map<Element>((folder) => ({
       label: folder.name,
       key: folder.id.toString(),

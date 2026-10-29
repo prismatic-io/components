@@ -3,6 +3,7 @@ import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
 import { getItemByIdExamplePayload } from "../../examplePayloads";
 import { getItemByIdInputs } from "../../inputs";
+
 export const getItemById = action({
   display: {
     label: "Get Item",
@@ -10,6 +11,7 @@ export const getItemById = action({
   },
   perform: async (context, params) => {
     const client = getOneDriveClient(params.connection, context.debug.enabled);
+
     return {
       data: await handleErrors(
         client.get(`/drives/${params.driveId}/items/${params.itemId}`),

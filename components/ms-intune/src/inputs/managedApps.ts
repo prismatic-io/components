@@ -6,6 +6,7 @@ import {
 } from "../constants";
 import { cleanCodeInput, cleanStringInput } from "../util";
 import { connection, fetchAll, odataParams } from "./common";
+
 const createOdataTypeApp = input({
   label: "OData App Type",
   comments:
@@ -16,6 +17,7 @@ const createOdataTypeApp = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const createDisplayName = input({
   label: "Display Name",
   comments:
@@ -26,6 +28,7 @@ const createDisplayName = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const createDescription = input({
   label: "Description",
   comments:
@@ -36,6 +39,7 @@ const createDescription = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const createPublisher = input({
   label: "Publisher",
   comments:
@@ -46,6 +50,7 @@ const createPublisher = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createLargeIconType = input({
   label: "Icon Image Type",
   comments:
@@ -56,6 +61,7 @@ const createLargeIconType = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createLargeIconValue = input({
   label: "Icon Image Data",
   comments:
@@ -66,6 +72,7 @@ const createLargeIconValue = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createIsFeatured = input({
   label: "Is Featured",
   comments:
@@ -75,6 +82,7 @@ const createIsFeatured = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const createPrivacyInformationUrl = input({
   label: "Privacy Information URL",
   comments:
@@ -85,6 +93,7 @@ const createPrivacyInformationUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createInformationUrl = input({
   label: "Information URL",
   comments:
@@ -95,6 +104,7 @@ const createInformationUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createOwner = input({
   label: "Owner",
   comments:
@@ -105,6 +115,7 @@ const createOwner = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createDeveloper = input({
   label: "Developer",
   comments:
@@ -115,6 +126,7 @@ const createDeveloper = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createNotes = input({
   label: "Notes",
   comments:
@@ -125,6 +137,7 @@ const createNotes = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const createSpecificPlatformProperties = input({
   label: "Specific Platform Properties",
   comments:
@@ -135,6 +148,7 @@ const createSpecificPlatformProperties = input({
   required: true,
   clean: cleanCodeInput,
 });
+
 const createAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -150,6 +164,7 @@ const createAdditionalFields = structuredObjectInput({
     notes: createNotes,
   },
 });
+
 export const createManagedAppInputs = {
   connection,
   odataTypeApp: createOdataTypeApp,
@@ -159,6 +174,7 @@ export const createManagedAppInputs = {
   specificPlatformProperties: createSpecificPlatformProperties,
   additionalFields: createAdditionalFields,
 };
+
 const deleteMobileAppId = input({
   label: "Mobile App ID",
   comments: "The ID of the app to delete.",
@@ -168,10 +184,12 @@ const deleteMobileAppId = input({
   required: true,
   clean: cleanStringInput,
 });
+
 export const deleteManagedAppInputs = {
   connection,
   mobileAppId: deleteMobileAppId,
 };
+
 const getAppId = input({
   label: "App ID",
   comments:
@@ -182,10 +200,12 @@ const getAppId = input({
   required: true,
   clean: cleanStringInput,
 });
+
 export const getManagedAppInputs = {
   connection,
   appId: getAppId,
 };
+
 const listPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -196,6 +216,7 @@ const listPagination = structuredObjectInput({
     $skipToken: odataParams.$skipToken,
   },
 });
+
 const listFilters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -210,12 +231,14 @@ const listFilters = structuredObjectInput({
     $format: odataParams.$format,
   },
 });
+
 export const listManagedAppsInputs = {
   connection,
   fetchAll,
   pagination: listPagination,
   filters: listFilters,
 };
+
 const updateMobileAppId = input({
   label: "Mobile App ID",
   comments: "The ID of the app to update.",
@@ -226,6 +249,7 @@ const updateMobileAppId = input({
   dataSource: "selectMobileApp",
   clean: cleanStringInput,
 });
+
 const updateOdataTypeApp = input({
   label: "OData App Type",
   comments:
@@ -236,6 +260,7 @@ const updateOdataTypeApp = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const updateDisplayName = input({
   label: "Display Name",
   comments:
@@ -246,6 +271,7 @@ const updateDisplayName = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateDescription = input({
   label: "Description",
   comments:
@@ -256,6 +282,7 @@ const updateDescription = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updatePublisher = input({
   label: "Publisher",
   comments:
@@ -266,6 +293,7 @@ const updatePublisher = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateLargeIconType = input({
   label: "Icon Image Type",
   comments:
@@ -276,6 +304,7 @@ const updateLargeIconType = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateLargeIconValue = input({
   label: "Icon Image Data",
   comments:
@@ -286,6 +315,7 @@ const updateLargeIconValue = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateIsFeatured = input({
   label: "Is Featured",
   comments:
@@ -295,6 +325,7 @@ const updateIsFeatured = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const updatePrivacyInformationUrl = input({
   label: "Privacy Information URL",
   comments:
@@ -305,6 +336,7 @@ const updatePrivacyInformationUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateInformationUrl = input({
   label: "Information URL",
   comments:
@@ -315,6 +347,7 @@ const updateInformationUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateOwner = input({
   label: "Owner",
   comments:
@@ -325,6 +358,7 @@ const updateOwner = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateDeveloper = input({
   label: "Developer",
   comments:
@@ -335,6 +369,7 @@ const updateDeveloper = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateNotes = input({
   label: "Notes",
   comments:
@@ -345,6 +380,7 @@ const updateNotes = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const updateSpecificPlatformProperties = input({
   label: "Specific Platform Properties",
   comments:
@@ -355,6 +391,7 @@ const updateSpecificPlatformProperties = input({
   required: false,
   clean: cleanCodeInput,
 });
+
 const updateAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -371,6 +408,7 @@ const updateAdditionalFields = structuredObjectInput({
     specificPlatformProperties: updateSpecificPlatformProperties,
   },
 });
+
 export const updateManagedAppInputs = {
   connection,
   mobileAppId: updateMobileAppId,

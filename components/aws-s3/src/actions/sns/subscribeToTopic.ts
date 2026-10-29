@@ -7,6 +7,7 @@ import { createSNSClient } from "../../client";
 import { subscribeToTopicExamplePayload } from "../../examplePayloads";
 import { subscribeToTopicInputs } from "../../inputs";
 import { subscribeToTopicOutputSchema } from "../../outputSchemas";
+
 export const subscribeToTopic = action({
   display: {
     label: "Subscribe to SNS Topic",
@@ -39,6 +40,7 @@ export const subscribeToTopic = action({
     };
     const subscribeCommand = new SubscribeCommand(subscribeParams);
     const responseSubscribeCommand = await sns.send(subscribeCommand);
+
     return {
       data: responseSubscribeCommand,
     };

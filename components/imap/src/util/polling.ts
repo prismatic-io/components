@@ -1,9 +1,11 @@
 import { util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
+
 export interface ImapRecordChange {
   changeType: "created";
   record: unknown;
 }
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
@@ -27,6 +29,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return str;
 };
+
 export const resolveImapRecordChanges = (
   data: unknown[] | undefined,
 ): ImapRecordChange[] => {

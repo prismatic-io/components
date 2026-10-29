@@ -5,6 +5,7 @@ import {
   paginationQueryStringInputs,
   extraParameters,
 } from "./common";
+
 const eventId = input({
   label: "Event ID",
   comments: "Identifies the business process event.",
@@ -15,16 +16,20 @@ const eventId = input({
   clean: util.types.toString,
   dataSource: "selectEvent",
 });
+
 const listEventsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.businessProcess.slice(1)}/get-/events).`;
+
 export const getEventAttachmentsInputs = {
   connection,
   eventId,
   ...paginationQueryStringInputs,
 };
+
 export const getEventByIdInputs = {
   connection,
   eventId,
 };
+
 export const listEventsInputs = {
   connection,
   ...paginationQueryStringInputs,

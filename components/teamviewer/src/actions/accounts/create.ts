@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createAccountExamplePayload } from "../../examplePayloads/account";
 import { createAccountInputs } from "../../inputs/accounts";
+
 export const createAccount = action({
   display: {
     label: "Create Account",
@@ -12,6 +13,7 @@ export const createAccount = action({
     { connection, email, language, name, password, client_id, client_secret },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       client_id,
       client_secret,
@@ -20,7 +22,9 @@ export const createAccount = action({
       name,
       password,
     };
+
     const { data } = await client.post("/account", body);
+
     return {
       data,
     };

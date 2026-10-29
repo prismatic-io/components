@@ -5,6 +5,7 @@ import { getHubspotClient } from "../../client";
 import { getDealByIdInputs } from "../../inputs";
 import { getProps } from "../../util";
 import { DEAL_PROPS, hubspotPaths } from "../../constants";
+
 export const getDealById = action({
   display: {
     label: "Get Deal",
@@ -25,6 +26,7 @@ export const getDealById = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     if (!dealId && !dealName) {
       throw new Error(
         "You must supply an Id or deal name to retrieve a deal record.",
@@ -35,34 +37,41 @@ export const getDealById = action({
       timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       DEAL_PROPS,
       additionalProperties || [],
     );
+
     const params = {
       ...parameterizedProperties,
       associations: associationsList,
       archived: archived,
     };
+
     if (dealName) {
       const result = await client.get(hubspotPaths.objects("deals"), {
         params,
       });
       const { results: deals } = result.data;
+
       const filteredDeals = (deals || []).filter((deal) => {
         return deal?.properties?.dealname === dealName;
       });
+
       if (filteredDeals.length === 0) {
         throw new Error(`No deals found matching ${dealName}`);
       }
       return { data: filteredDeals };
     }
+
     const { data } = await client.get(
       hubspotPaths.objects("deals", `/${dealId}`),
       {
         params,
       },
     );
+
     return { data };
   },
   inputs: getDealByIdInputs,

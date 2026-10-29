@@ -12,4 +12,5 @@ export const getCurrentUserExamplePayload = {
     user: "admin@example.com",
   },
 };
+
 export const validateConnectionExamplePayload = { data: true };

@@ -15,6 +15,7 @@ const stageRecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 const stageDealRecordSchema = {
   type: "object",
   properties: {
@@ -40,6 +41,7 @@ const stageDealRecordSchema = {
     visible_to: { type: "string" },
   },
 };
+
 export const getStagesOutputSchema = {
   type: "object",
   properties: {
@@ -58,6 +60,7 @@ export const getStagesOutputSchema = {
     },
   },
 };
+
 export const addStageOutputSchema = {
   type: "object",
   properties: {
@@ -70,6 +73,7 @@ export const addStageOutputSchema = {
     },
   },
 };
+
 export const deleteStageOutputSchema = {
   type: "object",
   properties: {
@@ -87,6 +91,7 @@ export const deleteStageOutputSchema = {
     },
   },
 };
+
 export const getStageOutputSchema = {
   type: "object",
   properties: {
@@ -99,6 +104,7 @@ export const getStageOutputSchema = {
     },
   },
 };
+
 export const updateStageOutputSchema = {
   type: "object",
   properties: {
@@ -111,6 +117,7 @@ export const updateStageOutputSchema = {
     },
   },
 };
+
 export const getStageDealsOutputSchema = {
   type: "object",
   properties: {

@@ -1,5 +1,6 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { ZendeskTrigger } from "../types";
+
 export const fetchTriggers = async (
   client: HttpClient,
 ): Promise<ZendeskTrigger[]> => {

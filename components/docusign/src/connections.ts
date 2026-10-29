@@ -1,4 +1,5 @@
 import { oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
+
 export const docusignOauthConnection = oauth2Connection({
   key: "docusignOauthConnection",
   display: {
@@ -87,4 +88,5 @@ export const docusignOauthConnection = oauth2Connection({
     },
   },
 });
+
 export default [docusignOauthConnection];

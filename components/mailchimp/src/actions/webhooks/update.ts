@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhook } from "../../utils/webhooks";
+
 export default action({
   display: {
     label: "Update Webhook",
@@ -28,6 +29,7 @@ export default action({
       webhookEvents,
       webhookSources,
     );
+
     return { data: webhook };
   },
 });

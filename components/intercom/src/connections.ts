@@ -3,6 +3,7 @@ import {
   OAuth2Type,
   oauth2Connection,
 } from "@prismatic-io/spectral";
+
 export const intercomConnection = oauth2Connection({
   key: "intercom",
   display: {
@@ -49,6 +50,7 @@ export const intercomConnection = oauth2Connection({
     },
   },
 });
+
 export const accessTokenAuth = connection({
   key: "intercomAccesssToken",
   display: {
@@ -64,4 +66,5 @@ export const accessTokenAuth = connection({
     },
   },
 });
+
 export default [intercomConnection, accessTokenAuth];

@@ -1,4 +1,5 @@
 import type { Application } from "../v1/Applications";
+
 export interface V3Application {
   id: number;
   candidate_id: number;
@@ -18,13 +19,11 @@ export interface V3Application {
   updated_at: string;
   last_activity_at: string;
   custom_fields: Record<string, unknown> | null;
-  answers: Array<{
-    question: string;
-    answer: string | null;
-  }>;
+  answers: Array<{ question: string; answer: string | null }>;
   prospective_job_ids?: number[];
   [key: string]: unknown;
 }
+
 export interface V3Candidate {
   id: number;
   first_name: string;
@@ -35,29 +34,16 @@ export interface V3Candidate {
   updated_at: string;
   last_activity: string | null;
   is_private: boolean;
-  email_addresses: Array<{
-    value: string;
-    type: string;
-  }>;
-  phone_numbers: Array<{
-    value: string;
-    type: string;
-  }>;
-  addresses: Array<{
-    value: string;
-    type: string;
-  }>;
-  website_addresses: Array<{
-    value: string;
-    type: string;
-  }>;
-  social_media_addresses: Array<{
-    value: string;
-  }>;
+  email_addresses: Array<{ value: string; type: string }>;
+  phone_numbers: Array<{ value: string; type: string }>;
+  addresses: Array<{ value: string; type: string }>;
+  website_addresses: Array<{ value: string; type: string }>;
+  social_media_addresses: Array<{ value: string }>;
   tags: string[];
   custom_fields: Record<string, unknown> | null;
   [key: string]: unknown;
 }
+
 export interface V3Attachment {
   id: number;
   application_id: number;
@@ -69,6 +55,7 @@ export interface V3Attachment {
   updated_at: string;
   [key: string]: unknown;
 }
+
 export interface V3Job {
   id: number;
   name: string;
@@ -87,6 +74,7 @@ export interface V3Job {
   custom_fields: Record<string, unknown> | null;
   [key: string]: unknown;
 }
+
 export interface V3User {
   id: number;
   name: string;
@@ -101,46 +89,55 @@ export interface V3User {
   employee_id: string | null;
   [key: string]: unknown;
 }
+
 export interface V3RejectionReason {
   id: number;
   name: string;
   [key: string]: unknown;
 }
+
 export interface V3Department {
   id: number;
   name: string;
   parent_id: number | null;
   [key: string]: unknown;
 }
+
 export interface V3Office {
   id: number;
   name: string;
   parent_id: number | null;
   [key: string]: unknown;
 }
+
 export interface V3CustomField {
   id: number;
   name: string;
   field_type: string;
   [key: string]: unknown;
 }
+
 export interface V3ApplicationChangesObject {
   created: Application[];
   updated: Application[];
 }
+
 export interface V3ApplicationChange {
   changeType: "created" | "updated";
   record: Application;
 }
+
 export interface V3PollWindowStart extends Record<string, unknown> {
   since: string;
   drainStartedAt: string;
   backfill: boolean;
   after?: string;
 }
+
 export interface V3PollingCursor extends V3PollWindowStart {
   after: string;
 }
+
 export interface V3PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   cursor?: V3PollingCursor;

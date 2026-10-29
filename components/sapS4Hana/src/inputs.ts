@@ -6,11 +6,13 @@ import {
   pollResourceModel,
 } from "./constants";
 import { lookBackDateClean } from "./util/clean";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const requestBody = input({
   label: "Request Body",
   type: "string",
@@ -18,6 +20,7 @@ export const requestBody = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const requestBodyCode = input({
   label: "Body",
   type: "code",
@@ -33,6 +36,7 @@ export const requestBodyCode = input({
  }`,
   clean: util.types.toString,
 });
+
 export const documentInfoRecordDocumentType = input({
   label: "Document Info Record Document Type",
   type: "string",
@@ -40,6 +44,7 @@ export const documentInfoRecordDocumentType = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const documentInfoRecordDocumentNumber = input({
   label: "Document Info Record Document Number",
   type: "string",
@@ -47,6 +52,7 @@ export const documentInfoRecordDocumentNumber = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const documentInfoRecordDocumentVersion = input({
   label: "Document Info Record Document Version",
   type: "string",
@@ -54,6 +60,7 @@ export const documentInfoRecordDocumentVersion = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const documentInfoRecordDocumentPart = input({
   label: "Document Info Record Document Part",
   type: "string",
@@ -61,6 +68,7 @@ export const documentInfoRecordDocumentPart = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -68,6 +76,7 @@ export const filter = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const inlinecount = input({
   label: "Inline Count",
   type: "string",
@@ -84,6 +93,7 @@ export const inlinecount = input({
   ],
   clean: util.types.toString,
 });
+
 export const orderBy = input({
   label: "Order By",
   type: "string",
@@ -95,6 +105,7 @@ export const orderBy = input({
   clean: (value: unknown) =>
     (value as unknown[]).map((item) => util.types.toString(item)),
 });
+
 export const select = input({
   label: "Select",
   type: "string",
@@ -106,6 +117,7 @@ export const select = input({
   clean: (value: unknown) =>
     (value as unknown[]).map((item) => util.types.toString(item)),
 });
+
 export const logicalDocument = input({
   label: "Logical Document",
   type: "string",
@@ -113,6 +125,7 @@ export const logicalDocument = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const archiveDocumentId = input({
   label: "Archive Document ID",
   type: "string",
@@ -120,6 +133,7 @@ export const archiveDocumentId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const linkedSapObjectKey = input({
   label: "Linked SAP Object Key",
   type: "string",
@@ -127,6 +141,7 @@ export const linkedSapObjectKey = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const businessObjectTypeName = input({
   label: "Business Object Type Name",
   type: "string",
@@ -134,6 +149,7 @@ export const businessObjectTypeName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const top = input({
   label: "Top",
   type: "string",
@@ -141,6 +157,7 @@ export const top = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const skip = input({
   label: "Skip",
   type: "string",
@@ -148,6 +165,7 @@ export const skip = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const search = input({
   label: "Search",
   type: "string",
@@ -155,6 +173,7 @@ export const search = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const busEventSubscriberCode = input({
   label: "Bus Event Subscriber Code",
   type: "string",
@@ -162,6 +181,7 @@ export const busEventSubscriberCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const sapObjectType = input({
   label: "SAP Object Type",
   type: "string",
@@ -169,6 +189,7 @@ export const sapObjectType = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const sapObjectTaskCode = input({
   label: "SAP Object Task Code",
   type: "string",
@@ -176,6 +197,7 @@ export const sapObjectTaskCode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const expand = input({
   label: "Expand",
   type: "string",
@@ -186,6 +208,7 @@ export const expand = input({
   clean: (value: unknown) =>
     (value as unknown[]).map((item) => util.types.toString(item)),
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -194,6 +217,7 @@ export const projectId = input({
   dataSource: "selectProject",
   clean: util.types.toString,
 });
+
 export const changeRecordUuid = input({
   label: "Change Record UUID",
   type: "string",
@@ -202,6 +226,7 @@ export const changeRecordUuid = input({
   dataSource: "selectChangeRecord",
   clean: util.types.toString,
 });
+
 export const attachOrderBy = input({
   label: "Order By",
   placeholder: "Order By",
@@ -227,6 +252,7 @@ export const attachOrderBy = input({
   ],
   clean: util.types.toString,
 });
+
 export const attachSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -278,6 +304,7 @@ export const attachSelect = input({
   ],
   clean: util.types.toString,
 });
+
 export const changerecordSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -430,6 +457,7 @@ export const changerecordSelect = input({
     { label: "to_RefPSV", value: "to_RefPSV" },
   ],
 });
+
 export const changerecordExpand = input({
   label: "Expand",
   placeholder: "Expand",
@@ -471,6 +499,7 @@ export const changerecordExpand = input({
     { label: "to_RefPSV", value: "to_RefPSV" },
   ],
 });
+
 export const projectSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -508,6 +537,7 @@ export const projectSelect = input({
     { label: "WorkPackageSet", value: "WorkPackageSet" },
   ],
 });
+
 export const projectExpand = input({
   label: "Expand",
   placeholder: "Expand",
@@ -520,6 +550,7 @@ export const projectExpand = input({
     { label: "WorkPackageSet", value: "WorkPackageSet" },
   ],
 });
+
 export const changeRecordOrderBy = input({
   label: "Order By",
   placeholder: "Order By",
@@ -572,6 +603,7 @@ export const changeRecordOrderBy = input({
   ],
   clean: util.types.toString,
 });
+
 export const changeRecordSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -725,6 +757,7 @@ export const changeRecordSelect = input({
   ],
   clean: util.types.toString,
 });
+
 export const changeRecordExpand = input({
   label: "Expand",
   placeholder: "Expand",
@@ -767,6 +800,7 @@ export const changeRecordExpand = input({
   ],
   clean: util.types.toString,
 });
+
 export const listPurchaseRequisitionsOrderBy = input({
   label: "Order By",
   placeholder: "Order By",
@@ -809,6 +843,7 @@ export const listPurchaseRequisitionsOrderBy = input({
   ],
   clean: util.types.toString,
 });
+
 export const listPurchaseRequisitionSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -832,6 +867,7 @@ export const listPurchaseRequisitionSelect = input({
   ],
   clean: util.types.toString,
 });
+
 export const listPurchaseRequisitionExpand = input({
   label: "Expand",
   placeholder: "Expand",
@@ -847,6 +883,7 @@ export const listPurchaseRequisitionExpand = input({
   ],
   clean: util.types.toString,
 });
+
 export const purchaseRequisitionNumberInput = input({
   label: "Purchase Requisition Number",
   placeholder: "123123123123",
@@ -856,6 +893,7 @@ export const purchaseRequisitionNumberInput = input({
   dataSource: "selectPurchaseRequisition",
   clean: util.types.toString,
 });
+
 export const getPurchaseRequisitionItemDetailsOrderBy = input({
   label: "Order By",
   placeholder: "Order By",
@@ -866,6 +904,7 @@ export const getPurchaseRequisitionItemDetailsOrderBy = input({
   model: GET_PURCHASE_REQUISITION_ITEM_DETAILS_ORDER_BY_MODEL,
   clean: util.types.toString,
 });
+
 export const getPurchaseRequisitionItemDetailsSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -876,6 +915,7 @@ export const getPurchaseRequisitionItemDetailsSelect = input({
   model: GET_PURCHASE_REQUISITION_ITEM_DETAILS_SELECT_MODEL,
   clean: util.types.toString,
 });
+
 export const getPurchaseRequisitionItemDetailsExpand = input({
   label: "Expand",
   placeholder: "Expand",
@@ -886,6 +926,7 @@ export const getPurchaseRequisitionItemDetailsExpand = input({
   model: GET_PURCHASE_REQUISITION_ITEM_DETAILS_EXPAND_MODEL,
   clean: util.types.toString,
 });
+
 export const recordType = input({
   label: "Record Type",
   type: "string",
@@ -894,6 +935,7 @@ export const recordType = input({
   default: "WorkItemSet",
   clean: util.types.toString,
 });
+
 export const recordId = input({
   label: "Record ID",
   type: "string",
@@ -902,6 +944,7 @@ export const recordId = input({
   default: "12312313",
   clean: util.types.toString,
 });
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -910,6 +953,7 @@ export const pollResourceType = input({
   model: pollResourceModel,
   clean: util.types.toString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -918,6 +962,7 @@ export const showNewRecords = input({
   comments: "Include newly created records in trigger results.",
   clean: util.types.toBool,
 });
+
 export const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -926,6 +971,7 @@ export const showUpdatedRecords = input({
   comments: "Include updated records in trigger results.",
   clean: util.types.toBool,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",

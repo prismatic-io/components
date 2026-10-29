@@ -1,19 +1,23 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { BUDGET_SEVERITY } from "./constants";
+
 export const externalAttributionDataExampleInput = {
   externalAttributionCredit: 0.75,
   externalAttributionModel: "LINEAR",
 };
+
 export const customVariableExampleInput = {
   conversionCustomVariable:
     "customers/1234567890/conversionCustomVariables/11111",
   value: "premium_tier",
 };
+
 export const cartDataItemExampleInput = {
   productId: "SKU-12345",
   quantity: 2,
   unitPrice: 49.99,
 };
+
 export const cartDataExampleInput = {
   merchantId: "1234567",
   feedCountryCode: "US",
@@ -21,6 +25,7 @@ export const cartDataExampleInput = {
   localTransactionCost: 5.99,
   items: [cartDataItemExampleInput],
 };
+
 export const offlineUserAddressInfoExampleInput = {
   hashedFirstName:
     "a8cfcd74832004951b4408cdb0a5dbcd8c7e52d43f7fe244bf720582e05241da",
@@ -33,6 +38,7 @@ export const offlineUserAddressInfoExampleInput = {
   hashedStreetAddress:
     "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
 };
+
 export const userIdentifierExampleInput = {
   userIdentifierSource: "FIRST_PARTY",
   hashedEmail:
@@ -43,10 +49,12 @@ export const userIdentifierExampleInput = {
   thirdPartyUserId: "ext-user-98765",
   addressInfo: offlineUserAddressInfoExampleInput,
 };
+
 export const consentExampleInput = {
   adUserData: "GRANTED",
   adPersonalization: "GRANTED",
 };
+
 export const clickConversionsExampleInput = [
   {
     gbraid: "CjwKCAjwABCDEF1234567890ghijklMNOPQRstuvwxyz",
@@ -65,6 +73,7 @@ export const clickConversionsExampleInput = [
     orderId: "ORDER-2026-00123",
   },
 ];
+
 export const ingestOfflineConversionsExamplePayload = {
   data: {
     requestId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
@@ -78,6 +87,7 @@ export const ingestOfflineConversionsExamplePayload = {
     ],
   },
 };
+
 export const campaignOperationExampleInput = {
   updateMask: "status,name",
   create: {
@@ -92,7 +102,9 @@ export const campaignOperationExampleInput = {
   },
   remove: "customers/1234567890/campaigns/1122334455",
 };
+
 export const campaignOperationsExampleInput = [campaignOperationExampleInput];
+
 export const campaignCriteriaOperationsExampleInput = [
   {
     updateMask: "bidModifier",
@@ -110,6 +122,7 @@ export const campaignCriteriaOperationsExampleInput = [
     remove: "customers/1234567890/campaignCriteria/1122334455~987654321",
   },
 ];
+
 const uploadConversionsPartialFailureError = {
   code: 3,
   message:
@@ -135,6 +148,7 @@ const uploadConversionsPartialFailureError = {
     },
   ],
 };
+
 export const uploadCallConversionsExamplePayload = {
   data: {
     partialFailureError: uploadConversionsPartialFailureError,
@@ -148,6 +162,7 @@ export const uploadCallConversionsExamplePayload = {
     ],
   },
 };
+
 export const uploadClickConversionsExamplePayload = {
   data: {
     partialFailureError: uploadConversionsPartialFailureError,
@@ -170,6 +185,7 @@ export const uploadClickConversionsExamplePayload = {
     jobId: "1234567890123456789",
   },
 };
+
 export const confirmClientLinkExamplePayload = {
   data: {
     results: [
@@ -180,6 +196,7 @@ export const confirmClientLinkExamplePayload = {
     ],
   },
 };
+
 export const getCustomerExamplePayload = {
   data: {
     results: [
@@ -199,6 +216,7 @@ export const getCustomerExamplePayload = {
     queryResourceConsumption: "80",
   },
 };
+
 export const getConversionActionExamplePayload = {
   data: {
     results: [
@@ -215,6 +233,7 @@ export const getConversionActionExamplePayload = {
     queryResourceConsumption: "702",
   },
 };
+
 export const mutateCampaignExamplePayload = {
   data: {
     results: [
@@ -224,6 +243,7 @@ export const mutateCampaignExamplePayload = {
     ],
   },
 };
+
 export const mutateCampaignCriteriaExamplePayload = {
   data: {
     results: [
@@ -233,9 +253,8 @@ export const mutateCampaignCriteriaExamplePayload = {
     ],
   },
 };
-export const searchAdsLocalServicesExamplePayload: {
-  data: unknown;
-} = {
+
+export const searchAdsLocalServicesExamplePayload: { data: unknown } = {
   data: {
     results: [
       {
@@ -253,6 +272,7 @@ export const searchAdsLocalServicesExamplePayload: {
     queryResourceConsumption: "74",
   },
 };
+
 export const accountReportsExamplePayload = {
   data: {
     accountReports: [
@@ -280,6 +300,7 @@ export const accountReportsExamplePayload = {
     nextPageToken: "CJL5XLT2PWDmIpGNGciABRnu",
   },
 };
+
 export const detailedLeadReportsExamplePayload = {
   data: {
     detailedLeadReports: [
@@ -313,6 +334,7 @@ export const detailedLeadReportsExamplePayload = {
     nextPageToken: "CJL5XLT2PWDmIpGNGciABRnu",
   },
 };
+
 export const inviteUserExamplePayload = {
   data: {
     result: {
@@ -322,14 +344,14 @@ export const inviteUserExamplePayload = {
     },
   },
 };
+
 export const listAccessibleCustomersExamplePayload = {
   data: {
     resourceNames: ["customers/1234567890", "customers/5555555555"],
   },
 };
-export const listCustomersExamplePayload: {
-  data: unknown;
-} = {
+
+export const listCustomersExamplePayload: { data: unknown } = {
   data: {
     results: [
       {
@@ -356,6 +378,7 @@ export const listCustomersExamplePayload: {
       "customerClient.resourceName,customerClient.clientCustomer,customerClient.id,customerClient.level,customerClient.hidden,customerClient.level",
   },
 };
+
 export const createClientLinkExamplePayload = {
   data: {
     resourceName:
@@ -365,90 +388,92 @@ export const createClientLinkExamplePayload = {
     managerLinkId: "3333333333",
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     resourceNames: ["customers/1234567890", "customers/5555555555"],
   },
 };
+
 export const listAccessibleCustomersDataSourceExamplePayload = {
   result: [{ label: "Example Account - 123-456-7890", key: "1234567890" }],
 };
+
 export const listAccessibleSubAccountsExamplePayload = {
   result: [{ label: "Example Account - 123-456-7890", key: "1234567890" }],
 };
-export const campaignChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
-  payload: {
-    headers: {},
-    queryParameters: {},
-    rawBody: { data: null },
-    body: {
-      data: {
-        changes: [
-          {
-            changeType: "created",
-            campaignId: "12345678901",
-            campaignName: "Example-Campaign-1",
-            field: "campaign",
-            oldValue: null,
-            newValue: {
-              resourceName: "customers/1234567890/campaigns/12345678901",
-              status: "ENABLED",
-              name: "Example-Campaign-1",
-              id: "12345678901",
+
+export const campaignChangesTriggerExamplePayload: { payload: TriggerPayload } =
+  {
+    payload: {
+      headers: {},
+      queryParameters: {},
+      rawBody: { data: null },
+      body: {
+        data: {
+          changes: [
+            {
+              changeType: "created",
+              campaignId: "12345678901",
+              campaignName: "Example-Campaign-1",
+              field: "campaign",
+              oldValue: null,
+              newValue: {
+                resourceName: "customers/1234567890/campaigns/12345678901",
+                status: "ENABLED",
+                name: "Example-Campaign-1",
+                id: "12345678901",
+              },
+              changedAt: "2026-01-01 12:00:00",
             },
-            changedAt: "2026-01-01 12:00:00",
+            {
+              changeType: "budget",
+              campaignId: "12345678901",
+              campaignName: "Example-Campaign-1",
+              field: "budget_amount_micros",
+              oldValue: "50000000",
+              newValue: "75000000",
+              changedAt: "2026-01-01 12:05:00",
+            },
+          ],
+          changesDetected: 2,
+          timeRange: {
+            start: "2026-01-01 11:00:00",
+            end: "2026-01-01 12:10:00",
           },
-          {
-            changeType: "budget",
-            campaignId: "12345678901",
-            campaignName: "Example-Campaign-1",
-            field: "budget_amount_micros",
-            oldValue: "50000000",
-            newValue: "75000000",
-            changedAt: "2026-01-01 12:05:00",
-          },
-        ],
-        changesDetected: 2,
-        timeRange: {
-          start: "2026-01-01 11:00:00",
-          end: "2026-01-01 12:10:00",
+          syncedAt: "2026-01-01 12:10:00",
         },
-        syncedAt: "2026-01-01 12:10:00",
       },
+      pathFragment: "",
+      webhookUrls: {},
+      webhookApiKeys: {},
+      invokeUrl: "",
+      executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+      customer: {
+        id: "testCustomerId",
+        name: "Test Customer",
+        externalId: "testExternalId",
+      },
+      instance: { id: "testInstanceId", name: "Test Instance" },
+      user: {
+        id: "testUserId",
+        email: "user@example.com",
+        name: "Test User",
+        externalId: "testUserExternalId",
+      },
+      integration: {
+        id: "testIntegrationId",
+        name: "Test Integration",
+        versionSequenceId: "1",
+        externalVersion: "",
+      },
+      flow: { id: "testFlowId", name: "Test Flow", stableId: "" },
+      startedAt: "2024-01-15T00:00:00.000Z",
+      globalDebug: false,
     },
-    pathFragment: "",
-    webhookUrls: {},
-    webhookApiKeys: {},
-    invokeUrl: "",
-    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
-    customer: {
-      id: "testCustomerId",
-      name: "Test Customer",
-      externalId: "testExternalId",
-    },
-    instance: { id: "testInstanceId", name: "Test Instance" },
-    user: {
-      id: "testUserId",
-      email: "user@example.com",
-      name: "Test User",
-      externalId: "testUserExternalId",
-    },
-    integration: {
-      id: "testIntegrationId",
-      name: "Test Integration",
-      versionSequenceId: "1",
-      externalVersion: "",
-    },
-    flow: { id: "testFlowId", name: "Test Flow", stableId: "" },
-    startedAt: "2024-01-15T00:00:00.000Z",
-    globalDebug: false,
-  },
-};
-export const budgetAlertTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+  };
+
+export const budgetAlertTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -501,9 +526,8 @@ export const budgetAlertTriggerExamplePayload: {
     globalDebug: false,
   },
 };
-export const changeHistoryTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const changeHistoryTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

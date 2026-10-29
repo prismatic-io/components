@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { postMarkAppInstalledExamplePayload } from "../../examplePayloads";
 import { postMarkAppInstalledInputs } from "../../inputs";
+
 const postMarkAppInstalled = action({
   display: {
     label: "Post Mark App Installed (V1)",
@@ -20,6 +21,7 @@ const postMarkAppInstalled = action({
     return { data };
   },
 });
+
 export default {
   postMarkAppInstalled,
 };

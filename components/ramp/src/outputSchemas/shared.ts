@@ -7,6 +7,7 @@ export const pageSchema = {
   },
   required: ["next"],
 };
+
 export const deleteResponseSchema = {
   type: "string",
   enum: ["Deleted successfully"],

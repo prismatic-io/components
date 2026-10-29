@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUserRoleSettingsInputs } from "../../inputs";
 import { getUserRoleSettingsExamplePayload } from "../../examplePayloads";
 import { getUserRoleSettingsOutputSchema } from "../../outputSchemas";
+
 export const getUserRoleSettings = action({
   display: {
     label: "Get User Role Settings",

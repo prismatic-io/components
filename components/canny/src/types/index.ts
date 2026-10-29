@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export interface Board {
   id: string;
   created: string;
@@ -9,6 +10,7 @@ export interface Board {
   token: string;
   url: string;
 }
+
 export interface Post {
   id: string;
   author: User | null;
@@ -22,9 +24,7 @@ export interface Post {
   eta: string;
   etaPublic: boolean;
   imageURLs: string[];
-  jira: {
-    linkedIssues: unknown[];
-  };
+  jira: { linkedIssues: unknown[] };
   mergeHistory: unknown[];
   owner: User | null;
   score: number;
@@ -34,6 +34,7 @@ export interface Post {
   title: string;
   url: string;
 }
+
 export interface Comment {
   id: string;
   author: User;
@@ -48,6 +49,7 @@ export interface Comment {
   private: boolean;
   value: string;
 }
+
 export interface Vote {
   id: string;
   board: Board;
@@ -56,6 +58,7 @@ export interface Vote {
   post: Post;
   voter: User;
 }
+
 export interface Category {
   id: string;
   board: Board;
@@ -65,6 +68,7 @@ export interface Category {
   postCount: number;
   url: string;
 }
+
 export interface Tag {
   id: string;
   board: Board;
@@ -73,6 +77,7 @@ export interface Tag {
   postCount: number;
   url: string;
 }
+
 export interface User {
   id: string;
   created: string;
@@ -82,6 +87,7 @@ export interface User {
   url: string;
   userID: string;
 }
+
 export interface Company {
   id: string;
   created: string;
@@ -92,18 +98,17 @@ export interface Company {
   name: string;
   urlName: string;
 }
+
 export interface StatusChange {
   id: string;
-  changeComment: {
-    imageURLs: string[];
-    value: string;
-  } | null;
+  changeComment: { imageURLs: string[]; value: string } | null;
   changer: User;
   created: string;
   newStatus: string;
   oldStatus: string;
   post: Post;
 }
+
 export interface Entry {
   id: string;
   created: string;
@@ -119,6 +124,7 @@ export interface Entry {
   types: string[];
   url: string;
 }
+
 export interface CannyClient {
   post: <T = unknown>(
     path: string,
@@ -131,24 +137,25 @@ export interface CannyClient {
   apiKey: string;
   httpClient: HttpClient;
 }
-export type OffsetResult<K extends string, T> = {
-  [P in K]: T[];
-} & {
+
+export type OffsetResult<K extends string, T> = { [P in K]: T[] } & {
   hasMore: boolean;
 };
-export type CursorResult<K extends string, T> = {
-  [P in K]: T[];
-} & {
+
+export type CursorResult<K extends string, T> = { [P in K]: T[] } & {
   hasNextPage: boolean;
   cursor: string;
 };
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+
 export interface CannyPostChangesObject {
   created: Post[];
   updated: Post[];
 }
+
 export interface CannyPostChange {
   changeType: "created" | "updated";
   record: Post;

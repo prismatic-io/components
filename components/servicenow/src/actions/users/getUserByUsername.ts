@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getUserByUsernameInputs } from "../../inputs";
 import { listUsers } from "./listUsers";
+
 export const getUserByUsername = action({
   display: {
     label: "Get User by Username",
@@ -23,9 +24,7 @@ export const getUserByUsername = action({
       sysparmQuery: `user_name=${userName}`,
     });
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: [] },
   }),
   inputs: getUserByUsernameInputs,

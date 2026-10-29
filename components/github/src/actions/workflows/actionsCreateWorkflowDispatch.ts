@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { actionsCreateWorkflowDispatchExamplePayload } from "../../examplePayloads";
 import { actionsCreateWorkflowDispatchInputs } from "../../inputs";
+
 export const actionsCreateWorkflowDispatch = action({
   display: {
     label: "Create Workflow Dispatch Event",

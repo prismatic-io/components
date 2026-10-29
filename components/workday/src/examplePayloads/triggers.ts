@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
   headers: {},
   queryParameters: {},
@@ -30,6 +31,7 @@ const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
   startedAt: "2024-01-15T00:00:00.000Z",
   globalDebug: false,
 };
+
 export const raasReportPollingTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -50,6 +52,7 @@ export const raasReportPollingTriggerExamplePayload: {
     },
   },
 };
+
 export const wqlQueryPollingTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -67,6 +70,7 @@ export const wqlQueryPollingTriggerExamplePayload: {
     },
   },
 };
+
 export const newEventStepsPollingTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {

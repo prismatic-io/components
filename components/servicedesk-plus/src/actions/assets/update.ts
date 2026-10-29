@@ -11,6 +11,7 @@ import {
   state,
 } from "../../inputs";
 import { createPayload } from "../../util";
+
 export const updateAsset = action({
   display: {
     label: "Update Asset",

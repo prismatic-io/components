@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listBusinessPartnerGroupsExamplePayload } from "../../../examplePayloads";
 import { listBusinessPartnerGroupsInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listBusinessPartnerGroups = action({
   display: {
     label: "List Business Partner Groups (V2)",

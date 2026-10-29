@@ -4,12 +4,16 @@ import {
   handleErrors,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { BASE_URL, OAUTH_URL } from "./constants";
+
 export async function getToken(domoConnection: Connection, debug: boolean) {
   const clientId = domoConnection?.fields?.clientId;
   const clientSecret = domoConnection?.fields?.clientSecret;
   const scope = domoConnection?.fields?.scopes;
+
   const credentials = `${clientId}:${clientSecret}`;
+
   const encodedCredentials = Buffer.from(credentials).toString("base64");
+
   const client = createClient({
     baseUrl: OAUTH_URL,
     headers: {
@@ -17,10 +21,12 @@ export async function getToken(domoConnection: Connection, debug: boolean) {
     },
     debug,
   });
+
   try {
     const { data } = await client.get("/token", {
       params: { grant_type: "client_credentials", scope },
     });
+
     return data.access_token;
   } catch (error) {
     const handled = handleErrors(error);
@@ -28,6 +34,7 @@ export async function getToken(domoConnection: Connection, debug: boolean) {
     throw new Error(serialized);
   }
 }
+
 export const getDomoClient = async (
   domoConnection: Connection,
   debug: boolean,

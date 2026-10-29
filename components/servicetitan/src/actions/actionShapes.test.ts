@@ -26,29 +26,36 @@ import { getJob } from "./jobs/getJob";
 import { updatePayment } from "./payments/updatePayment";
 import { createTechnician } from "./technician/createTechnician";
 import { updateTechnician } from "./technician/updateTechnician";
+
 afterEach(() => nock.cleanAll());
+
 describe("getCustomer (GET by id)", () => {
   test("returns the record the API sent, untouched", async () => {
     api()
       .get(`${prefix("crm")}/customers/12345`)
       .reply(200, getCustomerExamplePayload.data);
+
     const { result } = await invoke(getCustomer, {
       connection,
       customerId: 12345,
     });
+
     expect(result.data).toEqual(getCustomerExamplePayload.data);
   });
+
   test("surfaces a failing lookup", async () => {
     api()
       .get(`${prefix("crm")}/customers/12345`)
       .reply(404, {
         title: "Not Found",
       });
+
     await expect(
       invoke(getCustomer, { connection, customerId: 12345 }),
     ).rejects.toThrow();
   });
 });
+
 describe("getJob (GET by id with query params)", () => {
   test("forwards externalDataApplicationGuid as a query parameter", async () => {
     const guid = "6b29fc40-ca47-1067-b31d-00dd010662da";
@@ -56,13 +63,16 @@ describe("getJob (GET by id with query params)", () => {
       .get(`${prefix("jpm")}/jobs/24815`)
       .query({ externalDataApplicationGuid: guid })
       .reply(200, getJobExamplePayload.data);
+
     const { result } = await invoke(getJob, {
       connection,
       jobId: 24815,
       externalDataApplicationGuid: guid,
     });
+
     expect(result.data).toEqual(getJobExamplePayload.data);
   });
+
   test("surfaces a failing lookup", async () => {
     api()
       .get(`${prefix("jpm")}/jobs/24815`)
@@ -70,6 +80,7 @@ describe("getJob (GET by id with query params)", () => {
       .reply(403, {
         title: "Forbidden",
       });
+
     await expect(
       invoke(getJob, {
         connection,
@@ -79,6 +90,7 @@ describe("getJob (GET by id with query params)", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("createJob (POST with a flat body)", () => {
   const params = {
     connection,
@@ -98,6 +110,7 @@ describe("createJob (POST with a flat body)", () => {
     invoiceSignatureIsRequired: true,
     customerPo: "PO-1",
   };
+
   test("posts every input through to the body and returns the response", async () => {
     api()
       .post(`${prefix("jpm")}/jobs`, {
@@ -115,16 +128,21 @@ describe("createJob (POST with a flat body)", () => {
         tagTypeIds: [7],
       })
       .reply(200, createJobExamplePayload.data);
+
     const { result } = await invoke(createJob, params);
+
     expect(result.data).toEqual(createJobExamplePayload.data);
   });
+
   test("surfaces a rejected creation", async () => {
     api()
       .post(`${prefix("jpm")}/jobs`)
       .reply(422, { title: "Invalid" });
+
     await expect(invoke(createJob, params)).rejects.toThrow();
   });
 });
+
 describe("createInvoices (POST, Royalty Details flattening)", () => {
   const params = {
     connection,
@@ -146,6 +164,7 @@ describe("createInvoices (POST, Royalty Details flattening)", () => {
     assignedToId: 55,
     items: [{ skuId: 1, quantity: 2 }],
   };
+
   test("flattens Royalty Details into four top-level royalty keys", async () => {
     api()
       .post(`${prefix("accounting")}/invoices`, {
@@ -168,18 +187,23 @@ describe("createInvoices (POST, Royalty Details flattening)", () => {
       .reply(200, JSON.stringify(12345), {
         "content-type": "application/json",
       });
+
     const { result } = await invoke(createInvoices, params);
+
     expect(result.data).toBe(12345);
   });
+
   test("surfaces a rejected creation", async () => {
     api()
       .post(`${prefix("accounting")}/invoices`)
       .reply(400, {
         title: "Bad Request",
       });
+
     await expect(invoke(createInvoices, params)).rejects.toThrow();
   });
 });
+
 describe("createInstalledEquipment (POST, Warranty Dates flattening)", () => {
   test("flattens Warranty Dates into four top-level warranty keys", async () => {
     api()
@@ -201,6 +225,7 @@ describe("createInstalledEquipment (POST, Warranty Dates flattening)", () => {
         tagTypeIds: [7],
       })
       .reply(200, createInstalledEquipmentExamplePayload.data);
+
     const { result } = await invoke(createInstalledEquipment, {
       connection,
       locationId: 67890,
@@ -221,9 +246,11 @@ describe("createInstalledEquipment (POST, Warranty Dates flattening)", () => {
       attachments: [{ path: "a.csv" }],
       tagTypeIds: [7],
     });
+
     expect(result.data).toEqual(createInstalledEquipmentExamplePayload.data);
   });
 });
+
 describe("createTechnician (POST, Additional Fields flattening)", () => {
   test("flattens Additional Fields into six top-level keys", async () => {
     api()
@@ -250,6 +277,7 @@ describe("createTechnician (POST, Additional Fields flattening)", () => {
         team: "North",
       })
       .reply(200, createTechnicianExamplePayload.data);
+
     const { result } = await invoke(createTechnician, {
       connection,
       name: "Alex Tech",
@@ -275,9 +303,11 @@ describe("createTechnician (POST, Additional Fields flattening)", () => {
       home: { street: "1 Main St" },
       customFields: [{ typeId: 1, value: "abc" }],
     });
+
     expect(result.data).toEqual(createTechnicianExamplePayload.data);
   });
 });
+
 describe("updateCustomer (PATCH with a flat body)", () => {
   const params = {
     connection,
@@ -292,6 +322,7 @@ describe("updateCustomer (PATCH with a flat body)", () => {
     active: true,
     tagTypeIds: [7],
   };
+
   test("puts the id in the path and never in the body", async () => {
     api()
       .patch(`${prefix("crm")}/customers/12345`, {
@@ -305,18 +336,23 @@ describe("updateCustomer (PATCH with a flat body)", () => {
         type: "Commercial",
       })
       .reply(200, updateCustomerExamplePayload.data);
+
     const { result } = await invoke(updateCustomer, params);
+
     expect(result.data).toEqual(updateCustomerExamplePayload.data);
   });
+
   test("surfaces a rejected update", async () => {
     api()
       .patch(`${prefix("crm")}/customers/12345`)
       .reply(409, {
         title: "Conflict",
       });
+
     await expect(invoke(updateCustomer, params)).rejects.toThrow();
   });
 });
+
 describe("updateInvoiceItems (PATCH, nine Additional Fields keys)", () => {
   test("flattens all nine Additional Fields keys and repeats invoiceId in the body", async () => {
     api()
@@ -342,6 +378,7 @@ describe("updateInvoiceItems (PATCH, nine Additional Fields keys)", () => {
         id: 7,
       })
       .reply(200);
+
     const { result } = await invoke(updateInvoiceItems, {
       connection,
       invoiceId: 500,
@@ -366,9 +403,11 @@ describe("updateInvoiceItems (PATCH, nine Additional Fields keys)", () => {
       durationBillingId: 6,
       id: 7,
     });
+
     expect(result.data).toBe("");
   });
 });
+
 describe("updateInstalledEquipment (PATCH, Warranty Dates flattening)", () => {
   test("flattens Warranty Dates and puts the id in the path", async () => {
     api()
@@ -389,6 +428,7 @@ describe("updateInstalledEquipment (PATCH, Warranty Dates flattening)", () => {
         tagTypeIds: [7],
       })
       .reply(200, updateInstalledEquipmentExamplePayload.data);
+
     const { result } = await invoke(updateInstalledEquipment, {
       connection,
       installedEquipmentId: "777",
@@ -409,9 +449,11 @@ describe("updateInstalledEquipment (PATCH, Warranty Dates flattening)", () => {
       attachments: [{ path: "a.csv" }],
       tagTypeIds: [7],
     });
+
     expect(result.data).toEqual(updateInstalledEquipmentExamplePayload.data);
   });
 });
+
 describe("updateInvoice (PATCH, Royalty Details flattening)", () => {
   test("flattens Royalty Details and omits invoiceId from the body", async () => {
     api()
@@ -433,6 +475,7 @@ describe("updateInvoice (PATCH, Royalty Details flattening)", () => {
         payments: [{ id: 9 }],
       })
       .reply(200);
+
     const { result } = await invoke(updateInvoice, {
       connection,
       invoiceId: 500,
@@ -454,9 +497,11 @@ describe("updateInvoice (PATCH, Royalty Details flattening)", () => {
       items: [{ skuId: 1, quantity: 2 }],
       payments: [{ id: 9 }],
     });
+
     expect(result.data).toBe("");
   });
 });
+
 describe("updateTechnician (PATCH, Additional Fields flattening)", () => {
   test("flattens Additional Fields into six top-level keys", async () => {
     api()
@@ -481,6 +526,7 @@ describe("updateTechnician (PATCH, Additional Fields flattening)", () => {
         team: "North",
       })
       .reply(200, updateTechnicianExamplePayload.data);
+
     const { result } = await invoke(updateTechnician, {
       connection,
       technicianId: 321,
@@ -505,9 +551,11 @@ describe("updateTechnician (PATCH, Additional Fields flattening)", () => {
       home: { street: "1 Main St" },
       customFields: [{ typeId: 1, value: "abc" }],
     });
+
     expect(result.data).toEqual(updateTechnicianExamplePayload.data);
   });
 });
+
 describe("updatePayment (blank optionals omitted, not sent as empty)", () => {
   test("omits all eight `|| undefined` fields when the user left them blank", async () => {
     let sentBody: unknown;
@@ -517,6 +565,7 @@ describe("updatePayment (blank optionals omitted, not sent as empty)", () => {
         return true;
       })
       .reply(200, updatePaymentExamplePayload.data);
+
     const { result } = await invoke(updatePayment, {
       connection,
       paymentId: "808",
@@ -529,32 +578,39 @@ describe("updatePayment (blank optionals omitted, not sent as empty)", () => {
       status: "",
       typeId: 0,
     });
+
     expect(sentBody).toEqual({});
     expect(result.data).toEqual(updatePaymentExamplePayload.data);
   });
 });
+
 describe("deleteAppointment (DELETE)", () => {
   test("deletes by id and returns the empty body the API sends", async () => {
     api()
       .delete(`${prefix("jpm")}/appointments/4242`)
       .reply(200);
+
     const { result } = await invoke(deleteAppointment, {
       connection,
       appointmentId: "4242",
     });
+
     expect(result.data).toBe("");
   });
+
   test("surfaces a failed delete", async () => {
     api()
       .delete(`${prefix("jpm")}/appointments/4242`)
       .reply(404, {
         title: "Not Found",
       });
+
     await expect(
       invoke(deleteAppointment, { connection, appointmentId: "4242" }),
     ).rejects.toThrow();
   });
 });
+
 describe("cancelJob (PUT command endpoint)", () => {
   test("PUTs the cancel command with a memo and reason", async () => {
     api()
@@ -563,20 +619,24 @@ describe("cancelJob (PUT command endpoint)", () => {
         reasonId: 12,
       })
       .reply(200);
+
     const { result } = await invoke(cancelJob, {
       connection,
       jobId: 24815,
       memo: "Customer rescheduled",
       reasonId: 12,
     });
+
     expect(result.data).toBe("");
   });
+
   test("surfaces a rejected cancellation", async () => {
     api()
       .put(`${prefix("jpm")}/jobs/24815/cancel`)
       .reply(400, {
         title: "Job already cancelled",
       });
+
     await expect(
       invoke(cancelJob, {
         connection,

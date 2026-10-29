@@ -3,6 +3,7 @@ import { createShareOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { createShareInputs } from "../../inputs";
 import { createShareExamplePayload } from "../../examplePayloads";
+
 export const createShare = action({
   display: {
     label: "Create Share",
@@ -44,9 +45,7 @@ export const createShare = action({
     const { data } = await client.post("/shares", body);
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createShareExamplePayload.data,
   }),
   inputs: createShareInputs,

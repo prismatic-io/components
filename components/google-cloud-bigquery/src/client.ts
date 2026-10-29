@@ -1,6 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { google } from "googleapis";
 import { googleConnection, googleServiceAccount } from "./connections";
+
 const validateConnection = (connection: Connection) => {
   if (
     connection.key !== googleConnection.key &&
@@ -8,6 +9,7 @@ const validateConnection = (connection: Connection) => {
   ) {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
+
   if (
     !connection.token?.access_token &&
     !connection.fields.privateKey &&
@@ -20,6 +22,7 @@ const validateConnection = (connection: Connection) => {
     );
   }
 };
+
 const generateAuthentication = (connection: Connection) => {
   if (connection.key === googleServiceAccount.key) {
     const { clientEmail, privateKey, scopes } = connection.fields;
@@ -37,6 +40,7 @@ const generateAuthentication = (connection: Connection) => {
       util.types.toString(connection.fields.clientId),
       util.types.toString(connection.fields.clientSecret),
     );
+
     const token = util.types.toString(connection.token?.access_token);
     oauth2Client.setCredentials({
       access_token: token,
@@ -45,9 +49,12 @@ const generateAuthentication = (connection: Connection) => {
   }
   throw new ConnectionError(connection, "Unknown Connection type provided.");
 };
+
 export const createClient = (connection: Connection) => {
   validateConnection(connection);
+
   const auth = generateAuthentication(connection);
+
   return google.bigquery({
     version: "v2",
     auth: auth,

@@ -10,6 +10,7 @@ import {
   name,
   pagination,
 } from "./general";
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -19,6 +20,7 @@ export const filter = input({
   comments: "Filter expression for the query.",
   clean: toOptionalString,
 });
+
 export const expand = input({
   label: "Expand",
   type: "string",
@@ -29,6 +31,7 @@ export const expand = input({
     "Comma-separated list of related fields to include in the response.",
   clean: toOptionalString,
 });
+
 export const id = input({
   label: "ID",
   type: "string",
@@ -38,6 +41,7 @@ export const id = input({
   comments: "The unique identifier for the resource.",
   clean: util.types.toString,
 });
+
 export const workerId = input({
   label: "Worker ID",
   type: "string",
@@ -48,6 +52,7 @@ export const workerId = input({
   clean: util.types.toString,
   dataSource: "selectWorker",
 });
+
 export const workersFilter = input({
   label: "Filter",
   type: "string",
@@ -58,6 +63,7 @@ export const workersFilter = input({
     "Filter expression. Filterable fields: status, work_email, user_id, created_at, updated_at. Example: status eq 'ACTIVE'.",
   clean: toOptionalString,
 });
+
 export const workersExpand = input({
   label: "Expand",
   type: "string",
@@ -68,6 +74,7 @@ export const workersExpand = input({
     "Comma-separated fields to expand: user, manager, legal_entity, employment_type, compensation, department, teams, level, custom_fields, business_partners.",
   clean: toOptionalString,
 });
+
 export const listWorkersInputs = {
   connection,
   filter: workersFilter,
@@ -75,11 +82,13 @@ export const listWorkersInputs = {
   fetchAll,
   pagination,
 };
+
 export const getWorkerInputs = {
   connection,
   id: workerId,
   expand: workersExpand,
 };
+
 export const companiesExpand = input({
   label: "Expand",
   type: "string",
@@ -90,12 +99,14 @@ export const companiesExpand = input({
     "Comma-separated fields to expand: parent_legal_entity, legal_entities.",
   clean: toOptionalString,
 });
+
 export const listCompaniesInputs = {
   connection,
   expand: companiesExpand,
   fetchAll,
   pagination,
 };
+
 export const departmentId = input({
   label: "Department ID",
   type: "string",
@@ -106,6 +117,7 @@ export const departmentId = input({
   clean: util.types.toString,
   dataSource: "selectDepartment",
 });
+
 export const departmentsExpand = input({
   label: "Expand",
   type: "string",
@@ -115,17 +127,20 @@ export const departmentsExpand = input({
   comments: "Comma-separated fields to expand: parent, department_hierarchy.",
   clean: toOptionalString,
 });
+
 export const listDepartmentsInputs = {
   connection,
   expand: departmentsExpand,
   fetchAll,
   pagination,
 };
+
 export const getDepartmentInputs = {
   connection,
   id: departmentId,
   expand: departmentsExpand,
 };
+
 export const teamId = input({
   label: "Team ID",
   type: "string",
@@ -136,6 +151,7 @@ export const teamId = input({
   clean: util.types.toString,
   dataSource: "selectTeam",
 });
+
 export const teamsExpand = input({
   label: "Expand",
   type: "string",
@@ -145,17 +161,20 @@ export const teamsExpand = input({
   comments: "Comma-separated fields to expand: parent.",
   clean: toOptionalString,
 });
+
 export const listTeamsInputs = {
   connection,
   expand: teamsExpand,
   fetchAll,
   pagination,
 };
+
 export const getTeamInputs = {
   connection,
   id: teamId,
   expand: teamsExpand,
 };
+
 export const userId = input({
   label: "User ID",
   type: "string",
@@ -166,20 +185,24 @@ export const userId = input({
   clean: util.types.toString,
   dataSource: "selectUser",
 });
+
 export const listUsersInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getUserInputs = {
   connection,
   id: userId,
 };
+
 export const listCustomFieldsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const workLocationId = input({
   label: "Work Location ID",
   type: "string",
@@ -190,15 +213,18 @@ export const workLocationId = input({
   clean: util.types.toString,
   dataSource: "selectWorkLocation",
 });
+
 export const listWorkLocationsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getWorkLocationInputs = {
   connection,
   id: workLocationId,
 };
+
 export const employmentTypeId = input({
   label: "Employment Type ID",
   type: "string",
@@ -209,20 +235,24 @@ export const employmentTypeId = input({
   clean: util.types.toString,
   dataSource: "selectEmploymentType",
 });
+
 export const listEmploymentTypesInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getEmploymentTypeInputs = {
   connection,
   id: employmentTypeId,
 };
+
 export const listEntitlementsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const jobFunctionId = input({
   label: "Job Function ID",
   type: "string",
@@ -233,15 +263,18 @@ export const jobFunctionId = input({
   clean: util.types.toString,
   dataSource: "selectJobFunction",
 });
+
 export const listJobFunctionsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getJobFunctionInputs = {
   connection,
   id: jobFunctionId,
 };
+
 export const ssoMeExpand = input({
   label: "Expand",
   type: "string",
@@ -251,10 +284,12 @@ export const ssoMeExpand = input({
   comments: "Comma-separated fields to expand: company.",
   clean: toOptionalString,
 });
+
 export const getSsoMeInputs = {
   connection,
   expand: ssoMeExpand,
 };
+
 export const supergroupId = input({
   label: "Supergroup ID",
   type: "string",
@@ -265,6 +300,7 @@ export const supergroupId = input({
   clean: util.types.toString,
   dataSource: "selectSupergroup",
 });
+
 export const supergroupsFilter = input({
   label: "Filter",
   type: "string",
@@ -275,16 +311,19 @@ export const supergroupsFilter = input({
     "Filterable fields: app_owner_id, group_type. Example: app_owner_id eq 'abc123'.",
   clean: toOptionalString,
 });
+
 export const listSupergroupsInputs = {
   connection,
   filter: supergroupsFilter,
   fetchAll,
   pagination,
 };
+
 export const getSupergroupInputs = {
   connection,
   id: supergroupId,
 };
+
 export const businessPartnerId = input({
   label: "Business Partner ID",
   type: "string",
@@ -294,6 +333,7 @@ export const businessPartnerId = input({
   comments: "The unique identifier for the business partner.",
   clean: util.types.toString,
 });
+
 export const businessPartnersFilter = input({
   label: "Filter",
   type: "string",
@@ -304,6 +344,7 @@ export const businessPartnersFilter = input({
     "Filterable fields: worker_id, business_partner_group_id. Example: worker_id eq 'abc123'.",
   clean: toOptionalString,
 });
+
 export const businessPartnersExpand = input({
   label: "Expand",
   type: "string",
@@ -314,6 +355,7 @@ export const businessPartnersExpand = input({
     "Comma-separated fields to expand: business_partner_group, worker, client_group.",
   clean: toOptionalString,
 });
+
 export const businessPartnerGroupId = input({
   label: "Business Partner Group ID",
   type: "string",
@@ -324,6 +366,7 @@ export const businessPartnerGroupId = input({
     "The unique identifier of the business partner group to associate with.",
   clean: toOptionalString,
 });
+
 export const listBusinessPartnersInputs = {
   connection,
   filter: businessPartnersFilter,
@@ -331,11 +374,13 @@ export const listBusinessPartnersInputs = {
   fetchAll,
   pagination,
 };
+
 export const getBusinessPartnerInputs = {
   connection,
   id: businessPartnerId,
   expand: businessPartnersExpand,
 };
+
 export const createBusinessPartnerInputs = {
   connection,
   workerId: {
@@ -344,6 +389,7 @@ export const createBusinessPartnerInputs = {
   },
   businessPartnerGroupId,
 };
+
 export const deleteBusinessPartnerInputs = {
   connection,
   id: {
@@ -351,6 +397,7 @@ export const deleteBusinessPartnerInputs = {
     comments: "Unique identifier for the business partner to delete.",
   },
 };
+
 export const businessPartnerGroupIdRequired = input({
   label: "Business Partner Group ID",
   type: "string",
@@ -361,6 +408,7 @@ export const businessPartnerGroupIdRequired = input({
   clean: util.types.toString,
   dataSource: "selectBusinessPartnerGroup",
 });
+
 export const businessPartnerGroupsExpand = input({
   label: "Expand",
   type: "string",
@@ -370,6 +418,7 @@ export const businessPartnerGroupsExpand = input({
   comments: "Comma-separated fields to expand: default_business_partner.",
   clean: toOptionalString,
 });
+
 export const defaultBusinessPartnerId = input({
   label: "Default Business Partner ID",
   type: "string",
@@ -380,22 +429,26 @@ export const defaultBusinessPartnerId = input({
     "The unique identifier of the default business partner for this group.",
   clean: toOptionalString,
 });
+
 export const listBusinessPartnerGroupsInputs = {
   connection,
   expand: businessPartnerGroupsExpand,
   fetchAll,
   pagination,
 };
+
 export const getBusinessPartnerGroupInputs = {
   connection,
   id: businessPartnerGroupIdRequired,
   expand: businessPartnerGroupsExpand,
 };
+
 export const createBusinessPartnerGroupInputs = {
   connection,
   name: { ...name, comments: "The name of the business partner group." },
   defaultBusinessPartnerId,
 };
+
 export const deleteBusinessPartnerGroupInputs = {
   connection,
   id: {
@@ -403,6 +456,7 @@ export const deleteBusinessPartnerGroupInputs = {
     comments: "Unique identifier for the business partner group to delete.",
   },
 };
+
 export const customObjectApiName = input({
   label: "Custom Object API Name",
   type: "string",
@@ -412,6 +466,7 @@ export const customObjectApiName = input({
   comments: "The API name of the custom object.",
   clean: util.types.toString,
 });
+
 export const pluralLabel = input({
   label: "Plural Label",
   type: "string",
@@ -421,6 +476,7 @@ export const pluralLabel = input({
   comments: "The plural label for the custom object.",
   clean: toOptionalString,
 });
+
 export const ownerRole = input({
   label: "Owner Role",
   type: "string",
@@ -430,15 +486,18 @@ export const ownerRole = input({
   comments: "The owner role for the custom object.",
   clean: toOptionalString,
 });
+
 export const listCustomObjectsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getCustomObjectInputs = {
   connection,
   customObjectApiName,
 };
+
 export const createCustomObjectInputs = {
   connection,
   name: { ...name, comments: "The name of the custom object." },
@@ -448,6 +507,7 @@ export const createCustomObjectInputs = {
   },
   category: { ...category, comments: "The category for the custom object." },
 };
+
 const updateCustomObjectAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -471,6 +531,7 @@ const updateCustomObjectAdditionalFields = structuredObjectInput({
     ownerRole,
   },
 });
+
 export const updateCustomObjectInputs = {
   connection,
   customObjectApiName: {
@@ -479,6 +540,7 @@ export const updateCustomObjectInputs = {
   },
   additionalFields: updateCustomObjectAdditionalFields,
 };
+
 export const deleteCustomObjectInputs = {
   connection,
   customObjectApiName: {
@@ -486,6 +548,7 @@ export const deleteCustomObjectInputs = {
     comments: "The API name of the custom object to delete.",
   },
 };
+
 export const objectCategoryId = input({
   label: "Object Category ID",
   type: "string",
@@ -496,15 +559,18 @@ export const objectCategoryId = input({
   clean: util.types.toString,
   dataSource: "selectObjectCategory",
 });
+
 export const listObjectCategoriesInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getObjectCategoryInputs = {
   connection,
   id: objectCategoryId,
 };
+
 export const createObjectCategoryInputs = {
   connection,
   name: {
@@ -517,6 +583,7 @@ export const createObjectCategoryInputs = {
     comments: "A description of the object category.",
   },
 };
+
 export const updateObjectCategoryInputs = {
   connection,
   id: {
@@ -535,6 +602,7 @@ export const updateObjectCategoryInputs = {
     comments: "The new description for the object category.",
   },
 };
+
 export const deleteObjectCategoryInputs = {
   connection,
   id: {
@@ -542,7 +610,9 @@ export const deleteObjectCategoryInputs = {
     comments: "Unique identifier for the object category to delete.",
   },
 };
+
 const { debugRequest, ...httpInputsWithoutDebug } = httpClientInputs;
+
 export const rawRequestV2Inputs = {
   connection,
   ...httpInputsWithoutDebug,

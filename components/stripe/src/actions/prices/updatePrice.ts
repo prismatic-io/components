@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { updatePriceExamplePayload } from "../../examplePayloads/prices";
 import { updatePriceInputs } from "../../inputs";
 import { priceOutputSchema } from "../../outputSchemas";
+
 export const updatePrice = action({
   display: {
     label: "Update Price",
@@ -37,10 +38,9 @@ export const updatePrice = action({
   examplePerform: async (
     _context,
     { priceId, active, nickname, metadata },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const price = updatePriceExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...price,
@@ -56,5 +56,6 @@ export const updatePrice = action({
     type: "actionOutput",
     schema: priceOutputSchema,
   }),
+
   examplePayload: updatePriceExamplePayload,
 });

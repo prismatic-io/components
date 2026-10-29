@@ -11,6 +11,7 @@ import {
   transferRecording,
   transferWhiteboard,
 } from "../../inputs";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",
@@ -32,6 +33,7 @@ export const deleteUser = action({
     },
   ) => {
     const client = createZoomClient({ connection, debug });
+
     const { data } = await client.delete(`/users/${userId}`, {
       params: {
         encrypted_email: encryptedEmail,
@@ -43,6 +45,7 @@ export const deleteUser = action({
         transfer_whiteboard: transferWhiteboard,
       },
     });
+
     return {
       data,
     };

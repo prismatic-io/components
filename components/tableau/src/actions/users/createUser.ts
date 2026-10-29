@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createUserExamplePayload } from "../../examplePayloads";
 import { createUserInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -14,6 +15,7 @@ export const createUser = action({
       timeout: util.types.toInt(params.timeout),
       debug: context.debug.enabled,
     });
+
     const response = await client.post("/users", {
       user: {
         name: params.username,
@@ -21,6 +23,7 @@ export const createUser = action({
         authSetting: params.authSetting,
       },
     });
+
     return {
       data: response.data,
     };

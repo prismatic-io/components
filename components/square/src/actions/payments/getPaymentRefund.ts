@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { getPaymentRefundExamplePayload } from "../../examplePayloads";
 import { getPaymentRefundInputs } from "../../inputs";
+
 export const getPaymentRefund = action({
   display: {
     label: "Get Payment Refund",
@@ -12,7 +13,9 @@ export const getPaymentRefund = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.get(`/v2/refunds/${refundId}`);
+
     return {
       data: response.data,
     };

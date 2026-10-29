@@ -15,6 +15,7 @@ import {
   statusReasonTypeSchema,
   statusTypeSchema,
 } from "./common";
+
 const workerDatesSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +33,7 @@ const workerDatesSchema = {
     retirementPlanDates: openObjectSchema,
   },
 };
+
 export const workerPersonSchema = {
   type: "object" as const,
   properties: {
@@ -58,6 +60,7 @@ export const workerPersonSchema = {
   },
   additionalProperties: true,
 };
+
 export const workAssignmentSchema = {
   type: "object" as const,
   properties: {
@@ -93,6 +96,7 @@ export const workAssignmentSchema = {
   },
   additionalProperties: true,
 };
+
 export const workerSchema = {
   type: "object" as const,
   properties: {
@@ -113,6 +117,7 @@ export const workerSchema = {
     _languageCode: codeTypeSchema,
   },
 };
+
 const workersResponseSchema = {
   type: "object" as const,
   properties: {
@@ -121,14 +126,17 @@ const workersResponseSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 export const getWorkerOutputSchema = {
   type: "object" as const,
   properties: { ...workersResponseSchema.properties },
 };
+
 export const getWorkersMetadataOutputSchema = {
   type: "object" as const,
   properties: { ...resourceMetaResponseSchema.properties },
 };
+
 const teamTimeCardSchema = {
   type: "object" as const,
   properties: {
@@ -181,6 +189,7 @@ const teamTimeCardSchema = {
     },
   },
 };
+
 export const getTimeCardsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -189,6 +198,7 @@ export const getTimeCardsOutputSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 const dataCollectionEntrySchema = {
   type: "object" as const,
   properties: {
@@ -199,6 +209,7 @@ const dataCollectionEntrySchema = {
     workerDataCollectionEntries: openObjectArraySchema,
   },
 };
+
 const dataCollectionEntriesEventSchema = {
   type: "object" as const,
   properties: {
@@ -237,6 +248,7 @@ const dataCollectionEntriesEventSchema = {
     },
   },
 };
+
 const dataCollectionEntriesResponseSchema = {
   type: "object" as const,
   properties: {
@@ -245,14 +257,17 @@ const dataCollectionEntriesResponseSchema = {
     confirmMessage: confirmMessageSchema,
   },
 };
+
 export const createScanPunchOutputSchema = {
   type: "object" as const,
   properties: { ...dataCollectionEntriesResponseSchema.properties },
 };
+
 export const getClockingTransactionOutputSchema = {
   type: "object" as const,
   properties: { ...dataCollectionEntriesResponseSchema.properties },
 };
+
 const timeEntrySchema = {
   type: "object" as const,
   properties: {
@@ -292,6 +307,7 @@ const timeEntrySchema = {
     reviewRequest: openObjectSchema,
   },
 };
+
 const timeEntriesModifyEventSchema = {
   type: "object" as const,
   properties: {
@@ -331,6 +347,7 @@ const timeEntriesModifyEventSchema = {
     },
   },
 };
+
 export const modifyTimeEntriesOutputSchema = {
   type: "object" as const,
   properties: {

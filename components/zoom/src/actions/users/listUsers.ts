@@ -10,6 +10,7 @@ import {
 import { getAllPaginationResults } from "../../util";
 import type { User } from "../../interfaces/User";
 import { listUsersExamplePayload } from "../../examplePayloads";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -20,14 +21,19 @@ export const listUsers = action({
     { connection, status, roleId, includeFields, license },
   ) => {
     const client = createZoomClient({ connection, debug });
-    const data: {
-      users: User[];
-    } = await getAllPaginationResults<User>(client, `/users`, "users", {
-      status,
-      role_id: roleId,
-      include_fields: includeFields,
-      license,
-    });
+
+    const data: { users: User[] } = await getAllPaginationResults<User>(
+      client,
+      `/users`,
+      "users",
+      {
+        status,
+        role_id: roleId,
+        include_fields: includeFields,
+        license,
+      },
+    );
+
     return {
       data,
     };

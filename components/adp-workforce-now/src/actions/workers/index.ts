@@ -6,6 +6,7 @@ import { getWorker } from "./getWorker";
 import { getWorkersMetadata } from "./getWorkersMetadata";
 import { listWorkers } from "./listWorkers";
 import { modifyTimeEntries } from "./modifyTimeEntries";
+
 export default {
   ...workersDemographic,
   createScanPunch,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { getCandidateExamplePayload } from "../../../examplePayloads";
 import { candidate_id, connectionInput, version } from "../../../inputs";
+
 export const getCandidate = action({
   display: {
     label: "Get Candidate (Harvest v1/v2)",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../examplePayloads";
 import { connectionInput } from "../../inputs";
 import { deleteInstanceWebhooks } from "../../util";
+
 export const deleteAllInstanceWebhooks = action({
   display: {
     label: "Delete All Instance Webhooks",

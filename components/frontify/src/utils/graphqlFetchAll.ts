@@ -1,5 +1,6 @@
 import type { GraphQLClient } from "graphql-request";
 import { DEFAULT_PAGE_SIZE } from "../inputs/pagination";
+
 export const graphqlFetchAll = async <T = unknown>({
   client,
   query,
@@ -14,12 +15,14 @@ export const graphqlFetchAll = async <T = unknown>({
   const responses: T[] = [];
   let hasNext = true;
   let page = 1;
+
   while (hasNext) {
     const response = await client.request(query, {
       page,
       limit: DEFAULT_PAGE_SIZE,
       ...params,
     });
+
     hasNext = hasNextPath.reduce<Record<string, unknown> | boolean>(
       (obj, key) =>
         typeof obj === "object" && obj !== null
@@ -28,7 +31,9 @@ export const graphqlFetchAll = async <T = unknown>({
       response as Record<string, unknown>,
     ) as boolean;
     page += 1;
+
     responses.push(response as T);
   }
+
   return responses;
 };

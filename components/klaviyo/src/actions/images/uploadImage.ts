@@ -6,6 +6,7 @@ import { type ImageCreateQuery, ImageEnum } from "klaviyo-api";
 import { bufferToDataUri } from "../../util";
 import { uploadImageExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const uploadImage = action({
   display: {
     label: "Upload Image",
@@ -23,6 +24,7 @@ export const uploadImage = action({
     if (!importFromUrl) {
       throw new Error("Provide either an Image URL or File Data.");
     }
+
     if (debug) {
       context.logger.debug({
         connection,
@@ -32,6 +34,7 @@ export const uploadImage = action({
         debug,
       });
     }
+
     const image: ImageCreateQuery = {
       data: {
         type: ImageEnum.Image,
@@ -41,7 +44,9 @@ export const uploadImage = action({
         },
       },
     };
+
     const { body } = await imagesApi.uploadImageFromUrl(image);
+
     return {
       data: body,
     };

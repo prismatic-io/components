@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs/general";
 import { selectUserRoleDataSourceExamplePayload } from "../examplePayloads/dataSources";
+
 export const selectUserRole = dataSource({
   display: {
     label: "Select User Role",
@@ -12,6 +13,7 @@ export const selectUserRole = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const { data } = await client.get(`/userroles`);
     const result = (data.Roles as []).map<Element>(({ Name, Id }) => ({
       label: Name,

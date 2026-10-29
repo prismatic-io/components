@@ -7,6 +7,7 @@ import { updatePlanOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { patchWithEtag } from "../../utils";
 import { updatePlanInputs } from "../../inputs";
+
 export const updatePlan = action({
   display: {
     label: "Update Plan",
@@ -29,12 +30,7 @@ export const updatePlan = action({
     );
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { title },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { title }): Promise<{ data: unknown }> => ({
     data: { ...updatePlanExamplePayload.data, title },
   }),
   examplePayload: updatePlanExamplePayload,

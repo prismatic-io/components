@@ -10,6 +10,7 @@ import {
   site,
 } from "../../inputs/general";
 import { filterDataChangedAfter } from "../../util";
+
 export const listProductGroups = action({
   display: {
     label: "List Product Groups",
@@ -25,6 +26,7 @@ export const listProductGroups = action({
       endpoint: "/product_groups",
       fetchAll,
     });
+
     return {
       data: filterDataAfterDate
         ? filterDataChangedAfter(data, filterDataAfterDate)

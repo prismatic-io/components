@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getAsposeClient } from "../../client";
 import { getDocumentExamplePayload } from "../../examplePayloads";
 import { connection, fileName, folderPath, storageName } from "../../inputs";
+
 export const getDocument = action({
   display: {
     label: "Get Document",
@@ -35,6 +36,7 @@ export const getDocument = action({
         Folder: folderPath || undefined,
       },
     });
+
     return { data };
   },
   examplePayload: getDocumentExamplePayload,

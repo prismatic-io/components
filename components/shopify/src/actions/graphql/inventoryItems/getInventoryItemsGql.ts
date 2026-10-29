@@ -3,7 +3,9 @@ import { getShopifyGraphQlClient } from "../../../client";
 import { getInventoryItemsExamplePayload as examplePayload } from "../../../examplePayloads";
 import { getInventoryItemsInputs as inputs } from "../../../inputsGql";
 import { getInventoryItemsGqlOutputSchema } from "../../../outputSchemas";
+
 import getInventoryItemQuery from "../queries/inventoryItems/GetInventoryItems.gql";
+
 export const getInventoryItemsGql = action({
   display: {
     label: "Get Inventory Item",
@@ -20,6 +22,7 @@ export const getInventoryItemsGql = action({
     const data = await client.request(getInventoryItemQuery, {
       id: itemId,
     });
+
     return {
       data,
     };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { listIssueTypesExamplePayload } from "../../examplePayloads";
 import { connectionInput } from "../../inputs";
+
 export const listIssueTypes = action({
   display: {
     label: "List Issue Types",

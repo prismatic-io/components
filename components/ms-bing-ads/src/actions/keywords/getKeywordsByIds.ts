@@ -3,6 +3,7 @@ import { getKeywordsByIdsExamplePayload } from "../../examplePayloads";
 import { getKeywordsByIdsInputs } from "../../inputs/keywords";
 import { getRestClient } from "../../restClient";
 import type { QueryRestResponse } from "../../types";
+
 export const getKeywordsByIds = action({
   display: {
     label: "Get Keywords By IDs",
@@ -20,6 +21,7 @@ export const getKeywordsByIds = action({
     },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<QueryRestResponse>(
       "/Keywords/QueryByIds",
       {
@@ -28,6 +30,7 @@ export const getKeywordsByIds = action({
         ReturnAdditionalFields: returnAdditionalFields,
       },
     );
+
     return { data };
   },
   inputs: getKeywordsByIdsInputs,

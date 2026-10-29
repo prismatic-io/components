@@ -4,6 +4,7 @@ import { listFileAttributesExamplePayload } from "../../examplePayloads";
 import { listFileAttributesInputs } from "../../inputs";
 import { attributeDefinitionFullRepListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listFileAttributes = action({
   display: {
     label: "List File Attributes",
@@ -29,6 +30,7 @@ export const listFileAttributes = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         includePossibleValues,
         creatableOnly,
@@ -36,15 +38,19 @@ export const listFileAttributes = action({
         searchableOnly,
         includeDeleted,
       };
+
       context.logger.info("Fetching file attributes from Arena", {
         queryParamNames: Object.keys(queryParams),
       });
+
       const { data } = await client.get("/settings/files/attributes", {
         params: queryParams,
       });
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} file attributes`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List File Attributes");

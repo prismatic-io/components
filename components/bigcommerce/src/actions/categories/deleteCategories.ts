@@ -25,6 +25,7 @@ import {
   parentId,
   storeHash,
 } from "../../inputs";
+
 export const deleteCategories = action({
   display: {
     label: "Delete Categories",
@@ -61,7 +62,9 @@ export const deleteCategories = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/categories`;
+
     const params = {
       id,
       "id:in": id_in,
@@ -83,8 +86,10 @@ export const deleteCategories = action({
       "parent_id:less": parent_id_less,
       "page_title:like": pageTitle_like,
     };
+
     try {
       const response = await client.delete(endpoint, { params });
+
       return {
         data: response.data,
       };

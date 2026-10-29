@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../client";
 import { connection } from "../inputs/sharedInputs";
 import type { WebhookItem, WebhooksResponse } from "../types";
+
 const query = gql`
   query listWebhooks {
     webhooks {
@@ -13,6 +14,7 @@ const query = gql`
     }
   }
 `;
+
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",

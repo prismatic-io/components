@@ -7,6 +7,7 @@ import listWebhooksQuery from "../actions/graphql/queries/webhooks/ListWebhooks.
 import { MAX_LIMIT } from "../constants";
 import type { PageInfo, Webhookinput, WebhookSubscription } from "../types";
 import { fetchData } from "./pagination";
+
 export const signaturesMatch = (
   expected: string,
   received: unknown,
@@ -21,6 +22,7 @@ export const signaturesMatch = (
     crypto.timingSafeEqual(expectedBuffer, receivedBuffer)
   );
 };
+
 export const performFunction = async (
   context,
   payload: TriggerPayload,
@@ -66,6 +68,7 @@ export const performFunction = async (
     },
   });
 };
+
 export const createWebhook = async (
   client: GraphQLClient,
   input: Webhookinput,
@@ -78,14 +81,16 @@ export const createWebhook = async (
   } = await client.request(createWebhookQuery, input);
   return data;
 };
+
 export const deleteWebhookById = async (client: GraphQLClient, id: string) => {
-  const data: {
-    webhookSubscriptionDelete: Record<string, unknown>;
-  } = await client.request(deleteWebhookQuery, {
-    id,
-  });
+  const data: { webhookSubscriptionDelete: Record<string, unknown> } =
+    await client.request(deleteWebhookQuery, {
+      id,
+    });
+
   return data;
 };
+
 export const listWebhooks = async (
   client: GraphQLClient,
   getAlldata: boolean,
@@ -96,6 +101,7 @@ export const listWebhooks = async (
   callbackUrl?: string,
 ) => {
   const shouldFetchAll = onlyInstanceWebhooks || getAlldata;
+
   const data = (await fetchData<WebhookSubscription>(
     client,
     ["webhookSubscriptions"],
@@ -110,11 +116,14 @@ export const listWebhooks = async (
   )) as Record<"webhookSubscriptions", WebhookSubscription[]> & {
     pageInfo: PageInfo;
   };
+
   if (onlyInstanceWebhooks) {
     const webhooks = data.webhookSubscriptions;
+
     const filteredWebhooks = (webhooks || []).filter((webhook) =>
       instanceWebhookUrls.includes(webhook.endpoint.callbackUrl),
     );
+
     return {
       webhookSubscriptions: filteredWebhooks,
       pageInfo: {
@@ -123,5 +132,6 @@ export const listWebhooks = async (
       },
     };
   }
+
   return data;
 };

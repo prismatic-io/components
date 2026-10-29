@@ -1,7 +1,6 @@
 import type { Element } from "@prismatic-io/spectral";
-export const selectCustomerExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectCustomerExamplePayload: { result: Element[] } = {
   result: [
     {
       key: "1",
@@ -17,9 +16,8 @@ export const selectCustomerExamplePayload: {
     },
   ],
 };
-export const selectEventExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectEventExamplePayload: { result: Element[] } = {
   result: [
     {
       key: "1",
@@ -35,9 +33,8 @@ export const selectEventExamplePayload: {
     },
   ],
 };
-export const selectMessageExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectMessageExamplePayload: { result: Element[] } = {
   result: [
     {
       key: "1",
@@ -53,9 +50,8 @@ export const selectMessageExamplePayload: {
     },
   ],
 };
-export const selectTicketExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectTicketExamplePayload: { result: Element[] } = {
   result: [
     {
       key: "1",

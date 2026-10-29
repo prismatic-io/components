@@ -4,6 +4,7 @@ import { getTaskExamplePayload } from "../../examplePayloads";
 import { getTaskInputs } from "../../inputs";
 import { getTaskOutputSchema } from "../../outputSchemas";
 import type { GetTaskQueryParams } from "../../types";
+
 export const getTask = action({
   display: {
     label: "Get Task",
@@ -25,6 +26,7 @@ export const getTask = action({
       include_subtasks: subTasks,
     };
     if (teamId.length) params.team_id = teamId;
+
     const { data } = await client.get(`/task/${taskId}`, {
       params,
     });

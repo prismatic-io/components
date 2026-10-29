@@ -7,6 +7,7 @@ import {
   pagination,
   version,
 } from "./common";
+
 export const getAdAccountInputs = {
   connection: myConnectionField,
   adAccountId,
@@ -16,6 +17,7 @@ export const getAdAccountInputs = {
   },
   version,
 };
+
 export const listAdAccountsInputs = {
   connection: myConnectionField,
   fetchAll,

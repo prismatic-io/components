@@ -1,12 +1,14 @@
 import { type Element, dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { companyIdInput, connectionInput } from "../inputs";
+
 interface Employee {
   uuid: string;
   first_name: string;
   last_name: string;
   email: string;
 }
+
 export const selectEmployee = dataSource({
   display: {
     label: "Select Employee",
@@ -19,9 +21,11 @@ export const selectEmployee = dataSource({
   },
   perform: async (_context, { connection, companyId }) => {
     const client = createClient(connection);
+
     let page = 1;
     let hasMorePages = true;
     const employees: Employee[] = [];
+
     do {
       const { data, headers } = await client.get<Employee[]>(
         `/companies/${companyId}/employees`,
@@ -31,12 +35,14 @@ export const selectEmployee = dataSource({
       hasMorePages = headers["x-total-pages"] > headers["x-page"];
       page += 1;
     } while (hasMorePages);
+
     const result = employees
       .map<Element>((employee) => ({
         label: `${employee.first_name} ${employee.last_name}`,
         key: employee.uuid.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   examplePayload: {

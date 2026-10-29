@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createPaymentExamplePayload } from "../../examplePayloads";
 import { createPaymentInputs } from "../../inputs";
+
 export const createPayment = action({
   display: {
     label: "Create Payment",
@@ -12,7 +13,9 @@ export const createPayment = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.post("/v2/payments", paymentData);
+
     return {
       data: response.data,
     };

@@ -4,6 +4,7 @@ import { removeTicketReferenceExamplePayload } from "../../examplePayloads";
 import { removeTicketReferenceInputs } from "../../inputs";
 import { removeTicketReferenceOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const removeTicketReference = action({
   display: {
     label: "Remove Ticket Reference",
@@ -19,9 +20,11 @@ export const removeTicketReference = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       await client.delete(
         `/tickets/${params.ticketGuid}/tickets/${params.associationGuid}`,
       );
+
       return {
         data: {
           success: true,

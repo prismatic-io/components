@@ -21,6 +21,7 @@ import { mergeDeals } from "./mergeDeals";
 import { searchDeals } from "./searchDeals";
 import { updateDeal } from "./updateDeal";
 import { updateDealProduct } from "./updateDealProduct";
+
 export default {
   getDeals,
   addDeal,

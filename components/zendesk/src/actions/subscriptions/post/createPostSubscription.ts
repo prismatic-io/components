@@ -4,6 +4,7 @@ import { createPostSubscriptionExamplePayload } from "../../../examplePayloads";
 import { createPostSubscriptionInputs } from "../../../inputs";
 import { createPostSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
+
 export const createPostSubscription = action({
   display: {
     label: "Create Post Subscription",
@@ -15,10 +16,12 @@ export const createPostSubscription = action({
     const payload = {
       user_id: userId,
     };
+
     const { data } = await client.post<SubscriptionResponse>(
       `/community/posts/${postId}/subscriptions`,
       payload,
     );
+
     return {
       data,
     };

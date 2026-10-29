@@ -5,6 +5,7 @@ import { listAssets } from "./listAssets";
 import { moveAsset } from "./moveAsset";
 import { searchAsset } from "./searchAsset";
 import { updateAsset } from "./updateAsset";
+
 export default {
   createAsset,
   deleteAsset,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getMobileAppExamplePayload } from "../../examplePayloads";
 import { getMobileAppInputs } from "../../inputs";
+
 export const getMobileApp = action({
   display: {
     label: "Get Mobile App",

@@ -5,6 +5,7 @@ import { createClient } from "../../client";
 import { createFileInputs } from "../../inputs";
 import { createFileOutputSchema } from "../../outputSchemas";
 import { createFileExamplePayload } from "../../examplePayloads";
+
 export const createFile = action({
   display: {
     label: "Create File",
@@ -15,8 +16,11 @@ export const createFile = action({
     const { fileName, folderId } = params;
     const fields = util.types.toString(params.fields);
     const { data: fileData } = util.types.toData(params.fileContent);
+
     const mimeType = mime.lookup(fileName) || undefined;
+
     const drive = createClient(params.connection);
+
     const { data } = await drive.files.create({
       requestBody: {
         name: fileName,
@@ -30,6 +34,7 @@ export const createFile = action({
       fields,
       supportsAllDrives: true,
     });
+
     return {
       data,
     };
@@ -39,13 +44,9 @@ export const createFile = action({
     type: "actionOutput",
     schema: createFileOutputSchema,
   }),
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const { fileName, folderId } = params;
+
     return {
       data: {
         ...createFileExamplePayload.data,
@@ -58,4 +59,5 @@ export const createFile = action({
   },
   examplePayload: createFileExamplePayload,
 });
+
 export default createFile;

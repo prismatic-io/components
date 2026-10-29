@@ -5,6 +5,7 @@ import { getBatchContactsExamplePayload } from "../../examplePayloads";
 import { getBatchContactsInputs } from "../../inputs";
 import { getArrayOfObjectsWithKey } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const getBatchContacts = action({
   display: {
     label: "Get Batch Contacts",
@@ -25,6 +26,7 @@ export const getBatchContacts = action({
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
@@ -33,6 +35,7 @@ export const getBatchContacts = action({
         "Content-Type": "application/json",
       },
     });
+
     const payload = {
       propertiesWithHistory: propertiesWithHistory || [],
       ...(idProperty && { idProperty }),
@@ -46,6 +49,7 @@ export const getBatchContacts = action({
         params: { archived },
       },
     );
+
     return {
       data,
     };

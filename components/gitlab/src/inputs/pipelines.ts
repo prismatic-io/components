@@ -9,6 +9,7 @@ import {
   refName,
   updatedAfter,
 } from "./common";
+
 const pipelineId = input({
   label: "Pipeline ID",
   placeholder: "Enter pipeline ID",
@@ -18,6 +19,7 @@ const pipelineId = input({
   example: "61205",
   clean: toRequiredId,
 });
+
 const pipelineStatus = input({
   label: "Status",
   type: "string",
@@ -26,6 +28,7 @@ const pipelineStatus = input({
   model: PIPELINE_STATUS_OPTIONS,
   clean: cleanString,
 });
+
 export const listPipelinesInputs = {
   connection: connectionInput,
   project,
@@ -35,6 +38,7 @@ export const listPipelinesInputs = {
   pipelineStatus,
   updatedAfter,
 };
+
 export const getPipelineInputs = {
   connection: connectionInput,
   project,

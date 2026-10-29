@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { deleteAllInstanceSubscriptionsExamplePayload } from "../../examplePayloads";
 import { deleteAllInstanceSubscriptionsInputs } from "../../inputs";
 import { fetchAllData } from "../../util";
+
 export const deleteAllInstanceSubscriptions = action({
   display: {
     label: "Delete All Instance Subscriptions",
@@ -24,9 +25,11 @@ export const deleteAllInstanceSubscriptions = action({
         instanceWebhooks.has(notificationUrl ?? ""),
       )
       .map(({ id }) => id);
+
     await Promise.all(
       subscriptionsToRemove.map((id) => client.delete(`/subscriptions/${id}`)),
     );
+
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
   examplePayload: deleteAllInstanceSubscriptionsExamplePayload,

@@ -10,6 +10,7 @@ import {
   subscriptionName,
   topicName,
 } from "../inputs";
+
 export const deleteSubscriptions = action({
   display: {
     label: "Delete Subscriptions",
@@ -48,4 +49,5 @@ export const deleteSubscriptions = action({
     subscriptionName,
   },
 });
+
 export default { deleteSubscriptions };

@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { removeFollowersFromTaskExamplePayload } from "../../examplePayloads";
 import { removeFollowersFromTaskInputs } from "../../inputs";
 import { taskResponseSchema } from "../../outputSchemas";
+
 export const removeFollowersFromTask = action({
   display: {
     label: "Remove Followers from Task",

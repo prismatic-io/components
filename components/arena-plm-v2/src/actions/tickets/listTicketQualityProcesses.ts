@@ -4,6 +4,7 @@ import { listTicketQualityProcessesExamplePayload } from "../../examplePayloads"
 import { listTicketQualityProcessesInputs } from "../../inputs";
 import { referencedQualityListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listTicketQualityProcesses = action({
   display: {
     label: "List Ticket Quality Processes",
@@ -19,9 +20,11 @@ export const listTicketQualityProcesses = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/tickets/${params.ticketGuid}/quality`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Ticket Quality Processes");

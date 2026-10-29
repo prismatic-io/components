@@ -8,6 +8,7 @@ export const userMiniSchema = {
   },
   required: ["id", "type"],
 };
+
 export const folderMiniSchema = {
   type: "object" as const,
   properties: {
@@ -19,6 +20,7 @@ export const folderMiniSchema = {
   },
   required: ["id", "type", "name"],
 };
+
 export const fileVersionMiniSchema = {
   type: "object" as const,
   properties: {
@@ -28,6 +30,7 @@ export const fileVersionMiniSchema = {
   },
   required: ["id", "type"],
 };
+
 export const fileMiniSchema = {
   type: "object" as const,
   properties: {
@@ -41,6 +44,7 @@ export const fileMiniSchema = {
   },
   required: ["id", "type", "name"],
 };
+
 export const pathCollectionSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +53,7 @@ export const pathCollectionSchema = {
   },
   required: ["total_count", "entries"],
 };
+
 export const sharedLinkSchema = {
   type: "object" as const,
   properties: {
@@ -80,10 +85,12 @@ export const sharedLinkSchema = {
   },
   required: ["url", "access"],
 };
+
 export const nullableSharedLinkSchema = {
   ...sharedLinkSchema,
   type: ["object", "null"],
 };
+
 export const watermarkInfoSchema = {
   type: "object" as const,
   properties: {
@@ -92,6 +99,7 @@ export const watermarkInfoSchema = {
     is_watermarked_by_access_policy: { type: "boolean" },
   },
 };
+
 export const classificationSchema = {
   type: ["object", "null"],
   properties: {
@@ -100,6 +108,7 @@ export const classificationSchema = {
     color: { type: "string" },
   },
 };
+
 export const collectionSchema = {
   type: "object" as const,
   properties: {
@@ -109,10 +118,12 @@ export const collectionSchema = {
     collection_type: { type: "string", enum: ["favorites"] },
   },
 };
+
 export const metadataSchema = {
   type: "object" as const,
   additionalProperties: true,
 };
+
 export const folderFullSchema = {
   type: "object" as const,
   properties: {
@@ -213,6 +224,7 @@ export const folderFullSchema = {
   },
   required: ["id", "type", "name"],
 };
+
 export const fileFullSchema = {
   type: "object" as const,
   properties: {
@@ -386,6 +398,7 @@ export const fileFullSchema = {
   },
   required: ["id", "type", "name"],
 };
+
 export const folderItemSchema = {
   type: "object" as const,
   properties: {

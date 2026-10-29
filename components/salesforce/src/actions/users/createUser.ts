@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { createUserInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -40,12 +41,14 @@ export const createUser = action({
       });
     }
     const salesforceClient = await createSalesforceClient(connection, version);
+
     const profileResponse = await salesforceClient
       .sobject("Profile")
       .findOne({ Name: profile });
     if (!profileResponse?.Id) {
       throw new Error(`Unable to find Profile matching "${profile}"`);
     }
+
     const command = salesforceClient.sobject("User").create({
       profileId: profileResponse.Id,
       FirstName: firstName,
@@ -60,14 +63,15 @@ export const createUser = action({
       ...dynamicValues,
       ...fieldValues,
     });
+
     const response = await executeSFAction(context, command);
+
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   inputs: createUserInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getZendeskClient } from "../../client";
 import { getContactsStreamExamplePayload } from "../../examplePayloads";
 import { getContactsStreamInputs } from "../../inputs";
+
 export const getContactsStream = action({
   display: {
     label: "Get Contacts Stream",
@@ -16,6 +17,7 @@ export const getContactsStream = action({
         params,
         headers: { Accept: "application/json" },
       });
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);

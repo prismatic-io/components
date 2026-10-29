@@ -9,6 +9,7 @@ import {
   targetType,
   triggerTypes,
 } from "./common";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -19,6 +20,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const webhookInputs = {
   primarySignatureKey: { ...signatureKey, label: "Primary Signature Key" },
   secondarySignatureKey: {
@@ -26,6 +28,7 @@ export const webhookInputs = {
     label: "Secondary Signature Key",
   },
 };
+
 export const managedWebhookInputs = {
   connection: connectionInput,
   targetId,
@@ -37,16 +40,19 @@ export const managedWebhookInputs = {
     label: "Secondary Signature Key",
   },
 };
+
 export const newOrUpdatedFileInputs = {
   connection: connectionInput,
   folderId: folderIdInput,
   lookBackDate,
 };
+
 export const newFolderInputs = {
   connection: connectionInput,
   folderId: folderIdInput,
   lookBackDate,
 };
+
 export const newFileCommentsInputs = {
   connection: connectionInput,
   fileId: fileIdInput,

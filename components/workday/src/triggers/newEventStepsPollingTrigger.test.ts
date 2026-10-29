@@ -6,10 +6,10 @@ import {
 } from "../testHelpers";
 import type { PollingState, WorkdayEventStep } from "../types";
 import { newEventStepsPollingTrigger } from "./newEventStepsPollingTrigger";
+
 type PerformArgs = Parameters<typeof newEventStepsPollingTrigger.perform>;
-type PollResult = {
-  polledNoChanges?: boolean;
-};
+type PollResult = { polledNoChanges?: boolean };
+
 const STEPS_PATH = "/ccx/businessProcess/v1/eventSteps";
 const NOW = "2026-10-15T12:00:00.000Z";
 const step = (id: string, creationDate: string): WorkdayEventStep => ({
@@ -20,9 +20,8 @@ const step = (id: string, creationDate: string): WorkdayEventStep => ({
 const yesterday = step("s1", "2026-10-14");
 const today = step("s2", "2026-10-15");
 const later = step("s3", "2026-10-15");
-const store: {
-  state?: PollingState;
-} = {};
+
+const store: { state?: PollingState } = {};
 const context = (batching = false) =>
   createPollingContext<PerformArgs[0]>(store, { batching });
 const noPayload = {} as PerformArgs[1];
@@ -41,6 +40,7 @@ const mockSteps = (
     .get(STEPS_PATH)
     .query({ limit: "100", offset: "0", ...query })
     .reply(200, { total, data: steps });
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 beforeEach(() => {
@@ -53,6 +53,7 @@ afterEach(() => {
   expect(nock.isDone()).toBe(true);
   nock.cleanAll();
 });
+
 describe("newEventStepsPollingTrigger declaration", () => {
   it("declares opt-in batching with a default batch size", () => {
     expect(newEventStepsPollingTrigger.triggerResolverSupport).toBe("valid");
@@ -61,12 +62,14 @@ describe("newEventStepsPollingTrigger declaration", () => {
       newEventStepsPollingTrigger.triggerResolver?.resolveItems,
     ).toBeInstanceOf(Function);
   });
+
   it("says it emits new records only", () => {
     expect(newEventStepsPollingTrigger.display.label).toBe("New Event Steps");
     expect(newEventStepsPollingTrigger.display.description).toMatch(
       /new event steps only/,
     );
   });
+
   it("offers the Look-back Date directly below the connection", () => {
     expect(Object.keys(newEventStepsPollingTrigger.inputs ?? {})).toEqual([
       "connection",
@@ -75,6 +78,7 @@ describe("newEventStepsPollingTrigger declaration", () => {
       "stepType",
     ]);
   });
+
   it("resolves a realistic payload into tagged items", () => {
     const items = newEventStepsPollingTrigger.triggerResolver?.resolveItems?.(
       {} as never,
@@ -83,6 +87,7 @@ describe("newEventStepsPollingTrigger declaration", () => {
     expect(items).toEqual([{ changeType: "created", record: today }]);
   });
 });
+
 describe("newEventStepsPollingTrigger perform", () => {
   it("filters by creation date only and records a baseline on a first run", async () => {
     mockSteps({ createdOnOrAfter: "2026-10-14" }, [yesterday, today]);
@@ -95,6 +100,7 @@ describe("newEventStepsPollingTrigger perform", () => {
     expect((result as PollResult).polledNoChanges).toBe(true);
     expect(store.state).toEqual({ lastPolledAt: NOW, seen: ["s1", "s2"] });
   });
+
   it("delivers every step from the Look-back Date on an initial sync", async () => {
     mockSteps({ createdOnOrAfter: "2026-01-01" }, [yesterday, today]);
     const result = await newEventStepsPollingTrigger.perform(
@@ -109,6 +115,7 @@ describe("newEventStepsPollingTrigger perform", () => {
       data: { created: [yesterday, today] },
     });
   });
+
   it("delivers only steps not seen in the overlap and drops IDs that left the window", async () => {
     store.state = {
       lastPolledAt: "2026-10-15T08:00:00.000Z",
@@ -125,6 +132,7 @@ describe("newEventStepsPollingTrigger perform", () => {
       lastPolledAt: NOW,
       seen: ["s1", "s2", "s3"],
     });
+
     vi.setSystemTime(new Date("2026-10-16T12:00:00.000Z"));
     const tomorrow = step("s4", "2026-10-16");
     mockSteps({ createdOnOrAfter: "2026-10-14" }, [
@@ -141,6 +149,7 @@ describe("newEventStepsPollingTrigger perform", () => {
     expect(next.payload.body).toEqual({ data: { created: [tomorrow] } });
     expect(store.state?.seen).toEqual(["s2", "s3", "s4"]);
   });
+
   it("sends the Business Process and Step Type filters as repeated parameters", async () => {
     mockSteps(
       {
@@ -156,6 +165,7 @@ describe("newEventStepsPollingTrigger perform", () => {
       stepType: ["st1"],
     });
   });
+
   it("reads every page until the total is reached", async () => {
     store.state = { lastPolledAt: NOW, seen: [] };
     const page1 = Array.from({ length: 100 }, (_, i) =>
@@ -172,13 +182,10 @@ describe("newEventStepsPollingTrigger perform", () => {
       params,
     );
     expect(
-      (
-        result.payload.body.data as {
-          created: unknown[];
-        }
-      ).created,
+      (result.payload.body.data as { created: unknown[] }).created,
     ).toHaveLength(101);
   });
+
   it("surfaces a Workday error and keeps the stored state", async () => {
     store.state = { lastPolledAt: NOW, seen: ["s1"] };
     nock(TEST_HOST)

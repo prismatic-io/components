@@ -19,6 +19,7 @@ import {
 } from "../outputSchemas";
 import type { Property } from "../types";
 import { paginateRecords } from "../util";
+
 const listProperties = action({
   display: {
     label: "List Properties",
@@ -52,13 +53,12 @@ const listProperties = action({
   examplePerform: async (
     _context,
     { accountId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const properties = listPropertiesExamplePayload.data.properties as Record<
       string,
       unknown
     >[];
+
     return {
       data: {
         ...listPropertiesExamplePayload.data,
@@ -72,6 +72,7 @@ const listProperties = action({
   },
   examplePayload: listPropertiesExamplePayload,
 });
+
 const getProperty = action({
   display: {
     label: "Get Property",
@@ -94,6 +95,7 @@ const getProperty = action({
   },
   examplePayload: getPropertyExamplePayload,
 });
+
 const runReport = action({
   display: {
     label: "Run Report",
@@ -165,24 +167,20 @@ const runReport = action({
   examplePerform: async (
     _context,
     { requestBody },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const { dimensions, metrics } = requestBody as {
-      dimensions?: {
-        name: string;
-      }[];
-      metrics?: {
-        name: string;
-      }[];
+      dimensions?: { name: string }[];
+      metrics?: { name: string }[];
     };
     const example = runReportExamplePayload.data;
+
     const dimensionHeaders = dimensions?.length
       ? dimensions.map(({ name }) => ({ name }))
       : example.dimensionHeaders;
     const metricHeaders = metrics?.length
       ? metrics.map(({ name }) => ({ name }))
       : example.metricHeaders;
+
     return {
       data: {
         ...example,
@@ -202,4 +200,5 @@ const runReport = action({
   },
   examplePayload: runReportExamplePayload,
 });
+
 export default { getProperty, listProperties, runReport };

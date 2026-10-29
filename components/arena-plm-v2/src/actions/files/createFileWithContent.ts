@@ -5,6 +5,7 @@ import { createFileWithContentExamplePayload } from "../../examplePayloads";
 import { createFileWithContentInputs } from "../../inputs";
 import { fileDetailSchema } from "../../outputSchemas";
 import { getFilenameFromContentType, handleArenaError } from "../../util";
+
 export const createFileWithContent = action({
   display: {
     label: "Create File With Content",
@@ -34,7 +35,9 @@ export const createFileWithContent = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const formData = new FormData();
+
       if (file.data) {
         const filename =
           getFilenameFromContentType(file.contentType, format) || "upload";
@@ -43,6 +46,7 @@ export const createFileWithContent = action({
           contentType: file.contentType,
         });
       }
+
       if (title) formData.append("title", title);
       if (description) formData.append("description", description);
       if (format) formData.append("format", format);
@@ -53,11 +57,13 @@ export const createFileWithContent = action({
       if (edition) formData.append("edition", edition);
       if (isPrivate !== undefined)
         formData.append("private", isPrivate.toString());
+
       const { data } = await client.post("/files", formData, {
         headers: {
           ...formData.getHeaders(),
         },
       });
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Create File With Content");

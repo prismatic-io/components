@@ -3,6 +3,7 @@ import {
   instanceReferenceSchema,
   workerDataSchema,
 } from "./shared";
+
 export const calculatedTimeDetailsSchema = {
   type: "object" as const,
   properties: {
@@ -34,6 +35,7 @@ export const calculatedTimeDetailsSchema = {
     },
   },
 };
+
 export const timeBlockViewSchema = {
   type: "object" as const,
   properties: {
@@ -112,6 +114,7 @@ export const timeBlockViewSchema = {
     },
   },
 };
+
 export const workerTimeAttestationsSchema = {
   type: "object" as const,
   properties: {
@@ -126,6 +129,7 @@ export const workerTimeAttestationsSchema = {
     },
   },
 };
+
 export const timeClockEventViewSchema = {
   type: "object" as const,
   properties: {
@@ -196,6 +200,7 @@ export const timeClockEventViewSchema = {
     },
   },
 };
+
 export const getTimeClockEventsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -212,8 +217,11 @@ export const getTimeClockEventsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getTimeClockEventsByIdOutputSchema = timeClockEventViewSchema;
+
 export const getWorkerByIdOutputSchema = workerDataSchema;
+
 export const getWorkersOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -230,6 +238,9 @@ export const getWorkersOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postWorkerTimeBlockOutputSchema = timeBlockViewSchema;
+
 export const updateTimeClockEventsByIdOutputSchema = timeClockEventViewSchema;
+
 export const updateWorkerTimeBlockOutputSchema = timeBlockViewSchema;

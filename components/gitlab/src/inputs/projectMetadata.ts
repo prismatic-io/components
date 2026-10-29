@@ -8,6 +8,7 @@ import {
   project,
   search,
 } from "./common";
+
 const milestoneState = input({
   label: "State",
   type: "string",
@@ -16,6 +17,7 @@ const milestoneState = input({
   model: MILESTONE_STATE_OPTIONS,
   clean: cleanString,
 });
+
 const memberQuery = input({
   label: "Query",
   type: "string",
@@ -26,6 +28,7 @@ const memberQuery = input({
   example: "jdoe",
   clean: cleanString,
 });
+
 export const listLabelsInputs = {
   connection: connectionInput,
   project,
@@ -33,6 +36,7 @@ export const listLabelsInputs = {
   pagination,
   search,
 };
+
 export const listMilestonesInputs = {
   connection: connectionInput,
   project,
@@ -40,6 +44,7 @@ export const listMilestonesInputs = {
   pagination,
   milestoneState,
 };
+
 export const listProjectMembersInputs = {
   connection: connectionInput,
   project,

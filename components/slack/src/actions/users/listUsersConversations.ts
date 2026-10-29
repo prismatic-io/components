@@ -3,6 +3,7 @@ import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { listUserConversationsExamplePayload } from "../../examplePayloads";
 import { listUsersConversationsInputs } from "../../inputs";
 import { debugLogger, paginateResults } from "../../util";
+
 export const listUsersConversations = action({
   display: {
     label: "List User Conversations",
@@ -26,6 +27,7 @@ export const listUsersConversations = action({
       limit,
       team_id: teamId || undefined,
     };
+
     if (fetchAll) {
       return await paginateResults(
         client,
@@ -35,12 +37,12 @@ export const listUsersConversations = action({
         params,
       );
     }
+
     const data = await client.users.conversations(params);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listUserConversationsExamplePayload,
   }),
   examplePayload: {

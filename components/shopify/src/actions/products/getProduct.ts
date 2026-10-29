@@ -3,6 +3,7 @@ import { getProductExamplePayload } from "../../examplePayloads";
 import { getProductInputs } from "../../inputs";
 import { getProductOutputSchema } from "../../outputSchemas";
 import { getProductGql } from "../graphql/products/getProductGql";
+
 export const getProduct = action({
   display: {
     label: "Get Product",

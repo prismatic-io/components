@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const bookingSchema = {
   type: "object" as const,
   properties: {
@@ -115,9 +116,15 @@ const bookingSchema = {
     "modifiedOn",
   ],
 };
+
 export const createBookingByProviderOutputSchema = bookingSchema;
+
 export const getBookingByProviderOutputSchema = bookingSchema;
+
 export const getBookingByTenantOutputSchema = bookingSchema;
+
 export const listBookingByProviderOutputSchema = listEnvelope(bookingSchema);
+
 export const listBookingByTenantOutputSchema = listEnvelope(bookingSchema);
+
 export const updateBookingOutputSchema = bookingSchema;

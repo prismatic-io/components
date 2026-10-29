@@ -4,6 +4,7 @@ import { createOauthClient } from "../../client";
 import { uploadFileExamplePayload } from "../../examplePayloads";
 import { uploadFileInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -25,14 +26,13 @@ export const uploadFile = action({
       initial_comment: params.initialComment || undefined,
       thread_ts: params.thread || undefined,
     });
+
     return { data };
   },
   examplePerform: async (
     _context,
     { fileName, title, channels },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...uploadFileExamplePayload,
       file: {

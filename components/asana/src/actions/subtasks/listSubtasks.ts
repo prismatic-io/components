@@ -5,6 +5,7 @@ import { listSubtasksInputs } from "../../inputs";
 import { listSubtasksOutputSchema } from "../../outputSchemas";
 import type { Task } from "../../types";
 import { getSubtasks } from "../../util";
+
 export const listSubtasks = action({
   display: {
     label: "List Subtasks",
@@ -16,14 +17,18 @@ export const listSubtasks = action({
       params.asanaConnection,
       context.debug.enabled,
     );
+
     let subtasks = await getSubtasks(client, params.taskId, {
       limit: params.pagination.limit,
       offset: params.pagination.offset,
       opt_fields: params.optFields,
     });
+
     if (params.listAllNestedSubtasks) {
       const allSubtasks = [...subtasks];
+
       let shouldGetMoreSubtasks = subtasks.length;
+
       while (shouldGetMoreSubtasks) {
         const toGetSubtasks = subtasks.reduce(
           (getSubtasksAccumulator: Promise<Task[]>[], subtask) => {
@@ -38,14 +43,18 @@ export const listSubtasks = action({
           },
           [],
         );
+
         const results: Task[][] = await Promise.all(toGetSubtasks);
+
         subtasks = [];
+
         results.forEach((result) => {
           result.forEach((subtask: Task) => {
             subtasks.push(subtask);
             allSubtasks.push(subtask);
           });
         });
+
         shouldGetMoreSubtasks = subtasks.length;
       }
       return { data: { data: allSubtasks } };

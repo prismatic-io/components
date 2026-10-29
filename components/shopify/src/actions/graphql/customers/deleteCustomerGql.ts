@@ -4,6 +4,7 @@ import { deleteCustomerExamplePayload } from "../../../examplePayloads";
 import { deleteCustomerInputs as inputs } from "../../../inputsGql";
 import { deleteCustomerGqlOutputSchema } from "../../../outputSchemas";
 import deleteCustomerQuery from "../queries/customers/DeleteCustomer.gql";
+
 export const deleteCustomerGql = action({
   display: {
     label: "Delete Customer",
@@ -20,6 +21,7 @@ export const deleteCustomerGql = action({
     await client.request(deleteCustomerQuery, {
       id: customerIdGql,
     });
+
     return {
       data: {},
     };

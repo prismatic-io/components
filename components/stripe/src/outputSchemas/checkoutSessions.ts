@@ -2709,6 +2709,7 @@ export const checkoutSessionOutputSchema = {
     "shipping_options",
   ],
 };
+
 export const listCheckoutSessionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -2719,6 +2720,7 @@ export const listCheckoutSessionsOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const lineItemOutputSchema = {
   type: "object" as const,
   properties: {
@@ -3256,6 +3258,7 @@ export const lineItemOutputSchema = {
     "object",
   ],
 };
+
 export const listCheckoutSessionLineItemsOutputSchema = {
   type: "object" as const,
   properties: {

@@ -4,10 +4,14 @@ import { createClient } from "../client";
 import type { GongRecord, PollingState } from "../types";
 import { lookBackDateClean, resolvePollingRecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 vi.mock("../client", () => ({ createClient: vi.fn() }));
+
 const NOW = new Date("2026-03-01T12:00:00.000Z");
+
 const created: GongRecord = { id: "call-1", started: "2026-01-01T00:00:00Z" };
 const other: GongRecord = { id: "call-2", started: "2026-01-02T00:00:00Z" };
+
 describe("batching declaration", () => {
   test("New Records is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -16,6 +20,7 @@ describe("batching declaration", () => {
       Function,
     );
   });
+
   test("resolvePollingRecordChanges tags every record with how it changed", () => {
     expect(
       resolvePollingRecordChanges({ created: [created], updated: [other] }),
@@ -24,6 +29,7 @@ describe("batching declaration", () => {
       { changeType: "updated", record: other },
     ]);
   });
+
   test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({})).toEqual([]);
     expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual(
@@ -31,6 +37,7 @@ describe("batching declaration", () => {
     );
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolvePollingRecordChanges tolerates an absent array", () => {
     expect(resolvePollingRecordChanges({ created: [created] })).toEqual([
       { changeType: "created", record: created },
@@ -39,6 +46,7 @@ describe("batching declaration", () => {
       { changeType: "updated", record: other },
     ]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const payload = {
       ...defaultTriggerPayload(),
@@ -51,6 +59,7 @@ describe("batching declaration", () => {
     ).toEqual([{ changeType: "created", record: created }]);
   });
 });
+
 describe("lookBackDateClean", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -59,23 +68,28 @@ describe("lookBackDateClean", () => {
   afterEach(() => {
     vi.useRealTimers();
   });
+
   test("returns an empty string for empty values", () => {
     expect(lookBackDateClean(undefined)).toBe("");
     expect(lookBackDateClean(null)).toBe("");
     expect(lookBackDateClean("  ")).toBe("");
   });
+
   test("returns the date as an ISO string", () => {
     expect(lookBackDateClean("2026-01-01")).toBe("2026-01-01T00:00:00.000Z");
   });
+
   test("rejects a wrong format, a non-calendar date, and a future date", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(/YYYY-MM-DD/);
     expect(() => lookBackDateClean("2026-02-31")).toThrow(/YYYY-MM-DD/);
     expect(() => lookBackDateClean("2026-03-02")).toThrow(/future/);
   });
 });
+
 describe("perform initial sync seed", () => {
   const get = vi.fn();
   let store: PollingState | undefined;
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(NOW);
@@ -86,6 +100,7 @@ describe("perform initial sync seed", () => {
   afterEach(() => {
     vi.useRealTimers();
   });
+
   const poll = async (params: {
     resourceType?: string;
     lookBackDate?: string;
@@ -120,6 +135,7 @@ describe("perform initial sync seed", () => {
       polledNoChanges: result.polledNoChanges,
     };
   };
+
   test("calls without a Look-back Date start the window at now", async () => {
     get.mockResolvedValue({ data: { calls: [] } });
     await poll({});
@@ -132,6 +148,7 @@ describe("perform initial sync seed", () => {
     });
     expect(store?.lastPolledAt).toBe(NOW.toISOString());
   });
+
   test("a Look-back Date seeds the first calls window and ignores Show New Records", async () => {
     get.mockResolvedValue({ data: { calls: [created, other] } });
     const { data } = await poll({
@@ -148,6 +165,7 @@ describe("perform initial sync seed", () => {
     expect(data.created).toEqual([created, other]);
     expect(store?.lastPolledAt).toBe(NOW.toISOString());
   });
+
   test("once a cursor exists the Look-back Date is ignored and Show New Records applies", async () => {
     store = { lastPolledAt: "2026-02-01T00:00:00.000Z" };
     get.mockResolvedValue({ data: { calls: [created] } });
@@ -164,6 +182,7 @@ describe("perform initial sync seed", () => {
     });
     expect(data.created).toEqual([]);
   });
+
   test("users ignore the Look-back Date: the first poll stores a baseline and returns nothing", async () => {
     get.mockResolvedValue({ data: { users: [created, other] } });
     const first = await poll({
@@ -174,6 +193,7 @@ describe("perform initial sync seed", () => {
     expect(first.polledNoChanges).toBe(true);
     expect(store?.knownIds).toEqual(["call-1", "call-2"]);
   });
+
   test("users: a later poll emits only ids absent from the baseline", async () => {
     store = { lastPolledAt: "2026-02-01T00:00:00.000Z", knownIds: ["call-1"] };
     get.mockResolvedValue({ data: { users: [created, other] } });
@@ -182,6 +202,7 @@ describe("perform initial sync seed", () => {
     expect(store?.knownIds).toEqual(["call-1", "call-2"]);
   });
 });
+
 describe("input order", () => {
   test("Look-back Date leads the optional tier, directly below the required inputs", () => {
     const inputs = pollChangesTrigger.inputs as unknown;

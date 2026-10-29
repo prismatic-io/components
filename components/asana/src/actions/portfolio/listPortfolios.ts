@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { listPortfoliosExamplePayload } from "../../examplePayloads";
 import { listPortfoliosInputs } from "../../inputs";
 import { listPortfoliosOutputSchema } from "../../outputSchemas";
+
 export const listPortfolios = action({
   display: {
     label: "List Portfolios",
@@ -14,11 +15,13 @@ export const listPortfolios = action({
       params.asanaConnection,
       context.debug.enabled,
     );
+
     const {
       data: {
         data: { gid: userGid },
       },
     } = await client.get("/users/me");
+
     const { data } = await client.get(`/portfolios`, {
       params: {
         offset: params.pagination.offset,
@@ -27,6 +30,7 @@ export const listPortfolios = action({
         owner: userGid,
       },
     });
+
     return { data };
   },
   inputs: listPortfoliosInputs,

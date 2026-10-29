@@ -11,12 +11,19 @@ const createWebhookRaw = {
     request_format: "json",
   },
 };
+
 const listWebhooksRaw = [createWebhookRaw.webhook];
+
 const deleteWebhookRaw = "";
+
 const deleteInstanceWebhooksRaw = null;
+
 export const createWebhookExamplePayload = { data: createWebhookRaw };
+
 export const deleteInstanceWebhooksExamplePayload = {
   data: deleteInstanceWebhooksRaw,
 };
+
 export const deleteWebhookExamplePayload = { data: deleteWebhookRaw };
+
 export const listWebhooksExamplePayload = { data: listWebhooksRaw as unknown };

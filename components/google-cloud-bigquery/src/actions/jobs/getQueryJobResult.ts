@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getQueryJobResultInputs } from "../../inputs";
+
 export const getQueryJobResult = action({
   display: {
     description: "Receives the results of a query job.",

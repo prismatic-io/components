@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getAccountingConnectionResponse } from "../../examplePayloads/accountingConnection";
 import { connection } from "../../inputs";
 import { getAccountConnectionOutputSchema } from "../../outputSchemas";
+
 export const getAccountConnection = action({
   display: {
     label: "Get Accounting Connection",
@@ -18,6 +19,7 @@ export const getAccountConnection = action({
   performSafety: "safe",
   perform: async (context, { connection }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/accounting/connection`);
     return {
       data,

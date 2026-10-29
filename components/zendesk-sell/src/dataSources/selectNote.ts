@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getZendeskClient } from "../client";
 import { selectNoteInputs } from "../inputs/dataSources";
+
 export const selectNote = dataSource({
   display: {
     label: "Select Note",
@@ -12,6 +13,7 @@ export const selectNote = dataSource({
     const { data } = await client.get("/notes", {
       headers: { Accept: "application/json" },
     });
+
     return {
       result: data.items
         .map((note: any) => {

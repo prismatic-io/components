@@ -5,6 +5,7 @@ import { createClient } from "../../client";
 import { updateFileInputs } from "../../inputs";
 import { updateFileOutputSchema } from "../../outputSchemas";
 import { updateFileExamplePayload } from "../../examplePayloads";
+
 export const updateFile = action({
   display: {
     label: "Update File",
@@ -16,8 +17,11 @@ export const updateFile = action({
     const fileName = util.types.toString(params.fileName);
     const fields = util.types.toString(params.fields);
     const { data: fileData } = util.types.toData(params.fileContent);
+
     const mimeType = mime.lookup(fileName) || undefined;
+
     const drive = createClient(params.connection);
+
     const { data } = await drive.files.update({
       fileId,
       requestBody: {
@@ -31,6 +35,7 @@ export const updateFile = action({
       fields,
       supportsAllDrives: true,
     });
+
     return {
       data,
     };
@@ -40,13 +45,9 @@ export const updateFile = action({
     type: "actionOutput",
     schema: updateFileOutputSchema,
   }),
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const fileName = util.types.toString(params.fileName);
+
     return {
       data: {
         ...updateFileExamplePayload.data,
@@ -59,4 +60,5 @@ export const updateFile = action({
   },
   examplePayload: updateFileExamplePayload,
 });
+
 export default updateFile;

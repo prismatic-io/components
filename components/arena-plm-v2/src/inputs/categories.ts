@@ -14,6 +14,7 @@ import {
   searchableOnlyInput,
   userInput,
 } from "./common";
+
 export const listBomAttributesInputs = {
   connection: connectionInput,
   includePossibleValues: includePossibleValuesInput,
@@ -25,6 +26,7 @@ export const listBomAttributesInputs = {
     comments: "Whether to include deleted attributes in the results.",
   },
 };
+
 export const listCategoriesInputs = {
   connection: connectionInput,
   objectType: {
@@ -64,6 +66,7 @@ export const listCategoriesInputs = {
     clean: toOptionalString,
   },
 };
+
 export const listCategoryAttributesInputs = {
   connection: connectionInput,
   objectType: {

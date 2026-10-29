@@ -10,11 +10,13 @@ export interface Webhook {
     };
   };
 }
+
 export interface ListWebhooks {
   webhooks: {
     webhook: Webhook[];
   };
 }
+
 export interface TableauTriggerPayload {
   resource: string;
   event_type: string;
@@ -23,19 +25,23 @@ export interface TableauTriggerPayload {
   resource_luid: string;
   created_at: string;
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+
 export interface TableauRecord extends Record<string, unknown> {
   id?: string;
   name?: string;
   createdAt?: string;
   updatedAt?: string;
 }
+
 export interface ChangesObject {
   created?: TableauRecord[];
   updated?: TableauRecord[];
 }
+
 export interface RecordChange {
   changeType: "created" | "updated";
   record: TableauRecord;

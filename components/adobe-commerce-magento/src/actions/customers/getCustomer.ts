@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getCustomerExamplePayload } from "../../examplePayloads";
 import { getCustomerInputs } from "../../inputs";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",

@@ -4,6 +4,7 @@ import { removeRequirementFileAssociationExamplePayload } from "../../examplePay
 import { removeRequirementFileAssociationInputs } from "../../inputs";
 import { removeRequirementFileAssociationOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const removeRequirementFileAssociation = action({
   display: {
     label: "Remove Requirement File Association",

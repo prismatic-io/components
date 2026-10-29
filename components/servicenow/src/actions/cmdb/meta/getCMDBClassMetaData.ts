@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getCMDBClassMetaDataExamplePayload } from "../../../examplePayloads";
 import { getCMDBClassMetaDataInputs } from "../../../inputs";
 import { createNowApiClient } from "../../../util";
+
 export const getCMDBClassMetaData = action({
   display: {
     label: "Get CMDB Class Metadata",

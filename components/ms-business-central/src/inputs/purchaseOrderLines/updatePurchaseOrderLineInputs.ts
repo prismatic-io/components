@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { createPurchaseOrderLineInputs } from "./createPurchaseOrderLineInputs";
 import { purchaseOrderLineId } from "./shared";
+
 export const updatePurchaseOrderLineInputs = {
   purchaseOrderLineId: input({
     ...purchaseOrderLineId,

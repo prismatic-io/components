@@ -1,4 +1,5 @@
 import { idDescriptorReferenceSchema, instanceReferenceSchema } from "./shared";
+
 export const currencySchema = {
   type: "object" as const,
   properties: {
@@ -10,6 +11,7 @@ export const currencySchema = {
     },
   },
 };
+
 export const invoiceRequestSummarySchema = {
   type: "object" as const,
   properties: {
@@ -65,6 +67,7 @@ export const invoiceRequestSummarySchema = {
     },
   },
 };
+
 export const attachmentSummarySchema = {
   type: "object" as const,
   properties: {
@@ -85,6 +88,7 @@ export const attachmentSummarySchema = {
     },
   },
 };
+
 export const getSupplierInvoiceRequestAttachmentsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -101,8 +105,10 @@ export const getSupplierInvoiceRequestAttachmentsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getSupplierInvoiceRequestsByIdOutputSchema =
   invoiceRequestSummarySchema;
+
 export const listSupplierInvoiceRequestsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -119,6 +125,7 @@ export const listSupplierInvoiceRequestsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postSupplierInvoiceRequestsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -249,6 +256,7 @@ export const postSupplierInvoiceRequestsOutputSchema = {
   },
   required: ["company", "invoiceDate", "supplier"],
 };
+
 export const postSupplierInvoiceRequestsAttachmentsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -271,5 +279,6 @@ export const postSupplierInvoiceRequestsAttachmentsOutputSchema = {
     },
   },
 };
+
 export const submitSupplierInvoiceRequestOutputSchema =
   idDescriptorReferenceSchema;

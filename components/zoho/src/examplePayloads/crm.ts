@@ -87,6 +87,7 @@ export const crmGetRecordExamplePayload = {
     },
   },
 };
+
 export const crmGetRecordsExamplePayload = {
   data: {
     data: [
@@ -133,6 +134,7 @@ export const crmGetRecordsExamplePayload = {
     },
   },
 };
+
 export const crmCreateRecordExamplePayload = {
   data: {
     data: [
@@ -158,6 +160,7 @@ export const crmCreateRecordExamplePayload = {
     ],
   },
 };
+
 export const crmUpdateRecordExamplePayload = {
   data: {
     data: [
@@ -182,6 +185,7 @@ export const crmUpdateRecordExamplePayload = {
     ],
   },
 };
+
 export const crmRemoveRecordExamplePayload = {
   data: {
     data: [
@@ -196,6 +200,7 @@ export const crmRemoveRecordExamplePayload = {
     ],
   },
 };
+
 export const crmRunQueryExamplePayload = {
   data: {
     data: [
@@ -216,6 +221,7 @@ export const crmRunQueryExamplePayload = {
     },
   },
 };
+
 export const crmAddAttachmentExamplePayload = {
   data: {
     data: [
@@ -240,6 +246,7 @@ export const crmAddAttachmentExamplePayload = {
     ],
   },
 };
+
 export const crmRawRequestExamplePayload = {
   data: {
     data: [

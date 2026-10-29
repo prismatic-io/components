@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listManagedDevicesExamplePayload } from "../../examplePayloads";
 import { listManagedDevicesInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listManagedDevices = action({
   display: {
     label: "List Managed Devices",

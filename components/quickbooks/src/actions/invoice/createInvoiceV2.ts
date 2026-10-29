@@ -30,6 +30,7 @@ import {
   shippingPostalCode,
   shippingState,
 } from "../../inputs";
+
 const buildConditionalObject = (
   entries: [string, unknown][],
 ): Record<string, unknown> | undefined => {
@@ -39,6 +40,7 @@ const buildConditionalObject = (
   }
   return Object.keys(obj).length > 0 ? obj : undefined;
 };
+
 export const createInvoiceV2 = action({
   display: {
     label: "Create Invoice",
@@ -48,6 +50,7 @@ export const createInvoiceV2 = action({
     quickbooksConnection: connectionInput,
     customerId: { ...customerId, required: true },
     lineItems,
+
     customerName,
     customFields,
     billEmail,
@@ -60,16 +63,19 @@ export const createInvoiceV2 = action({
     privateNote,
     salesTermId,
     applyTaxAfterDiscount: { ...applyTaxAfterDiscount, required: false },
+
     billingLine1,
     billingLine2,
     billingCity,
     billingState,
     billingPostalCode,
+
     shippingLine1,
     shippingLine2,
     shippingCity,
     shippingState,
     shippingPostalCode,
+
     dynamicValues: dynamicValuesInput,
     fieldValues: fieldValuesInput,
   },
@@ -78,6 +84,7 @@ export const createInvoiceV2 = action({
       params.quickbooksConnection,
       context.debug.enabled,
     );
+
     const billAddr = buildConditionalObject([
       ["Line1", params.billingLine1],
       ["Line2", params.billingLine2],
@@ -85,6 +92,7 @@ export const createInvoiceV2 = action({
       ["CountrySubDivisionCode", params.billingState],
       ["PostalCode", params.billingPostalCode],
     ]);
+
     const shipAddr = buildConditionalObject([
       ["Line1", params.shippingLine1],
       ["Line2", params.shippingLine2],
@@ -92,6 +100,7 @@ export const createInvoiceV2 = action({
       ["CountrySubDivisionCode", params.shippingState],
       ["PostalCode", params.shippingPostalCode],
     ]);
+
     const body = {
       ...util.types.keyValPairListToObject(
         (params.dynamicValues as KeyValuePair[]) || [],
@@ -126,9 +135,11 @@ export const createInvoiceV2 = action({
       ...(billAddr && { BillAddr: billAddr }),
       ...(shipAddr && { ShipAddr: shipAddr }),
     };
+
     const { data } = await client.post("/invoice", body, {
       headers: { "Content-Type": "application/json" },
     });
+
     return { data: data.Invoice };
   },
   examplePayload,

@@ -3,6 +3,7 @@ import { createSsvClient } from "../../client";
 import { listSiteSurveysExamplePayload } from "../../examplePayloads/sites";
 import { listSiteSurveysInputs } from "../../inputs";
 import { fetchPaginatedResults } from "../../util";
+
 export const listSiteSurveys = action({
   display: {
     label: "List Site Surveys",
@@ -14,6 +15,7 @@ export const listSiteSurveys = action({
     { ssvConnection, siteId, fetchAll, pageNumber, pageSize },
   ) => {
     const client = await createSsvClient(ssvConnection, context);
+
     const data = await fetchPaginatedResults(
       client,
       `/v3/site/${siteId}/surveys`,
@@ -24,6 +26,7 @@ export const listSiteSurveys = action({
         dataKey: "surveys",
       },
     );
+
     return { data };
   },
   examplePayload: listSiteSurveysExamplePayload,

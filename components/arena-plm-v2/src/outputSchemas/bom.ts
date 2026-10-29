@@ -5,6 +5,7 @@ export const bomSettingSchema = {
     checkReferenceDesignators: { type: "boolean" },
   },
 };
+
 export const bomSubstituteSchema = {
   type: "object" as const,
   properties: {
@@ -24,16 +25,19 @@ export const bomSubstituteSchema = {
     rank: { type: "integer", format: "int32" },
   },
 };
+
 export const deleteBomLineOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteBomSubstituteOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const itemBomSchema = {
   type: "object" as const,
   properties: {
@@ -93,6 +97,7 @@ export const itemBomSchema = {
     },
   },
 };
+
 export const itemBomWithSubstituteSchema = {
   type: "object" as const,
   properties: {
@@ -174,6 +179,7 @@ export const itemBomWithSubstituteSchema = {
     },
   },
 };
+
 export const listBomOutputSchema = {
   type: "object" as const,
   properties: {
@@ -181,6 +187,7 @@ export const listBomOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listBomSubstitutesOutputSchema = {
   type: "object" as const,
   properties: {

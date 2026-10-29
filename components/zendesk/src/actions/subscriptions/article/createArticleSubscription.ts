@@ -4,6 +4,7 @@ import { createArticleSubscriptionExamplePayload } from "../../../examplePayload
 import { createArticleSubscriptionInputs } from "../../../inputs";
 import { createArticleSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
+
 export const createArticleSubscription = action({
   display: {
     label: "Create Article Subscription",
@@ -19,10 +20,13 @@ export const createArticleSubscription = action({
       user_id: userId,
       source_locale: locale,
     };
+
     const url = locale
       ? `/help_center/${locale}/articles/${articleId}/subscriptions`
       : `/help_center/articles/${articleId}/subscriptions`;
+
     const { data } = await client.post<SubscriptionResponse>(url, payload);
+
     return {
       data,
     };

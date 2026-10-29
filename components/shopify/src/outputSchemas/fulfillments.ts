@@ -1,4 +1,5 @@
 import { moneyV2Schema } from "./shared";
+
 const gqlFulfillmentLineItemSchema = {
   type: "object" as const,
   properties: {
@@ -42,6 +43,7 @@ const gqlFulfillmentLineItemSchema = {
     },
   },
 };
+
 const gqlFulfillmentSchema = {
   type: "object" as const,
   properties: {
@@ -92,6 +94,7 @@ const gqlFulfillmentSchema = {
     name: { type: "string" as const },
   },
 };
+
 const restFulfillmentSchema = {
   type: "object" as const,
   properties: {
@@ -119,12 +122,14 @@ const restFulfillmentSchema = {
     admin_graphql_api_id: { type: "string" as const },
   },
 };
+
 export const getFulfillmentGqlOutputSchema = {
   type: "object" as const,
   properties: {
     fulfillment: gqlFulfillmentSchema,
   },
 };
+
 export const listFulfillmentsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -136,6 +141,7 @@ export const listFulfillmentsOutputSchema = {
     },
   },
 };
+
 const restFulfillmentOrderSchema = {
   type: "object" as const,
   properties: {
@@ -160,6 +166,7 @@ const restFulfillmentOrderSchema = {
     merchant_requests: { type: "array" as const, items: { type: "object" } },
   },
 };
+
 export const getFulfillmentOrderOutputSchema = {
   type: "object" as const,
   properties: {
@@ -171,6 +178,7 @@ export const getFulfillmentOrderOutputSchema = {
     },
   },
 };
+
 export const getFulfillmentOrderGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -182,6 +190,7 @@ export const getFulfillmentOrderGqlOutputSchema = {
     },
   },
 };
+
 export const listFulfillmentOrdersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -210,6 +219,8 @@ export const listFulfillmentOrdersOutputSchema = {
     rel: { type: ["string", "null"] },
   },
 };
+
 export const listFulfillmentOrdersGqlOutputSchema =
   listFulfillmentOrdersOutputSchema;
+
 export const listFulfillmentsGqlOutputSchema = listFulfillmentsOutputSchema;

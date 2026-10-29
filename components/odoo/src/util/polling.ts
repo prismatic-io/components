@@ -13,19 +13,25 @@ import type {
   PollWindow,
 } from "../types";
 import { json2Path } from "./paths";
+
 const toOdooDate = (iso: string): string =>
   iso
     .replace("T", " ")
     .replace(/\.\d+Z$/, "")
     .replace(/Z$/, "");
+
 const SECOND_MS = 1000;
 const NORMAL_ORDER = "write_date asc, id asc";
 const TIE_ORDER = "id asc";
+
 const toIso = (epochMs: number): string => new Date(epochMs).toISOString();
+
 const truncateToSecond = (iso: string): string =>
   toIso(Math.floor(new Date(iso).getTime() / SECOND_MS) * SECOND_MS);
+
 export const resolveSafeHorizon = (now: string): string =>
   truncateToSecond(toIso(new Date(now).getTime() - WATERMARK_SKEW_MARGIN_MS));
+
 export const fetchOdooPage =
   (client: HttpClient, model: string): FetchPollPage =>
   async ({ domain, order, limit }: PollPageQuery): Promise<OdooRecord[]> => {
@@ -35,6 +41,7 @@ export const fetchOdooPage =
     );
     return data;
   };
+
 const parseOdooDate = (value: unknown): Date | null =>
   typeof value === "string"
     ? new Date(
@@ -43,12 +50,14 @@ const parseOdooDate = (value: unknown): Date | null =>
           : `${value.replace(" ", "T")}Z`,
       )
     : null;
+
 const writeSecond = (record: OdooRecord): number | null => {
   const at = parseOdooDate(record.write_date);
   return at && !Number.isNaN(at.getTime())
     ? Math.floor(at.getTime() / SECOND_MS) * SECOND_MS
     : null;
 };
+
 const normalRound = async (
   fetchPage: FetchPollPage,
   cursor: PollCursor,
@@ -105,6 +114,7 @@ const normalRound = async (
     drained: false,
   };
 };
+
 const tieRound = async (
   fetchPage: FetchPollPage,
   cursor: PollCursor,
@@ -157,6 +167,7 @@ const tieRound = async (
     drained: true,
   };
 };
+
 export const drainWatermark = async (
   fetchPage: FetchPollPage,
   start: PollCursor,
@@ -177,6 +188,7 @@ export const drainWatermark = async (
   }
   return { records, cursor, drained: false };
 };
+
 export const resolveStartCursor = (
   state: PollingState | undefined,
   incoming: PollCursor | undefined,
@@ -187,6 +199,7 @@ export const resolveStartCursor = (
     watermark: truncateToSecond(window.since),
     boundaryIds: state?.lastPolledAt ? (state.boundaryIds ?? []) : [],
   };
+
 export const nextPollingState = (
   state: PollingState | undefined,
   window: PollWindow,
@@ -207,6 +220,7 @@ export const nextPollingState = (
     ...(window.isInitialSync ? { initialSyncFrom: window.createdSince } : {}),
   };
 };
+
 export const resolvePollWindow = (
   state: PollingState | undefined,
   lookBackDate: string | undefined,
@@ -234,13 +248,11 @@ export const resolvePollWindow = (
   }
   return { since: now, isInitialSync: false, createdSince: now };
 };
+
 export const splitPolledRecords = (
   records: OdooRecord[],
   window: PollWindow,
-  filters: {
-    showNew: boolean;
-    showUpdated: boolean;
-  },
+  filters: { showNew: boolean; showUpdated: boolean },
 ): PollingChangesObject => {
   const sinceDate = new Date(window.createdSince);
   const created: OdooRecord[] = [];
@@ -258,6 +270,7 @@ export const splitPolledRecords = (
   }
   return { created, updated };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

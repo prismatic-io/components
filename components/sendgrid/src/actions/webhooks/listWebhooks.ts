@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -12,10 +13,12 @@ export const listWebhooks = action({
   performSafety: "safe",
   perform: async (_context, { sendGridConnection }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const [_response, body] = await client.request({
       url: "/v3/user/webhooks/event/settings/all",
       method: "GET",
     });
+
     return {
       data: body,
     };

@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { listPropertiesExamplePayload } from "../../examplePayloads";
 import { listPropertiesInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const listProperties = action({
   display: {
     label: "List Properties",
@@ -18,6 +19,7 @@ export const listProperties = action({
       debugRequest,
     });
     const { data } = await client.get(hubspotPaths.properties(objectType));
+
     return { data };
   },
   inputs: listPropertiesInputs,
@@ -27,4 +29,5 @@ export const listProperties = action({
     schema: listPropertiesOutputSchema,
   }),
 });
+
 export default listProperties;

@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { AtomFeedEntry, Worker } from "../types";
+
 const triggerPayloadWrapper: Omit<TriggerPayload, "body"> = {
   headers: {},
   queryParameters: {},
@@ -31,6 +32,7 @@ const triggerPayloadWrapper: Omit<TriggerPayload, "body"> = {
   startedAt: "2024-01-15T00:00:00.000Z",
   globalDebug: false,
 };
+
 const newHireEntry: AtomFeedEntry = {
   id: "Workers-300100099990042-NewHire",
   feedName: "NewHire",
@@ -51,6 +53,7 @@ const newHireEntry: AtomFeedEntry = {
     },
   },
 };
+
 const employeeUpdateEntry: AtomFeedEntry = {
   id: "Workers-300100099990042-EmployeeUpdate",
   feedName: "EmployeeUpdate",
@@ -71,6 +74,7 @@ const employeeUpdateEntry: AtomFeedEntry = {
     },
   },
 };
+
 export const pollChangesExamplePayload = {
   payload: {
     ...triggerPayloadWrapper,
@@ -82,6 +86,7 @@ export const pollChangesExamplePayload = {
   } as TriggerPayload,
   polledNoChanges: false,
 };
+
 const workerRecord: Worker = {
   PersonId: 300100099990042,
   PersonNumber: "EMP042",
@@ -93,6 +98,7 @@ const workerRecord: Worker = {
   CreationDate: "2026-05-13T09:15:00.000Z",
   LastUpdateDate: "2026-05-13T10:30:00.000Z",
 };
+
 export const pollRecordsExamplePayload = {
   payload: {
     ...triggerPayloadWrapper,

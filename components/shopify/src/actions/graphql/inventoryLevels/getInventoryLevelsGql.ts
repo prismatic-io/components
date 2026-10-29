@@ -4,6 +4,7 @@ import { getInventoryLevelsExamplePayload as examplePayload } from "../../../exa
 import { getInventoryLevelsInputs as inputs } from "../../../inputsGql";
 import { getInventoryLevelsGqlOutputSchema } from "../../../outputSchemas";
 import getInventoryLevelsQuery from "../queries/inventoryLevels/GetInventoryLevels.gql";
+
 export const getInventoryLevelsGql = action({
   display: {
     label: "Get Inventory Levels",
@@ -20,6 +21,7 @@ export const getInventoryLevelsGql = action({
     const data = await client.request(getInventoryLevelsQuery, {
       id: levelId,
     });
+
     return {
       data,
     };

@@ -1,5 +1,6 @@
 import { connection } from "../common";
 import { email, identifier } from "./common";
+
 export const updateEmployeeEmailInputs = {
   connection,
   identifier: {

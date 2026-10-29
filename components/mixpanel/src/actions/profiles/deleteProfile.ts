@@ -4,6 +4,7 @@ import { deleteProfileInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { deleteProfileExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
+
 export const deleteProfile = action({
   display: {
     label: "Delete Profile",
@@ -38,8 +39,7 @@ export const deleteProfile = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteProfileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteProfileExamplePayload,
   examplePayload: deleteProfileExamplePayload,
 });

@@ -7,16 +7,20 @@ import type {
   Sage200Record,
   Sage200RecordChange,
 } from "./types";
+
 export const cleanNumberInput = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanCodeInput = (value: unknown) => {
   if (value) {
     return util.types.toObject(value);
   }
   return undefined;
 };
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -26,15 +30,15 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const filterDataChangedAfter = (
-  data: {
-    date_time_updated: string;
-  }[],
+  data: { date_time_updated: string }[],
   dataChangedAfter: Date,
 ) =>
   data.filter((item) => {
     return new Date(item.date_time_updated) > dataChangedAfter;
   });
+
 export const cleanDate = (value: unknown) => {
   if (value) {
     const date = new Date(util.types.toString(value));
@@ -45,12 +49,14 @@ export const cleanDate = (value: unknown) => {
   }
   return undefined;
 };
+
 export const cleanOptionalBoolean = (value: unknown) => {
   if (value === "undefined") {
     return undefined;
   }
   return util.types.toBool(value);
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (
     value === undefined ||
@@ -59,6 +65,7 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
@@ -67,6 +74,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -81,23 +89,24 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const filterByTimestamp = (
   records: Sage200Record[],
   lastPolledAt: string,
   includeNew: boolean,
   includeUpdated: boolean,
-): {
-  created: Sage200Record[];
-  updated: Sage200Record[];
-} => {
+): { created: Sage200Record[]; updated: Sage200Record[] } => {
   const lastPolledAtDate = new Date(lastPolledAt);
   const created: Sage200Record[] = [];
   const updated: Sage200Record[] = [];
+
   for (const record of records) {
     const rawCreated = record.date_time_created;
     const rawUpdated = record.date_time_updated;
@@ -105,17 +114,21 @@ export const filterByTimestamp = (
       typeof rawCreated === "string" ? new Date(rawCreated) : null;
     const updatedDate =
       typeof rawUpdated === "string" ? new Date(rawUpdated) : null;
+
     const isNew = createdDate !== null && createdDate > lastPolledAtDate;
     const isUpdated =
       !isNew && updatedDate !== null && updatedDate > lastPolledAtDate;
+
     if (isNew && includeNew) {
       created.push(record);
     } else if (isUpdated && includeUpdated) {
       updated.push(record);
     }
   }
+
   return { created, updated };
 };
+
 export const resolvePollWindow = (
   state: PollingState | undefined,
   params: {
@@ -124,11 +137,7 @@ export const resolvePollWindow = (
     showUpdatedRecords: boolean;
   },
   now: string,
-): {
-  lastPolledAt: string;
-  includeNew: boolean;
-  includeUpdated: boolean;
-} => {
+): { lastPolledAt: string; includeNew: boolean; includeUpdated: boolean } => {
   const stored = state?.lastPolledAt;
   if (stored != null || !params.lookBackDate) {
     return {
@@ -143,6 +152,7 @@ export const resolvePollWindow = (
     includeUpdated: true,
   };
 };
+
 export const resolveSage200RecordChanges = (
   data: Sage200Changes | undefined,
 ): Sage200RecordChange[] => {
@@ -156,6 +166,7 @@ export const resolveSage200RecordChanges = (
     ),
   ];
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({
     label,

@@ -2,12 +2,14 @@ import { input, util } from "@prismatic-io/spectral";
 import { cleanNumberInput, cleanStringInput } from "./utils";
 import { ID_CONSTRAINTS_TEXT } from "./constants";
 import { lookBackDateClean } from "./util/polling";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The connection to use for Gmail authorization.",
 });
+
 export const userIdInput = input({
   label: "Gmail User ID",
   type: "string",
@@ -19,6 +21,7 @@ export const userIdInput = input({
   comments:
     "The user ID or email address to query. Use 'me' for the currently authenticated user (default).",
 });
+
 export const messageIdInput = input({
   label: "Message ID",
   type: "string",
@@ -29,6 +32,7 @@ export const messageIdInput = input({
   comments: "The unique identifier of the Gmail message.",
   dataSource: "selectMessage",
 });
+
 export const topicNameInput = input({
   label: "Topic Name",
   type: "string",
@@ -39,6 +43,7 @@ export const topicNameInput = input({
   comments:
     "The full Pub/Sub topic name in the format: projects/{project-id}/topics/{topic-id}",
 });
+
 export const labelIdsInput = input({
   label: "Label ID",
   type: "string",
@@ -52,6 +57,7 @@ export const labelIdsInput = input({
   clean: (value: unknown) =>
     (value as unknown[]).map((val: unknown) => util.types.toString(val)),
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -60,6 +66,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -69,6 +76,7 @@ export const maxResults = input({
   comments: "The maximum number of results to return per page.",
   clean: cleanNumberInput,
 });
+
 export const addMetadata = input({
   label: "Add Metadata",
   type: "boolean",
@@ -78,6 +86,7 @@ export const addMetadata = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -88,6 +97,7 @@ export const pageToken = input({
     "Page token from the previous response when looping through paginated results.",
   example: "09876543210abcdefg",
 });
+
 export const query = input({
   label: "Query String",
   type: "string",
@@ -98,6 +108,7 @@ export const query = input({
     "Filter messages using Gmail search syntax. Supports the same query format as the Gmail search box.",
   example: "from:user@example.com is:unread after:2024/01/01",
 });
+
 export const labelIds = input({
   label: "Labels",
   type: "string",
@@ -111,6 +122,7 @@ export const labelIds = input({
       util.types.toString(value),
     ),
 });
+
 export const from = input({
   label: "From",
   type: "string",
@@ -121,6 +133,7 @@ export const from = input({
   example: "John Doe <john.doe@example.com>",
   clean: cleanStringInput,
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -130,6 +143,7 @@ export const projectId = input({
   example: "my-gcp-project-123456",
   placeholder: "Enter project ID",
 });
+
 export const subscriptionId = input({
   label: "Subscription ID",
   type: "string",
@@ -139,6 +153,7 @@ export const subscriptionId = input({
   example: "my-subscription-123456",
   placeholder: "Enter subscription ID",
 });
+
 export const topicId = input({
   label: "Topic ID",
   type: "string",
@@ -148,6 +163,7 @@ export const topicId = input({
   example: "my-topic-123456",
   placeholder: "Enter topic ID",
 });
+
 const historyId = input({
   label: "History ID",
   type: "string",
@@ -157,6 +173,7 @@ const historyId = input({
   comments: "The history ID to start retrieving history records from.",
   clean: util.types.toString,
 });
+
 export const getEventHistoryInputs = {
   connection: connectionInput,
   userId: userIdInput,
@@ -169,6 +186,7 @@ export const getEventHistoryInputs = {
   fetchAll,
   maxResults,
 };
+
 const labelId = input({
   label: "Label ID",
   type: "string",
@@ -179,6 +197,7 @@ const labelId = input({
   dataSource: "selectLabel",
   clean: cleanStringInput,
 });
+
 const getMessageDetails = input({
   label: "Get Message Details",
   type: "boolean",
@@ -188,6 +207,7 @@ const getMessageDetails = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -198,6 +218,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesTriggerInputs = {
   connection: connectionInput,
   lookBackDate,
@@ -205,6 +226,7 @@ export const pollChangesTriggerInputs = {
   labelId,
   getMessageDetails,
 };
+
 export const getWatchStatusInputs = {
   expiration: input({
     label: "Watch Expiration",
@@ -217,6 +239,7 @@ export const getWatchStatusInputs = {
     clean: util.types.toString,
   }),
 };
+
 export const pushNotificationWebhookInputs = {
   connection: connectionInput,
   projectId,

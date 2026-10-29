@@ -4,6 +4,7 @@ import { listRequirementTemplatesExamplePayload } from "../../examplePayloads";
 import { listRequirementTemplatesInputs } from "../../inputs";
 import { listRequirementTemplatesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listRequirementTemplates = action({
   display: {
     label: "List Requirement Templates",

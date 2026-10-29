@@ -3,6 +3,7 @@ import { dataSource, util } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../client";
 import { selectDraftProjectResourceExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { connection, guId } from "../inputs";
+
 export const selectDraftProjectResource = dataSource({
   display: {
     label: "Select Draft Project Resource",
@@ -22,7 +23,9 @@ export const selectDraftProjectResource = dataSource({
     const { data } = await client.get(
       `/Projects('${projectId}')/Draft/ProjectResources`,
     );
+
     const items = data?.d?.results ?? data?.results ?? [];
+
     const result: Element[] = items
       .map((item: { Name?: string; Id?: string }) => ({
         label: item.Name || item.Id || "",
@@ -31,6 +34,7 @@ export const selectDraftProjectResource = dataSource({
       .sort((a: Element, b: Element) =>
         (a.label ?? "").localeCompare(b.label ?? ""),
       );
+
     return { result };
   },
   dataSourceType: "picklist",

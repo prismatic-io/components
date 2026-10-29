@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteCompanyExamplePayload } from "../../examplePayloads";
 import { deleteCompanyInputs } from "../../inputs";
 import { deleteCompanyOutputSchema } from "../../outputSchemas";
+
 export const deleteCompany = action({
   display: {
     label: "Delete Company",
@@ -21,8 +22,7 @@ export const deleteCompany = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteCompanyExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteCompanyExamplePayload,
   examplePayload: deleteCompanyExamplePayload,
 });

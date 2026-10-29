@@ -1,8 +1,10 @@
 import { util } from "@prismatic-io/spectral";
+
 export const cleanKeyValueList = (value: unknown): Record<string, unknown> =>
   util.types.keyValPairListToObject(
     value as Parameters<typeof util.types.keyValPairListToObject>[0],
   );
+
 export const cleanOptionalKeyValueList = (
   value: unknown,
 ): Record<string, unknown> | undefined => {

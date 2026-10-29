@@ -11,6 +11,7 @@ import {
   topK,
   topP,
 } from "./common";
+
 const history = input({
   label: "Chat History",
   type: "code",
@@ -29,6 +30,7 @@ const history = input({
   placeholder: "Enter chat history JSON",
   clean: cleanCode,
 });
+
 const generationConfig = structuredObjectInput({
   label: "Generation Config",
   required: false,
@@ -36,6 +38,7 @@ const generationConfig = structuredObjectInput({
     "Sampling parameters, safety settings, and conversation history for controlling model output.",
   inputs: { temperature, maxOutputTokens, topK, topP, safetySettings, history },
 });
+
 export const sendMessageInputs = {
   prompt: {
     ...prompt,

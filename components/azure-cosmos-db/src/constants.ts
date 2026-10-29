@@ -3,6 +3,7 @@ export enum CosmosDbResourceType {
   Databases = "dbs",
   Documents = "docs",
 }
+
 export enum HttpVerb {
   GET = "GET",
   POST = "POST",

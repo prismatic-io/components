@@ -15,6 +15,7 @@ export const listWebhookSubscriptionsExamplePayload = {
     cursor: "MTY1Njk2OTU5NjEzMjAwMDAwMA==",
   },
 };
+
 export const retrieveWebhookSubscriptionExamplePayload = {
   data: {
     subscription: {
@@ -35,6 +36,7 @@ export const retrieveWebhookSubscriptionExamplePayload = {
     },
   },
 };
+
 export const createWebhookSubscriptionExamplePayload = {
   data: {
     subscription: {
@@ -50,6 +52,7 @@ export const createWebhookSubscriptionExamplePayload = {
     },
   },
 };
+
 export const updateWebhookSubscriptionExamplePayload = {
   data: {
     subscription: {
@@ -65,9 +68,11 @@ export const updateWebhookSubscriptionExamplePayload = {
     },
   },
 };
+
 export const deleteWebhookSubscriptionExamplePayload = {
   data: {},
 };
+
 export const deleteInstanceWebhooksExamplePayload = {
   data: "All webhooks deleted",
 };

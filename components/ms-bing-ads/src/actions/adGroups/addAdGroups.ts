@@ -3,6 +3,7 @@ import { addAdGroupsExamplePayload } from "../../examplePayloads";
 import { addAdGroupsInputs } from "../../inputs/adGroups";
 import { getRestClient } from "../../restClient";
 import type { AddRestResponse } from "../../types";
+
 export const addAdGroups = action({
   display: {
     label: "Add Ad Groups",
@@ -13,10 +14,12 @@ export const addAdGroups = action({
     { connection, accountId, customerId, campaignId, adGroups },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<AddRestResponse>("/AdGroups", {
       CampaignId: campaignId,
       AdGroups: adGroups,
     });
+
     return { data };
   },
   inputs: addAdGroupsInputs,

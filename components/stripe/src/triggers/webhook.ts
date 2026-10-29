@@ -1,4 +1,5 @@
 import { trigger } from "@prismatic-io/spectral";
+
 export const webhook = trigger({
   display: {
     label: "Webhook (Deprecated)",

@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getBranchExamplePayload } from "../../examplePayloads";
 import { getBranchInputs } from "../../inputs";
 import { getBranchOutputSchema } from "../../outputSchemas";
+
 export const getBranch = action({
   display: {
     label: "Get Branch",

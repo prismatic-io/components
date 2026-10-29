@@ -12,6 +12,7 @@ import {
   pagination,
   queryParams,
 } from "./common";
+
 const badgeID = input({
   label: "Badge ID",
   type: "string",
@@ -22,6 +23,7 @@ const badgeID = input({
   example: "123456",
   clean: cleanString,
 });
+
 const eventID = input({
   label: "Event ID",
   type: "string",
@@ -31,6 +33,7 @@ const eventID = input({
   example: "123456",
   clean: cleanString,
 });
+
 const clockingType = input({
   label: "Clocking Type",
   type: "string",
@@ -59,6 +62,7 @@ const clockingType = input({
   placeholder: "Select clocking type",
   clean: cleanString,
 });
+
 const events = input({
   label: "Events",
   type: "code",
@@ -69,15 +73,18 @@ const events = input({
   example: JSON.stringify(timeEntryPayload, null, 2),
   clean: cleanObject,
 });
+
 export const createScanPunchInputs = {
   badgeID,
   clockingType,
   connection,
 };
+
 export const getClockingTransactionInputs = {
   eventID,
   connection,
 };
+
 export const getTimeCardsInputs = {
   aoid,
   pagination,
@@ -85,20 +92,24 @@ export const getTimeCardsInputs = {
   $expand,
   connection,
 };
+
 export const getWorkerInputs = {
   aoid,
   $select,
   connection,
 };
+
 export const getWorkerDemographicsInputs = {
   aoid,
   $select,
   connection,
 };
+
 export const getWorkersMetadataInputs = {
   $filter,
   connection,
 };
+
 export const listWorkersInputs = {
   fetchAll,
   pagination,
@@ -108,6 +119,7 @@ export const listWorkersInputs = {
   queryParams,
   connection,
 };
+
 export const listWorkersDemographicsInputs = {
   fetchAll,
   pagination,
@@ -116,6 +128,7 @@ export const listWorkersDemographicsInputs = {
   queryParams,
   connection,
 };
+
 export const modifyTimeEntriesInputs = {
   events: {
     ...events,

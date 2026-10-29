@@ -4,6 +4,7 @@ import { getTicketByGuidExamplePayload } from "../../examplePayloads";
 import { getTicketByGuidInputs } from "../../inputs";
 import { ticketSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getTicketByGuid = action({
   display: {
     label: "Get Ticket by GUID",
@@ -19,7 +20,9 @@ export const getTicketByGuid = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(`/tickets/${params.ticketGuid}`);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Get Ticket by GUID");

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateSessionInputs } from "../../inputs/sessions";
 import { NO_CONTENT_RESPONSE } from "../../constants";
+
 export const updateSession = action({
   display: {
     label: "Update Session",
@@ -12,6 +13,7 @@ export const updateSession = action({
     { connection, sessionId, customBody, customId, description, group },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       ...customBody,
       customId,
@@ -19,7 +21,9 @@ export const updateSession = action({
       groupid: group.groupid,
       groupname: group.groupname,
     };
+
     await client.put(`/sessions/${sessionId}`, body);
+
     return {
       data: NO_CONTENT_RESPONSE,
     };

@@ -2,6 +2,7 @@ import { util, input } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { completeMultipartUploadExampleInput } from "./exampleInputs";
 import { cleanUploads, toOptionalNumber, toOptionalString } from "./util";
+
 export const project = input({
   label: "GCP Project ID",
   placeholder: "Enter GCP Project ID",
@@ -11,6 +12,7 @@ export const project = input({
     "Google Cloud Storage buckets are associated with GCP projects. This is the project ID containing letters, numbers, and dashes.",
   example: "my-project-123456",
 });
+
 export const bucketName = input({
   label: "Bucket Name",
   placeholder: "Enter bucket name",
@@ -22,6 +24,7 @@ export const bucketName = input({
   dataSource: "selectBucket",
   clean: util.types.toString,
 });
+
 export const sourceBucketName = input({
   label: "Source Bucket",
   placeholder: "Enter source bucket name",
@@ -33,6 +36,7 @@ export const sourceBucketName = input({
   dataSource: "selectBucket",
   clean: util.types.toString,
 });
+
 export const destinationBucketName = input({
   label: "Destination Bucket",
   placeholder: "Enter destination bucket name",
@@ -44,6 +48,7 @@ export const destinationBucketName = input({
   dataSource: "selectBucket",
   clean: util.types.toString,
 });
+
 export const fileContents = input({
   label: "File Contents",
   placeholder: "Output data from previous step, or a string, to write",
@@ -54,6 +59,7 @@ export const fileContents = input({
   example: "My File Contents",
   clean: util.types.toData,
 });
+
 export const fileName = input({
   label: "File Name",
   placeholder: "Enter file name",
@@ -64,6 +70,7 @@ export const fileName = input({
   dataSource: "selectFile",
   clean: util.types.toString,
 });
+
 export const partNumber = input({
   label: "Part Number",
   type: "string",
@@ -74,6 +81,7 @@ export const partNumber = input({
   placeholder: "Enter part number",
   clean: util.types.toNumber,
 });
+
 export const sourceFileName = input({
   label: "Source File Name",
   placeholder: "Enter source file name",
@@ -85,6 +93,7 @@ export const sourceFileName = input({
   dataSource: "selectFile",
   clean: util.types.toString,
 });
+
 export const destinationFileName = input({
   label: "Destination File Name",
   placeholder: "Enter destination file name",
@@ -96,6 +105,7 @@ export const destinationFileName = input({
   dataSource: "selectFile",
   clean: util.types.toString,
 });
+
 export const uploadId = input({
   label: "Upload ID",
   type: "string",
@@ -106,6 +116,7 @@ export const uploadId = input({
   placeholder: "Enter upload ID",
   clean: util.types.toString,
 });
+
 export const contentType = input({
   label: "Content Type",
   type: "string",
@@ -116,6 +127,7 @@ export const contentType = input({
   placeholder: "Enter content type",
   clean: util.types.toString,
 });
+
 export const prefix = input({
   label: "Prefix",
   placeholder: "Enter prefix",
@@ -126,6 +138,7 @@ export const prefix = input({
   example: "path/to/directory/",
   clean: toOptionalString,
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -136,6 +149,7 @@ export const maxResults = input({
   placeholder: "Enter max results",
   clean: toOptionalNumber,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -146,11 +160,13 @@ export const pageToken = input({
   placeholder: "Enter page token",
   clean: toOptionalString,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const userProject = input({
   label: "User Project",
   type: "string",
@@ -159,6 +175,7 @@ export const userProject = input({
   example: "my-example-project",
   placeholder: "Enter user project ID",
 });
+
 export const location = input({
   label: "Location",
   type: "string",
@@ -168,12 +185,14 @@ export const location = input({
   example: "US-EAST1",
   placeholder: "Enter location",
 });
+
 export const multiRegional = input({
   label: "Multi-Regional",
   type: "boolean",
   required: false,
   comments: "When true, the bucket will be available from multiple regions.",
 });
+
 export const storageClass = input({
   label: "Storage Class",
   type: "string",
@@ -189,6 +208,7 @@ export const storageClass = input({
     "The storage class for the bucket. See [Google Cloud Storage documentation](https://cloud.google.com/storage/docs/storage-classes) for details.",
   placeholder: "Select storage class",
 });
+
 export const expirationTime = input({
   label: "Expiration Time",
   type: "string",
@@ -200,6 +220,7 @@ export const expirationTime = input({
   placeholder: "Enter expiration time in seconds",
   clean: (value) => util.types.toInt(value, 3600),
 });
+
 export const fileMetadata = input({
   label: "File Metadata",
   type: "boolean",
@@ -209,6 +230,7 @@ export const fileMetadata = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const partUploads = input({
   label: "Part Uploads",
   type: "code",
@@ -219,6 +241,7 @@ export const partUploads = input({
   example: JSON.stringify([completeMultipartUploadExampleInput], null, 2),
   clean: cleanUploads,
 });
+
 export const fetchAll = input({
   label: "Fetch All Results",
   type: "boolean",
@@ -228,10 +251,12 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const listBucketsInputs = {
   fetchAll,
   connection: connectionInput,
 };
+
 export const listFilesInputs = {
   connection: connectionInput,
   bucketName,
@@ -240,9 +265,11 @@ export const listFilesInputs = {
   maxResults,
   fetchAll,
 };
+
 export const selectBucketInputs = {
   connection: connectionInput,
 };
+
 export const selectFileInputs = {
   connection: connectionInput,
   bucketName: {
@@ -251,4 +278,5 @@ export const selectFileInputs = {
   },
   prefix,
 };
+
 export const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;

@@ -1,4 +1,5 @@
 import { collectionLinksSchema, resourceLinksSchema } from "./shared";
+
 const templateResourceObject = {
   type: "object" as const,
   properties: {
@@ -20,6 +21,7 @@ const templateResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const createTemplateOutputSchema = {
   type: "object" as const,
   properties: {
@@ -28,7 +30,9 @@ export const createTemplateOutputSchema = {
   },
   required: ["data"],
 };
+
 export const getTemplateOutputSchema = createTemplateOutputSchema;
+
 export const listTemplatesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -40,7 +44,9 @@ export const listTemplatesOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const updateTemplateOutputSchema = createTemplateOutputSchema;
+
 export const deleteTemplateOutputSchema = {
   type: "string" as const,
 };

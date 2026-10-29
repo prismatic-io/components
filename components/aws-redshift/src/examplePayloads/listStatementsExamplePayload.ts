@@ -1,4 +1,5 @@
 import type { ListStatementsCommandOutput } from "@aws-sdk/client-redshift-data";
+
 export const listStatementsExamplePayload: {
   data: ListStatementsCommandOutput;
 } = {

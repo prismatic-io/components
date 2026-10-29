@@ -4,6 +4,7 @@ import { awsRegion } from "aws-utils";
 import { subscriptionArn, connectionInput } from "../inputs";
 import { UnsubscribeCommand } from "@aws-sdk/client-sns";
 import { unsubscribeExamplePayload } from "../examplePayloads";
+
 export const unsubscribe = action({
   display: {
     label: "Unsubscribe from a Topic",
@@ -24,6 +25,7 @@ export const unsubscribe = action({
     };
     const command = new UnsubscribeCommand(unsubscribeParams);
     const response = await sns.send(command);
+
     return {
       data: response,
     };
@@ -31,4 +33,5 @@ export const unsubscribe = action({
   inputs: { awsRegion, subscriptionArn, awsConnection: connectionInput },
   examplePayload: unsubscribeExamplePayload,
 });
+
 export default unsubscribe;

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { unassignTechniciansExamplePayload } from "../../examplePayloads";
 import { unassignTechniciansInputs } from "../../inputs";
 import { unassignTechniciansOutputSchema } from "../../outputSchemas";
+
 export const unassignTechnicians = action({
   display: {
     label: "Unassign Technicians from Appointment",

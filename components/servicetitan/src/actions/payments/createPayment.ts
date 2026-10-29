@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createPaymentExamplePayload } from "../../examplePayloads";
 import { createPaymentInputs } from "../../inputs";
+
 export const createPayment = action({
   display: {
     label: "Create Payment (Deprecated)",

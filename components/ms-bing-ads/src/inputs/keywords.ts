@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringArray } from "../util";
 import {
   accountIdInput,
@@ -8,6 +9,7 @@ import {
   customerIdInput,
   returnAdditionalFieldsInput,
 } from "./common";
+
 const keywordsBodyInput = input({
   label: "Keywords",
   type: "code",
@@ -29,6 +31,7 @@ const keywordsBodyInput = input({
   ),
   clean: util.types.toObject,
 });
+
 const keywordIdsInput = input({
   label: "Keyword IDs",
   placeholder: "Enter keyword ID",
@@ -40,6 +43,7 @@ const keywordIdsInput = input({
   example: "6012345",
   clean: cleanStringArray,
 });
+
 export const addKeywordsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -48,6 +52,7 @@ export const addKeywordsInputs = {
   adGroupId: adGroupIdInput,
   keywords: keywordsBodyInput,
 };
+
 export const updateKeywordsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -71,6 +76,7 @@ export const updateKeywordsInputs = {
     ),
   },
 };
+
 export const deleteKeywordsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -83,6 +89,7 @@ export const deleteKeywordsInputs = {
     comments: "An array of keyword identifiers to delete.",
   },
 };
+
 export const getKeywordsByAdGroupIdInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -91,6 +98,7 @@ export const getKeywordsByAdGroupIdInputs = {
   adGroupId: adGroupIdInput,
   returnAdditionalFields: returnAdditionalFieldsInput,
 };
+
 export const getKeywordsByIdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },

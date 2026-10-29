@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateApplicationUserAssignmentsExamplePayload } from "../../examplePayloads/applications";
 import { updateApplicationUserAssignmentsInputs } from "../../inputs/applications";
+
 export const updateApplicationUserAssignment = action({
   display: {
     label: "Update Application User Assignment",
@@ -32,6 +33,7 @@ export const updateApplicationUserAssignment = action({
             : undefined,
       },
     );
+
     return { data };
   },
   examplePayload: updateApplicationUserAssignmentsExamplePayload,

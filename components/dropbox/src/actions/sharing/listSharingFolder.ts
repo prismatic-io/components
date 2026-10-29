@@ -8,6 +8,7 @@ import {
   fetchAllSharedFolders,
   handleDropboxError,
 } from "../../util";
+
 export const listSharingFolder = action({
   display: {
     label: "List Shared Folders",
@@ -17,6 +18,7 @@ export const listSharingFolder = action({
   perform: async (context, params) => {
     checkDebug(params, context);
     const dbx = createAuthorizedClient(params.dropboxConnection);
+
     try {
       const data = await fetchAllSharedFolders(dbx, {
         limit: params.pagination.limit,
@@ -29,9 +31,7 @@ export const listSharingFolder = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listSharedFoldersExamplePayload,
   }),
   inputs: listSharingFolderInputs,

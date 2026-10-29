@@ -4,6 +4,7 @@ import { getChangeItemAssociationExamplePayload } from "../../examplePayloads";
 import { getChangeItemAssociationInputs } from "../../inputs";
 import { changeItemAssociationSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getChangeItemAssociation = action({
   display: {
     label: "Get Change Item Association",
@@ -22,19 +23,23 @@ export const getChangeItemAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Getting change item association from Arena", {
         changeGuid: changeGuid,
         changeItemAssociationGuid: changeItemAssociationGuid,
       });
+
       const { data, status } = await client.get(
         `/changes/${changeGuid}/items/${changeItemAssociationGuid}`,
       );
+
       context.logger.info("Change item association retrieved successfully", {
         changeGuid: changeGuid,
         changeItemAssociationGuid: changeItemAssociationGuid,
         responseGuid: data.guid,
         statusCode: status,
       });
+
       return {
         data,
       };

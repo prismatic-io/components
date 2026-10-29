@@ -1,4 +1,5 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+
 export const queryField = input({
   label: "Query",
   type: "code",
@@ -9,6 +10,7 @@ export const queryField = input({
     "The SQL query to execute against the Microsoft SQL Server database. Supports optional named parameters using the '@variable' operator.",
   clean: util.types.toString,
 });
+
 export const params = input({
   label: "Parameters",
   comments:
@@ -19,6 +21,7 @@ export const params = input({
   clean: (value: unknown) =>
     util.types.keyValPairListToObject(value as KeyValuePair<unknown>[]),
 });
+
 export const paramsObject = input({
   label: "Parameters Object",
   comments:
@@ -29,12 +32,14 @@ export const paramsObject = input({
   example: JSON.stringify({ productId: 123, customerName: "Acme Corp" }),
   clean: (value) => (value ? util.types.toObject(value) : {}),
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft SQL Server connection to use.",
 });
+
 export const timeout = input({
   label: "Timeout",
   comments:
@@ -46,6 +51,7 @@ export const timeout = input({
   placeholder: "Enter timeout in milliseconds",
   clean: util.types.toInt,
 });
+
 export const storedProcedure = input({
   label: "Stored Procedure",
   type: "string",

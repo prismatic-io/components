@@ -4,6 +4,7 @@ import { listPostSubscriptionsOutputSchema } from "../../../outputSchemas";
 import type { PaginatedResponse, Subscription } from "../../../types";
 import { listPostSubscriptionsInputs } from "../../../inputs";
 import { listPostSubscriptionsExamplePayload } from "../../../examplePayloads";
+
 export const listPostSubscriptions = action({
   display: {
     label: "List Post Subscriptions",
@@ -16,14 +17,12 @@ export const listPostSubscriptions = action({
       "page[size]": pagination.pageLimit,
       "page[after]": pagination.cursor,
     };
+
     const { data } = await client.get<
-      | PaginatedResponse<{
-          subscriptions: Subscription[];
-        }>
-      | {
-          subscriptions: Subscription[];
-        }
+      | PaginatedResponse<{ subscriptions: Subscription[] }>
+      | { subscriptions: Subscription[] }
     >(`/community/posts/${postId}/subscriptions`, { params });
+
     return {
       data,
     };

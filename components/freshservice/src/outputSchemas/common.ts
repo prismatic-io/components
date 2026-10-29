@@ -11,7 +11,9 @@ export const attachmentSchema = {
   },
   required: ["id"],
 };
+
 export const customFieldsSchema = { type: "object" as const };
+
 export const successOutputSchema = {
   type: "object" as const,
   properties: {

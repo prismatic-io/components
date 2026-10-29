@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteCustomerExamplePayload } from "../../examplePayloads";
 import { deleteRecordInputs } from "../../inputs";
+
 export const deleteRecord = action({
   display: {
     label: "Delete Record",
@@ -21,7 +22,6 @@ export const deleteRecord = action({
     );
     return { data: { data, headers: headers as Record<string, string> } };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteCustomerExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteCustomerExamplePayload,
 });

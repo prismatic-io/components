@@ -13,6 +13,7 @@ import {
   taskUserSchema,
   userRefSchema,
 } from "./shared";
+
 const taskProperties = {
   id: { type: "string" },
   custom_id: { type: ["string", "null"] },
@@ -55,6 +56,7 @@ const taskProperties = {
   folder: folderRefSchema,
   space: spaceIdRefSchema,
 };
+
 const subtaskSchema = {
   type: "object" as const,
   properties: {
@@ -88,6 +90,7 @@ const subtaskSchema = {
     url: { type: "string" },
   },
 };
+
 const taskAttachmentSchema = {
   type: "object" as const,
   properties: {
@@ -117,6 +120,7 @@ const taskAttachmentSchema = {
     url_w_host: { type: "string" },
   },
 };
+
 export const getTaskOutputSchema = {
   type: "object" as const,
   properties: {
@@ -125,6 +129,7 @@ export const getTaskOutputSchema = {
     attachments: { type: "array", items: taskAttachmentSchema },
   },
 };
+
 export const createTaskOutputSchema = {
   type: "object" as const,
   properties: {
@@ -133,6 +138,7 @@ export const createTaskOutputSchema = {
     time_spent: { type: "number" },
   },
 };
+
 export const updateTaskOutputSchema = {
   type: "object" as const,
   properties: {
@@ -145,6 +151,7 @@ export const updateTaskOutputSchema = {
     attachments: { type: "array", items: taskAttachmentSchema },
   },
 };
+
 export const listTasksOutputSchema = {
   type: "object" as const,
   properties: {

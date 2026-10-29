@@ -6,6 +6,7 @@ import {
   fieldType,
   historical,
 } from "./common";
+
 export const createNewFieldInputs = {
   connection,
   name: fieldName,

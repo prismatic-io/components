@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listMembersExamplePayload } from "../../examplePayloads";
 import { listMembersInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listMembersFromGroup = action({
   display: {
     label: "List Group Members",
@@ -23,12 +24,14 @@ export const listMembersFromGroup = action({
       $count: filters.$count,
       $top,
     };
+
     const data = await paginateResults(
       client,
       `${ENDPOINTS.GROUPS}/${groupId}/members`,
       fetchAll,
       params,
     );
+
     return {
       data,
     };

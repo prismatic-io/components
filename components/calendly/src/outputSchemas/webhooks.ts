@@ -30,6 +30,7 @@ const webhookSubscriptionResource = {
     "organization",
   ],
 };
+
 export const createWebhookSubscriptionOutputSchema = {
   type: "object",
   properties: {
@@ -37,6 +38,7 @@ export const createWebhookSubscriptionOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const getWebhookSubscriptionOutputSchema = {
   type: "object",
   properties: {
@@ -44,14 +46,17 @@ export const getWebhookSubscriptionOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listWebhookSubscriptionOutputSchema = {
   type: "array",
   items: webhookSubscriptionResource,
 };
+
 export const deleteWebhookSubscriptionOutputSchema = {
   type: "object",
   properties: {},
 };
+
 export const deleteInstancedWebhooksOutputSchema = {
   type: "object",
   properties: {},

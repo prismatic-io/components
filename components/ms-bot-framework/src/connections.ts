@@ -3,6 +3,7 @@ import {
   oauth2Connection,
   OAuth2Type,
 } from "@prismatic-io/spectral";
+
 export const clientCredentials = oauth2Connection({
   key: "clientCredentials",
   oauth2Type: OAuth2Type.ClientCredentials,
@@ -54,6 +55,7 @@ export const clientCredentials = oauth2Connection({
     },
   },
 });
+
 export const directLine = connection({
   key: "directLine",
   display: {
@@ -70,4 +72,5 @@ export const directLine = connection({
     },
   },
 });
+
 export default [clientCredentials, directLine];

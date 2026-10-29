@@ -4,6 +4,7 @@ import {
   mapReadAssociations,
   resolveAssociationSpec,
 } from "./associations";
+
 const labels = {
   results: [
     { category: "HUBSPOT_DEFINED", typeId: 1, label: "Primary" },
@@ -11,10 +12,12 @@ const labels = {
     { category: "USER_DEFINED", typeId: 7, label: "Decision Maker" },
   ],
 };
+
 const clientWith = (data: unknown = labels) => {
   const get = vi.fn().mockResolvedValue({ data });
   return { client: { get } as never, get };
 };
+
 describe("resolveAssociationSpec", () => {
   test("numeric string matches typeId and reads the dated labels path", async () => {
     const { client, get } = clientWith();
@@ -32,6 +35,7 @@ describe("resolveAssociationSpec", () => {
       associationTypeId: 7,
     });
   });
+
   test("numeric string with surrounding whitespace still matches typeId", async () => {
     const { client } = clientWith();
     expect(
@@ -41,6 +45,7 @@ describe("resolveAssociationSpec", () => {
       associationTypeId: 279,
     });
   });
+
   test("label matches case-insensitively after trimming", async () => {
     const { client } = clientWith();
     expect(
@@ -52,6 +57,7 @@ describe("resolveAssociationSpec", () => {
       ),
     ).toEqual({ associationCategory: "USER_DEFINED", associationTypeId: 7 });
   });
+
   test("a numeric string matches typeId, never a label", async () => {
     const { client } = clientWith({
       results: [
@@ -64,6 +70,7 @@ describe("resolveAssociationSpec", () => {
       associationTypeId: 7,
     });
   });
+
   test("a miss throws naming the value and the object types", async () => {
     const { client } = clientWith();
     await expect(
@@ -77,6 +84,7 @@ describe("resolveAssociationSpec", () => {
       /"contact_to_company"[\s\S]*contacts[\s\S]*companies[\s\S]*numeric association type ID[\s\S]*List Association Types/,
     );
   });
+
   test("an empty value throws instead of matching an unlabeled type", async () => {
     const { client } = clientWith();
     await expect(
@@ -84,6 +92,7 @@ describe("resolveAssociationSpec", () => {
     ).rejects.toThrow(/numeric association type ID/);
   });
 });
+
 describe("mapAssociationTypes", () => {
   test("adds id and name for every entry and keeps the dated keys", () => {
     expect(mapAssociationTypes(labels)).toEqual({
@@ -113,6 +122,7 @@ describe("mapAssociationTypes", () => {
     });
   });
 });
+
 describe("mapReadAssociations", () => {
   const envelope = {
     status: "COMPLETE",
@@ -139,6 +149,7 @@ describe("mapReadAssociations", () => {
       },
     ],
   };
+
   test("emits one v3-style target per (record, association type) and preserves the envelope", () => {
     const out = mapReadAssociations(envelope) as typeof envelope;
     expect(out.status).toBe("COMPLETE");
@@ -169,6 +180,7 @@ describe("mapReadAssociations", () => {
     ]);
   });
 });
+
 describe("mapCreatedAssociations", () => {
   test("adds v3 from/to/type next to the labeled pair fields and keeps the envelope", () => {
     const pair = {

@@ -9,7 +9,9 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { XeroResponse } from "../interfaces/XeroResponse";
 import { LOOK_BACK_DATE_PATTERN, MAX_PAGE_SIZE } from "../constants";
 import type { XeroRecord } from "../types";
+
 const validConnectionKeys = connections.map((connection) => connection.key);
+
 export const validateConnection = (connection: Connection): void => {
   if (!validConnectionKeys.includes(connection.key)) {
     throw new ConnectionError(
@@ -17,6 +19,7 @@ export const validateConnection = (connection: Connection): void => {
       `Unsupported connection: ${connection?.key}.`,
     );
   }
+
   if (connection?.token?.access_token === undefined) {
     throw new ConnectionError(
       connection,
@@ -24,6 +27,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getHeaders = async (
   connection: Connection,
   debug: boolean,
@@ -31,19 +35,26 @@ export const getHeaders = async (
   validateConnection(connection);
   const tenantId = await getTenant(connection, debug);
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${util.types.toString(connection?.token?.access_token)}`,
+    Authorization: `Bearer ${util.types.toString(
+      connection?.token?.access_token,
+    )}`,
     Accepts: "application/json",
     "Xero-Tenant-Id": tenantId,
   };
+
   return headers;
 };
+
 export const cleanObject = (value: unknown): object | undefined =>
   value ? util.types.toObject(value) : undefined;
+
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 const throwCodeInputError = (inputLabel: string) => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     try {
@@ -54,6 +65,7 @@ export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
@@ -77,6 +89,7 @@ export const lookBackDateClean = (value: unknown): string => {
   }
   return str;
 };
+
 export const fetchAllData = async <T, K extends string>({
   client,
   path,
@@ -96,15 +109,19 @@ export const fetchAllData = async <T, K extends string>({
     queryParams.page = 1;
     queryParams.pageSize = MAX_PAGE_SIZE;
   }
+
   const { data } = await client.get<XeroResponse<T, K>>(path, {
     headers,
     params: { ...queryParams },
   });
+
   if (!fetchAll) return data;
+
   const allData: T[] = [...data[key]];
   let page = 2;
   let hasMore =
     data.pagination && data.pagination.page < data.pagination.pageCount;
+
   while (hasMore) {
     const { data } = await client.get<XeroResponse<T, K>>(path, {
       headers,
@@ -113,11 +130,14 @@ export const fetchAllData = async <T, K extends string>({
         page,
       },
     });
+
     allData.push(...data[key]);
     page++;
+
     hasMore =
       data.pagination && data.pagination.page < data.pagination.pageCount;
   }
+
   return {
     Id: data.Id,
     Status: data.Status,
@@ -126,6 +146,7 @@ export const fetchAllData = async <T, K extends string>({
     [key]: allData,
   } as XeroResponse<T, K>;
 };
+
 export const fetchAllRecords = async (
   client: HttpClient,
   endpoint: string,
@@ -137,27 +158,34 @@ export const fetchAllRecords = async (
   if (modifiedSince) {
     headers["If-Modified-Since"] = modifiedSince;
   }
+
   if (!paginated) {
     const { data } = await client.get(endpoint, { headers });
     return (data?.[responseKey] ?? []) as XeroRecord[];
   }
+
   const allRecords: XeroRecord[] = [];
   let page = 1;
   let hasMore = true;
+
   while (hasMore) {
     const { data } = await client.get(endpoint, {
       headers,
       params: { page },
     });
+
     const records = (data?.[responseKey] ?? []) as XeroRecord[];
     allRecords.push(...records);
+
     hasMore =
       data?.pagination != null &&
       data.pagination.page < data.pagination.pageCount;
     page++;
   }
+
   return allRecords;
 };
+
 export const resolvePollingRecordChanges = (
   data: import("../types").XeroChangesObject | undefined,
 ): import("../types").XeroRecordChange[] => {

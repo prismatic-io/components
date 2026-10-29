@@ -4,6 +4,7 @@ import { listQualityProcessStepAttributeGroupsExamplePayload } from "../../examp
 import { listQualityProcessStepAttributeGroupsInputs } from "../../inputs";
 import { attributeGroupFullSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessStepAttributeGroups = action({
   display: {
     label: "List Quality Process Step Attribute Groups",
@@ -19,9 +20,11 @@ export const listQualityProcessStepAttributeGroups = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         "/settings/qualityprocesses/steps/attributegroups",
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

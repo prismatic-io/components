@@ -9,6 +9,7 @@ import {
   page,
   where,
 } from "./common";
+
 export const paymentId = input({
   label: "Payment ID",
   type: "string",
@@ -18,6 +19,7 @@ export const paymentId = input({
   dataSource: "selectPayment",
   clean: util.types.toString,
 });
+
 export const paymentAmount = input({
   label: "Payment Amount",
   type: "string",
@@ -27,14 +29,17 @@ export const paymentAmount = input({
   placeholder: "Enter payment amount",
   clean: util.types.toString,
 });
+
 export const getPaymentInputs = {
   xeroConnection: connectionInput,
   paymentId,
 };
+
 export const getPaymentHistoryInputs = {
   xeroConnection: connectionInput,
   paymentId,
 };
+
 export const listPaymentsInputs = {
   xeroConnection: connectionInput,
   fetchAll,
@@ -42,6 +47,7 @@ export const listPaymentsInputs = {
   modifiedAfter,
   where,
 };
+
 export const payInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceId,
@@ -49,6 +55,7 @@ export const payInvoiceInputs = {
   paymentAmount,
   dateString,
 };
+
 export const reversePaymentInputs = {
   xeroConnection: connectionInput,
   paymentId,

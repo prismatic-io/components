@@ -5,6 +5,7 @@ import type {
   PaginatedRecord,
   StripeResource,
 } from "../types";
+
 export const paginateStripeRecords = async (
   client: ClassResource,
   fetchAll: boolean,

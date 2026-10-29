@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanNumber, cleanString, cleanStringByRequired } from "../util";
+
 export const getTeamId = <R extends boolean>(required: R, comments?: string) =>
   input({
     label: "Team ID",
@@ -13,6 +14,7 @@ export const getTeamId = <R extends boolean>(required: R, comments?: string) =>
     clean: cleanStringByRequired(required),
     dataSource: "teams",
   });
+
 export const getSpaceId = <R extends boolean>(required: R, comments?: string) =>
   input({
     label: "Space ID",
@@ -23,6 +25,7 @@ export const getSpaceId = <R extends boolean>(required: R, comments?: string) =>
     clean: cleanStringByRequired(required),
     dataSource: "spaces",
   });
+
 export const startDate = input({
   label: "Start Date",
   type: "string",
@@ -32,6 +35,7 @@ export const startDate = input({
   required: false,
   clean: cleanString,
 });
+
 export const getAssignee = <R extends boolean>(required: R, comments: string) =>
   input({
     label: "Assignee",
@@ -41,6 +45,7 @@ export const getAssignee = <R extends boolean>(required: R, comments: string) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 export const getFolderId = <R extends boolean>(
   required: R,
   comments?: string,
@@ -56,6 +61,7 @@ export const getFolderId = <R extends boolean>(
     clean: cleanStringByRequired(required),
     dataSource: "folders",
   });
+
 export const getlistId = <R extends boolean>(required: R, comments?: string) =>
   input({
     label: "List ID",
@@ -68,6 +74,7 @@ export const getlistId = <R extends boolean>(required: R, comments?: string) =>
     clean: cleanStringByRequired(required),
     dataSource: "lists",
   });
+
 export const getTaskId = <R extends boolean>(
   required: R,
   comments?: string,
@@ -84,6 +91,7 @@ export const getTaskId = <R extends boolean>(
     dataSource: "tasks",
   });
 };
+
 export const getCustomTaskIds = (
   required: boolean,
   comments?: string,
@@ -99,6 +107,7 @@ export const getCustomTaskIds = (
     default: defaultValue !== undefined ? `${defaultValue}` : "false",
     clean: util.types.toBool,
   });
+
 export const getArchived = (
   required: boolean,
   comments: string,
@@ -112,6 +121,7 @@ export const getArchived = (
     ...(defaultValue !== undefined && { default: `${defaultValue}` }),
     clean: util.types.toBool,
   });
+
 export const getEmail = (required: boolean, comments: string) =>
   input({
     label: "Email",
@@ -122,6 +132,7 @@ export const getEmail = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 export const customRoleId = input({
   label: "Custom Role ID",
   type: "string",
@@ -131,12 +142,14 @@ export const customRoleId = input({
   required: true,
   clean: util.types.toNumber,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The ClickUp connection to use.",
 });
+
 export const getDescription = <R extends boolean>(
   required: R,
   comments?: string,
@@ -149,6 +162,7 @@ export const getDescription = <R extends boolean>(
     required,
     clean: cleanStringByRequired(required),
   });
+
 export const getStatus = <R extends boolean>(required: R, comments: string) =>
   input({
     label: "Status",
@@ -158,6 +172,7 @@ export const getStatus = <R extends boolean>(required: R, comments: string) =>
     required,
     clean: cleanStringByRequired(required),
   });
+
 export const getPriority = (required: boolean, comments: string) =>
   input({
     label: "Priority",
@@ -167,6 +182,7 @@ export const getPriority = (required: boolean, comments: string) =>
     required,
     clean: cleanNumber,
   });
+
 export const getDueDateInt = (
   required: boolean,
   comments: string,
@@ -181,6 +197,7 @@ export const getDueDateInt = (
     ...(example?.length && { example }),
     clean: cleanNumber,
   });
+
 export const getDueDateTime = (
   required: boolean,
   comments: string,
@@ -194,6 +211,7 @@ export const getDueDateTime = (
     default: `${defaultValue}`,
     clean: util.types.toBool,
   });
+
 export const getNotifyAll = (
   required: boolean,
   comments: string,
@@ -207,6 +225,7 @@ export const getNotifyAll = (
     default: `${defaultValue}`,
     clean: util.types.toBool,
   });
+
 export const listIdInput = input({
   label: "List ID",
   type: "string",
@@ -215,6 +234,7 @@ export const listIdInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const folderIdInput = input({
   label: "Folder ID",
   type: "string",
@@ -223,6 +243,7 @@ export const folderIdInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const spaceIdInput = input({
   label: "Space ID",
   type: "string",
@@ -231,6 +252,7 @@ export const spaceIdInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const teamIdInput = input({
   label: "Team ID",
   type: "string",

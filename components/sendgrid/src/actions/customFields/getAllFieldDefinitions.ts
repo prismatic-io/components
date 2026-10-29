@@ -5,6 +5,7 @@ import { getAllFieldDefinitionsExamplePayload } from "../../examplePayloads";
 import { getAllFieldDefinitionsInputs } from "../../inputs";
 import { getAllFieldDefinitionsOutputSchema } from "../../outputSchemas";
 import { fetchPaginatedData } from "../../util";
+
 export const getAllFieldDefinitions = action({
   display: {
     label: "Get All Field Definitions",
@@ -15,6 +16,7 @@ export const getAllFieldDefinitions = action({
   performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, pagination, fetchAll }) => {
     const client = createAuthorizedClient(sendGridConnection);
+
     const data = await fetchPaginatedData(
       client,
       `/${API_VERSION}/marketing/field_definitions`,
@@ -27,9 +29,7 @@ export const getAllFieldDefinitions = action({
     type: "actionOutput",
     schema: getAllFieldDefinitionsOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: getAllFieldDefinitionsExamplePayload.data,
   }),
   examplePayload: getAllFieldDefinitionsExamplePayload,

@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput } from "../inputs";
+
 export const selectSpace = dataSource({
   display: {
     label: "Select Space",
@@ -10,10 +11,8 @@ export const selectSpace = dataSource({
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const { data } = await client.get("/spaces");
-    const items: {
-      id: string;
-      name: string;
-    }[] = data?.data ?? [];
+    const items: { id: string; name: string }[] = data?.data ?? [];
+
     return {
       result: items
         .map((item) => ({

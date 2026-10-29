@@ -4,6 +4,7 @@ import triggers from "./triggers";
 import connections from "./connections";
 import actions from "./actions";
 import dataSources from "./dataSources";
+
 export default component({
   key: "stripe",
   public: true,

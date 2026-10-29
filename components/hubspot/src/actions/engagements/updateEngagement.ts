@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { updateEngagementExamplePayload } from "../../examplePayloads";
 import { updateEngagementInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const updateEngagement = action({
   display: {
     label: "Update Engagement",
@@ -29,12 +30,15 @@ export const updateEngagement = action({
       debugRequest,
       headers: { "Content-Type": "application/json" },
     });
+
     const payload = { properties };
+
     const { data } = await client.patch(
       hubspotPaths.objects(engagementObject, `/${engagementId}`),
       payload,
       { params: { idProperty: idProperty } },
     );
+
     return {
       data,
     };

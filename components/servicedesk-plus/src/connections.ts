@@ -1,6 +1,7 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { DATA_CENTERS } from "./constants";
 import type { MapModel } from "./interfaces";
+
 const mapModel = (array: MapModel[]) => {
   const modelArray = array.map(({ label, value }) => ({
     label,
@@ -8,6 +9,7 @@ const mapModel = (array: MapModel[]) => {
   }));
   return [{ label: "", value: "" }, ...modelArray];
 };
+
 export const oauth2 = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "sdp-oauth2",
@@ -70,4 +72,5 @@ export const oauth2 = oauth2Connection({
     },
   },
 });
+
 export default [oauth2];

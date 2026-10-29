@@ -22,11 +22,13 @@ import {
   cleanupMcpServers,
   buildPendingApprovals,
 } from "../utils";
+
 export const runAgent = action({
   display: {
     label: "Agent: Run",
     description: "Run an agent",
   },
+
   inputs: {
     openaiConnection: openaiConnectionInput,
     agentConfig: agentConfigInput,
@@ -37,16 +39,20 @@ export const runAgent = action({
     maxTurns: maxTurnsInput,
     handoffs: handoffsInput,
   },
+
   perform: async (context, params) => {
     setDefaultOpenAIKey(
       util.types.toString(params.openaiConnection.fields.apiKey),
     );
+
     const configData = params.agentConfig as AgentConfigData;
+
     const { agent, allMcpServers } = await setupAgentWithHandoffs({
       configData,
       handoffConfigs: params.handoffs as AgentConfigData[] | undefined,
       context,
     });
+
     try {
       let agentInput: AgentInputItem[] = [];
       if (params.history) {
@@ -60,27 +66,33 @@ export const runAgent = action({
             text: util.types.toString(params.userInput),
           },
         ];
+
         for (const fileId of params.fileIds) {
           contentArray.push({
             type: "input_file",
             file: { id: util.types.toString(fileId) },
           });
         }
+
         const userMessage = {
           role: "user",
           content: contentArray,
         } as UserMessageItem;
+
         agentInput.push(userMessage);
       } else {
         agentInput.push(user(util.types.toString(params.userInput)));
       }
+
       const maxTurns = util.types.toNumber(params.maxTurns) || 10;
+
       const result = await run(agent, agentInput, {
         maxTurns: maxTurns,
         previousResponseId: params.previousResponseId
           ? util.types.toString(params.previousResponseId)
           : undefined,
       });
+
       const interrupted = result.interruptions.length > 0;
       const pendingApprovals = interrupted
         ? buildPendingApprovals(result.interruptions)
@@ -97,12 +109,15 @@ export const runAgent = action({
       };
     } catch (e) {
       await cleanupMcpServers(allMcpServers);
+
       console.error("Error in runAgent:", e);
+
       if (e instanceof Error) {
         console.error("Error message:", e.message);
         if (e.stack) {
           console.error("Stack trace:", e.stack);
         }
+
         if (
           e.message?.includes("Invalid schema") ||
           e.message?.includes("response_format") ||
@@ -110,6 +125,7 @@ export const runAgent = action({
         ) {
           throw new Error(`Structured output validation failed: ${e.message}`);
         }
+
         throw e;
       }
       console.error("Non-Error thrown:", JSON.stringify(e));

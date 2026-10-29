@@ -3,6 +3,7 @@ import { validateConnectionOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { validateConnectionInputs } from "../../inputs";
 import { validateConnectionExamplePayload } from "../../examplePayloads";
+
 export const validateConnection = action({
   display: {
     label: "Validate Connection",
@@ -17,7 +18,9 @@ export const validateConnection = action({
         connection,
         version,
       );
+
       await salesforceClient.identity();
+
       return {
         data: true,
       };

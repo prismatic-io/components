@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, contactId } from "../inputs";
+
 export const deleteContact = action({
   display: {
     label: "Delete Contact",

@@ -9,6 +9,7 @@ import {
 } from "../../inputs";
 import { getSftpClient } from "../../client";
 import { listDirectoryExamplePayload } from "../../examplePayloads";
+
 const listDirectory = action({
   display: {
     label: "List Directory",
@@ -20,6 +21,7 @@ const listDirectory = action({
     { connection, path, pattern, includeSubdirectories, includeDirectories },
   ) => {
     const sftp = await getSftpClient(connection, context.debug.enabled);
+
     try {
       const listDirectoryFilesRecursive = async (
         currentPath: string,
@@ -27,7 +29,9 @@ const listDirectory = action({
         const fileList = await sftp.list(currentPath, (file) =>
           pattern ? minimatch(file.name, pattern) : true,
         );
+
         const results: string[] = [];
+
         for (const file of fileList) {
           const fullPath = `${currentPath}/${file.name}`.replace(/\/+/g, "/");
           if (file.type === "d") {
@@ -40,22 +44,27 @@ const listDirectory = action({
             results.push(fullPath);
           }
         }
+
         return results.sort();
       };
+
       const listDirectoryFiles = async (
         currentPath: string,
       ): Promise<string[]> => {
         const fileList = await sftp.list(currentPath, (file) =>
           pattern ? minimatch(file.name, pattern) : true,
         );
+
         return fileList
           .filter(({ type }) => (includeDirectories ? true : type !== "d"))
           .map(({ name }) => name)
           .sort();
       };
+
       const allFiles = includeSubdirectories
         ? await listDirectoryFilesRecursive(path)
         : await listDirectoryFiles(path);
+
       return {
         data: allFiles,
       };
@@ -72,4 +81,5 @@ const listDirectory = action({
   },
   examplePayload: listDirectoryExamplePayload,
 });
+
 export default listDirectory;

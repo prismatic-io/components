@@ -2,6 +2,7 @@ import { util, action } from "@prismatic-io/spectral";
 import { googleStorageClient } from "../client";
 import { downloadFileExamplePayload } from "../examplePayloads";
 import { bucketName, connectionInput, fileName } from "../inputs";
+
 export const downloadFile = action({
   display: {
     label: "Download File",

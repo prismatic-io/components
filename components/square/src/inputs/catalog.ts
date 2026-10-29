@@ -10,6 +10,7 @@ import {
   squareConnection,
   validateJSON,
 } from "./common";
+
 const types = input({
   label: "Types",
   type: "string",
@@ -22,6 +23,7 @@ const types = input({
   example: "ITEM, CATEGORY, TAX",
   clean: toOptionalString,
 });
+
 const catalogVersion = input({
   label: "Catalog Version",
   type: "string",
@@ -32,6 +34,7 @@ const catalogVersion = input({
   required: false,
   clean: toOptionalNumber,
 });
+
 const textFilter = input({
   label: "Text Filter",
   type: "string",
@@ -42,6 +45,7 @@ const textFilter = input({
   required: false,
   clean: toOptionalString,
 });
+
 const categoryIds = input({
   label: "Category IDs",
   type: "code",
@@ -56,6 +60,7 @@ const categoryIds = input({
   required: false,
   clean: (input) => validateJSON(input),
 });
+
 const stockLevels = input({
   label: "Stock Levels",
   type: "code",
@@ -66,6 +71,7 @@ const stockLevels = input({
   required: false,
   clean: (input) => validateJSON(input),
 });
+
 const enabledLocationIds = input({
   label: "Enabled Location IDs",
   type: "code",
@@ -76,6 +82,7 @@ const enabledLocationIds = input({
   required: false,
   clean: (input) => validateJSON(input),
 });
+
 const productTypes = input({
   label: "Product Types",
   type: "code",
@@ -86,6 +93,7 @@ const productTypes = input({
   required: false,
   clean: (input) => validateJSON(input),
 });
+
 const customAttributeFilters = input({
   label: "Custom Attribute Filters",
   type: "code",
@@ -107,6 +115,7 @@ const customAttributeFilters = input({
   required: false,
   clean: (input) => validateJSON(input),
 });
+
 const objectTypes = input({
   label: "Object Types",
   type: "text",
@@ -117,6 +126,7 @@ const objectTypes = input({
   required: true,
   clean: util.types.toString,
 });
+
 const includeDeletedObjects = input({
   label: "Include Deleted Objects",
   type: "boolean",
@@ -124,6 +134,7 @@ const includeDeletedObjects = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const includeRelatedObjects = input({
   label: "Include Related Objects",
   type: "boolean",
@@ -132,6 +143,7 @@ const includeRelatedObjects = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const catalogQuery = input({
   label: "Catalog Query",
   type: "code",
@@ -156,6 +168,7 @@ const catalogQuery = input({
   required: true,
   clean: validateJSON,
 });
+
 const objectIds = input({
   label: "Object IDs",
   type: "code",
@@ -173,6 +186,7 @@ const objectIds = input({
   required: true,
   clean: validateJSON,
 });
+
 const catalogObject = input({
   label: "Catalog Object",
   type: "code",
@@ -211,6 +225,7 @@ const catalogObject = input({
   required: true,
   clean: validateJSON,
 });
+
 const batches = input({
   label: "Batches",
   type: "code",
@@ -238,6 +253,7 @@ const batches = input({
   required: true,
   clean: validateJSON,
 });
+
 const objectId = input({
   label: "Object ID",
   type: "string",
@@ -247,6 +263,7 @@ const objectId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const listCatalogInputs = {
   squareConnection,
   fetchAll,
@@ -254,6 +271,7 @@ export const listCatalogInputs = {
   types,
   catalogVersion,
 };
+
 export const searchCatalogItemsInputs = {
   squareConnection,
   pagination,
@@ -265,6 +283,7 @@ export const searchCatalogItemsInputs = {
   productTypes,
   customAttributeFilters,
 };
+
 export const searchCatalogObjectsInputs = {
   squareConnection,
   objectTypes,
@@ -274,6 +293,7 @@ export const searchCatalogObjectsInputs = {
   catalogQuery,
   pagination,
 };
+
 export const batchRetrieveCatalogObjectsInputs = {
   squareConnection,
   objectIds,
@@ -281,28 +301,34 @@ export const batchRetrieveCatalogObjectsInputs = {
   includeDeletedObjects,
   catalogVersion,
 };
+
 export const upsertCatalogObjectInputs = {
   squareConnection,
   idempotencyKey,
   catalogObject,
 };
+
 export const batchUpsertCatalogObjectsInputs = {
   squareConnection,
   idempotencyKey,
   batches,
 };
+
 export const retrieveCatalogObjectInputs = {
   squareConnection,
   objectId,
   includeRelatedObjects,
   catalogVersion,
 };
+
 export const deleteCatalogObjectInputs = {
   squareConnection,
   objectId,
 };
+
 export const batchDeleteCatalogObjectsInputs = {
   squareConnection,
   objectIds,
 };
+
 export { catalogVersion, types };

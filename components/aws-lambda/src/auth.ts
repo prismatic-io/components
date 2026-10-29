@@ -1,6 +1,7 @@
 import { LambdaClient } from "@aws-sdk/client-lambda";
 import { type ClientProps, getClientParams } from "aws-utils";
 import { accessKeySecretPair } from "./connections";
+
 export const createClient = async ({
   awsRegion,
   awsConnection,

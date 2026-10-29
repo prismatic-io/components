@@ -4,6 +4,7 @@ import { getWorkerExamplePayload } from "../../examplePayloads/workers";
 import { getWorkerInputs } from "../../inputs";
 import { workerRecordOutputSchema } from "../../outputSchemas";
 import type { WorkerRecord } from "../../types";
+
 export const getWorker = action({
   display: {
     label: "Get Worker",

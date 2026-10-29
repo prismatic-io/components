@@ -4,6 +4,7 @@ import { getTeamInfoExamplePayload } from "../../examplePayloads";
 import { getTeamMembersInputs } from "../../inputs";
 import { getTeamMembersOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const getTeamMembers = action({
   display: {
     label: "Get Team Members",
@@ -22,6 +23,7 @@ export const getTeamMembers = action({
           },
         ] as any,
       });
+
       return {
         data,
       };

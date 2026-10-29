@@ -5,6 +5,7 @@ import { listActiveImportsExamplePayload } from "../../examplePayloads";
 import { listActiveImportsInputs } from "../../inputs";
 import { getAllPaginatedData } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const listActiveImports = action({
   display: {
     label: "List Active Imports",
@@ -18,6 +19,7 @@ export const listActiveImports = action({
       timeout,
       debugRequest,
     });
+
     const data = await getAllPaginatedData(
       client,
       hubspotPaths.imports(),
@@ -25,10 +27,12 @@ export const listActiveImports = action({
       true,
       {},
     );
+
     return {
       data,
     };
   },
+
   inputs: listActiveImportsInputs,
   examplePerform: async () => ({
     data: listActiveImportsExamplePayload.data,

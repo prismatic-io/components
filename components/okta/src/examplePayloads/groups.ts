@@ -32,29 +32,36 @@ export const getGroupExamplePayload = {
     },
   },
 };
+
 export const createGroupExamplePayload = getGroupExamplePayload;
+
 export const updateGroupExamplePayload = getGroupExamplePayload;
+
 export const listGroupsExamplePayload = {
   data: [getGroupExamplePayload.data],
 };
+
 export const assignUserToGroupExamplePayload = {
   data: {
     success: true,
     message: `User 123 added to group 123`,
   },
 };
+
 export const removeUserFromGroupExamplePayload = {
   data: {
     success: true,
     message: `User 123 removed from group 123`,
   },
 };
+
 export const deleteGroupExamplePayload = {
   data: {
     id: "00g1emaKYZTWRYYRRTSK",
     status: "DELETED",
   },
 };
+
 export const listGroupUsersExamplePayload = {
   data: [
     {

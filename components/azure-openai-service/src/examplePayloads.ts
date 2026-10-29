@@ -1,6 +1,4 @@
-export const createChatCompletionExamplePayload: {
-  data: unknown;
-} = {
+export const createChatCompletionExamplePayload: { data: unknown } = {
   data: {
     id: "chatcmpl-8ZzX9Y5K3mN2pQ7rS1tU0vW",
     object: "chat.completion",
@@ -26,9 +24,8 @@ export const createChatCompletionExamplePayload: {
     system_fingerprint: "fp_50cad350e4",
   },
 };
-export const createCompletionsExamplePayload: {
-  data: unknown;
-} = {
+
+export const createCompletionsExamplePayload: { data: unknown } = {
   data: {
     id: "chatcmpl-8ZzX9Y5K3mN2pQ7rS1tU0vW",
     object: "chat.completion",
@@ -52,9 +49,8 @@ export const createCompletionsExamplePayload: {
     },
   },
 };
-export const summarizeTextExamplePayload: {
-  data: unknown;
-} = {
+
+export const summarizeTextExamplePayload: { data: unknown } = {
   data: [
     {
       index: 0,
@@ -68,9 +64,8 @@ export const summarizeTextExamplePayload: {
     },
   ],
 };
-export const createImageExamplePayload: {
-  data: unknown;
-} = {
+
+export const createImageExamplePayload: { data: unknown } = {
   data: [
     {
       url: "https://oaidalleapiprodscus.blob.core.windows.net/private/org-123456789/user-abcdef123456/img-1a2b3c4d5e6f.png?st=2024-01-15T10%3A30%3A00Z&se=2024-01-15T12%3A30%3A00Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=abcd1234-efgh-5678-ijkl-9012mnop3456&sktid=a1b2c3d4-e5f6-7890-ghij-k1l2m3n4o5p6&skt=2024-01-15T09%3A45%3A00Z&ske=2024-01-16T09%3A45%3A00Z&sks=b&skv=2021-08-06&sig=abcdef1234567890",

@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { deleteDocumentInputs } from "../../inputs";
 import { deleteDocumentExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const deleteDocument = action({
   display: {
     label: "Delete Document",
@@ -20,13 +21,16 @@ export const deleteDocument = action({
       resourceLink,
       debug: context.debug.enabled,
     });
+
     const headers: Record<string, string> = {};
     if (partitionKey) {
       headers["x-ms-documentdb-partitionkey"] = `["${partitionKey}"]`;
     }
+
     if (etag) {
       headers["If-Match"] = etag;
     }
+
     await client.delete(`/${resourceLink}`, { headers });
     return {
       data: {

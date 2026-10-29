@@ -8,9 +8,11 @@ import {
 } from "../../../examplePayloads";
 import { getWorkerDemographics } from "./getWorkerDemographics";
 import { listWorkersDemographics } from "./listWorkersDemographics";
+
 const BASE = "https://api.adp.com";
 const TOKEN = "test-token";
 const AOID = "G3R47DSRZK5TRCFJ";
+
 const connection = createConnection(adpOauth2, {
   endpoint: API_ENDPOINT,
   tokenEndpoint: TOKEN_ENDPOINT,
@@ -19,6 +21,7 @@ const connection = createConnection(adpOauth2, {
   sslCert: "-----BEGIN CERTIFICATE-----\nCERT\n-----END CERTIFICATE-----",
   sslKey: "-----BEGIN PRIVATE KEY-----\nKEY\n-----END PRIVATE KEY-----",
 });
+
 const context = () => ({
   executionState: {
     [`ADP - ${connection.configVarKey}`]: {
@@ -27,11 +30,14 @@ const context = () => ({
     },
   },
 });
+
 const api = () =>
   nock(BASE, { reqheaders: { authorization: `Bearer ${TOKEN}` } });
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
+
 describe("getWorkerDemographics", () => {
   test("happy path returns the worker demographics", async () => {
     api()
@@ -45,6 +51,7 @@ describe("getWorkerDemographics", () => {
     );
     expect(result).toEqual(getWorkerDemographicsExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get(`/hr/v2/worker-demographics/${AOID}`)
@@ -59,6 +66,7 @@ describe("getWorkerDemographics", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("listWorkersDemographics", () => {
   const params = {
     connection,
@@ -71,6 +79,7 @@ describe("listWorkersDemographics", () => {
   const fixture = listWorkersDemographicsExamplePayload.data as {
     workers: unknown[];
   };
+
   test("happy path returns one page wrapped in workers/meta/confirmMessage", async () => {
     api()
       .get("/hr/v2/worker-demographics")
@@ -79,6 +88,7 @@ describe("listWorkersDemographics", () => {
     const { result } = await invoke(listWorkersDemographics, params, context());
     expect(result).toEqual(listWorkersDemographicsExamplePayload);
   });
+
   test("error path rejects", async () => {
     api()
       .get("/hr/v2/worker-demographics")

@@ -1,4 +1,5 @@
 import { instanceReferenceSchema, workerDataSchema } from "./shared";
+
 export const skillSourcesSchema = {
   type: "object" as const,
   properties: {
@@ -20,6 +21,7 @@ export const skillSourcesSchema = {
     },
   },
 };
+
 export const displayExplicitSkillRepresentationSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +41,7 @@ export const displayExplicitSkillRepresentationSchema = {
     },
   },
 };
+
 export const serviceDatesDataSchema = {
   type: "object" as const,
   properties: {
@@ -52,7 +55,9 @@ export const serviceDatesDataSchema = {
     },
   },
 };
+
 export const getStaffingWorkerByIdOutputSchema = workerDataSchema;
+
 export const getStaffingWorkersOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -69,6 +74,7 @@ export const getStaffingWorkersOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getWorkerExplicitSkillsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -85,6 +91,7 @@ export const getWorkerExplicitSkillsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getWorkerServiceDatesOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -101,6 +108,7 @@ export const getWorkerServiceDatesOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const initiateJobChangeOutputSchema = {
   type: "object" as const,
   properties: {
@@ -122,6 +130,7 @@ export const initiateJobChangeOutputSchema = {
   },
   required: ["date"],
 };
+
 export const initiateOrganizationAssignmentChangeOutputSchema = {
   type: "object" as const,
   properties: {

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { updateInvoiceExamplePayload } from "../../examplePayloads";
 import { updateInvoiceInputs } from "../../inputs";
+
 export const updateInvoice = action({
   display: {
     label: "Update Invoice",
@@ -15,8 +16,11 @@ export const updateInvoice = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const updateBody = updateInvoiceInput;
+
     const response = await client.put(`/v2/invoices/${invoiceId}`, updateBody);
+
     return {
       data: response.data,
     };

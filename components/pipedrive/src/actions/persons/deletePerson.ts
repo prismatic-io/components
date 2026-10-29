@@ -4,6 +4,7 @@ import { deletePersonInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deletePersonExamplePayload } from "../../examplePayloads";
 import { deletePersonOutputSchema } from "../../outputSchemas";
+
 export const deletePerson = action({
   display: {
     label: "Delete Person",

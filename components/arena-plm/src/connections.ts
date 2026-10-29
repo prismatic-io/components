@@ -1,4 +1,5 @@
 import { connection, input, util } from "@prismatic-io/spectral";
+
 export const arenaPlmBasicAuth = connection({
   display: {
     description: "Arena PLM Basic Auth",
@@ -45,4 +46,5 @@ export const arenaPlmBasicAuth = connection({
     }),
   },
 });
+
 export default [arenaPlmBasicAuth];

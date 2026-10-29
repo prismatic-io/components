@@ -5,6 +5,7 @@ import { changeRequestStatusInputs } from "../../inputs";
 import { changeRequestStatusOutputSchema } from "../../outputSchemas";
 import type { RequestTransitionCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const changeRequestStatus = action({
   display: {
     label: "Change Request Status",
@@ -20,12 +21,14 @@ export const changeRequestStatus = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const transitionPayload: RequestTransitionCreateVo = {
         request: {
           guid: params.requestGuid,
         },
         status: params.status as RequestTransitionCreateVo["status"],
       };
+
       if (params.fromStatus) {
         transitionPayload.fromStatus =
           params.fromStatus as RequestTransitionCreateVo["fromStatus"];
@@ -45,6 +48,7 @@ export const changeRequestStatus = action({
       if (params.deferDeadlineDateTime) {
         transitionPayload.deferDeadlineDateTime = params.deferDeadlineDateTime;
       }
+
       context.logger.info(
         `Changing request ${params.requestGuid} status to ${params.status}`,
         {
@@ -53,11 +57,14 @@ export const changeRequestStatus = action({
           toStatus: params.status,
         },
       );
+
       const { data } = await client.post(
         "/requests/statuschanges",
         transitionPayload,
       );
+
       context.logger.info("Successfully changed request status");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Change Request Status");

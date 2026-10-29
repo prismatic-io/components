@@ -7,6 +7,7 @@ import {
   includeMetadataLinks,
   pagination,
 } from "./common";
+
 const gradeId = input({
   label: "Grade ID",
   type: "string",
@@ -17,12 +18,14 @@ const gradeId = input({
   example: "300100012345678",
   clean: cleanId,
 });
+
 export const getGradeInputs = {
   connection,
   effectiveDate,
   gradeId,
   includeMetadataLinks,
 };
+
 export const listGradesInputs = {
   connection,
   fetchAll,

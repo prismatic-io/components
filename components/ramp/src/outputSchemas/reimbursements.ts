@@ -1,4 +1,5 @@
 import { pageSchema } from "./shared";
+
 const reimbursementSchema = {
   type: "object" as const,
   properties: {
@@ -881,7 +882,9 @@ const reimbursementSchema = {
     "waypoints",
   ],
 };
+
 export const getReimbursementOutputSchema = reimbursementSchema;
+
 export const listReimbursementsOutputSchema = {
   type: "object" as const,
   properties: {

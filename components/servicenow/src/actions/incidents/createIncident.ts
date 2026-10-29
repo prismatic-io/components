@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createIncidentInputs } from "../../inputs";
 import { createTableRecord } from "../tables/records/createTableRecord";
+
 export const createIncident = action({
   display: {
     label: "Create Incident",
@@ -16,9 +17,7 @@ export const createIncident = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: {} },
   }),
   inputs: createIncidentInputs,

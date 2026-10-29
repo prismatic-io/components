@@ -4,6 +4,7 @@ import { updateItamAssetExamplePayload as examplePayload } from "../../examplePa
 import { updateItamAssetInputs as inputs } from "../../inputs";
 import { itamAssetWriteOutputSchema } from "../../outputSchemas";
 import { itamPath, normalizeItamWrite } from "../../util";
+
 export const updateItamAsset = action({
   display: {
     label: "Update Asset (ITAM)",
@@ -34,6 +35,7 @@ export const updateItamAsset = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     if (
       (rackPlacement.rack || rackPlacement.rackId) &&
       (!rackPlacement.startAt || !rackPlacement.size)
@@ -42,6 +44,7 @@ export const updateItamAsset = action({
         "Start At and Size are both required when placing an asset in a rack.",
       );
     }
+
     const payload = {
       type,
       name,
@@ -65,10 +68,12 @@ export const updateItamAsset = action({
       depth: rackPlacement.depth,
       ...itamAssetsAdditionalFields,
     };
+
     const { data } = await client.put(
       itamPath("assets", { op: "update", id: assetId }),
       payload,
     );
+
     return { data: normalizeItamWrite(data) };
   },
   outputSchema: outputSchema({

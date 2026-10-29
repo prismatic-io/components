@@ -3,6 +3,7 @@ import { selectColumnInputs } from "../inputs/columns/list";
 import { createClient } from "../client";
 import { getDriveOrSiteBaseUrl, paginateResults } from "../helpers";
 import type { Column } from "../interfaces";
+
 export const selectColumn = dataSource({
   display: {
     label: "Select Column",
@@ -15,6 +16,7 @@ export const selectColumn = dataSource({
   ) => {
     const { client, source } = createClient(connection, false);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
+
     const data = await paginateResults<Column>(
       client,
       `${baseUrl}/worksheets/${worksheetId}/tables/${tableId}/columns`,

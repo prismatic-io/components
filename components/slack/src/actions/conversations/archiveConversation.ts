@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { archiveConversationExamplePayload } from "../../examplePayloads";
 import { archiveConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const archiveConversation = action({
   display: {
     label: "Archive Conversation",
@@ -21,11 +22,10 @@ export const archiveConversation = action({
     const data = await client.conversations.archive({
       channel: channelName,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: archiveConversationExamplePayload,
   }),
   examplePayload: {

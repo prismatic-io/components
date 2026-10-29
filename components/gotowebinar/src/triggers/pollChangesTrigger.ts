@@ -13,6 +13,7 @@ import {
   lookBackDateToCursor,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Registrants",
@@ -30,9 +31,11 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
+
     const lastPolledAt =
       pollState?.lastPolledAt ||
       (params.lookBackDate ? lookBackDateToCursor(params.lookBackDate) : "");
+
     if (!lastPolledAt) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -40,10 +43,12 @@ export const pollChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const { client, organizerKey } = createGotoWebinarClient(
       params.connection,
       context.debug.enabled,
     );
+
     const registrants = await fetchAllRegistrants(
       client,
       organizerKey,
@@ -53,12 +58,15 @@ export const pollChangesTrigger = pollingTrigger({
       registrants,
       lastPolledAt,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled GoToWebinar registrants (webinar ${params.webinarKey}): ${registrants.length} fetched, ${newRegistrants.length} new`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created: newRegistrants } } },
       polledNoChanges: newRegistrants.length === 0,

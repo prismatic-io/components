@@ -4,6 +4,7 @@ import { ASSET_QUERY_PATH } from "../../constants";
 import { queryAssetsExamplePayload } from "../../examplePayloads";
 import { queryAssetsInputs } from "../../inputs";
 import { queryAssetsOutputSchema } from "../../outputSchemas";
+
 export const queryAssets = action({
   examplePayload: queryAssetsExamplePayload,
   display: {
@@ -22,6 +23,7 @@ export const queryAssets = action({
     { connection, assetQuery, assetFields, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       page: { page: pagination.page, pageSize: pagination.pageSize },
       ...(assetQuery && { query: assetQuery }),
@@ -29,12 +31,12 @@ export const queryAssets = action({
         fields: assetFields.split(",").map((f: string) => f.trim()),
       }),
     };
+
     const { data } = await client.post(ASSET_QUERY_PATH, body);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: queryAssetsExamplePayload.data,
   }),
 });

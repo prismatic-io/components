@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The ServiceNow connection to use.",
 });
+
 export const instanceUrlInput = input({
   label: "Instance URL",
   placeholder: "Enter the instance URL",
@@ -16,6 +18,7 @@ export const instanceUrlInput = input({
   example: "https://instance.service-now.com",
   clean: util.types.toString,
 });
+
 export const apiVersionInput = input({
   label: "API Version",
   placeholder: "Enter the API version",
@@ -30,6 +33,7 @@ export const apiVersionInput = input({
   example: "v2",
   clean: util.types.toString,
 });
+
 export const tableNameInput = input({
   label: "Table",
   placeholder: "Enter the table name",
@@ -40,6 +44,7 @@ export const tableNameInput = input({
   clean: util.types.toString,
   dataSource: "selectTable",
 });
+
 export const fieldValuesInput = input({
   label: "Values",
   placeholder: "Enter the field values",
@@ -49,6 +54,7 @@ export const fieldValuesInput = input({
   comments:
     "The names of the fields and their values to use when creating a record",
 });
+
 export const fieldValuesInputNonRequired = input({
   label: "Values",
   placeholder: "Enter the field values",
@@ -58,6 +64,7 @@ export const fieldValuesInputNonRequired = input({
   comments:
     "The names of the fields and their values to use when creating a record",
 });
+
 export const sysId = input({
   label: "Sys ID",
   type: "string",
@@ -68,6 +75,7 @@ export const sysId = input({
   placeholder: "Enter the Sys ID",
   dataSource: "selectAttachment",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -77,6 +85,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const sysparmFields = input({
   label: "Sysparm Fields",
   type: "string",
@@ -87,6 +96,7 @@ export const sysparmFields = input({
     "Comma-separated list of fields to return. If not specified, all fields are returned.",
   clean: cleanStringInput,
 });
+
 export const sysparmLimit = input({
   label: "Sysparm Limit",
   type: "string",
@@ -97,6 +107,7 @@ export const sysparmLimit = input({
     "Max number of records to return. Large values can impact performance. For pagination with large data sets include the Sysparm Offset",
   clean: cleanStringInput,
 });
+
 export const sysparmOffset = input({
   label: "Sysparm Offset",
   type: "string",
@@ -107,6 +118,7 @@ export const sysparmOffset = input({
     "Starting record index for which to begin retrieving records. This functionality enables the retrieval of all records, regardless of the number of records, in small manageable chunks. For example, the first time you call this endpoint, sysparm_offset is set to '0'. To simply page through all available records, use sysparm_offset=sysparm_offset+sysparm_limit, until you reach the end of all records.",
   clean: cleanStringInput,
 });
+
 export const sysparmQuery = input({
   label: "Sysparm Query",
   type: "string",
@@ -117,12 +129,14 @@ export const sysparmQuery = input({
   placeholder: "Enter the encoded query",
   clean: cleanStringInput,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and offset for paginated retrieval.",
   inputs: { sysparmLimit, sysparmOffset },
 });
+
 export const file = input({
   label: "File",
   type: "string",
@@ -131,6 +145,7 @@ export const file = input({
   placeholder: "Enter the file data",
   clean: util.types.toData,
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -140,6 +155,7 @@ export const fileName = input({
   placeholder: "Enter the file name",
   clean: util.types.toString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -149,6 +165,7 @@ export const showNewRecords = input({
     "When enabled, newly created records will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",

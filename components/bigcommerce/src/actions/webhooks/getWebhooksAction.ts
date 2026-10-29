@@ -11,6 +11,7 @@ import {
   webhookPageInput,
   webhookScopeInput,
 } from "../../inputs";
+
 export const getWebhooksAction = action({
   display: {
     label: "List Webhooks",
@@ -34,6 +35,7 @@ export const getWebhooksAction = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/hooks`;
+
     const params = {
       page,
       limit,
@@ -41,6 +43,7 @@ export const getWebhooksAction = action({
       scope,
       destination,
     };
+
     try {
       const response = await client.get(endpoint, { params });
       return {
@@ -52,6 +55,7 @@ export const getWebhooksAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash: storeHash,

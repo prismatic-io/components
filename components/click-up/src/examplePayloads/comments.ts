@@ -38,11 +38,13 @@ const commentObject = {
   reactions: [],
   date: "1704153600000",
 };
+
 export const getTaskCommentsExamplePayload = {
   data: {
     comments: [commentObject],
   },
 };
+
 export const createTaskCommentExamplePayload = {
   data: {
     id: "458",
@@ -50,9 +52,11 @@ export const createTaskCommentExamplePayload = {
     date: 1704153600000,
   },
 };
+
 export const updateCommentExamplePayload = {
   data: {},
 };
+
 export const deleteCommentExamplePayload = {
   data: {},
 };

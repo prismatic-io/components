@@ -17,6 +17,7 @@ import {
   tagging,
   versionId,
 } from "./common";
+
 const objectKeys = input({
   label: "Object Keys",
   placeholder: "Enter object keys",
@@ -28,6 +29,7 @@ const objectKeys = input({
   example: "path/to/file1.txt",
   clean: getObjectIdentifiers,
 });
+
 const sourceKey = input({
   label: "Source Key",
   placeholder: "Enter source object key",
@@ -38,6 +40,7 @@ const sourceKey = input({
   example: "backups/2024/database-backup.sql",
   clean: util.types.toString,
 });
+
 const destinationKey = input({
   label: "Destination Key",
   placeholder: "Enter destination object key",
@@ -48,6 +51,7 @@ const destinationKey = input({
   example: "archive/2024/database-backup.sql",
   clean: util.types.toString,
 });
+
 const sourceBucket = input({
   label: "Source Bucket Name",
   placeholder: "Enter source bucket name",
@@ -58,6 +62,7 @@ const sourceBucket = input({
   example: "my-company-data-prod",
   clean: util.types.toString,
 });
+
 const destinationBucket = input({
   label: "Destination Bucket Name",
   placeholder: "Enter destination bucket name",
@@ -68,6 +73,7 @@ const destinationBucket = input({
   example: "my-company-archive",
   clean: util.types.toString,
 });
+
 const prefix = input({
   label: "Prefix",
   placeholder: "Enter prefix",
@@ -79,6 +85,7 @@ const prefix = input({
   example: "path/to/files/",
   clean: util.types.toString,
 });
+
 const maxKeys = input({
   label: "Max Keys",
   type: "string",
@@ -89,6 +96,7 @@ const maxKeys = input({
   placeholder: "Enter max keys (1-1000)",
   clean: toOptionalInt,
 });
+
 const continuationToken = input({
   label: "Continuation Token",
   type: "string",
@@ -99,12 +107,14 @@ const continuationToken = input({
   placeholder: "Enter continuation token",
   clean: cleanString,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { maxKeys, continuationToken },
 });
+
 const actionType = input({
   label: "Action Type",
   type: "string",
@@ -119,6 +129,7 @@ const actionType = input({
     { label: "Upload", value: "upload" },
   ],
 });
+
 const objectAttributes = input({
   label: "Object Attributes",
   type: "string",
@@ -133,6 +144,7 @@ const objectAttributes = input({
   placeholder: "Select object attributes",
   clean: getObjectAttributes,
 });
+
 const includeMetadata = input({
   label: "Include Metadata",
   type: "boolean",
@@ -142,6 +154,7 @@ const includeMetadata = input({
     "When true, returns full object metadata and pagination information instead of just object keys.",
   clean: util.types.toBool,
 });
+
 export const copyObjectInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -152,6 +165,7 @@ export const copyObjectInputs = {
   acl,
   awsRegion,
 };
+
 export const deleteObjectInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -159,6 +173,7 @@ export const deleteObjectInputs = {
   objectKey,
   awsRegion,
 };
+
 export const deleteObjectsInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -166,6 +181,7 @@ export const deleteObjectsInputs = {
   objectKeys,
   awsRegion,
 };
+
 export const generatePresignedUrlInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -175,6 +191,7 @@ export const generatePresignedUrlInputs = {
   expirationSeconds,
   awsRegion,
 };
+
 export const getObjectInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -187,6 +204,7 @@ export const getObjectInputs = {
   },
   awsRegion,
 };
+
 export const getObjectAttributesInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -199,6 +217,7 @@ export const getObjectAttributesInputs = {
   },
   awsRegion,
 };
+
 export const headObjectInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -210,6 +229,7 @@ export const headObjectInputs = {
   },
   awsRegion,
 };
+
 export const listObjectsInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -219,6 +239,7 @@ export const listObjectsInputs = {
   prefix,
   awsRegion,
 };
+
 export const putObjectInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,

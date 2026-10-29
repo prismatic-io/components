@@ -9,6 +9,7 @@ import {
   partitionEntryChanges,
   resolvePollingWindowStart,
 } from "./polling";
+
 const entry = (
   id: string,
   createdAt: string,
@@ -18,8 +19,10 @@ const entry = (
     sys: { id, createdAt, updatedAt },
     fields: {},
   }) as unknown as EntryProps<KeyValueMap>;
+
 const NOW = "2026-02-01T00:00:00.000Z";
 const SINCE = "2026-01-01T00:00:00.000Z";
+
 test("a complete poll advances the cursor to now", () => {
   const records = [entry("a", SINCE, "2026-01-02T00:00:00.000Z")];
   expect(computeNextCursor(records, false, SINCE, NOW)).toEqual({
@@ -27,6 +30,7 @@ test("a complete poll advances the cursor to now", () => {
     stalled: false,
   });
 });
+
 test("a truncated poll advances the cursor to the newest (last) fetched record", () => {
   const records = [
     entry("a", SINCE, "2026-01-02T00:00:00.000Z"),
@@ -37,6 +41,7 @@ test("a truncated poll advances the cursor to the newest (last) fetched record",
     stalled: false,
   });
 });
+
 test("a truncated poll whose records all share the cursor timestamp is stalled", () => {
   const records = [entry("a", SINCE, SINCE), entry("b", SINCE, SINCE)];
   expect(computeNextCursor(records, true, SINCE, NOW)).toEqual({
@@ -44,6 +49,7 @@ test("a truncated poll whose records all share the cursor timestamp is stalled",
     stalled: true,
   });
 });
+
 test("a first poll seeds from the Look-back Date as an initial sync", () => {
   expect(resolvePollingWindowStart(undefined, SINCE, NOW)).toEqual({
     since: SINCE,
@@ -61,6 +67,7 @@ test("a first poll seeds from the Look-back Date as an initial sync", () => {
     ),
   ).toEqual({ since: SINCE, isInitialSync: true });
 });
+
 test("an initial sync ignores the visibility toggles", () => {
   const fresh = entry(
     "a",
@@ -86,6 +93,7 @@ test("an initial sync ignores the visibility toggles", () => {
     }),
   ).toEqual({ created: [fresh], updated: [old] });
 });
+
 describe("fetchEntriesSince", () => {
   const fakeEnvironment = (
     store: EntryProps<KeyValueMap>[],
@@ -108,8 +116,10 @@ describe("fetchEntriesSince", () => {
       },
     } as unknown as Environment;
   };
+
   const seconds = (n: number) =>
     new Date(Date.UTC(2026, 0, 2) + n * 1000).toISOString();
+
   test("an entry edited between pages does not hide any other entry", async () => {
     const store = Array.from({ length: 250 }, (_, i) =>
       entry(`e${String(i).padStart(3, "0")}`, SINCE, seconds(i)),
@@ -125,6 +135,7 @@ describe("fetchEntriesSince", () => {
     expect(truncated).toBe(false);
     expect(new Set(records.map((r) => r.sys.id)).size).toBe(250);
   });
+
   test("entries sharing the anchor timestamp are paged past, not refetched forever", async () => {
     const store = Array.from({ length: 150 }, (_, i) =>
       entry(`t${String(i).padStart(3, "0")}`, SINCE, seconds(0)),
@@ -137,6 +148,7 @@ describe("fetchEntriesSince", () => {
     expect(truncated).toBe(false);
     expect(records).toHaveLength(150);
   });
+
   test("stopping at the page cap reports truncation", async () => {
     const store = Array.from({ length: 250 }, (_, i) =>
       entry(`c${String(i).padStart(3, "0")}`, SINCE, seconds(i)),

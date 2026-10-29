@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getMailThreadsInputs } from "../../inputs";
 import { getMailThreadsExamplePayload } from "../../examplePayloads";
 import { getMailThreadsOutputSchema } from "../../outputSchemas";
+
 export const getMailThreads = action({
   display: {
     label: "Get Mail Threads",

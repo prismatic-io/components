@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -8,6 +9,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const subscriptionId = input({
   label: "Subscription ID",
   comments:
@@ -17,6 +19,7 @@ export const subscriptionId = input({
   clean: util.types.toString,
   dataSource: "selectSubscription",
 });
+
 export const resourceGroupName = input({
   label: "Resource Group Name",
   comments: "Name of the Resource group within the Azure subscription.",
@@ -24,6 +27,7 @@ export const resourceGroupName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const namespaceName = input({
   label: "Namespace Name",
   comments: "The namespace name",
@@ -35,6 +39,7 @@ export const namespaceName = input({
   },
   dataSource: "selectNamespaceByResourceGroup",
 });
+
 export const queueName = input({
   label: "Queue Name",
   comments: "The queue name.",
@@ -46,6 +51,7 @@ export const queueName = input({
   },
   dataSource: "selectQueue",
 });
+
 export const topicName = input({
   label: "Topic Name",
   comments: "The topic name.",
@@ -54,6 +60,7 @@ export const topicName = input({
   clean: util.types.toString,
   dataSource: "selectTopic",
 });
+
 export const subscriptionName = input({
   label: "Subscription Name",
   comments: "The subscription name.",
@@ -62,6 +69,7 @@ export const subscriptionName = input({
   clean: util.types.toString,
   dataSource: "selectSubscriptionByTopic",
 });
+
 export const ruleName = input({
   label: "Rule Name",
   comments: "The rule name.",
@@ -70,6 +78,7 @@ export const ruleName = input({
   clean: util.types.toString,
   dataSource: "selectRule",
 });
+
 export const $skip = input({
   label: "Skip",
   comments:
@@ -78,6 +87,7 @@ export const $skip = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const $top = input({
   label: "Top",
   comments:
@@ -86,11 +96,13 @@ export const $top = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const autoDeleteOnIdle = input({
   label: "Auto Delete On Idle",
   comments:
@@ -99,6 +111,7 @@ export const autoDeleteOnIdle = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const defaultMessageTimeToLive = input({
   label: "Default Message Time To Live",
   comments:
@@ -107,6 +120,7 @@ export const defaultMessageTimeToLive = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const duplicateDetectionHistoryTimeWindow = input({
   label: "Duplicate Detection History Time Window",
   comments:
@@ -115,6 +129,7 @@ export const duplicateDetectionHistoryTimeWindow = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const enableBatchedOperations = input({
   label: "Enable Batched Operations",
   comments:
@@ -123,6 +138,7 @@ export const enableBatchedOperations = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const enableExpress = input({
   label: "Enable Express",
   comments:
@@ -131,6 +147,7 @@ export const enableExpress = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const enablePartitioning = input({
   label: "Enable Partitioning",
   comments:
@@ -139,6 +156,7 @@ export const enablePartitioning = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const maxMessageSizeInKilobytes = input({
   label: "Max Message Size in Kilobytes",
   comments:
@@ -147,6 +165,7 @@ export const maxMessageSizeInKilobytes = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const maxSizeInMegabytes = input({
   label: "Max Size in Megabytes",
   comments:
@@ -155,6 +174,7 @@ export const maxSizeInMegabytes = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const requiresDuplicateDetection = input({
   label: "Requires Duplicate Detection",
   comments: "Value indicating if this topic requires duplicate detection.",
@@ -162,6 +182,7 @@ export const requiresDuplicateDetection = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const status = input({
   label: "Status",
   comments: "Status of the messaging entity.",
@@ -171,6 +192,7 @@ export const status = input({
   example:
     "Use one: Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming ,Unknown",
 });
+
 export const supportOrdering = input({
   label: "Support Ordering",
   comments: "Value that indicates whether the topic supports ordering.",
@@ -178,6 +200,7 @@ export const supportOrdering = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const clientId = input({
   label: "Client ID",
   comments:
@@ -186,6 +209,7 @@ export const clientId = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const isDurable = input({
   label: "Is Durable",
   comments:
@@ -194,6 +218,7 @@ export const isDurable = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const isShared = input({
   label: "Is Shared",
   comments:
@@ -202,6 +227,7 @@ export const isShared = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const deadLetteringOnFilterEvaluationExceptions = input({
   label: "Dead Lettering On Filter Evaluation Exceptions",
   comments:
@@ -210,6 +236,7 @@ export const deadLetteringOnFilterEvaluationExceptions = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const deadLetteringOnMessageExpiration = input({
   label: "Dead Lettering On Message Expiration",
   comments:
@@ -218,6 +245,7 @@ export const deadLetteringOnMessageExpiration = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const forwardDeadLetteredMessagesTo = input({
   label: "Forward Dead Lettered Messages To",
   comments: "Queue/Topic name to forward the Dead Letter message.",
@@ -225,6 +253,7 @@ export const forwardDeadLetteredMessagesTo = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const forwardTo = input({
   label: "Forward To",
   comments: "Queue/Topic name to forward the messages.",
@@ -232,6 +261,7 @@ export const forwardTo = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const isClientAffine = input({
   label: "Is Client Affine",
   comments:
@@ -240,6 +270,7 @@ export const isClientAffine = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const lockDuration = input({
   label: "Lock Duration",
   comments:
@@ -248,6 +279,7 @@ export const lockDuration = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const maxDeliveryCount = input({
   label: "Max Delivery Count",
   comments: "Number of maximum deliveries.",
@@ -255,6 +287,7 @@ export const maxDeliveryCount = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const requiresSession = input({
   label: "Requires Session",
   comments:
@@ -263,6 +296,7 @@ export const requiresSession = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const location = input({
   label: "Location",
   comments: "The geo-location where the resource lives",
@@ -270,6 +304,7 @@ export const location = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const identityType = input({
   label: "Identity Type",
   comments: "Type of managed service identity.",
@@ -295,6 +330,7 @@ export const identityType = input({
     },
   ],
 });
+
 export const userAssignedIdentities = input({
   label: "Identity User Assigned Identities",
   type: "code",
@@ -313,6 +349,7 @@ export const userAssignedIdentities = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const alternateName = input({
   label: "Alternate Name",
   comments: "Alternate name for the namespace.",
@@ -320,6 +357,7 @@ export const alternateName = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const filterType = input({
   label: "Filter Type",
   comments: "Filter type that is evaluated against a BrokeredMessage.",
@@ -328,6 +366,7 @@ export const filterType = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const disableLocalAuth = input({
   label: "Disable Local Auth",
   comments:
@@ -336,6 +375,7 @@ export const disableLocalAuth = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const requireInfrastructureEncryption = input({
   label: "Require Infrastructure Encryption",
   comments: "Enable Infrastructure Encryption (Double Encryption)",
@@ -343,6 +383,7 @@ export const requireInfrastructureEncryption = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const zoneRedundant = input({
   label: "Zone Redundant",
   comments:
@@ -351,6 +392,7 @@ export const zoneRedundant = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const keySource = input({
   label: "Key Source",
   comments: "Enumerates the possible value of keySource for Encryption",
@@ -359,6 +401,7 @@ export const keySource = input({
   example: "Microsoft.KeyVault",
   clean: util.types.toString,
 });
+
 export const keyVaultProperties = input({
   label: "Key Vault Properties",
   type: "code",
@@ -375,6 +418,7 @@ export const keyVaultProperties = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const privateEndpointConnections = input({
   label: "Private Endpoint Connections",
   type: "code",
@@ -401,6 +445,7 @@ export const privateEndpointConnections = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const sku = input({
   label: "SKU",
   type: "code",
@@ -415,6 +460,7 @@ export const sku = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const tags = input({
   label: "Tags",
   type: "code",
@@ -423,6 +469,7 @@ export const tags = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const action = input({
   label: "Action",
   type: "code",
@@ -437,6 +484,7 @@ export const action = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const correlationFilter = input({
   label: "Correlation Filter",
   type: "code",
@@ -458,6 +506,7 @@ export const correlationFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const version = input({
   label: "Version",
   type: "string",
@@ -467,6 +516,7 @@ export const version = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const sqlFilter = input({
   label: "SQL Filter",
   type: "code",
@@ -482,6 +532,7 @@ export const sqlFilter = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const messages = input({
   label: "Messages",
   type: "string",
@@ -495,6 +546,7 @@ export const messages = input({
     return [util.types.toString(value)];
   },
 });
+
 export const amountOfMessages = input({
   label: "Amount of Messages",
   comments: "Amount of messages to receive from the queue.",
@@ -502,6 +554,7 @@ export const amountOfMessages = input({
   required: true,
   clean: (value: unknown) => util.types.toInt(value, 20),
 });
+
 export const maxTimeToWait = input({
   label: "Max Time To Wait",
   comments:

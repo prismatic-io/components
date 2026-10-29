@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateFilterInputs } from "../../inputs";
 import { updateFilterExamplePayload } from "../../examplePayloads";
 import { updateFilterOutputSchema } from "../../outputSchemas";
+
 export const updateFilter = action({
   display: {
     label: "Update Filter",

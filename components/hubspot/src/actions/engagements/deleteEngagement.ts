@@ -3,6 +3,7 @@ import { getHubspotClient } from "../../client";
 import { deleteEngagementExamplePayload } from "../../examplePayloads";
 import { deleteEngagementInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const deleteEngagement = action({
   display: {
     label: "Delete Engagement",
@@ -19,9 +20,11 @@ export const deleteEngagement = action({
       timeout,
       debugRequest,
     });
+
     const { data } = await client.delete(
       hubspotPaths.objects(engagementObject, `/${engagementId}`),
     );
+
     return {
       data,
     };

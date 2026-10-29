@@ -1,4 +1,5 @@
 import type { PaginatedResponse } from "../types";
+
 export const upsertRowExamplePayload = {
   data: [
     {
@@ -11,15 +12,15 @@ export const upsertRowExamplePayload = {
     },
   ],
 };
+
 export const asyncUpsertRowsExamplePayload = {
   data: {
     requestId: "3ba0103a-fd9b-438a-8568-88c5720d77f4",
     resultMessages: [],
   },
 };
-export const listDataExtensionsExamplePayload: {
-  data: PaginatedResponse;
-} = {
+
+export const listDataExtensionsExamplePayload: { data: PaginatedResponse } = {
   data: {
     count: 1,
     page: 1,
@@ -61,6 +62,7 @@ export const listDataExtensionsExamplePayload: {
     ],
   },
 };
+
 export const createDataExtensionExamplePayload = {
   data: {
     id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
@@ -73,6 +75,7 @@ export const createDataExtensionExamplePayload = {
     fieldCount: 3,
   },
 };
+
 export const getDataExtensionFieldsExamplePayload = {
   data: {
     id: "f9e59b85-f353-ee11-ba4e-d4f5ef3d54c9",

@@ -4,6 +4,7 @@ import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import type { CreateWebhookBody } from "../../types";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -42,6 +43,7 @@ export const createWebhook = action({
       ...(taskId?.length && { task_id: taskId }),
     };
     const { data } = await client.post(`/team/${teamId}/webhook`, body);
+
     return {
       data,
     };

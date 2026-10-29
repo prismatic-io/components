@@ -42,8 +42,9 @@ export const updateEnvironmentTemplate = action({
     };
   },
   inputs: updateEnvironmentTemplateInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateEnvironmentTemplateExamplePayload,
+
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateEnvironmentTemplateExamplePayload,
+
   examplePayload: updateEnvironmentTemplateExamplePayload,
 });

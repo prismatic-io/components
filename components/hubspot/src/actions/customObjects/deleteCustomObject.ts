@@ -3,6 +3,7 @@ import { getHubspotClient } from "../../client";
 import { deleteCustomObjectExamplePayload } from "../../examplePayloads";
 import { deleteCustomObjectInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const deleteCustomObject = action({
   display: {
     label: "Delete Custom Object",
@@ -19,6 +20,7 @@ export const deleteCustomObject = action({
       timeout,
       debugRequest,
     });
+
     const { data } = await client.delete(
       hubspotPaths.schemas(`/${objectType}`),
       {
@@ -27,6 +29,7 @@ export const deleteCustomObject = action({
         },
       },
     );
+
     return {
       data,
     };

@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringArray } from "../util";
 import {
   accountIdInput,
@@ -8,6 +9,7 @@ import {
   customerIdInput,
   returnAdditionalFieldsInput,
 } from "./common";
+
 const adTypeModel = [
   { label: "App Install", value: "AppInstall" },
   { label: "Dynamic Search", value: "DynamicSearch" },
@@ -19,6 +21,7 @@ const adTypeModel = [
   { label: "Responsive Search", value: "ResponsiveSearch" },
   { label: "Text", value: "Text" },
 ];
+
 const adsBodyInput = input({
   label: "Ads",
   type: "code",
@@ -53,6 +56,7 @@ const adsBodyInput = input({
   ),
   clean: util.types.toObject,
 });
+
 const adIdsInput = input({
   label: "Ad IDs",
   placeholder: "Enter ad ID",
@@ -63,6 +67,7 @@ const adIdsInput = input({
   example: "7012345",
   clean: cleanStringArray,
 });
+
 const adTypesInput = input({
   label: "Ad Types",
   type: "string",
@@ -72,6 +77,7 @@ const adTypesInput = input({
   comments: "The type(s) of ads to return for the specified ad group.",
   clean: cleanStringArray,
 });
+
 export const addAdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -80,6 +86,7 @@ export const addAdsInputs = {
   adGroupId: adGroupIdInput,
   ads: adsBodyInput,
 };
+
 export const updateAdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -104,6 +111,7 @@ export const updateAdsInputs = {
     ),
   },
 };
+
 export const deleteAdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -116,6 +124,7 @@ export const deleteAdsInputs = {
     comments: "An array of ad identifiers to delete.",
   },
 };
+
 export const getAdsByAdGroupIdInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -125,6 +134,7 @@ export const getAdsByAdGroupIdInputs = {
   adTypes: adTypesInput,
   returnAdditionalFields: returnAdditionalFieldsInput,
 };
+
 export const getAdsByIdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },

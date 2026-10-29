@@ -25,6 +25,7 @@ export const createOnboardingRequest = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       fields: {
         cf_employee_name: cfEmployeeName,
@@ -39,7 +40,9 @@ export const createOnboardingRequest = action({
         ...onboardingAdditionalFields,
       },
     };
+
     const { data } = await client.post(`/onboarding_requests`, payload);
+
     return {
       data,
     };

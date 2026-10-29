@@ -3,6 +3,7 @@ import { escapeString } from "../../actionUtils";
 import { createHttpClient } from "../../client";
 import { getCustomerByDisplayNamePayload as examplePayload } from "../../examplePayloads";
 import { connectionInput, customerDisplayName } from "../../inputs";
+
 export const getCustomerByDisplayName = action({
   display: {
     label: "Get Customer By Display Name",
@@ -14,8 +15,13 @@ export const getCustomerByDisplayName = action({
       params.quickbooksConnection,
       context.debug.enabled,
     );
-    const queryString = `select * from Customer Where DisplayName = '${escapeString(params.customerDisplayName)}'`;
+
+    const queryString = `select * from Customer Where DisplayName = '${escapeString(
+      params.customerDisplayName,
+    )}'`;
+
     const { data } = await client.get(`/query?query=${queryString}`);
+
     const customer = data.QueryResponse?.Customer?.[0] || {};
     return {
       data: customer,

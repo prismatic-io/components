@@ -10,6 +10,7 @@ import type {
 } from "../types";
 import { fetchSlackMessagesSince } from "../util/fetchSlackMessagesSince";
 import { resolvePollingRecordChanges } from "../util/resolvePollingRecordChanges";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Messages",
@@ -32,6 +33,7 @@ export const pollChangesTrigger = pollingTrigger({
     const isBackfill =
       pollState?.backfillActive === true ||
       (!hasExistingState && hasLookBackDate);
+
     let lastPolledAt: string;
     if (hasExistingState) {
       lastPolledAt = pollState.lastPolledAt;
@@ -40,15 +42,19 @@ export const pollChangesTrigger = pollingTrigger({
     } else {
       lastPolledAt = now;
     }
+
     const oldest = (new Date(lastPolledAt).getTime() / 1000).toFixed(6);
+
     const { messages, truncated } = await fetchSlackMessagesSince(
       params.connection,
       params.channelId,
       oldest,
     );
+
     const created: SlackMessage[] =
       isBackfill || params.showNewRecords !== false ? messages : [];
     const updated: SlackMessage[] = [];
+
     let nextCursor = now;
     if (truncated) {
       const oldestTs = messages
@@ -69,11 +75,13 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt: nextCursor,
       ...(isBackfill && truncated ? { backfillActive: true } : {}),
     });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Slack channel ${params.channelId}: ${messages.length} fetched, truncated=${truncated}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

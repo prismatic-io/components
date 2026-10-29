@@ -15,6 +15,7 @@ import {
   timeout,
   transferGroup,
 } from "./common";
+
 export const payout = input({
   label: "Payout",
   type: "string",
@@ -23,6 +24,7 @@ export const payout = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -74,6 +76,7 @@ export const type = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const fraudDetails = input({
   label: "Fraud Details",
   type: "code",
@@ -87,16 +90,19 @@ export const fraudDetails = input({
   }),
   clean: cleanObjectInput,
 });
+
 export const getChargeInputs = {
   timeout,
   stripeConnection: connectionInput,
   chargeId,
 };
+
 export const listChargesInputs = {
   timeout,
   pagination: forwardCursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const searchChargesPagination = structuredObjectInput({
   label: "Pagination",
   comments: "Cursor and page-size controls for paging through results.",
@@ -109,12 +115,14 @@ export const searchChargesPagination = structuredObjectInput({
     page,
   },
 });
+
 export const searchChargesInputs = {
   timeout,
   stripeConnection: connectionInput,
   query,
   pagination: searchChargesPagination,
 };
+
 export const updateChargeInputs = {
   timeout,
   stripeConnection: connectionInput,

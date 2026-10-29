@@ -5,10 +5,12 @@ import {
   WQL_MAX_GET_QUERY_LENGTH,
 } from "../constants";
 import type { WqlPageParams, WqlResponse } from "../types";
+
 const longQueryCannotPageError = (detail: string): Error =>
   new Error(
     `${detail} Queries over 2,047 characters cannot be paged because Workday's POST endpoint takes no limit or offset. Shorten the query to 2,047 characters or fewer so it runs with GET, or narrow it (WHERE or LIMIT) to one page of rows.`,
   );
+
 export const queryWqlPage = async (
   client: HttpClient,
   path: string,
@@ -34,6 +36,7 @@ export const queryWqlPage = async (
   }
   return data;
 };
+
 export const queryWqlAll = async (
   client: HttpClient,
   path: string,
@@ -66,6 +69,7 @@ export const queryWqlAll = async (
   );
   return { total: total ?? rows.length, data: rows };
 };
+
 export const assertWqlReadComplete = (response: WqlResponse): void => {
   if (response.total > response.data.length) {
     throw new Error(

@@ -4,6 +4,7 @@ import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
 import DeleteWebhookMutation from "../../queries/deleteWebhook.gql";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",

@@ -1,4 +1,5 @@
 import type { Variables } from "graphql-request";
+
 export interface WebhookSubscription {
   id: string;
   endpoint: {
@@ -14,6 +15,7 @@ export interface WebhookSubscription {
     displayName: string;
   };
 }
+
 export interface Webhookinput extends Variables {
   topic: string;
   webhookSubscription: {

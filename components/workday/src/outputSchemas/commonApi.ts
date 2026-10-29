@@ -2,6 +2,7 @@ import {
   instanceReferenceSchema,
   instanceSummaryReferenceSchema,
 } from "./shared";
+
 export const businessTitleChangeDetailSchema = {
   type: "object" as const,
   properties: {
@@ -36,6 +37,7 @@ export const businessTitleChangeDetailSchema = {
     },
   },
 };
+
 export const getCustomerByIdOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,7 +52,9 @@ export const getCustomerByIdOutputSchema = {
     },
   },
 };
+
 export const getOrganizationByIdOutputSchema = instanceSummaryReferenceSchema;
+
 export const getWorkerBusinessTitleChangesOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -67,6 +71,7 @@ export const getWorkerBusinessTitleChangesOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const listOrganizationsOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -83,6 +88,7 @@ export const listOrganizationsOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postJobChangesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -110,6 +116,7 @@ export const postJobChangesOutputSchema = {
     },
   },
 };
+
 export const postWorkerBusinessTitleChangeOutputSchema = {
   type: "object" as const,
   properties: {

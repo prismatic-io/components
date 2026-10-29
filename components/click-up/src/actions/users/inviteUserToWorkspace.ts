@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { inviteUserToWorkspaceExamplePayload } from "../../examplePayloads";
 import { inviteUserToWorkspaceInputs } from "../../inputs";
 import { inviteUserToWorkspaceOutputSchema } from "../../outputSchemas";
+
 export const inviteUserToWorkspace = action({
   display: {
     label: "Invite User to Workspace",
@@ -27,6 +28,7 @@ export const inviteUserToWorkspace = action({
       admin,
       custom_role_id: customRoleId,
     };
+
     const { data } = await client.post(`/team/${teamId}/user`, body);
     return { data };
   },

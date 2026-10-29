@@ -61,6 +61,7 @@ export const getAccountExamplePayload = {
     type: "standard",
   } as unknown,
 };
+
 export const listAccountsExamplePayload = {
   data: {
     object: "list",

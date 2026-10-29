@@ -24,6 +24,7 @@ const sampleUser = {
     },
   },
 };
+
 export const listUsersV3ExamplePayload = {
   data: [
     sampleUser,
@@ -49,9 +50,11 @@ export const listUsersV3ExamplePayload = {
     },
   ],
 };
+
 export const getUserV3ExamplePayload = {
   data: sampleUser,
 };
+
 export const createUserV3ExamplePayload = {
   data: {
     id: 94001,
@@ -74,6 +77,7 @@ export const createUserV3ExamplePayload = {
     custom_fields: {},
   },
 };
+
 export const editUserV3ExamplePayload = {
   data: {
     id: 92120,
@@ -102,9 +106,11 @@ export const editUserV3ExamplePayload = {
     },
   },
 };
+
 export const activateUserV3ExamplePayload = {
   data: { success: true },
 };
+
 export const deactivateUserV3ExamplePayload = {
   data: { success: true },
 };

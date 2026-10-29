@@ -20,6 +20,7 @@ import {
   fetchAll,
 } from "../inputs";
 import { getUserPath, paginateResults } from "../utils";
+
 const listUsers = action({
   display: {
     label: "List Users",
@@ -31,6 +32,7 @@ const listUsers = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(client, "/users", params.fetchAll, {
       $filter: params.filter,
       $top: params.top,
@@ -39,6 +41,7 @@ const listUsers = action({
       $search: params.search,
       $select: params.select,
     });
+
     return { data };
   },
   inputs: {
@@ -54,6 +57,7 @@ const listUsers = action({
   },
   examplePayload: listUsersExamplePayload,
 });
+
 const getUser = action({
   display: {
     label: "Get User",
@@ -71,6 +75,7 @@ const getUser = action({
   inputs: { connection, userId, timeout },
   examplePayload: getUserExamplePayload,
 });
+
 const deleteUser = action({
   display: {
     label: "Delete User",
@@ -88,6 +93,7 @@ const deleteUser = action({
   inputs: { connection, userId, timeout },
   examplePayload: deleteUserExamplePayload,
 });
+
 const getCurrentUser = action({
   display: {
     label: "Get Current Or Existing User",
@@ -100,12 +106,14 @@ const getCurrentUser = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.get(getUserPath(params.userPrincipalName));
     return { data };
   },
   inputs: { connection, userPrincipalName, timeout },
   examplePayload: getCurrentUserExamplePayload,
 });
+
 const listUsersTeams = action({
   display: {
     label: "List User's Teams",
@@ -117,6 +125,7 @@ const listUsersTeams = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(
       client,
       `/users/${params.userId}/joinedTeams`,
@@ -130,6 +139,7 @@ const listUsersTeams = action({
         $search: params.search,
       },
     );
+
     return { data };
   },
   inputs: {
@@ -145,6 +155,7 @@ const listUsersTeams = action({
     select,
   },
 });
+
 export default {
   listUsers,
   getUser,

@@ -15,6 +15,7 @@ import {
   resolvePollingRecordChanges,
   resolvePollWindow,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Tasks",
@@ -47,6 +48,7 @@ export const pollChangesTrigger = pollingTrigger({
       lookBackDate,
       now,
     );
+
     const client = await createAsanaClient(
       asanaConnection,
       context.debug.enabled,
@@ -56,6 +58,7 @@ export const pollChangesTrigger = pollingTrigger({
       projectId,
       sinceDate.toISOString(),
     );
+
     const poll =
       context.batch?.enabled === true
         ? planBatchedPoll(
@@ -69,20 +72,24 @@ export const pollChangesTrigger = pollingTrigger({
             nextState: { lastPolledAt: now.toISOString() },
             complete: true,
           };
+
     context.polling.setState({
       ...poll.nextState,
       ...(isBackfill && !poll.complete ? { isBackfill: true } : {}),
     });
+
     const { created, updated } = poll;
     const result = {
       created: isBackfill || showNewRecords ? created : [],
       updated: isBackfill || showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled project ${projectId}: ${tasks.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { listStoresExamplePayload } from "../../examplePayloads";
 import { listStoresInputs } from "../../inputs";
+
 export const listStores = action({
   display: {
     label: "List Stores",
@@ -15,10 +16,12 @@ export const listStores = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const params = {
       showInactive,
       marketplaceId,
     };
+
     const { data } = await client.get("/stores", { params });
     return { data };
   },

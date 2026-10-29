@@ -1,4 +1,5 @@
 import { outputSchema } from "@prismatic-io/spectral";
+
 export const getEntityMetaDataOutputSchema = outputSchema({
   type: "actionOutput",
   schema: {

@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { getClient } from "../client";
 import { connection, consumerOrgId, projectId, workspaceId } from "../inputs";
+
 export const selectRegistration = dataSource({
   display: {
     label: "Select Registration",
@@ -21,22 +22,17 @@ export const selectRegistration = dataSource({
     const { data } = await client.get(
       `/${consumerOrgId}/${projectId}/${workspaceId}/registrations`,
     );
+
     const registrations = data?._embedded?.registrations ?? [];
+
     return {
       result: registrations
         .map((registration: { registration_id: string; name: string }) => ({
           label: registration.name,
           key: registration.registration_id.toString(),
         }))
-        .sort(
-          (
-            a: {
-              label: string;
-            },
-            b: {
-              label: string;
-            },
-          ) => (a.label < b.label ? -1 : 1),
+        .sort((a: { label: string }, b: { label: string }) =>
+          a.label < b.label ? -1 : 1,
         ),
     };
   },

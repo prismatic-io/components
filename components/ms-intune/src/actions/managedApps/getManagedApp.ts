@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getManagedAppExamplePayload } from "../../examplePayloads";
 import { getManagedAppInputs } from "../../inputs";
+
 export const getManagedApp = action({
   display: {
     label: "Get Managed App",

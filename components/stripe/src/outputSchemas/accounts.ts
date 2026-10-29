@@ -2348,6 +2348,7 @@ export const accountOutputSchema = {
   },
   required: ["id", "object"],
 };
+
 export const listAccountsOutputSchema = {
   type: "object" as const,
   properties: {

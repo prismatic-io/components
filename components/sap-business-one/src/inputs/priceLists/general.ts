@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const priceListNo = input({
   label: "Price List Number",
   type: "string",
@@ -9,6 +10,7 @@ export const priceListNo = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const priceListName = input({
   label: "Price List Name",
   type: "string",

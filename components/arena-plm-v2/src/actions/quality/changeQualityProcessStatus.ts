@@ -4,6 +4,7 @@ import { changeQualityProcessStatusExamplePayload } from "../../examplePayloads"
 import { changeQualityProcessStatusInputs } from "../../inputs";
 import { changeQualityProcessStatusOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const changeQualityProcessStatus = action({
   display: {
     label: "Change Quality Process Status",
@@ -19,12 +20,14 @@ export const changeQualityProcessStatus = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       if (params.requestType === "qualityStatus") {
         if (!params.status) {
           throw new Error(
             "Status is required when Request Type is 'Quality Process Status Change'",
           );
         }
+
         const payload = {
           qualityProcess: {
             guid: params.qualityProcessGuid,
@@ -32,6 +35,7 @@ export const changeQualityProcessStatus = action({
           },
           ...(params.comment && { comment: params.comment }),
         };
+
         if (context.debug.enabled) {
           context.logger.debug(
             "Quality process status change request payload",
@@ -40,14 +44,17 @@ export const changeQualityProcessStatus = action({
             },
           );
         }
+
         const response = await client.post(
           "/qualityprocesses/statuschanges",
           payload,
         );
+
         context.logger.info("Successfully changed quality process status", {
           qualityProcessGuid: params.qualityProcessGuid,
           newStatus: params.status,
         });
+
         return {
           data: response.data,
         };
@@ -63,6 +70,7 @@ export const changeQualityProcessStatus = action({
             "Status is required when Request Type is 'Quality Step Workflow'",
           );
         }
+
         const payload = {
           qualityProcess: {
             guid: params.qualityProcessGuid,
@@ -73,20 +81,24 @@ export const changeQualityProcessStatus = action({
           },
           ...(params.comment && { comment: params.comment }),
         };
+
         if (context.debug.enabled) {
           context.logger.debug("Quality step workflow change request payload", {
             payloadKeys: Object.keys(payload),
           });
         }
+
         const response = await client.post(
           "/qualityprocesses/statuschanges",
           payload,
         );
+
         context.logger.info("Successfully changed quality step status", {
           qualityProcessGuid: params.qualityProcessGuid,
           stepGuid: params.stepGuid,
           newStatus: params.status,
         });
+
         return {
           data: response.data,
         };

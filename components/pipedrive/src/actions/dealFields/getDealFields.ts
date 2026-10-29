@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getDealFieldsInputs } from "../../inputs";
 import { getDealFieldsExamplePayload } from "../../examplePayloads";
 import { getDealFieldsOutputSchema } from "../../outputSchemas";
+
 export const getDealFields = action({
   display: {
     label: "Get Deal Fields",

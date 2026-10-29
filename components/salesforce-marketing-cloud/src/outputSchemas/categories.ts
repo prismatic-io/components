@@ -12,6 +12,7 @@ export const categoryOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listCategoriesOutputSchema = {
   type: "object" as const,
   properties: {

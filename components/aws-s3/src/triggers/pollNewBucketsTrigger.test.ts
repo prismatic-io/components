@@ -1,4 +1,5 @@
 const { sendMock } = vi.hoisted(() => ({ sendMock: vi.fn() }));
+
 vi.mock("aws-utils", async () => {
   const { input } = await import("@prismatic-io/spectral");
   return {
@@ -7,9 +8,11 @@ vi.mock("aws-utils", async () => {
     dynamicAccessAllInputs: {},
   };
 });
+
 vi.mock("../client", () => ({
   createS3Client: vi.fn(async () => ({ send: sendMock })),
 }));
+
 import { ListBucketsCommand } from "@aws-sdk/client-s3";
 import type { ActionContext } from "@prismatic-io/spectral";
 import {
@@ -25,10 +28,12 @@ import {
 } from "../examplePayloads";
 import type { PolledBucket, PollingState } from "../types";
 import { pollNewBucketsTrigger } from "./pollNewBucketsTrigger";
+
 const connection = createConnection(accessKeySecretPair, {
   accessKeyId: "fakeKey",
   secretAccessKey: "fakeSecret",
 });
+
 const params = {
   lookBackDate: "",
   accessKey: connection,
@@ -37,9 +42,11 @@ const params = {
   dynamicSecretAccessKey: "",
   dynamicSessionToken: "",
 };
+
 const T0 = "2024-03-08T00:00:00.000Z";
 const T1 = "2024-03-09T00:00:00.000Z";
 const T2 = "2024-03-10T00:00:00.000Z";
+
 const createPollingContext = (initialState: PollingState = {}) => {
   let store: PollingState = initialState;
   const polling = {
@@ -53,19 +60,15 @@ const createPollingContext = (initialState: PollingState = {}) => {
     getStore: () => store,
   };
 };
+
 type PollResult = {
-  payload: {
-    body: {
-      data: PolledBucket[];
-    };
-  };
+  payload: { body: { data: PolledBucket[] } };
   polledNoChanges: boolean;
 };
+
 const poll = async (
   context: Partial<ActionContext>,
-): Promise<{
-  result: PollResult;
-}> => {
+): Promise<{ result: PollResult }> => {
   const { result } = await invokeTrigger(
     pollNewBucketsTrigger as never,
     context,
@@ -74,14 +77,17 @@ const poll = async (
   );
   return { result: result as unknown as PollResult };
 };
+
 describe("pollNewBucketsTrigger", () => {
   beforeEach(() => {
     sendMock.mockReset();
     vi.useFakeTimers({ toFake: ["Date"] });
   });
+
   afterEach(() => {
     vi.useRealTimers();
   });
+
   test("emits only buckets created after the cursor, with ISO dates, and advances the cursor", async () => {
     sendMock.mockResolvedValue({
       Buckets: [
@@ -93,8 +99,10 @@ describe("pollNewBucketsTrigger", () => {
       ],
     });
     const { context, getStore } = createPollingContext({ lastPolledAt: T0 });
+
     vi.setSystemTime(new Date(T1));
     const { result } = await poll(context);
+
     const command = sendMock.mock.calls[0][0];
     expect(command).toBeInstanceOf(ListBucketsCommand);
     expect(command.input).toEqual({ MaxBuckets: LIST_BUCKETS_MAX_BUCKETS });
@@ -104,22 +112,28 @@ describe("pollNewBucketsTrigger", () => {
     expect(result.polledNoChanges).toBe(false);
     expect(getStore()).toEqual({ lastPolledAt: T1 });
   });
+
   test("does not re-emit buckets already returned by the previous poll", async () => {
     sendMock.mockResolvedValue({ Buckets: listBucketsExamplePayload.data });
     const { context, getStore } = createPollingContext({ lastPolledAt: T0 });
+
     vi.setSystemTime(new Date(T1));
     const first = await poll(context);
     vi.setSystemTime(new Date(T2));
     const second = await poll(context);
+
     expect(first.result.payload.body.data).toHaveLength(1);
     expect(second.result.payload.body.data).toEqual([]);
     expect(second.result.polledNoChanges).toBe(true);
     expect(getStore()).toEqual({ lastPolledAt: T2 });
   });
+
   test("passes the step logger and debug flag to the S3 client", async () => {
     sendMock.mockResolvedValue({ Buckets: [] });
     const { context } = createPollingContext({ lastPolledAt: T0 });
+
     await poll(context);
+
     expect(createS3Client).toHaveBeenCalledWith(
       expect.objectContaining({
         logger: expect.anything(),
@@ -127,6 +141,7 @@ describe("pollNewBucketsTrigger", () => {
       }),
     );
   });
+
   test("seeds the initial sync from Look-back Date on the first poll", async () => {
     sendMock.mockResolvedValue({
       Buckets: [
@@ -137,6 +152,7 @@ describe("pollNewBucketsTrigger", () => {
       ],
     });
     const { context, getStore } = createPollingContext({});
+
     vi.setSystemTime(new Date(T1));
     const { result } = await invokeTrigger(
       pollNewBucketsTrigger as never,
@@ -144,20 +160,25 @@ describe("pollNewBucketsTrigger", () => {
       undefined,
       { ...params, lookBackDate: "2024-03-01T00:00:00.000Z" } as never,
     );
+
     expect((result as unknown as PollResult).payload.body.data).toEqual([
       { Name: "backfilled-bucket", CreationDate: "2024-03-05T00:00:00.000Z" },
     ]);
     expect(getStore()).toEqual({ lastPolledAt: T1 });
   });
+
   test("falls back to now (no backfill) when neither stored state nor Look-back Date is set", async () => {
     sendMock.mockResolvedValue({ Buckets: [] });
     const { context, getStore } = createPollingContext({});
+
     vi.setSystemTime(new Date(T1));
     const { result } = await poll(context);
+
     expect(result.payload.body.data).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
     expect(getStore()).toEqual({ lastPolledAt: T1 });
   });
+
   test("includes a bucket stamped exactly at the Look-back Date on the initial sync (inclusive)", async () => {
     const lookBackDate = "2024-03-01T00:00:00.000Z";
     sendMock.mockResolvedValue({
@@ -166,6 +187,7 @@ describe("pollNewBucketsTrigger", () => {
       ],
     });
     const { context } = createPollingContext({});
+
     vi.setSystemTime(new Date(T1));
     const { result } = await invokeTrigger(
       pollNewBucketsTrigger as never,
@@ -173,21 +195,26 @@ describe("pollNewBucketsTrigger", () => {
       undefined,
       { ...params, lookBackDate } as never,
     );
+
     expect((result as unknown as PollResult).payload.body.data).toEqual([
       { Name: "midnight-bucket", CreationDate: lookBackDate },
     ]);
   });
+
   test("does not re-emit a bucket whose CreationDate equals the stored cursor (strict, incremental)", async () => {
     sendMock.mockResolvedValue({
       Buckets: [{ Name: "boundary-bucket", CreationDate: new Date(T0) }],
     });
     const { context } = createPollingContext({ lastPolledAt: T0 });
+
     vi.setSystemTime(new Date(T1));
     const { result } = await poll(context);
+
     expect(result.payload.body.data).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
   });
 });
+
 describe("pollNewBucketsTrigger batching", () => {
   test("declares batching with a default batch size", () => {
     expect(pollNewBucketsTrigger.triggerResolverSupport).toBe("valid");
@@ -196,6 +223,7 @@ describe("pollNewBucketsTrigger batching", () => {
       Function,
     );
   });
+
   test("resolveItems flattens the payload into tagged bucket changes", () => {
     const bucket: PolledBucket = {
       Name: "bucket-1",

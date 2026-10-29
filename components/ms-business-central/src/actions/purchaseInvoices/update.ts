@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { updatePurchaseInvoiceExamplePayload } from "../../examplePayloads";
 import { updatePurchaseInvoiceInputs } from "../../inputs/purchaseInvoices";
 import type { PurchaseInvoice } from "../../interfaces";
+
 export const updatePurchaseInvoice = action({
   display: {
     label: "Update Purchase Invoice",
@@ -38,6 +39,7 @@ export const updatePurchaseInvoice = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.patch<PurchaseInvoice>(
       `/companies(${companyId})/purchaseInvoices(${purchaseInvoiceId})`,
       {
@@ -68,6 +70,7 @@ export const updatePurchaseInvoice = action({
         },
       },
     );
+
     return { data };
   },
   examplePayload: updatePurchaseInvoiceExamplePayload,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateUserExamplePayload } from "../../examplePayloads/users";
 import { updateUserInputs } from "../../inputs/users";
 import type { User } from "../../interfaces/user";
+
 export const updateUser = action({
   display: {
     label: "Update User",
@@ -55,6 +56,7 @@ export const updateUser = action({
       `/users/${encodeURIComponent(id)}`,
       updatedBody,
     );
+
     return { data };
   },
   examplePayload: updateUserExamplePayload,

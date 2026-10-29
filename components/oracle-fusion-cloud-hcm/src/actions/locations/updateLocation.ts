@@ -5,6 +5,7 @@ import { updateLocationInputs } from "../../inputs";
 import { locationOutputSchema } from "../../outputSchemas";
 import type { Location } from "../../types";
 import { toChildArray } from "../../util";
+
 export const updateLocation = action({
   display: {
     label: "Update Location",

@@ -1,13 +1,16 @@
 export const BASE_URL = "https://api.getguru.com/api/v1";
+
 export const SHARE_STATUS = [
   { label: "TEAM", value: "TEAM" },
   { label: "PRIVATE", value: "PRIVATE" },
 ];
+
 export const VERIFICATION_STATUS = [
   { label: "Verified", value: "VERIFIED" },
   { label: "Needs Update", value: "NEEDS_UPDATE" },
   { label: "Invalid", value: "INVALID" },
 ];
+
 export const WEBHOOK_EVENT_TYPES = [
   { label: "Alert Read", value: "alert-read" },
   { label: "API Token Created", value: "api-token-created" },
@@ -64,15 +67,18 @@ export const WEBHOOK_EVENT_TYPES = [
   { label: "User Group Member Added", value: "usergroup-member-added" },
   { label: "User Group Member Deleted", value: "usergroup-member-deleted" },
 ];
+
 export const QUERY_TYPES = [
   { label: "Cards", value: "cards" },
   { label: "Questions", value: "questions" },
   { label: "Archived", value: "archived" },
   { label: "Legacy", value: "legacy" },
 ];
+
 export const DELIVERY_MODE = [
   { label: "Single", value: "SINGLE" },
   { label: "Batch", value: "BATCH" },
 ];
+
 export const DEFAULT_BATCH_SIZE = 50;
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

@@ -7,15 +7,18 @@ import {
 } from "../../examplePayloads";
 import { createSpace } from "./createSpace";
 import { updateSpace } from "./updateSpace";
+
 const API = "https://api.clickup.com";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
+
 interface Captured {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, unknown>;
 }
+
 const mockClickUp = (
   method: string,
   path: string,
@@ -38,15 +41,12 @@ const mockClickUp = (
     });
   return captured;
 };
+
 type ActionUnderTest = {
-  inputs: Record<
-    string,
-    {
-      type?: string;
-    }
-  >;
+  inputs: Record<string, { type?: string }>;
   perform: unknown;
 };
+
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
   const connectionKey = Object.keys(action.inputs).find(
     (key) => action.inputs[key].type === "connection",
@@ -56,6 +56,7 @@ const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
     { [connectionKey]: connection, ...params } as any,
   );
 };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -63,6 +64,7 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 const featureToggles = {
   multipleAssignees: true,
   enableDueDates: true,
@@ -78,6 +80,7 @@ const featureToggles = {
   enableDependencyWarning: true,
   enablePortfolios: false,
 };
+
 const featureBody = {
   multiple_assignees: true,
   features: {
@@ -97,12 +100,14 @@ const featureBody = {
     portfolios: { enabled: false },
   },
 };
+
 describe("createSpace", () => {
   const params = {
     teamId: "9012345",
     spaceName: "Engineering",
     ...featureToggles,
   };
+
   test("happy path nests the feature toggles in the body and returns the response", async () => {
     const req = mockClickUp(
       "POST",
@@ -115,6 +120,7 @@ describe("createSpace", () => {
     expect(req.body).toEqual({ name: "Engineering", ...featureBody });
   });
 });
+
 describe("updateSpace", () => {
   const params = {
     spaceId: "790",
@@ -124,6 +130,7 @@ describe("updateSpace", () => {
     adminCanManage: true,
     ...featureToggles,
   };
+
   test("happy path puts the space settings and returns the response", async () => {
     const req = mockClickUp(
       "PUT",

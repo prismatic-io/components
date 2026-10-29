@@ -1,4 +1,5 @@
 import { pageInfoSchema, userErrorsArraySchema } from "./shared";
+
 const inventoryLevelSchema = {
   type: "object" as const,
   properties: {
@@ -24,6 +25,7 @@ const inventoryLevelSchema = {
     updatedAt: { type: "string" as const },
   },
 };
+
 export const connectInventoryLevelGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -31,18 +33,21 @@ export const connectInventoryLevelGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const deleteInventoryLevelsGqlOutputSchema = {
   type: "object" as const,
   properties: {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const getInventoryLevelsGqlOutputSchema = {
   type: "object" as const,
   properties: {
     inventoryLevel: inventoryLevelSchema,
   },
 };
+
 export const listInventoryLevelsGqlOutputSchema = {
   type: "object" as const,
   properties: {

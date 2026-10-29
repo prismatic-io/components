@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { paginateResults } from "ms-utils";
 import { connectionInput, fetchAll, odataParams } from "../../inputs/general";
 import { listCompaniesExamplePayload } from "../../examplePayloads";
+
 export const listCompanies = action({
   display: {
     label: "List Companies",
@@ -14,6 +15,7 @@ export const listCompanies = action({
     {
       connection,
       fetchAll,
+
       $count,
       $expand,
       $format,
@@ -42,6 +44,7 @@ export const listCompanies = action({
       $skipToken,
       $filter,
     };
+
     return await paginateResults<
       (typeof listCompaniesExamplePayload)["data"]["value"][number]
     >({

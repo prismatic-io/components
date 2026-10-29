@@ -12,6 +12,7 @@ const pipelineRecordSchema = {
     selected: { type: "boolean" },
   },
 };
+
 const pipelineDealRecordSchema = {
   type: "object",
   properties: {
@@ -39,6 +40,7 @@ const pipelineDealRecordSchema = {
     visible_to: { type: "string" },
   },
 };
+
 const dealMovementStatsSchema = {
   type: "object",
   properties: {
@@ -48,6 +50,7 @@ const dealMovementStatsSchema = {
     formatted_values: { type: "object" },
   },
 };
+
 export const getPipelinesOutputSchema = {
   type: "object",
   properties: {
@@ -66,6 +69,7 @@ export const getPipelinesOutputSchema = {
     },
   },
 };
+
 export const addPipelineOutputSchema = {
   type: "object",
   properties: {
@@ -78,6 +82,7 @@ export const addPipelineOutputSchema = {
     },
   },
 };
+
 export const deletePipelineOutputSchema = {
   type: "object",
   properties: {
@@ -95,6 +100,7 @@ export const deletePipelineOutputSchema = {
     },
   },
 };
+
 export const getPipelineOutputSchema = {
   type: "object",
   properties: {
@@ -107,6 +113,7 @@ export const getPipelineOutputSchema = {
     },
   },
 };
+
 export const updatePipelineOutputSchema = {
   type: "object",
   properties: {
@@ -119,6 +126,7 @@ export const updatePipelineOutputSchema = {
     },
   },
 };
+
 export const getPipelineConversionStatisticsOutputSchema = {
   type: "object",
   properties: {
@@ -148,6 +156,7 @@ export const getPipelineConversionStatisticsOutputSchema = {
     },
   },
 };
+
 export const getPipelineDealsOutputSchema = {
   type: "object",
   properties: {
@@ -166,6 +175,7 @@ export const getPipelineDealsOutputSchema = {
     },
   },
 };
+
 export const getPipelineMovementStatisticsOutputSchema = {
   type: "object",
   properties: {

@@ -10,6 +10,7 @@ import {
   DEFAULT_SHOPIFY_VERSION,
 } from "./constants";
 import { gqlErrorsCheck } from "./util";
+
 export const getShopifyHostname = (host: string): string => {
   const hostnameRegex = /(https:\/\/)?(.*\.myshopify.com)/;
   const result = hostnameRegex.exec(host);
@@ -20,6 +21,7 @@ export const getShopifyHostname = (host: string): string => {
   }
   return result[2];
 };
+
 const getApiVersion = (
   shopifyConnection: Connection,
   defaultVersion: string,
@@ -41,6 +43,7 @@ const getApiVersion = (
   }
   return defaultVersion;
 };
+
 export const getShopifyClient = (
   shopifyConnection: Connection,
   apiVersion?: string,
@@ -53,6 +56,7 @@ export const getShopifyClient = (
   const version =
     apiVersion ??
     getApiVersion(shopifyConnection, DEFAULT_SHOPIFY_VERSION, logger);
+
   return createClient({
     debug,
     baseUrl: `https://${shopifyHostname}/admin/api/${version}`,
@@ -66,6 +70,7 @@ export const getShopifyClient = (
     },
   });
 };
+
 export const getShopifyGraphQlClient = (
   shopifyConnection: Connection,
   apiVersion: string | undefined,

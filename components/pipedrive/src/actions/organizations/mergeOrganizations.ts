@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { mergeOrganizationsInputs } from "../../inputs";
 import { mergeOrganizationsExamplePayload } from "../../examplePayloads";
 import { mergeOrganizationsOutputSchema } from "../../outputSchemas";
+
 export const mergeOrganizations = action({
   display: {
     label: "Merge Organizations",

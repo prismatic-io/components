@@ -7,6 +7,7 @@ import { listCollectionsGqlOutputSchema } from "../../../outputSchemas";
 import type { Collection, PageInfo } from "../../../types";
 import { fetchData } from "../../../util";
 import listCollectionsQuery from "../queries/collections/ListCollections.gql";
+
 export const listCollectionsGql = action({
   display: {
     label: "List Collections",
@@ -23,6 +24,7 @@ export const listCollectionsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = await fetchData<Collection>(
       client,
       ["collections"],
@@ -34,6 +36,7 @@ export const listCollectionsGql = action({
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
     );
+
     return {
       data: data as Record<"collections", Collection[]> & {
         pageInfo: PageInfo;

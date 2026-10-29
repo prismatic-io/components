@@ -5,6 +5,7 @@ import { changeFileCheckoutStatusExamplePayload } from "../../examplePayloads";
 import { changeFileCheckoutStatusInputs } from "../../inputs";
 import { changeFileCheckoutStatusOutputSchema } from "../../outputSchemas";
 import { appendFilePart, appendFormFields, handleArenaError } from "../../util";
+
 export const changeFileCheckoutStatus = action({
   display: {
     label: "Change File Checkout Status",
@@ -21,8 +22,10 @@ export const changeFileCheckoutStatus = action({
     try {
       const client = await createArenaClient(context, params.connection);
       const formData = new FormData();
+
       appendFilePart(formData, "content", params.fileContent, "checkin_file");
       appendFormFields(formData, params.fileCheckoutData);
+
       const { data } = await client.post(
         "/files/checkoutstatuschanges",
         formData,
@@ -30,6 +33,7 @@ export const changeFileCheckoutStatus = action({
           headers: { ...formData.getHeaders() },
         },
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Change File Checkout Status");

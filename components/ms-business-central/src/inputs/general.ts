@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../utils";
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -9,12 +10,14 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft Business Central connection to use.",
 });
+
 export const odataParams = {
   $filter: input({
     label: "Filter",
@@ -109,6 +112,7 @@ export const odataParams = {
     clean: cleanStringInput,
   }),
 };
+
 export const odataQueryParams = structuredObjectInput({
   label: "OData Query Parameters",
   required: false,
@@ -127,6 +131,7 @@ export const odataQueryParams = structuredObjectInput({
     $skipToken: odataParams.$skipToken,
   },
 });
+
 export const additionalProperties = input({
   label: "Additional Properties",
   type: "code",

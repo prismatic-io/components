@@ -10,23 +10,31 @@ import type {
   NewComputersChanges,
   PagedResponse,
 } from "../types";
+
 export const resolveNewComputerChanges = (
   data: NewComputersChanges | undefined,
 ): NewComputerChange[] =>
   (data ?? []).map(
     (record): NewComputerChange => ({ changeType: "created", record }),
   );
+
 const SECOND_MS = 1000;
 const INVENTORY_ENDPOINT = "/v3/computers-inventory";
 const TRIGGER_NAME = "pollNewComputers";
+
 const NORMAL_SORT = "general.lastEnrolledDate:asc,id:asc";
 const TIE_SORT = "id:asc";
+
 const toIso = (epochMs: number): string => new Date(epochMs).toISOString();
+
 const truncateToSecond = (iso: string): string =>
   toIso(Math.floor(Date.parse(iso) / SECOND_MS) * SECOND_MS);
+
 const toFilterDate = (iso: string): string => iso.replace(/\.\d+Z$/, "Z");
+
 export const resolveSafeHorizon = (now: string): string =>
   truncateToSecond(toIso(Date.parse(now) - WATERMARK_SKEW_MARGIN_MS));
+
 export const fetchComputerPage =
   (client: HttpClient): FetchComputerPage =>
   async ({ filter, sort, pageSize }): Promise<ComputerInventory[]> => {
@@ -45,15 +53,18 @@ export const fetchComputerPage =
     );
     return data.results;
   };
+
 const enrolledSecond = (record: ComputerInventory): number | null => {
   const raw = record.general?.lastEnrolledDate;
   const at = typeof raw === "string" ? Date.parse(raw) : Number.NaN;
   return Number.isNaN(at) ? null : Math.floor(at / SECOND_MS) * SECOND_MS;
 };
+
 const noProgress = (watermark: string): Error =>
   new Error(
     `${TRIGGER_NAME}: the watermark cursor cannot advance past ${watermark}: a full page (page size ${MAX_PAGE_SIZE}) held no computer enrolled at or after it, so the same request would return the same page on every poll. Stopping instead of looping.`,
   );
+
 const normalRound = async (
   fetchPage: FetchComputerPage,
   cursor: ComputerPollCursor,
@@ -111,6 +122,7 @@ const normalRound = async (
     drained: false,
   };
 };
+
 const tieRound = async (
   fetchPage: FetchComputerPage,
   cursor: ComputerPollCursor,
@@ -160,6 +172,7 @@ const tieRound = async (
     drained: true,
   };
 };
+
 export const drainWatermark = async (
   fetchPage: FetchComputerPage,
   start: ComputerPollCursor,
@@ -180,6 +193,7 @@ export const drainWatermark = async (
   }
   return { delivered, cursor, drained: false };
 };
+
 export const resolveStartCursor = (
   state: ComputerPollingState,
   incoming: ComputerPollCursor | undefined,
@@ -190,6 +204,7 @@ export const resolveStartCursor = (
     watermark: truncateToSecond(state.lastPolledAt ?? seed),
     boundaryIds: state.lastPolledAt ? (state.boundaryIds ?? []) : [],
   };
+
 export const nextPollingState = (
   state: ComputerPollingState,
   seed: string,

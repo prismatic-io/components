@@ -46,6 +46,7 @@ export const smsDefinitionOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listSmsDefinitionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -70,6 +71,7 @@ export const listSmsDefinitionsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const deleteSmsDefinitionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -79,6 +81,7 @@ export const deleteSmsDefinitionOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const sendSmsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +101,7 @@ export const sendSmsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const sendSmsBatchOutputSchema = {
   type: "object" as const,
   properties: {

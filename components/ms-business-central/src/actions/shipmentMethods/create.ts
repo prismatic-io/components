@@ -8,6 +8,7 @@ import {
   shipmentMethodName,
 } from "../../inputs/shipmentMethods/createShipmentMethodInputs";
 import type { ShipmentMethod } from "../../interfaces";
+
 export const createShipmentMethod = action({
   display: {
     label: "Create Shipment Method",
@@ -26,10 +27,12 @@ export const createShipmentMethod = action({
       code: shipmentCode,
       displayName: shipmentMethodName,
     };
+
     const { data } = await client.post<ShipmentMethod>(
       `/companies(${companyId})/shipmentMethods`,
       payload,
     );
+
     return { data };
   },
   inputs: {

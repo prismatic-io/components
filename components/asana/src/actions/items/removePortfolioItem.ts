@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { removePortfolioItemExamplePayload } from "../../examplePayloads";
 import { removePortfolioItemInputs } from "../../inputs";
 import { emptyResponseOutputSchema } from "../../outputSchemas";
+
 export const removePortfolioItem = action({
   display: {
     label: "Remove Portfolio Item",

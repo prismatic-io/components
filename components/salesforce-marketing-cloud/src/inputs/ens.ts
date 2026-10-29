@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { ENS_ALL_EVENT_TYPES } from "../constants";
 import { toOptionalNumber } from "../util";
 import { connection } from "./common";
+
 const callbackId = input({
   label: "Callback ID",
   type: "string",
@@ -12,6 +13,7 @@ const callbackId = input({
   dataSource: "selectCallback",
   clean: util.types.toString,
 });
+
 const callbackName = input({
   label: "Callback Name",
   type: "string",
@@ -21,6 +23,7 @@ const callbackName = input({
   placeholder: "Enter callback name",
   clean: util.types.toString,
 });
+
 const callbackUrl = input({
   label: "Callback URL",
   type: "string",
@@ -30,6 +33,7 @@ const callbackUrl = input({
   placeholder: "Enter callback URL",
   clean: util.types.toString,
 });
+
 const maxBatchSize = input({
   label: "Max Batch Size",
   type: "string",
@@ -40,6 +44,7 @@ const maxBatchSize = input({
   placeholder: "Enter max batch size",
   clean: toOptionalNumber,
 });
+
 const verificationKey = input({
   label: "Verification Key",
   type: "string",
@@ -50,6 +55,7 @@ const verificationKey = input({
   placeholder: "Enter verification key",
   clean: util.types.toString,
 });
+
 const subscriptionId = input({
   label: "Subscription ID",
   type: "string",
@@ -60,6 +66,7 @@ const subscriptionId = input({
   dataSource: "selectSubscription",
   clean: util.types.toString,
 });
+
 const subscriptionName = input({
   label: "Subscription Name",
   type: "string",
@@ -69,6 +76,7 @@ const subscriptionName = input({
   placeholder: "Enter subscription name",
   clean: util.types.toString,
 });
+
 const eventCategoryTypes = input({
   label: "Event Types",
   type: "string",
@@ -79,6 +87,7 @@ const eventCategoryTypes = input({
     "The event types to subscribe to. Select one or more Marketing Cloud event categories.",
   clean: (value: unknown) => value as string[],
 });
+
 const callbackUrlOptional = input({
   label: "Callback URL",
   type: "string",
@@ -89,6 +98,7 @@ const callbackUrlOptional = input({
   placeholder: "Enter callback URL",
   clean: (value: unknown) => (value ? util.types.toString(value) : undefined),
 });
+
 const maxBatchSizeOptional = input({
   label: "Max Batch Size",
   type: "string",
@@ -99,6 +109,7 @@ const maxBatchSizeOptional = input({
   placeholder: "Enter max batch size",
   clean: toOptionalNumber,
 });
+
 export const updateCallbackInputs = {
   connection,
   callbackId,
@@ -110,6 +121,7 @@ export const updateCallbackInputs = {
   callbackUrl: callbackUrlOptional,
   maxBatchSize: maxBatchSizeOptional,
 };
+
 export const updateSubscriptionInputs = {
   connection,
   subscriptionId,
@@ -123,41 +135,50 @@ export const updateSubscriptionInputs = {
     required: false,
   },
 };
+
 export const listCallbacksInputs = {
   connection,
 };
+
 export const createCallbackInputs = {
   connection,
   callbackName,
   callbackUrl,
   maxBatchSize,
 };
+
 export const verifyCallbackInputs = {
   connection,
   callbackId,
   verificationKey,
 };
+
 export const deleteCallbackInputs = {
   connection,
   callbackId,
 };
+
 export const listSubscriptionsInputs = {
   connection,
 };
+
 export const createSubscriptionInputs = {
   connection,
   subscriptionName,
   callbackId,
   eventCategoryTypes,
 };
+
 export const getSubscriptionInputs = {
   connection,
   subscriptionId,
 };
+
 export const deleteSubscriptionInputs = {
   connection,
   subscriptionId,
 };
+
 const signatureKey = input({
   label: "Signature Key",
   type: "password",
@@ -168,6 +189,7 @@ const signatureKey = input({
   placeholder: "Enter the base64 signature key from callback creation",
   clean: (value: unknown) => (value ? util.types.toString(value) : undefined),
 });
+
 export const ensWebhookInputs = {
   signatureKey,
 };

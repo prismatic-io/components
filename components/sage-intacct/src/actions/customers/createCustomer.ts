@@ -9,6 +9,7 @@ import type { AbstractCustomer } from "@intacct/intacct-sdk/dist/Functions/Accou
 import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
 import { createCustomerOutputSchema } from "../../outputSchemas";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -128,6 +129,7 @@ export const createCustomer = action({
       restrictedDepartments: restrictedDepartmentsInput,
       customFields: customFieldsInput,
     } as unknown as AbstractCustomer);
+
     if (context.debug.enabled) {
       context.logger.debug(JSON.stringify(createCustomer, null, 2));
     }

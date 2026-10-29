@@ -4,6 +4,7 @@ import { companyId } from "../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../inputs/general";
 import type { MultipleItemsResponse, PurchaseOrder } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const selectPurchaseOrder = dataSource({
   display: {
     label: "Select Purchase Order",
@@ -19,6 +20,7 @@ export const selectPurchaseOrder = dataSource({
     const { data } = await client.get<MultipleItemsResponse<PurchaseOrder[]>>(
       `/companies(${companyId})/purchaseOrders`,
     );
+
     return {
       result: toSortedPicklist(data.value, (po) => ({
         key: po.id,

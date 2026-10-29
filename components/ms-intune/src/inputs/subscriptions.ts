@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanArrayInput, cleanStringInput } from "../util";
 import { $skipToken, bodyFields, connection, fetchAll } from "./common";
+
 const subscriptionId = input({
   label: "Subscription ID",
   type: "string",
@@ -11,6 +12,7 @@ const subscriptionId = input({
   clean: util.types.toString,
   dataSource: "selectSubscription",
 });
+
 const notificationUrl = input({
   label: "Notification URL",
   type: "string",
@@ -21,6 +23,7 @@ const notificationUrl = input({
   placeholder: "Enter notification URL",
   clean: util.types.toString,
 });
+
 const lifecycleNotificationUrl = input({
   label: "Lifecycle Notification URL",
   type: "string",
@@ -31,6 +34,7 @@ const lifecycleNotificationUrl = input({
   placeholder: "Enter lifecycle notification URL",
   clean: cleanStringInput,
 });
+
 export const expirationDateTime = input({
   label: "Expiration Date Time",
   type: "string",
@@ -41,6 +45,7 @@ export const expirationDateTime = input({
   placeholder: "Enter expiration date/time",
   clean: util.types.toString,
 });
+
 export const changeType = input({
   label: "Change Type",
   type: "string",
@@ -55,6 +60,7 @@ export const changeType = input({
   ],
   clean: cleanArrayInput,
 });
+
 export const resource = input({
   label: "Resource",
   type: "string",
@@ -65,6 +71,7 @@ export const resource = input({
   placeholder: "Enter resource path",
   clean: util.types.toString,
 });
+
 export const createSubscriptionInputs = {
   connection,
   changeType,
@@ -84,15 +91,18 @@ export const createSubscriptionInputs = {
     ),
   },
 };
+
 export const getSubscriptionInputs = {
   connection,
   subscriptionId,
 };
+
 export const listSubscriptionsInputs = {
   connection,
   fetchAll,
   $skipToken,
 };
+
 export const deleteSubscriptionInputs = {
   connection,
   subscriptionId: {
@@ -100,6 +110,7 @@ export const deleteSubscriptionInputs = {
     comments: "The ID of the subscription to delete.",
   },
 };
+
 export const deleteAllSubscriptionsInputs = {
   connection,
   notificationUrl: {
@@ -107,6 +118,7 @@ export const deleteAllSubscriptionsInputs = {
     comments: "The URL from which to delete all subscriptions.",
   },
 };
+
 export const updateSubscriptionInputs = {
   connection,
   subscriptionId: {

@@ -4,6 +4,7 @@ import { downloadExtractRunFileContentExamplePayload } from "../../examplePayloa
 import { downloadExtractRunFileContentInputs } from "../../inputs";
 import { downloadExtractRunFileContentOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const downloadExtractRunFileContent = action({
   display: {
     label: "Download Extract Run File Content",
@@ -22,8 +23,10 @@ export const downloadExtractRunFileContent = action({
         `/extracts/${params.extractGuid}/runs/${params.extractRunGuid}/files/${params.runFileAssociationGuid}/content`,
         { responseType: "arraybuffer" },
       );
+
       const buffer = Buffer.from(data);
       const base64Content = buffer.toString("base64");
+
       return {
         data: {
           content: base64Content,

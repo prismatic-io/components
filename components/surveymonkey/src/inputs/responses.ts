@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connectionInput, fetchAll, pagination, extraBody } from "./common";
 import { surveyId } from "./surveys";
+
 export const responseId = input({
   label: "Response ID",
   type: "string",
@@ -12,6 +13,7 @@ export const responseId = input({
   dataSource: "selectResponse",
   clean: util.types.toString,
 });
+
 export const responseStatus = input({
   label: "Response Status",
   type: "string",
@@ -27,6 +29,7 @@ export const responseStatus = input({
   placeholder: "Select response status",
   clean: toOptionalString,
 });
+
 export const responsePages = input({
   label: "Response Pages",
   type: "code",
@@ -59,6 +62,7 @@ export const responsePages = input({
   ),
   clean: util.types.toObject,
 });
+
 export const responseUpdateStatus = input({
   label: "Status",
   type: "string",
@@ -73,6 +77,7 @@ export const responseUpdateStatus = input({
   placeholder: "Select status",
   clean: toOptionalString,
 });
+
 export const responseCustomValue = input({
   label: "Custom Value",
   type: "string",
@@ -81,6 +86,7 @@ export const responseCustomValue = input({
   placeholder: "Enter custom value",
   clean: toOptionalString,
 });
+
 export const listResponsesInputs = {
   connection: connectionInput,
   surveyId,
@@ -88,16 +94,19 @@ export const listResponsesInputs = {
   fetchAll,
   pagination,
 };
+
 export const getResponseInputs = {
   connection: connectionInput,
   surveyId,
   responseId,
 };
+
 export const deleteResponseInputs = {
   connection: connectionInput,
   surveyId,
   responseId,
 };
+
 export const updateResponseInputs = {
   connection: connectionInput,
   surveyId,

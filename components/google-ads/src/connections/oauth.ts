@@ -5,6 +5,7 @@ import {
   GOOGLE_ADS_OAUTH_SCOPE,
   GOOGLE_DATA_MANAGER_OAUTH_SCOPE,
 } from "../constants";
+
 export const oauth = oauth2Connection({
   key: "oauth",
   display: {

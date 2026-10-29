@@ -4,6 +4,7 @@ import { listGroupsExamplePayload } from "../../examplePayloads";
 import { listGroupsInputs } from "../../inputs";
 import { listGroupsOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listGroups = action({
   display: {
     label: "List Groups",
@@ -24,9 +25,8 @@ export const listGroups = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listGroupsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listGroupsExamplePayload,
   examplePayload: listGroupsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

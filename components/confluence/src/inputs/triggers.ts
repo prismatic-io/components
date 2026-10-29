@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connectionInput } from "./common";
+
 export const lookBackDate = input({
   label: "Look-back Date",
   type: "string",
@@ -11,10 +12,12 @@ export const lookBackDate = input({
   placeholder: "2026-01-01",
   clean: cleanStringInput,
 });
+
 export const pagesPollingTriggerInputs = {
   connectionInput,
   lookBackDate,
 };
+
 export const newSpacesPollingTriggerInputs = {
   connectionInput,
   lookBackDate,

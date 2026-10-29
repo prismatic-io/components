@@ -5,7 +5,9 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { connectionInput } from "../../inputs";
 import { getBaseURL, getRealmId } from "../../util";
+
 const { debugRequest: _, ...rest } = httpClientInputs;
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -25,10 +27,13 @@ export const rawRequest = action({
     const accessToken = connection.token?.access_token;
     const realmId = getRealmId(connection);
     const rootUrl = getBaseURL(connection);
+
     const { url } = rawRequestInputs;
+
     const fullURL = url.startsWith("/v3/company/")
       ? url
       : `/v3/company/${realmId}/${url}`;
+
     const { data } = await sendRawRequest(
       rootUrl,
       {
@@ -38,11 +43,13 @@ export const rawRequest = action({
       },
       { Authorization: `Bearer ${accessToken}` },
     );
+
     if (rawRequestInputs.url.includes("/invoice")) {
       return {
         data: data.Invoice || data.Invoices || data,
       };
     }
+
     return { data };
   },
 });

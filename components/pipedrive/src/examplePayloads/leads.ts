@@ -24,6 +24,7 @@ const leadRecord = {
   visible_to: "3",
   cc_email: "test-sandbox+lead1@pipedrivemail.com",
 };
+
 export const getLeadsExamplePayload = {
   data: {
     success: true,
@@ -37,24 +38,28 @@ export const getLeadsExamplePayload = {
     },
   },
 };
+
 export const addLeadExamplePayload = {
   data: {
     success: true,
     data: leadRecord,
   },
 };
+
 export const getLeadExamplePayload = {
   data: {
     success: true,
     data: leadRecord,
   },
 };
+
 export const updateLeadExamplePayload = {
   data: {
     success: true,
     data: leadRecord,
   },
 };
+
 export const deleteLeadExamplePayload = {
   data: {
     success: true,
@@ -63,6 +68,7 @@ export const deleteLeadExamplePayload = {
     },
   },
 };
+
 export const searchLeadsExamplePayload = {
   data: {
     success: true,

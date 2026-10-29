@@ -4,6 +4,7 @@ import {
   openStructSchema,
   openTaggedUnionSchema,
 } from "./shared";
+
 export const getCurrentAccountOutputSchema = {
   type: "object" as const,
   properties: {

@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { createContactInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const createContact = action({
   display: {
     label: "Create Contact",
@@ -25,6 +26,7 @@ export const createContact = action({
     },
   ) => {
     const salesforceClient = await createSalesforceClient(connection, version);
+
     const payload = {
       ...(nameAndContact.firstName && { FirstName: nameAndContact.firstName }),
       ...(nameAndContact.lastName && { LastName: nameAndContact.lastName }),
@@ -73,15 +75,16 @@ export const createContact = action({
       ...dynamicValues,
       ...fieldValues,
     };
+
     const command = salesforceClient.sobject("Contact").create(payload);
     const response = await executeSFAction(context, command);
+
     return {
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   inputs: createContactInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

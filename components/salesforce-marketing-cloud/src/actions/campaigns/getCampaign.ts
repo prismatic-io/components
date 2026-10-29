@@ -4,6 +4,7 @@ import { CAMPAIGNS_PATH } from "../../constants";
 import { getCampaignExamplePayload } from "../../examplePayloads";
 import { getCampaignInputs } from "../../inputs";
 import { campaignOutputSchema } from "../../outputSchemas";
+
 export const getCampaign = action({
   examplePayload: getCampaignExamplePayload,
   display: {
@@ -21,6 +22,7 @@ export const getCampaign = action({
     const { data } = await client.get(
       `${CAMPAIGNS_PATH}/${encodeURIComponent(campaignId)}`,
     );
+
     return { data };
   },
 });

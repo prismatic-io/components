@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listRoutingFormsInputs } from "../../inputs";
 import { listRoutingFormsExamplePayload } from "../../examplePayloads";
 import { getRoutingForms } from "../../util";
+
 export const listRoutingForms = action({
   display: {
     label: "List Routing Forms",
@@ -13,11 +14,10 @@ export const listRoutingForms = action({
   perform: async (context, { connection, organization, sort }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const data = await getRoutingForms(client, organization, sort);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listRoutingFormsExamplePayload.data,
   }),
   inputs: listRoutingFormsInputs,

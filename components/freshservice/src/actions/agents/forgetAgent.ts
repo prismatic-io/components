@@ -4,6 +4,7 @@ import { SUCCESS_RESPONSE } from "../../constants";
 import { forgetAgentExamplePayload as examplePayload } from "../../examplePayloads";
 import { forgetAgentInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
+
 export const forgetAgent = action({
   display: {
     label: "Forget Agent",
@@ -14,7 +15,9 @@ export const forgetAgent = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(`/agents/${agentId}/forget`);
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

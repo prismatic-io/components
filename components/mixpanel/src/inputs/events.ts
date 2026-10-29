@@ -8,6 +8,7 @@ import {
   verbose,
   redirect,
 } from "./common";
+
 export const events = input({
   label: "Events",
   type: "code",
@@ -34,6 +35,7 @@ export const events = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const ip = input({
   label: "IP",
   type: "string",
@@ -44,6 +46,7 @@ export const ip = input({
   required: false,
   example: "1",
 });
+
 export const img = input({
   label: "Img",
   type: "string",
@@ -54,6 +57,7 @@ export const img = input({
   required: false,
   example: "1",
 });
+
 export const deliveryOptions = structuredObjectInput({
   label: "Delivery Options",
   required: false,
@@ -61,6 +65,7 @@ export const deliveryOptions = structuredObjectInput({
     "Optional request delivery controls: IP-based distinct ID computation, verbose responses, redirect URL, and pixel-image response.",
   inputs: { ip, verbose, redirect, img },
 });
+
 export const trackEventsInputs = {
   connection: connectionInput,
   useProjectToken: { ...useProjectToken, default: "true" },
@@ -68,6 +73,7 @@ export const trackEventsInputs = {
   deliveryOptions,
   events,
 };
+
 export const importEventsInputs = {
   connection: connectionInput,
   useProjectToken,

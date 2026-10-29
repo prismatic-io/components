@@ -9,6 +9,7 @@ import type { AbstractVendor } from "@intacct/intacct-sdk/dist/Functions/Account
 import { createVendorExamplePayload } from "../../examplePayloads";
 import { createVendorInputs } from "../../inputs";
 import { createVendorOutputSchema } from "../../outputSchemas";
+
 export const createVendor = action({
   display: {
     label: "Create Vendor",
@@ -50,6 +51,7 @@ export const createVendor = action({
     },
   ) => {
     const createVendor = new Functions.AccountsPayable.VendorCreate();
+
     assignParametersToObject(createVendor, {
       vendorId: vendorIdInput,
       vendorName: vendorNameInput,
@@ -148,6 +150,7 @@ export const createVendor = action({
       restrictedDepartments: restrictedDepartmentsInput,
       customFields: customFieldsInput,
     } as unknown as AbstractVendor);
+
     if (context.debug.enabled) {
       context.logger.debug(JSON.stringify(createVendor, null, 2));
     }

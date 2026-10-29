@@ -3,6 +3,7 @@ import {
   instanceReferenceSchema,
   instanceSummaryReferenceSchema,
 } from "./shared";
+
 export const billToCustomerAddressSchema = {
   type: "object" as const,
   properties: {
@@ -60,6 +61,7 @@ export const billToCustomerAddressSchema = {
     },
   },
 };
+
 export const customerInvoiceSchema = {
   type: "object" as const,
   properties: {
@@ -170,8 +172,11 @@ export const customerInvoiceSchema = {
     },
   },
 };
+
 export const getInvoiceByIdOutputSchema = customerInvoiceSchema;
+
 export const getPaymentByIdOutputSchema = idDescriptorReferenceSchema;
+
 export const listInvoicesOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -188,6 +193,7 @@ export const listInvoicesOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postPaymentOutputSchema = {
   type: "object" as const,
   properties: {

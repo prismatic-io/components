@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { BRANCH_DELETED_MESSAGE, ISSUE_DELETED_MESSAGE } from "./constants";
+
 const exampleUser = {
   id: 1001,
   username: "jdoe",
@@ -10,6 +11,7 @@ const exampleUser = {
     "https://gitlab.example.com/uploads/-/system/user/avatar/1001/avatar.png",
   web_url: "https://gitlab.example.com/jdoe",
 };
+
 const exampleProject = {
   id: 278964,
   name: "Payments Service",
@@ -33,6 +35,7 @@ const exampleProject = {
     full_path: "acme",
   },
 };
+
 const exampleGroup = {
   id: 7412,
   name: "Acme",
@@ -45,6 +48,7 @@ const exampleGroup = {
   parent_id: null,
   created_at: "2024-11-02T09:15:00.000Z",
 };
+
 const exampleMilestone = {
   id: 55120,
   iid: 4,
@@ -56,6 +60,7 @@ const exampleMilestone = {
   start_date: "2026-10-01",
   web_url: "https://gitlab.example.com/acme/payments-service/-/milestones/4",
 };
+
 const exampleLabel = {
   id: 90211,
   name: "bug",
@@ -63,6 +68,7 @@ const exampleLabel = {
   text_color: "#FFFFFF",
   description: "Something is not working",
 };
+
 const exampleIssue = {
   id: 1740233,
   iid: 42,
@@ -96,6 +102,7 @@ const exampleIssue = {
     full: "acme/payments-service#42",
   },
 };
+
 const exampleMergeRequest = {
   id: 3310457,
   iid: 17,
@@ -129,6 +136,7 @@ const exampleMergeRequest = {
     full: "acme/payments-service!17",
   },
 };
+
 const exampleNote = {
   id: 918273,
   body: "Deployed to staging; settlements now retry up to 3 times.",
@@ -141,6 +149,7 @@ const exampleNote = {
   noteable_type: "Issue",
   internal: false,
 };
+
 const exampleCommit = {
   id: "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
   short_id: "8d2f5c7a",
@@ -157,11 +166,13 @@ const exampleCommit = {
   web_url:
     "https://gitlab.example.com/acme/payments-service/-/commit/8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
 };
+
 const exampleCommitDetail = {
   ...exampleCommit,
   stats: { additions: 48, deletions: 6, total: 54 },
   status: "success",
 };
+
 const exampleBranch = {
   name: "feature/ach-retry",
   merged: false,
@@ -174,6 +185,7 @@ const exampleBranch = {
     "https://gitlab.example.com/acme/payments-service/-/tree/feature/ach-retry",
   commit: exampleCommit,
 };
+
 const exampleFile = {
   file_name: "settings.json",
   file_path: "config/settings.json",
@@ -187,10 +199,12 @@ const exampleFile = {
   commit_id: "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
   last_commit_id: "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
 };
+
 const exampleFileCommit = {
   file_path: "config/settings.json",
   branch: "main",
 };
+
 const examplePipeline = {
   id: 61205,
   iid: 312,
@@ -203,6 +217,7 @@ const examplePipeline = {
   updated_at: "2026-09-26T12:09:52.000Z",
   web_url: "https://gitlab.example.com/acme/payments-service/-/pipelines/61205",
 };
+
 const examplePipelineDetail = {
   ...examplePipeline,
   started_at: "2026-09-26T12:01:14.000Z",
@@ -210,12 +225,14 @@ const examplePipelineDetail = {
   duration: 518,
   user: exampleUser,
 };
+
 const exampleMember = {
   ...exampleUser,
   access_level: 40,
   expires_at: null,
   membership_state: "active",
 };
+
 const exampleHook = {
   id: 14982,
   url: "https://hooks.example.com/trigger/EXAMPLE",
@@ -238,6 +255,7 @@ const exampleHook = {
   alert_status: "executable",
   disabled_until: null,
 };
+
 const syntheticTriggerPayload = (
   data: unknown,
   headers: Record<string, string> = {},
@@ -273,6 +291,7 @@ const syntheticTriggerPayload = (
   startedAt: "2024-01-15T00:00:00.000Z",
   globalDebug: false,
 });
+
 export const listProjectsExamplePayload = { data: [exampleProject] };
 export const getProjectExamplePayload = { data: exampleProject };
 export const listGroupsExamplePayload = { data: [exampleGroup] };
@@ -313,12 +332,14 @@ export const getCurrentUserExamplePayload = {
   },
 };
 export const listUsersExamplePayload = { data: [exampleUser] };
+
 export const selectProjectExamplePayload = {
   result: [{ label: "acme/payments-service", key: "278964" }],
 };
 export const selectGroupExamplePayload = {
   result: [{ label: "acme", key: "7412" }],
 };
+
 export const listIssuesExamplePayload = { data: [exampleIssue] };
 export const getIssueExamplePayload = { data: exampleIssue };
 export const createIssueExamplePayload = { data: exampleIssue };
@@ -333,6 +354,7 @@ export const updateIssueExamplePayload = {
 export const deleteIssueExamplePayload = {
   data: { success: true, message: ISSUE_DELETED_MESSAGE },
 };
+
 export const selectLabelExamplePayload = {
   result: [{ label: "bug", key: "bug" }],
 };
@@ -342,6 +364,7 @@ export const selectMilestoneExamplePayload = {
 export const selectUserExamplePayload = {
   result: [{ label: "Jane Doe (@jdoe)", key: "1001" }],
 };
+
 export const listMergeRequestsExamplePayload = { data: [exampleMergeRequest] };
 export const getMergeRequestExamplePayload = { data: exampleMergeRequest };
 export const createMergeRequestExamplePayload = { data: exampleMergeRequest };
@@ -361,6 +384,7 @@ export const acceptMergeRequestExamplePayload = {
     merge_commit_sha: "2b4d6f8a0c2e4a6c8e0a2c4e6a8c0e2a4c6e8a0c",
   },
 };
+
 export const listIssueNotesExamplePayload = { data: [exampleNote] };
 export const createIssueNoteExamplePayload = { data: exampleNote };
 export const listMergeRequestNotesExamplePayload = {
@@ -381,6 +405,7 @@ export const createMergeRequestNoteExamplePayload = {
     noteable_type: "MergeRequest",
   },
 };
+
 export const listBranchesExamplePayload = { data: [exampleBranch] };
 export const getBranchExamplePayload = { data: exampleBranch };
 export const createBranchExamplePayload = {
@@ -399,6 +424,7 @@ export const getCommitExamplePayload = { data: exampleCommitDetail };
 export const selectBranchExamplePayload = {
   result: [{ label: "feature/ach-retry", key: "feature/ach-retry" }],
 };
+
 export const getFileExamplePayload = { data: exampleFile };
 export const createFileExamplePayload = { data: exampleFileCommit };
 export const updateFileExamplePayload = { data: exampleFileCommit };
@@ -407,10 +433,12 @@ export const getPipelineExamplePayload = { data: examplePipelineDetail };
 export const listLabelsExamplePayload = { data: [exampleLabel] };
 export const listMilestonesExamplePayload = { data: [exampleMilestone] };
 export const listProjectMembersExamplePayload = { data: [exampleMember] };
+
 export const listProjectWebhooksExamplePayload = { data: [exampleHook] };
 export const deleteInstancedWebhooksExamplePayload = {
   data: { deleted: [{ projectId: "278964", hookId: 14982 }] },
 };
+
 const examplePushEvent = {
   object_kind: "push",
   event_name: "push",
@@ -444,19 +472,23 @@ const examplePushEvent = {
   ],
   total_commits_count: 1,
 };
+
 const exampleWebhookHeaders = {
   "Content-Type": "application/json",
   "X-Gitlab-Event": "Push Hook",
   "X-Gitlab-Event-UUID": "4c4e1bd8-1f7a-4a2e-9d7c-2b6c1f0e9a11",
 };
+
 export const webhookExamplePayload = {
   payload: syntheticTriggerPayload(examplePushEvent, exampleWebhookHeaders),
   branch: "Push",
 };
+
 export const webhookEventsExamplePayload = {
   payload: syntheticTriggerPayload(examplePushEvent, exampleWebhookHeaders),
   branch: "Push",
 };
+
 const exampleUpdatedIssue = {
   ...exampleIssue,
   id: 1739877,
@@ -471,6 +503,7 @@ const exampleUpdatedIssue = {
     full: "acme/payments-service#38",
   },
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: syntheticTriggerPayload({
     created: [exampleIssue],

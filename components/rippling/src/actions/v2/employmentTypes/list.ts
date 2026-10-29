@@ -4,6 +4,7 @@ import { API_VERSION } from "../../../constants";
 import { listEmploymentTypesExamplePayload } from "../../../examplePayloads";
 import { listEmploymentTypesInputs } from "../../../inputs";
 import { paginateV2Results } from "../../../utils/pagination";
+
 export const listEmploymentTypes = action({
   display: {
     label: "List Employment Types (V2)",

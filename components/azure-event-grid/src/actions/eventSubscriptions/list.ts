@@ -3,6 +3,7 @@ import { listEventSubscriptionsInputs as inputs } from "../../inputs/eventSubscr
 import { listEventSubscriptionsExamplePayload as examplePayload } from "../../examplePayloads";
 import { action } from "@prismatic-io/spectral";
 import { getEventSubscriptionUrl, paginateResults } from "../../util";
+
 export const listEventSubscriptions = action({
   display: {
     label: "List Event Subscriptions",

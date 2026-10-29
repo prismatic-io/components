@@ -4,6 +4,7 @@ import { SUCCESS_RESPONSE } from "../../constants";
 import { deleteTicketExamplePayload as examplePayload } from "../../examplePayloads";
 import { deleteTicketInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
+
 export const deleteTicket = action({
   display: {
     label: "Delete Ticket",
@@ -14,7 +15,9 @@ export const deleteTicket = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(`/tickets/${ticketId}`);
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

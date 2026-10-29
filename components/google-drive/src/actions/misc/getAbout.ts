@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getAboutInputs } from "../../inputs";
 import { getAboutOutputSchema } from "../../outputSchemas";
 import { getAboutExamplePayload } from "../../examplePayloads";
+
 export const getAbout = action({
   display: {
     label: "Get About",
@@ -15,6 +16,7 @@ export const getAbout = action({
     const { data } = await drive.about.get({
       fields: util.types.toString(fields),
     });
+
     return {
       data,
     };
@@ -26,4 +28,5 @@ export const getAbout = action({
   }),
   examplePayload: getAboutExamplePayload,
 });
+
 export default getAbout;

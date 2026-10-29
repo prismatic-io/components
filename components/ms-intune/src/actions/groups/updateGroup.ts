@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS, NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../constants";
 import { updateGroupExamplePayload } from "../../examplePayloads";
 import { updateGroupInputs } from "../../inputs";
+
 export const updateGroup = action({
   display: {
     label: "Update Group",
@@ -30,6 +31,7 @@ export const updateGroup = action({
       visibility: additionalFields.visibility,
       ...bodyFields,
     });
+
     return {
       data: NO_RESPONSE_SUCCESSFULL_PAYLOAD,
     };

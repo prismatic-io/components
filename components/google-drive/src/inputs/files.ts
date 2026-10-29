@@ -10,6 +10,7 @@ import {
   query,
   searchQuery,
 } from "./common";
+
 export const fileId = input({
   label: "File ID",
   placeholder: "Enter File ID",
@@ -21,6 +22,7 @@ export const fileId = input({
     "A unique opaque ID for each file. File IDs are stable throughout the life of the file, even if the file name changes.",
   dataSource: "selectFiles",
 });
+
 export const fileName = input({
   label: "File Name",
   placeholder: "Enter file name",
@@ -30,6 +32,7 @@ export const fileName = input({
   comments: "The name of the file.",
   clean: cleanStringInput,
 });
+
 export const fileContent = input({
   label: "File Content",
   placeholder: "Enter file content",
@@ -39,6 +42,7 @@ export const fileContent = input({
   comments:
     "The binary or text body of the file. Images, videos, text, and PDF files can be stored in Google Drive.",
 });
+
 export const exportType = input({
   label: "Preferred Export Type",
   type: "string",
@@ -49,6 +53,7 @@ export const exportType = input({
   example: "application/pdf",
   clean: cleanStringInput,
 });
+
 export const metadataFields = input({
   label: "Fields",
   type: "string",
@@ -58,6 +63,7 @@ export const metadataFields = input({
   placeholder: "Enter comma separated fields",
   clean: util.types.toString,
 });
+
 export const filesContainingSearchQuery = input({
   label: "Files Containing Search Query",
   type: "boolean",
@@ -67,13 +73,16 @@ export const filesContainingSearchQuery = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const filters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Optional query controls to sort and refine the results.",
   inputs: { searchQuery, filesContainingSearchQuery, query },
 });
+
 export const copyFileInputs = { connection, fileId, fileName, folderId };
+
 export const createFileInputs = {
   connection,
   folderId: { ...folderId, label: "Parent Folder ID" },
@@ -81,10 +90,15 @@ export const createFileInputs = {
   fileName: { ...fileName, required: true, clean: util.types.toString },
   fields,
 };
+
 export const deleteFileInputs = { connection, fileId, fields };
+
 export const getFileInputs = { connection, fileId, exportType };
+
 export const getFileMetadataInputs = { connection, fileId, metadataFields };
+
 export const listExportTypesInputs = { connection, fileId };
+
 export const listFilesInputs = {
   connection,
   driveId,
@@ -93,11 +107,13 @@ export const listFilesInputs = {
   fields,
   query,
 };
+
 export const moveFileInputs = {
   connection,
   fileId,
   folderId: { ...folderId, required: true, clean: util.types.toString },
 };
+
 export const searchFilesInputs = {
   connection,
   driveId,
@@ -107,6 +123,7 @@ export const searchFilesInputs = {
   fetchAll,
   pagination,
 };
+
 export const updateFileInputs = {
   connection,
   fileId,

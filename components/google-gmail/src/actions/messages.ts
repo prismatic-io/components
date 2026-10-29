@@ -22,6 +22,7 @@ import {
   unTrashMessageByIdExamplePayload,
   updateLabelsExamplePayload,
 } from "../examplePayloads";
+
 const listMessages = action({
   display: {
     label: "List Messages",
@@ -51,6 +52,7 @@ const listMessages = action({
     },
   ) => {
     const client = await createClient(connection);
+
     const data = await listAllMessages(
       client,
       {
@@ -76,6 +78,7 @@ const listMessages = action({
     },
   },
 });
+
 const getMessageById = action({
   display: {
     label: "Get Message",
@@ -95,6 +98,7 @@ const getMessageById = action({
       id: params.messageId,
       format: "raw",
     });
+
     const parsed = await simpleParser(Buffer.from(raw ?? "", "base64"), {
       writableObjectMode: true,
       autoDestroy: true,
@@ -110,12 +114,14 @@ const getMessageById = action({
       text: parsed.text,
       html: parsed.html,
     };
+
     const ret = {
       id,
       threadId,
       labelIds,
       message,
     };
+
     return { data: ret };
   },
   examplePayload: {
@@ -151,6 +157,7 @@ const getMessageById = action({
     },
   },
 });
+
 const trashMessageById = action({
   display: {
     label: "Trash Message",
@@ -171,6 +178,7 @@ const trashMessageById = action({
   },
   examplePayload: trashMessageByIdExamplePayload,
 });
+
 const unTrashMessageById = action({
   display: {
     label: "Untrash Message",
@@ -191,6 +199,7 @@ const unTrashMessageById = action({
   },
   examplePayload: unTrashMessageByIdExamplePayload,
 });
+
 const updateLabels = action({
   display: {
     label: "Update Message Labels",
@@ -239,6 +248,7 @@ const updateLabels = action({
   },
   examplePayload: updateLabelsExamplePayload,
 });
+
 const sendMessage = action({
   display: {
     label: "Send Message",
@@ -351,6 +361,7 @@ const sendMessage = action({
     };
     const mailComposer = new MailComposer(options).compile();
     mailComposer.keepBcc = true;
+
     const message = await mailComposer.build();
     const rawMessage = Buffer.from(message)
       .toString("base64")
@@ -365,6 +376,7 @@ const sendMessage = action({
   },
   examplePayload: sendMessageExamplePayload,
 });
+
 export default {
   getMessageById,
   listMessages,

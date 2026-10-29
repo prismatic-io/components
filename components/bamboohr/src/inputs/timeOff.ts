@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
 import { validateDate } from "../util";
 import { connectionInput, employeeId } from "./common";
+
 const cleanOptionalString = (value: unknown): string | undefined => {
   const str = util.types.toString(value);
   return str ? str : undefined;
 };
+
 const startDate = input({
   label: "Start Date",
   type: "string",
@@ -15,6 +17,7 @@ const startDate = input({
   example: "2024-01-01",
   clean: validateDate,
 });
+
 const endDate = input({
   label: "End Date",
   type: "string",
@@ -25,6 +28,7 @@ const endDate = input({
   example: "2024-01-31",
   clean: validateDate,
 });
+
 const timeOffRecordId = input({
   label: "Time Off Record ID",
   type: "string",
@@ -34,6 +38,7 @@ const timeOffRecordId = input({
   clean: cleanOptionalString,
   example: "42",
 });
+
 const timeOffStatus = input({
   label: "Status",
   type: "string",
@@ -48,6 +53,7 @@ const timeOffStatus = input({
   ],
   clean: cleanOptionalString,
 });
+
 const whosOutStartDate = input({
   label: "Start Date",
   type: "string",
@@ -58,6 +64,7 @@ const whosOutStartDate = input({
   example: "2024-01-01",
   clean: cleanOptionalString,
 });
+
 const whosOutEndDate = input({
   label: "End Date",
   type: "string",
@@ -68,6 +75,7 @@ const whosOutEndDate = input({
   example: "2024-01-15",
   clean: cleanOptionalString,
 });
+
 export const getTimeOffRequestsInputs = {
   connection: connectionInput,
   startDate,
@@ -76,6 +84,7 @@ export const getTimeOffRequestsInputs = {
   employeeId: { ...employeeId, required: false },
   timeOffStatus,
 };
+
 export const whosOutInputs = {
   connection: connectionInput,
   startDate: whosOutStartDate,

@@ -4,6 +4,7 @@ import { deleteStageInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deleteStageExamplePayload } from "../../examplePayloads";
 import { deleteStageOutputSchema } from "../../outputSchemas";
+
 export const deleteStage = action({
   display: {
     label: "Delete Stage",

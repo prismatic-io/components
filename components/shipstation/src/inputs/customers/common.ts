@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 export const customerId = input({
   label: "Customer ID",
   type: "string",
@@ -9,6 +10,7 @@ export const customerId = input({
   dataSource: "selectCustomers",
   clean: util.types.toString,
 });
+
 export const stateCode = input({
   label: "State Code",
   type: "string",
@@ -18,6 +20,7 @@ export const stateCode = input({
   placeholder: "Enter state code",
   clean: cleanStringInput,
 });
+
 export const countryCode = input({
   label: "Country Code",
   type: "string",

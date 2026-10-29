@@ -1,4 +1,5 @@
 import { nextPageSchema, workspaceCompactSchema } from "./shared";
+
 export const workspaceResponseSchema = {
   type: "object" as const,
   properties: {
@@ -18,6 +19,7 @@ export const workspaceResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listWorkspacesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +29,7 @@ export const listWorkspacesOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const findWorkspaceByNameOutputSchema = {
   type: "object" as const,
   properties: {

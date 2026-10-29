@@ -1,4 +1,5 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
+
 import { pollChangesTriggerInputs } from "../inputs";
 import {
   DEFAULT_MAX_RECORDS,
@@ -26,6 +27,7 @@ import {
 } from "../util";
 import { createSalesforceClient } from "../client";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -50,6 +52,7 @@ export const pollChangesTrigger = pollingTrigger({
     const pageSize = isBatching
       ? Math.min(requestedPageSize, MAX_BATCHED_PAGE_SIZE)
       : requestedPageSize;
+
     const cursor = resolveCursorSafely({
       incoming: payload.paginationState as PollingCursor | undefined,
       state,
@@ -57,6 +60,7 @@ export const pollChangesTrigger = pollingTrigger({
       now,
       logger: context.logger,
     });
+
     const sfClient = await createSalesforceClient(params.connection, sfVersion);
     const fields = await resolvePollingFields(
       sfClient,
@@ -65,12 +69,14 @@ export const pollChangesTrigger = pollingTrigger({
       params.returnIdsOnly,
       context.logger,
     );
+
     const filters = cursor.isBackfill
       ? {}
       : {
           ...params.dynamicValues,
           ...coerceObjectValues(params.fieldValues, params.fieldValueTypes),
         };
+
     const windowIsEmpty =
       formatSOQLDateTime(cursor.watermark) >=
       formatSOQLDateTime(cursor.windowEnd);
@@ -83,6 +89,7 @@ export const pollChangesTrigger = pollingTrigger({
           cursor,
           pageSize,
         });
+
     const isFirstRound = !payload.paginationState && !state.cursor;
     let deletedRecords: DeletedRecord[] = [];
     let lastDeletedAt = state.lastDeletedAt;
@@ -104,6 +111,7 @@ export const pollChangesTrigger = pollingTrigger({
     } else if (!params.showDeletedRecords || !lastDeletedAt) {
       lastDeletedAt = now;
     }
+
     const { changes, changesObject } = getPollingChanges(
       params.showNewRecords,
       params.showUpdatedRecords,
@@ -113,7 +121,9 @@ export const pollChangesTrigger = pollingTrigger({
       deletedRecords,
       { snapshot: cursor.isBackfill },
     );
+
     const isPlatformDrivenRound = Boolean(payload.paginationState);
+
     context.polling.setState({
       lastPolledAt: nextCursor
         ? (state.lastPolledAt ?? cursor.watermark)
@@ -121,6 +131,7 @@ export const pollChangesTrigger = pollingTrigger({
       ...(nextCursor ? { cursor: nextCursor } : {}),
       lastDeletedAt,
     } satisfies PollingState);
+
     return {
       payload: {
         ...payload,

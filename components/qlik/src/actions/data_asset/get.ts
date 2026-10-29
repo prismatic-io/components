@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getDataAssetsExamplePayload } from "../../examplePayloads";
 import { connectionInput, dataAssetsId, projections } from "../../inputs";
+
 export const getDataAssets = action({
   display: {
     label: "Get Data Asset",
@@ -15,6 +16,7 @@ export const getDataAssets = action({
         projections: projections || undefined,
       },
     });
+
     return {
       data,
     };

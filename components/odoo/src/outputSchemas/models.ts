@@ -10,6 +10,7 @@ export const modelOutputSchema = {
   },
   required: ["id", "name", "model", "state", "modules", "display_name"],
 };
+
 export const listModelsOutputSchema = {
   type: "array" as const,
   items: modelOutputSchema,

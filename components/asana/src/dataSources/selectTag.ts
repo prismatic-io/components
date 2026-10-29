@@ -3,6 +3,7 @@ import { createAsanaClient } from "../client";
 import { selectTagInputs } from "../inputs";
 import type { DataSource } from "../types/resources";
 import { fetchMoreData, mapToLabelKey } from "../util";
+
 const selectTag = dataSource({
   display: {
     label: "Select Tag",
@@ -17,11 +18,13 @@ const selectTag = dataSource({
       [],
       true,
     );
+
     const result = mapToLabelKey(data);
     return { result };
   },
   dataSourceType: "picklist",
 });
+
 export default {
   selectTag,
 };

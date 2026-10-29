@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteLocationExamplePayload } from "../../examplePayloads/locations";
 import { deleteLocationInputs } from "../../inputs";
 import { deleteResultOutputSchema } from "../../outputSchemas";
+
 export const deleteLocation = action({
   display: {
     label: "Delete Location",

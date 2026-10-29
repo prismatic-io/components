@@ -3,6 +3,7 @@ import { getCampaignsByIdsExamplePayload } from "../../examplePayloads";
 import { getCampaignsByIdsInputs } from "../../inputs/campaigns";
 import { getRestClient } from "../../restClient";
 import type { QueryRestResponse } from "../../types";
+
 export const getCampaignsByIds = action({
   display: {
     label: "Get Campaigns By IDs",
@@ -20,6 +21,7 @@ export const getCampaignsByIds = action({
     },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<QueryRestResponse>(
       "/Campaigns/QueryByIds",
       {
@@ -29,6 +31,7 @@ export const getCampaignsByIds = action({
         ReturnAdditionalFields: returnAdditionalFields,
       },
     );
+
     return { data };
   },
   inputs: getCampaignsByIdsInputs,

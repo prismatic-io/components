@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteUserExamplePayload } from "../../examplePayloads";
 import { deleteUserInputs } from "../../inputs";
 import { deleteUserOutputSchema } from "../../outputSchemas";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",
@@ -19,8 +20,7 @@ export const deleteUser = action({
     const data = await client.post("/users/delete", { userID: userId });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteUserExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteUserExamplePayload,
   examplePayload: deleteUserExamplePayload,
 });

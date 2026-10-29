@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { deleteSpaceExamplePayload } from "../../examplePayloads";
 import { deleteSpaceInputs } from "../../inputs";
 import { deleteSpaceOutputSchema } from "../../outputSchemas";
+
 export const deleteSpace = action({
   display: {
     label: "Delete Space",
@@ -18,9 +19,8 @@ export const deleteSpace = action({
       data: {},
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteSpaceExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteSpaceExamplePayload,
   inputs: deleteSpaceInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

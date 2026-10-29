@@ -4,6 +4,7 @@ import {
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";
+
 export const shopifyTemplatedConnection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2-dynamic-inputs",

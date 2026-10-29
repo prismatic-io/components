@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Odoo connection to use.",
 });
+
 export const model = input({
   label: "Model",
   type: "string",
@@ -17,6 +19,7 @@ export const model = input({
   dataSource: "selectModel",
   clean: util.types.toString,
 });
+
 const limit = input({
   label: "Limit",
   type: "string",
@@ -26,6 +29,7 @@ const limit = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 const offset = input({
   label: "Offset",
   type: "string",
@@ -35,12 +39,14 @@ const offset = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and starting offset for paging through results.",
   inputs: { limit, offset },
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -50,6 +56,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of records. Overrides the Limit and Offset inputs.",
   clean: util.types.toBool,
 });
+
 export const nameSearch = input({
   label: "Name Search",
   type: "string",
@@ -60,6 +67,7 @@ export const nameSearch = input({
   placeholder: "Enter a search term",
   clean: toOptionalString,
 });
+
 export const modelSearch = input({
   label: "Model Search",
   type: "string",

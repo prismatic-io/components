@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { listMailboxesDataSourceInputs } from "../inputs/dataSources";
+
 export const listMailboxes = dataSource({
   display: {
     label: "List Mailboxes",

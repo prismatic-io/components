@@ -5,6 +5,7 @@ import { type TemplateCreateHtmlOrDndQuery, TemplateEnum } from "klaviyo-api";
 import { createTemplateInputs as inputs } from "../../inputs";
 import { createTemplateExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const createTemplate = action({
   display: {
     label: "Create Template",
@@ -27,6 +28,7 @@ export const createTemplate = action({
         debug,
       });
     }
+
     const template: TemplateCreateHtmlOrDndQuery = {
       data: {
         type: TemplateEnum.Template,

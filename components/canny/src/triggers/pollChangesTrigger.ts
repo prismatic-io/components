@@ -13,6 +13,7 @@ import {
   paginateOffset,
   resolvePostChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Posts",
@@ -30,6 +31,7 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
     const isInitialSync = !pollState?.lastPolledAt;
+
     if (isInitialSync && !params.lookBackDate) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -37,8 +39,10 @@ export const pollChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const since = pollState?.lastPolledAt ?? params.lookBackDate;
     const client = createClient(params.connection, context.debug.enabled);
+
     const { posts } = await paginateOffset<"posts", Post>(
       client.post,
       "/posts/list",
@@ -51,12 +55,15 @@ export const pollChangesTrigger = pollingTrigger({
       showNewRecords: params.showNewRecords,
       showUpdatedRecords: params.showUpdatedRecords,
     });
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Canny posts: ${posts.length} fetched, ${created.length} created, ${updated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

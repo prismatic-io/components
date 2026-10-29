@@ -3,6 +3,7 @@ import createUserInputs from "../../inputs/users/createUser";
 import { createKarbonClient } from "../../client";
 import { cleanOdata } from "../../utils";
 import { createUserExamplePayload } from "../../examplePayloads";
+
 export const createUser = action({
   display: {
     label: "Create User",

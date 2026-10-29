@@ -1,5 +1,6 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { assumeRoleConnection } from "../connection/assumeRoleConnection";
+
 export const validateConnection = (
   connection: Connection,
   validConnectionKeys: string[],

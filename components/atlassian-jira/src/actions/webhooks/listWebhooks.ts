@@ -3,6 +3,7 @@ import { createV3Client } from "../../connections/auth";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { connectionInput, fetchAll } from "../../inputs";
 import { getPaginatedData, isBasicAuth } from "../../util";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -20,6 +21,7 @@ export const listWebhooks = action({
       context.debug.enabled,
       useBasicAuth,
     );
+
     const { data } = await getPaginatedData(
       client,
       "/webhook",

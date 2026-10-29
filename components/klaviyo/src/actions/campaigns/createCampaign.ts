@@ -10,6 +10,7 @@ import {
 import { type CampaignCreateQuery, CampaignEnum } from "klaviyo-api";
 import { createCampaignExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const createCampaign = action({
   display: {
     label: "Create Campaign",
@@ -41,6 +42,7 @@ export const createCampaign = action({
         debug,
       });
     }
+
     const campaign: CampaignCreateQuery = {
       data: {
         type: CampaignEnum.Campaign,

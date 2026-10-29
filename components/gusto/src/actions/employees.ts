@@ -16,15 +16,18 @@ import {
 } from "../inputs";
 import { createClient } from "../client";
 import { fetchAllPages } from "../util";
+
 import {
   listEmployeesExamplePayload,
   getEmployeeExamplePayload,
   createEmployeeExamplePayload,
   findEmployeeByEmailExamplePayload,
 } from "../examplePayloads";
+
 interface Employee {
   email: string;
 }
+
 const listEmployees = action({
   display: {
     label: "List Employees",
@@ -38,6 +41,7 @@ const listEmployees = action({
   },
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     if (params.fetchAll) {
       const data = await fetchAllPages(
         client,
@@ -45,6 +49,7 @@ const listEmployees = action({
       );
       return { data: { data, headers: {} } };
     }
+
     const { data, headers } = await client.get(
       `/companies/${params.companyId}/employees`,
       {
@@ -55,6 +60,7 @@ const listEmployees = action({
   },
   examplePayload: listEmployeesExamplePayload,
 });
+
 const getEmployee = action({
   display: {
     label: "Get Employee",
@@ -73,6 +79,7 @@ const getEmployee = action({
   },
   examplePayload: getEmployeeExamplePayload,
 });
+
 const createEmployee = action({
   display: {
     label: "Create Employee",
@@ -117,6 +124,7 @@ const createEmployee = action({
   },
   examplePayload: createEmployeeExamplePayload,
 });
+
 const findEmployeeByEmail = action({
   display: {
     label: "Find Employee by Email",
@@ -149,6 +157,7 @@ const findEmployeeByEmail = action({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   examplePayload: findEmployeeByEmailExamplePayload as any,
 });
+
 export default {
   createEmployee,
   findEmployeeByEmail,

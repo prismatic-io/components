@@ -4,6 +4,7 @@ import { createGCSPipelineInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { createGCSPipelineExamplePayload } from "../../examplePayloads";
 import { createGCSPipelineOutputSchema } from "../../outputSchemas";
+
 export const createGCSPipeline = action({
   display: {
     label: "Create GCS Pipeline",
@@ -45,8 +46,7 @@ export const createGCSPipeline = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createGCSPipelineExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createGCSPipelineExamplePayload,
   examplePayload: createGCSPipelineExamplePayload,
 });

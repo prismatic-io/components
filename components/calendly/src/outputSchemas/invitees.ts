@@ -9,6 +9,7 @@ const trackingSchema = {
     salesforce_uuid: { type: ["string", "null"] },
   },
 };
+
 const questionAndAnswerSchema = {
   type: "object",
   properties: {
@@ -17,6 +18,7 @@ const questionAndAnswerSchema = {
     question: { type: "string" },
   },
 };
+
 const paymentSchema = {
   type: ["object", "null"],
   properties: {
@@ -28,6 +30,7 @@ const paymentSchema = {
     successful: { type: "boolean" },
   },
 };
+
 const reconfirmationSchema = {
   type: ["object", "null"],
   properties: {
@@ -35,6 +38,7 @@ const reconfirmationSchema = {
     confirmed_at: { type: ["string", "null"], format: "date-time" },
   },
 };
+
 const inviteeResource = {
   type: "object",
   properties: {
@@ -74,6 +78,7 @@ const inviteeResource = {
   },
   required: ["uri", "email", "event", "status", "created_at", "updated_at"],
 };
+
 export const getEventInviteeOutputSchema = {
   type: "object",
   properties: {
@@ -81,10 +86,12 @@ export const getEventInviteeOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listEventInviteesOutputSchema = {
   type: "array",
   items: inviteeResource,
 };
+
 export const deleteInviteeDataOutputSchema = {
   type: "object",
   properties: {},

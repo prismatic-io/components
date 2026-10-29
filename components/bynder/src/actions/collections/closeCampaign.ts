@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { connection, id } from "../../inputs";
+
 export const closeCampaign = action({
   display: {
     label: "Close Campaign",

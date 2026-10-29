@@ -4,6 +4,7 @@ import { getQualityProcessStepByGuidExamplePayload } from "../../examplePayloads
 import { getQualityProcessStepByGuidInputs } from "../../inputs";
 import { qualityProcessStepSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getQualityProcessStepByGuid = action({
   display: {
     label: "Get Quality Process Step by GUID",
@@ -19,14 +20,17 @@ export const getQualityProcessStepByGuid = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         includeEmptyAdditionalAttributes:
           params.includeEmptyAdditionalAttributes,
       };
+
       const { data } = await client.get(
         `/qualityprocesses/${params.qualityProcessGuid}/steps/${params.stepGuid}`,
         { params: queryParams },
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

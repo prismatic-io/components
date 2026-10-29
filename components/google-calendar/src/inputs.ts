@@ -1,6 +1,7 @@
 import type { calendar_v3 } from "@googleapis/calendar/build/v3";
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "./utils/cleanInputs";
+
 export const calendarId = input({
   label: "Calendar ID",
   type: "string",
@@ -12,6 +13,7 @@ export const calendarId = input({
   clean: util.types.toString,
   dataSource: "selectCalendar",
 });
+
 export const startTime = input({
   label: "Start Time",
   type: "string",
@@ -21,6 +23,7 @@ export const startTime = input({
   comments:
     "The start time of the event in ISO 8601 format with timezone offset.",
 });
+
 export const timeZone = input({
   label: "Time Zone",
   type: "string",
@@ -30,6 +33,7 @@ export const timeZone = input({
   comments:
     "The timezone of the event in IANA Time Zone Database format. See [IANA timezone list](https://www.iana.org/time-zones).",
 });
+
 export const endTime = input({
   label: "End Time",
   type: "string",
@@ -39,6 +43,7 @@ export const endTime = input({
   comments:
     "The end time of the event in ISO 8601 format with timezone offset.",
 });
+
 export const summary = input({
   label: "Summary",
   type: "string",
@@ -47,6 +52,7 @@ export const summary = input({
   example: "Team Standup Meeting",
   comments: "The title or summary of the event.",
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -55,6 +61,7 @@ export const description = input({
   example: "Discuss sprint progress and blockers",
   comments: "A detailed description of the event.",
 });
+
 export const attendees = input({
   label: "Attendees",
   type: "code",
@@ -75,6 +82,7 @@ export const attendees = input({
       ? (util.types.toObject(value) as calendar_v3.Schema$EventAttendee[])
       : undefined,
 });
+
 export const remindMethod = input({
   label: "Remind Method",
   type: "string",
@@ -93,6 +101,7 @@ export const remindMethod = input({
   comments:
     "How to send the event reminder. Only used when 'Default Reminder' is false.",
 });
+
 export const remindMinutes = input({
   label: "Remind Before (minutes)",
   type: "string",
@@ -102,6 +111,7 @@ export const remindMinutes = input({
   comments:
     "Number of minutes before the event to send the reminder. Only used when 'Default Reminder' is false.",
 });
+
 export const eventLocation = input({
   label: "Event Location",
   type: "string",
@@ -110,6 +120,7 @@ export const eventLocation = input({
   example: "Conference Room A, Building 3",
   comments: "The physical or virtual location of the event.",
 });
+
 export const eventId = input({
   label: "Event ID",
   type: "string",
@@ -119,6 +130,7 @@ export const eventId = input({
   example: "20260101_q8ue475rr4p7opsd4c0lr7g5pg",
   comments: "The unique identifier of the event.",
 });
+
 export const useDefaultReminder = input({
   label: "Default Reminder",
   type: "boolean",
@@ -126,6 +138,7 @@ export const useDefaultReminder = input({
   comments:
     "When true, the event uses the default reminder settings from the calendar.",
 });
+
 export const maxResults = input({
   label: "Max Results",
   type: "string",
@@ -135,6 +148,7 @@ export const maxResults = input({
   example: "50",
   clean: (value) => (value !== "" ? util.types.toInt(value) : undefined),
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -145,6 +159,7 @@ export const pageToken = input({
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
   clean: (value) => (value !== "" ? util.types.toString(value) : undefined),
 });
+
 export const syncToken = input({
   label: "Sync Token",
   type: "string",
@@ -155,12 +170,14 @@ export const syncToken = input({
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
   clean: (value) => (value !== "" ? util.types.toString(value) : undefined),
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Google Calendar connection to use.",
 });
+
 export const addConferenceEvent = input({
   label: "Add Conference Event",
   type: "boolean",
@@ -169,6 +186,7 @@ export const addConferenceEvent = input({
   comments: "When true, creates a Google Meet conference link for the event.",
   clean: util.types.toBool,
 });
+
 export const sendUpdates = input({
   label: "Send Updates",
   type: "string",
@@ -196,7 +214,9 @@ export const sendUpdates = input({
     "Whether to send notifications about the creation of the new event. Note that some emails might still be sent. The default is false.",
   clean: util.types.toString,
 });
+
 export const selectCalendarInputs = { connection: connectionInput };
+
 export const selectEventInputs = {
   connection: connectionInput,
   calendarId: {
@@ -205,6 +225,7 @@ export const selectEventInputs = {
     dataSource: undefined,
   },
 };
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -213,6 +234,7 @@ export const fetchAll = input({
     "When true, fetches all pages of results, ignoring the 'Max Results' and 'Page Token' inputs.",
   clean: util.types.toBool,
 });
+
 export const calendarChangeEventsInputs = {
   connection: connectionInput,
   calendarId: {
@@ -220,6 +242,7 @@ export const calendarChangeEventsInputs = {
     comments: "The calendar to monitor for changes.",
   },
 };
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -230,6 +253,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollEventsTriggerInputs = {
   connection: connectionInput,
   calendarId: {

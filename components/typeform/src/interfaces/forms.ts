@@ -14,44 +14,54 @@ export interface Form {
   settings: FormSettings;
   cui_settings: FormCuiSettings;
 }
+
 export interface FormLinks {
   display: string;
 }
+
 export interface FormCuiSettings {
   avatar: string;
   is_typing_emulation_disabled: boolean;
   typing_emulation_speed: string;
 }
+
 export interface FormLogic {
   type: string;
   ref: string;
   actions: FormAction[];
 }
+
 export interface FormAction {
   action: string;
   details: FormDetails;
   condition: FormCondition;
 }
+
 export interface FormCondition {
   op: string;
   vars: FormVar[];
 }
+
 export interface FormVar {
   type: string;
   value: Record<string, unknown>;
 }
+
 export interface FormDetails {
   to: FormTarget;
   target: FormTarget;
   value: FormValue;
 }
+
 export interface FormTarget {
   type: string;
   value: string;
 }
+
 export interface FormValue {
   type: string;
 }
+
 export interface FormSettings {
   language: string;
   is_public: boolean;
@@ -73,24 +83,29 @@ export interface FormSettings {
   milestones: FormMilestone[];
   enrichment_in_renderer: FormEnrichmentInRenderer;
 }
+
 export interface FormEnrichmentInRenderer {
   toggle: boolean;
   active: boolean;
 }
+
 export interface FormMeta {
   title: string;
   allow_indexing: boolean;
   description: string;
   image: FormTheme;
 }
+
 export interface FormTheme {
   href: string;
 }
+
 export interface FormMilestone {
   field_ref: string;
   status: string;
   reason: string;
 }
+
 export interface FormThankyouScreen {
   ref: string;
   title: string;
@@ -99,38 +114,46 @@ export interface FormThankyouScreen {
   attachment: FormAttachment;
   layout: FormLayout;
 }
+
 export interface FormAttachment {
   type: string;
   href: FormHref;
   scale: number;
   properties: FormAttachmentProperties;
 }
+
 export interface FormHref {
   image: FormPexels;
   Pexels: FormPexels;
   Vimeo: FormPexels;
   YouTube: FormPexels;
 }
+
 export interface FormPexels {
   value: string;
 }
+
 export interface FormAttachmentProperties {
   description: string;
 }
+
 export interface FormLayout {
   type: string;
   placement: string;
   attachment: FormAttachment;
   viewport_overrides: FormViewportOverrides;
 }
+
 export interface FormViewportOverrides {
   small: FormLarge;
   large: FormLarge;
 }
+
 export interface FormLarge {
   type: string;
   placement: string;
 }
+
 export interface FormThankyouScreenProperties {
   show_button: boolean;
   button_text: string;
@@ -138,10 +161,12 @@ export interface FormThankyouScreenProperties {
   redirect_url: string;
   share_icons: boolean;
 }
+
 export interface FormVariables {
   score: number;
   price: number;
 }
+
 export interface FormWelcomeScreen {
   ref: string;
   title: string;
@@ -149,6 +174,7 @@ export interface FormWelcomeScreen {
   attachment: FormAttachment;
   layout: FormLayout;
 }
+
 export interface FormWelcomeScreenProperties {
   description: string;
   show_button: boolean;

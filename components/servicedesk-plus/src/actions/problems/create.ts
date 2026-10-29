@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createProblemResponse as examplePayload } from "../../examplePayloads";
 import { createProblemInputs as inputs } from "../../inputs";
 import { createPayload } from "../../util";
+
 export const createProblem = action({
   display: {
     label: "Create Problem",
@@ -25,6 +26,7 @@ export const createProblem = action({
         reported_time: problemTimes.problemReportedTime,
         due_by_time: problemTimes.problemDueByTime,
         closed_time: problemTimes.problemClosedTime,
+
         title: problemTitle,
         description: problemDescription,
         ...additionalFields,

@@ -3,6 +3,7 @@ const sampleCreator = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleExportDefinition = {
   guid: "EXP123DEF456GHI789JKL012",
   number: 128,
@@ -18,6 +19,7 @@ const sampleExportDefinition = {
     app: "https://app.bom.com/exports/EXP123DEF456GHI789JKL012",
   },
 };
+
 const sampleExportRun = {
   guid: "RUN123ABC456DEF789GHI012",
   number: 1,
@@ -39,7 +41,9 @@ const sampleExportRun = {
     app: "https://app.bom.com/exports/EXP123DEF456GHI789JKL012/runs/RUN123ABC456DEF789GHI012",
   },
 };
+
 export const createExportExamplePayload = { data: sampleExportDefinition };
+
 export const downloadExportRunFileContentExamplePayload = {
   data: {
     content:
@@ -49,8 +53,11 @@ export const downloadExportRunFileContentExamplePayload = {
     size: 79,
   },
 };
+
 export const getExportExamplePayload = { data: sampleExportDefinition };
+
 export const getExportRunExamplePayload = { data: sampleExportRun };
+
 export const listExportRunsExamplePayload = {
   data: {
     results: [
@@ -68,6 +75,7 @@ export const listExportRunsExamplePayload = {
     count: 2,
   },
 };
+
 export const listExportsExamplePayload = {
   data: {
     results: [
@@ -84,9 +92,11 @@ export const listExportsExamplePayload = {
     count: 2,
   },
 };
+
 export const getLatestCompletedExportRunExamplePayload = {
   data: sampleExportRun,
 };
+
 export const runExportExamplePayload = {
   data: {
     ...sampleExportRun,

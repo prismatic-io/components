@@ -4,6 +4,7 @@ import { Service } from "../../constants";
 import { sendMetricsExamplePayload } from "../../examplePayloads";
 import { sendMetricsInputs } from "../../inputs";
 import { sendMetricsOutputSchema } from "../../outputSchemas";
+
 export const sendMetrics = action({
   display: {
     label: "Send Metric Data",
@@ -16,6 +17,7 @@ export const sendMetrics = action({
       context.debug.enabled,
       Service.METRICS,
     );
+
     const { data } = await client.post("", [
       {
         metrics: [
@@ -29,13 +31,12 @@ export const sendMetrics = action({
         ],
       },
     ]);
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...sendMetricsExamplePayload,
   }),
   outputSchema: outputSchema({
@@ -45,4 +46,5 @@ export const sendMetrics = action({
   examplePayload: sendMetricsExamplePayload,
   inputs: sendMetricsInputs,
 });
+
 export default sendMetrics;

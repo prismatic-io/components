@@ -4,6 +4,7 @@ import { SMS_MESSAGES_PATH } from "../../constants";
 import { sendSmsExamplePayload } from "../../examplePayloads";
 import { sendSmsInputs } from "../../inputs";
 import { sendSmsOutputSchema } from "../../outputSchemas";
+
 export const sendSms = action({
   examplePayload: sendSmsExamplePayload,
   display: {
@@ -29,6 +30,7 @@ export const sendSms = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       definitionKey: smsDefinitionKey,
       recipient: {
@@ -37,18 +39,18 @@ export const sendSms = action({
         attributes: smsRecipientAttributes || {},
       },
     };
+
     const { data } = await client.post(
       `${SMS_MESSAGES_PATH}/${encodeURIComponent(smsMessageKey)}`,
       body,
     );
+
     return { data };
   },
   examplePerform: async (
     _context,
     { smsMessageKey },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...sendSmsExamplePayload.data,
       responses: [{ messageKey: smsMessageKey }],

@@ -1,9 +1,12 @@
 import { KeyValuePair, util } from "@prismatic-io/spectral";
+
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value).trim() : undefined;
+
 const cleanEmailArray = (value: string[]) => {
   return value.map(cleanString).filter(Boolean);
 };
+
 export const cleanEmailInput = (value: unknown, required = false) => {
   if (value) {
     const email = util.types.toObject(value);
@@ -16,9 +19,11 @@ export const cleanEmailInput = (value: unknown, required = false) => {
   }
   return [];
 };
+
 const throwCodeInputError = (inputLabel: string): void => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanArrayCodeInput = (
   value: unknown,
   inputLabel: string,
@@ -37,6 +42,7 @@ export const cleanArrayCodeInput = (
   }
   return [];
 };
+
 export const cleanAttachments = (attachments: unknown) =>
   ((attachments as KeyValuePair[]) || []).map((attachment) => ({
     filename: attachment.key,

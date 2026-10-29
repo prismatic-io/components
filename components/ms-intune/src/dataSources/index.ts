@@ -10,6 +10,7 @@ import { selectMobileApp } from "./selectMobileApp";
 import { selectMobileAppAssignment } from "./selectMobileAppAssignment";
 import { selectSubscription } from "./selectSubscription";
 import { selectUser } from "./selectUser";
+
 export default {
   selectDetectedApp,
   selectDeviceCompliancePolicy,

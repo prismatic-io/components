@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { closeDisputeExamplePayload } from "../../examplePayloads/disputes";
 import { closeDisputeInputs } from "../../inputs";
 import { disputeOutputSchema } from "../../outputSchemas";
+
 export const closeDispute = action({
   display: {
     label: "Close Dispute",
@@ -22,10 +23,9 @@ export const closeDispute = action({
   examplePerform: async (
     _context,
     { disputeId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const dispute = closeDisputeExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...dispute,
@@ -38,5 +38,6 @@ export const closeDispute = action({
     type: "actionOutput",
     schema: disputeOutputSchema,
   }),
+
   examplePayload: closeDisputeExamplePayload,
 });

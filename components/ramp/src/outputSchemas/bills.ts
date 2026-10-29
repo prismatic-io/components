@@ -1,4 +1,5 @@
 import { pageSchema } from "./shared";
+
 const billSchema = {
   type: "object" as const,
   properties: {
@@ -1537,7 +1538,9 @@ const billSchema = {
     "vendor_contact_id",
   ],
 };
+
 export const getBillOutputSchema = billSchema;
+
 export const listBillsOutputSchema = {
   type: "object" as const,
   properties: {

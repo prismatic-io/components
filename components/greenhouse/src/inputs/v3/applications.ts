@@ -22,6 +22,7 @@ import {
   updatedAtGte,
   updatedAtLte,
 } from "./common";
+
 export const applicationId = {
   ...application_id,
   required: true,
@@ -29,6 +30,7 @@ export const applicationId = {
   dataSource: "applicationsV3",
   clean: util.types.toString,
 };
+
 const ids = input({
   label: "Application IDs",
   type: "string",
@@ -39,12 +41,14 @@ const ids = input({
   example: "69306314,69306315",
   clean: toOptionalString,
 });
+
 const candidateIds = {
   ...candidate_ids,
   comments:
     "Comma-separated list of candidate IDs to filter by. Maximum 50 items.",
   example: "57683957,57683958",
 };
+
 const jobIds = input({
   label: "Job IDs",
   type: "string",
@@ -55,6 +59,7 @@ const jobIds = input({
   example: "123456,123457",
   clean: toOptionalString,
 });
+
 const prospectiveJobIds = input({
   label: "Prospective Job IDs",
   type: "string",
@@ -65,6 +70,7 @@ const prospectiveJobIds = input({
   example: "123456,123457",
   clean: toOptionalString,
 });
+
 const jobPostIds = input({
   label: "Job Post IDs",
   type: "string",
@@ -75,6 +81,7 @@ const jobPostIds = input({
   example: "234567,234568",
   clean: toOptionalString,
 });
+
 const sourceIds = input({
   label: "Source IDs",
   type: "string",
@@ -85,6 +92,7 @@ const sourceIds = input({
   example: "2,3",
   clean: toOptionalString,
 });
+
 const referrerIds = input({
   label: "Referrer IDs",
   type: "string",
@@ -95,6 +103,7 @@ const referrerIds = input({
   example: "4080,4081",
   clean: toOptionalString,
 });
+
 const stageIds = input({
   label: "Stage IDs",
   type: "string",
@@ -105,6 +114,7 @@ const stageIds = input({
   example: "1109787,1109788",
   clean: toOptionalString,
 });
+
 const stageName = input({
   label: "Stage Name",
   type: "string",
@@ -115,6 +125,7 @@ const stageName = input({
   example: "Application Review",
   clean: toOptionalString,
 });
+
 const prospect = input({
   label: "Prospect",
   type: "boolean",
@@ -123,6 +134,7 @@ const prospect = input({
     "When true, returns only prospect applications. When false, returns only candidate applications. Omit to return both.",
   clean: toOptionalBoolean,
 });
+
 export const lastActivityAtGte = createTimestampOperatorInput(
   "last_activity_at",
   "Last Activity",
@@ -133,6 +145,7 @@ export const lastActivityAtLte = createTimestampOperatorInput(
   "Last Activity",
   "lte",
 );
+
 const referrerId = input({
   label: "Referrer ID",
   type: "string",
@@ -142,6 +155,7 @@ const referrerId = input({
   example: "4080",
   clean: toOptionalNumber,
 });
+
 const recruiterId = input({
   label: "Recruiter ID",
   type: "string",
@@ -151,6 +165,7 @@ const recruiterId = input({
   example: "92120",
   clean: toOptionalNumber,
 });
+
 const coordinatorId = input({
   label: "Coordinator ID",
   type: "string",
@@ -160,6 +175,7 @@ const coordinatorId = input({
   example: "92121",
   clean: toOptionalNumber,
 });
+
 const rejectedAt = input({
   label: "Rejected At",
   type: "string",
@@ -169,6 +185,7 @@ const rejectedAt = input({
   example: "2026-06-01",
   clean: toOptionalString,
 });
+
 export const rejectionReasonId = input({
   label: "Rejection Reason ID",
   type: "string",
@@ -180,6 +197,7 @@ export const rejectionReasonId = input({
   dataSource: "rejectionReasonsV3",
   clean: util.types.toString,
 });
+
 const rejectionNotes = input({
   label: "Rejection Notes",
   type: "string",
@@ -189,6 +207,7 @@ const rejectionNotes = input({
   example: "Candidate did not meet the technical requirements.",
   clean: toOptionalString,
 });
+
 const sendEmailAt = input({
   label: "Send Email At",
   type: "string",
@@ -199,6 +218,7 @@ const sendEmailAt = input({
   example: "2026-06-10T09:00:00Z",
   clean: toOptionalString,
 });
+
 const emailTemplateId = input({
   label: "Email Template ID",
   type: "string",
@@ -209,6 +229,7 @@ const emailTemplateId = input({
   example: "9876",
   clean: toOptionalNumber,
 });
+
 const emailFromUserId = input({
   label: "Email From User ID",
   type: "string",
@@ -219,6 +240,7 @@ const emailFromUserId = input({
   example: "92120",
   clean: toOptionalNumber,
 });
+
 const idFilters = structuredObjectInput({
   label: "ID Filters",
   required: false,
@@ -235,6 +257,7 @@ const idFilters = structuredObjectInput({
     stageIds,
   },
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -249,6 +272,7 @@ const dateRangeFilters = structuredObjectInput({
     lastActivityAtLte,
   },
 });
+
 const assignmentIds = structuredObjectInput({
   label: "Assignment IDs",
   required: false,
@@ -263,6 +287,7 @@ const assignmentIds = structuredObjectInput({
     prospectStageId: prospect_stage_id,
   },
 });
+
 const rejectionEmail = structuredObjectInput({
   label: "Rejection Email",
   required: false,
@@ -270,6 +295,7 @@ const rejectionEmail = structuredObjectInput({
     "Optional rejection email settings: when to send, which template to use, and which user to send it from. Provide at least one value to send a rejection email.",
   inputs: { sendEmailAt, emailTemplateId, emailFromUserId },
 });
+
 export const listApplicationsV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
@@ -279,10 +305,12 @@ export const listApplicationsV3Inputs = {
   prospect,
   dateRangeFilters,
 };
+
 export const getApplicationV3Inputs = {
   connection: connectionInput,
   applicationId,
 };
+
 export const editApplicationV3Inputs = {
   connection: connectionInput,
   applicationId,
@@ -290,10 +318,12 @@ export const editApplicationV3Inputs = {
   rejectedAt,
   customFields: customFieldsV3,
 };
+
 export const deleteApplicationV3Inputs = {
   connection: connectionInput,
   applicationId,
 };
+
 export const rejectApplicationV3Inputs = {
   connection: connectionInput,
   applicationId,
@@ -302,6 +332,7 @@ export const rejectApplicationV3Inputs = {
   rejectionEmail,
   customFields: customFieldsV3,
 };
+
 export const unrejectApplicationV3Inputs = {
   connection: connectionInput,
   applicationId,

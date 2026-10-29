@@ -3,6 +3,7 @@ import type {
   PollingChangesObject,
   PollingRecordChange,
 } from "../types";
+
 export const resolvePollingRecordChanges = (
   data: Partial<PollingChangesObject> | undefined,
 ): PollingRecordChange[] => {
@@ -16,6 +17,7 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const getEngagementObjectLabel = (
   properties: Engagement["properties"],
 ): string => {
@@ -29,6 +31,7 @@ export const getEngagementObjectLabel = (
     "hs_email_subject",
     "hs_communication_body",
   ];
+
   for (const property of Object.keys(properties)) {
     if (engagementObjectProperties.includes(property)) {
       return properties[property];

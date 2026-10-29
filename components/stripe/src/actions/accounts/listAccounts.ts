@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { listAccountsExamplePayload } from "../../examplePayloads/accounts";
 import { listAccountsInputs } from "../../inputs";
 import { listAccountsOutputSchema } from "../../outputSchemas";
+
 export const listAccounts = action({
   display: {
     label: "List Accounts",

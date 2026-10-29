@@ -14,6 +14,7 @@ import {
   partitionByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -46,12 +47,14 @@ export const pollChangesTrigger = pollingTrigger({
         ? new Date(lookBackDate)
         : now;
     const sinceTimestamp = formatPipedriveTimestamp(sinceDate);
+
     const client = createClient(connection, context.debug.enabled);
     const records = await fetchRecentsSince(
       client,
       sinceTimestamp,
       resourceType,
     );
+
     const config = POLL_RESOURCE_CONFIG[resourceType] ?? {
       createdAtField: null,
       updatedAtField: null,
@@ -61,20 +64,25 @@ export const pollChangesTrigger = pollingTrigger({
       sinceDate,
       config,
     );
+
     context.polling.setState({ lastPolledAt: now.toISOString() } as Record<
       string,
       unknown
     >);
+
     const isInitialSync = !lastState?.lastPolledAt && !!lookBackDate;
+
     const result = {
       created: isInitialSync || showNewRecords ? created : [],
       updated: isInitialSync || showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${records.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

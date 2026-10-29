@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { getProjectExamplePayload } from "../../examplePayloads";
 import { getProjectInputs } from "../../inputs";
 import { projectResponseSchema } from "../../outputSchemas";
+
 export const getProject = action({
   display: {
     label: "Get Project",

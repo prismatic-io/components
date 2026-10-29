@@ -4,6 +4,7 @@ import { searchArticlesExamplePayload } from "../../examplePayloads";
 import { searchArticlesInputs } from "../../inputs";
 import { searchArticlesOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse } from "../../types";
+
 export const searchArticles = action({
   display: {
     label: "Search Articles",
@@ -41,13 +42,14 @@ export const searchArticles = action({
       sort_by: filters.sortBy,
       locale: filterLocale,
     };
-    const { data } = await client.get<
-      PaginatedResponse<{
-        results: unknown;
-      }>
-    >("/help_center/articles/search", {
-      params,
-    });
+
+    const { data } = await client.get<PaginatedResponse<{ results: unknown }>>(
+      "/help_center/articles/search",
+      {
+        params,
+      },
+    );
+
     return {
       data,
     };

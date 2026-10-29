@@ -4,6 +4,7 @@ import { runExtractExamplePayload } from "../../examplePayloads";
 import { runExtractInputs } from "../../inputs";
 import { runSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const runExtract = action({
   display: {
     label: "Run Extract",

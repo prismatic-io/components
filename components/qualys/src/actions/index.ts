@@ -5,6 +5,7 @@ import misc from "./misc";
 import remediationTickets from "./remediationTickets";
 import scans from "./scans";
 import tags from "./tags";
+
 export default {
   ...assets,
   ...assetRiskData,

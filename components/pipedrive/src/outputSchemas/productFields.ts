@@ -23,6 +23,7 @@ const productFieldRecordSchema = {
     options: {},
   },
 };
+
 const productFieldV2RecordSchema = {
   type: "object",
   properties: {
@@ -40,6 +41,7 @@ const productFieldV2RecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 export const getProductFieldsOutputSchema = {
   type: "object",
   properties: {
@@ -65,6 +67,7 @@ export const getProductFieldsOutputSchema = {
     },
   },
 };
+
 export const getProductFieldsV2OutputSchema = {
   type: "object",
   properties: {
@@ -82,6 +85,7 @@ export const getProductFieldsV2OutputSchema = {
     },
   },
 };
+
 export const getProductFieldOutputSchema = {
   type: "object",
   properties: {
@@ -94,6 +98,7 @@ export const getProductFieldOutputSchema = {
     },
   },
 };
+
 export const getProductFieldV2OutputSchema = {
   type: "object",
   properties: {
@@ -106,6 +111,7 @@ export const getProductFieldV2OutputSchema = {
     },
   },
 };
+
 export const deleteProductFieldOutputSchema = {
   type: "object",
   properties: {
@@ -123,6 +129,7 @@ export const deleteProductFieldOutputSchema = {
     },
   },
 };
+
 export const deleteProductFieldV2OutputSchema = {
   type: "object",
   properties: {

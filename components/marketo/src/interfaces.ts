@@ -12,12 +12,14 @@ export interface Lead {
     readOnly: boolean;
   };
 }
+
 export interface Company {
   seq: number;
   id: number;
   externalCompanyId: string;
   company: string;
 }
+
 export interface PaginatedResponse<T> {
   requestId: string;
   success: boolean;

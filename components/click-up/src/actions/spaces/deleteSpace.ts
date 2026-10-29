@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteSpaceExamplePayload } from "../../examplePayloads";
 import { deleteSpaceInputs } from "../../inputs";
+
 export const deleteSpace = action({
   display: {
     label: "Delete Space",
@@ -14,7 +15,9 @@ export const deleteSpace = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(`/space/${spaceId}`);
+
     return {
       data,
     };

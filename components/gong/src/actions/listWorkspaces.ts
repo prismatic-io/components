@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs";
+
 export const listWorkspaces = action({
   display: {
     label: "List Workspaces",

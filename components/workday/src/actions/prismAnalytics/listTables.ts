@@ -5,6 +5,7 @@ import { listTablesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { listTablesInputs } from "../../inputs";
 import { listTablesOutputSchema } from "../../outputSchemas";
+
 export const listTables = action({
   display: {
     label: "List Tables",

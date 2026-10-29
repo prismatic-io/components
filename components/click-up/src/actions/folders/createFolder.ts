@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { createFolderExamplePayload } from "../../examplePayloads";
 import { createFolderInputs } from "../../inputs";
 import { createFolderOutputSchema } from "../../outputSchemas";
+
 export const createFolder = action({
   display: {
     label: "Create Folder",
@@ -16,9 +17,11 @@ export const createFolder = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, spaceId, folderName }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/space/${spaceId}/folder`, {
       name: folderName,
     });
+
     return {
       data,
     };

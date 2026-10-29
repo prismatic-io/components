@@ -10,6 +10,7 @@ import type {
   FieldsMetric,
   FieldsProfileEvent,
 } from "../../types";
+
 export const getEvent = action({
   display: {
     label: "Get Event",
@@ -32,11 +33,13 @@ export const getEvent = action({
         debug,
       });
     }
+
     const params = {
       fieldsEvent: fieldsEvent as FieldsEvent[],
       fieldsMetric: fieldsMetric as FieldsMetric[],
       fieldsProfile: fieldsProfile as FieldsProfileEvent[],
     };
+
     const { body } = await eventsApi.getEvent(eventId, {
       ...params,
       include: getIncludeParams(params.fieldsProfile, params.fieldsMetric),

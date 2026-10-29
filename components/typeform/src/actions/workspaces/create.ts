@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection, workspaceName } from "../../inputs";
 import { getWorkspaceResponse as createWorkspaceResponse } from "../../examplePayloads/workspaces";
 import type { Workspace } from "../../interfaces/workspace";
+
 export const createWorkspace = action({
   display: {
     label: "Create Workspace",
@@ -14,6 +15,7 @@ export const createWorkspace = action({
   },
   perform: async (context, { connection, workspaceName }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post<Workspace>(`/workspaces`, {
       name: workspaceName,
     });

@@ -8,6 +8,7 @@ import {
   fetchAllTeamFolders,
   handleDropboxError,
 } from "../../util";
+
 export const listTeamFolder = action({
   display: {
     label: "List Team's Folders",
@@ -17,6 +18,7 @@ export const listTeamFolder = action({
   perform: async (context, params) => {
     checkDebug(params, context);
     const dbx = createAuthorizedClient(params.dropboxConnection);
+
     try {
       const data = await fetchAllTeamFolders(dbx, {
         limit: params.pagination.limit,
@@ -28,9 +30,7 @@ export const listTeamFolder = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listTeamFoldersExamplePayload,
   }),
   inputs: listTeamFolderInputs,

@@ -5,6 +5,7 @@ import { listExportRunsInputs } from "../../inputs";
 import { listExportRunsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listExportRuns = action({
   display: {
     label: "List Export Runs",
@@ -19,6 +20,7 @@ export const listExportRuns = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         number: params.number,
         status: params.status,
@@ -26,19 +28,24 @@ export const listExportRuns = action({
         offset: params.pagination?.offset,
         limit: params.pagination?.limit,
       };
+
       const endpoint = `/exports/${params.exportGuid}/runs`;
+
       context.logger.info(
         `Fetching export runs for export ${params.exportGuid}`,
       );
+
       const data = await fetchArenaList(
         client,
         endpoint,
         queryParams,
         params.fetchAll,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} export runs`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Export Runs");

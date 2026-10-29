@@ -1,13 +1,16 @@
 import { connection, organization, uuid, sort, form } from "./common";
+
 export const getRoutingFormInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
   uuid: { ...uuid, dataSource: "routingForms" },
 };
+
 export const getRoutingFormSubmissionInputs = {
   connection,
   uuid,
 };
+
 export const listRoutingFormSubmissionsInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
@@ -32,6 +35,7 @@ export const listRoutingFormSubmissionsInputs = {
       "Order results by the specified field and direction. Supported fields are: created_at. Sort direction is specified as: asc, desc.",
   },
 };
+
 export const listRoutingFormsInputs = {
   connection,
   organization: {

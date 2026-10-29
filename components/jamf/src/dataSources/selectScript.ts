@@ -4,6 +4,7 @@ import { selectScriptExamplePayload } from "../examplePayloads";
 import { selectScriptInputs } from "../inputs";
 import type { Script } from "../types";
 import { mapToSortedElements, paginateResults } from "../util";
+
 export const selectScript = dataSource({
   display: {
     label: "Select Script",

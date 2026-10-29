@@ -10,10 +10,12 @@ import type {
   PollingResource,
 } from "../types";
 import { resolvePollingRecordChanges, runPollingCycle } from "../util";
+
 const customersResource: PollingResource = {
   listKey: "customers",
   query: pollCustomersQuery,
 };
+
 export const customersPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Customers",

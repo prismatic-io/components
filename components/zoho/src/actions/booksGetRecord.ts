@@ -8,6 +8,7 @@ import {
   recordId,
 } from "../inputs";
 import { getBooksUrl } from "../util/general";
+
 const booksGetRecord = action({
   display: {
     label: "Books - Get Record",
@@ -34,18 +35,22 @@ const booksGetRecord = action({
       ClientType.BOOKS,
       context.debug.enabled,
     );
+
     const url = getBooksUrl(
       parentRecordType,
       parentRecordId,
       recordType,
       recordId,
     );
+
     const { data } = await booksClient.request({
       method: "GET",
       url,
     });
+
     return data;
   },
   examplePayload: booksGetRecordExamplePayload,
 });
+
 export default booksGetRecord;

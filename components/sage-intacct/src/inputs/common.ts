@@ -4,6 +4,7 @@ import {
   cleanFieldsList,
   cleanFunctionForXml,
 } from "../util";
+
 export const vendorIdInput = input({
   label: "Vendor ID",
   type: "string",
@@ -15,6 +16,7 @@ export const vendorIdInput = input({
   clean: util.types.toString,
   dataSource: "selectVendor",
 });
+
 export const defaultExpenseGlAccountNoInput = input({
   label: "Default Expense GL Account No",
   type: "string",
@@ -24,6 +26,7 @@ export const defaultExpenseGlAccountNoInput = input({
   placeholder: "Enter GL account number",
   clean: util.types.toString,
 });
+
 export const offsetGlAccountNoInput = input({
   label: "Offset GL Account No",
   type: "string",
@@ -33,12 +36,14 @@ export const offsetGlAccountNoInput = input({
   placeholder: "Enter GL account number",
   clean: util.types.toString,
 });
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Sage Intacct connection to use.",
 });
+
 export const customerIdInput = input({
   label: "Customer ID",
   type: "string",
@@ -50,6 +55,7 @@ export const customerIdInput = input({
   clean: util.types.toString,
   dataSource: "selectCustomer",
 });
+
 export const activeInput = input({
   label: "Active Status",
   comments:
@@ -73,6 +79,7 @@ export const activeInput = input({
     },
   ],
 });
+
 export const lastNameInput = input({
   label: "Last Name",
   type: "string",
@@ -82,6 +89,7 @@ export const lastNameInput = input({
   placeholder: "Enter last name",
   clean: util.types.toString,
 });
+
 export const firstNameInput = input({
   label: "First Name",
   type: "string",
@@ -91,6 +99,7 @@ export const firstNameInput = input({
   placeholder: "Enter first name",
   clean: util.types.toString,
 });
+
 export const middleNameInput = input({
   label: "Middle Name",
   type: "string",
@@ -100,6 +109,7 @@ export const middleNameInput = input({
   placeholder: "Enter middle name",
   clean: util.types.toString,
 });
+
 export const prefixInput = input({
   label: "Prefix",
   type: "string",
@@ -109,6 +119,7 @@ export const prefixInput = input({
   placeholder: "Enter prefix (e.g., Mr., Mrs., Dr.)",
   clean: util.types.toString,
 });
+
 export const companyNameInput = input({
   label: "Company Name",
   type: "string",
@@ -118,6 +129,7 @@ export const companyNameInput = input({
   placeholder: "Enter company name",
   clean: util.types.toString,
 });
+
 export const printAsInput = input({
   label: "Print Name As",
   type: "string",
@@ -127,6 +139,7 @@ export const printAsInput = input({
   placeholder: "Enter formatted name",
   clean: util.types.toString,
 });
+
 export const primaryPhoneNoInput = input({
   label: "Primary Phone Number",
   type: "string",
@@ -136,6 +149,7 @@ export const primaryPhoneNoInput = input({
   placeholder: "Enter phone number",
   clean: util.types.toString,
 });
+
 export const secondaryPhoneNoInput = input({
   label: "Secondary Phone Number",
   type: "string",
@@ -145,6 +159,7 @@ export const secondaryPhoneNoInput = input({
   placeholder: "Enter phone number",
   clean: util.types.toString,
 });
+
 export const cellularPhoneNoInput = input({
   label: "Cellular Phone Number",
   type: "string",
@@ -154,6 +169,7 @@ export const cellularPhoneNoInput = input({
   placeholder: "Enter cellular phone number",
   clean: util.types.toString,
 });
+
 export const pagerNoInput = input({
   label: "Pager Number",
   type: "string",
@@ -163,6 +179,7 @@ export const pagerNoInput = input({
   placeholder: "Enter pager number",
   clean: util.types.toString,
 });
+
 export const faxNoInput = input({
   label: "Fax Number",
   type: "string",
@@ -172,6 +189,7 @@ export const faxNoInput = input({
   placeholder: "Enter fax number",
   clean: util.types.toString,
 });
+
 export const primaryEmailAddressInput = input({
   label: "Primary Email Address",
   type: "string",
@@ -181,6 +199,7 @@ export const primaryEmailAddressInput = input({
   placeholder: "Enter email address",
   clean: util.types.toString,
 });
+
 export const secondaryEmailAddressInput = input({
   label: "Secondary Email Address",
   type: "string",
@@ -190,6 +209,7 @@ export const secondaryEmailAddressInput = input({
   placeholder: "Enter email address",
   clean: util.types.toString,
 });
+
 export const primaryUrlInput = input({
   label: "Primary URL",
   type: "string",
@@ -199,6 +219,7 @@ export const primaryUrlInput = input({
   placeholder: "Enter URL",
   clean: util.types.toString,
 });
+
 export const secondaryUrlInput = input({
   label: "Secondary URL",
   type: "string",
@@ -208,6 +229,7 @@ export const secondaryUrlInput = input({
   placeholder: "Enter URL",
   clean: util.types.toString,
 });
+
 export const addressLine1Input = input({
   label: "Address Line 1",
   type: "string",
@@ -217,6 +239,7 @@ export const addressLine1Input = input({
   placeholder: "Enter address line 1",
   clean: util.types.toString,
 });
+
 export const addressLine2Input = input({
   label: "Address Line 2",
   type: "string",
@@ -226,6 +249,7 @@ export const addressLine2Input = input({
   placeholder: "Enter address line 2",
   clean: util.types.toString,
 });
+
 export const cityInput = input({
   label: "City",
   type: "string",
@@ -235,6 +259,7 @@ export const cityInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const stateProvinceInput = input({
   label: "State/Province",
   type: "string",
@@ -244,6 +269,7 @@ export const stateProvinceInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const zipPostalCodeInput = input({
   label: "ZIP/Postal Code",
   type: "string",
@@ -253,6 +279,7 @@ export const zipPostalCodeInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const countryInput = input({
   label: "Country",
   type: "string",
@@ -262,6 +289,7 @@ export const countryInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const isoCountryCodeInput = input({
   label: "ISO Country Code",
   type: "string",
@@ -272,6 +300,7 @@ export const isoCountryCodeInput = input({
   placeholder: "Enter ISO country code",
   clean: util.types.toString,
 });
+
 export const contactDetails = structuredObjectInput({
   label: "Contact Details",
   required: false,
@@ -294,6 +323,7 @@ export const contactDetails = structuredObjectInput({
     secondaryUrlInput,
   },
 });
+
 export const contactDetailsWithCountryCode = structuredObjectInput({
   label: "Contact Details",
   required: false,
@@ -317,6 +347,7 @@ export const contactDetailsWithCountryCode = structuredObjectInput({
     secondaryUrlInput,
   },
 });
+
 export const name = structuredObjectInput({
   label: "Name",
   required: false,
@@ -328,6 +359,7 @@ export const name = structuredObjectInput({
     lastNameInput,
   },
 });
+
 export const excludedFromContactListInput = input({
   label: "Excluded From Contact List",
   comments:
@@ -351,6 +383,7 @@ export const excludedFromContactListInput = input({
     },
   ],
 });
+
 export const glGroupNameInput = input({
   label: "GL Group Name",
   type: "string",
@@ -360,6 +393,7 @@ export const glGroupNameInput = input({
   placeholder: "Enter GL group name",
   clean: util.types.toString,
 });
+
 export const attachmentsIdInput = input({
   label: "Attachments ID",
   type: "string",
@@ -369,6 +403,7 @@ export const attachmentsIdInput = input({
   placeholder: "Enter attachments ID",
   clean: util.types.toString,
 });
+
 export const taxableInput = input({
   label: "Taxable",
   comments:
@@ -392,6 +427,7 @@ export const taxableInput = input({
     },
   ],
 });
+
 export const contactTaxGroupNameInput = input({
   label: "Contact Tax Group Name",
   type: "string",
@@ -401,6 +437,7 @@ export const contactTaxGroupNameInput = input({
   placeholder: "Enter tax group name",
   clean: util.types.toString,
 });
+
 export const taxIdInput = input({
   label: "Tax ID",
   type: "string",
@@ -410,6 +447,7 @@ export const taxIdInput = input({
   placeholder: "Enter tax ID",
   clean: util.types.toString,
 });
+
 export const creditLimitInput = input({
   label: "Credit Limit",
   type: "string",
@@ -420,6 +458,7 @@ export const creditLimitInput = input({
   placeholder: "Enter credit limit",
   clean: util.types.toNumber,
 });
+
 export const onHoldInput = input({
   label: "On Hold",
   comments:
@@ -443,6 +482,7 @@ export const onHoldInput = input({
     },
   ],
 });
+
 export const commentsInput = input({
   label: "Comments",
   type: "string",
@@ -450,6 +490,7 @@ export const commentsInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const defaultCurrencyInput = input({
   label: "Default Currency",
   type: "string",
@@ -460,6 +501,7 @@ export const defaultCurrencyInput = input({
   placeholder: "Enter currency code (e.g., USD)",
   clean: util.types.toString,
 });
+
 export const currencyInput = input({
   label: "Currency",
   type: "string",
@@ -469,6 +511,7 @@ export const currencyInput = input({
   placeholder: "Enter currency code (e.g., USD)",
   clean: util.types.toString,
 });
+
 export const baseCurrencyInput = input({
   label: "Base Currency",
   type: "string",
@@ -479,6 +522,7 @@ export const baseCurrencyInput = input({
   placeholder: "Enter currency code (e.g., USD)",
   clean: util.types.toString,
 });
+
 export const primaryContactNameInput = input({
   label: "Primary Contact Name",
   type: "string",
@@ -488,6 +532,7 @@ export const primaryContactNameInput = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+
 export const billToContactNameInput = input({
   label: "Bill To Contact Name",
   type: "string",
@@ -497,6 +542,7 @@ export const billToContactNameInput = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+
 export const shipToContactNameInput = input({
   label: "Ship To Contact Name",
   type: "string",
@@ -506,6 +552,7 @@ export const shipToContactNameInput = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+
 export const taxInfo = structuredObjectInput({
   label: "Tax Information",
   required: false,
@@ -516,6 +563,7 @@ export const taxInfo = structuredObjectInput({
     contactTaxGroupNameInput,
   },
 });
+
 export const glAccounts = structuredObjectInput({
   label: "GL Accounts",
   required: false,
@@ -527,6 +575,7 @@ export const glAccounts = structuredObjectInput({
     offsetGlAccountNoInput,
   },
 });
+
 export const restrictionTypeInput = input({
   label: "Restriction Type",
   type: "string",
@@ -534,6 +583,7 @@ export const restrictionTypeInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const customFieldsInput = input({
   label: "Custom Fields",
   type: "code",
@@ -547,6 +597,7 @@ export const customFieldsInput = input({
   required: false,
   clean: cleanCustomFields,
 });
+
 export const fieldsInput = input({
   label: "Field",
   type: "string",
@@ -557,6 +608,7 @@ export const fieldsInput = input({
   required: true,
   clean: cleanFieldsList,
 });
+
 export const restrictedLocationsInput = input({
   label: "Restricted Location",
   type: "string",
@@ -564,6 +616,7 @@ export const restrictedLocationsInput = input({
   comments: "Restricted location ID. Use if OBJECTRESTRICTION is Restricted",
   required: false,
 });
+
 export const restrictedDepartmentsInput = input({
   label: "Restricted Department",
   type: "string",
@@ -571,6 +624,7 @@ export const restrictedDepartmentsInput = input({
   comments: "Restricted department IDs. Use if OBJECTRESTRICTION is Restricted",
   required: false,
 });
+
 export const recordNoInput = input({
   label: "Record No",
   type: "string",
@@ -580,6 +634,7 @@ export const recordNoInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const contactNameInput = input({
   label: "Contact Name",
   type: "string",
@@ -590,6 +645,7 @@ export const contactNameInput = input({
   clean: util.types.toString,
   dataSource: "selectContact",
 });
+
 export const descriptionInput = input({
   label: "Description",
   type: "string",
@@ -599,6 +655,7 @@ export const descriptionInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const termNameInput = input({
   label: "Term Name",
   type: "string",
@@ -608,6 +665,7 @@ export const termNameInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const dueDateInput = input({
   label: "Due Date",
   type: "string",
@@ -617,6 +675,7 @@ export const dueDateInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const dateCreatedInput = input({
   label: "Date Created",
   type: "string",
@@ -626,6 +685,7 @@ export const dateCreatedInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const exchRateTypeInput = input({
   label: "Exchange Rate Type",
   type: "string",
@@ -635,6 +695,7 @@ export const exchRateTypeInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const datePostedInput = input({
   label: "GL Date Posted",
   type: "string",
@@ -644,6 +705,7 @@ export const datePostedInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const invoiceNumberInput = input({
   label: "Invoice Number",
   type: "string",
@@ -654,6 +716,7 @@ export const invoiceNumberInput = input({
   clean: util.types.toString,
   dataSource: "selectInvoice",
 });
+
 export const keyId = input({
   label: "Record Number",
   comments: "Invoice RECORDNO to update",
@@ -663,6 +726,7 @@ export const keyId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const explicitArray = input({
   label: "Array JSON Nodes",
   type: "boolean",
@@ -672,6 +736,7 @@ export const explicitArray = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const additionalXmlTagsInput = input({
   label: "Additional XML Tags",
   type: "code",
@@ -682,6 +747,7 @@ export const additionalXmlTagsInput = input({
   required: false,
   clean: cleanFunctionForXml,
 });
+
 export const paymentPriorityInput = input({
   label: "Payment Priority",
   type: "string",
@@ -691,6 +757,7 @@ export const paymentPriorityInput = input({
   placeholder: "Enter payment priority",
   clean: util.types.toString,
 });
+
 export const paymentTermInput = input({
   label: "Payment Term",
   type: "string",

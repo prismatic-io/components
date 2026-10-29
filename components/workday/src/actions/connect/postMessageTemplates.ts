@@ -5,6 +5,7 @@ import { postMessageTemplatesExamplePayload } from "../../examplePayloads";
 import { postMessageTemplatesInputs } from "../../inputs";
 import { compactObject, getIdObject } from "../../util";
 import { postMessageTemplatesOutputSchema } from "../../outputSchemas";
+
 export const postMessageTemplates = action({
   display: {
     label: "Create Message Template",

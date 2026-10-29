@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../util";
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",

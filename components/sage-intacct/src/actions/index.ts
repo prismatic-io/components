@@ -8,6 +8,7 @@ import projectsActions from "./projects";
 import arAdjustmentsActions from "./arAdjustments";
 import arAdvancesActions from "./arAdvances";
 import miscActions from "./misc";
+
 export default {
   ...vendorsActions,
   ...customersActions,

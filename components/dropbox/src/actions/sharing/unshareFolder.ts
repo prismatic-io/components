@@ -4,6 +4,7 @@ import { unshareFolderExamplePayload } from "../../examplePayloads";
 import { unshareFolderInputs } from "../../inputs";
 import { unshareFolderOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const unshareFolder = action({
   display: {
     label: "Unshare Folder",
@@ -48,9 +49,7 @@ export const unshareFolder = action({
       handleDropboxError(err, [shared_folder_id]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: unshareFolderExamplePayload,
   }),
   inputs: unshareFolderInputs,

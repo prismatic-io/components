@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { approveRequestExamplePayload } from "../../examplePayloads";
 import { approveRequestInputs } from "../../inputs";
+
 export const approveRequest = action({
   display: {
     label: "Approve or Decline Request",

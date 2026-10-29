@@ -7,6 +7,7 @@ import {
   changerecordSelect,
   changerecordExpand,
 } from "../inputs";
+
 export const getChangerecord = action({
   display: {
     label: "Get Change Records",
@@ -28,7 +29,11 @@ export const getChangerecord = action({
     const client = getSapClient(connectionInput, headers);
     try {
       const { data } = await client.get(
-        `/sap/opu/odata/sap/API_CHANGE_RECORD/A_ChangeRecord(guid'${changeRecordUuid}')?${changerecordSelect.length ? `$select=${changerecordSelect.join(",")}&` : ""}${changerecordExpand.length ? `$expand=${changerecordExpand.join(",")}&` : ""}`,
+        `/sap/opu/odata/sap/API_CHANGE_RECORD/A_ChangeRecord(guid'${changeRecordUuid}')?${
+          changerecordSelect.length
+            ? `$select=${changerecordSelect.join(",")}&`
+            : ""
+        }${changerecordExpand.length ? `$expand=${changerecordExpand.join(",")}&` : ""}`,
       );
       return { data };
     } catch (error) {

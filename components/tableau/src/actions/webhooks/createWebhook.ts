@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookSubscription, getTableauClient } from "../../util";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -33,6 +34,7 @@ export const createWebhook = action({
       webhookName,
       webhookEnabled,
     );
+
     return {
       data,
     };

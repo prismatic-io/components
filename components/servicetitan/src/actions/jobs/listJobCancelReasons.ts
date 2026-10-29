@@ -5,6 +5,7 @@ import { listJobCancelReasonsInputs } from "../../inputs";
 import { listJobCancelReasonsOutputSchema } from "../../outputSchemas";
 import type { JobCancel } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listJobCancelReasons = action({
   display: {
     label: "List Job Cancel Reasons",
@@ -21,6 +22,7 @@ export const listJobCancelReasons = action({
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
   ) => {
     const client = createClient(connection, "jpm", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<JobCancel>(
         client,

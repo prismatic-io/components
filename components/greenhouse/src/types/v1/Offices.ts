@@ -9,6 +9,7 @@ export interface OfficeDataSources {
   child_office_external_ids: string[];
   external_id: string;
 }
+
 export interface Location {
   name: string;
 }

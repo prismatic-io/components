@@ -7,7 +7,9 @@ import {
 import { validateConnection } from "../client";
 import { rawRequestExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -44,4 +46,5 @@ const rawRequest = action({
     }
   },
 });
+
 export default rawRequest;

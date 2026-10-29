@@ -16,6 +16,7 @@ import {
   recordTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -48,15 +49,19 @@ export const pollChangesTrigger = pollingTrigger({
       (!pollState?.lastPolledAt && Boolean(lookBackDate));
     const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const config = POLL_RESOURCE_CONFIG[resourceType];
+
     if (!config) {
       throw new Error(`Unsupported resource type: ${resourceType}`);
     }
+
     const client = createClient(
       connection,
       config.urlType,
       context.debug.enabled,
     );
+
     const isBatching = context.batch?.enabled === true;
+
     const result = await fetchAllRecords<ServiceTitanRecord>(
       client,
       config.endpoint,
@@ -66,6 +71,7 @@ export const pollChangesTrigger = pollingTrigger({
       },
       isBatching && config.sortField ? MAX_BATCHED_RECORDS : undefined,
     );
+
     const { created, updated } = filterByTimestamp(
       result.data,
       lastPolledAt,
@@ -73,15 +79,18 @@ export const pollChangesTrigger = pollingTrigger({
       config.updatedAtField,
       pollState?.lastSeenIds,
     );
+
     const filteredCreated = isBackfill || showNewRecords ? created : [];
     const filteredUpdated = isBackfill || showUpdatedRecords ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
+
     const watermark = advanceCursor(
       [...created, ...updated],
       lastPolledAt,
       config.updatedAtField,
       config.createdAtField,
     );
+
     const carriedIds =
       watermark === lastPolledAt ? (pollState?.lastSeenIds ?? []) : [];
     const lastSeenIds = [
@@ -99,16 +108,19 @@ export const pollChangesTrigger = pollingTrigger({
           .map((record) => record.id),
       ]),
     ];
+
     context.polling.setState({
       lastPolledAt: watermark,
       lastSeenIds,
       ...(isBackfill && result.hasMore ? { backfillActive: true } : {}),
     });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${result.data.length} total, ${filteredCreated.length} new, ${filteredUpdated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

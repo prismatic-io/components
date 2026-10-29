@@ -11,6 +11,7 @@ import type {
   BigCommerceOrder,
   BigCommerceRecordChange,
 } from "../types";
+
 export const fetchAllOrdersModifiedSince = async (
   client: HttpClient,
   storeHash: string,
@@ -34,13 +35,11 @@ export const fetchAllOrdersModifiedSince = async (
   }
   return collected;
 };
+
 export const partitionOrdersByTimestamp = (
   orders: BigCommerceOrder[],
   since: Date,
-): {
-  created: BigCommerceOrder[];
-  updated: BigCommerceOrder[];
-} => {
+): { created: BigCommerceOrder[]; updated: BigCommerceOrder[] } => {
   const created: BigCommerceOrder[] = [];
   const updated: BigCommerceOrder[] = [];
   for (const order of orders) {
@@ -56,6 +55,7 @@ export const partitionOrdersByTimestamp = (
   }
   return { created, updated };
 };
+
 export const resolvePollingRecordChanges = (
   data: BigCommerceChangesObject | undefined,
 ): BigCommerceRecordChange[] => {
@@ -69,12 +69,15 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
+
   if (!LOOK_BACK_DATE_PATTERN.test(str)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const parts = str.split("-");
   const year = util.types.toNumber(parts[0]);
   const month = util.types.toNumber(parts[1]);
@@ -87,8 +90,10 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
+
   if (parsed > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return str;
 };

@@ -5,6 +5,7 @@ import {
   locationId,
   pageInfo,
 } from "../common";
+
 export const listInventoryLevelsInputs = {
   locationId,
   getAlldata,

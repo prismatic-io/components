@@ -13,6 +13,7 @@ export const instanceReferenceSchema = {
   },
   required: ["id"],
 };
+
 export const eventAttachmentsViewSchema = {
   type: "object" as const,
   properties: {
@@ -41,6 +42,7 @@ export const eventAttachmentsViewSchema = {
     },
   },
 };
+
 export const idDescriptorReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -52,6 +54,7 @@ export const idDescriptorReferenceSchema = {
     },
   },
 };
+
 export const locationSchema = {
   type: "object" as const,
   properties: {
@@ -71,6 +74,7 @@ export const locationSchema = {
     },
   },
 };
+
 export const workSpaceSchema = {
   type: "object" as const,
   properties: {
@@ -85,6 +89,7 @@ export const workSpaceSchema = {
     },
   },
 };
+
 export const additionalJobsSchema = {
   type: "object" as const,
   properties: {
@@ -111,6 +116,7 @@ export const additionalJobsSchema = {
     },
   },
 };
+
 export const personSchema = {
   type: "object" as const,
   properties: {
@@ -125,6 +131,7 @@ export const personSchema = {
     },
   },
 };
+
 export const workerDataSchema = {
   type: "object" as const,
   properties: {
@@ -149,6 +156,7 @@ export const workerDataSchema = {
     },
   },
 };
+
 export const instanceSummaryReferenceSchema = {
   type: "object" as const,
   properties: {

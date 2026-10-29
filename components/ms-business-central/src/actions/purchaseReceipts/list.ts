@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { listPurchaseReceiptsExamplePayload as examplePayload } from "../../examplePayloads";
 import { paginateResults } from "ms-utils";
 import { listPurchaseReceiptsInputs as inputs } from "../../inputs/purchaseReceipts/listPurchaseReceiptsInputs";
+
 export const listPurchaseReceipts = action({
   display: {
     label: "List Purchase Receipts",
@@ -29,6 +30,7 @@ export const listPurchaseReceipts = action({
       $search: odataQueryParams.$search,
       $select: odataQueryParams.$select,
     };
+
     return await paginateResults<
       (typeof examplePayload)["data"]["value"][number]
     >({

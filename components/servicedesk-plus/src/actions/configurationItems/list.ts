@@ -10,6 +10,7 @@ import {
   pagination,
 } from "../../inputs";
 import { buildCriteriaObject, paginateData } from "../../util";
+
 export const listConfigurationItems = action({
   display: {
     label: "List Configuration Items",

@@ -4,12 +4,14 @@ import {
   cleanStringInput,
   lookBackDateClean,
 } from "./util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   comments: "The connection to be used.",
   required: true,
 });
+
 export const resultsPerPage = input({
   label: "Results Per Page",
   type: "string",
@@ -19,6 +21,7 @@ export const resultsPerPage = input({
   example: "100",
   clean: cleanStringInput,
 });
+
 export const page = input({
   label: "Page Number",
   type: "string",
@@ -28,6 +31,7 @@ export const page = input({
   example: "1",
   clean: cleanStringInput,
 });
+
 export const offset = input({
   label: "Page Offset",
   type: "string",
@@ -37,6 +41,7 @@ export const offset = input({
   example: "0",
   clean: cleanStringInput,
 });
+
 export const customerId = input({
   label: "Customer",
   type: "string",
@@ -48,6 +53,7 @@ export const customerId = input({
   clean: util.types.toString,
   dataSource: "selectCustomer",
 });
+
 export const email = input({
   label: "Email Address",
   type: "string",
@@ -57,6 +63,7 @@ export const email = input({
   example: "john.doe@example.com",
   clean: util.types.toString,
 });
+
 export const firstName = input({
   label: "First Name",
   type: "string",
@@ -65,6 +72,7 @@ export const firstName = input({
   placeholder: "Enter a first name",
   example: "John",
 });
+
 export const lastName = input({
   label: "Last Name",
   type: "string",
@@ -73,6 +81,7 @@ export const lastName = input({
   placeholder: "Enter a last name",
   example: "Doe",
 });
+
 export const username = input({
   label: "Username",
   type: "string",
@@ -81,6 +90,7 @@ export const username = input({
   placeholder: "Enter a username",
   example: "john.doe",
 });
+
 export const company = input({
   label: "Company",
   type: "string",
@@ -89,6 +99,7 @@ export const company = input({
   placeholder: "Enter a company name",
   example: "Acme Inc.",
 });
+
 export const billingAddress1 = input({
   label: "Billing Address 1",
   type: "string",
@@ -97,6 +108,7 @@ export const billingAddress1 = input({
   placeholder: "Enter an address",
   example: "123 Main Street",
 });
+
 export const billingAddress2 = input({
   label: "Billing Address 2",
   type: "string",
@@ -105,6 +117,7 @@ export const billingAddress2 = input({
   placeholder: "Enter additional address information",
   example: "Suite 100",
 });
+
 export const city = input({
   label: "Billing City",
   type: "string",
@@ -113,6 +126,7 @@ export const city = input({
   placeholder: "Enter a city",
   example: "San Francisco",
 });
+
 export const state = input({
   label: "State",
   type: "string",
@@ -121,6 +135,7 @@ export const state = input({
   placeholder: "Enter a state",
   example: "CA",
 });
+
 export const postalcode = input({
   label: "Postal Code",
   type: "string",
@@ -130,6 +145,7 @@ export const postalcode = input({
   placeholder: "Enter a postal code",
   example: "94103",
 });
+
 export const country = input({
   label: "Country",
   type: "string",
@@ -138,6 +154,7 @@ export const country = input({
   placeholder: "Enter a country code",
   example: "US",
 });
+
 export const phone = input({
   label: "Phone",
   type: "string",
@@ -147,6 +164,7 @@ export const phone = input({
   placeholder: "Enter a phone number",
   example: "+1-555-123-4567",
 });
+
 export const shippingAddress1 = input({
   label: "Shipping Address 1",
   type: "string",
@@ -155,6 +173,7 @@ export const shippingAddress1 = input({
   placeholder: "Enter an address",
   example: "123 Main Street",
 });
+
 export const shippingAddress2 = input({
   label: "Shipping Address 2",
   type: "string",
@@ -163,6 +182,7 @@ export const shippingAddress2 = input({
   placeholder: "Enter additional address information",
   example: "Suite 100",
 });
+
 export const productId = input({
   label: "Product Id",
   type: "string",
@@ -172,6 +192,7 @@ export const productId = input({
   example: "100",
   dataSource: "selectProduct",
 });
+
 export const productName = input({
   label: "Product Name",
   type: "string",
@@ -180,6 +201,7 @@ export const productName = input({
   placeholder: "Enter a product name",
   example: "Software Subscription",
 });
+
 export const productType = input({
   label: "Product Type",
   type: "string",
@@ -188,6 +210,7 @@ export const productType = input({
   placeholder: "Enter a product type",
   example: "simple",
 });
+
 export const price = input({
   label: "Price",
   type: "string",
@@ -196,6 +219,7 @@ export const price = input({
   placeholder: "Enter a price",
   example: "19.99",
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -204,6 +228,7 @@ export const description = input({
   placeholder: "Enter a product description",
   example: "This is a high quality product with excellent features.",
 });
+
 export const summary = input({
   label: "Summary",
   type: "string",
@@ -212,6 +237,7 @@ export const summary = input({
   placeholder: "Enter a product summary",
   example: "High quality product with great value.",
 });
+
 export const values = input({
   label: "Optional Values",
   type: "string",
@@ -220,6 +246,7 @@ export const values = input({
     "For each item, provide an optional key value pair to be injected into the request body.",
   required: false,
 });
+
 export const categories = input({
   label: "Categories",
   type: "code",
@@ -237,6 +264,7 @@ export const categories = input({
   }
 ]`,
 });
+
 export const images = input({
   label: "Images",
   type: "code",
@@ -254,6 +282,7 @@ export const images = input({
   }
 ]`,
 });
+
 export const period = input({
   label: "Period",
   type: "string",
@@ -266,6 +295,7 @@ export const period = input({
     { label: "Year", value: "year" },
   ],
 });
+
 export const minDate = input({
   label: "Start Date",
   type: "string",
@@ -275,6 +305,7 @@ export const minDate = input({
   placeholder: "Enter a date (YYYY-MM-DD)",
   example: "2024-01-15",
 });
+
 export const maxDate = input({
   label: "End Date",
   type: "string",
@@ -284,6 +315,7 @@ export const maxDate = input({
   placeholder: "Enter a date (YYYY-MM-DD)",
   example: "2024-12-31",
 });
+
 export const search = input({
   label: "Search",
   type: "string",
@@ -293,6 +325,7 @@ export const search = input({
   example: "Product name",
   clean: cleanStringInput,
 });
+
 export const before = input({
   label: "Before",
   type: "string",
@@ -303,6 +336,7 @@ export const before = input({
   example: "2024-01-15T10:30:00Z",
   clean: cleanStringInput,
 });
+
 export const after = input({
   label: "After",
   type: "string",
@@ -313,6 +347,7 @@ export const after = input({
   example: "2024-01-15T10:30:00Z",
   clean: cleanStringInput,
 });
+
 export const orderId = input({
   label: "Order Id",
   type: "string",
@@ -322,6 +357,7 @@ export const orderId = input({
   example: "100",
   dataSource: "selectOrder",
 });
+
 export const paymentMethod = input({
   label: "Payment Method Key",
   type: "string",
@@ -330,6 +366,7 @@ export const paymentMethod = input({
   placeholder: "Enter a payment method key",
   example: "bacs",
 });
+
 export const paymentMethodTitle = input({
   label: "Payment Method Title",
   type: "string",
@@ -338,12 +375,14 @@ export const paymentMethodTitle = input({
   placeholder: "Enter a payment method title",
   example: "Direct Bank Transfer",
 });
+
 export const isPaid = input({
   label: "Is Paid",
   type: "boolean",
   comments: "Determines if the order has been paid for.",
   required: true,
 });
+
 export const lineItems = input({
   label: "Line Items",
   type: "code",
@@ -364,6 +403,7 @@ export const lineItems = input({
   }
 ]`,
 });
+
 export const shippingLines = input({
   label: "Shipping Lines",
   type: "code",
@@ -380,6 +420,7 @@ export const shippingLines = input({
   }
 ]`,
 });
+
 export const categoryName = input({
   label: "Category Name",
   type: "string",
@@ -388,6 +429,7 @@ export const categoryName = input({
   placeholder: "Enter a category name",
   example: "Electronics",
 });
+
 export const categoryId = input({
   label: "Category Id",
   type: "string",
@@ -397,6 +439,7 @@ export const categoryId = input({
   example: "100",
   dataSource: "selectProductCategory",
 });
+
 export const refundId = input({
   label: "Refund Id",
   type: "string",
@@ -406,6 +449,7 @@ export const refundId = input({
   example: "100",
   dataSource: "selectRefund",
 });
+
 export const imageLink = input({
   label: "Image Link",
   type: "string",
@@ -415,6 +459,7 @@ export const imageLink = input({
   example:
     "http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_front.jpg",
 });
+
 export const refundAmount = input({
   label: "Refund Amount",
   type: "string",
@@ -423,6 +468,7 @@ export const refundAmount = input({
   placeholder: "Enter a refund amount",
   example: "10.00",
 });
+
 export const params = input({
   label: "Extra Parameters",
   type: "string",
@@ -431,6 +477,7 @@ export const params = input({
   required: false,
   clean: cleanKeyValPairListInput,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -439,6 +486,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const resourceType = input({
   label: "Resource Type",
   type: "string",
@@ -451,6 +499,7 @@ export const resourceType = input({
     { label: "Coupons", value: "coupons" },
   ],
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",

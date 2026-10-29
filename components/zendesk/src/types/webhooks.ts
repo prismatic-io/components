@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export interface ZendeskWebhook {
   id: string;
   name: string;
@@ -11,6 +12,7 @@ export interface ZendeskWebhook {
   http_method: string;
   request_format: string;
 }
+
 export interface FetchWebhooksInput {
   client: HttpClient;
   showOnlyInstanceWebhooks: boolean;

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { listPackagesExamplePayload } from "../../examplePayloads";
 import { listPackagesInputs } from "../../inputs";
+
 export const listPackages = action({
   display: {
     label: "List Packages",
@@ -12,9 +13,11 @@ export const listPackages = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const { data } = await client.get(
       `/carriers/listpackages?carrierCode=${carrierCode}`,
     );
+
     return { data };
   },
   inputs: listPackagesInputs,

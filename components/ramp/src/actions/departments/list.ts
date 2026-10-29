@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { Department } from "../../interfaces/departments";
 import { listDepartmentsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listDepartments = action({
   display: {
     label: "List Departments",
@@ -23,6 +24,7 @@ export const listDepartments = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<Department>(
       client,
       "departments",
@@ -40,9 +42,7 @@ export const listDepartments = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listDepartmentsResponse,
       page: fetchAll ? null : listDepartmentsResponse.page,

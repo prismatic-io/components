@@ -1,5 +1,6 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { DEFAULT_VERSION } from "../constants";
+
 export const clientCredentials = oauth2Connection({
   key: "meta-client-credentials",
   display: {

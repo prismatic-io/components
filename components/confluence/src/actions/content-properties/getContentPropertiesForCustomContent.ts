@@ -3,6 +3,7 @@ import { contentPropertySchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { getContentPropertiesForCustomContentInputs } from "../../inputs";
 import { getContentPropertyExamplePayload as getContentPropertyForCustomContentExamplePayload } from "../../examplePayloads";
+
 export const getContentPropertiesForCustomContent = action({
   display: {
     label: "Get Content Properties for Custom Content",

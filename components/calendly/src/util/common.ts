@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const paginator = async (
   client: HttpClient,
   url: string,
@@ -18,6 +19,7 @@ export const paginator = async (
   } while (params.page_token);
   return allData;
 };
+
 export const extractUuidFromUri = (uri: string): string => {
   const parts = uri.split("/");
   return parts[parts.length - 1];

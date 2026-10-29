@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { BATCH_REQUEST_BODY_EXAMPLE } from "../constants";
 import { cleanBatchRequestItems } from "../actionUtils";
+
 export const batchRequestItems = input({
   label: "Batch Request Items",
   type: "code",

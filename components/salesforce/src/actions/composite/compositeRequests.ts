@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { compositeRequestsInputs } from "../../inputs";
 import { compositeRequestExamplePayload } from "../../examplePayloads";
+
 export const compositeRequests = action({
   display: {
     label: "Send Composite Request",

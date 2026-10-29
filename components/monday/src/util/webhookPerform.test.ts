@@ -1,6 +1,7 @@
 import type { ActionContext, TriggerPayload } from "@prismatic-io/spectral";
 import { describe, expect, it, vi } from "vitest";
 import { perform } from "./webhookPerform";
+
 const mockLogger = {
   info: vi.fn(),
   warn: vi.fn(),
@@ -10,18 +11,21 @@ const mockLogger = {
   metric: vi.fn(),
   trace: vi.fn(),
 };
+
 const makeContext = (overrides: Partial<ActionContext> = {}) =>
   ({
     logger: mockLogger,
     isSimulatedTestExecution: false,
     ...overrides,
   }) as unknown as ActionContext;
+
 const makePayload = (overrides: Partial<TriggerPayload> = {}) =>
   ({
     headers: {},
     body: { data: {} },
     ...overrides,
   }) as unknown as TriggerPayload;
+
 describe("webhookPerform", () => {
   describe("challenge verification", () => {
     it("returns challenge response when body contains a challenge", async () => {
@@ -38,6 +42,7 @@ describe("webhookPerform", () => {
         challenge: "abc123",
       });
     });
+
     it("takes priority over signature verification", async () => {
       const payload = makePayload({
         headers: { authorization: "wrong" },
@@ -49,6 +54,7 @@ describe("webhookPerform", () => {
       expect(result.branch).toBe("Challenge Verification");
     });
   });
+
   describe("signature verification", () => {
     it("passes when authorization header matches signing secret", async () => {
       const payload = makePayload({
@@ -59,6 +65,7 @@ describe("webhookPerform", () => {
       });
       expect(result.branch).toBe("Notification");
     });
+
     it("is case-insensitive on the header name", async () => {
       const payload = makePayload({
         headers: { AUTHORIZATION: "my-secret" },
@@ -68,6 +75,7 @@ describe("webhookPerform", () => {
       });
       expect(result.branch).toBe("Notification");
     });
+
     it("throws when authorization header does not match", async () => {
       const payload = makePayload({
         headers: { authorization: "wrong" },
@@ -76,6 +84,7 @@ describe("webhookPerform", () => {
         perform(makeContext(), payload, { signingSecret: "correct" }),
       ).rejects.toThrow("Signature verification failed");
     });
+
     it("skips verification during simulated test execution", async () => {
       const payload = makePayload({
         headers: { authorization: "wrong" },
@@ -87,6 +96,7 @@ describe("webhookPerform", () => {
       );
       expect(result.branch).toBe("Notification");
     });
+
     it("skips verification when no signing secret is provided", async () => {
       const payload = makePayload();
       const result = await perform(makeContext(), payload, {});

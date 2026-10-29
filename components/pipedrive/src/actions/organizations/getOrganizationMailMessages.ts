@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getOrganizationMailMessagesInputs } from "../../inputs";
 import { getOrganizationMailMessagesExamplePayload } from "../../examplePayloads";
 import { getOrganizationMailMessagesOutputSchema } from "../../outputSchemas";
+
 export const getOrganizationMailMessages = action({
   display: {
     label: "Get Organization Mail Messages",

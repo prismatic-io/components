@@ -1,4 +1,5 @@
 import { metaSchema } from "./common";
+
 const partitionSchema = {
   type: "object" as const,
   properties: {
@@ -28,6 +29,7 @@ const partitionSchema = {
     volumeStatus: { type: "string" },
   },
 };
+
 const activeDirectorySchema = {
   type: "object" as const,
   properties: {
@@ -45,6 +47,7 @@ const activeDirectorySchema = {
     lastLogon: { type: "string", format: "date-time" },
   },
 };
+
 const activeDirectoryGroupSchema = {
   type: "object" as const,
   properties: {
@@ -55,6 +58,7 @@ const activeDirectoryGroupSchema = {
     name: { type: "string" },
   },
 };
+
 const deviceCustomFieldSchema = {
   type: "object" as const,
   properties: {
@@ -66,6 +70,7 @@ const deviceCustomFieldSchema = {
     value: { type: ["boolean", "number", "string"] },
   },
 };
+
 const diskSchema = {
   type: "object" as const,
   properties: {
@@ -84,6 +89,7 @@ const diskSchema = {
     totalSpaceKb: { type: "integer" },
   },
 };
+
 const driverSchema = {
   type: "object" as const,
   properties: {
@@ -97,6 +103,7 @@ const driverSchema = {
     version: { type: "string" },
   },
 };
+
 const featureSchema = {
   type: "object" as const,
   properties: {
@@ -106,6 +113,7 @@ const featureSchema = {
     name: { type: "string" },
   },
 };
+
 const networkingSchema = {
   type: "object" as const,
   properties: {
@@ -123,6 +131,7 @@ const networkingSchema = {
     netProfileName: { type: "string" },
   },
 };
+
 const processorSchema = {
   type: "object" as const,
   properties: {
@@ -143,6 +152,7 @@ const processorSchema = {
     status: { type: "string" },
   },
 };
+
 const softwareSchema = {
   type: "object" as const,
   properties: {
@@ -160,6 +170,7 @@ const softwareSchema = {
     versionlessCpe: { type: "string" },
   },
 };
+
 const updateSchema = {
   type: "object" as const,
   properties: {
@@ -171,6 +182,7 @@ const updateSchema = {
     title: { type: "string" },
   },
 };
+
 export const deviceSchema = {
   type: "object" as const,
   properties: {
@@ -225,12 +237,14 @@ export const deviceSchema = {
   },
   required: ["id"],
 };
+
 export const getDeviceOutputSchema = {
   type: "object" as const,
   properties: {
     data: deviceSchema,
   },
 };
+
 export const listDevicesOutputSchema = {
   type: "object" as const,
   properties: {

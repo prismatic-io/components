@@ -9,6 +9,7 @@ import {
   includeFields,
   storeHash,
 } from "../../inputs";
+
 export const getCategory = action({
   display: {
     label: "Get Category",
@@ -29,16 +30,20 @@ export const getCategory = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/categories/${categoryId}`;
     const params: Record<string, unknown> = {};
+
     if (includeFields) {
       params.include_fields = includeFields;
     }
     if (excludeFields) {
       params.exclude_fields = excludeFields;
     }
+
     try {
       const response = await client.get(endpoint, { params });
+
       return {
         data: response.data,
       };

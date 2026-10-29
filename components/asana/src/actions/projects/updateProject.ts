@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { updateProjectExamplePayload } from "../../examplePayloads";
 import { updateProjectInputs } from "../../inputs";
 import { projectResponseSchema } from "../../outputSchemas";
+
 export const updateProject = action({
   display: {
     label: "Update Project",

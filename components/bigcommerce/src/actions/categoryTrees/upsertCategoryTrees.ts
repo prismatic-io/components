@@ -7,6 +7,7 @@ import {
   categoryTreeData,
   storeHash,
 } from "../../inputs";
+
 export const upsertCategoryTrees = action({
   display: {
     label: "Upsert Category Trees",
@@ -23,12 +24,14 @@ export const upsertCategoryTrees = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/trees`;
+
     try {
       const response = await client.put(endpoint, categoryTreeData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       return {
         data: response.data,
       };
@@ -38,6 +41,7 @@ export const upsertCategoryTrees = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

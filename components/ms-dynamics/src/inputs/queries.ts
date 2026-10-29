@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
 import { connectionInput, entityType, fetchAll, nextPageId } from "./common";
+
 const xmlQuery = input({
   label: "XML Query",
   placeholder: "Enter Fetch XML query",
@@ -17,6 +18,7 @@ const xmlQuery = input({
 </fetch>`,
   clean: util.types.toString,
 });
+
 const pageNumber = input({
   label: "Page Number",
   placeholder: "Enter page number",
@@ -27,6 +29,7 @@ const pageNumber = input({
   example: "1",
   clean: toOptionalNumber,
 });
+
 const includeAnnotations = input({
   label: "Include Annotations",
   placeholder: "Enter annotation filter",
@@ -37,6 +40,7 @@ const includeAnnotations = input({
   example: "*",
   clean: toOptionalString,
 });
+
 const impersonateUserId = input({
   label: "Impersonate User ID",
   placeholder: "Enter user GUID to impersonate",
@@ -47,6 +51,7 @@ const impersonateUserId = input({
   example: "7d577253-3ef0-4a0a-bb7f-8335c2596e70",
   clean: toOptionalString,
 });
+
 const fetchXmlPagination = structuredObjectInput({
   label: "Pagination",
   comments: "Page number and next-page cookie for paging through results.",
@@ -55,6 +60,7 @@ const fetchXmlPagination = structuredObjectInput({
     nextPageId,
   },
 });
+
 export const fetchXmlInputs = {
   connection: connectionInput,
   entityType,

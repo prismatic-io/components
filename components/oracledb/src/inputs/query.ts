@@ -1,5 +1,6 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./common";
+
 const query = input({
   label: "SQL Query",
   type: "code",
@@ -11,6 +12,7 @@ const query = input({
   default: "SELECT * FROM mytable WHERE name = :name AND company = :company_id",
   clean: util.types.toString,
 });
+
 const namedParameters = input({
   label: "Named Parameters",
   comments:
@@ -23,6 +25,7 @@ const namedParameters = input({
       ? util.types.keyValPairListToObject(value as KeyValuePair<unknown>[])
       : {},
 });
+
 const namedParametersObject = input({
   label: "Named Parameters Object",
   comments:
@@ -33,6 +36,7 @@ const namedParametersObject = input({
   example: JSON.stringify({ product_id: 123, customer_name: "Acme Corp" }),
   clean: (value) => (value ? util.types.toObject(value) : {}),
 });
+
 export const queryInputs = {
   connection: connectionInput,
   query,

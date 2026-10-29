@@ -13,6 +13,7 @@ import {
   resourceGroupName,
   subscriptionId,
 } from "../../inputs";
+
 export const sendMessagesToQueue = action({
   display: {
     label: "Send Multiple Messages to Queue",
@@ -40,6 +41,7 @@ export const sendMessagesToQueue = action({
     messages,
   },
 });
+
 export const sendMessageToQueue = action({
   display: {
     label: "Send Message to Queue",
@@ -136,4 +138,5 @@ export const sendMessageToQueue = action({
     }),
   },
 });
+
 export default { sendMessagesToQueue, sendMessageToQueue };

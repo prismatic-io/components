@@ -10,6 +10,7 @@ import type {
   PollingState,
 } from "../types";
 import { fetchAtomEntries, resolveAtomPollingRecordChanges } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "Atom Feed Notifications",
@@ -32,6 +33,7 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const lastPolledAt =
       pollState?.lastPolledAt ?? (params.lookBackDate || now);
+
     const client = createAtomFeedClient(
       params.connection,
       context.debug.enabled,
@@ -42,12 +44,15 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt,
       params.pageSize,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Atom feed '${params.feedName}': ${entries.length} entries since ${lastPolledAt}`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { entries } } } as typeof payload,
       polledNoChanges: entries.length === 0,

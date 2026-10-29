@@ -3,6 +3,7 @@ import { getHubspotClient } from "../../client";
 import { deleteDealExamplePayload } from "../../examplePayloads";
 import { deleteDealInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const deleteDeal = action({
   display: {
     label: "Delete Deal",
@@ -11,14 +12,17 @@ export const deleteDeal = action({
   performSafety: "notAllowed",
   perform: async (context, { dealId, timeout, hubspotConnection }) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const { data } = await client.delete(
       hubspotPaths.objects("deals", `/${dealId}`),
     );
+
     return { data };
   },
   inputs: deleteDealInputs,

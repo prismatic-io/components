@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { pollResourceModel } from "../constants";
 import { connectionInput } from "./common";
 import { lookBackDateClean } from "../util";
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -10,6 +11,7 @@ export const pollResourceType = input({
   model: pollResourceModel,
   clean: util.types.toString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -18,6 +20,7 @@ export const showNewRecords = input({
   comments: "Include newly created records in trigger results.",
   clean: util.types.toBool,
 });
+
 export const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -26,6 +29,7 @@ export const showUpdatedRecords = input({
   comments: "Include updated records in trigger results.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -36,6 +40,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesTriggerInputs = {
   xeroConnection: connectionInput,
   resourceType: pollResourceType,
@@ -43,6 +48,7 @@ export const pollChangesTriggerInputs = {
   showUpdatedRecords,
   lookBackDate,
 };
+
 export const webhookInputs = {
   webhookKey: input({
     label: "Webhook Key",

@@ -12,6 +12,7 @@ export const campaignOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listCampaignsOutputSchema = {
   type: "object" as const,
   properties: {

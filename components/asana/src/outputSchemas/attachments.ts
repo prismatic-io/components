@@ -1,4 +1,5 @@
 import { attachmentCompactSchema, nextPageSchema } from "./shared";
+
 export const attachmentResponseSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +50,7 @@ export const attachmentResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listAttachmentsOutputSchema = {
   type: "object" as const,
   properties: {

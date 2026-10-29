@@ -12,6 +12,7 @@ import {
   deleteAppSettings,
   webhookPerformFunction,
 } from "../util";
+
 export const eventTypeSubscription = trigger({
   display: {
     label: "Event Type Subscription",
@@ -44,6 +45,7 @@ export const eventTypeSubscription = trigger({
       );
       const { developerApiKey, appId } =
         checkDeveloperApiKeyAndAppId(hubspotConnection);
+
       const getConfigurationResults = await Promise.all([
         appWebhookSettingsExists(
           client,
@@ -52,13 +54,16 @@ export const eventTypeSubscription = trigger({
         ) as Promise<boolean>,
         appWebhookSubscriptionsExists(client, appId, developerApiKey),
       ]);
+
       const appWebhookConfigurationExists = getConfigurationResults.some(
         (configExists) => configExists === true,
       );
+
       if (appWebhookConfigurationExists && !overwriteWebhookSettings)
         throw new Error(
           `Webhook configuration already exists for App ID ${appId} and overwrite is set to false. No action will be taken.`,
         );
+
       if (
         !appWebhookConfigurationExists ||
         (appWebhookConfigurationExists && overwriteWebhookSettings)
@@ -66,6 +71,7 @@ export const eventTypeSubscription = trigger({
         context.logger.info(
           `Creating webhook configuration for App ID ${appId}.`,
         );
+
         await createAppWebhookConfiguration(
           client,
           eventTypes,
@@ -87,12 +93,14 @@ export const eventTypeSubscription = trigger({
         },
         false,
       );
+
       const currentAppWebhookSettings = await appWebhookSettingsExists(
         client,
         appId,
         developerApiKey,
         true,
       );
+
       if (
         currentAppWebhookSettings &&
         (currentAppWebhookSettings as WebhookSettings).targetUrl === webhookUrl

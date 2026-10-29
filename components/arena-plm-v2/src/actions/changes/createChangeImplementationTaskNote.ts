@@ -4,6 +4,7 @@ import { createChangeImplementationTaskNoteExamplePayload } from "../../exampleP
 import { createChangeImplementationTaskNoteInputs } from "../../inputs";
 import { changeImplementationNoteSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const createChangeImplementationTaskNote = action({
   display: {
     label: "Create Change Implementation Task Note",
@@ -18,19 +19,18 @@ export const createChangeImplementationTaskNote = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
-      const requestData: {
-        note: string;
-        label?: string;
-        private?: boolean;
-      } = {
+      const requestData: { note: string; label?: string; private?: boolean } = {
         note: util.types.toString(params.note),
       };
+
       if (params.label) {
         requestData.label = util.types.toString(params.label);
       }
+
       if (params.isPrivate !== null && params.isPrivate !== undefined) {
         requestData.private = util.types.toBool(params.isPrivate);
       }
+
       const { data } = await client.post(
         `/changes/${util.types.toString(params.changeGuid)}/implementationtasks/${util.types.toString(params.implementationTaskGuid)}/notes`,
         requestData,

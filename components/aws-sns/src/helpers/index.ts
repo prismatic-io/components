@@ -5,6 +5,7 @@ import {
   toTrimmedString,
 } from "aws-utils";
 import { accessKeySecretPair } from "../connections";
+
 export const validateConnection = (connection: Connection): void => {
   if (
     ![accessKeySecretPair.key, assumeRoleConnection.key].includes(
@@ -17,6 +18,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const getCredentials = (connection: Connection): Credentials => {
   validateConnection(connection);
   return {

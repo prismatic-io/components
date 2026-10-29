@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { EMAIL_DEFINITIONS_PATH } from "../constants";
 import { connection } from "../inputs/common";
 import { paginateResults } from "../util/pagination";
+
 export const selectEmailDefinition = dataSource({
   display: {
     label: "Select Email Definition",
@@ -14,6 +15,7 @@ export const selectEmailDefinition = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const response = await paginateResults(
       client,
       EMAIL_DEFINITIONS_PATH,
@@ -21,13 +23,16 @@ export const selectEmailDefinition = dataSource({
       { $pageSize: 500 },
       { itemsField: "definitions", preserveFields: ["requestId"] },
     );
+
     const definitions = response.definitions ?? [];
+
     const result = definitions
       .map<Element>((item) => ({
         label: util.types.toString(item.name),
         key: util.types.toString(item.definitionKey),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
     return { result };
   },
   dataSourceType: "picklist",

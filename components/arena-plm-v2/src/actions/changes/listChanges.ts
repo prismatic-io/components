@@ -6,6 +6,7 @@ import { listChangesOutputSchema } from "../../outputSchemas";
 import type { ChangeCompactVo } from "../../types";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listChanges = action({
   display: {
     label: "List Changes",

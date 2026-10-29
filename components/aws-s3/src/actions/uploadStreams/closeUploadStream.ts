@@ -3,6 +3,7 @@ import { closeUploadStreamExamplePayload } from "../../examplePayloads";
 import { closeUploadStreamInputs } from "../../inputs";
 import { closeUploadStreamOutputSchema } from "../../outputSchemas";
 import { getUploadStream } from "../../utils";
+
 export const closeUploadStream = action({
   display: {
     label: "Close Upload Stream",

@@ -12,6 +12,7 @@ import {
   attachOrderBy,
   attachSelect,
 } from "../inputs";
+
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
@@ -37,19 +38,15 @@ export const getAttachment = action({
       "Content-Type": "*/*",
     };
     const client = getSapClient(connectionInput, headers);
-    const orderByValue = (
-      attachOrderBy as {
-        value?: string;
-      }
-    )?.value;
-    const selectValue = (
-      attachSelect as {
-        value?: string;
-      }
-    )?.value;
+    const orderByValue = (attachOrderBy as { value?: string })?.value;
+    const selectValue = (attachSelect as { value?: string })?.value;
     try {
       const { data } = await client.get(
-        `/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/A_DocumentInfoRecordAttch(DocumentInfoRecordDocType='${documentInfoRecordDocumentType}',DocumentInfoRecordDocNumber='${documentInfoRecordDocumentNumber}',DocumentInfoRecordDocVersion='${documentInfoRecordDocumentVersion}',DocumentInfoRecordDocPart='${documentInfoRecordDocumentPart}')/DocumentInfoRecordToAttachmentNavigation?${filter.length ? `$filter=${filter}&` : ""}${inlinecount.length ? `$inlinecount=${inlinecount}&` : ""}${orderByValue ? `$orderby=${orderByValue}&` : ""}${selectValue ? `$select=${selectValue}&` : ""}`,
+        `/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/A_DocumentInfoRecordAttch(DocumentInfoRecordDocType='${documentInfoRecordDocumentType}',DocumentInfoRecordDocNumber='${documentInfoRecordDocumentNumber}',DocumentInfoRecordDocVersion='${documentInfoRecordDocumentVersion}',DocumentInfoRecordDocPart='${documentInfoRecordDocumentPart}')/DocumentInfoRecordToAttachmentNavigation?${
+          filter.length ? `$filter=${filter}&` : ""
+        }${inlinecount.length ? `$inlinecount=${inlinecount}&` : ""}${
+          orderByValue ? `$orderby=${orderByValue}&` : ""
+        }${selectValue ? `$select=${selectValue}&` : ""}`,
       );
       return { data };
     } catch (error) {

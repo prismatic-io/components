@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updatePostExamplePayload } from "../../examplePayloads";
 import { updatePostInputs } from "../../inputs";
 import { updatePostOutputSchema } from "../../outputSchemas";
+
 export const updatePost = action({
   display: {
     label: "Update Post",
@@ -30,8 +31,7 @@ export const updatePost = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updatePostExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updatePostExamplePayload,
   examplePayload: updatePostExamplePayload,
 });

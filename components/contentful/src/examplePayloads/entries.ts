@@ -63,30 +63,39 @@ export const createEntryExamplePayload = {
     },
   },
 };
+
 export const updateEntryExamplePayload = {
   data: createEntryExamplePayload.data,
 };
+
 export const putEntryExamplePayload = {
   data: createEntryExamplePayload.data,
 };
+
 export const patchEntryExamplePayload = {
   data: createEntryExamplePayload.data,
 };
+
 export const archiveEntryExamplePayload = {
   data: createEntryExamplePayload.data,
 };
+
 export const unarchiveEntryExamplePayload = {
   data: createEntryExamplePayload.data,
 };
+
 export const listEntriesExamplePayload = {
   data: [createEntryExamplePayload.data],
 };
+
 export const listPublishedEntriesExamplePayload = {
   data: listEntriesExamplePayload.data,
 };
+
 export const getEntryExamplePayload = {
   data: createEntryExamplePayload.data,
 };
+
 export const publishEntryExamplePayload = {
   data: {
     fields: {
@@ -123,6 +132,7 @@ export const publishEntryExamplePayload = {
     },
   },
 };
+
 export const unpublishEntryExamplePayload = {
   data: {
     fields: {
@@ -146,4 +156,5 @@ export const unpublishEntryExamplePayload = {
     },
   },
 };
+
 export const deleteEntryExamplePayload = { data: {} };

@@ -1,32 +1,41 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
+
 const throwInvalidInputError = (kind: string, inputLabel: string): never => {
   throw new Error(`Invalid ${kind} for ${inputLabel} input.`);
 };
+
 const assertJsonInput = (value: unknown, inputLabel: string): void => {
   if (typeof value === "string" && !util.types.isJSON(value)) {
     throwInvalidInputError("code", inputLabel);
   }
 };
+
 const assertJsonObject = (parsed: unknown, inputLabel: string): void => {
   if (typeof parsed !== "object" || parsed === null) {
     throwInvalidInputError("code", inputLabel);
   }
 };
+
 const isEmptyInput = (value: unknown): boolean =>
   value === undefined || value === null || value === "";
+
 export const cleanNumberInput = (value: unknown): number | undefined =>
   isEmptyInput(value) ? undefined : util.types.toNumber(value);
+
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanBooleanInput = (value: unknown): boolean | undefined =>
   isEmptyInput(value) ? undefined : util.types.toBool(value);
+
 export const cleanKeyValueListInput = (
   value: unknown,
 ): Record<string, unknown> | undefined =>
   value
     ? util.types.keyValPairListToObject(value as KeyValuePair[])
     : undefined;
+
 export const cleanDate = (
   value: unknown,
   inputLabel: string,
@@ -40,6 +49,7 @@ export const cleanDate = (
     return throwInvalidInputError("date", inputLabel);
   }
 };
+
 export const cleanCodeInput = (
   value: unknown,
   inputLabel: string,
@@ -52,6 +62,7 @@ export const cleanCodeInput = (
   assertJsonObject(parsed, inputLabel);
   return parsed;
 };
+
 export const cleanArrayCodeInput = (
   value: unknown,
   inputLabel: string,
@@ -66,12 +77,14 @@ export const cleanArrayCodeInput = (
     ? object
     : throwInvalidInputError("array", inputLabel);
 };
+
 export const cleanValueListInput = (value: unknown): string[] | undefined => {
   const values = (Array.isArray(value) ? value : value ? [value] : [])
     .map((entry) => util.types.toString(entry).trim())
     .filter(Boolean);
   return values.length > 0 ? values : undefined;
 };
+
 export const overlapMinutesClean = (value: unknown): number | undefined => {
   if (isEmptyInput(value) || (typeof value === "string" && !value.trim())) {
     return undefined;
@@ -84,6 +97,7 @@ export const overlapMinutesClean = (value: unknown): number | undefined => {
   }
   return minutes;
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   if (isEmptyInput(value) || (typeof value === "string" && !value.trim())) {
     return "";

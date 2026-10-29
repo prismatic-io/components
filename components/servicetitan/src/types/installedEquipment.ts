@@ -8,6 +8,7 @@ interface Tag {
   textColor: string | null;
   code: string | null;
 }
+
 export interface InstalledEquipment {
   id: number;
   equipmentId: number | null;

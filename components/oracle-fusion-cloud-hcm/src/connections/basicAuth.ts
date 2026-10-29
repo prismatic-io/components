@@ -1,4 +1,5 @@
 import { connection, input } from "@prismatic-io/spectral";
+
 export const basicAuthConnection = connection({
   key: "basicAuth",
   display: {

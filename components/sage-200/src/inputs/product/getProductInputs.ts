@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 const productId = input({
   label: "Product ID",
   comments: "The ID of the product to retrieve.",
@@ -10,6 +11,7 @@ const productId = input({
   dataSource: "selectProduct",
   clean: cleanStringInput,
 });
+
 export default {
   productId,
 };

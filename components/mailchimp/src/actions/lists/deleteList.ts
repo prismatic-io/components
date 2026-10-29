@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listId, connectionInput } from "../../inputs";
+
 export const deleteList = action({
   display: {
     label: "Delete List",
@@ -13,4 +14,5 @@ export const deleteList = action({
   },
   inputs: { listId, connection: connectionInput },
 });
+
 export default deleteList;

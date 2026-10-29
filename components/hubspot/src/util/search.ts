@@ -3,6 +3,7 @@ import { getHubspotClient } from "../client";
 import { MAX_SEARCH_LIMIT } from "../constants";
 import type { SearchObjectParams, SearchResponse } from "../types";
 import { resolveEndpoint } from "./polling";
+
 export const searchPerform = async (
   context: ActionContext,
   {
@@ -15,9 +16,7 @@ export const searchPerform = async (
     searchLimit,
   }: SearchObjectParams,
   searchOnlyCustomObjects = false,
-): Promise<{
-  data: SearchResponse;
-}> => {
+): Promise<{ data: SearchResponse }> => {
   const debugRequest = context.debug.enabled;
   const client = getHubspotClient({
     hubspotConnection,
@@ -25,16 +24,20 @@ export const searchPerform = async (
     debugRequest,
     headers: { "Content-Type": "application/json" },
   });
+
   const endpoint = resolveEndpoint(
     searchEndpoint,
     objectType,
     searchOnlyCustomObjects,
   );
+
   const payload = {
     limit: fetchAll ? MAX_SEARCH_LIMIT : searchLimit,
     ...searchProperties,
   };
+
   const { data } = await client.post<SearchResponse>(endpoint, payload);
+
   if (fetchAll) {
     while (data.paging?.next) {
       const { after } = data.paging.next;
@@ -51,6 +54,7 @@ export const searchPerform = async (
       data.paging = nextData.paging;
     }
   }
+
   return {
     data,
   };

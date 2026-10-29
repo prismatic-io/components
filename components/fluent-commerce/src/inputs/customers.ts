@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString, toStringAttributes } from "../util";
 import { connectionInput } from "./common";
+
 const retailerId = input({
   label: "Retailer ID",
   type: "string",
@@ -10,6 +11,7 @@ const retailerId = input({
   clean: util.types.toString,
   comments: "The ID of the retailer (a number)",
 });
+
 const customerEmail = input({
   label: "Customer Email",
   type: "string",
@@ -19,6 +21,7 @@ const customerEmail = input({
   clean: util.types.toString,
   comments: "The email address of the customer",
 });
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -28,6 +31,7 @@ const firstName = input({
   clean: util.types.toString,
   comments: "The first name of the customer (required)",
 });
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -37,6 +41,7 @@ const lastName = input({
   clean: toOptionalString,
   comments: "The last name of the customer",
 });
+
 const phoneNumber = input({
   label: "Phone Number",
   type: "string",
@@ -46,6 +51,7 @@ const phoneNumber = input({
   clean: toOptionalString,
   comments: "The customer's phone number",
 });
+
 const country = input({
   label: "Country",
   type: "string",
@@ -55,6 +61,7 @@ const country = input({
   clean: toOptionalString,
   comments: "The customer's country",
 });
+
 const timezone = input({
   label: "Time Zone",
   type: "string",
@@ -64,6 +71,7 @@ const timezone = input({
   clean: toOptionalString,
   comments: "The customer's time zone",
 });
+
 const promotionOptIn = input({
   label: "Promotion Opt In",
   type: "boolean",
@@ -72,6 +80,7 @@ const promotionOptIn = input({
   comments:
     "When true, the customer is opted in to receive promotional communications.",
 });
+
 const attributes = input({
   label: "Attributes",
   type: "string",
@@ -81,6 +90,7 @@ const attributes = input({
   comments:
     "Custom attributes to apply to the customer. Each key becomes the attribute name, and each value is stored as a STRING attribute.",
 });
+
 const emailAddress = input({
   label: "Customer Email Address",
   type: "string",
@@ -90,6 +100,7 @@ const emailAddress = input({
   clean: util.types.toString,
   comments: "The customer's email address",
 });
+
 export const createCustomerInputs = {
   connection: connectionInput,
   retailerId,
@@ -102,6 +113,7 @@ export const createCustomerInputs = {
   timezone,
   attributes,
 };
+
 export const getCustomerByEmailAddressInputs = {
   connection: connectionInput,
   emailAddress,

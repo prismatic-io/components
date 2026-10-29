@@ -5,6 +5,7 @@ import { searchFilesOutputSchema } from "../../outputSchemas";
 import { escapeDriveQueryValue, getDriveQueryParams } from "../../util";
 import { fetchFiles } from "../../util/pagination";
 import { searchFilesExamplePayload } from "../../examplePayloads";
+
 export const searchFiles = action({
   display: {
     label: "Search Files",
@@ -14,20 +15,24 @@ export const searchFiles = action({
   perform: async (_context, params) => {
     const drive = createClient(params.connection);
     let finalQuery = "";
+
     const nameQuery = params.filters.searchQuery
       ? params.filters.filesContainingSearchQuery
         ? `name contains '${escapeDriveQueryValue(params.filters.searchQuery)}'`
         : `name = '${escapeDriveQueryValue(params.filters.searchQuery)}'`
       : null;
+
     if (params.folderId) {
       finalQuery += `'${escapeDriveQueryValue(params.folderId)}' in parents`;
     }
+
     if (nameQuery) {
       if (params.folderId) {
         finalQuery += ` and `;
       }
       finalQuery += nameQuery;
     }
+
     const customQuery = params.filters.query;
     if (customQuery) {
       if (params.folderId || nameQuery) {
@@ -35,6 +40,7 @@ export const searchFiles = action({
       }
       finalQuery += customQuery;
     }
+
     const data = await fetchFiles({
       drive,
       initialParams: {
@@ -46,6 +52,7 @@ export const searchFiles = action({
       },
       fetchAll: params.fetchAll,
     });
+
     if (data.files.length === 0) {
       throw new Error(`No results found for query: ${finalQuery}`);
     }
@@ -58,9 +65,9 @@ export const searchFiles = action({
     type: "actionOutput",
     schema: searchFilesOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => searchFilesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    searchFilesExamplePayload,
   examplePayload: searchFilesExamplePayload,
 });
+
 export default searchFiles;

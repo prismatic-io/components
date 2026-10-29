@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection, fetchAll, pagination } from "./common";
+
 const emailDefinitionKey = input({
   label: "Definition Key",
   type: "string",
@@ -11,6 +12,7 @@ const emailDefinitionKey = input({
   dataSource: "selectEmailDefinition",
   clean: util.types.toString,
 });
+
 const emailDefinitionName = input({
   label: "Definition Name",
   type: "string",
@@ -20,6 +22,7 @@ const emailDefinitionName = input({
   placeholder: "Enter definition name",
   clean: util.types.toString,
 });
+
 const emailDefinitionDescription = input({
   label: "Definition Description",
   type: "string",
@@ -29,6 +32,7 @@ const emailDefinitionDescription = input({
   placeholder: "Enter definition description",
   clean: toOptionalString,
 });
+
 const emailContentCustomerKey = input({
   label: "Content Customer Key",
   type: "string",
@@ -39,6 +43,7 @@ const emailContentCustomerKey = input({
   placeholder: "Enter content customer key",
   clean: util.types.toString,
 });
+
 const emailDefinitionExtraBody = input({
   label: "Extra Body",
   type: "code",
@@ -59,6 +64,7 @@ const emailDefinitionExtraBody = input({
   ),
   clean: util.types.toObject,
 });
+
 const recipientContactKey = input({
   label: "Recipient Contact Key",
   type: "string",
@@ -68,6 +74,7 @@ const recipientContactKey = input({
   placeholder: "Enter recipient contact key",
   clean: util.types.toString,
 });
+
 const recipientEmail = input({
   label: "Recipient Email",
   type: "string",
@@ -77,6 +84,7 @@ const recipientEmail = input({
   placeholder: "Enter recipient email address",
   clean: util.types.toString,
 });
+
 const recipientAttributes = input({
   label: "Recipient Attributes",
   type: "code",
@@ -95,6 +103,7 @@ const recipientAttributes = input({
   ),
   clean: util.types.toObject,
 });
+
 const messageKey = input({
   label: "Message Key",
   type: "string",
@@ -105,6 +114,7 @@ const messageKey = input({
   placeholder: "Enter message key",
   clean: toOptionalString,
 });
+
 const batchRecipients = input({
   label: "Recipients",
   type: "code",
@@ -130,6 +140,7 @@ const batchRecipients = input({
   ),
   clean: util.types.toObject,
 });
+
 const emailMessageKey = input({
   label: "Message Key",
   type: "string",
@@ -139,15 +150,18 @@ const emailMessageKey = input({
   placeholder: "Enter message key",
   clean: util.types.toString,
 });
+
 export const listEmailDefinitionsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getEmailDefinitionInputs = {
   connection,
   emailDefinitionKey,
 };
+
 export const createEmailDefinitionInputs = {
   connection,
   emailDefinitionKey,
@@ -156,6 +170,7 @@ export const createEmailDefinitionInputs = {
   emailDefinitionDescription,
   emailDefinitionExtraBody,
 };
+
 export const sendEmailInputs = {
   connection,
   messageKey: {
@@ -170,11 +185,13 @@ export const sendEmailInputs = {
   recipientEmail,
   recipientAttributes,
 };
+
 export const sendEmailBatchInputs = {
   connection,
   emailDefinitionKey,
   batchRecipients,
 };
+
 export const updateEmailDefinitionInputs = {
   connection,
   emailDefinitionKey,
@@ -186,10 +203,12 @@ export const updateEmailDefinitionInputs = {
   emailDefinitionDescription,
   emailDefinitionExtraBody,
 };
+
 export const deleteEmailDefinitionInputs = {
   connection,
   emailDefinitionKey,
 };
+
 export const getEmailSendStatusInputs = {
   connection,
   emailMessageKey,

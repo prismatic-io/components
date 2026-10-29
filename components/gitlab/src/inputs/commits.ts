@@ -7,6 +7,7 @@ import {
   project,
   refName,
 } from "./common";
+
 const commitSha = input({
   label: "Commit SHA",
   placeholder: "Enter commit SHA",
@@ -17,6 +18,7 @@ const commitSha = input({
   example: "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
   clean: toPathSegment,
 });
+
 const since = input({
   label: "Since",
   type: "string",
@@ -26,6 +28,7 @@ const since = input({
   example: "2026-09-01T00:00:00Z",
   clean: toOptionalTimestamp,
 });
+
 const until = input({
   label: "Until",
   type: "string",
@@ -35,6 +38,7 @@ const until = input({
   example: "2026-09-30T00:00:00Z",
   clean: toOptionalTimestamp,
 });
+
 const path = input({
   label: "Path",
   type: "string",
@@ -44,6 +48,7 @@ const path = input({
   example: "src/settlements/retry.ts",
   clean: cleanString,
 });
+
 export const listCommitsInputs = {
   connection: connectionInput,
   project,
@@ -54,6 +59,7 @@ export const listCommitsInputs = {
   until,
   path,
 };
+
 export const getCommitInputs = {
   connection: connectionInput,
   project,

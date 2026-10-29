@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { cancelFeedExamplePayload } from "../../examplePayloads/feeds";
 import { connectionInput, feedId } from "../../inputs";
+
 export const cancelFeed = action({
   display: {
     label: "Cancel Feed",

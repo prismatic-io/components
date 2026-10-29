@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const queueName = input({
   example: "myQueue",
   placeholder: "Queue Name",
@@ -8,11 +9,13 @@ export const queueName = input({
   comments: "Provide the name of the queue you would like to interact with.",
   clean: (value) => util.types.toString(value) || "",
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const routeMessage = input({
   label: "Route Message",
   type: "boolean",
@@ -20,6 +23,7 @@ export const routeMessage = input({
   comments: "If you would like to route this message, check this box.",
   clean: util.types.toBool,
 });
+
 export const exchange = input({
   label: "Exchange",
   type: "string",
@@ -30,6 +34,7 @@ export const exchange = input({
   clean: util.types.toString,
   example: "account_events",
 });
+
 export const routingKey = input({
   label: "Routing Key",
   type: "string",

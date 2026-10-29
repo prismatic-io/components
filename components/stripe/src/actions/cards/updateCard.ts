@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { updateCardExamplePayload } from "../../examplePayloads/cards";
 import { updateCardInputs } from "../../inputs";
 import { paymentMethodOutputSchema } from "../../outputSchemas";
+
 export const updateCard = action({
   display: {
     label: "Update Card",
@@ -26,6 +27,7 @@ export const updateCard = action({
       stripeConnection,
       timeout,
     });
+
     return {
       data: await client.paymentMethods.update(paymentId, {
         card: {
@@ -52,13 +54,12 @@ export const updateCard = action({
   examplePerform: async (
     _context,
     { paymentId, expMonth, expYear, billingAddress, contactInfo, metadata },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const card = updateCardExamplePayload.data as Record<string, unknown>;
     const cardDetails = card.card as Record<string, unknown>;
     const billingDetails = card.billing_details as Record<string, unknown>;
     const address = billingDetails.address as Record<string, unknown>;
+
     return {
       data: {
         ...card,
@@ -92,5 +93,6 @@ export const updateCard = action({
     type: "actionOutput",
     schema: paymentMethodOutputSchema,
   }),
+
   examplePayload: updateCardExamplePayload,
 });

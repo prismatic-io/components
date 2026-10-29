@@ -9,6 +9,7 @@ import {
   status,
   user,
 } from "./common";
+
 const orgUuid = input({
   label: "Organization UUID",
   type: "string",
@@ -17,6 +18,7 @@ const orgUuid = input({
   placeholder: "Enter organization UUID",
   clean: util.types.toString,
 });
+
 const actionInput = input({
   label: "Action",
   type: "string",
@@ -25,6 +27,7 @@ const actionInput = input({
   required: false,
   clean: (value) => value as string[],
 });
+
 const actor = input({
   label: "Actor",
   type: "string",
@@ -33,6 +36,7 @@ const actor = input({
   required: false,
   clean: (value) => value as string[],
 });
+
 const maxOccurredAt = input({
   label: "Max Occurred At",
   type: "string",
@@ -43,6 +47,7 @@ const maxOccurredAt = input({
   example: "2020-01-02T03:04:05.678Z",
   clean: cleanString,
 });
+
 const minOccurredAt = input({
   label: "Min Occurred At",
   type: "string",
@@ -53,6 +58,7 @@ const minOccurredAt = input({
   example: "2020-01-02T03:04:05.678Z",
   clean: cleanString,
 });
+
 const namespace = input({
   label: "Namespace",
   type: "string",
@@ -61,6 +67,7 @@ const namespace = input({
   required: false,
   clean: (value) => value as string[],
 });
+
 const searchTerm = input({
   label: "Search Term",
   type: "string",
@@ -70,6 +77,7 @@ const searchTerm = input({
   placeholder: "Enter search term",
   clean: cleanString,
 });
+
 const sortList = input({
   label: "Sort",
   type: "string",
@@ -121,6 +129,7 @@ const sortList = input({
   ],
   clean: (value) => value as string[],
 });
+
 export const getOrganizationInvitationInputs = {
   connection,
   uuid: {
@@ -129,6 +138,7 @@ export const getOrganizationInvitationInputs = {
   },
   orgUuid,
 };
+
 export const getOrganizationMembershipInputs = {
   connection,
   uuid: {
@@ -136,6 +146,7 @@ export const getOrganizationMembershipInputs = {
     comments: "The organization membership's unique identifier.",
   },
 };
+
 export const inviteUserToOrganizationInputs = {
   connection,
   uuid: { ...uuid, comments: "The UUID of the organization." },
@@ -145,6 +156,7 @@ export const inviteUserToOrganizationInputs = {
     comments: "The email address of the user to invite.",
   },
 };
+
 export const listActivityLogEntriesInputs = {
   connection,
   organization: {
@@ -162,6 +174,7 @@ export const listActivityLogEntriesInputs = {
   searchTerm,
   sortList,
 };
+
 export const listOrganizationInvitationsInputs = {
   connection,
   uuid,
@@ -196,6 +209,7 @@ export const listOrganizationInvitationsInputs = {
     ],
   },
 };
+
 export const listOrganizationMembershipsInputs = {
   connection,
   email: {
@@ -214,6 +228,7 @@ export const listOrganizationMembershipsInputs = {
     example: "https://api.calendly.com/users/UR1234567890",
   },
 };
+
 export const removeUserFromOrganizationInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
@@ -223,6 +238,7 @@ export const removeUserFromOrganizationInputs = {
     dataSource: "organizationMemberships",
   },
 };
+
 export const revokeUserOrganizationInvitationInputs = {
   connection,
   uuid: {

@@ -8,10 +8,13 @@ import type {
 import { lookBackDateClean } from "../../util/clean";
 import { resolveV3ApplicationChanges } from "../../util/polling";
 import { pollChangesTriggerV3 } from "./pollChangesTriggerV3";
+
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 vi.mock("../../client", () => ({ createV3Client: () => ({ get }) }));
+
 const NOW = "2026-06-10T12:00:00.000Z";
 const LAST_POLLED_AT = "2026-06-01T00:00:00.000Z";
+
 const application = (
   id: number,
   createdAt: string,
@@ -21,6 +24,7 @@ const application = (
   created_at: createdAt,
   last_activity_at: lastActivityAt,
 });
+
 const createdApplication = application(
   2,
   "2026-06-05T00:00:00.000Z",
@@ -31,6 +35,7 @@ const updatedApplication = application(
   "2025-01-01T00:00:00.000Z",
   "2026-06-05T00:00:00.000Z",
 );
+
 const page = (data: Application[], cursor?: string) => ({
   data,
   headers: cursor
@@ -39,12 +44,12 @@ const page = (data: Application[], cursor?: string) => ({
       }
     : {},
 });
+
 type PerformContext = Parameters<typeof pollChangesTriggerV3.perform>[0];
 type PerformPayload = Parameters<typeof pollChangesTriggerV3.perform>[1];
+
 const makeContext = (
-  store: {
-    state: Record<string, unknown>;
-  },
+  store: { state: Record<string, unknown> },
   batching = false,
 ): PerformContext =>
   ({
@@ -58,19 +63,23 @@ const makeContext = (
     debug: { enabled: false },
     logger: { debug: vi.fn() },
   }) as unknown as PerformContext;
+
 const makePayload = (paginationState?: V3PollingCursor): PerformPayload =>
   ({
     headers: {},
     body: { data: undefined },
     ...(paginationState ? { paginationState } : {}),
   }) as unknown as PerformPayload;
+
 type PerformParams = Parameters<typeof pollChangesTriggerV3.perform>[2];
+
 const params = (lookBackDate = "") => ({
   connection: {} as never,
   lookBackDate,
   showNewRecords: true,
   showUpdatedRecords: true,
 });
+
 const poll = async (
   context: PerformContext,
   payload: PerformPayload,
@@ -84,14 +93,17 @@ const poll = async (
     payload: PerformPayload;
     polledNoChanges?: boolean;
   };
+
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(new Date(NOW));
   get.mockReset();
 });
+
 afterEach(() => {
   vi.useRealTimers();
 });
+
 describe("pollChangesTriggerV3 batching declaration", () => {
   test("declares opt-in batching with a default batch size and a pagination cursor", () => {
     expect(pollChangesTriggerV3.triggerResolverSupport).toBe("valid");
@@ -103,6 +115,7 @@ describe("pollChangesTriggerV3 batching declaration", () => {
       pollChangesTriggerV3.triggerResolver?.getNextPaginationState,
     ).toBeInstanceOf(Function);
   });
+
   test("offers the Look-back Date directly below the connection", () => {
     expect(Object.keys(pollChangesTriggerV3.inputs ?? {})).toEqual([
       "connection",
@@ -112,6 +125,7 @@ describe("pollChangesTriggerV3 batching declaration", () => {
     ]);
   });
 });
+
 describe("resolveV3ApplicationChanges", () => {
   test("tags every application with how it changed", () => {
     expect(
@@ -124,12 +138,14 @@ describe("resolveV3ApplicationChanges", () => {
       { changeType: "updated", record: updatedApplication },
     ]);
   });
+
   test("returns [] for empty or undefined changes", () => {
     expect(resolveV3ApplicationChanges({ created: [], updated: [] })).toEqual(
       [],
     );
     expect(resolveV3ApplicationChanges(undefined)).toEqual([]);
   });
+
   test("tolerates a single absent array", () => {
     expect(
       resolveV3ApplicationChanges({
@@ -143,6 +159,7 @@ describe("resolveV3ApplicationChanges", () => {
     ).toEqual([{ changeType: "updated", record: updatedApplication }]);
   });
 });
+
 describe("triggerResolver.resolveItems", () => {
   test("flattens the payload shape perform actually returns", () => {
     const data = pollChangesTriggerV3ExamplePayload.payload.body
@@ -156,6 +173,7 @@ describe("triggerResolver.resolveItems", () => {
       ...data.updated.map((record) => ({ changeType: "updated", record })),
     ]);
   });
+
   test("resolved items split into batches of the declared batchSize", () => {
     const chunk = <T>(items: T[], size: number): T[][] =>
       Array.from({ length: Math.ceil(items.length / size) }, (_, i) =>
@@ -180,11 +198,13 @@ describe("triggerResolver.resolveItems", () => {
     ]);
   });
 });
+
 describe("pollChangesTriggerV3 multi-round drain", () => {
   test("resumes from the round's cursor and commits the watermark only when drained", async () => {
     const store = {
       state: { lastPolledAt: LAST_POLLED_AT } as Record<string, unknown>,
     };
+
     get.mockResolvedValueOnce(page([createdApplication], "c1"));
     const first = await poll(makeContext(store, true), makePayload(), params());
     expect(get).toHaveBeenCalledTimes(1);
@@ -210,6 +230,7 @@ describe("pollChangesTriggerV3 multi-round drain", () => {
         { payload: first.payload },
       ),
     ).toEqual(cursor);
+
     store.state = { ...store.state, cursor: { ...cursor, after: "stale" } };
     vi.setSystemTime(new Date("2026-06-10T12:05:00.000Z"));
     get.mockResolvedValueOnce(page([]));
@@ -230,15 +251,18 @@ describe("pollChangesTriggerV3 multi-round drain", () => {
         { payload: second.payload },
       ),
     ).toBeNull();
+
     get.mockResolvedValueOnce(page([]));
     const third = await poll(makeContext(store, true), makePayload(), params());
     expect(third.polledNoChanges).toBe(true);
   });
+
   test("bounds an unbatched round to a window and resumes it on the next recurrence", async () => {
     const store = {
       state: { lastPolledAt: LAST_POLLED_AT } as Record<string, unknown>,
     };
     get.mockResolvedValue(page([updatedApplication], "more"));
+
     const first = await poll(makeContext(store), makePayload(), params());
     expect(get).toHaveBeenCalledTimes(10);
     expect(get).toHaveBeenNthCalledWith(1, "/applications", {
@@ -246,6 +270,7 @@ describe("pollChangesTriggerV3 multi-round drain", () => {
     });
     expect(store.state.lastPolledAt).toBe(LAST_POLLED_AT);
     expect(first.payload.paginationState).toMatchObject({ after: "more" });
+
     get.mockReset();
     get.mockResolvedValueOnce(page([]));
     await poll(makeContext(store), makePayload(), params());
@@ -255,6 +280,7 @@ describe("pollChangesTriggerV3 multi-round drain", () => {
     expect(store.state).toEqual({ lastPolledAt: NOW });
   });
 });
+
 describe("Look-back Date", () => {
   test("seeds the first drain from the date and ignores the visibility toggles", async () => {
     const lookBackDate = "2026-01-01T00:00:00.000Z";
@@ -262,6 +288,7 @@ describe("Look-back Date", () => {
     get.mockResolvedValueOnce(
       page([createdApplication, updatedApplication], "c1"),
     );
+
     const first = await poll(makeContext(store, true), makePayload(), {
       ...params(lookBackDate),
       showNewRecords: false,
@@ -280,11 +307,13 @@ describe("Look-back Date", () => {
       updated: [updatedApplication],
     });
   });
+
   test("lookBackDateClean returns an ISO instant, and '' for empty", () => {
     expect(lookBackDateClean("")).toBe("");
     expect(lookBackDateClean(undefined)).toBe("");
     expect(lookBackDateClean("2026-01-01")).toBe("2026-01-01T00:00:00.000Z");
   });
+
   test("lookBackDateClean rejects a bad format, a non-calendar date, and a future date", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(/Look-back Date/);
     expect(() => lookBackDateClean("2026-02-31")).toThrow(/Look-back Date/);

@@ -13,6 +13,7 @@ import {
   paymentIntent,
   timeout,
 } from "./common";
+
 export const evidence = input({
   label: "Evidence",
   type: "code",
@@ -23,6 +24,7 @@ export const evidence = input({
   required: false,
   clean: cleanObjectInput,
 });
+
 export const submit = input({
   label: "Submit",
   type: "string",
@@ -36,6 +38,7 @@ export const submit = input({
   default: "",
   clean: cleanTriStateBoolInput,
 });
+
 export const disputeId = input({
   label: "Dispute ID",
   type: "string",
@@ -45,16 +48,19 @@ export const disputeId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const closeDisputeInputs = {
   timeout,
   stripeConnection: connectionInput,
   disputeId,
 };
+
 export const getDisputeInputs = {
   timeout,
   stripeConnection: connectionInput,
   disputeId,
 };
+
 export const listDisputesInputs = {
   timeout,
   stripeConnection: connectionInput,
@@ -70,6 +76,7 @@ export const listDisputesInputs = {
   created,
   pagination: cursorPagination,
 };
+
 export const updateDisputeInputs = {
   timeout,
   stripeConnection: connectionInput,

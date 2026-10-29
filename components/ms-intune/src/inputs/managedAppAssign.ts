@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connection } from "./common";
+
 const assignAppId = input({
   label: "App ID",
   comments:
@@ -11,6 +12,7 @@ const assignAppId = input({
   required: true,
   clean: cleanStringInput,
 });
+
 const groupId = input({
   label: "Group ID",
   comments:
@@ -22,6 +24,7 @@ const groupId = input({
   clean: cleanStringInput,
   dataSource: "selectGroup",
 });
+
 const intent = input({
   label: "Intent",
   comments:
@@ -40,12 +43,14 @@ const intent = input({
   required: true,
   clean: cleanStringInput,
 });
+
 export const assignManagedAppToGroupInputs = {
   connection,
   appId: assignAppId,
   groupId,
   intent,
 };
+
 const listAppId = input({
   label: "App ID",
   comments:
@@ -56,6 +61,7 @@ const listAppId = input({
   required: true,
   clean: cleanStringInput,
 });
+
 export const listManagedAppAssignmentsInputs = {
   connection,
   appId: listAppId,

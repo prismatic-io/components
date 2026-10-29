@@ -1,4 +1,5 @@
 import type { DropboxResponse, files } from "dropbox";
+
 export const copyObjectExamplePayload: DropboxResponse<files.RelocationResult> =
   {
     status: 200,
@@ -15,6 +16,7 @@ export const copyObjectExamplePayload: DropboxResponse<files.RelocationResult> =
       },
     },
   };
+
 export const deleteObjectExamplePayload: DropboxResponse<files.DeleteResult> = {
   status: 200,
   headers: {},
@@ -30,10 +32,12 @@ export const deleteObjectExamplePayload: DropboxResponse<files.DeleteResult> = {
     },
   },
 };
+
 export const downloadFileExamplePayload = {
   data: Buffer.from("example"),
   contentType: "application/octet",
 };
+
 export const exportFileExamplePayload: DropboxResponse<files.ExportResult> = {
   status: 200,
   headers: {},
@@ -81,6 +85,7 @@ export const exportFileExamplePayload: DropboxResponse<files.ExportResult> = {
     },
   },
 };
+
 export const getDownloadStatusExamplePayload: DropboxResponse<files.SaveUrlJobStatus> =
   {
     status: 200,
@@ -89,6 +94,7 @@ export const getDownloadStatusExamplePayload: DropboxResponse<files.SaveUrlJobSt
       ".tag": "in_progress",
     },
   };
+
 export const getFileOrFolderMetadataExamplePayload: DropboxResponse<
   | files.FileMetadataReference
   | files.FolderMetadataReference
@@ -133,6 +139,7 @@ export const getFileOrFolderMetadataExamplePayload: DropboxResponse<
     size: 7212,
   },
 };
+
 export const lockFileBatchExamplePayload: DropboxResponse<files.LockFileBatchResult> =
   {
     status: 200,
@@ -190,8 +197,11 @@ export const lockFileBatchExamplePayload: DropboxResponse<files.LockFileBatchRes
       ],
     },
   };
+
 export const getFileLockExamplePayload = lockFileBatchExamplePayload;
+
 export const unlockFileExamplePayload = lockFileBatchExamplePayload;
+
 export const moveObjectExamplePayload: DropboxResponse<files.RelocationResult> =
   {
     status: 200,
@@ -208,6 +218,7 @@ export const moveObjectExamplePayload: DropboxResponse<files.RelocationResult> =
       },
     },
   };
+
 export const saveFromUrlExamplePayload: DropboxResponse<files.SaveUrlResult> = {
   status: 200,
   headers: {},
@@ -216,6 +227,7 @@ export const saveFromUrlExamplePayload: DropboxResponse<files.SaveUrlResult> = {
     async_job_id: "LnMobEc7XVEAAAAAAAAAAQ",
   },
 };
+
 export const searchFilesExamplePayload: DropboxResponse<files.SearchV2Result> =
   {
     status: 200,
@@ -251,6 +263,7 @@ export const searchFilesExamplePayload: DropboxResponse<files.SearchV2Result> =
       ],
     },
   };
+
 export const uploadFileExamplePayload: DropboxResponse<files.FileMetadata> = {
   status: 200,
   headers: {},

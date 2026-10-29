@@ -6,6 +6,7 @@ import { toInt } from "../utils/toInt";
 import { toStr } from "../utils/toStr";
 import { validateLimit } from "../utils/validateLimit";
 import { sharedInputs } from "./shared";
+
 export const getEventInputs = {
   id: input({
     label: "Event ID",
@@ -18,6 +19,7 @@ export const getEventInputs = {
   }),
   ...sharedInputs,
 };
+
 export const listEventsInputs = {
   created_datetime: input({
     label: "Created Datetime",
@@ -148,6 +150,7 @@ export const listEventsInputs = {
   }),
   ...sharedInputs,
 };
+
 export const selectEventInputs = {
   created_datetime: listEventsInputs.created_datetime,
   object_id: listEventsInputs.object_id,

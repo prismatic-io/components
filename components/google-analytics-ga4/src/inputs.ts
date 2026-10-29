@@ -2,6 +2,7 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { ANALYTICS_ENDPOINTS } from "./constants";
 import { lookBackDateClean, pollResourceModel, toOptionalString } from "./util";
+
 const cleanId = (idType: string, id: string) => {
   if (id.startsWith(idType)) {
     return id;
@@ -9,6 +10,7 @@ const cleanId = (idType: string, id: string) => {
     return `${idType}/${id}`;
   }
 };
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -20,6 +22,7 @@ export const pageToken = input({
     "If a previous response was truncated, the response includes a `nextPageToken`. To retrieve the next page of results, set this parameter to the value of `nextPageToken` from the previous response.",
   clean: toOptionalString,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -29,11 +32,13 @@ export const pageSize = input({
   comments: `The maximum number of resources contained in the underlying API response. The API may return fewer values in a page, even if there are additional values to return. If unspecified, 200 is requested, which is also the maximum.`,
   clean: toOptionalString,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const propertyIdInput = input({
   label: "Property ID",
   type: "string",
@@ -45,6 +50,7 @@ export const propertyIdInput = input({
   dataSource: "listProperties",
   clean: (value) => cleanId("properties", util.types.toString(value)),
 });
+
 export const appInstanceId = input({
   label: "App Instance ID",
   comments:
@@ -55,6 +61,7 @@ export const appInstanceId = input({
   placeholder: "Enter an app instance ID",
   clean: util.types.toString,
 });
+
 export const events = input({
   label: "Events To Send",
   comments: "The events to send to Google Analytics",
@@ -77,6 +84,7 @@ export const events = input({
     },
   ]),
 });
+
 export const apiSecret = input({
   label: "API Secret",
   type: "password",
@@ -87,6 +95,7 @@ export const apiSecret = input({
     "The Measurement Protocol API secret. Generate one in the Google Analytics UI under Admin > Data Streams > Measurement Protocol API secrets.",
   clean: util.types.toString,
 });
+
 export const firebaseAppId = input({
   label: "Firebase App ID",
   type: "string",
@@ -98,6 +107,7 @@ export const firebaseAppId = input({
     " Project Settings > General > Your Apps > App ID",
   clean: util.types.toString,
 });
+
 export const accountId = input({
   label: "Account ID",
   type: "string",
@@ -109,6 +119,7 @@ export const accountId = input({
   dataSource: "listAccounts",
   clean: util.types.toString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -116,7 +127,9 @@ export const fetchAll = input({
   comments: "When true, retrieves all pages of results.",
   clean: util.types.toBool,
 });
+
 const { debugRequest: _, ...restInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   connection: connectionInput,
   baseUrl: input({
@@ -137,23 +150,27 @@ export const rawRequestInputs = {
     example: "/accounts",
   },
 };
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { pageSize, pageToken },
 });
+
 export const listAccountsInputs = {
   fetchAll,
   pagination,
   connection: connectionInput,
 };
+
 export const listPropertiesInputs = {
   accountId: accountId,
   fetchAll,
   pagination,
   connection: connectionInput,
 };
+
 export const getPropertyInputs = {
   accountId: {
     ...accountId,
@@ -162,6 +179,7 @@ export const getPropertyInputs = {
   propertyId: propertyIdInput,
   connection: connectionInput,
 };
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -171,6 +189,7 @@ const pollResourceType = input({
     "The Google Analytics GA4 resource type to poll for new or updated records.",
   clean: util.types.toString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -180,6 +199,7 @@ const showNewRecords = input({
     "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -189,6 +209,7 @@ const showUpdatedRecords = input({
     "When true, records that were modified after the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -199,6 +220,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = {
   connection: {
     ...connectionInput,

@@ -4,6 +4,7 @@ import {
 } from "@prismatic-io/spectral/dist/testing";
 import { TriggerBranches } from "../constants";
 import { resourceTrigger } from "./resourceTrigger";
+
 const notification = {
   value: [
     {
@@ -13,19 +14,13 @@ const notification = {
     },
   ],
 };
+
 type ObservedTriggerResult = {
   branch: string;
-  payload: {
-    body: {
-      data: unknown;
-    };
-  };
-  response?: {
-    statusCode: number;
-    contentType: string;
-    body: string;
-  };
+  payload: { body: { data: unknown } };
+  response?: { statusCode: number; contentType: string; body: string };
 };
+
 describe("resourceTrigger", () => {
   test("URL Validation branch echoes the validation token as a text/plain 200", async () => {
     const validationToken = "validation-token-value";
@@ -33,8 +28,10 @@ describe("resourceTrigger", () => {
       ...defaultTriggerPayload(),
       queryParameters: { validationToken },
     };
+
     const { result } = await invokeTrigger(resourceTrigger, {}, payload);
     const observed = result as unknown as ObservedTriggerResult;
+
     expect(observed.branch).toBe(TriggerBranches.URLValidation);
     expect(observed.response).toEqual({
       statusCode: 200,
@@ -43,6 +40,7 @@ describe("resourceTrigger", () => {
     });
     expect(result?.payload).toEqual(payload);
   });
+
   test("Notification branch returns the parsed webhook payload with no response", async () => {
     const base = defaultTriggerPayload();
     const payload = {
@@ -54,8 +52,10 @@ describe("resourceTrigger", () => {
         contentType: "application/json",
       },
     };
+
     const { result } = await invokeTrigger(resourceTrigger, {}, payload);
     const observed = result as unknown as ObservedTriggerResult;
+
     expect(observed.branch).toBe(TriggerBranches.Notification);
     expect(observed.payload.body.data).toEqual(notification);
     expect(observed.response).toBeUndefined();

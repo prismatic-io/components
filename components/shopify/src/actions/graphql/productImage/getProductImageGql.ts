@@ -5,6 +5,7 @@ import { getProductImageInputs as inputs } from "../../../inputsGql";
 import { getProductImageGqlOutputSchema } from "../../../outputSchemas";
 import type { Nodes } from "../../../types";
 import getProductImageQuery from "../queries/productImage/GetProductImage.gql";
+
 export const getProductImageGql = action({
   display: {
     label: "Get Product Image",
@@ -18,17 +19,17 @@ export const getProductImageGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      product: {
-        media: {
-          nodes: Nodes;
-        };
-      };
-    } = await client.request(getProductImageQuery, {
-      productId,
-      query: `id:${imageId}`,
-    });
+
+    const data: { product: { media: { nodes: Nodes } } } = await client.request(
+      getProductImageQuery,
+      {
+        productId,
+        query: `id:${imageId}`,
+      },
+    );
+
     const image = data.product.media.nodes[0] || null;
+
     return {
       data: {
         image,

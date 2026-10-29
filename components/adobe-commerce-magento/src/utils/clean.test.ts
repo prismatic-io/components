@@ -4,6 +4,7 @@ import {
   cleanString,
   lookBackDateClean,
 } from "./clean";
+
 describe("cleanString", () => {
   test.each<[string, unknown, string]>([
     ["a filled string", "hello", "hello"],
@@ -12,6 +13,7 @@ describe("cleanString", () => {
   ])("%s resolves to its string form", (_label, raw, expected) => {
     expect(cleanString(raw)).toBe(expected);
   });
+
   test.each<[string, unknown]>([
     ["an empty string", ""],
     ["undefined", undefined],
@@ -21,10 +23,12 @@ describe("cleanString", () => {
     expect(cleanString(raw)).toBeUndefined();
   });
 });
+
 describe("cleanNumber", () => {
   test("coerces a numeric string", () => {
     expect(cleanNumber("5")).toBe(5);
   });
+
   test.each<[string, unknown]>([
     ["an empty string", ""],
     ["undefined", undefined],
@@ -34,25 +38,33 @@ describe("cleanNumber", () => {
   ])("%s resolves to undefined rather than 0", (_label, raw) => {
     expect(cleanNumber(raw)).toBeUndefined();
   });
+
   test("propagates the coercion failure for a non-numeric value", () => {
     expect(() => cleanNumber("abc")).toThrow(/cannot be coerced to a number/);
   });
 });
+
 describe("asJsonObject", () => {
   test("returns a shallow copy so the caller can extend it safely", () => {
     const input = { sku: "ABC-123", price: 10 };
+
     const result = asJsonObject(input, "Product");
+
     expect(result).toEqual(input);
     expect(result).not.toBe(input);
   });
+
   test("preserves nested values by reference, copying only the top level", () => {
     const nested = { weight: 2 };
+
     const result = asJsonObject(
       { sku: "ABC-123", extension: nested },
       "Product",
     );
+
     expect(result.extension).toBe(nested);
   });
+
   test.each<[string, unknown]>([
     ["a string that never parsed", "{ not json"],
     ["an array", [{ sku: "ABC-123" }]],
@@ -65,6 +77,7 @@ describe("asJsonObject", () => {
     );
   });
 });
+
 describe("lookBackDateClean", () => {
   test.each<[string, unknown]>([
     ["undefined", undefined],
@@ -74,14 +87,17 @@ describe("lookBackDateClean", () => {
   ])("%s resolves to undefined", (_label, raw) => {
     expect(lookBackDateClean(raw)).toBeUndefined();
   });
+
   test("normalizes a calendar date to an ISO 8601 instant at UTC midnight", () => {
     expect(lookBackDateClean("2020-01-01")).toBe("2020-01-01T00:00:00.000Z");
   });
+
   test("trims surrounding whitespace before matching", () => {
     expect(lookBackDateClean("  2020-01-01  ")).toBe(
       "2020-01-01T00:00:00.000Z",
     );
   });
+
   test.each<[string, unknown]>([
     ["a day the month does not have", "2020-02-31"],
     ["a month that does not exist", "2020-13-01"],
@@ -94,6 +110,7 @@ describe("lookBackDateClean", () => {
       /must be a date in YYYY-MM-DD format/,
     );
   });
+
   test("rejects a future date with its own message", () => {
     expect(() => lookBackDateClean("2099-01-01")).toThrow(
       /cannot be a future date/,

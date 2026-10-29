@@ -1,16 +1,24 @@
 export const EXPERIMENTAL_API_HEADER = {
   "X-ExperimentalApi": "opt-in",
 } as const;
+
 export const DEFAULT_PAGE_SIZE = 50;
+
 export const API_PATH = "/rest/servicedeskapi";
+
 export const SUCCESS_RESPONSE = { success: true } as const;
+
 export const OPS_EVENTS_BASE_URL =
   "https://api.atlassian.com/jsm/ops/integration/v2";
+
 export const OPS_API_HOST = "api.atlassian.com";
 export const OPS_API_PATH_PREFIX = "/jsm/ops/api";
+
 export const ASSETS_API_HOST = "api.atlassian.com";
+
 export const ASSETS_WORKSPACE_LOOKUP_PATH =
   "/rest/servicedeskapi/assets/workspace";
+
 export const DEFAULT_OAUTH2_SCOPES = [
   "read:servicedesk-request",
   "write:servicedesk-request",

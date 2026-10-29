@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { getSamlIdpMetadataExamplePayload } from "../../examplePayloads";
 import { getSamlIdpMetadataInputs } from "../../inputs";
+
 const getSamlIdpMetadata = action({
   display: {
     label: "Get Saml Idp Metadata (V1)",
@@ -20,6 +21,7 @@ const getSamlIdpMetadata = action({
     return { data };
   },
 });
+
 export default {
   getSamlIdpMetadata,
 };

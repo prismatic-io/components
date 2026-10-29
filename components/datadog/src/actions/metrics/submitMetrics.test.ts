@@ -4,11 +4,13 @@ import { apiKeyConnection } from "../../connections";
 import { DEFAULT_DATADOG_SITE } from "../../constants";
 import { submitMetricsExamplePayload } from "../../examplePayloads";
 import { submitMetrics } from "./submitMetrics";
+
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
   apiKey: "test-api-key",
   applicationKey: "test-application-key",
 });
+
 const series = [
   {
     metric: "system.load.1",
@@ -18,25 +20,31 @@ const series = [
     tags: ["environment:production"],
   },
 ];
+
 describe("submitMetrics", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("wraps the cleaned series array in a series body", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series", { series })
       .reply(202, submitMetricsExamplePayload.data);
+
     const { result } = await invoke(submitMetrics, {
       connection: testConnection,
       metricSeries: series,
     });
+
     expect(result.data).toEqual(submitMetricsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("surfaces an API error", async () => {
     nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series")
       .reply(400, { errors: ["Invalid metric payload"] });
+
     await expect(
       invoke(submitMetrics, {
         connection: testConnection,

@@ -5,6 +5,7 @@ import type {
   PlannerChecklistEntry,
   PlannerReferenceEntry,
 } from "../types";
+
 export const buildAssignments = (
   assignTo: string[] = [],
   unassign: string[] = [],
@@ -21,6 +22,7 @@ export const buildAssignments = (
   }
   return assignments;
 };
+
 export const buildAppliedCategories = (
   applied: string[] = [],
   removed: string[] = [],
@@ -34,19 +36,14 @@ export const buildAppliedCategories = (
   }
   return categories;
 };
+
 export const buildChecklist = (
-  add: {
-    title: string;
-    isChecked?: boolean;
-  }[] = [],
-  update: {
-    id: string;
-    title?: string;
-    isChecked?: boolean;
-  }[] = [],
+  add: { title: string; isChecked?: boolean }[] = [],
+  update: { id: string; title?: string; isChecked?: boolean }[] = [],
   removeIds: string[] = [],
 ): Record<string, PlannerChecklistEntry | null> => {
   const checklist: Record<string, PlannerChecklistEntry | null> = {};
+
   for (const item of add) {
     checklist[randomUUID()] = {
       "@odata.type": ODATA_TYPE.checklistItem,
@@ -54,6 +51,7 @@ export const buildChecklist = (
       isChecked: item.isChecked ?? false,
     };
   }
+
   for (const item of update) {
     const entry: PlannerChecklistEntry = {
       "@odata.type": ODATA_TYPE.checklistItem,
@@ -62,20 +60,20 @@ export const buildChecklist = (
     if (item.isChecked !== undefined) entry.isChecked = item.isChecked;
     checklist[item.id] = entry;
   }
+
   for (const id of removeIds) {
     checklist[id] = null;
   }
+
   return checklist;
 };
+
 export const buildReferences = (
-  add: {
-    url: string;
-    alias?: string;
-    type?: string;
-  }[] = [],
+  add: { url: string; alias?: string; type?: string }[] = [],
   removeUrls: string[] = [],
 ): Record<string, PlannerReferenceEntry | null> => {
   const references: Record<string, PlannerReferenceEntry | null> = {};
+
   for (const reference of add) {
     const entry: PlannerReferenceEntry = {
       "@odata.type": ODATA_TYPE.externalReference,
@@ -85,17 +83,21 @@ export const buildReferences = (
     if (reference.type) entry.type = reference.type;
     references[encodeReferenceKey(reference.url)] = entry;
   }
+
   for (const url of removeUrls) {
     references[encodeReferenceKey(url)] = null;
   }
+
   return references;
 };
+
 export const compact = <T extends Record<string, unknown>>(
   body: T,
 ): Partial<T> =>
   Object.fromEntries(
     Object.entries(body).filter(([, value]) => value !== undefined),
   ) as Partial<T>;
+
 export const encodeReferenceKey = (url: string): string =>
   url
     .replace(/%/g, "%25")

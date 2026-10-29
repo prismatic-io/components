@@ -8,6 +8,7 @@ import type {
 } from "../types";
 import { generatePrefixedHash, getBase64FromUrl } from "../utils";
 import { createWatchFn } from "../watchUtils";
+
 export const pushNotificationWebhookCreate = async (
   {
     logger,
@@ -32,22 +33,28 @@ export const pushNotificationWebhookCreate = async (
     logger.error(errorMessage);
     throw new Error(errorMessage);
   }
+
   if (!idRegex.test(subscriptionId)) {
     const errorMessage = `Subscription ID ${idError}`;
     logger.error(errorMessage);
     throw new Error(errorMessage);
   }
+
   const pubSubClient = await createPubSubClient(connection);
   const gmailClient = await createGmailClient(connection);
+
   const integrationFlowName = flow.name;
   const encodedId = getBase64FromUrl(webhookUrls[integrationFlowName]);
+
   const prefixedTopicId = generatePrefixedHash(topicId, encodedId);
   const topicName = `projects/${projectId}/topics/${prefixedTopicId}`;
   try {
     const { data: topicData } = await pubSubClient.projects.topics.create({
       name: topicName,
     });
+
     logger.info(`Created topic: ${topicData.name}`);
+
     await pubSubClient.projects.topics.setIamPolicy({
       resource: topicName,
       requestBody: {
@@ -79,6 +86,7 @@ export const pushNotificationWebhookCreate = async (
       throw error;
     }
   }
+
   const prefixedSubscriptionId = generatePrefixedHash(
     subscriptionId,
     encodedId,
@@ -111,6 +119,7 @@ export const pushNotificationWebhookCreate = async (
       throw error;
     }
   }
+
   try {
     const watchData = await createWatchFn(
       gmailClient,
@@ -123,6 +132,7 @@ export const pushNotificationWebhookCreate = async (
         `HistoryId: ${watchData.historyId}, ` +
         `Expiration: ${watchData.expiration}`,
     );
+
     crossFlowState[encodedId] = {
       historyId: watchData.historyId,
     };

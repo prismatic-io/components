@@ -1,4 +1,5 @@
 import { localServicesAggregatorInfoSchema } from "./common";
+
 export const accountReportsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -30,6 +31,7 @@ export const accountReportsOutputSchema = {
     nextPageToken: { type: "string" },
   },
 };
+
 export const detailedLeadReportsOutputSchema = {
   type: "object" as const,
   properties: {

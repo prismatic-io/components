@@ -7,6 +7,7 @@ import sources from "./sources";
 import transformations from "./transformations";
 import users from "./users";
 import warehouses from "./warehouses";
+
 export default {
   ...catalogs_metadata,
   ...destinations,

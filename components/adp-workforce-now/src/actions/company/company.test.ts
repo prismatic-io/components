@@ -4,10 +4,12 @@ import { adpOauth2 } from "../../connections/adpOauth2";
 import { API_ENDPOINT, TOKEN_ENDPOINT } from "../../constants";
 import { listCompanyCodesExamplePayload } from "../../examplePayloads";
 import { listCompanyCodes } from "./listCompanyCodes";
+
 const BASE = "https://api.adp.com";
 const TOKEN = "test-token";
 const PATH =
   "/codelists/payroll/v4/payroll-instruction-management/pay-groups/wfn/1";
+
 const connection = createConnection(adpOauth2, {
   endpoint: API_ENDPOINT,
   tokenEndpoint: TOKEN_ENDPOINT,
@@ -16,6 +18,7 @@ const connection = createConnection(adpOauth2, {
   sslCert: "-----BEGIN CERTIFICATE-----\nCERT\n-----END CERTIFICATE-----",
   sslKey: "-----BEGIN PRIVATE KEY-----\nKEY\n-----END PRIVATE KEY-----",
 });
+
 const context = () => ({
   executionState: {
     [`ADP - ${connection.configVarKey}`]: {
@@ -24,11 +27,14 @@ const context = () => ({
     },
   },
 });
+
 const api = () =>
   nock(BASE, { reqheaders: { authorization: `Bearer ${TOKEN}` } });
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => nock.cleanAll());
+
 describe("listCompanyCodes", () => {
   test("happy path returns the company codes", async () => {
     api()
@@ -42,6 +48,7 @@ describe("listCompanyCodes", () => {
     );
     expect(result).toEqual(listCompanyCodesExamplePayload);
   });
+
   test("error path rejects", async () => {
     api().get(PATH).query(true).reply(500, { error: "boom" });
     await expect(

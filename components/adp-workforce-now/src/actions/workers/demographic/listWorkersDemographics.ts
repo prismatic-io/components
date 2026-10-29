@@ -4,6 +4,7 @@ import { listWorkersDemographicsExamplePayload } from "../../../examplePayloads"
 import { listWorkersDemographicsInputs } from "../../../inputs";
 import type { WorkerDemographics } from "../../../types";
 import { fetchAllRecordsNoCount } from "../../../util";
+
 export const listWorkersDemographics = action({
   display: {
     label: "List Worker Demographics",
@@ -43,8 +44,7 @@ export const listWorkersDemographics = action({
       },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listWorkersDemographicsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listWorkersDemographicsExamplePayload,
   examplePayload: listWorkersDemographicsExamplePayload,
 });

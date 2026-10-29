@@ -3,6 +3,7 @@ import { describeObjectOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { describeCustomerSObjectInputs } from "../../inputs";
 import { describeCustomerSObjectExamplePayload } from "../../examplePayloads";
+
 export const describeCustomerSObject = action({
   display: {
     label: "Describe Customer SObject",
@@ -13,6 +14,7 @@ export const describeCustomerSObject = action({
   perform: async (_context, { version, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const response = await salesforceClient.sobject("Customer").describe();
+
     return {
       data: response,
     };

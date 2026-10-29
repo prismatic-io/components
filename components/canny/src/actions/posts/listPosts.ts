@@ -4,6 +4,7 @@ import { listPostsExamplePayload } from "../../examplePayloads";
 import { listPostsInputs } from "../../inputs";
 import { listPostsOutputSchema } from "../../outputSchemas";
 import { paginateOffset } from "../../util";
+
 export const listPosts = action({
   display: {
     label: "List Posts",
@@ -48,8 +49,7 @@ export const listPosts = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listPostsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listPostsExamplePayload,
   examplePayload: listPostsExamplePayload,
 });

@@ -4,6 +4,7 @@ import { getRequirementQualityAssociationExamplePayload } from "../../examplePay
 import { getRequirementQualityAssociationInputs } from "../../inputs";
 import { referencedQualitySchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getRequirementQualityAssociation = action({
   display: {
     label: "Get Requirement Quality Association",

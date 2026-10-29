@@ -10,6 +10,7 @@ import {
   searchCriteriaSortField,
   searchCriteriaValue,
 } from "./common";
+
 export const transactionId = input({
   label: "Transaction ID",
   type: "string",
@@ -21,10 +22,12 @@ export const transactionId = input({
   dataSource: "selectTransaction",
   clean: util.types.toString,
 });
+
 export const getTransactionInputs = {
   connection: connectionInput,
   transactionId,
 };
+
 export const listTransactionsInputs = {
   connection: connectionInput,
   fetchAll,

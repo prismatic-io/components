@@ -6,7 +6,9 @@ import {
 import { URL } from "node:url";
 import { validateConnection } from "../client";
 import { connection } from "../inputs";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -25,10 +27,12 @@ const rawRequest = action({
   },
   perform: async (context, { connection, ...rawRequestInputs }) => {
     validateConnection(connection);
+
     const url = new URL(
       "/sites/pwa/_api",
       util.types.toString(connection.fields.pwaSite),
     );
+
     const { data } = await sendRawRequest(
       url.toString(),
       { ...rawRequestInputs, debugRequest: context.debug.enabled },
@@ -40,4 +44,5 @@ const rawRequest = action({
     return { data };
   },
 });
+
 export default rawRequest;

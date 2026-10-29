@@ -14,6 +14,7 @@ import {
   locator,
 } from "./bulkQueryJobs";
 import { file } from "./files";
+
 export const records = input({
   label: "Records",
   placeholder: "Enter records as JSON array",
@@ -32,6 +33,7 @@ export const records = input({
   ),
   clean: recordsInputClean,
 });
+
 export const allOrNone = input({
   label: "All Or None",
   type: "boolean",
@@ -41,6 +43,7 @@ export const allOrNone = input({
   clean: util.types.toBool,
   default: "true",
 });
+
 export const collateSubrequests = input({
   label: "Collate Subrequests",
   type: "boolean",
@@ -50,6 +53,7 @@ export const collateSubrequests = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 const object = input({
   label: "Object",
   type: "string",
@@ -60,6 +64,7 @@ const object = input({
   example: "Account",
   clean: cleanStringInput,
 });
+
 const jobOperation = input({
   label: "Operation",
   type: "string",
@@ -76,6 +81,7 @@ const jobOperation = input({
   default: "insert",
   clean: util.types.toString,
 });
+
 const bulkJobId = input({
   label: "Bulk Job ID",
   placeholder: "Enter bulk job ID",
@@ -87,6 +93,7 @@ const bulkJobId = input({
   dataSource: "selectBulkJob",
   clean: util.types.toString,
 });
+
 const assignmentRuleId = input({
   label: "Assignment Rule ID",
   placeholder: "Enter assignment rule ID",
@@ -97,6 +104,7 @@ const assignmentRuleId = input({
   example: "01Q7F0000004g8eUAA",
   clean: cleanStringInput,
 });
+
 export const createBulkJobInputs = {
   connection: connectionInput,
   operation: jobOperation,
@@ -116,6 +124,7 @@ export const createBulkJobInputs = {
   assignmentRuleId,
   columnDelimiter,
 };
+
 export const bulkInsertRecordsInputs = {
   version,
   recordType,
@@ -123,6 +132,7 @@ export const bulkInsertRecordsInputs = {
   file,
   connection: connectionInput,
 };
+
 export const bulkUpsertRecordsInputs = {
   version,
   recordType,
@@ -130,22 +140,26 @@ export const bulkUpsertRecordsInputs = {
   file,
   connection: connectionInput,
 };
+
 export const uploadJobDataInputs = {
   connection: connectionInput,
   version,
   bulkJobId,
   file,
 };
+
 export const completeUploadBulkJobInputs = {
   connection: connectionInput,
   version,
   bulkJobId,
 };
+
 export const getBulkJobInputs = {
   connection: connectionInput,
   version,
   bulkJobId,
 };
+
 export const listBulkJobsInputs = {
   connection: connectionInput,
   version,
@@ -161,21 +175,25 @@ export const listBulkJobsInputs = {
   },
   queryLocator: locator,
 };
+
 export const abortBulkJobInputs = {
   connection: connectionInput,
   version,
   bulkJobId,
 };
+
 export const deleteBulkJobInputs = {
   connection: connectionInput,
   version,
   bulkJobId,
 };
+
 export const getJobSuccessfulRecordResultsInputs = {
   connection: connectionInput,
   version,
   bulkJobId,
 };
+
 export const getJobFailedRecordResultsInputs = {
   connection: connectionInput,
   version,

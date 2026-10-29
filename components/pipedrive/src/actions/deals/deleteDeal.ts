@@ -4,6 +4,7 @@ import { deleteDealInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deleteDealExamplePayload } from "../../examplePayloads";
 import { deleteDealOutputSchema } from "../../outputSchemas";
+
 export const deleteDeal = action({
   display: {
     label: "Delete Deal",

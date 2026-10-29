@@ -4,6 +4,7 @@ import { editUser } from "./editUser";
 import { enableUser } from "./enableUser";
 import { getUser } from "./getUser";
 import { listUsers } from "./listUsers";
+
 export default {
   listUsers,
   getUser,

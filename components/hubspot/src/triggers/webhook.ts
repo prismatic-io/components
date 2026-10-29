@@ -2,6 +2,7 @@ import { trigger } from "@prismatic-io/spectral";
 import { webhookExamplePayload } from "../examplePayloads";
 import { webhookTriggerInputs } from "../inputs";
 import { triggerWebhookPerformFunction } from "../util";
+
 export const webhook = trigger({
   display: {
     label: "Webhook",

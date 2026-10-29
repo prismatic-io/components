@@ -30,6 +30,7 @@ export interface DraftOrder {
   paymentTerms: PaymentTerms | null;
   customer: Customer | null;
 }
+
 interface LineItem {
   id: string | null;
   variant: {
@@ -59,6 +60,7 @@ interface LineItem {
   custom: boolean | null;
   originalUnitPriceSet: PriceSet | null;
 }
+
 interface Address {
   id?: string | null;
   firstName: string | null;
@@ -77,6 +79,7 @@ interface Address {
   countryCodeV2: string | null;
   provinceCode: string | null;
 }
+
 interface Discount {
   title: string | null;
   value: number | null;
@@ -84,6 +87,7 @@ interface Discount {
   description: string | null;
   amountSet: PriceSet | null;
 }
+
 interface ShippingLine {
   title: string | null;
   custom: boolean | null;
@@ -91,6 +95,7 @@ interface ShippingLine {
   originalPriceSet: PriceSet | null;
   discountedPriceSet: PriceSet | null;
 }
+
 interface TaxLine {
   rate: number | null;
   ratePercentage: number | null;
@@ -99,18 +104,21 @@ interface TaxLine {
   channelLiable: boolean | null;
   title: string | null;
 }
+
 interface PriceSet {
   shopMoney: {
     amount: string | null;
     currencyCode: string | null;
   } | null;
 }
+
 interface PaymentTerms {
   dueInDays: number | null;
   paymentTermsName: string | null;
   paymentTermsType: string | null;
   overdue: boolean | null;
 }
+
 interface Customer {
   id: string | null;
   email: string | null;

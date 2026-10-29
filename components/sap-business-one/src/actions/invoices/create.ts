@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { createInvoiceInputs } from "../../inputs/invoices/create";
+
 export const createInvoice = action({
   display: {
     label: "Create Invoice",
@@ -20,6 +21,7 @@ export const createInvoice = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/Invoices`, {
       CardCode,
       DocumentLines,

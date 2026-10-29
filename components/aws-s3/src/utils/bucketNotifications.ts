@@ -16,10 +16,12 @@ import {
   QUEUE_CONFIGURATIONS_EXAMPLE,
   TOPIC_CONFIGURATIONS_EXAMPLE,
 } from "../constants";
+
 const parseConfigurationValue = (value: unknown): unknown => {
   if (value === undefined || value === null || value === "") return undefined;
   return typeof value === "string" ? JSON.parse(value) : value;
 };
+
 const parseConfigurationArray = <T>(
   value: unknown,
   label: string,
@@ -33,6 +35,7 @@ const parseConfigurationArray = <T>(
     );
   return parsed;
 };
+
 export const getTopicConfigurations = (
   topicConfigurations: unknown,
 ): TopicConfiguration[] =>
@@ -41,6 +44,7 @@ export const getTopicConfigurations = (
     "Topic configurations",
     TOPIC_CONFIGURATIONS_EXAMPLE,
   );
+
 export const getQueueConfigurations = (
   queueConfigurations: unknown,
 ): QueueConfiguration[] =>
@@ -49,6 +53,7 @@ export const getQueueConfigurations = (
     "Queue configurations",
     QUEUE_CONFIGURATIONS_EXAMPLE,
   );
+
 export const getLambdaFunctionConfigurations = (
   lambdaFunctionConfigurations: unknown,
 ): LambdaFunctionConfiguration[] =>
@@ -57,10 +62,12 @@ export const getLambdaFunctionConfigurations = (
     "Lambda function configurations",
     LAMBDA_FUNCTION_CONFIGURATIONS_EXAMPLE,
   );
+
 export const getEventBridgeConfiguration = (
   eventBridgeConfiguration: unknown,
 ): EventBridgeConfiguration =>
   parseConfigurationValue(eventBridgeConfiguration) as EventBridgeConfiguration;
+
 export const getBucketNotificationConfiguration = async (
   s3Client: S3Client,
   bucket: string,
@@ -72,6 +79,7 @@ export const getBucketNotificationConfiguration = async (
       Bucket: bucket,
       ExpectedBucketOwner: bucketOwnerAccountid,
     };
+
   const getBucketNotificationConfigurationCommand =
     new GetBucketNotificationConfigurationCommand(
       getBucketNotificationConfigurationCommandInput,
@@ -79,10 +87,13 @@ export const getBucketNotificationConfiguration = async (
   const getBucketNotificationConfigurationCommandOutput = await s3Client.send(
     getBucketNotificationConfigurationCommand,
   );
+
   if (removeMetadata)
     getBucketNotificationConfigurationCommandOutput.$metadata = undefined;
+
   return getBucketNotificationConfigurationCommandOutput;
 };
+
 export const putBucketNotificationConfiguration = async (
   s3Client: S3Client,
   bucket: string,
@@ -103,6 +114,7 @@ export const putBucketNotificationConfiguration = async (
   );
   return putBucketNotificationConfigurationCommandOutput;
 };
+
 export const processTopicConfiguration = async (
   s3Client: S3Client,
   bucket: string,
@@ -115,18 +127,23 @@ export const processTopicConfiguration = async (
     bucket,
     bucketOwnerAccountid,
   );
+
   if (!("TopicConfigurations" in notificationConfiguration))
     notificationConfiguration.TopicConfigurations = [];
+
   let existingTopicConfigurationIndex = -1;
   notificationConfiguration.TopicConfigurations.find(
     (topicConfiguration, index) => {
       const topicConfigurationIdEqualsEventNotificationName =
         topicConfiguration.Id === eventNotificationName;
+
       if (topicConfigurationIdEqualsEventNotificationName)
         existingTopicConfigurationIndex = index;
+
       return topicConfigurationIdEqualsEventNotificationName;
     },
   );
+
   if (existingTopicConfigurationIndex === -1) {
     notificationConfiguration.TopicConfigurations.push(topicConfiguration);
   } else {
@@ -134,6 +151,7 @@ export const processTopicConfiguration = async (
       existingTopicConfigurationIndex
     ] = topicConfiguration;
   }
+
   return await putBucketNotificationConfiguration(
     s3Client,
     bucket,

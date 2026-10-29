@@ -3,6 +3,7 @@ import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
 import { listSharedExamplePayload } from "../../examplePayloads";
 import { listSharedInputs } from "../../inputs";
+
 export const listShared = action({
   display: {
     label: "List Shared",
@@ -11,10 +12,12 @@ export const listShared = action({
   inputs: listSharedInputs,
   perform: async (context, { connection }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
+
     return {
       data: await handleErrors(client.get("/me/insights/shared")),
     };
   },
   examplePayload: listSharedExamplePayload,
 });
+
 export default listShared;

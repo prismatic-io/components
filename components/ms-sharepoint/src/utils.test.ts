@@ -2,19 +2,24 @@ import { type Mock, vi } from "vitest";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { DriveItem } from "./interfaces";
 import { getFilesFromDriveFN, paginateResults } from "./utils";
+
 const createMockClient = (getMock: Mock) =>
   ({ get: getMock }) as unknown as HttpClient;
+
 const driveItem = (id: string, isFolder = false): DriveItem =>
   ({
     id,
     name: `${id}.txt`,
     ...(isFolder ? { folder: { childCount: 1 } } : {}),
   }) as DriveItem;
+
 describe("paginateResults", () => {
   let getMock: Mock;
+
   beforeEach(() => {
     getMock = vi.fn();
   });
+
   describe("default options", () => {
     it("returns a bare array so internal callers keep working", async () => {
       getMock.mockResolvedValueOnce({
@@ -23,12 +28,15 @@ describe("paginateResults", () => {
           value: [{ id: "1" }, { id: "2" }],
         },
       });
+
       const result = await paginateResults(
         createMockClient(getMock),
         "/sites/abc/drives",
       );
+
       expect(result).toEqual([{ id: "1" }, { id: "2" }]);
     });
+
     it("accumulates items across pages into the bare array", async () => {
       getMock
         .mockResolvedValueOnce({
@@ -39,10 +47,12 @@ describe("paginateResults", () => {
           },
         })
         .mockResolvedValueOnce({ data: { value: [{ id: "2" }] } });
+
       const result = await paginateResults(
         createMockClient(getMock),
         "/sites/abc/lists",
       );
+
       expect(getMock).toHaveBeenCalledTimes(2);
       expect(getMock.mock.calls[1][0]).toBe(
         "https://graph.microsoft.com/v1.0/next?token=abc",
@@ -50,6 +60,7 @@ describe("paginateResults", () => {
       expect(result).toEqual([{ id: "1" }, { id: "2" }]);
     });
   });
+
   describe("returnFullData", () => {
     it("returns the same { value } envelope a single page call returns", async () => {
       getMock.mockResolvedValueOnce({
@@ -58,6 +69,7 @@ describe("paginateResults", () => {
           value: [{ id: "1" }, { id: "2" }],
         },
       });
+
       const result = await paginateResults(
         createMockClient(getMock),
         "/sites/abc/lists",
@@ -65,11 +77,13 @@ describe("paginateResults", () => {
           returnFullData: true,
         },
       );
+
       expect(result).toEqual({
         "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#lists",
         value: [{ id: "1" }, { id: "2" }],
       });
     });
+
     it("merges every page into value and does not leak a stale nextLink", async () => {
       getMock
         .mockResolvedValueOnce({
@@ -88,6 +102,7 @@ describe("paginateResults", () => {
             value: [{ id: "2" }, { id: "3" }],
           },
         });
+
       const result = (await paginateResults(
         createMockClient(getMock),
         "/sites",
@@ -95,9 +110,11 @@ describe("paginateResults", () => {
           returnFullData: true,
         },
       )) as Record<string, unknown>;
+
       expect(result.value).toEqual([{ id: "1" }, { id: "2" }, { id: "3" }]);
       expect(result["@odata.nextLink"]).toBeUndefined();
     });
+
     it("preserves @odata.deltaLink from the final delta page", async () => {
       getMock
         .mockResolvedValueOnce({
@@ -114,6 +131,7 @@ describe("paginateResults", () => {
               "https://graph.microsoft.com/v1.0/delta?token=final",
           },
         });
+
       const result = (await paginateResults(
         createMockClient(getMock),
         "/drives/abc/root/delta",
@@ -123,12 +141,14 @@ describe("paginateResults", () => {
           excludeParents: true,
         },
       )) as Record<string, unknown>;
+
       expect(result["@odata.deltaLink"]).toBe(
         "https://graph.microsoft.com/v1.0/delta?token=final",
       );
       expect(result.value).toEqual([{ id: "1" }, { id: "2" }]);
     });
   });
+
   describe("useTop", () => {
     it("requests $top on the first page only", async () => {
       getMock
@@ -140,12 +160,16 @@ describe("paginateResults", () => {
           },
         })
         .mockResolvedValueOnce({ data: { value: [{ id: "2" }] } });
+
       await paginateResults(createMockClient(getMock), "/sites/abc/drives");
+
       expect(getMock.mock.calls[0][1].params).toEqual({ $top: 100 });
       expect(getMock.mock.calls[1][1].params).toBeUndefined();
     });
+
     it("omits $top entirely when disabled, since delta token endpoints reject it", async () => {
       getMock.mockResolvedValueOnce({ data: { value: [] } });
+
       await paginateResults(
         createMockClient(getMock),
         "/drives/abc/root/delta",
@@ -153,12 +177,15 @@ describe("paginateResults", () => {
           useTop: false,
         },
       );
+
       expect(getMock.mock.calls[0][1].params).toBeUndefined();
     });
   });
+
   describe("excludeParents", () => {
     it("sends the Prefer header when enabled", async () => {
       getMock.mockResolvedValueOnce({ data: { value: [] } });
+
       await paginateResults(
         createMockClient(getMock),
         "/drives/abc/root/delta",
@@ -166,16 +193,21 @@ describe("paginateResults", () => {
           excludeParents: true,
         },
       );
+
       expect(getMock.mock.calls[0][1].headers).toEqual({
         Prefer: "deltaExcludeParent",
       });
     });
+
     it("leaves the Prefer header unset by default", async () => {
       getMock.mockResolvedValueOnce({ data: { value: [] } });
+
       await paginateResults(createMockClient(getMock), "/sites");
+
       expect(getMock.mock.calls[0][1].headers.Prefer).toBeUndefined();
     });
   });
+
   it("drops items already accumulated from an earlier page", async () => {
     getMock
       .mockResolvedValueOnce({
@@ -185,15 +217,20 @@ describe("paginateResults", () => {
         },
       })
       .mockResolvedValueOnce({ data: { value: [{ id: "2" }, { id: "3" }] } });
+
     const result = await paginateResults(createMockClient(getMock), "/sites");
+
     expect(result).toEqual([{ id: "1" }, { id: "2" }, { id: "3" }]);
   });
 });
+
 describe("getFilesFromDriveFN", () => {
   let getMock: Mock;
+
   beforeEach(() => {
     getMock = vi.fn();
   });
+
   it("returns the enveloped shape with the drive root's context", async () => {
     getMock.mockResolvedValueOnce({
       data: {
@@ -202,16 +239,19 @@ describe("getFilesFromDriveFN", () => {
         value: [driveItem("file-1")],
       },
     });
+
     const result = await getFilesFromDriveFN(
       createMockClient(getMock),
       "drive-abc",
     );
+
     expect(result).toEqual({
       "@odata.context":
         "https://graph.microsoft.com/v1.0/$metadata#root/children",
       value: [driveItem("file-1")],
     });
   });
+
   it("keeps the root context rather than a subfolder's when recursing", async () => {
     getMock
       .mockResolvedValueOnce({
@@ -228,10 +268,12 @@ describe("getFilesFromDriveFN", () => {
           value: [driveItem("file-2")],
         },
       });
+
     const result = await getFilesFromDriveFN(
       createMockClient(getMock),
       "drive-abc",
     );
+
     expect(getMock.mock.calls[0][0]).toBe("/drives/drive-abc/root/children");
     expect(getMock.mock.calls[1][0]).toBe(
       "/drives/drive-abc/items/folder-1/children",
@@ -241,12 +283,14 @@ describe("getFilesFromDriveFN", () => {
     );
     expect(result.value).toEqual([driveItem("file-1"), driveItem("file-2")]);
   });
+
   it("omits the context when no root request is made", async () => {
     const result = await getFilesFromDriveFN(
       createMockClient(getMock),
       "drive-abc",
       [driveItem("file-1")],
     );
+
     expect(getMock).not.toHaveBeenCalled();
     expect(result).toEqual({ value: [driveItem("file-1")] });
     expect("@odata.context" in result).toBe(false);

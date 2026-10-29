@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getMailMessageInputs } from "../../inputs";
 import { getMailMessageExamplePayload } from "../../examplePayloads";
 import { getMailMessageOutputSchema } from "../../outputSchemas";
+
 export const getMailMessage = action({
   display: {
     label: "Get Mail Message",

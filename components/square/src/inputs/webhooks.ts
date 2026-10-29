@@ -6,6 +6,7 @@ import {
   squareConnection,
   validateJSON,
 } from "./common";
+
 const cursorSubscriptions = input({
   type: "string",
   label: "Cursor",
@@ -15,6 +16,7 @@ const cursorSubscriptions = input({
     "The pagination cursor returned by a previous call to this endpoint.",
   clean: toOptionalString,
 });
+
 const includeDisabled = input({
   type: "boolean",
   label: "Include Disabled",
@@ -23,6 +25,7 @@ const includeDisabled = input({
     "When true, disabled subscriptions are included in the results. By default, only enabled subscriptions are returned.",
   clean: util.types.toBool,
 });
+
 const sortOrderSubscriptions = input({
   type: "string",
   label: "Sort Order",
@@ -33,6 +36,7 @@ const sortOrderSubscriptions = input({
     "The sort order for subscriptions by creation date. Options: ASC (oldest first), DESC (newest first).",
   clean: toOptionalString,
 });
+
 const limitSubscriptions = input({
   type: "string",
   label: "Limit",
@@ -42,12 +46,14 @@ const limitSubscriptions = input({
   comments: "The maximum number of results to return in a single page.",
   clean: toOptionalNumber,
 });
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor and page-size controls for paging through results.",
   inputs: { cursorSubscriptions, limitSubscriptions },
 });
+
 const subscriptionId = input({
   type: "string",
   label: "Subscription ID",
@@ -58,6 +64,7 @@ const subscriptionId = input({
   clean: util.types.toString,
   dataSource: "selectWebhookSubscription",
 });
+
 const webhookSubscription = input({
   type: "code",
   label: "Webhook Subscription",
@@ -76,6 +83,7 @@ const webhookSubscription = input({
   ),
   clean: (input) => validateJSON(input),
 });
+
 const updatedWebhookSubscription = input({
   type: "code",
   label: "Webhook Subscription",
@@ -95,6 +103,7 @@ const updatedWebhookSubscription = input({
     "The updated webhook subscription data in JSON format. Include only the fields to modify.",
   clean: (input) => validateJSON(input),
 });
+
 const deleteSubscriptionId = input({
   type: "string",
   label: "Subscription ID",
@@ -104,6 +113,7 @@ const deleteSubscriptionId = input({
   comments: "The unique identifier for the webhook subscription to delete.",
   clean: util.types.toString,
 });
+
 export const listWebhookSubscriptionsInputs = {
   squareConnection,
   fetchAll,
@@ -111,24 +121,29 @@ export const listWebhookSubscriptionsInputs = {
   includeDisabled,
   sortOrderSubscriptions,
 };
+
 export const retrieveWebhookSubscriptionInputs = {
   squareConnection,
   subscriptionId,
 };
+
 export const createWebhookSubscriptionInputs = {
   squareConnection,
   idempotencyKey,
   webhookSubscription,
 };
+
 export const updateWebhookSubscriptionInputs = {
   squareConnection,
   subscriptionId,
   updatedWebhookSubscription,
 };
+
 export const deleteWebhookSubscriptionInputs = {
   squareConnection,
   deleteSubscriptionId,
 };
+
 export const deleteInstanceWebhooksInputs = {
   squareConnection,
 };

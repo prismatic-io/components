@@ -5,6 +5,7 @@ import { listWorkersInputs } from "../../inputs";
 import { listWorkersOutputSchema } from "../../outputSchemas";
 import type { WorkerRecord } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listWorkers = action({
   display: {
     label: "List Workers",

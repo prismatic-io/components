@@ -25,6 +25,7 @@ import {
   resolveActivitySyncHandoff,
   resolveDriveActivities,
 } from "../util";
+
 interface ActivityResult {
   payload: Omit<TriggerPayload, "body" | "paginationState"> & {
     body: {
@@ -36,6 +37,7 @@ interface ActivityResult {
   instanceState?: Record<string, unknown>;
   polledNoChanges: boolean;
 }
+
 export const driveActivityPollingTrigger = pollingTrigger({
   display: {
     label: "Drive Activity",
@@ -88,20 +90,25 @@ export const driveActivityPollingTrigger = pollingTrigger({
     const incoming = payload.paginationState as
       | ActivityPaginationState
       | undefined;
+
     const nothingToDo = (): ActivityResult => ({
       payload: { ...payload, paginationState: undefined, body: { data: [] } },
       polledNoChanges: true,
     });
+
     if (!incoming && isInitialSyncCompleted(context)) {
       return nothingToDo();
     }
+
     if (!lookBackDate) {
       return nothingToDo();
     }
+
     const windowStart = incoming?.windowStart || lookBackDate;
     const cycleEnd = incoming?.cycleEnd ?? new Date().toISOString();
     const filter = buildActivityFilter(windowStart, triggerEvents);
     const drive = createActivityClient(connection);
+
     const ancestorIndex = incoming?.ancestorIndex ?? 0;
     const actionReturn = await getQueryDriveActivity(
       drive,
@@ -114,6 +121,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
       false,
     );
     const activities = actionReturn.activities || [];
+
     const nextState: ActivityPaginationState | undefined =
       actionReturn.nextPageToken
         ? {
@@ -125,6 +133,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
         : ancestorIndex + 1 < ancestors.length
           ? { ancestorIndex: ancestorIndex + 1, windowStart, cycleEnd }
           : undefined;
+
     return {
       payload: {
         ...payload,
@@ -177,6 +186,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
     const isBatching = context.batch?.enabled === true;
     const isPlatformDrivenRound = Boolean(incoming);
     const handoff = resolveActivitySyncHandoff(context);
+
     const windowStart =
       incoming?.windowStart ||
       pollState.lastPolledAt ||
@@ -184,11 +194,12 @@ export const driveActivityPollingTrigger = pollingTrigger({
       lookBackDate ||
       new Date().toISOString();
     const cycleEnd = incoming?.cycleEnd ?? new Date().toISOString();
+
     const filter = buildActivityFilter(windowStart, triggerEvents);
+
     const drive = createActivityClient(connection);
-    const handoffCleanup: {
-      instanceState?: Record<string, unknown>;
-    } = handoff
+
+    const handoffCleanup: { instanceState?: Record<string, unknown> } = handoff
       ? {
           instanceState: {
             ...context.instanceState,
@@ -196,8 +207,10 @@ export const driveActivityPollingTrigger = pollingTrigger({
           },
         }
       : {};
+
     if (!isBatching) {
       const searchRecords: driveactivity_v2.Schema$DriveActivity[] = [];
+
       for (const ancestor of ancestors) {
         const actionReturn = await getQueryDriveActivity(
           drive,
@@ -206,7 +219,9 @@ export const driveActivityPollingTrigger = pollingTrigger({
         );
         searchRecords.push(...(actionReturn.activities || []));
       }
+
       context.polling.setState({ lastPolledAt: cycleEnd });
+
       return {
         payload: {
           ...payload,
@@ -217,6 +232,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
         polledNoChanges: searchRecords.length === 0,
       };
     }
+
     const ancestorIndex = incoming?.ancestorIndex ?? 0;
     const actionReturn = await getQueryDriveActivity(
       drive,
@@ -229,6 +245,7 @@ export const driveActivityPollingTrigger = pollingTrigger({
       false,
     );
     const activities = actionReturn.activities || [];
+
     const nextState: ActivityPaginationState | undefined =
       actionReturn.nextPageToken
         ? {
@@ -240,9 +257,11 @@ export const driveActivityPollingTrigger = pollingTrigger({
         : ancestorIndex + 1 < ancestors.length
           ? { ancestorIndex: ancestorIndex + 1, windowStart, cycleEnd }
           : undefined;
+
     if (!nextState) {
       context.polling.setState({ lastPolledAt: cycleEnd });
     }
+
     return {
       payload: {
         ...payload,

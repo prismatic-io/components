@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectGroupMemberInputs as inputs } from "../inputs/dataSources";
 import { getValues } from "../util";
+
 export const selectGroupMember = dataSource({
   display: {
     label: "Select Group Member",

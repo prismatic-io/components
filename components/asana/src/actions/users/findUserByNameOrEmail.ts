@@ -4,6 +4,7 @@ import { findUserByNameOrEmailExamplePayload } from "../../examplePayloads";
 import { findUserByNameOrEmailInputs } from "../../inputs";
 import { findUserByNameOrEmailOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, User } from "../../types";
+
 export const findUserByNameOrEmail = action({
   display: {
     label: "Find User by Name or Email",

@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { getTeamExamplePayload } from "../../examplePayloads";
 import { getTeamInputs } from "../../inputs";
 import { teamResponseSchema } from "../../outputSchemas";
+
 export const getTeam = action({
   display: {
     label: "Get Team",

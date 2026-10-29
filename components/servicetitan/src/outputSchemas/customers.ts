@@ -1,4 +1,5 @@
 import { addressSchema, listEnvelope } from "./shared";
+
 const customerSchema = {
   type: "object" as const,
   properties: {
@@ -122,6 +123,7 @@ const customerSchema = {
     "externalData",
   ],
 };
+
 const createdCustomerSchema = {
   ...customerSchema,
   properties: {
@@ -287,7 +289,11 @@ const createdCustomerSchema = {
   },
   required: [...customerSchema.required, "locations", "contacts"],
 };
+
 export const createCustomerOutputSchema = createdCustomerSchema;
+
 export const getCustomerOutputSchema = customerSchema;
+
 export const updateCustomerOutputSchema = customerSchema;
+
 export const listCustomersOutputSchema = listEnvelope(customerSchema);

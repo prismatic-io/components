@@ -1,13 +1,16 @@
 import type { ConnectionInput } from "@prismatic-io/spectral";
+
 export interface ConnectionDisplayOverrides {
   label?: string;
   description?: string;
 }
+
 export interface BaseConnectionParams {
   key: string;
   display?: ConnectionDisplayOverrides;
   additionalInputs?: Record<string, ConnectionInput>;
 }
+
 export interface BasicAuthConnectionParams extends BaseConnectionParams {
   comments?: Partial<{
     username: string;
@@ -15,6 +18,7 @@ export interface BasicAuthConnectionParams extends BaseConnectionParams {
     host: string;
   }>;
 }
+
 export interface OAuth2AuthorizationCodeConnectionParams
   extends BaseConnectionParams {
   defaultScopes?: string;
@@ -27,6 +31,7 @@ export interface OAuth2AuthorizationCodeConnectionParams
     apiSiteOverride: string;
   }>;
 }
+
 export interface OAuth2ClientCredentialsConnectionParams
   extends BaseConnectionParams {
   defaultScopes?: string;

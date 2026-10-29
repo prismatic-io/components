@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCategoryExamplePayload } from "../../examplePayloads";
 import { getCategoryInputs } from "../../inputs";
 import type { Category } from "../../types";
+
 export const getCategory = action({
   display: {
     label: "Get Category",

@@ -10,6 +10,7 @@ import { createDynamoClient } from "../auth";
 import { getItemKeySearch } from "../util";
 import { GetItemCommand } from "@aws-sdk/client-dynamodb";
 import { getItemExamplePayload } from "../examplePayloads";
+
 export const getItem = action({
   display: {
     label: "Get Item",
@@ -25,18 +26,22 @@ export const getItem = action({
       debug: context.debug.enabled,
       logger: context.logger,
     });
+
     const key = await getItemKeySearch({
       client,
       tableName,
       hashKeyValue: value,
       rangeKeyValue: rangeKeyValue,
     });
+
     const command = new GetItemCommand({
       TableName: tableName,
       Key: key,
     });
+
     const result = await client.send(command);
     const found = result?.Item != null;
+
     return {
       data: { result, found },
     };

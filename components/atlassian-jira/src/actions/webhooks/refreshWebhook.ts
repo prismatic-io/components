@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { refreshWebhookExamplePayload } from "../../examplePayloads";
 import { connectionInput, webhookIdInput } from "../../inputs";
+
 export const refreshWebhook = action({
   display: {
     label: "Refresh Webhook",

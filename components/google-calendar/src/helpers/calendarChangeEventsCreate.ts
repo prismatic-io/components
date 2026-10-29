@@ -5,6 +5,7 @@ import type { CalendarChangeEventsInputs, CalendarWatch } from "../types";
 import { getBase64FromUrl } from "../utils";
 import { listAllEvents } from "./listAllEvents";
 import { manageWatch } from "./manageWatch";
+
 export const calendarChangeEventsCreate = async (
   context: ActionContext,
   { connection, calendarId }: CalendarChangeEventsInputs,
@@ -12,15 +13,20 @@ export const calendarChangeEventsCreate = async (
   const calendar = createClient({ connection });
   const integrationFlowName = context.flow.name;
   const address = context.webhookUrls[integrationFlowName];
+
   const stateKey = getBase64FromUrl(address);
+
   const newChannelId = uuidv4();
   const previousWatch = context.crossFlowState[stateKey] as
     | CalendarWatch
     | undefined;
+
   context.logger.info(
     `Started Calendar Change Events Trigger deploy for ${integrationFlowName}`,
   );
+
   context.logger.info(`Creating watch for calendar ${calendarId}`);
+
   const watchResult = await manageWatch({
     calendar,
     calendarId,
@@ -29,10 +35,14 @@ export const calendarChangeEventsCreate = async (
     logger: context.logger,
     previousWatch,
   });
+
   context.crossFlowState[stateKey] = watchResult;
+
   context.logger.info("Establishing initial sync token for incremental sync");
+
   const syncStateKey = `${stateKey}_syncToken`;
   const lastListExecutedAtStateKey = `${stateKey}_lastListExecutedAt`;
+
   try {
     const response = await listAllEvents({
       googleConnection: connection,
@@ -41,6 +51,7 @@ export const calendarChangeEventsCreate = async (
       singleEvents: true,
       showDeleted: true,
     });
+
     if (response.data.nextSyncToken) {
       context.crossFlowState[syncStateKey] = response.data.nextSyncToken;
       context.crossFlowState[lastListExecutedAtStateKey] =
@@ -58,6 +69,7 @@ export const calendarChangeEventsCreate = async (
     );
     throw error;
   }
+
   context.logger.info(
     `Finished Calendar Change Events Trigger deploy for ${integrationFlowName}`,
   );

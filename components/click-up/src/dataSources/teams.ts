@@ -3,6 +3,7 @@ import { createClickUpClient as createClient } from "../client";
 import { teamsExamplePayload } from "../examplePayloads";
 import { teamsInputs } from "../inputs";
 import type { GetAuthorizedTeamsResponse } from "../types";
+
 export const teams = dataSource({
   display: {
     label: "Select Authorized Workspace",

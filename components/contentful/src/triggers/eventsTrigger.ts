@@ -9,6 +9,7 @@ import {
   upsertEventsWebhook,
   validateContentfulWebhookRequest,
 } from "../util";
+
 export const eventsTrigger = trigger({
   display: {
     label: "Event Subscription",

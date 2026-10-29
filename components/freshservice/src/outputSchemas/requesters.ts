@@ -1,4 +1,5 @@
 import { customFieldsSchema } from "./common";
+
 export const requesterSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +33,7 @@ export const requesterSchema = {
   required: ["id"],
   additionalProperties: false,
 };
+
 export const requesterOutputSchema = {
   type: "object" as const,
   properties: {
@@ -40,6 +42,7 @@ export const requesterOutputSchema = {
   required: ["requester"],
   additionalProperties: false,
 };
+
 export const listRequestersOutputSchema = {
   type: "object" as const,
   properties: {

@@ -3,6 +3,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { graphBaseUrl, validateConnection } from "../../utils";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -12,6 +13,7 @@ export const rawRequest = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, ...params }) => {
     validateConnection(connection);
+
     const { data } = await sendRawRequest(
       graphBaseUrl(connection),
       {

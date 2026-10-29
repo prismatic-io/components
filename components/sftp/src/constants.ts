@@ -5,6 +5,7 @@ import type {
   MacAlgorithm,
   ServerHostKeyAlgorithm,
 } from "ssh2";
+
 export const kexAlgorithms = [
   "curve25519-sha256",
   "curve25519-sha256@libssh.org",
@@ -21,6 +22,7 @@ export const kexAlgorithms = [
   "diffie-hellman-group14-sha1",
   "diffie-hellman-group1-sha1",
 ] as KexAlgorithm[];
+
 export const secureServerHostKeyAlgorithms = [
   "ssh-ed25519",
   "ecdsa-sha2-nistp256",
@@ -29,15 +31,18 @@ export const secureServerHostKeyAlgorithms = [
   "rsa-sha2-512",
   "rsa-sha2-256",
 ] as ServerHostKeyAlgorithm[];
+
 export const unsecureServerHostKeyAlgorithms = [
   "ssh-rsa",
   "ssh-dss",
 ] as ServerHostKeyAlgorithm[];
+
 export const compressionAlgorithms = [
   "none",
   "zlib",
   "zlib@openssh.com",
 ] as CompressionAlgorithm[];
+
 export const secureCipherAlgorithms = [
   "chacha20-poly1305@openssh.com",
   "aes128-gcm@openssh.com",
@@ -46,7 +51,9 @@ export const secureCipherAlgorithms = [
   "aes192-ctr",
   "aes256-ctr",
 ] as CipherAlgorithm[];
+
 export const unsecureCipherAlgorithms = ["aes256-cbc"] as CipherAlgorithm[];
+
 export const hmacAlgorithms = [
   "hmac-sha2-256-etm@openssh.com",
   "hmac-sha2-512-etm@openssh.com",

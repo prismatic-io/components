@@ -4,6 +4,7 @@ import { selectGroupExamplePayload } from "../examplePayloads";
 import { selectGroupInputs } from "../inputs";
 import type { Group } from "../types";
 import { fetchAllPages } from "../utils";
+
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",

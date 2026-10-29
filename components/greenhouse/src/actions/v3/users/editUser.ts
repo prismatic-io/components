@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { editUserV3ExamplePayload } from "../../../examplePayloads/v3/users";
 import { editUserV3Inputs } from "../../../inputs/v3/users";
 import { generatePayload } from "../../../util";
+
 export const editUserV3 = action({
   display: {
     label: "Edit User",
@@ -28,6 +29,7 @@ export const editUserV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       first_name: firstName,
       last_name: lastName,
@@ -41,6 +43,7 @@ export const editUserV3 = action({
       interviewer_tag_ids: interviewerTagIds,
       custom_fields: customFields,
     });
+
     const { data } = await client.patch(`/users/${userId}`, body);
     return { data };
   },

@@ -3,6 +3,7 @@ import { selectPagesInputs } from "../inputs";
 import { createClient } from "../client";
 import type { Page } from "../types";
 import { paginateResults } from "../util";
+
 export const listPages = dataSource({
   display: {
     label: "List Pages",
@@ -15,20 +16,24 @@ export const listPages = dataSource({
     let next = "/pages";
     let nextUrlRegex = /\/pages.*/;
     const client = await createClient(connectionInput, false);
+
     if (spaceId) {
       next = `/spaces/${spaceId}/pages`;
       nextUrlRegex = /\/spaces.*/;
     }
+
     const pages = await paginateResults<Page>(client, next, nextUrlRegex);
     if (pages.length > NO_ELEMENTS) {
       result = pages.map<Element>(({ title, id }) => ({
         label: title,
         key: id,
       }));
+
       return {
         result,
       };
     }
+
     return { result };
   },
   dataSourceType: "picklist",

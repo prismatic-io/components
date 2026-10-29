@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { connectionInput, emails } from "../inputs";
 import { createHttpClient } from "../client";
 import { sendBatchEmailExamplePayload } from "../examplePayloads";
+
 export const sendBatchEmail = action({
   display: {
     label: "Send Email Batch",
@@ -17,6 +18,7 @@ export const sendBatchEmail = action({
         "Invalid emails input. Please provide a JSON array of email objects.",
       );
     }
+
     const emailBatchData = params.emails.map((email) => ({
       From: email.From,
       To: email.To,
@@ -32,6 +34,7 @@ export const sendBatchEmail = action({
       Metadata: email.Metadata,
       Attachments: email.Attachments,
     }));
+
     const httpClient = createHttpClient(
       params.postmarkConnection,
       context.debug.enabled,

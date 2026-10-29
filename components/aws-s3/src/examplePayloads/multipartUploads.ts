@@ -6,6 +6,7 @@ import type {
   ListPartsCommandOutput,
 } from "@aws-sdk/client-s3";
 import type { UploadPartPayload } from "../types";
+
 export const listMultipartUploadsExamplePayload: {
   data: ListMultipartUploadsCommandOutput;
 } = {
@@ -41,11 +42,9 @@ export const listMultipartUploadsExamplePayload: {
     ],
   },
 };
+
 export const generatePresignedForMultiparUploadsExamplePayload: {
-  data: {
-    url: string;
-    partNumber: number;
-  }[];
+  data: { url: string; partNumber: number }[];
 } = {
   data: [
     {
@@ -54,6 +53,7 @@ export const generatePresignedForMultiparUploadsExamplePayload: {
     },
   ],
 };
+
 export const createMultipartUploadExamplePayload: {
   data: CreateMultipartUploadCommandOutput;
 } = {
@@ -74,6 +74,7 @@ export const createMultipartUploadExamplePayload: {
       "9DWJzLdFIcK05G2Yq.TNhJbCU57dDZyIRlO_tHcdFgYqWQgtu6XdASs7h.DJlcWk2M9vmEx72gXcS8q5SBu_12345ccg-",
   },
 };
+
 export const abortMultipartUploadExamplePayload: {
   data: AbortMultipartUploadCommandOutput;
 } = {
@@ -89,9 +90,8 @@ export const abortMultipartUploadExamplePayload: {
     },
   },
 };
-export const uploadPartExamplePayload: {
-  data: UploadPartPayload;
-} = {
+
+export const uploadPartExamplePayload: { data: UploadPartPayload } = {
   data: {
     $metadata: {
       httpStatusCode: 200,
@@ -110,9 +110,8 @@ export const uploadPartExamplePayload: {
     },
   },
 };
-export const listPartsExamplePayload: {
-  data: ListPartsCommandOutput;
-} = {
+
+export const listPartsExamplePayload: { data: ListPartsCommandOutput } = {
   data: {
     $metadata: {
       httpStatusCode: 200,
@@ -147,6 +146,7 @@ export const listPartsExamplePayload: {
       "iHtFwRT6d6IAPwGTlT6tO1iBApulQGCA2sG7yn_BzUKItrnLrWykCbDheQBJrb1MUGHgGfihOY07XfnCeU2CWCZM0kD6VbyC46MJ4123456-",
   },
 };
+
 export const completeMultipartUploadExamplePayload: {
   data: CompleteMultipartUploadCommandOutput;
 } = {

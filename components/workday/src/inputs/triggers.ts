@@ -6,6 +6,7 @@ import {
 } from "../util";
 import { connection, reportUrl } from "./common";
 import { reportPrompts, wqlTenant } from "./reports";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -16,6 +17,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const watermarkPrompt = input({
   label: "Watermark Prompt",
   comments:
@@ -26,6 +28,7 @@ const watermarkPrompt = input({
   required: true,
   clean: util.types.toString,
 });
+
 const watermarkFormat = input({
   label: "Watermark Format",
   comments:
@@ -39,6 +42,7 @@ const watermarkFormat = input({
   ],
   clean: util.types.toString,
 });
+
 const raasRecordKeyField = input({
   label: "Record Key Field",
   comments:
@@ -49,6 +53,7 @@ const raasRecordKeyField = input({
   required: true,
   clean: util.types.toString,
 });
+
 const wqlPollingQuery = input({
   label: "Query",
   comments:
@@ -60,6 +65,7 @@ const wqlPollingQuery = input({
   required: true,
   clean: util.types.toString,
 });
+
 const wqlRecordKeyField = input({
   label: "Record Key Field",
   comments:
@@ -70,6 +76,7 @@ const wqlRecordKeyField = input({
   required: true,
   clean: util.types.toString,
 });
+
 const wqlDateField = input({
   label: "Date Field",
   comments:
@@ -80,6 +87,7 @@ const wqlDateField = input({
   required: true,
   clean: util.types.toString,
 });
+
 const wqlOverlapMinutes = input({
   label: "Overlap Minutes",
   comments:
@@ -90,6 +98,7 @@ const wqlOverlapMinutes = input({
   required: false,
   clean: overlapMinutesClean,
 });
+
 const businessProcess = input({
   label: "Business Process",
   comments:
@@ -101,6 +110,7 @@ const businessProcess = input({
   required: false,
   clean: cleanValueListInput,
 });
+
 const stepType = input({
   label: "Step Type",
   comments:
@@ -112,6 +122,7 @@ const stepType = input({
   required: false,
   clean: cleanValueListInput,
 });
+
 export const raasReportPollingInputs = {
   connection,
   reportUrl: {
@@ -129,6 +140,7 @@ export const raasReportPollingInputs = {
       "Static prompt values for the report as key-value pairs, sent on every recurrence. Keys are the prompt XML aliases. Do not include the Watermark Prompt.",
   },
 };
+
 export const wqlQueryPollingInputs = {
   connection,
   query: wqlPollingQuery,
@@ -138,6 +150,7 @@ export const wqlQueryPollingInputs = {
   lookBackDate,
   tenant: wqlTenant,
 };
+
 export const newEventStepsPollingInputs = {
   connection,
   lookBackDate,

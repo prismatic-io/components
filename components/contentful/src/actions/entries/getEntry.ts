@@ -9,6 +9,7 @@ import { getEntryExamplePayload } from "../../examplePayloads";
 import { getEntryInputs } from "../../inputs";
 import { getEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const getEntry = action({
   display: {
     label: "Get Entry",
@@ -25,6 +26,7 @@ export const getEntry = action({
     const entry: EntryProps<KeyValueMap> = (
       await environment.getEntry(entryId)
     ).toPlainObject();
+
     return {
       data: entry as unknown,
     };

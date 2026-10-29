@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listDrivesInputs } from "../../inputs";
 import { fetchDrives } from "../../util/pagination";
 import { listDrivesExamplePayload } from "../../examplePayloads";
+
 export const listDrives = action({
   display: {
     label: "List Drives",
@@ -19,8 +20,7 @@ export const listDrives = action({
     });
     return { data: drives };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listDrivesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listDrivesExamplePayload,
   examplePayload: listDrivesExamplePayload,
 });

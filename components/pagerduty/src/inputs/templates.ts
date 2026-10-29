@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { createTemplateExample, updateTemplateExample } from "./examples";
+
 export const templateQuery = input({
   label: "Query",
   type: "string",
@@ -10,6 +11,7 @@ export const templateQuery = input({
   comments: "The template name or description to search for.",
   clean: toOptionalString,
 });
+
 export const templateType = input({
   label: "Template Type",
   type: "string",
@@ -19,6 +21,7 @@ export const templateType = input({
   comments: "The template type used to filter results.",
   clean: toOptionalString,
 });
+
 export const templateSortBy = input({
   label: "Sort By",
   type: "string",
@@ -36,6 +39,7 @@ export const templateSortBy = input({
     "The field and direction used to sort results. Field options: name, created_at. Direction: asc or desc.",
   clean: toOptionalString,
 });
+
 export const templateId = input({
   label: "Template ID",
   type: "string",
@@ -45,6 +49,7 @@ export const templateId = input({
   comments: "The unique identifier for the template.",
   clean: util.types.toString,
 });
+
 export const createTemplateObject = input({
   label: "Template Object",
   type: "code",
@@ -54,6 +59,7 @@ export const createTemplateObject = input({
   required: true,
   clean: util.types.toObject,
 });
+
 export const updateTemplateObject = input({
   label: "Template",
   comments: "The JSON object body describing the template to update.",
@@ -63,6 +69,7 @@ export const updateTemplateObject = input({
   example: updateTemplateExample,
   clean: util.types.toObject,
 });
+
 export const updateMessage = input({
   label: "Update Message",
   type: "string",
@@ -76,6 +83,7 @@ export const updateMessage = input({
         status_update: parsedValue,
       };
     }
+
     return undefined;
   },
   comments:

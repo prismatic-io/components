@@ -1,4 +1,5 @@
 import type { WebClient } from "@slack/web-api";
+
 export const paginateResults = async (
   client: WebClient,
   object: string,
@@ -17,9 +18,11 @@ export const paginateResults = async (
       cursor: cursor,
       limit: 50,
     });
+
     cursor = data.response_metadata?.next_cursor;
     toReturn.push(...(data[returnObject] ?? []));
   } while (cursor);
+
   return {
     data: {
       ok: true,

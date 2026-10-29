@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { retireDeviceExamplePayload } from "../../examplePayloads";
 import { retireDeviceInputs } from "../../inputs";
+
 export const retireDevice = action({
   display: {
     label: "Retire Managed Device",

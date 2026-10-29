@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { modifyTimeEntriesExamplePayload } from "../../examplePayloads";
 import { modifyTimeEntriesInputs } from "../../inputs";
 import { modifyTimeEntriesOutputSchema } from "../../outputSchemas";
+
 export const modifyTimeEntries = action({
   display: {
     label: "Modify Time Entries",
@@ -24,9 +25,8 @@ export const modifyTimeEntries = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => modifyTimeEntriesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    modifyTimeEntriesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: modifyTimeEntriesOutputSchema,

@@ -5,6 +5,7 @@ import { selectDatabaseInputs } from "../inputs";
 import { getPaginatedData, sortArray } from "../utils";
 import { HttpMethod } from "../constants";
 import type { InlineDSDatabase } from "../types";
+
 export const selectDatabase = dataSource({
   display: {
     label: "Select Database (Deprecated)",
@@ -13,6 +14,7 @@ export const selectDatabase = dataSource({
   inputs: selectDatabaseInputs,
   perform: async (_context, { connection }) => {
     const client = createOldClient(connection, false);
+
     const { data } = await getPaginatedData(
       client,
       HttpMethod.POST,

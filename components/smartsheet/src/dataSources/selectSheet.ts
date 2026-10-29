@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectSheetInputs } from "../inputs";
+
 export const selectSheet = dataSource({
   display: {
     label: "Select Sheet",
@@ -18,13 +19,16 @@ export const selectSheet = dataSource({
         includeAll: true,
       },
     });
+
     if (!sheets || !Array.isArray(sheets)) {
       return { result: [] };
     }
+
     const result: Element[] = sheets.map(({ name: label, id: key }) => ({
       label,
       key: util.types.toString(key),
     }));
+
     return { result };
   },
 });

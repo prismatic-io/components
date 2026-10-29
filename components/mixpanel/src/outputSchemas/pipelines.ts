@@ -6,6 +6,7 @@ export const createGCSPipelineOutputSchema = {
   },
   required: ["pipeline_names"],
 };
+
 const pipelineJobSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +28,7 @@ const pipelineJobSchema = {
     "to_date",
   ],
 };
+
 export const getPipelineOutputSchema = {
   type: "object" as const,
   properties: {
@@ -36,6 +38,7 @@ export const getPipelineOutputSchema = {
   },
   required: ["canceled", "retried", "succeeded"],
 };
+
 export const listPipelinesOutputSchema = {
   type: "object" as const,
   additionalProperties: {

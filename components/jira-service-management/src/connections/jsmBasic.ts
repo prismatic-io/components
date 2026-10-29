@@ -1,4 +1,5 @@
 import { getAtlassianBasicAuthConnection } from "atlassian-utils";
+
 export const jsmBasic = getAtlassianBasicAuthConnection({
   key: "jsmBasic",
   display: {

@@ -4,6 +4,7 @@ import { selectLabel } from "./selectLabel";
 import { selectMilestone } from "./selectMilestone";
 import { selectProject } from "./selectProject";
 import { selectUser } from "./selectUser";
+
 export default {
   selectBranch,
   selectGroup,

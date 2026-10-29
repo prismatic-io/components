@@ -7,6 +7,7 @@ import {
   V3_MAX_RETRY_AFTER_SECONDS,
 } from "../constants";
 import { generatePayload, parseNextLink } from "./index";
+
 export const getV3Token = (connection: Connection): string => {
   const token = util.types.toString(connection.token?.access_token);
   if (!token) {
@@ -17,7 +18,9 @@ export const getV3Token = (connection: Connection): string => {
   }
   return token;
 };
+
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const getRateLimitedPage = async <T>(
   client: HttpClient,
   url: string,
@@ -26,22 +29,13 @@ const getRateLimitedPage = async <T>(
   try {
     return await client.get<T[]>(url, { params });
   } catch (error) {
-    const status = (
-      error as {
-        response?: {
-          status?: number;
-        };
-      }
-    ).response?.status;
+    const status = (error as { response?: { status?: number } }).response
+      ?.status;
     if (status !== 429) {
       throw error;
     }
     const retryAfterHeader = (
-      error as {
-        response?: {
-          headers?: Record<string, unknown>;
-        };
-      }
+      error as { response?: { headers?: Record<string, unknown> } }
     ).response?.headers?.["retry-after"];
     let retryAfterSeconds: number;
     try {
@@ -55,6 +49,7 @@ const getRateLimitedPage = async <T>(
     return await client.get<T[]>(url, { params });
   }
 };
+
 export const fetchAllV3 = async <T>(
   client: HttpClient,
   path: string,
@@ -66,6 +61,7 @@ export const fetchAllV3 = async <T>(
     per_page: V3_MAX_PER_PAGE,
     ...params,
   };
+
   while (nextUrl) {
     const response = await getRateLimitedPage<T>(
       client,
@@ -78,8 +74,10 @@ export const fetchAllV3 = async <T>(
     nextUrl = parseNextLink(response.headers?.link as string | undefined);
     currentParams = undefined;
   }
+
   return results;
 };
+
 const cursorFromNextLink = (linkHeader: string | undefined): string | null => {
   const nextUrl = parseNextLink(linkHeader);
   if (!nextUrl) {
@@ -93,6 +91,7 @@ const cursorFromNextLink = (linkHeader: string | undefined): string | null => {
   }
   return cursor;
 };
+
 export const fetchV3Window = async <T>(
   client: HttpClient,
   path: string,
@@ -107,15 +106,13 @@ export const fetchV3Window = async <T>(
     perPage: number;
     maxPages: number;
   },
-): Promise<{
-  records: T[];
-  after: string | null;
-}> => {
+): Promise<{ records: T[]; after: string | null }> => {
   const records: T[] = [];
   let requestParams: Record<string, unknown> = after
     ? { cursor: after }
     : { per_page: perPage, ...params };
   let next: string | null = null;
+
   for (let page = 0; page < maxPages; page++) {
     const response = await getRateLimitedPage<T>(client, path, requestParams);
     if (Array.isArray(response.data)) {
@@ -127,8 +124,10 @@ export const fetchV3Window = async <T>(
     }
     requestParams = { cursor: next };
   }
+
   return { records, after: next };
 };
+
 export const paginateV3 = async <T>(
   client: HttpClient,
   path: string,
@@ -146,11 +145,13 @@ export const paginateV3 = async <T>(
   if (fetchAll) {
     return fetchAllV3<T>(client, path, params);
   }
+
   const requestParams = cursor ? { cursor } : { ...params, per_page: perPage };
   const response = await getRateLimitedPage<T>(
     client,
     path,
     generatePayload(requestParams),
   );
+
   return Array.isArray(response.data) ? response.data : [];
 };

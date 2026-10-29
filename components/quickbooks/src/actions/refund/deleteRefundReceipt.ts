@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { connectionInput, receiptId, syncToken } from "../../inputs";
+
 export const deleteRefundReceipt = action({
   display: {
     label: "Delete Refund Receipt",

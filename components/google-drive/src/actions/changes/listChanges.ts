@@ -10,6 +10,7 @@ import {
   getListChangesNewStateKey,
   resolveListChangesPageToken,
 } from "../../util";
+
 export const listChanges = action({
   display: {
     label: "List Changes",
@@ -29,6 +30,7 @@ export const listChanges = action({
     const legacyCleanup = isLegacy
       ? { instanceState: { [getListChangesLegacyStateKey(context)]: null } }
       : {};
+
     if (pageToken) {
       const { data } = await client.changes.list({
         pageSize: CHANGES_PAGE_SIZE,
@@ -41,6 +43,7 @@ export const listChanges = action({
         ...legacyCleanup,
       };
     }
+
     const {
       data: { startPageToken },
     } = await client.changes.getStartPageToken(

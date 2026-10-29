@@ -4,6 +4,7 @@ import { downloadDataInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { downloadDataExamplePayload } from "../../examplePayloads";
 import { downloadDataOutputSchema } from "../../outputSchemas";
+
 export const downloadData = action({
   display: {
     label: "Download Data",
@@ -43,8 +44,7 @@ export const downloadData = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => downloadDataExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    downloadDataExamplePayload,
   examplePayload: downloadDataExamplePayload,
 });

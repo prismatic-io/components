@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../../client";
 import { toPaginationParams } from "../../helper";
 import { connection, pageNumber, pageSize, queryString } from "../../inputs";
+
 export const listProjects = action({
   display: {
     label: "List Projects",
@@ -14,9 +15,11 @@ export const listProjects = action({
       },
       context.debug.enabled,
     );
+
     const { data } = await client.get("/Projects", {
       params: toPaginationParams(params.pageSize, params.pageNumber),
     });
+
     return {
       data,
     };
@@ -24,4 +27,5 @@ export const listProjects = action({
   inputs: { connection, queryString, pageSize, pageNumber },
   examplePayload: { data: [{ "odata.type": "PS.PublishedProject" }] },
 });
+
 export default listProjects;

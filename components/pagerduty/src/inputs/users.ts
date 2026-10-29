@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { createUserExample } from "./examples";
+
 export const userId = input({
   label: "User ID",
   type: "string",
@@ -10,6 +11,7 @@ export const userId = input({
   clean: util.types.toString,
   comments: "The unique identifier for the user.",
 });
+
 export const userObject = input({
   label: "User",
   type: "code",
@@ -19,6 +21,7 @@ export const userObject = input({
   required: true,
   clean: util.types.toObject,
 });
+
 export const includeAttributes = input({
   label: "Include",
   type: "string",
@@ -32,6 +35,7 @@ export const includeAttributes = input({
   clean: toOptionalString,
   comments: "The additional models to include in the response.",
 });
+
 export const query = input({
   label: "Query",
   type: "string",

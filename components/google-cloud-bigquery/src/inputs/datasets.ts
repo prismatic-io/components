@@ -20,6 +20,7 @@ import {
   selfLink,
 } from "./common";
 import { paginationFields } from "./pagination";
+
 export const all = input({
   label: "All",
   type: "boolean",
@@ -27,6 +28,7 @@ export const all = input({
   comments: "When true, lists all datasets, including hidden ones.",
   required: false,
 });
+
 export const storageBillingModel = input({
   label: "Storage Billing Model",
   type: "string",
@@ -48,6 +50,7 @@ export const storageBillingModel = input({
     },
   ],
 });
+
 export const maxTimeTravelHours = input({
   label: "Max Time Travel Hours",
   type: "string",
@@ -58,6 +61,7 @@ export const maxTimeTravelHours = input({
   placeholder: "Enter max time travel hours",
   required: false,
 });
+
 export const defaultTableExpirationMs = input({
   label: "Default Table Expiration (ms)",
   type: "string",
@@ -68,6 +72,7 @@ export const defaultTableExpirationMs = input({
   placeholder: "Enter default table expiration in milliseconds",
   required: false,
 });
+
 export const satisfiesPzs = input({
   label: "Satisfies PZS",
   type: "boolean",
@@ -75,6 +80,7 @@ export const satisfiesPzs = input({
   comments: "Output only. Reserved for future use.",
   required: false,
 });
+
 export const isCaseInsensitive = input({
   label: "Is Case Insensitive",
   type: "boolean",
@@ -83,6 +89,7 @@ export const isCaseInsensitive = input({
     "Optional. TRUE if the dataset and its table names are case-insensitive, otherwise FALSE. By default, this is FALSE, which means the dataset and its table names are case-sensitive. This field does not affect routine references.",
   required: false,
 });
+
 export const defaultPartitionExpirationMs = input({
   label: "Default Partition Expiration (ms)",
   type: "string",
@@ -93,6 +100,7 @@ export const defaultPartitionExpirationMs = input({
   placeholder: "Enter default partition expiration in milliseconds",
   required: false,
 });
+
 export const datasetReference = input({
   label: "Dataset Reference",
   type: "code",
@@ -105,6 +113,7 @@ export const datasetReference = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const access = input({
   label: "Access",
   type: "code",
@@ -141,6 +150,7 @@ export const access = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const defaultEncryptionConfiguration = input({
   label: "Default Encryption Configuration",
   type: "code",
@@ -153,6 +163,7 @@ export const defaultEncryptionConfiguration = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const linkedDatasetSource = input({
   label: "Linked Dataset Source",
   type: "code",
@@ -168,6 +179,7 @@ export const linkedDatasetSource = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const tags = input({
   label: "Tags",
   type: "code",
@@ -182,6 +194,7 @@ export const tags = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const datasetAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -210,22 +223,26 @@ export const datasetAdditionalFields = structuredObjectInput({
     storageBillingModel,
   },
 });
+
 export const createDatasetInputs = {
   connectionInput,
   projectId,
   datasetReference,
   additionalFields: datasetAdditionalFields,
 };
+
 export const deleteDatasetInputs = {
   connectionInput,
   projectId,
   datasetId,
 };
+
 export const getDatasetInputs = {
   connectionInput,
   projectId,
   datasetId,
 };
+
 export const listDatasetsInputs = {
   connectionInput,
   projectId,
@@ -234,6 +251,7 @@ export const listDatasetsInputs = {
   all,
   filter,
 };
+
 export const updateDatasetInputs = {
   connectionInput,
   projectId,

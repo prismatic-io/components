@@ -26,6 +26,7 @@ export const listCustomObjectsExamplePayload = {
     ],
   },
 };
+
 export const describeCustomObjectExamplePayload = {
   data: {
     requestId: "185d6#14b51985ff0",
@@ -120,6 +121,7 @@ export const describeCustomObjectExamplePayload = {
     ],
   },
 };
+
 export const getCustomObjectsByFilterExamplePayload = {
   data: {
     requestId: "12951#15699db5c97",
@@ -144,6 +146,7 @@ export const getCustomObjectsByFilterExamplePayload = {
     success: true,
   },
 };
+
 export const syncCustomObjectsExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",
@@ -172,6 +175,7 @@ export const syncCustomObjectsExamplePayload = {
     ],
   },
 };
+
 export const deleteCustomObjectsExamplePayload = {
   data: {
     requestId: "e42b#14272d07d78",

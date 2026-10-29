@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createEventsClient } from "../../client";
 import { createChangeEventExamplePayload } from "../../examplePayloads";
 import { event, sendChangeEventExample } from "../../inputs";
+
 export const sendChangeEvent = action({
   display: {
     label: "Send Change Event",

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { trackInputs } from "../../inputs";
 import { createCustomerClient } from "../../client";
 import { trackExamplePayload } from "../../examplePayloads";
+
 export const track = action({
   display: {
     label: "Track",
@@ -20,6 +21,7 @@ export const track = action({
       : {
           name: eventName,
         };
+
     return {
       data: await client.track(id, payload),
     };
@@ -27,4 +29,5 @@ export const track = action({
   inputs: trackInputs,
   examplePayload: trackExamplePayload,
 });
+
 export default track;

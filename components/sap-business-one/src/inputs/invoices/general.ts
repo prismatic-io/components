@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const invoiceDocumentEntry = input({
   label: "Doc Entry",
   type: "string",

@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { createProductsExamplePayload } from "../../examplePayloads";
 import { createProductsInputs } from "../../inputs";
 import { asJsonObject } from "../../utils";
+
 export const createProducts = action({
   display: {
     label: "Create Products",
@@ -13,7 +14,9 @@ export const createProducts = action({
   examplePerform: async () => createProductsExamplePayload,
   perform: async (context, { connection, product }) => {
     const client = await getClient(connection, context.debug.enabled);
+
     const body = asJsonObject(product, "Product");
+
     const { data } = await client.post(ENDPOINTS.products, body);
     return { data };
   },

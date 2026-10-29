@@ -8,6 +8,7 @@ import {
 } from "../../inputs/attachments/createAttachmentInputs";
 import { connectionInput } from "../../inputs/general";
 import type { Attachment, MultipleItemsResponse } from "../../interfaces";
+
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
@@ -19,15 +20,18 @@ export const getAttachment = action({
       context,
       context.debug.enabled,
     );
+
     const params = {
       $filter: `parentId eq ${parentId} and parentType eq '${parentType}'`,
     };
+
     const { data } = await client.get<MultipleItemsResponse<Attachment[]>>(
       `/companies(${companyId})/attachments`,
       {
         params,
       },
     );
+
     return { data };
   },
   inputs: {

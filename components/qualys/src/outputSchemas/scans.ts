@@ -6,6 +6,7 @@ export const launchScanOutputSchema = {
     message: { type: "string" },
   },
 };
+
 export const listScansOutputSchema = {
   type: "array" as const,
   items: {

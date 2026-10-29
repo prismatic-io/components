@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { updateContactExamplePayload } from "../../examplePayloads";
 import { updateContactInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const updateContact = action({
   display: {
     label: "Update Contact",
@@ -19,17 +20,20 @@ export const updateContact = action({
       contactUpdateFirstName,
       contactUpdatelastName,
       timeout,
+
       fieldValues,
       dynamicValues,
       hubspotConnection,
     },
   ) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
+
     const { data } = await client.patch(
       hubspotPaths.objects("contacts", `/${contactId}`),
       {
@@ -45,6 +49,7 @@ export const updateContact = action({
         },
       },
     );
+
     return { data };
   },
   inputs: updateContactInputs,

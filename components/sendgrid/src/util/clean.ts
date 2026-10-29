@@ -1,16 +1,20 @@
 import { type DataPayload, util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
+
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanValueListInput = (value: unknown): string[] => {
   if (value && Array.isArray(value)) {
     return value.map((item) => util.types.toString(item));
   }
   return [];
 };
+
 const throwCodeInputError = (inputLabel: string): void => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanArrayCodeInput = (
   value: unknown,
   inputLabel: string,
@@ -29,6 +33,7 @@ export const cleanArrayCodeInput = (
   }
   return undefined;
 };
+
 export const cleanFieldMappingsInput = (value: unknown) => {
   try {
     const parsedFieldMappings =
@@ -45,6 +50,7 @@ export const cleanFieldMappingsInput = (value: unknown) => {
     throw new Error(`Invalid JSON format for Field Mappings: ${e.message}`);
   }
 };
+
 export const cleanContactsArrayInput = (value: unknown) => {
   try {
     const parsedContacts =
@@ -58,17 +64,20 @@ export const cleanContactsArrayInput = (value: unknown) => {
     throw new Error(`Invalid JSON format for Contacts: ${e.message}`);
   }
 };
+
 export const lookBackDateClean = (value: unknown): string | undefined => {
   const raw = util.types.toString(value).trim();
   if (!raw) {
     return undefined;
   }
+
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
     throw new Error(
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = util.types.toNumber(yearStr);
   const month = util.types.toNumber(monthStr);
@@ -83,11 +92,13 @@ export const lookBackDateClean = (value: unknown): string | undefined => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
   return parsed.toISOString();
 };
+
 export const cleanDataInput = (value: unknown): DataPayload | undefined => {
   if (value) {
     return util.types.toData(value);

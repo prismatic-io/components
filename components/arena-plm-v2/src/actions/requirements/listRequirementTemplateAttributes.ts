@@ -4,6 +4,7 @@ import { listRequirementTemplateAttributesExamplePayload } from "../../examplePa
 import { listRequirementTemplateAttributesInputs } from "../../inputs";
 import { attributeDefinitionFullRepListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listRequirementTemplateAttributes = action({
   display: {
     label: "List Requirement Template Attributes",

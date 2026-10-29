@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString, toOptionalNumber } from "../utils";
+
 export const owner = input({
   label: "Owner",
   type: "string",
@@ -11,6 +12,7 @@ export const owner = input({
     "The account owner of the repository. For example, in https://github.com/octocat/Hello-World, the owner is 'octocat'.",
   dataSource: "selectUserFromOrganization",
 });
+
 export const repo = input({
   label: "Repository Name",
   type: "string",
@@ -22,6 +24,7 @@ export const repo = input({
     "The name of the repository. For example, in https://github.com/octocat/Hello-World, the repository name is 'Hello-World'.",
   dataSource: "listReposForAuthenticatedUser",
 });
+
 const githubEvents = [
   "branch_protection_configuration",
   "branch_protection_rule",
@@ -79,6 +82,7 @@ const githubEvents = [
   "workflow_job",
   "workflow_run",
 ];
+
 export const events = input({
   label: "Events",
   type: "string",
@@ -88,6 +92,7 @@ export const events = input({
   model: githubEvents.map((event) => ({ label: event, value: event })),
   comments: "The list of event types that will trigger the webhook.",
 });
+
 export const webhookSecretInput = input({
   label: "Webhook Secret",
   type: "string",
@@ -96,11 +101,13 @@ export const webhookSecretInput = input({
   comments:
     "An optional secret used to verify webhook authenticity. See [GitHub's documentation](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries) for details.",
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const perPage = input({
   label: "Per Page",
   type: "string",
@@ -111,6 +118,7 @@ export const perPage = input({
   clean: toOptionalNumber,
   comments: "The number of results per page (max 100)",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -121,6 +129,7 @@ export const page = input({
   clean: toOptionalNumber,
   comments: "Page number of the results to fetch",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -129,6 +138,7 @@ export const fetchAll = input({
   clean: util.types.toBool,
   comments: "When true, automatically fetches all pages of results.",
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,

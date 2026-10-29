@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { updateDocumentInputs } from "../../inputs";
 import { updateDocumentExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const updateDocument = action({
   display: {
     label: "Update Document",
@@ -28,15 +29,19 @@ export const updateDocument = action({
       resourceLink,
       debug: context.debug.enabled,
     });
+
     const partKey = partitionKey;
     const etagValue = etag;
+
     const headers: Record<string, string> = {};
     if (partKey) {
       headers["x-ms-documentdb-partitionkey"] = `["${partKey}"]`;
     }
+
     if (etagValue) {
       headers["If-Match"] = etagValue;
     }
+
     const { data } = await client.put(`/${resourceLink}`, document, {
       headers,
     });

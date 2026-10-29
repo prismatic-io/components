@@ -6,6 +6,7 @@ import {
   recipientId,
   recipientInfo,
 } from "../../inputs";
+
 export const editRecipient = action({
   display: {
     label: `Edit Recipient`,
@@ -26,6 +27,7 @@ export const editRecipient = action({
       `/envelopes/${envelopeId}/recipients/${recipientId}`,
       recipientInfo,
     );
+
     return { data };
   },
   examplePayload: {

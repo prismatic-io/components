@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createCategoryExamplePayload } from "../../examplePayloads";
 import { createCategoryInputs } from "../../inputs";
 import type { JamfCreateResponse } from "../../types";
+
 export const createCategory = action({
   display: {
     label: "Create Category",

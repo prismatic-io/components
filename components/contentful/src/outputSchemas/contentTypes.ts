@@ -1,4 +1,5 @@
 import { draftSysProperties } from "./shared";
+
 const contentTypeSchema = {
   type: "object" as const,
   properties: {
@@ -27,9 +28,12 @@ const contentTypeSchema = {
     },
   },
 };
+
 export const listContentTypesOutputSchema = {
   type: "array" as const,
   items: contentTypeSchema,
 };
+
 export const createContentTypeOutputSchema = contentTypeSchema;
+
 export const updateContentTypeOutputSchema = contentTypeSchema;

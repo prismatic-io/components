@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { installTemplateExamplePayload } from "../../examplePayloads";
 import { installTemplateInputs } from "../../inputs";
+
 export const installTemplate = action({
   display: {
     label: "Install Template",
@@ -21,8 +22,7 @@ export const installTemplate = action({
     };
   },
   inputs: installTemplateInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => installTemplateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    installTemplateExamplePayload,
   examplePayload: installTemplateExamplePayload,
 });

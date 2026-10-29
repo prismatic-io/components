@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getZendeskClient } from "../client";
 import { selectTaskInputs } from "../inputs/dataSources";
+
 export const selectTask = dataSource({
   display: {
     label: "Select Task",
@@ -12,6 +13,7 @@ export const selectTask = dataSource({
     const { data } = await client.get("/tasks", {
       headers: { Accept: "application/json" },
     });
+
     return {
       result: data.items
         .map((task: any) => {

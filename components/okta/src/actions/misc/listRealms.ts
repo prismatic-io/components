@@ -4,6 +4,7 @@ import { listRealmsExamplePayload } from "../../examplePayloads/general";
 import { listRealmsInputs } from "../../inputs/general";
 import type { Realm } from "../../interfaces/general";
 import { paginateRecordsWithLink } from "../../util/util";
+
 export const listRealms = action({
   display: {
     label: "List Realms",
@@ -15,6 +16,7 @@ export const listRealms = action({
     { connection, search, sorting = {}, fetchAll, pagination = {} },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
+
     const data = await paginateRecordsWithLink<Realm>(
       client,
       "/realms",
@@ -27,6 +29,7 @@ export const listRealms = action({
         sortOrder: sorting.sortOrder,
       },
     );
+
     return {
       data,
     };

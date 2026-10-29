@@ -1,4 +1,5 @@
 import { customFieldsSchema } from "./common";
+
 export const agentSchema = {
   type: "object" as const,
   properties: {
@@ -53,6 +54,7 @@ export const agentSchema = {
   required: ["id"],
   additionalProperties: false,
 };
+
 export const agentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -61,6 +63,7 @@ export const agentOutputSchema = {
   required: ["agent"],
   additionalProperties: false,
 };
+
 export const listAgentsOutputSchema = {
   type: "object" as const,
   properties: {

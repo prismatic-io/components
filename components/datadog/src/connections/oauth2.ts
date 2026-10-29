@@ -1,5 +1,6 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { DATADOG_SITES, DEFAULT_DATADOG_SITE } from "../constants";
+
 export const oauth2AuthorizationCode = oauth2Connection({
   key: "oauth2",
   display: {

@@ -5,6 +5,7 @@ import { getEventAttachmentsExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { getEventAttachmentsInputs } from "../../inputs";
 import { getEventAttachmentsOutputSchema } from "../../outputSchemas";
+
 export const getEventAttachments = action({
   display: {
     label: "Get Event Attachments",

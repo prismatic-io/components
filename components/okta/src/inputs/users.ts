@@ -1,12 +1,14 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanObject, cleanString } from "../util/clean";
 import { connection, expand, extraBody, listInputs } from "./general";
+
 const profileExtraInputs = {
   ...extraBody,
   label: "Profile Extra Attributes",
   comments:
     "List of additional profile attributes to include in the request. This can be used to include attributes that are not explicitly supported by this component. See [Okta's API documentation](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/User/#tag/User/operation/updateUser!path=profile&t=request) for a list of supported attributes.",
 };
+
 export const id = input({
   label: "ID",
   type: "string",
@@ -17,6 +19,7 @@ export const id = input({
     "An ID, login, or login shortname (as long as the shortname is unambiguous) of an existing Okta user.",
   clean: util.types.toString,
 });
+
 export const userId = input({
   label: "User ID",
   type: "string",
@@ -27,6 +30,7 @@ export const userId = input({
   dataSource: "selectUser",
   clean: util.types.toString,
 });
+
 export const sendEmail = input({
   label: "Send Email",
   type: "boolean",
@@ -34,6 +38,7 @@ export const sendEmail = input({
   comments: "When true, sends a deactivation email to the admin.",
   clean: util.types.toBool,
 });
+
 export const login = input({
   label: "Login",
   type: "string",
@@ -43,6 +48,7 @@ export const login = input({
   placeholder: "Enter login",
   clean: util.types.toString,
 });
+
 export const employeeNumber = input({
   label: "Employee Number",
   type: "string",
@@ -52,6 +58,7 @@ export const employeeNumber = input({
   placeholder: "Enter employee number",
   clean: cleanString,
 });
+
 export const department = input({
   label: "Department",
   type: "string",
@@ -61,6 +68,7 @@ export const department = input({
   placeholder: "Enter department",
   clean: cleanString,
 });
+
 export const locale = input({
   label: "Locale",
   type: "string",
@@ -72,6 +80,7 @@ export const locale = input({
   placeholder: "Enter the user's locale",
   clean: cleanString,
 });
+
 export const firstName = input({
   label: "First Name",
   type: "string",
@@ -81,6 +90,7 @@ export const firstName = input({
   placeholder: "Enter first name",
   clean: cleanString,
 });
+
 export const lastName = input({
   label: "Last Name",
   type: "string",
@@ -90,6 +100,7 @@ export const lastName = input({
   placeholder: "Enter last name",
   clean: cleanString,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -99,6 +110,7 @@ export const email = input({
   placeholder: "Enter email address",
   clean: util.types.toString,
 });
+
 export const mobilePhone = input({
   label: "Mobile Phone",
   type: "string",
@@ -108,6 +120,7 @@ export const mobilePhone = input({
   placeholder: "Enter mobile phone number",
   clean: cleanString,
 });
+
 export const password = input({
   label: "Password",
   type: "password",
@@ -118,6 +131,7 @@ export const password = input({
   placeholder: "Enter password",
   clean: cleanString,
 });
+
 export const hashPassword = input({
   label: "Hash Password",
   type: "code",
@@ -136,6 +150,7 @@ export const hashPassword = input({
   placeholder: "Enter the hash password",
   clean: cleanString,
 });
+
 export const question = input({
   label: "Question",
   type: "string",
@@ -145,6 +160,7 @@ export const question = input({
   placeholder: "Enter recovery question",
   clean: cleanString,
 });
+
 export const answer = input({
   label: "Answer",
   type: "string",
@@ -154,6 +170,7 @@ export const answer = input({
   placeholder: "Enter recovery answer",
   clean: cleanString,
 });
+
 export const groupIds = input({
   label: "Group IDs",
   type: "code",
@@ -168,6 +185,7 @@ export const groupIds = input({
   placeholder: "Enter group IDs",
   clean: cleanObject,
 });
+
 export const realmId = input({
   label: "Realm ID",
   type: "string",
@@ -178,6 +196,7 @@ export const realmId = input({
   dataSource: "selectRealm",
   clean: cleanString,
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -188,6 +207,7 @@ export const type = input({
   dataSource: "selectUserType",
   clean: cleanString,
 });
+
 export const providerName = input({
   label: "Provider Name",
   type: "string",
@@ -197,6 +217,7 @@ export const providerName = input({
   placeholder: "Enter provider name",
   clean: cleanString,
 });
+
 export const providerType = input({
   label: "Provider Type",
   type: "string",
@@ -213,6 +234,7 @@ export const providerType = input({
   ],
   clean: cleanString,
 });
+
 export const revokeSessions = input({
   label: "Revoke Sessions",
   type: "boolean",
@@ -220,6 +242,7 @@ export const revokeSessions = input({
   comments: "When true, revokes all of the user's active sessions.",
   clean: util.types.toBool,
 });
+
 export const oauthTokens = input({
   label: "OAuth Tokens",
   type: "boolean",
@@ -228,6 +251,7 @@ export const oauthTokens = input({
     "Revokes issued OpenID Connect and OAuth refresh and access tokens.",
   clean: util.types.toBool,
 });
+
 export const forgetDevices = input({
   label: "Forget Devices",
   type: "boolean",
@@ -235,6 +259,7 @@ export const forgetDevices = input({
   comments: "Clears the user's remembered factors for all devices.",
   clean: util.types.toBool,
 });
+
 export const factorId = input({
   label: "Factor ID",
   type: "string",
@@ -245,6 +270,7 @@ export const factorId = input({
   dataSource: "selectUserFactor",
   clean: util.types.toString,
 });
+
 export const removeRecoveryEnrollment = input({
   label: "Remove Recovery Enrollment",
   type: "boolean",
@@ -253,6 +279,7 @@ export const removeRecoveryEnrollment = input({
     "When true, removes the phone number as both a recovery method and a factor. This parameter is only used for the sms and call factors.",
   clean: util.types.toBool,
 });
+
 export const provider = input({
   label: "Provider",
   type: "boolean",
@@ -261,6 +288,7 @@ export const provider = input({
     "Indicates whether to create a user with a specified authentication provider.",
   clean: util.types.toBool,
 });
+
 export const nextLogin = input({
   label: "Next Login",
   type: "string",
@@ -271,6 +299,7 @@ export const nextLogin = input({
   placeholder: "Enter next login action",
   clean: cleanString,
 });
+
 export const activate = input({
   label: "Activate",
   type: "boolean",
@@ -280,12 +309,15 @@ export const activate = input({
   clean: util.types.toBool,
   default: "true",
 });
+
 export const listUsersInputs = {
   ...listInputs,
 };
+
 export const listUserTypesInputs = {
   connection,
 };
+
 export const listUserGroupsInputs = {
   id: {
     ...id,
@@ -293,6 +325,7 @@ export const listUserGroupsInputs = {
   },
   connection,
 };
+
 export const getUserInputs = {
   id: {
     ...id,
@@ -301,16 +334,19 @@ export const getUserInputs = {
   expand,
   connection,
 };
+
 export const listUserFactorsInputs = {
   userId,
   connection,
 };
+
 export const unenrollUserFactorInputs = {
   userId,
   factorId,
   removeRecoveryEnrollment,
   connection,
 };
+
 export const clearUserSessionsInputs = {
   userId: {
     ...userId,
@@ -321,6 +357,7 @@ export const clearUserSessionsInputs = {
   forgetDevices,
   connection,
 };
+
 export const deactivateUserInputs = {
   id: {
     ...id,
@@ -329,6 +366,7 @@ export const deactivateUserInputs = {
   sendEmail,
   connection,
 };
+
 export const suspendUserInputs = {
   id: {
     ...id,
@@ -336,6 +374,7 @@ export const suspendUserInputs = {
   },
   connection,
 };
+
 const updateUserAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -353,6 +392,7 @@ const updateUserAdditionalFields = structuredObjectInput({
     profileExtraInputs,
   },
 });
+
 export const updateUserInputs = {
   id: {
     ...id,
@@ -374,6 +414,7 @@ export const updateUserInputs = {
   additionalFields: updateUserAdditionalFields,
   connection,
 };
+
 const createUserProvisioningOptions = structuredObjectInput({
   label: "Provisioning Options",
   required: false,
@@ -381,6 +422,7 @@ const createUserProvisioningOptions = structuredObjectInput({
     "Options that control activation and authentication provider behavior on creation.",
   inputs: { activate, nextLogin, provider },
 });
+
 const createUserAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -401,6 +443,7 @@ const createUserAdditionalFields = structuredObjectInput({
     profileExtraInputs,
   },
 });
+
 export const createUserInputs = {
   login,
   email,
@@ -418,6 +461,7 @@ export const createUserInputs = {
   additionalFields: createUserAdditionalFields,
   connection,
 };
+
 export const resetUserPasswordInputs = {
   id: {
     ...id,
@@ -431,6 +475,7 @@ export const resetUserPasswordInputs = {
   revokeSessions,
   connection,
 };
+
 export const setUserPasswordInputs = {
   userId,
   newPassword: {

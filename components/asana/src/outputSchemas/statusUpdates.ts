@@ -3,6 +3,7 @@ import {
   nextPageSchema,
   statusUpdateCompactSchema,
 } from "./shared";
+
 export const statusUpdateResponseSchema = {
   type: "object" as const,
   properties: {
@@ -102,6 +103,7 @@ export const statusUpdateResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listStatusUpdatesOutputSchema = {
   type: "object" as const,
   properties: {

@@ -21,6 +21,7 @@ import {
 } from "../inputs";
 import { createHttpClient } from "../client";
 import { sendEmailWithTemplateExamplePayload } from "../examplePayloads";
+
 export const sendEmailWithTemplate = action({
   display: {
     label: "Send Email With Template",
@@ -31,9 +32,11 @@ export const sendEmailWithTemplate = action({
     if (!params.templateId && !params.templateAlias) {
       throw new Error("Either templateId or templateAlias must be provided.");
     }
+
     if (!params.htmlBody && !params.textBody) {
       throw new Error("Either htmlBody or textBody must be provided.");
     }
+
     const emailData = {
       From: params.fromAddress,
       To: params.toAddress,
@@ -49,6 +52,7 @@ export const sendEmailWithTemplate = action({
       Metadata: params.metadata,
       Attachments: params.attachments,
     };
+
     const client = createHttpClient(
       params.postmarkConnection,
       context.debug.enabled,

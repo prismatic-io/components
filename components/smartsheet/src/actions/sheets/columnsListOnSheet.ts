@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { columnsListOnSheetExamplePayload } from "../../examplePayloads";
 import { columnsListOnSheetInputs } from "../../inputs";
+
 export const columnsListOnSheet = action({
   display: {
     label: "List Columns",

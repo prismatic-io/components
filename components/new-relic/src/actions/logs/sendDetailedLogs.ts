@@ -4,6 +4,7 @@ import { Service } from "../../constants";
 import { sendDetailedLogsExamplePayload } from "../../examplePayloads";
 import { sendDetailedLogsInputs } from "../../inputs";
 import { sendDetailedLogsOutputSchema } from "../../outputSchemas";
+
 export const sendDetailedLogs = action({
   display: {
     label: "Send Detailed Logs",
@@ -17,14 +18,14 @@ export const sendDetailedLogs = action({
       context.debug.enabled,
       Service.LOGS,
     );
+
     const { data } = await client.post("", params.codeMessage);
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...sendDetailedLogsExamplePayload,
   }),
   outputSchema: outputSchema({
@@ -34,4 +35,5 @@ export const sendDetailedLogs = action({
   examplePayload: sendDetailedLogsExamplePayload,
   inputs: sendDetailedLogsInputs,
 });
+
 export default sendDetailedLogs;

@@ -5,6 +5,7 @@ import { listSupplierApprovalStatusesInputs } from "../../inputs";
 import { listSupplierApprovalStatusesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listSupplierApprovalStatuses = action({
   display: {
     label: "List Supplier Approval Statuses",
@@ -23,24 +24,29 @@ export const listSupplierApprovalStatuses = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         name,
         type,
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       context.logger.info("Fetching supplier approval statuses", {
         queryParamNames: Object.keys(queryParams),
       });
+
       const data = await fetchArenaList(
         client,
         "/settings/suppliers/approvalstatuses",
         queryParams,
         fetchAll,
       );
+
       context.logger.info(
         `Successfully retrieved ${data.results?.length || 0} supplier approval statuses`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

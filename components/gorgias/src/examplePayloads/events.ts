@@ -2,9 +2,8 @@ import type {
   GetEventResponse,
   ListEventsResponse,
 } from "../interfaces/events";
-export const getEventExamplePayload: {
-  data: GetEventResponse;
-} = {
+
+export const getEventExamplePayload: { data: GetEventResponse } = {
   data: {
     id: 501,
     context: "User logged into the system from a new device.",
@@ -21,9 +20,8 @@ export const getEventExamplePayload: {
     url: "https://www.example.com/login",
   },
 };
-export const listEventsExamplePayload: {
-  data: ListEventsResponse;
-} = {
+
+export const listEventsExamplePayload: { data: ListEventsResponse } = {
   data: {
     data: [
       {

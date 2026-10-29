@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { deleteInvoiceExamplePayload } from "../../examplePayloads/invoices";
 import { deleteInvoiceInputs } from "../../inputs";
 import { deleteInvoiceOutputSchema } from "../../outputSchemas";
+
 export const deleteInvoice = action({
   display: {
     label: "Delete Invoice",
@@ -21,10 +22,9 @@ export const deleteInvoice = action({
   examplePerform: async (
     _context,
     { invoiceId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const deleted = deleteInvoiceExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...deleted,
@@ -37,5 +37,6 @@ export const deleteInvoice = action({
     type: "actionOutput",
     schema: deleteInvoiceOutputSchema,
   }),
+
   examplePayload: deleteInvoiceExamplePayload,
 });

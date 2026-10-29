@@ -123,6 +123,7 @@ export const getNotificationDetailsExamplePayload = {
     },
   },
 };
+
 export const enableNotificationExamplePayload = {
   data: {
     watch: [
@@ -146,6 +147,7 @@ export const enableNotificationExamplePayload = {
     ],
   },
 };
+
 export const disableNotificationExamplePayload = {
   data: {
     watch: [
@@ -172,6 +174,7 @@ export const disableNotificationExamplePayload = {
     ],
   },
 };
+
 export const disableSpecificNotificationExamplePayload = {
   data: {
     watch: [
@@ -193,6 +196,7 @@ export const disableSpecificNotificationExamplePayload = {
     ],
   },
 };
+
 export const updateNotificationExamplePayload = {
   data: {
     watch: [

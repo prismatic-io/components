@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanLookBackDate, pollResourceModel } from "../util";
 import { connection } from "./common";
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -9,6 +10,7 @@ const pollResourceType = input({
   comments: "The Sage Intacct object to poll for new or updated records.",
   clean: util.types.toString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -18,6 +20,7 @@ const showNewRecords = input({
     "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -27,6 +30,7 @@ const showUpdatedRecords = input({
     "When true, records updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   type: "string",
@@ -37,6 +41,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: cleanLookBackDate,
 });
+
 export const pollChangesInputs = {
   connection,
   pollResourceType,

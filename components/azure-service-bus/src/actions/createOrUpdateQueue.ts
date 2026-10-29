@@ -27,6 +27,7 @@ import {
 } from "../inputs";
 import type { CreateOrUpdateQueueBody } from "../types/CreateOrUpdateQueueBody";
 import type { EntityStatus } from "../types/EntityStatus";
+
 export const createOrUpdateQueue = action({
   display: {
     label: "Create or Update Queue",
@@ -129,4 +130,5 @@ export const createOrUpdateQueue = action({
     status,
   },
 });
+
 export default { createOrUpdateQueue };

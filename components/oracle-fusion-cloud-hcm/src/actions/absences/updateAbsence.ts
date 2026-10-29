@@ -4,6 +4,7 @@ import { updateAbsenceExamplePayload } from "../../examplePayloads/absences";
 import { updateAbsenceInputs } from "../../inputs";
 import { absenceOutputSchema } from "../../outputSchemas";
 import type { Absence } from "../../types";
+
 export const updateAbsence = action({
   display: {
     label: "Update Absence",

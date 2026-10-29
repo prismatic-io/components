@@ -7,15 +7,18 @@ import {
 } from "../../constants";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhook } from "./createWebhook";
+
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
   apiKey: "test-api-key",
   applicationKey: "test-application-key",
 });
+
 describe("createWebhook", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("maps the inputs onto the snake_case request body", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post(WEBHOOKS_CONFIGURATION_PATH, {
@@ -26,6 +29,7 @@ describe("createWebhook", () => {
         payload: '{"alert": "$ALERT_TITLE"}',
       })
       .reply(201, createWebhookExamplePayload.data);
+
     const { result } = await invoke(createWebhook, {
       connection: testConnection,
       webhookName: "my-integration-webhook",
@@ -34,13 +38,16 @@ describe("createWebhook", () => {
       webhookEncodeAs: "json",
       webhookPayload: '{"alert": "$ALERT_TITLE"}',
     });
+
     expect(result.data).toEqual(createWebhookExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("surfaces an API error", async () => {
     nock(DEFAULT_DATADOG_SITE)
       .post(WEBHOOKS_CONFIGURATION_PATH)
       .reply(400, { errors: ["Webhook already exists"] });
+
     await expect(
       invoke(createWebhook, {
         connection: testConnection,

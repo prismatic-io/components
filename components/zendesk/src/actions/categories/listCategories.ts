@@ -5,6 +5,7 @@ import { listCategoriesInputs } from "../../inputs";
 import { listCategoriesOutputSchema } from "../../outputSchemas";
 import type { Category, PaginatedResponse } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listCategories = action({
   display: {
     label: "List Categories",
@@ -17,6 +18,7 @@ export const listCategories = action({
   ) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const url = `/help_center/${locale}/categories`;
+
     if (fetchAll) {
       const categories: Category[] = [];
       return {
@@ -31,20 +33,18 @@ export const listCategories = action({
         },
       };
     }
+
     const params = {
       sort_by: sortBy,
       sort_order: sortOrder,
     };
+
     const { data } = await client.get<
-      | PaginatedResponse<{
-          categories: Category[];
-        }>
-      | {
-          categories: Category[];
-        }
+      PaginatedResponse<{ categories: Category[] }> | { categories: Category[] }
     >(`/help_center/${locale}/categories`, {
       params,
     });
+
     return {
       data,
     };

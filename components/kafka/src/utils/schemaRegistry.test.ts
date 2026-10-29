@@ -6,13 +6,17 @@ import {
   createSchemaRegistryClient,
   deserializeBuffer,
 } from "./schemaRegistry";
+
 vi.mock("@kafkajs/confluent-schema-registry", () => ({
   SchemaRegistry: vi.fn(),
 }));
+
 const mockedSchemaRegistry = SchemaRegistry as unknown as Mock;
+
 beforeEach(() => {
   vi.clearAllMocks();
 });
+
 describe("createSchemaRegistryClient", () => {
   test("uses schemaRegistryUrl as the host and omits auth when no API key is set", () => {
     const connection = createConnection(basic, {
@@ -22,13 +26,16 @@ describe("createSchemaRegistryClient", () => {
       avroEnabled: true,
       schemaRegistryUrl: "https://psrc-example.us-east-1.confluent.cloud",
     });
+
     createSchemaRegistryClient(connection);
+
     expect(mockedSchemaRegistry).toHaveBeenCalledTimes(1);
     expect(mockedSchemaRegistry).toHaveBeenCalledWith({
       host: "https://psrc-example.us-east-1.confluent.cloud",
       auth: undefined,
     });
   });
+
   test("includes auth when schemaRegistryApiKey is set", () => {
     const connection = createConnection(basic, {
       username: "user",
@@ -39,12 +46,15 @@ describe("createSchemaRegistryClient", () => {
       schemaRegistryApiKey: "sr-key",
       schemaRegistryApiSecret: "sr-secret",
     });
+
     createSchemaRegistryClient(connection);
+
     expect(mockedSchemaRegistry).toHaveBeenCalledWith({
       host: "https://psrc-example.us-east-1.confluent.cloud",
       auth: { username: "sr-key", password: "sr-secret" },
     });
   });
+
   test("does not perform any I/O at construction time", () => {
     const connection = createConnection(basic, {
       username: "user",
@@ -52,48 +62,59 @@ describe("createSchemaRegistryClient", () => {
       authMechanism: "plain",
       schemaRegistryUrl: "https://psrc-example.us-east-1.confluent.cloud",
     });
+
     expect(() => createSchemaRegistryClient(connection)).not.toThrow();
   });
 });
+
 describe("deserializeBuffer", () => {
   const stubRegistry = (decode: Mock): SchemaRegistry =>
     ({ decode }) as unknown as SchemaRegistry;
+
   test("returns the decoded record on success", async () => {
     const decoded = { orderId: "order-12345", amount: 99.99 };
     const decode = vi.fn().mockResolvedValue(decoded);
     const logger = { warn: vi.fn() };
     const buffer = Buffer.from("avro-encoded-bytes");
+
     const result = await deserializeBuffer(
       stubRegistry(decode),
       buffer,
       logger,
     );
+
     expect(decode).toHaveBeenCalledWith(buffer);
     expect(result).toEqual(decoded);
     expect(logger.warn).not.toHaveBeenCalled();
   });
+
   test("does not throw on decode failure: warns and falls back to the raw string", async () => {
     const decode = vi.fn().mockRejectedValue(new Error("bad magic byte"));
     const logger = { warn: vi.fn() };
     const buffer = Buffer.from("not-really-avro");
+
     const result = await deserializeBuffer(
       stubRegistry(decode),
       buffer,
       logger,
     );
+
     expect(result).toBe("not-really-avro");
     expect(logger.warn).toHaveBeenCalledWith(
       "Avro deserialization failed, falling back to string: bad magic byte",
     );
   });
+
   test("labels a non-Error rejection as an unknown decode error", async () => {
     const decode = vi.fn().mockRejectedValue("a bare string rejection");
     const logger = { warn: vi.fn() };
+
     const result = await deserializeBuffer(
       stubRegistry(decode),
       Buffer.from("payload"),
       logger,
     );
+
     expect(result).toBe("payload");
     expect(logger.warn).toHaveBeenCalledWith(
       "Avro deserialization failed, falling back to string: Unknown decode error",

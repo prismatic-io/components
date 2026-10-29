@@ -4,6 +4,7 @@ import { getExportRunExamplePayload } from "../../examplePayloads";
 import { getExportRunInputs } from "../../inputs";
 import { exportRunSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getExportRun = action({
   display: {
     label: "Get Export Run",
@@ -18,15 +19,19 @@ export const getExportRun = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       context.logger.info(
         `Fetching export run ${params.exportRunGuid} for export ${params.exportGuid}`,
       );
+
       const { data } = await client.get(
         `/exports/${params.exportGuid}/runs/${params.exportRunGuid}`,
       );
+
       context.logger.info(
         `Successfully retrieved export run ${params.exportRunGuid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Get Export Run");

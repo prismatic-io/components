@@ -4,6 +4,7 @@ import {
   folderFullSchema,
   nullableSharedLinkSchema,
 } from "./common";
+
 const fileSharedLinkProjectionSchema = {
   type: "object" as const,
   properties: {
@@ -18,6 +19,7 @@ const fileSharedLinkProjectionSchema = {
   },
   required: ["id", "type", "name", "shared_link"],
 };
+
 const folderSharedLinkProjectionSchema = {
   type: "object" as const,
   properties: {
@@ -30,6 +32,7 @@ const folderSharedLinkProjectionSchema = {
   },
   required: ["id", "type", "name", "shared_link"],
 };
+
 export const findFileForSharedLinkOutputSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +42,7 @@ export const findFileForSharedLinkOutputSchema = {
   required: ["id", "type", "name"],
   additionalProperties: true,
 };
+
 export const findFolderForSharedLinkOutputSchema = {
   type: "object" as const,
   properties: {
@@ -48,17 +52,24 @@ export const findFolderForSharedLinkOutputSchema = {
   required: ["id", "type", "name"],
   additionalProperties: true,
 };
+
 export const addSharedLinkToFileOutputSchema = fileSharedLinkProjectionSchema;
+
 export const updateSharedLinkToFileOutputSchema =
   fileSharedLinkProjectionSchema;
+
 export const removeSharedLinkFromFileOutputSchema =
   fileSharedLinkProjectionSchema;
+
 export const addSharedLinkToFolderOutputSchema =
   folderSharedLinkProjectionSchema;
+
 export const updateSharedLinkOnFolderOutputSchema =
   folderSharedLinkProjectionSchema;
+
 export const removeSharedLinkFromFolderOutputSchema =
   folderSharedLinkProjectionSchema;
+
 const getSharedLinkResultSchema = {
   type: "object" as const,
   properties: {
@@ -66,5 +77,7 @@ const getSharedLinkResultSchema = {
   },
   required: ["sharedLink"],
 };
+
 export const getSharedLinkForFileOutputSchema = getSharedLinkResultSchema;
+
 export const getSharedLinkForFolderOutputSchema = getSharedLinkResultSchema;

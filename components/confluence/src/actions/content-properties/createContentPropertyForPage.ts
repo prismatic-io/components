@@ -3,6 +3,7 @@ import { contentPropertySchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { createContentPropertyForPageInputs } from "../../inputs";
 import { createContentPropertyExamplePayload as createContentPropertyForPageExamplePayload } from "../../examplePayloads";
+
 export const createContentPropertyForPage = action({
   display: {
     label: "Create Content Property for Page",
@@ -30,9 +31,7 @@ export const createContentPropertyForPage = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createContentPropertyForPageExamplePayload,
   }),
   examplePayload: {

@@ -9,6 +9,7 @@ import {
   timeout,
 } from "./common";
 import { customerEmail } from "./customers";
+
 export const successUrl = input({
   label: "Success URL",
   type: "string",
@@ -19,6 +20,7 @@ export const successUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const cancelUrl = input({
   label: "Cancel URL",
   type: "string",
@@ -29,6 +31,7 @@ export const cancelUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const mode = input({
   label: "Mode",
   type: "string",
@@ -44,6 +47,7 @@ export const mode = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const lineItems = input({
   label: "Line Items",
   type: "code",
@@ -54,6 +58,7 @@ export const lineItems = input({
   example: JSON.stringify([{ price: "price_H5ggYwtDq4fbrJ", quantity: 2 }]),
   clean: util.types.toObject,
 });
+
 export const clientReferenceId = input({
   label: "Client Reference ID",
   type: "string",
@@ -64,6 +69,7 @@ export const clientReferenceId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const bodyParams = input({
   label: "Body Params",
   type: "code",
@@ -74,6 +80,7 @@ export const bodyParams = input({
   example: JSON.stringify({ customer: "cus_123456" }, null, 2),
   clean: cleanObjectInput,
 });
+
 export const sessionId = input({
   label: "Session ID",
   type: "string",
@@ -83,6 +90,7 @@ export const sessionId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const createCheckoutSessionInputs = {
   mode,
   lineItems,
@@ -101,28 +109,33 @@ export const createCheckoutSessionInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const expireCheckoutSessionInputs = {
   sessionId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getCheckoutSessionInputs = {
   sessionId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listCheckoutSessionLineItemsInputs = {
   sessionId,
   pagination: cursorPagination,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listCheckoutSessionsInputs = {
   fetchAll,
   pagination: cursorPagination,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const updateCheckoutSessionInputs = {
   sessionId,
   metadata,

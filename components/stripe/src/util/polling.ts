@@ -1,4 +1,5 @@
 import type { StripeChangesObject, StripeRecordChange } from "../types";
+
 export const resolvePollingRecordChanges = (
   data: StripeChangesObject | undefined,
 ): StripeRecordChange[] => {

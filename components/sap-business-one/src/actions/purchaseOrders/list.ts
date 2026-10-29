@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { fetchAllData } from "../../util";
 import { defaultPaginationInputs, connection } from "../../inputs/general";
+
 export const listPurchaseOrders = action({
   display: {
     label: "List Purchase Orders",
@@ -30,6 +31,7 @@ export const listPurchaseOrders = action({
       context,
       context.debug.enabled,
     );
+
     const data = await fetchAllData(
       client,
       "PurchaseOrders",

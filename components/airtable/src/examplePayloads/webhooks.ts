@@ -47,6 +47,7 @@ export const listWebhooksExamplePayload = {
     },
   ],
 };
+
 export const createWebhookExamplePayload = {
   data: {
     id: "ach00000000000001",
@@ -54,9 +55,11 @@ export const createWebhookExamplePayload = {
     expirationTime: "2023-01-20T00:00:00.000Z",
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {},
 };
+
 export const refreshWebhookExamplePayload = {
   data: {
     expirationTime: "2023-01-30T00:00:00.000Z",

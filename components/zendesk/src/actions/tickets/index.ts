@@ -6,6 +6,7 @@ import { listTicketsByUser } from "./listTicketsByUser";
 import { listTicketsToUser } from "./listTicketsToUser";
 import { showTicket } from "./showTicket";
 import { updateTicket } from "./updateTicket";
+
 export default {
   createTicket,
   deleteTicket,

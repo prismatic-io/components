@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getSubscriptionExamplePayload as createSubscriptionExamplePayload } from "../../examplePayloads";
 import { createSubscriptionInputs } from "../../inputs";
 import { getExpirationDate, subscribeToResource } from "../../util";
+
 export const createSubscription = action({
   display: {
     label: "Create Subscription",
@@ -22,6 +23,7 @@ export const createSubscription = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const currentExpirationDateTime = getExpirationDate(expirationDateTime);
+
     const data = await subscribeToResource(
       client,
       notificationUrl,
@@ -33,6 +35,7 @@ export const createSubscription = action({
         lifecycleNotificationUrl,
       },
     );
+
     return {
       data,
     };

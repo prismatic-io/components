@@ -6,6 +6,7 @@ import {
   includePrivateChannels,
   includePublicChannels,
 } from "./common";
+
 export const showChannelIdInDropdown = input({
   label: "Show Channel ID in Dropdown",
   comments:
@@ -14,6 +15,7 @@ export const showChannelIdInDropdown = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const showUserIdInDropdown = input({
   label: "Show User ID in Dropdown",
   comments:
@@ -22,6 +24,7 @@ export const showUserIdInDropdown = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const showTeamIdInDropdown = input({
   label: "Show Team ID in Dropdown",
   comments:
@@ -30,6 +33,7 @@ export const showTeamIdInDropdown = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const selectChannelsInputs = {
   connection: connectionInput,
   showIdInDropdown: showChannelIdInDropdown,
@@ -38,10 +42,12 @@ export const selectChannelsInputs = {
   includeMultiPartyImchannels,
   includeImChannels,
 };
+
 export const selectUsersInputs = {
   connection: connectionInput,
   showIdInDropdown: showUserIdInDropdown,
 };
+
 export const selectTeamsInputs = {
   connection: connectionInput,
   showIdInDropdown: showTeamIdInDropdown,

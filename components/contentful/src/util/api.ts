@@ -7,6 +7,7 @@ import type {
   Space,
 } from "contentful-management";
 import { PAGINATION_LIMIT } from "../constants";
+
 export const getEnvironment = async (
   client: ClientAPI,
   spaceId: string,
@@ -15,6 +16,7 @@ export const getEnvironment = async (
   const space: Space = await client.getSpace(spaceId);
   return await space.getEnvironment(environmentId);
 };
+
 export const getAllPaginatedItems = async <T, TPlain>(
   getCollection: (
     options: Pick<QueryOptions, "limit" | "skip">,
@@ -33,5 +35,6 @@ export const getAllPaginatedItems = async <T, TPlain>(
     skip += data.items.length;
     allItems.push(...data.items);
   } while (allItems.length < total);
+
   return allItems;
 };

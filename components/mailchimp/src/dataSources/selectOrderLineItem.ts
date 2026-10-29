@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connectionInput, storeId, orderId } from "../inputs";
 import type { MailchimpOrderLineItem } from "../types";
 import { paginatedRequest } from "../utils/pagination";
+
 export const selectOrderLineItem = dataSource({
   display: {
     label: "Select Order Line Item",
@@ -22,6 +23,7 @@ export const selectOrderLineItem = dataSource({
       dataKey: "lines",
       fetchAll: true,
     });
+
     const lines = data.lines as MailchimpOrderLineItem[];
     const result = lines
       .map<Element>((line) => ({
@@ -31,6 +33,7 @@ export const selectOrderLineItem = dataSource({
         key: line.id.toString(),
       }))
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",
@@ -43,4 +46,5 @@ export const selectOrderLineItem = dataSource({
     ],
   },
 });
+
 export default selectOrderLineItem;

@@ -4,6 +4,7 @@ import { SUCCESS_PAYLOAD } from "../../examplePayloads";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { attachmentId } from "../../inputs/attachments/updateAttachmentInputs";
 import { connectionInput } from "../../inputs/general";
+
 export const deleteAttachment = action({
   display: {
     label: "Delete Attachment",
@@ -18,6 +19,7 @@ export const deleteAttachment = action({
     await client.delete(
       `/companies(${companyId})/attachments(${attachmentId})`,
     );
+
     return SUCCESS_PAYLOAD;
   },
   inputs: {

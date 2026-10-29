@@ -4,6 +4,7 @@ import { updateStageInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { updateStageExamplePayload } from "../../examplePayloads";
 import { updateStageOutputSchema } from "../../outputSchemas";
+
 export const updateStage = action({
   display: {
     label: "Update Stage",

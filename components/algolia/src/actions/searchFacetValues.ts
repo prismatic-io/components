@@ -8,6 +8,7 @@ import {
   indexName,
   maxFacetHitsInput,
 } from "../inputs";
+
 export const searchFacetValues = action({
   display: {
     label: "Search Facet Values",
@@ -22,6 +23,7 @@ export const searchFacetValues = action({
       isGoingToRead: true,
       debug: context.debug.enabled,
     });
+
     try {
       const response = await client.post(
         `/1/indexes/${indexName}/facets/${facetName}/query`,

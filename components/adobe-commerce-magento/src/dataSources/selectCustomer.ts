@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_SIZE, ENDPOINTS } from "../constants";
 import { selectCustomerExamplePayload } from "../examplePayloads";
 import { selectCustomerInputs } from "../inputs";
 import { toSortedElements } from "../utils";
+
 export const selectCustomer = dataSource({
   display: {
     label: "Select Customer",
@@ -24,6 +25,7 @@ export const selectCustomer = dataSource({
         "searchCriteria[pageSize]": DEFAULT_PAGE_SIZE,
       },
     });
+
     return {
       result: toSortedElements(data?.items, (item) => ({
         label: `${item.firstname} ${item.lastname} (${item.email})`,

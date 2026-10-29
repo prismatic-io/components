@@ -11,6 +11,7 @@ export const workerRecordOutputSchema = {
   },
   required: [],
 };
+
 export const workerOutputSchema = {
   type: "object" as const,
   properties: {
@@ -26,6 +27,7 @@ export const workerOutputSchema = {
   },
   required: ["PersonNumber", "LastName"],
 };
+
 export const listWorkersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -37,6 +39,7 @@ export const listWorkersOutputSchema = {
   },
   required: ["items", "count", "hasMore", "limit", "offset"],
 };
+
 export const listPublicWorkersOutputSchema = {
   type: "object" as const,
   properties: {

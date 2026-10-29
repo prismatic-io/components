@@ -19,6 +19,7 @@ import {
   startOn,
   workspaceId,
 } from "./common";
+
 const projectColor = input({
   label: "Project Color",
   type: "string",
@@ -28,6 +29,7 @@ const projectColor = input({
   required: false,
   clean: toOptionalString,
 });
+
 const archived = input({
   label: "Archived",
   type: "boolean",
@@ -36,6 +38,7 @@ const archived = input({
   required: false,
   clean: util.types.toBool,
 });
+
 const defaultView = input({
   label: "Default View",
   type: "string",
@@ -50,6 +53,7 @@ const defaultView = input({
   required: true,
   clean: util.types.toString,
 });
+
 const privacySetting = input({
   label: "Privacy Setting",
   type: "string",
@@ -72,6 +76,7 @@ const privacySetting = input({
   ],
   clean: util.types.toString,
 });
+
 const owner = input({
   label: "Owner ID",
   type: "string",
@@ -82,6 +87,7 @@ const owner = input({
   required: true,
   clean: validateId,
 });
+
 const team = input({
   label: "Team ID",
   type: "string",
@@ -92,12 +98,14 @@ const team = input({
   required: false,
   clean: toOptionalId,
 });
+
 const createProjectSettings = structuredObjectInput({
   label: "Project Settings",
   required: false,
   comments: "Archived, Privacy Setting, and Project Color.",
   inputs: { archived, privacySetting, projectColor },
 });
+
 const updateProjectSettings = structuredObjectInput({
   label: "Project Settings",
   required: false,
@@ -109,6 +117,7 @@ const updateProjectSettings = structuredObjectInput({
     projectColor,
   },
 });
+
 export const createProjectsInputs = {
   asanaConnection: connectionInput,
   defaultView,
@@ -130,6 +139,7 @@ export const createProjectsInputs = {
       "Include this value if you would like this project to be included in a workspace.",
   },
 };
+
 export const updateProjectInputs = {
   asanaConnection: connectionInput,
   dueOn,
@@ -143,21 +153,25 @@ export const updateProjectInputs = {
   startOn,
   team,
 };
+
 export const listProjectsInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
   pagination,
   workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
+
 export const getProjectInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
   projectId,
 };
+
 export const deleteProjectsInputs = {
   asanaConnection: connectionInput,
   projectId,
 };
+
 export const addUserToProjectInputs = {
   asanaConnection: connectionInput,
   members,
@@ -168,6 +182,7 @@ export const addUserToProjectInputs = {
   },
   projectId,
 };
+
 export const addCustomFieldToProjectInputs = {
   asanaConnection: connectionInput,
   fieldId,
@@ -176,6 +191,7 @@ export const addCustomFieldToProjectInputs = {
   isImportant,
   projectId,
 };
+
 export const removeCustomFieldFromProjectInputs = {
   asanaConnection: connectionInput,
   fieldId,

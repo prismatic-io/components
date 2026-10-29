@@ -4,6 +4,7 @@ import { addItemToChangeExamplePayload } from "../../examplePayloads";
 import { addItemToChangeInputs } from "../../inputs";
 import { changeItemAssociationSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const addItemToChange = action({
   display: {
     label: "Add Item to Change",
@@ -35,6 +36,7 @@ export const addItemToChange = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const requestPayload = {
         newItemRevision: newItemRevision
           ? { guid: newItemRevision }
@@ -61,6 +63,7 @@ export const addItemToChange = action({
         specsView: specsView || undefined,
         bomView: bomView || undefined,
       };
+
       context.logger.info("Adding item to change in Arena", {
         changeGuid: changeGuid,
         newItemRevision: newItemRevision,
@@ -73,15 +76,18 @@ export const addItemToChange = action({
           requestPayload.dispositionAttributes?.length || 0,
         hasDispositionAttributeJson: !!dispositionAttributeJson,
       });
+
       const { data, status } = await client.post(
         `/changes/${changeGuid}/items`,
         requestPayload,
       );
+
       context.logger.info("Item added to change successfully", {
         changeGuid: changeGuid,
         responseGuid: data.guid,
         statusCode: status,
       });
+
       return {
         data,
       };

@@ -9,6 +9,7 @@ import {
 } from "aws-utils";
 import { accessKeySecretPair } from "./connections";
 import type { GlueClientProps } from "./types";
+
 const validateConnection = (connection: Connection): void => {
   if (
     ![accessKeySecretPair.key, assumeRoleConnection.key].includes(
@@ -21,6 +22,7 @@ const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 const getCredentials = (connection: Connection): Credentials => {
   validateConnection(connection);
   return {
@@ -28,12 +30,14 @@ const getCredentials = (connection: Connection): Credentials => {
     secretAccessKey: toTrimmedString(connection.fields.secretAccessKey),
   };
 };
+
 export const createClient = async ({
   awsRegion,
   awsConnection,
 }: GlueClientProps): Promise<GlueClient> => {
   const { accessKeyId, secretAccessKey } = getCredentials(awsConnection);
   const shouldAssumeRole = awsConnection.key === assumeRoleConnection.key;
+
   const credentials = shouldAssumeRole
     ? await assumeRole(
         awsRegion,
@@ -46,7 +50,9 @@ export const createClient = async ({
         accessKeyId,
         secretAccessKey,
       };
+
   const region = awsRegion.length > 0 ? awsRegion : undefined;
+
   try {
     return new GlueClient({
       region,
@@ -55,7 +61,9 @@ export const createClient = async ({
   } catch (err) {
     throw new ConnectionError(
       awsConnection,
-      `Invalid AWS Credentials have been configured. This is sometimes caused by missing characters from a copy/paste. Original AWS error message: ${(err as Error).message}`,
+      `Invalid AWS Credentials have been configured. This is sometimes caused by missing characters from a copy/paste. Original AWS error message: ${
+        (err as Error).message
+      }`,
     );
   }
 };

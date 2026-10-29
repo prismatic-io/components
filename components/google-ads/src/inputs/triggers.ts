@@ -11,6 +11,7 @@ import {
   customerIdInput,
   managerCustomerIdInput,
 } from "./common";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -21,6 +22,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const changeTypes = input({
   label: "Change Types to Monitor",
   type: "string",
@@ -32,6 +34,7 @@ const changeTypes = input({
   placeholder: "Enter change types",
   clean: toStringList,
 });
+
 export const campaignChangesTriggerInputs = {
   connection: connectionInput,
   customerId: customerIdInput,
@@ -43,6 +46,7 @@ export const campaignChangesTriggerInputs = {
   },
   changeTypes: changeTypes,
 };
+
 const alertThreshold = input({
   label: "Alert Threshold (%)",
   type: "string",
@@ -53,6 +57,7 @@ const alertThreshold = input({
   placeholder: "Enter alert threshold percentage",
   clean: toOptionalInt,
 });
+
 const includeSharedBudgets = input({
   label: "Include Shared Budgets",
   type: "boolean",
@@ -62,6 +67,7 @@ const includeSharedBudgets = input({
     "When true, shared budgets across multiple campaigns will be monitored.",
   clean: util.types.toBool,
 });
+
 export const budgetAlertTriggerInputs = {
   connection: connectionInput,
   customerId: {
@@ -77,6 +83,7 @@ export const budgetAlertTriggerInputs = {
   alertThreshold,
   includeSharedBudgets,
 };
+
 const resourceTypes = input({
   label: "Resource Types",
   type: "string",
@@ -93,6 +100,7 @@ const resourceTypes = input({
   placeholder: "Enter resource types",
   clean: toStringList,
 });
+
 const includeUserInfo = input({
   label: "Include User Info",
   type: "boolean",
@@ -102,6 +110,7 @@ const includeUserInfo = input({
     "When true, user email and client type will be included in change events.",
   clean: util.types.toBool,
 });
+
 export const changeHistoryTriggerInputs = {
   connection: connectionInput,
   customerId: customerIdInput,

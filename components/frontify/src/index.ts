@@ -3,6 +3,7 @@ import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+
 export default component({
   key: "frontify",
   public: true,

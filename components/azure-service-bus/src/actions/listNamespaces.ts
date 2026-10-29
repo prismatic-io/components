@@ -4,6 +4,7 @@ import { getAzureServiceBusClient } from "../client";
 import { listNamespacesExamplePayload } from "../examplePayloads";
 import { paginateResults } from "../helpers/pagination";
 import { connection, fetchAll, subscriptionId } from "../inputs";
+
 export const listNamespaces = action({
   display: {
     label: "List Namespaces",
@@ -14,6 +15,7 @@ export const listNamespaces = action({
   perform: async (context, { connection, subscriptionId, fetchAll }) => {
     const client = getAzureServiceBusClient(connection, context.debug.enabled);
     const endpoint = `/${subscriptionId}/providers/Microsoft.ServiceBus/namespaces?api-version=2021-11-01`;
+
     try {
       return await paginateResults({
         client,
@@ -32,4 +34,5 @@ export const listNamespaces = action({
     fetchAll,
   },
 });
+
 export default { listNamespaces };

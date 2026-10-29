@@ -2,6 +2,7 @@ import type { HttpResponse, TriggerPayload } from "@prismatic-io/spectral";
 import type { FileProperties } from "jsforce/lib/api/metadata";
 import { WEBHOOK_SFDC_RESPONSE } from "./constants";
 import type { CleanSObject, SalesforceChangesObject } from "./types";
+
 export const genericCreateUpdateExamplePayload = {
   data: {
     id: "06Q606ExampleId",
@@ -9,6 +10,7 @@ export const genericCreateUpdateExamplePayload = {
     errors: [] as never[],
   },
 };
+
 export const genericCreateUpdateFullNameExamplePayload = {
   data: {
     success: true,
@@ -16,6 +18,7 @@ export const genericCreateUpdateFullNameExamplePayload = {
     fullName: "TestObject1__c",
   },
 };
+
 export const genericUpsertExamplePayload = {
   data: [
     {
@@ -26,6 +29,7 @@ export const genericUpsertExamplePayload = {
     },
   ],
 };
+
 const describeCustomerSObjectData = {
   actionOverrides: [],
   activateable: false,
@@ -260,9 +264,11 @@ const describeCustomerSObjectData = {
     sobject: "/services/data/v53.0/sobjects/Customer",
   },
 };
+
 export const describeCustomerSObjectExamplePayload = {
   data: describeCustomerSObjectData,
 };
+
 export const getCustomerExamplePayload = {
   data: {
     attributes: {
@@ -285,6 +291,7 @@ export const getCustomerExamplePayload = {
     CustomerStatusType: "Active",
   },
 };
+
 export const listCustomersExamplePayload = {
   data: [
     {
@@ -309,6 +316,7 @@ export const listCustomersExamplePayload = {
     },
   ],
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     id: "https://login.salesforce.com/id/00Z8d000694w9weEAQ/0064c00859AJGN6KPA",
@@ -381,6 +389,7 @@ export const getCurrentUserExamplePayload = {
     is_app_installed: true,
   },
 };
+
 const getObjectMetadataData = {
   createdById: "0064c00859AJGN6KPA",
   createdByName: "Dev Env",
@@ -394,6 +403,7 @@ const getObjectMetadataData = {
   namespacePrefix: "",
   type: "CustomObject",
 };
+
 export const getObjectMetadataExamplePayload = {
   data: [
     {
@@ -435,6 +445,7 @@ export const getObjectMetadataExamplePayload = {
     },
   ],
 };
+
 export const listObjectMetadataExamplePayload = {
   data: [
     getObjectMetadataData,
@@ -453,6 +464,7 @@ export const listObjectMetadataExamplePayload = {
     },
   ],
 };
+
 const getWorkflowRuleData = {
   createdById: "0064c00859AJGN6KPA",
   createdByName: "Dev Env",
@@ -467,9 +479,11 @@ const getWorkflowRuleData = {
   namespacePrefix: "",
   type: "WorkflowRule",
 };
+
 export const getWorkflowRuleExamplePayload = {
   data: getWorkflowRuleData,
 };
+
 export const listWorkflowRulesExamplePayload = {
   data: [
     getWorkflowRuleData,
@@ -489,6 +503,7 @@ export const listWorkflowRulesExamplePayload = {
     },
   ],
 };
+
 const getWorkflowOutboundMessageData = {
   createdById: "0064c00859AJGN6KPA",
   createdByName: "Dev Env",
@@ -502,9 +517,11 @@ const getWorkflowOutboundMessageData = {
   manageableState: "unmanaged",
   type: "WorkflowOutboundMessage",
 };
+
 export const getWorkflowOutboundMessageExamplePayload = {
   data: getWorkflowOutboundMessageData,
 };
+
 export const listWorkflowOutboundMessagesExamplePayload: {
   data: FileProperties[];
 } = {
@@ -525,6 +542,7 @@ export const listWorkflowOutboundMessagesExamplePayload: {
     },
   ],
 };
+
 export const subscribeRecordChangeExamplePayload = {
   data: {
     WorkflowRule: {
@@ -539,6 +557,7 @@ export const subscribeRecordChangeExamplePayload = {
     },
   },
 };
+
 export const createBulkQueryJobExamplePayload = {
   data: {
     id: "750R0000000zlh9IAA",
@@ -555,6 +574,7 @@ export const createBulkQueryJobExamplePayload = {
     columnDelimiter: "COMMA",
   },
 };
+
 export const getQueryJobInformationExamplePayload = {
   data: {
     id: "750R0000000zlh9IAA",
@@ -576,6 +596,7 @@ export const getQueryJobInformationExamplePayload = {
     isPkChunkingSupported: true,
   },
 };
+
 export const getAllQueryJobInformationExamplePayload = {
   data: {
     done: false,
@@ -615,6 +636,7 @@ export const getAllQueryJobInformationExamplePayload = {
       "/services/data/v60.0/jobs/query?queryLocator=01gR0000000opRTIAY-2000",
   },
 };
+
 export const getQueryJobResultsExamplePayload = {
   data: `"Id","Name"
 "005R0000000UyrWIAS","Jane Dunn"
@@ -622,6 +644,7 @@ export const getQueryJobResultsExamplePayload = {
 "005R0000000GiwoIAC","Pat Wilson"
 `,
 };
+
 export const abortBulkQueryJobExamplePayload = {
   data: {
     id: "750R000000146UvIAI",
@@ -636,6 +659,7 @@ export const abortBulkQueryJobExamplePayload = {
     apiVersion: 46.0,
   },
 };
+
 const getBulkJobData = {
   id: "7506g00000DhRA2AAN",
   operation: "insert",
@@ -656,9 +680,11 @@ const getBulkJobData = {
   apiActiveProcessingTime: 0,
   apexProcessingTime: 0,
 };
+
 export const getBulkJobExamplePayload = {
   data: getBulkJobData,
 };
+
 export const createBulkJobExamplePayload = {
   data: {
     id: "7506g00000DhRA2AAN",
@@ -677,20 +703,24 @@ export const createBulkJobExamplePayload = {
     jobType: "V2Ingest",
   },
 };
+
 export const uploadJobDataExamplePayload = {
   data: "",
 };
+
 export const getJobFailedRecordResultsExamplePayload = {
   data: `"sf__Id","sf__Error","Name","Phone"
 "","REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name --","","(415) 555-0123"
 `,
 };
+
 export const getJobSuccessfulRecordResultsExamplePayload = {
   data: `"sf__Id","sf__Created","Name","Phone"
 "0016g00000Kxyz1AAB","true","Acme Corporation","(415) 555-0100"
 "0016g00000Kxyz2AAB","true","Globex Industries","(212) 555-0199"
 `,
 };
+
 export const listBulkQueryJobsExamplePayload = {
   data: {
     done: true,
@@ -698,6 +728,7 @@ export const listBulkQueryJobsExamplePayload = {
     records: [getBulkJobData, getBulkJobData],
   },
 };
+
 export const listContactsExamplePayload = {
   data: [
     {
@@ -720,6 +751,7 @@ export const listContactsExamplePayload = {
     },
   ],
 };
+
 export const listLeadsExamplePayload = {
   data: [
     {
@@ -760,6 +792,7 @@ export const listLeadsExamplePayload = {
     },
   ],
 };
+
 export const listOpportunitiesExamplePayload = {
   data: [
     {
@@ -789,6 +822,7 @@ export const listOpportunitiesExamplePayload = {
     },
   ],
 };
+
 export const listProfilesExamplePayload = {
   data: [
     {
@@ -811,6 +845,7 @@ export const listProfilesExamplePayload = {
     },
   ],
 };
+
 export const listUsersExamplePayload = {
   data: [
     {
@@ -851,6 +886,7 @@ export const listUsersExamplePayload = {
     },
   ],
 };
+
 export const activateFlowExamplePayload = {
   data: {
     fullName: "My_Flow",
@@ -858,6 +894,7 @@ export const activateFlowExamplePayload = {
     errors: [],
   },
 };
+
 export const deactivateFlowExamplePayload = {
   data: {
     fullName: "My_Flow",
@@ -865,6 +902,7 @@ export const deactivateFlowExamplePayload = {
     errors: [],
   },
 };
+
 export const deleteFlowExamplePayload = {
   data: {
     fullName: "My_Flow",
@@ -872,6 +910,7 @@ export const deleteFlowExamplePayload = {
     errors: [],
   },
 };
+
 export const createFlowExamplePayload = {
   data: {
     fullName: "My_Flow",
@@ -879,12 +918,14 @@ export const createFlowExamplePayload = {
     errors: [],
   },
 };
+
 export const subscribeToRecordChangesExamplePayload = {
   data: {
     outboundMessageFullName: "Account.Account_Change_Outbound_Message",
     flowFullName: "Account_Change_Subscription_Flow",
   },
 };
+
 export const updateFlowExamplePayload = {
   data: {
     fullName: "My_Flow",
@@ -892,6 +933,7 @@ export const updateFlowExamplePayload = {
     errors: [],
   },
 };
+
 export const getFlowExamplePayload = {
   data: {
     fullName: "Example_Flow_01",
@@ -970,9 +1012,8 @@ export const getFlowExamplePayload = {
     waits: [],
   },
 };
-export const listFlowsExamplePayload: {
-  data: FileProperties[];
-} = {
+
+export const listFlowsExamplePayload: { data: FileProperties[] } = {
   data: [
     {
       fullName: "My_Flow",
@@ -990,12 +1031,14 @@ export const listFlowsExamplePayload: {
     },
   ],
 };
+
 export const deleteInstancedFlowsAndOutboundMessagesExamplePayload = {
   data: {
     deletedFlows: ["My_Flow"],
     deletedOutboundMessages: ["My_Outbound_Message"],
   },
 };
+
 export const getRecordExamplePayload = {
   data: {
     Id: "003RM000006pL5gQAE",
@@ -1005,6 +1048,7 @@ export const getRecordExamplePayload = {
     BillingState: "CA",
   },
 };
+
 export const findRecordsExamplePayload = {
   data: [
     {
@@ -1016,6 +1060,7 @@ export const findRecordsExamplePayload = {
     },
   ],
 };
+
 export const compositeRequestExamplePayload = {
   data: {
     compositeResponse: [
@@ -1034,6 +1079,7 @@ export const compositeRequestExamplePayload = {
     ],
   },
 };
+
 export const listCompositeResourcesExamplePayload = {
   data: {
     tree: "/services/data/v63.0/composite/tree",
@@ -1042,6 +1088,7 @@ export const listCompositeResourcesExamplePayload = {
     graph: "/services/data/v63.0/composite/graph",
   },
 };
+
 export const addAttachmentExamplePayload = {
   data: {
     id: "015D0000000N3ZZIA0",
@@ -1049,14 +1096,17 @@ export const addAttachmentExamplePayload = {
     success: true,
   },
 };
+
 export const getAttachmentExamplePayload = {
   data: Buffer.from("SGVsbG8gV29ybGQ="),
   contentType: "image/png",
 };
+
 export const getFileExamplePayload = {
   data: Buffer.from("SGVsbG8gV29ybGQ="),
   contentType: "image/png",
 };
+
 export const bulkInsertRecordsExamplePayload = {
   data: [
     {
@@ -1067,6 +1117,7 @@ export const bulkInsertRecordsExamplePayload = {
     },
   ] as unknown,
 };
+
 export const bulkUpsertRecordsExamplePayload = {
   data: [
     {
@@ -1077,24 +1128,29 @@ export const bulkUpsertRecordsExamplePayload = {
     },
   ] as unknown,
 };
+
 export const deleteBulkJobExamplePayload = {
   data: "",
 };
+
 export const deleteBulkQueryJobExamplePayload = {
   data: "",
 };
+
 export const updateMetadataExamplePayload = {
   data: {
     fullName: "Invoice__c",
     success: true,
   },
 };
+
 export const deleteMetadataExamplePayload = {
   data: {
     fullName: "Invoice__c",
     success: true,
   },
 };
+
 export const deleteAccountExamplePayload = {
   data: {
     id: "0016g00000Kxyz1AAB",
@@ -1102,6 +1158,7 @@ export const deleteAccountExamplePayload = {
     errors: [],
   },
 };
+
 export const deleteCustomerExamplePayload = {
   data: {
     id: "0o68c000000wk3lAAA",
@@ -1109,6 +1166,7 @@ export const deleteCustomerExamplePayload = {
     errors: [],
   },
 };
+
 export const describeObjectExamplePayload = {
   data: {
     ...describeCustomerSObjectData,
@@ -1162,6 +1220,7 @@ export const describeObjectExamplePayload = {
     ],
   },
 };
+
 export const describePermissionsExamplePayload = {
   data: [
     {
@@ -1198,6 +1257,7 @@ export const describePermissionsExamplePayload = {
     },
   ],
 };
+
 export const queryExamplePayload = {
   data: {
     totalSize: 2,
@@ -1222,9 +1282,11 @@ export const queryExamplePayload = {
     ],
   },
 };
+
 export const validateConnectionExamplePayload = {
   data: true,
 };
+
 const outboundMessageExampleData = {
   "soapenv:Envelope": {
     "soapenv:Body": {
@@ -1248,6 +1310,7 @@ const outboundMessageExampleData = {
     },
   },
 };
+
 export const webhookExamplePayload: {
   payload: TriggerPayload;
   response?: HttpResponse;
@@ -1289,6 +1352,7 @@ export const webhookExamplePayload: {
   },
   response: WEBHOOK_SFDC_RESPONSE,
 };
+
 export const workflowTriggerExamplePayload: {
   payload: TriggerPayload;
   response?: HttpResponse;
@@ -1330,6 +1394,7 @@ export const workflowTriggerExamplePayload: {
   },
   response: WEBHOOK_SFDC_RESPONSE,
 };
+
 export const flowOutboundMessageTriggerExamplePayload: {
   payload: TriggerPayload;
   response?: HttpResponse;
@@ -1379,6 +1444,7 @@ export const flowOutboundMessageTriggerExamplePayload: {
   },
   response: WEBHOOK_SFDC_RESPONSE,
 };
+
 export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;
   polledNoChanges?: boolean;

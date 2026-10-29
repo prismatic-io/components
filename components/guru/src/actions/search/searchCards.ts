@@ -3,6 +3,7 @@ import { getGuruClient } from "../../client";
 import { searchCardsPayload } from "../../examplePayloads";
 import { searchCardsInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
+
 export const searchCards = action({
   display: {
     label: "Search Cards",
@@ -13,14 +14,17 @@ export const searchCards = action({
     { connection, q, searchTerms, queryType, maxResults, fetchAll },
   ) => {
     const client = getGuruClient(connection, context.debug.enabled);
+
     const queryParams = {
       q,
       searchTerms,
       queryType,
       maxResults,
     };
+
     const url = "/search/query";
     const data = await fetchGuruResults(client, url, fetchAll, queryParams);
+
     return { data };
   },
   inputs: searchCardsInputs,

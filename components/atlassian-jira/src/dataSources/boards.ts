@@ -7,6 +7,7 @@ import {
   maxResults,
   startAt,
 } from "../inputs";
+
 const selectBoard = dataSource({
   display: {
     label: "Select Board",
@@ -23,6 +24,7 @@ const selectBoard = dataSource({
     { jiraConnection, startAt, maxResults, filter },
   ) => {
     const client = await createClient(jiraConnection, false);
+
     const {
       data,
     }: {
@@ -49,6 +51,7 @@ const selectBoard = dataSource({
   },
   dataSourceType: "picklist",
 });
+
 const selectBoardVersion = dataSource({
   display: {
     label: "Select Board Version",
@@ -68,6 +71,7 @@ const selectBoardVersion = dataSource({
     { jiraConnection, boardId, startAt, maxResults },
   ) => {
     const client = await createClient(jiraConnection, false);
+
     const {
       data,
     }: {
@@ -91,6 +95,7 @@ const selectBoardVersion = dataSource({
   },
   dataSourceType: "picklist",
 });
+
 export default {
   selectBoard,
   selectBoardVersion,

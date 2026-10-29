@@ -4,6 +4,7 @@ import { deleteSupplierFileAssociationExamplePayload } from "../../examplePayloa
 import { deleteSupplierFileAssociationInputs } from "../../inputs";
 import { deleteSupplierFileAssociationOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteSupplierFileAssociation = action({
   display: {
     label: "Delete Supplier File Association",
@@ -22,16 +23,20 @@ export const deleteSupplierFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting supplier file association", {
         supplierGuid,
         supplierFileAssociationGuid,
       });
+
       await client.delete(
         `/suppliers/${supplierGuid}/files/${supplierFileAssociationGuid}`,
       );
+
       context.logger.info(
         `Successfully deleted file association: ${supplierFileAssociationGuid} from supplier: ${supplierGuid}`,
       );
+
       return {
         data: {
           success: true,

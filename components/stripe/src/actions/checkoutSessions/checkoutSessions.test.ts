@@ -12,16 +12,22 @@ import { getCheckoutSession } from "./getCheckoutSession";
 import { listCheckoutSessionLineItems } from "./listCheckoutSessionLineItems";
 import { listCheckoutSessions } from "./listCheckoutSessions";
 import { updateCheckoutSession } from "./updateCheckoutSession";
+
 const BASE = "https://api.stripe.com";
 const conn = createConnection(stripeConnection, { apiKey: "sk_test_123" });
+
 const params = (values: Record<string, unknown>) => values as never;
+
 const SESSION_ID = createCheckoutSessionExamplePayload.data.id;
+
 afterEach(() => nock.cleanAll());
+
 describe("createCheckoutSession", () => {
   it("creates the session and returns it", async () => {
     const scope = nock(BASE)
       .post("/v1/checkout/sessions")
       .reply(200, createCheckoutSessionExamplePayload.data);
+
     const { result } = await invoke(
       createCheckoutSession,
       params({
@@ -33,9 +39,11 @@ describe("createCheckoutSession", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(createCheckoutSessionExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/checkout/sessions")
@@ -45,6 +53,7 @@ describe("createCheckoutSession", () => {
           message: "You must provide at least one line item",
         },
       });
+
     await expect(
       invoke(
         createCheckoutSession,
@@ -59,18 +68,22 @@ describe("createCheckoutSession", () => {
     ).rejects.toThrow("at least one line item");
   });
 });
+
 describe("getCheckoutSession", () => {
   it("returns the session for the supplied ID", async () => {
     const scope = nock(BASE)
       .get(`/v1/checkout/sessions/${SESSION_ID}`)
       .reply(200, createCheckoutSessionExamplePayload.data);
+
     const { result } = await invoke(
       getCheckoutSession,
       params({ sessionId: SESSION_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual(createCheckoutSessionExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/checkout/sessions/cs_missing")
@@ -80,6 +93,7 @@ describe("getCheckoutSession", () => {
           message: "No such checkout session",
         },
       });
+
     await expect(
       invoke(
         getCheckoutSession,
@@ -88,12 +102,14 @@ describe("getCheckoutSession", () => {
     ).rejects.toThrow("No such checkout session");
   });
 });
+
 describe("listCheckoutSessions", () => {
   it("returns a single page of sessions", async () => {
     const scope = nock(BASE)
       .get("/v1/checkout/sessions")
       .query({ limit: "10" })
       .reply(200, listCheckoutSessionsExamplePayload.data);
+
     const { result } = await invoke(
       listCheckoutSessions,
       params({
@@ -102,9 +118,11 @@ describe("listCheckoutSessions", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(listCheckoutSessionsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/checkout/sessions")
@@ -112,6 +130,7 @@ describe("listCheckoutSessions", () => {
       .reply(400, {
         error: { type: "invalid_request_error", message: "Invalid limit" },
       });
+
     await expect(
       invoke(
         listCheckoutSessions,
@@ -120,12 +139,14 @@ describe("listCheckoutSessions", () => {
     ).rejects.toThrow("Invalid limit");
   });
 });
+
 describe("listCheckoutSessionLineItems", () => {
   it("returns the session's line items", async () => {
     const scope = nock(BASE)
       .get(`/v1/checkout/sessions/${SESSION_ID}/line_items`)
       .query({ limit: "10" })
       .reply(200, listCheckoutSessionLineItemsExamplePayload.data);
+
     const { result } = await invoke(
       listCheckoutSessionLineItems,
       params({
@@ -134,11 +155,13 @@ describe("listCheckoutSessionLineItems", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(
       listCheckoutSessionLineItemsExamplePayload.data,
     );
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .get("/v1/checkout/sessions/cs_missing/line_items")
@@ -149,6 +172,7 @@ describe("listCheckoutSessionLineItems", () => {
           message: "No such checkout session",
         },
       });
+
     await expect(
       invoke(
         listCheckoutSessionLineItems,
@@ -161,11 +185,13 @@ describe("listCheckoutSessionLineItems", () => {
     ).rejects.toThrow("No such checkout session");
   });
 });
+
 describe("updateCheckoutSession", () => {
   it("updates the session metadata and returns the session", async () => {
     const scope = nock(BASE)
       .post(`/v1/checkout/sessions/${SESSION_ID}`)
       .reply(200, createCheckoutSessionExamplePayload.data);
+
     const { result } = await invoke(
       updateCheckoutSession,
       params({
@@ -174,9 +200,11 @@ describe("updateCheckoutSession", () => {
         stripeConnection: conn,
       }),
     );
+
     expect(result.data).toEqual(createCheckoutSessionExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/checkout/sessions/cs_missing")
@@ -186,6 +214,7 @@ describe("updateCheckoutSession", () => {
           message: "No such checkout session",
         },
       });
+
     await expect(
       invoke(
         updateCheckoutSession,
@@ -198,6 +227,7 @@ describe("updateCheckoutSession", () => {
     ).rejects.toThrow("No such checkout session");
   });
 });
+
 describe("expireCheckoutSession", () => {
   it("expires the session and returns it", async () => {
     const scope = nock(BASE)
@@ -206,16 +236,19 @@ describe("expireCheckoutSession", () => {
         ...createCheckoutSessionExamplePayload.data,
         status: "expired",
       });
+
     const { result } = await invoke(
       expireCheckoutSession,
       params({ sessionId: SESSION_ID, stripeConnection: conn }),
     );
+
     expect(result.data).toEqual({
       ...createCheckoutSessionExamplePayload.data,
       status: "expired",
     });
     expect(scope.isDone()).toBe(true);
   });
+
   it("surfaces a Stripe error response", async () => {
     nock(BASE)
       .post("/v1/checkout/sessions/cs_missing/expire")
@@ -225,6 +258,7 @@ describe("expireCheckoutSession", () => {
           message: "You may only expire an open session",
         },
       });
+
     await expect(
       invoke(
         expireCheckoutSession,

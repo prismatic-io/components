@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { listSubscriptionsExamplePayload } from "../../examplePayloads";
 import { listSubscriptionsInputs } from "../../inputs";
 import { fetchAllData } from "../../util";
+
 export const listSubscriptions = action({
   display: {
     label: "List Subscriptions",
@@ -18,6 +19,7 @@ export const listSubscriptions = action({
       params.fetchAll,
       {},
     );
+
     if (params.showInstanceWebhooks) {
       const instanceWebhooks = new Set(Object.values(context.webhookUrls));
       const instanceSubscriptions = data.value.filter(({ notificationUrl }) =>
@@ -25,6 +27,7 @@ export const listSubscriptions = action({
       );
       return { data: { ...data, value: instanceSubscriptions } };
     }
+
     return { data };
   },
   examplePayload: listSubscriptionsExamplePayload,

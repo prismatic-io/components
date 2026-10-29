@@ -1,6 +1,7 @@
 import { trigger } from "@prismatic-io/spectral";
 import { BRANCH_NAMES, VALIDATION_EVENT_TYPE } from "./constants";
 import { eventTopics } from "./inputs/general";
+
 interface EventGridEvent {
   id: string;
   topic: string;
@@ -16,12 +17,14 @@ interface EventGridEvent {
   dataVersion: string;
 }
 type Events = EventGridEvent[];
+
 function filterEvents(
   supportedEvents: string[],
   receivedEvent: string,
 ): boolean {
   return supportedEvents.includes(receivedEvent);
 }
+
 export const myTrigger = trigger({
   display: {
     label: "Event Grid Trigger",
@@ -32,6 +35,7 @@ export const myTrigger = trigger({
       ValidationResponse: "",
     };
     let branchToReturn = BRANCH_NAMES.PROCESS_EVENT;
+
     const body = payload.body;
     const contentType = body.contentType;
     const events =
@@ -42,6 +46,7 @@ export const myTrigger = trigger({
         : (body.data as Events);
     const requestHeaders = payload.headers;
     let responseHeaders = {};
+
     if (!events) {
       responseHeaders = {
         "WebHook-Allowed-Origin":
@@ -62,6 +67,7 @@ export const myTrigger = trigger({
     }
     const supportedEvents = [...eventTopics, VALIDATION_EVENT_TYPE];
     const receivedEventType = events[0].eventType || events[0].type || "";
+
     if (!filterEvents(supportedEvents, receivedEventType)) {
       return Promise.resolve({
         payload,
@@ -74,6 +80,7 @@ export const myTrigger = trigger({
         },
       });
     }
+
     for (const event of events) {
       if (event.eventType === VALIDATION_EVENT_TYPE) {
         branchToReturn = BRANCH_NAMES.VALIDATION_EVENT;
@@ -85,6 +92,7 @@ export const myTrigger = trigger({
         break;
       }
     }
+
     if (branchToReturn === BRANCH_NAMES.PROCESS_EVENT) {
       return Promise.resolve({
         payload,
@@ -97,6 +105,7 @@ export const myTrigger = trigger({
         },
       });
     }
+
     return Promise.resolve({
       payload,
       branch: branchToReturn,
@@ -116,4 +125,5 @@ export const myTrigger = trigger({
   allowsBranching: true,
   staticBranchNames: ["Process Event", "Skip Event", "Validation Event"],
 });
+
 export default { myTrigger };

@@ -4,6 +4,7 @@ import { createProfileInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { createProfileExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
+
 export const createProfile = action({
   display: {
     label: "Create Profile",
@@ -36,8 +37,7 @@ export const createProfile = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createProfileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createProfileExamplePayload,
   examplePayload: createProfileExamplePayload,
 });

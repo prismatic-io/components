@@ -1,5 +1,6 @@
 import type { Element } from "@prismatic-io/spectral";
 import type { OracleHcmListResponse, Position } from "../types";
+
 const positionExample: Position = {
   PositionId: 300100012340010,
   Name: "Engineering Lead",
@@ -12,6 +13,7 @@ const positionExample: Position = {
   EffectiveStartDate: "2021-01-01",
   EffectiveEndDate: "4712-12-31",
 };
+
 export const listPositionsExamplePayload: {
   data: OracleHcmListResponse<Position>;
 } = {
@@ -23,12 +25,12 @@ export const listPositionsExamplePayload: {
     offset: 0,
   },
 };
-export const getPositionExamplePayload: {
-  data: Position;
-} = { data: positionExample };
-export const selectPositionExamplePayload: {
-  result: Element[];
-} = {
+
+export const getPositionExamplePayload: { data: Position } = {
+  data: positionExample,
+};
+
+export const selectPositionExamplePayload: { result: Element[] } = {
   result: [
     { key: "300100012340010", label: "ENG-LEAD-001 - Engineering Lead" },
   ],

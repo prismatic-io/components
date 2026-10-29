@@ -4,6 +4,7 @@ import triggers from "./triggers";
 import connections from "./connections";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import dataSources from "./dataSources";
+
 export default component({
   key: "salesforce",
   documentationUrl: "https://prismatic.io/docs/components/salesforce/",

@@ -3,6 +3,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getAuthHeaders } from "../../client";
 import { rawRequestInputs } from "../../inputs";
 import { buildPayload, buildTableUrl } from "../../util";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -33,6 +34,7 @@ export const rawRequest = action({
         sys_id: sysId,
       },
     );
+
     const { data } = await sendRawRequest(
       instanceUrlInput,
       {

@@ -1,4 +1,5 @@
 import { simpleUserSchema } from "./common";
+
 export const webhookOutputSchema = {
   type: "object" as const,
   properties: {
@@ -49,11 +50,14 @@ export const webhookOutputSchema = {
     "last_response",
   ],
 };
+
 export const reposCreateWebhookOutputSchema = webhookOutputSchema;
+
 export const reposListWebhooksOutputSchema = {
   type: "array" as const,
   items: webhookOutputSchema,
 };
+
 export const reposListForOrgOutputSchema = {
   type: "array" as const,
   items: {

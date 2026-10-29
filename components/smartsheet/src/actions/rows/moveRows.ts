@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { moveRowsExamplePayload } from "../../examplePayloads";
 import { moveRowsInputs } from "../../inputs";
+
 export const moveRows = action({
   display: {
     label: "Move Rows",

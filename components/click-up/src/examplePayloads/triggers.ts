@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 export const webhookExamplePayload = {
   payload: {
     headers: {
@@ -73,6 +74,7 @@ export const webhookExamplePayload = {
     },
   } as unknown as TriggerPayload,
 };
+
 const newTaskRecord = {
   id: "9hy",
   custom_id: null,
@@ -137,6 +139,7 @@ const newTaskRecord = {
     id: "789",
   },
 };
+
 const updatedTaskRecord = {
   id: "9hx",
   custom_id: null,
@@ -222,6 +225,7 @@ const updatedTaskRecord = {
     id: "789",
   },
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

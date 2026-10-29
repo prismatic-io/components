@@ -7,6 +7,7 @@ import locationsActions from "./locations";
 import miscActions from "./misc";
 import positionsActions from "./positions";
 import workersActions from "./workers";
+
 export default {
   ...absencesActions,
   ...assignmentsActions,

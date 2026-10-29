@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { createContactInputs } from "../../inputs";
 import { createContactExamplePayload } from "../../examplePayloads";
+
 export const createContact = action({
   display: {
     label: "Create Contact",

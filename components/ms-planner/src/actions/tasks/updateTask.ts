@@ -12,6 +12,7 @@ import {
   patchWithEtag,
 } from "../../utils";
 import { updateTaskInputs } from "../../inputs";
+
 export const updateTask = action({
   display: {
     label: "Update Task",
@@ -41,6 +42,7 @@ export const updateTask = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const assignments = buildAssignments(
       assignment?.assignTo,
       assignment?.unassign,
@@ -49,6 +51,7 @@ export const updateTask = action({
       categories?.applyCategories,
       categories?.removeCategories,
     );
+
     const body = compact({
       title,
       bucketId,
@@ -62,6 +65,7 @@ export const updateTask = action({
         ? appliedCategories
         : undefined,
     });
+
     const data = await patchWithEtag<PlannerTask & Etagged>(
       client,
       PLANNER_ENDPOINTS.TASK(taskId),
@@ -81,10 +85,9 @@ export const updateTask = action({
       categories,
       conversationThreadId,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const exampleTask = updateTaskExamplePayload.data;
+
     const appliedCategories: Record<string, unknown> = {
       ...exampleTask.appliedCategories,
     };
@@ -94,6 +97,7 @@ export const updateTask = action({
     for (const category of categories?.removeCategories ?? []) {
       delete appliedCategories[category];
     }
+
     return {
       data: {
         ...exampleTask,

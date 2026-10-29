@@ -33,6 +33,7 @@ import {
   updatedAtGte,
   updatedAtLte,
 } from "./common";
+
 export const jobId = {
   ...job_id,
   required: true,
@@ -41,6 +42,7 @@ export const jobId = {
   dataSource: "jobsV3",
   clean: util.types.toString,
 };
+
 const ids = input({
   label: "Job IDs",
   type: "string",
@@ -51,6 +53,7 @@ const ids = input({
   example: "107761,107762",
   clean: toOptionalString,
 });
+
 const departmentId = {
   ...department_id,
   comments:
@@ -58,6 +61,7 @@ const departmentId = {
   dataSource: "departmentsV3",
   clean: toOptionalNumber,
 };
+
 const officeId = {
   ...office_id,
   comments:
@@ -65,6 +69,7 @@ const officeId = {
   dataSource: "officesV3",
   clean: toOptionalNumber,
 };
+
 const confidential = input({
   label: "Confidential",
   type: "boolean",
@@ -73,6 +78,7 @@ const confidential = input({
     "Filter legacy confidential jobs. When true, returns only confidential jobs.",
   clean: toOptionalBoolean,
 });
+
 const officeIds = input({
   label: "Office IDs",
   type: "string",
@@ -85,6 +91,7 @@ const officeIds = input({
   dataSource: "officesV3",
   clean: toNumberArray,
 });
+
 const externalOfficeIds = input({
   label: "External Office IDs",
   type: "string",
@@ -96,12 +103,14 @@ const externalOfficeIds = input({
   example: "ext-office-1",
   clean: toStringArray,
 });
+
 const externalDepartmentId = {
   ...external_department_id,
   comments:
     "Partner external identifier for the department. Mutually exclusive with Department ID; provide one or the other, never both.",
   example: "ext-dept-42",
 };
+
 const openingIds = input({
   label: "Opening IDs",
   type: "string",
@@ -113,6 +122,7 @@ const openingIds = input({
   example: "OP-2026-001",
   clean: toStringArray,
 });
+
 const idFilters = structuredObjectInput({
   label: "ID Filters",
   required: false,
@@ -120,6 +130,7 @@ const idFilters = structuredObjectInput({
     "Optional filters that narrow results to jobs matching specific record IDs: job, department, and office IDs.",
   inputs: { ids, departmentId, officeId },
 });
+
 const dateRangeFilters = structuredObjectInput({
   label: "Date Range Filters",
   required: false,
@@ -127,6 +138,7 @@ const dateRangeFilters = structuredObjectInput({
     "Optional inclusive date-range filters. Narrow results by when jobs were created or last updated.",
   inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
 });
+
 export const listJobsV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
@@ -144,10 +156,12 @@ export const listJobsV3Inputs = {
   confidential,
   dateRangeFilters,
 };
+
 export const getJobV3Inputs = {
   connection: connectionInput,
   jobId,
 };
+
 export const createJobV3Inputs = {
   connection: connectionInput,
   templateJobId: { ...template_job_id, dataSource: "jobsV3" },
@@ -185,6 +199,7 @@ export const createJobV3Inputs = {
       '[{"name_key": "target_salary", "value": {"amount": 120000, "currency_code": "USD"}}]',
   },
 };
+
 export const editJobV3Inputs = {
   connection: connectionInput,
   jobId,

@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { defaultInputs, defaultListActionsInputs } from "./general";
 import { cleanString } from "../util";
+
 export const deviceId = input({
   label: "Device ID",
   type: "string",
@@ -11,6 +12,7 @@ export const deviceId = input({
   dataSource: "selectDevice",
   clean: util.types.toString,
 });
+
 export const alias = input({
   label: "Alias",
   type: "string",
@@ -20,6 +22,7 @@ export const alias = input({
   placeholder: "My Device",
   clean: cleanString,
 });
+
 export const groupId = input({
   label: "Group ID",
   type: "string",
@@ -30,6 +33,7 @@ export const groupId = input({
   dataSource: "selectGroup",
   clean: util.types.toString,
 });
+
 export const remotecontrolId = input({
   label: "Remote Control ID",
   type: "string",
@@ -39,6 +43,7 @@ export const remotecontrolId = input({
   placeholder: "123456",
   clean: util.types.toString,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -48,6 +53,7 @@ export const description = input({
   placeholder: "This is my device.",
   clean: cleanString,
 });
+
 export const password = input({
   label: "Password",
   type: "string",
@@ -57,6 +63,7 @@ export const password = input({
   placeholder: "password",
   clean: cleanString,
 });
+
 export const createDeviceInputs = {
   remotecontrol_id: remotecontrolId,
   alias,
@@ -65,10 +72,12 @@ export const createDeviceInputs = {
   password,
   ...defaultInputs,
 };
+
 export const updateDeviceInputs = {
   deviceId,
   ...createDeviceInputs,
 };
+
 export const currentDevicePassword = input({
   label: "Current Password",
   type: "string",
@@ -78,6 +87,7 @@ export const currentDevicePassword = input({
   placeholder: "password",
   clean: cleanString,
 });
+
 export const enableEasyAccess = input({
   label: "Enable Easy Access",
   type: "boolean",
@@ -85,6 +95,7 @@ export const enableEasyAccess = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const assignMode = input({
   label: "Assign Mode",
   type: "string",
@@ -94,6 +105,7 @@ export const assignMode = input({
   placeholder: "auto",
   clean: cleanString,
 });
+
 export const assignmentOptions = structuredObjectInput({
   label: "Assignment Options",
   required: false,
@@ -105,15 +117,18 @@ export const assignmentOptions = structuredObjectInput({
     assign_mode: assignMode,
   },
 });
+
 export const assignDeviceInputs = {
   device_id: deviceId,
   assignmentOptions,
   ...defaultInputs,
 };
+
 export const getDeviceInputs = {
   deviceId,
   ...defaultInputs,
 };
+
 export const deleteDeviceInputs = {
   deviceId: {
     ...deviceId,
@@ -121,6 +136,7 @@ export const deleteDeviceInputs = {
   },
   ...defaultInputs,
 };
+
 const name = input({
   label: "Name",
   type: "string",
@@ -130,6 +146,7 @@ const name = input({
   placeholder: "My Device",
   clean: cleanString,
 });
+
 export const remoteControlId = input({
   label: "Remote Control ID",
   type: "string",
@@ -139,6 +156,7 @@ export const remoteControlId = input({
   placeholder: "123456",
   clean: cleanString,
 });
+
 export const listDevicesInputs = {
   name,
   groupid: groupId,

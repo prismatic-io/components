@@ -4,6 +4,7 @@ import { listWorkspacesExamplePayload as examplePayload } from "../../examplePay
 import { listWorkspacesInputs as inputs } from "../../inputs";
 import { listWorkspacesOutputSchema } from "../../outputSchemas";
 import { getListData } from "../../util";
+
 export const listWorkspaces = action({
   display: {
     label: "List Workspaces",
@@ -17,6 +18,7 @@ export const listWorkspaces = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const { data } = await getListData(client, `/workspaces`, "workspaces", {
       fetchAll,
       params: {
@@ -25,6 +27,7 @@ export const listWorkspaces = action({
         page: pagination.page,
       },
     });
+
     return {
       data,
     };

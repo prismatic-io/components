@@ -7,6 +7,7 @@ import { postWebhookSubscription, deleteWebhookInstance } from "../util";
 import { calendlyTriggerInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { calendlyTriggerExamplePayload } from "../examplePayloads";
+
 const performFunction = async (
   context: ActionContext,
   payload: TriggerPayload,
@@ -19,6 +20,7 @@ const performFunction = async (
       statusCode: 200,
     },
   });
+
 export const calendlyTrigger = trigger({
   display: {
     label: "Scheduled Event",
@@ -38,6 +40,7 @@ export const calendlyTrigger = trigger({
     ) => {
       const endpoint = context.webhookUrls[context.flow.name];
       const client = getCalendlyClient(connection, context.debug.enabled);
+
       await postWebhookSubscription(
         client,
         endpoint,

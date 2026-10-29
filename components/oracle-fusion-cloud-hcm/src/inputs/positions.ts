@@ -7,6 +7,7 @@ import {
   includeMetadataLinks,
   pagination,
 } from "./common";
+
 const positionId = input({
   label: "Position ID",
   type: "string",
@@ -18,12 +19,14 @@ const positionId = input({
   example: "300100012345678",
   clean: cleanId,
 });
+
 export const getPositionInputs = {
   connection,
   effectiveDate,
   positionId,
   includeMetadataLinks,
 };
+
 export const listPositionsInputs = {
   connection,
   fetchAll,

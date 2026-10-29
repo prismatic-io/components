@@ -3,6 +3,7 @@ import { createV3Client } from "../connections/auth";
 import { connectionInput } from "../inputs";
 import type { WebhookData } from "../types";
 import { getPaginatedData, isBasicAuth } from "../util";
+
 const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
@@ -31,6 +32,7 @@ const selectWebhook = dataSource({
   },
   dataSourceType: "picklist",
 });
+
 export default {
   selectWebhook,
 };

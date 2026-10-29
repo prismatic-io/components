@@ -26,6 +26,7 @@ import {
   generatePlatformAuthHeader,
   PLATFORM_AUTH_HEADER,
 } from "./util/platformAuth";
+
 export const createArenaClient = async (
   context: ArenaAuthContext,
   connection: Connection,
@@ -37,8 +38,10 @@ export const createArenaClient = async (
       `Unsupported connection type: ${connection.key}`,
     );
   }
+
   const baseUrl = getArenaApiBaseUrl(connection);
   const credential = await strategy.getCredential(context, connection);
+
   const client = createClient({
     baseUrl,
     headers: {
@@ -50,10 +53,12 @@ export const createArenaClient = async (
       ARENA_DEFAULT_TIMEOUT_MS,
     ),
   });
+
   client.interceptors.request.use((config) => {
     config.headers[PLATFORM_AUTH_HEADER] = generatePlatformAuthHeader();
     return config;
   });
+
   client.interceptors.response.use((response) => {
     const remaining = Number(
       response.headers?.[ARENA_REQUESTS_REMAINING_HEADER],
@@ -67,10 +72,12 @@ export const createArenaClient = async (
     }
     return response;
   });
+
   client.interceptors.response.use(
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
+
       if (
         (error.code === CONNECTION_RESET_CODE ||
           error.message === SOCKET_HANG_UP_MESSAGE) &&
@@ -80,23 +87,30 @@ export const createArenaClient = async (
         originalRequest._retryConn = true;
         return client.request(originalRequest);
       }
+
       return Promise.reject(error);
     },
   );
+
   if (strategy.renewable) {
     client.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
+
         if (isSessionExpiredError(error) && !originalRequest._retry) {
           originalRequest._retry = true;
+
           try {
             clearPersistedAuth(context, connection);
+
             const renewedHeaders = strategy.buildHeaders(
               await strategy.getCredential(context, connection),
             );
+
             Object.assign(client.defaults.headers, renewedHeaders);
             Object.assign(originalRequest.headers, renewedHeaders);
+
             return client.request(originalRequest);
           } catch (authError: unknown) {
             throw new ConnectionError(
@@ -105,9 +119,11 @@ export const createArenaClient = async (
             );
           }
         }
+
         return Promise.reject(error);
       },
     );
   }
+
   return client;
 };

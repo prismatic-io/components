@@ -3,6 +3,7 @@ import {
   connection,
   oauth2Connection,
 } from "@prismatic-io/spectral";
+
 export const googleOAuthConnection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "googleOAuth",
@@ -70,6 +71,7 @@ export const googleOAuthConnection = oauth2Connection({
     },
   },
 });
+
 export const googlePrivateKeyConnection = connection({
   key: "privateKey",
   display: {
@@ -109,4 +111,5 @@ export const googlePrivateKeyConnection = connection({
     },
   },
 });
+
 export default [googleOAuthConnection, googlePrivateKeyConnection];

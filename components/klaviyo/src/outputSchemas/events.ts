@@ -5,6 +5,7 @@ import {
   toManyRelationshipSchema,
   toOneRelationshipSchema,
 } from "./shared";
+
 const eventResourceObject = {
   type: "object" as const,
   properties: {
@@ -31,6 +32,7 @@ const eventResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const getEventOutputSchema = {
   type: "object" as const,
   properties: {
@@ -43,6 +45,7 @@ export const getEventOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listEventsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -58,9 +61,11 @@ export const listEventsOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const createEventOutputSchema = {
   type: "string" as const,
 };
+
 export const bulkCreateEventsOutputSchema = {
   type: "string" as const,
 };

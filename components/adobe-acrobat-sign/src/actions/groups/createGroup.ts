@@ -3,6 +3,7 @@ import { createGroupInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import type { CreateGroupPayload, GenericCreate } from "../../types";
 import { createGroupExamplePayload } from "../../examplePayloads";
+
 export const createGroup = action({
   display: {
     label: "Create Group",
@@ -14,12 +15,15 @@ export const createGroup = action({
     { connection, groupName, created, isDefaultGroup },
   ) => {
     const client = getAdobeSignClient(connection, context.debug.enabled);
+
     const payload: CreateGroupPayload = {
       groupName: groupName!,
       created: created!,
       isDefaultGroup,
     };
+
     const { data } = await client.post<GenericCreate>(`/groups`, payload);
+
     return {
       data,
     };

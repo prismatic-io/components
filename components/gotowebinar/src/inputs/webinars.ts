@@ -22,6 +22,7 @@ import {
   webinarKey,
   webinarType,
 } from "./common";
+
 export const subject = input({
   label: "Subject",
   comments: "The title displayed for the webinar.",
@@ -31,6 +32,7 @@ export const subject = input({
   placeholder: "Enter a subject",
   clean: util.types.toString,
 });
+
 export const description = input({
   label: "Description",
   comments: "A summary of what the webinar covers.",
@@ -40,6 +42,7 @@ export const description = input({
   placeholder: "Enter a description",
   clean: toOptionalString,
 });
+
 export const times = input({
   label: "Time Range for Webinar",
   comments:
@@ -69,6 +72,7 @@ export const times = input({
   ]),
   clean: util.types.toObject,
 });
+
 export const isPasswordProtected = input({
   label: "Is Password Protected",
   comments: "Indicates if the webinar is password protected.",
@@ -78,6 +82,7 @@ export const isPasswordProtected = input({
   default: "false",
   clean: toOptionalBoolean,
 });
+
 export const recordingAssetKey = input({
   label: "Recording Asset Key",
   comments:
@@ -91,6 +96,7 @@ export const recordingAssetKey = input({
   placeholder: "Enter a recording asset key",
   clean: toOptionalString,
 });
+
 export const isOndemand = input({
   label: "Is On Demand",
   comments: "A boolean flag indicating if the webinar should be On-Demand.",
@@ -100,6 +106,7 @@ export const isOndemand = input({
   default: "false",
   clean: toOptionalBoolean,
 });
+
 export const isBreakout = input({
   label: "Is Breakout",
   comments: "A boolean flag indicating if the webinar should be breakout.",
@@ -109,6 +116,7 @@ export const isBreakout = input({
   default: "false",
   clean: toOptionalBoolean,
 });
+
 export const experienceType = input({
   label: "Experience Type",
   comments: "The experience type of the webinar.",
@@ -118,6 +126,7 @@ export const experienceType = input({
   model: AVAILABLE_EXPERIENCES_MODEL,
   clean: toOptionalString,
 });
+
 export const confirmationEmail = input({
   label: "Should Send Confirmation Email",
   comments: "Whether or not to send a confirmation email to the registrants.",
@@ -126,6 +135,7 @@ export const confirmationEmail = input({
   model: MODEL_FOR_OPTIONAL_BOOLEAN_INPUTS,
   clean: toOptionalEmailSetting,
 });
+
 export const reminderEmail = input({
   label: "Should Send Reminder Email",
   comments: "Whether or not to send a reminder email to the registrants.",
@@ -134,6 +144,7 @@ export const reminderEmail = input({
   model: MODEL_FOR_OPTIONAL_BOOLEAN_INPUTS,
   clean: toOptionalEmailSetting,
 });
+
 export const absenteeFollowUpEmail = input({
   label: "Should Send Absentee Follow Up Email",
   comments:
@@ -143,6 +154,7 @@ export const absenteeFollowUpEmail = input({
   model: MODEL_FOR_OPTIONAL_BOOLEAN_INPUTS,
   clean: toOptionalEmailSetting,
 });
+
 export const attendeeFollowUpEmail = input({
   label: "Should Send Attendee Follow Up Email",
   comments:
@@ -152,6 +164,7 @@ export const attendeeFollowUpEmail = input({
   model: MODEL_FOR_OPTIONAL_BOOLEAN_INPUTS,
   clean: toOptionalEmailSetting,
 });
+
 export const sendCancellationEmail = input({
   label: "Send Cancellation Email",
   comments:
@@ -162,6 +175,7 @@ export const sendCancellationEmail = input({
   required: false,
   clean: toOptionalBoolean,
 });
+
 export const deleteAll = input({
   label: "Delete All",
   comments:
@@ -173,6 +187,7 @@ export const deleteAll = input({
   default: "false",
   clean: toOptionalBoolean,
 });
+
 export const notifyParticipants = input({
   label: "Notify Participants",
   comments: "Notify participants of the webinar.",
@@ -180,6 +195,7 @@ export const notifyParticipants = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const emailSettings = structuredObjectInput({
   label: "Email Settings",
   required: false,
@@ -192,6 +208,7 @@ const emailSettings = structuredObjectInput({
     attendeeFollowUpEmail,
   },
 });
+
 const createWebinarAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -205,6 +222,7 @@ const createWebinarAdditionalFields = structuredObjectInput({
     locale,
   },
 });
+
 export const createWebinarInputs = {
   connection,
   subject,
@@ -216,16 +234,19 @@ export const createWebinarInputs = {
   emailSettings,
   additionalFields: createWebinarAdditionalFields,
 };
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page number and page size for paginated results.",
   inputs: { page: pageNumber, size: pageSize },
 });
+
 export const getWebinarInputs = {
   connection,
   fromTime,
   toTime,
+
   accountKey: {
     ...accountKey,
     clean: toOptionalString,
@@ -237,6 +258,7 @@ export const getWebinarInputs = {
   fetchAll,
   pagination,
 };
+
 export const updateWebinarInputs = {
   connection,
   webinarKey,
@@ -260,6 +282,7 @@ export const updateWebinarInputs = {
   locale,
   emailSettings,
 };
+
 export const deleteWebinarInputs = {
   connection,
   webinarKey,

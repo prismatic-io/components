@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { ENDPOINTS } from "../constants";
 import { connection } from "./common";
+
 const endpoint = input({
   label: "Endpoint",
   type: "string",
@@ -11,6 +12,7 @@ const endpoint = input({
   placeholder: "Enter endpoint path",
   clean: util.types.toString,
 });
+
 const searchPattern = input({
   label: "Search Pattern",
   type: "string",
@@ -22,6 +24,7 @@ const searchPattern = input({
   placeholder: "Enter search pattern",
   clean: util.types.toString,
 });
+
 export const selectBapiInputs = {
   connection,
   endpoint,

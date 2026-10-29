@@ -4,6 +4,7 @@ import {
   orderBy,
   queryOperatorCode,
 } from "./common";
+
 export const selectDocumentInputs = {
   collection: {
     ...collection,
@@ -13,6 +14,7 @@ export const selectDocumentInputs = {
   queryOperatorCode,
   orderBy,
 };
+
 export const selectCollectionInputs = {
   firebaseConnection: connectionInput,
 };

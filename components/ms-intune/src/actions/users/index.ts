@@ -4,6 +4,7 @@ import { getUser } from "./getUser";
 import { listUsers } from "./listUsers";
 import { reprocessUserLicenseAssignment } from "./reprocessUserLicenseAssignment";
 import { updateUser } from "./updateUser";
+
 export default {
   createUser,
   deleteUser,

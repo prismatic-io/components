@@ -1,6 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { Attribute, Change, type Client } from "ldapts";
 import connections from "../connections";
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -10,6 +11,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const cleanAttributesList = (value: unknown): string[] => {
   const allAttributes = ["*"];
   if (Array.isArray(value)) {
@@ -17,32 +19,41 @@ export const cleanAttributesList = (value: unknown): string[] => {
   }
   return allAttributes;
 };
+
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const getRootDn = async (client: Client): Promise<string> => {
   const { searchEntries: searchRootEntries } = await client.search("", {
     scope: "base",
     attributes: ["namingContexts"],
   });
+
   if (searchRootEntries.length === 0) {
     throw new Error("Unable to retrieve root DN.");
   }
+
   const [rootDN] = searchRootEntries;
   const namingContexts = rootDN.namingContexts;
+
   if (!namingContexts || namingContexts.length === 0) {
     throw new Error("Unable to retrieve naming contexts.");
   }
+
   const rootDn = Array.isArray(namingContexts)
     ? namingContexts[0]
     : namingContexts;
   if (typeof rootDn !== "string") {
     throw new Error("Unsupported naming context found.");
   }
+
   return rootDn;
 };
+
 const throwCodeInputError = (inputLabel: string) => {
   throw new Error(`Invalid code for ${inputLabel} input.`);
 };
+
 export const cleanChanges = (value: unknown, inputLabel: string) => {
   if (value) {
     let object: unknown;
@@ -71,6 +82,7 @@ export const cleanChanges = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+
 export const formatPassword = (password: string) => {
   const quotedPassword = `"${password}"`;
   return Buffer.from(quotedPassword, "utf16le");

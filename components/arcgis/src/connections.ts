@@ -1,4 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
+
 export const arcgisOAuth2Connection = oauth2Connection({
   key: "arcgisOAuth2Connection",
   display: {
@@ -63,4 +64,5 @@ export const arcgisOAuth2Connection = oauth2Connection({
     },
   },
 });
+
 export default [arcgisOAuth2Connection];

@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connection } from "./common";
+
 const deviceCompliancePolicyId = input({
   label: "Device Compliance Policy ID",
   example: "705c034c-034c-705c-4c03-5c704c035c70",
@@ -10,6 +11,7 @@ const deviceCompliancePolicyId = input({
   clean: util.types.toString,
   dataSource: "selectDeviceCompliancePolicy",
 });
+
 const assignId = input({
   label: "Assignment ID",
   example: "705c034c-034c-705c-4c03-5c704c035c70",
@@ -19,6 +21,7 @@ const assignId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const target = input({
   label: "Target",
   type: "string",
@@ -29,6 +32,7 @@ const target = input({
   placeholder: "Enter target type",
   clean: util.types.toString,
 });
+
 const collectionId = input({
   label: "Collection ID",
   example: "705c034c-034c-705c-4c03-5c704c035c70",
@@ -39,6 +43,7 @@ const collectionId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const assignDeviceCompliancePolicyInputs = {
   connection,
   deviceCompliancePolicyId: {
@@ -50,10 +55,12 @@ export const assignDeviceCompliancePolicyInputs = {
   target,
   collectionId,
 };
+
 export const getDeviceCompliancePolicyInputs = {
   connection,
   deviceCompliancePolicyId,
 };
+
 const deviceCompliancePolicySettingStateSummaryId = input({
   label: "Device Compliance Policy Setting State Summary ID",
   example: "705c034c-034c-705c-4c03-5c704c035c70",
@@ -65,13 +72,16 @@ const deviceCompliancePolicySettingStateSummaryId = input({
   clean: util.types.toString,
   dataSource: "selectDeviceCompliancePolicySettingStateSummary",
 });
+
 export const getDeviceCompliancePolicySettingStateSummaryInputs = {
   connection,
   deviceCompliancePolicySettingStateSummaryId,
 };
+
 export const listDeviceCompliancePoliciesInputs = {
   connection,
 };
+
 export const listDeviceCompliancePolicySettingStateSummariesInputs = {
   connection,
 };

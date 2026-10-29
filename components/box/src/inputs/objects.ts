@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, path } from "./common";
+
 export const fromPath = input({
   label: "From Path",
   placeholder: "Enter source path",
@@ -10,6 +11,7 @@ export const fromPath = input({
   example: "/Marketing/Documents/OldReport.pdf",
   clean: util.types.toString,
 });
+
 export const toPath = input({
   label: "To Path",
   placeholder: "Enter destination path",
@@ -20,20 +22,24 @@ export const toPath = input({
   example: "/Archive/2024/OldReport.pdf",
   clean: util.types.toString,
 });
+
 export const copyObjectInputs = {
   fromPath,
   toPath,
   boxConnection: connectionInput,
 };
+
 export const moveObjectInputs = {
   fromPath,
   toPath,
   boxConnection: connectionInput,
 };
+
 export const deleteObjectInputs = {
   path,
   boxConnection: connectionInput,
 };
+
 export const pathDetailsInputs = {
   path,
   boxConnection: connectionInput,

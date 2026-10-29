@@ -1,7 +1,6 @@
 import type { EnvironmentProps } from "contentful-management";
-export const getEnvironmentExamplePayload: {
-  data: EnvironmentProps;
-} = {
+
+export const getEnvironmentExamplePayload: { data: EnvironmentProps } = {
   data: {
     name: "master",
     sys: {
@@ -41,13 +40,17 @@ export const getEnvironmentExamplePayload: {
     },
   },
 };
+
 export const listEnvironmentsExamplePayload = {
   data: [getEnvironmentExamplePayload.data],
 };
+
 export const createEnvironmentExamplePayload = {
   data: getEnvironmentExamplePayload.data,
 };
+
 export const updateEnvironmentExamplePayload = {
   data: getEnvironmentExamplePayload.data,
 };
+
 export const deleteEnvironmentExamplePayload = { data: {} };

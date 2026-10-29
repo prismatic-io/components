@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createToastClient } from "../../client";
 import { createShiftExamplePayload as examplePayload } from "../../examplePayloads";
 import { createShiftInputs as inputs } from "../../inputs/shift";
+
 export const createShift = action({
   display: {
     label: "Create Shift",
@@ -25,6 +26,7 @@ export const createShift = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+
     const body = {
       externalId,
       entityType: "Shift",
@@ -35,6 +37,7 @@ export const createShift = action({
       ...additionalFields,
     };
     const { data } = await client.post(`/labor/v1/shifts`, body);
+
     return {
       data,
     };

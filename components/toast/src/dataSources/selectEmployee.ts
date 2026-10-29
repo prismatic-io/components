@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createToastClient } from "../client";
 import { selectEmployeeInputs as inputs } from "../inputs/dataSources";
+
 export const selectEmployee = dataSource({
   display: {
     label: "Select Employee",
@@ -14,17 +15,16 @@ export const selectEmployee = dataSource({
       false,
       restaurantExternalId,
     );
+
     const { data } = await client.get(`/labor/v1/employees`);
+
     const objects = (
-      data as {
-        guid: string;
-        firstName: string;
-        lastName: string;
-      }[]
+      data as { guid: string; firstName: string; lastName: string }[]
     ).map<Element>((employee) => ({
       key: employee.guid,
       label: `${employee.firstName} ${employee.lastName}`,
     }));
+
     return { result: objects };
   },
 });

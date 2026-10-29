@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../util";
 import { connectionInput } from "./common";
+
 const pollScopeType = input({
   label: "Scope",
   type: "string",
@@ -13,6 +14,7 @@ const pollScopeType = input({
   comments:
     "Whether to poll tasks across an entire Team (Workspace) or scoped to a single List.",
 });
+
 const pollScopeId = input({
   label: "Scope ID",
   type: "string",
@@ -23,6 +25,7 @@ const pollScopeId = input({
   comments:
     "The Team ID or List ID to monitor for changes, depending on the Scope selected above.",
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -33,6 +36,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -42,6 +46,7 @@ const showNewRecords = input({
   comments:
     "When true, tasks created since the last poll are returned in the trigger payload.",
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -51,6 +56,7 @@ const showUpdatedRecords = input({
   comments:
     "When true, tasks updated since the last poll are returned in the trigger payload.",
 });
+
 export const pollChangesTriggerInputs = {
   connection: connectionInput,
   scopeType: pollScopeType,
@@ -59,4 +65,5 @@ export const pollChangesTriggerInputs = {
   showNewRecords,
   showUpdatedRecords,
 };
+
 export const webhookInputs = {};

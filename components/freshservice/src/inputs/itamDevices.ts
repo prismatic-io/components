@@ -2,18 +2,22 @@ import { input, util } from "@prismatic-io/spectral";
 import { ITAM_CLEAR_VALUE, ITAM_YES_NO_MODEL } from "../constants";
 import { cleanNumberInput, cleanStringInput } from "../util";
 import { additionalFields, connection, fetchAll, pagination } from "./common";
+
 const itamDevicesDocumentationComments =
   "See [Freshservice IT Asset Management API documentation](https://api.freshservice.com/) for more information.";
+
 const itamDevicesAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${itamDevicesDocumentationComments}`,
 });
+
 const deviceTypeOptions = [
   { label: "Unknown", value: "unknown" },
   { label: "Physical", value: "physical" },
   { label: "Virtual", value: "virtual" },
   { label: "Cluster", value: "cluster" },
 ];
+
 const deviceId = input({
   label: "Device ID",
   comments: "The unique identifier for the device.",
@@ -24,6 +28,7 @@ const deviceId = input({
   dataSource: "selectItamDevice",
   clean: util.types.toNumber,
 });
+
 const name = input({
   label: "Name",
   comments:
@@ -34,6 +39,7 @@ const name = input({
   placeholder: "Enter device name",
   clean: cleanStringInput,
 });
+
 const serialNo = input({
   label: "Serial Number",
   comments: `The serial number of the device. Values shorter than three characters, and generic values such as 123456789, are silently ignored by Freshservice rather than rejected. Set to ${ITAM_CLEAR_VALUE} to clear the stored value.`,
@@ -43,6 +49,7 @@ const serialNo = input({
   placeholder: "Enter serial number",
   clean: cleanStringInput,
 });
+
 const assetNo = input({
   label: "Asset Number",
   comments: "The asset number of the device.",
@@ -52,6 +59,7 @@ const assetNo = input({
   placeholder: "Enter asset number",
   clean: cleanStringInput,
 });
+
 const uuid = input({
   label: "UUID",
   comments:
@@ -62,6 +70,7 @@ const uuid = input({
   placeholder: "Enter device UUID",
   clean: cleanStringInput,
 });
+
 const type = input({
   label: "Type",
   comments: "The device type.",
@@ -72,6 +81,7 @@ const type = input({
   placeholder: "Select a device type",
   clean: cleanStringInput,
 });
+
 const inService = input({
   label: "In Service",
   comments:
@@ -83,6 +93,7 @@ const inService = input({
   placeholder: "Select yes or no",
   clean: cleanStringInput,
 });
+
 const networkDevice = input({
   label: "Network Device",
   comments:
@@ -94,6 +105,7 @@ const networkDevice = input({
   placeholder: "Select yes or no",
   clean: cleanStringInput,
 });
+
 const virtualHost = input({
   label: "Virtual Host",
   comments:
@@ -105,6 +117,7 @@ const virtualHost = input({
   placeholder: "Select yes or no",
   clean: cleanStringInput,
 });
+
 const physicalSubtypeId = input({
   label: "Physical Subtype ID",
   comments:
@@ -115,6 +128,7 @@ const physicalSubtypeId = input({
   placeholder: "Enter physical subtype ID",
   clean: cleanNumberInput,
 });
+
 const datacenter = input({
   label: "Data Center",
   comments: "The name of the data center housing the device.",
@@ -124,6 +138,7 @@ const datacenter = input({
   placeholder: "Enter data center name",
   clean: cleanStringInput,
 });
+
 const customers = input({
   label: "Cost Centers",
   comments:
@@ -134,6 +149,7 @@ const customers = input({
   placeholder: "Enter cost center names",
   clean: cleanStringInput,
 });
+
 const includeCols = input({
   label: "Include Columns",
   comments:
@@ -144,6 +160,7 @@ const includeCols = input({
   placeholder: "Enter attributes to include",
   clean: cleanStringInput,
 });
+
 export const createOrUpdateItamDeviceInputs = {
   connection,
   name,
@@ -166,6 +183,7 @@ export const createOrUpdateItamDeviceInputs = {
   customers,
   itamDevicesAdditionalFields,
 };
+
 export const deleteItamDeviceInputs = {
   connection,
   deviceId: input({
@@ -173,6 +191,7 @@ export const deleteItamDeviceInputs = {
     comments: "The unique identifier of the device to delete.",
   }),
 };
+
 export const getItamDeviceInputs = {
   connection,
   deviceId: input({
@@ -180,12 +199,14 @@ export const getItamDeviceInputs = {
     comments: "The unique identifier of the device to retrieve.",
   }),
 };
+
 export const listItamDevicesInputs = {
   connection,
   fetchAll,
   pagination,
   includeCols,
 };
+
 export const updateItamDeviceInputs = {
   connection,
   deviceId: input({

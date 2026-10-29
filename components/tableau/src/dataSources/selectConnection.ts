@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { selectConnectionInputs } from "../inputs";
 import { getTableauClient } from "../util";
+
 export const selectConnection = dataSource({
   display: {
     label: "Select Connection",
@@ -13,24 +14,23 @@ export const selectConnection = dataSource({
       timeout: 10000,
       debug: false,
     });
+
     const { data } = await client.get(
       `/workbooks/${util.types.toString(workbookId)}/connections/`,
       {
         params: { pageSize: 1000 },
       },
     );
+
     const connections = data?.connections?.connection ?? [];
-    const result: Element[] = (
-      connections as {
-        id: string;
-        type: string;
-      }[]
-    )
+
+    const result: Element[] = (connections as { id: string; type: string }[])
       .map((connection) => ({
         label: connection.type,
         key: connection.id.toString(),
       }))
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

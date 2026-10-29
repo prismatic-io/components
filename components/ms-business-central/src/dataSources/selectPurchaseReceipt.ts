@@ -4,6 +4,7 @@ import { companyId } from "../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../inputs/general";
 import type { MultipleItemsResponse, PurchaseReceipt } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const selectPurchaseReceipt = dataSource({
   display: {
     label: "Select Purchase Receipt",
@@ -19,6 +20,7 @@ export const selectPurchaseReceipt = dataSource({
     const { data } = await client.get<MultipleItemsResponse<PurchaseReceipt[]>>(
       `/companies(${companyId})/purchaseReceipts`,
     );
+
     return {
       result: toSortedPicklist(data.value, (pr) => ({
         key: pr.id,

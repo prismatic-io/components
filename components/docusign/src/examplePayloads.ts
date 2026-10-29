@@ -6,6 +6,7 @@ export const createEnvelopePayload = {
     status: "sent",
   },
 };
+
 export const getEnvelopePayload = {
   data: {
     envelopeId: "a3b2c1d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
@@ -116,6 +117,7 @@ export const getEnvelopePayload = {
     is21CFRPart11: "false",
   },
 };
+
 export const listEnvelopesPayload = {
   data: {
     resultSetSize: "25",
@@ -177,6 +179,7 @@ export const listEnvelopesPayload = {
     ],
   },
 };
+
 export const updateEnvelopePayload = {
   data: {
     envelopeId: "a3b2c1d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
@@ -186,6 +189,7 @@ export const updateEnvelopePayload = {
     statusChangedDateTime: "2025-01-15T16:30:00.000Z",
   },
 };
+
 export const deleteEnvelopePayload = {
   data: {
     envelopeId: "a3b2c1d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
@@ -193,6 +197,7 @@ export const deleteEnvelopePayload = {
     deletedDateTime: "2025-01-15T17:00:00.000Z",
   },
 };
+
 export const getEnvelopeDocumentPayload = {
   data: {
     documentId: "1",
@@ -216,6 +221,7 @@ export const getEnvelopeDocumentPayload = {
     ],
   },
 };
+
 export const listEnvelopeDocumentsPayload = {
   data: {
     envelopeId: "a3b2c1d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
@@ -252,6 +258,7 @@ export const listEnvelopeDocumentsPayload = {
     ],
   },
 };
+
 export const getRecipientPayload = {
   data: {
     recipientId: "1",
@@ -305,6 +312,7 @@ export const getRecipientPayload = {
     },
   },
 };
+
 export const listRecipientsPayload = {
   data: {
     signers: [
@@ -347,6 +355,7 @@ export const listRecipientsPayload = {
     currentRoutingOrder: "2",
   },
 };
+
 export const addRecipientPayload = {
   data: {
     recipientId: "3",
@@ -358,6 +367,7 @@ export const addRecipientPayload = {
     status: "created",
   },
 };
+
 export const updateRecipientPayload = {
   data: {
     recipientId: "1",
@@ -370,6 +380,7 @@ export const updateRecipientPayload = {
     statusChangedDateTime: "2025-01-15T11:00:00.000Z",
   },
 };
+
 export const createTemplatePayload = {
   data: {
     templateId: "e7f6a5b4-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
@@ -391,6 +402,7 @@ export const createTemplatePayload = {
     folderId: "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
   },
 };
+
 export const getTemplatePayload = {
   data: {
     templateId: "e7f6a5b4-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
@@ -467,6 +479,7 @@ export const getTemplatePayload = {
     status: "created",
   },
 };
+
 export const listTemplatesPayload = {
   data: {
     resultSetSize: "10",
@@ -527,6 +540,7 @@ export const listTemplatesPayload = {
     ],
   },
 };
+
 export const updateTemplatePayload = {
   data: {
     templateId: "e7f6a5b4-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
@@ -540,12 +554,14 @@ export const updateTemplatePayload = {
     },
   },
 };
+
 export const deleteTemplatePayload = {
   data: {
     templateId: "e7f6a5b4-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
     status: "deleted",
   },
 };
+
 export const listTemplateDocumentsPayload = {
   data: {
     templateId: "e7f6a5b4-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
@@ -575,6 +591,7 @@ export const listTemplateDocumentsPayload = {
     ],
   },
 };
+
 export const getAccountPayload = {
   data: {
     accountId: "7654321",
@@ -607,6 +624,7 @@ export const getAccountPayload = {
     suspensionStatus: null,
   },
 };
+
 export const listAccountSettingsPayload = {
   data: {
     accountSettings: [
@@ -661,6 +679,7 @@ export const listAccountSettingsPayload = {
     ],
   },
 };
+
 export const createUserPayload = {
   data: {
     userId: "a0b1c2d3-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
@@ -672,6 +691,7 @@ export const createUserPayload = {
     createdDateTime: "2025-01-15T10:30:00.000Z",
   },
 };
+
 export const getUserPayload = {
   data: {
     userId: "a0b1c2d3-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
@@ -716,6 +736,7 @@ export const getUserPayload = {
     homeAddress: null,
   },
 };
+
 export const listUsersPayload = {
   data: {
     resultSetSize: "15",
@@ -754,6 +775,7 @@ export const listUsersPayload = {
     ],
   },
 };
+
 export const updateUserPayload = {
   data: {
     userId: "a0b1c2d3-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
@@ -764,6 +786,7 @@ export const updateUserPayload = {
     lastModifiedDateTime: "2025-01-20T11:45:00.000Z",
   },
 };
+
 export const deleteUserPayload = {
   data: {
     userId: "a0b1c2d3-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
@@ -771,6 +794,7 @@ export const deleteUserPayload = {
     closedDateTime: "2025-01-20T15:00:00.000Z",
   },
 };
+
 export const createWebhookPayload = {
   data: {
     connectId: "c2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f",
@@ -810,6 +834,7 @@ export const createWebhookPayload = {
     createdDateTime: "2025-01-15T10:45:00.000Z",
   },
 };
+
 export const getWebhookPayload = {
   data: {
     connectId: "c2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f",
@@ -850,6 +875,7 @@ export const getWebhookPayload = {
     failureDetails: null,
   },
 };
+
 export const listWebhooksPayload = {
   data: {
     totalRecords: "3",
@@ -881,6 +907,7 @@ export const listWebhooksPayload = {
     ],
   },
 };
+
 export const updateWebhookPayload = {
   data: {
     connectId: "c2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f",
@@ -893,12 +920,14 @@ export const updateWebhookPayload = {
     lastModifiedDateTime: "2025-01-20T09:30:00.000Z",
   },
 };
+
 export const deleteWebhookPayload = {
   data: {
     connectId: "c2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f",
     status: "deleted",
   },
 };
+
 export const listFoldersPayload = {
   data: {
     resultSetSize: "6",
@@ -949,6 +978,7 @@ export const listFoldersPayload = {
     ],
   },
 };
+
 export const listFolderItemsPayload = {
   data: {
     resultSetSize: "5",
@@ -982,6 +1012,7 @@ export const listFolderItemsPayload = {
     ],
   },
 };
+
 export const getTabsPayload = {
   data: {
     signHereTabs: [
@@ -1085,6 +1116,7 @@ export const getTabsPayload = {
     ],
   },
 };
+
 export const addTabsPayload = {
   data: {
     signHereTabs: [
@@ -1102,6 +1134,7 @@ export const addTabsPayload = {
     ],
   },
 };
+
 export const updateTabsPayload = {
   data: {
     textTabs: [
@@ -1115,6 +1148,7 @@ export const updateTabsPayload = {
     ],
   },
 };
+
 export const deleteTabsPayload = {
   data: {
     tabs: [
@@ -1125,6 +1159,7 @@ export const deleteTabsPayload = {
     ],
   },
 };
+
 export const getCustomFieldsPayload = {
   data: {
     textCustomFields: [
@@ -1158,6 +1193,7 @@ export const getCustomFieldsPayload = {
     ],
   },
 };
+
 export const addCustomFieldsPayload = {
   data: {
     textCustomFields: [
@@ -1172,6 +1208,7 @@ export const addCustomFieldsPayload = {
     ],
   },
 };
+
 export const updateCustomFieldsPayload = {
   data: {
     textCustomFields: [
@@ -1184,6 +1221,7 @@ export const updateCustomFieldsPayload = {
     ],
   },
 };
+
 export const deleteCustomFieldsPayload = {
   data: {
     textCustomFields: [
@@ -1194,6 +1232,7 @@ export const deleteCustomFieldsPayload = {
     ],
   },
 };
+
 export const getBrandPayload = {
   data: {
     brandId: "f5a6b7c8-9d0e-1f2a-3b4c-5d6e7f8a9b0c",
@@ -1219,6 +1258,7 @@ export const getBrandPayload = {
     modifiedDateTime: "2025-01-10T14:30:00.000Z",
   },
 };
+
 export const listBrandsPayload = {
   data: {
     resultSetSize: "2",
@@ -1243,6 +1283,7 @@ export const listBrandsPayload = {
     ],
   },
 };
+
 export const createPowerFormPayload = {
   data: {
     powerFormId: "b7c8d9e0-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
@@ -1253,6 +1294,7 @@ export const createPowerFormPayload = {
     createdDateTime: "2025-01-15T11:00:00.000Z",
   },
 };
+
 export const getPowerFormPayload = {
   data: {
     powerFormId: "b7c8d9e0-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
@@ -1272,6 +1314,7 @@ export const getPowerFormPayload = {
     envelopesCreatedCount: "47",
   },
 };
+
 export const listPowerFormsPayload = {
   data: {
     resultSetSize: "2",
@@ -1298,12 +1341,14 @@ export const listPowerFormsPayload = {
     ],
   },
 };
+
 export const deletePowerFormPayload = {
   data: {
     powerFormId: "b7c8d9e0-1f2a-3b4c-5d6e-7f8a9b0c1d2e",
     status: "deleted",
   },
 };
+
 export const createBulkSendListPayload = {
   data: {
     listId: "d9e0f1a2-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
@@ -1312,6 +1357,7 @@ export const createBulkSendListPayload = {
     bulkCopies: "250",
   },
 };
+
 export const getBulkSendListPayload = {
   data: {
     listId: "d9e0f1a2-3b4c-5d6e-7f8a-9b0c1d2e3f4a",
@@ -1328,6 +1374,7 @@ export const getBulkSendListPayload = {
     failed: "15",
   },
 };
+
 export const createContactPayload = {
   data: {
     contactId: "e0f1a2b3-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
@@ -1338,6 +1385,7 @@ export const createContactPayload = {
     createdDateTime: "2025-01-15T13:00:00.000Z",
   },
 };
+
 export const getContactPayload = {
   data: {
     contactId: "e0f1a2b3-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
@@ -1358,6 +1406,7 @@ export const getContactPayload = {
     createdDateTime: "2025-01-15T13:00:00.000Z",
   },
 };
+
 export const listContactsPayload = {
   data: {
     resultSetSize: "3",
@@ -1392,12 +1441,14 @@ export const listContactsPayload = {
     ],
   },
 };
+
 export const deleteContactPayload = {
   data: {
     contactId: "e0f1a2b3-4c5d-6e7f-8a9b-0c1d2e3f4a5b",
     status: "deleted",
   },
 };
+
 export const getAccountSignaturePayload = {
   data: {
     accountSignatures: [
@@ -1423,6 +1474,7 @@ export const getAccountSignaturePayload = {
     ],
   },
 };
+
 export const createAccountSignaturePayload = {
   data: {
     signatureId: "c4d5e6f7-8a9b-0c1d-2e3f-4a5b6c7d8e9f",
@@ -1432,6 +1484,7 @@ export const createAccountSignaturePayload = {
     createdDateTime: "2025-01-15T14:00:00.000Z",
   },
 };
+
 export const getPermissionProfilePayload = {
   data: {
     permissionProfileId: "d5e6f7a8-9b0c-1d2e-3f4a-5b6c7d8e9f0a",
@@ -1467,6 +1520,7 @@ export const getPermissionProfilePayload = {
     userCount: "12",
   },
 };
+
 export const listPermissionProfilesPayload = {
   data: {
     resultSetSize: "4",
@@ -1495,12 +1549,14 @@ export const listPermissionProfilesPayload = {
     ],
   },
 };
+
 export const errorPayload = {
   data: {
     errorCode: "ENVELOPE_NOT_FOUND",
     message: "The envelope specified by the envelopeId does not exist.",
   },
 };
+
 export const validationErrorPayload = {
   data: {
     errorCode: "INVALID_REQUEST_PARAMETER",

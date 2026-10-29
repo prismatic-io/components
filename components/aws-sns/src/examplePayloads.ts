@@ -8,22 +8,26 @@ import type {
   PublishBatchCommandOutput,
   ListPhoneNumbersOptedOutResponse,
 } from "@aws-sdk/client-sns";
+
 export const createTopicExamplePayload = {
   data: {
     TopicArn: "arn:aws:sns:us-east-1:123456789012:MyExampleTopic",
   } as CreateTopicResponse,
 };
+
 export const publishMessageExamplePayload = {
   data: {
     MessageId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     SequenceNumber: "10000000000000001000",
   } as PublishResponse,
 };
+
 export const publishSmsExamplePayload = {
   data: {
     MessageId: "b2c3d4e5-f6a7-8901-bcde-f12345678901",
   } as PublishResponse,
 };
+
 export const publishBatchMessagesExamplePayload = {
   data: {
     $metadata: {
@@ -54,20 +58,24 @@ export const publishBatchMessagesExamplePayload = {
     ],
   } as PublishBatchCommandOutput,
 };
+
 export const subscribeExamplePayload = {
   data: {
     SubscriptionArn:
       "arn:aws:sns:us-east-1:123456789012:MyExampleTopic:a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   } as SubscribeResponse,
 };
+
 export const subscribePendingExamplePayload = {
   data: {
     SubscriptionArn: "pending confirmation",
   } as SubscribeResponse,
 };
+
 export const unsubscribeExamplePayload = {
   data: {},
 };
+
 export const listTopicsExamplePayload = {
   data: {
     Topics: [
@@ -84,6 +92,7 @@ export const listTopicsExamplePayload = {
     NextToken: "AAEBAf/8v+7MSvN8MkD9xZHCrFKL6RQ7UHJ9PJhWOH5Yqvf1H8EXAMPLE",
   } as ListTopicsResponse,
 };
+
 export const getTopicAttributesExamplePayload = {
   data: {
     Attributes: {
@@ -105,6 +114,7 @@ export const getTopicAttributesExamplePayload = {
     },
   } as GetTopicAttributesResponse,
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     Subscriptions: [
@@ -142,9 +152,11 @@ export const listSubscriptionsExamplePayload = {
     NextToken: "AAEBAf/8v+7MSvN8MkD9xZHCrFKL6RQ7UHJ9PJhWOH5Yqvf1H8EXAMPLE",
   } as ListSubscriptionsByTopicResponse,
 };
+
 export const deleteTopicExamplePayload = {
   data: {},
 };
+
 export const listOptOutNumbersExamplePayload = {
   data: {
     phoneNumbers: ["+12125551001", "+12125551002", "+12125551003"],

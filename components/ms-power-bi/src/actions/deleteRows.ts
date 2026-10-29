@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection, datasetId, tableName } from "../inputs";
 import { deleteRowsExamplePayload } from "../examplePayloads";
+
 export const deleteRows = action({
   display: {
     label: "Delete Rows",
@@ -10,9 +11,11 @@ export const deleteRows = action({
   },
   perform: async (context, { connection, datasetId, tableName }) => {
     const client = createClient({ connection }, context.debug.enabled);
+
     const { data } = await client.delete(
       `/datasets/${datasetId}/tables/${tableName}/rows`,
     );
+
     return {
       data,
     };

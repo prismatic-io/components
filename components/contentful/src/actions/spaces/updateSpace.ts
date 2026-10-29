@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { updateSpaceExamplePayload } from "../../examplePayloads";
 import { updateSpaceInputs } from "../../inputs";
 import { updateSpaceOutputSchema } from "../../outputSchemas";
+
 export const updateSpace = action({
   display: {
     label: "Update Space",
@@ -13,15 +14,16 @@ export const updateSpace = action({
   perform: async (context, { connection, spaceId, spaceName }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
+
     space.name = spaceName;
+
     const data: SpaceProps = (await space.update()).toPlainObject();
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateSpaceExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateSpaceExamplePayload,
   inputs: updateSpaceInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

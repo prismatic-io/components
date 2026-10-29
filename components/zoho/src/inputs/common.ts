@@ -5,12 +5,14 @@ import {
   lookBackDateClean,
   toOptionalString,
 } from "../util/general";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Zoho connection to use.",
 });
+
 export const recordId = input({
   label: "Record ID",
   placeholder: "Enter Record ID",
@@ -20,6 +22,7 @@ export const recordId = input({
   clean: util.types.toString,
   example: "5394166000000379001",
 });
+
 export const page = input({
   label: "Page",
   placeholder: "Enter page number",
@@ -30,6 +33,7 @@ export const page = input({
   example: "1",
   default: DEFAULT_PAGE_NUMBER.toString(),
 });
+
 export const per_page = input({
   label: "Per Page",
   placeholder: "Enter number of records per page",
@@ -40,6 +44,7 @@ export const per_page = input({
   clean: util.types.toNumber,
   example: "200",
 });
+
 export const page_token = input({
   label: "Page Token",
   placeholder: "Enter page token",
@@ -50,6 +55,7 @@ export const page_token = input({
   clean: toOptionalString,
   example: "187d2af1e9c50119e",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -59,6 +65,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const dynamicValues = input({
   label: "Dynamic Fields",
   type: "data",
@@ -66,6 +73,7 @@ export const dynamicValues = input({
   comments:
     "Dynamic input fields that can be configured at deploy time using key-value config variables.",
 });
+
 export const fieldValues = input({
   label: "Values",
   placeholder: "Enter field key-value pairs",
@@ -81,6 +89,7 @@ export const fieldValues = input({
   ),
   clean: cleanKeyValList,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -91,6 +100,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const leadsPollingTriggerInputs = {
   connection: connectionInput,
   lookBackDate,

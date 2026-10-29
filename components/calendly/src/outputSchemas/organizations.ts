@@ -19,6 +19,7 @@ const organizationInvitationResource = {
     "updated_at",
   ],
 };
+
 export const getOrganizationInvitationOutputSchema = {
   type: "object",
   properties: {
@@ -26,6 +27,7 @@ export const getOrganizationInvitationOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const inviteUserToOrganizationOutputSchema = {
   type: "object",
   properties: {
@@ -33,10 +35,12 @@ export const inviteUserToOrganizationOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listOrganizationInvitationsOutputSchema = {
   type: "array",
   items: organizationInvitationResource,
 };
+
 const membershipUserSchema = {
   type: "object",
   properties: {
@@ -51,6 +55,7 @@ const membershipUserSchema = {
     updated_at: { type: "string", format: "date-time" },
   },
 };
+
 const organizationMembershipResource = {
   type: "object",
   properties: {
@@ -63,6 +68,7 @@ const organizationMembershipResource = {
   },
   required: ["uri", "role", "user", "organization", "created_at", "updated_at"],
 };
+
 export const getOrganizationMembershipOutputSchema = {
   type: "object",
   properties: {
@@ -70,10 +76,12 @@ export const getOrganizationMembershipOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listOrganizationMembershipsOutputSchema = {
   type: "array",
   items: organizationMembershipResource,
 };
+
 export const listActivityLogEntriesOutputSchema = {
   type: "array",
   items: {
@@ -121,10 +129,12 @@ export const listActivityLogEntriesOutputSchema = {
     ],
   },
 };
+
 export const removeUserFromOrganizationOutputSchema = {
   type: "object",
   properties: {},
 };
+
 export const revokeUserOrganizationInvitationOutputSchema = {
   type: "object",
   properties: {},

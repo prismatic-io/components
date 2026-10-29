@@ -8,6 +8,7 @@ import {
 } from "../examplePayloads";
 import { connectionInput, timeout } from "../inputs";
 import FormData from "form-data";
+
 const uploadFile = action({
   display: {
     label: "Upload File",
@@ -60,7 +61,9 @@ const uploadFile = action({
       context.debug.enabled,
       params.timeout,
     );
+
     const formData = new FormData();
+
     formData.append(
       "file",
       util.types.isBufferDataPayload(params.file)
@@ -69,13 +72,16 @@ const uploadFile = action({
       params.filename,
     );
     formData.append("purpose", params.purpose);
+
     const { data } = await client.post("/v1/files", formData, {
       headers: formData.getHeaders(),
     });
+
     return { data };
   },
   examplePayload: uploadFileExamplePayload,
 });
+
 const listFiles = action({
   display: {
     label: "List Files",
@@ -105,17 +111,21 @@ const listFiles = action({
       context.debug.enabled,
       params.timeout,
     );
+
     const queryParams: Record<string, string> = {};
     if (params.purpose) {
       queryParams.purpose = util.types.toString(params.purpose);
     }
+
     const { data } = await client.get("/v1/files", {
       params: queryParams,
     });
+
     return { data };
   },
   examplePayload: listFilesExamplePayload,
 });
+
 const retrieveFile = action({
   display: {
     label: "Retrieve File",
@@ -140,11 +150,14 @@ const retrieveFile = action({
       context.debug.enabled,
       params.timeout,
     );
+
     const { data } = await client.get(`/v1/files/${params.fileId}`);
+
     return { data };
   },
   examplePayload: retrieveFileExamplePayload,
 });
+
 const deleteFile = action({
   display: {
     label: "Delete File",
@@ -169,11 +182,14 @@ const deleteFile = action({
       context.debug.enabled,
       params.timeout,
     );
+
     const { data } = await client.delete(`/v1/files/${params.fileId}`);
+
     return { data };
   },
   examplePayload: deleteFileExamplePayload,
 });
+
 export default {
   uploadFile,
   listFiles,

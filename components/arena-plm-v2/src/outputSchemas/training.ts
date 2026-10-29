@@ -18,6 +18,7 @@ export const trainingItemSchema = {
     },
   },
 };
+
 export const listTrainingPlanItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -25,6 +26,7 @@ export const listTrainingPlanItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const trainingRecordSchema = {
   type: "object" as const,
   properties: {
@@ -56,6 +58,7 @@ export const trainingRecordSchema = {
     requiresUserAction: { type: "boolean" },
   },
 };
+
 export const listTrainingPlanRecordsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -63,6 +66,7 @@ export const listTrainingPlanRecordsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const trainingShortSchema = {
   type: "object" as const,
   properties: {
@@ -91,6 +95,7 @@ export const trainingShortSchema = {
     },
   },
 };
+
 export const listTrainingPlansOutputSchema = {
   type: "object" as const,
   properties: {
@@ -98,6 +103,7 @@ export const listTrainingPlansOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const trainingUserSchema = {
   type: "object" as const,
   properties: {
@@ -113,6 +119,7 @@ export const trainingUserSchema = {
     dueDate: { type: "string" },
   },
 };
+
 export const listTrainingPlanUsersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -120,16 +127,19 @@ export const listTrainingPlanUsersOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const removeFileFromTrainingPlanOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeItemFromTrainingPlanOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const removeQualityFromTrainingPlanOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },

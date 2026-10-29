@@ -7,6 +7,7 @@ import type {
   AddGuestToFolderBody as AddGuestToFolder,
   AddGuestToFolderQueryParams,
 } from "../../types";
+
 export const addGuestToFolder = action({
   display: {
     label: "Add Guest to Folder",
@@ -32,11 +33,13 @@ export const addGuestToFolder = action({
     const params: AddGuestToFolderQueryParams = {
       include_shared: includeShared,
     };
+
     const { data } = await client.post(
       `/folder/${folderId}/guest/${guestId}`,
       body,
       { params },
     );
+
     return {
       data,
     };

@@ -3,6 +3,7 @@ import { WEBHOOK_BRANCH_NAMES } from "../constants";
 import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { resolveEventBranch, tokensMatch, withoutSecretToken } from "../utils";
+
 export const webhook = trigger({
   display: {
     label: "Webhook",

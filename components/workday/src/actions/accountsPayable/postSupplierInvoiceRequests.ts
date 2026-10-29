@@ -5,6 +5,7 @@ import { postSupplierInvoiceRequestsExamplePayload } from "../../examplePayloads
 import { postSupplierInvoiceRequestsInputs } from "../../inputs";
 import { getIdObject } from "../../util";
 import { postSupplierInvoiceRequestsOutputSchema } from "../../outputSchemas";
+
 export const postSupplierInvoiceRequests = action({
   display: {
     label: "Create Supplier Invoice Request",
@@ -29,6 +30,7 @@ export const postSupplierInvoiceRequests = action({
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     const body = {
       supplier: getIdObject(supplierId),
       invoiceDate,

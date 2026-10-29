@@ -88,6 +88,7 @@ export const listInvoicesExamplePayload = {
     total: 1,
   },
 };
+
 export const getInvoiceByIdExamplePayload = {
   data: {
     invoiceDate: "2024-06-08T07:00:00.000Z",
@@ -173,10 +174,12 @@ export const getInvoiceByIdExamplePayload = {
     href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/invoices/7c6b5a4938271605f4e3d2c1b0a99888",
   },
 };
+
 export const getInvoicePdfExamplePayload = {
   data: Buffer.from("%PDF-1.7\n%example invoice PDF bytes"),
   contentType: "application/pdf",
 };
+
 export const postPaymentExamplePayload = {
   data: {
     memo: "Monthly office supplies",
@@ -204,6 +207,7 @@ export const postPaymentExamplePayload = {
     id: "e5f6a708192a3b4c5d6e7f8091122334",
   },
 };
+
 export const getPaymentByIdExamplePayload = {
   data: {
     descriptor: "Customer Payment",

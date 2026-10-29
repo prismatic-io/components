@@ -5,6 +5,7 @@ import { postJobChangesExamplePayload } from "../../examplePayloads";
 import { postJobChangesInputs } from "../../inputs";
 import { compactRows, getIdObject } from "../../util";
 import { postJobChangesOutputSchema } from "../../outputSchemas";
+
 export const postJobChanges = action({
   display: {
     label: "Create Job Change",

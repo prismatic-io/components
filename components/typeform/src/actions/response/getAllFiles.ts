@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, formId } from "../../inputs";
 import { getFileResponse as getAllResponseFilesResponse } from "../../examplePayloads/responses";
+
 export const getAllResponseFiles = action({
   display: {
     label: "Get All Response Files",
@@ -14,6 +15,7 @@ export const getAllResponseFiles = action({
   },
   perform: async (context, { connection, formId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/forms/${formId}/responses/files`);
     return {
       data,

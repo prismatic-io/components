@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../util";
 import { connectionInput, projectId, workspaceId } from "./common";
+
 const triggerWhenAdded = input({
   label: "Trigger When Added",
   type: "boolean",
@@ -9,6 +10,7 @@ const triggerWhenAdded = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const triggerWhenRemoved = input({
   label: "Trigger When Removed",
   type: "boolean",
@@ -17,6 +19,7 @@ const triggerWhenRemoved = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const triggerWhenChanged = input({
   label: "Trigger When Changed",
   type: "boolean",
@@ -25,6 +28,7 @@ const triggerWhenChanged = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const triggerWhenDeleted = input({
   label: "Trigger When Deleted",
   type: "boolean",
@@ -33,6 +37,7 @@ const triggerWhenDeleted = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const triggerWhenUndeleted = input({
   label: "Trigger When Undeleted",
   type: "boolean",
@@ -41,6 +46,7 @@ const triggerWhenUndeleted = input({
   required: true,
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -51,6 +57,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -60,6 +67,7 @@ const showNewRecords = input({
   comments:
     "When true, tasks created since the last poll are returned in the trigger payload.",
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -69,6 +77,7 @@ const showUpdatedRecords = input({
   comments:
     "When true, tasks modified since the last poll are returned in the trigger payload.",
 });
+
 export const pollChangesTriggerInputs = {
   asanaConnection: connectionInput,
   projectId,
@@ -76,6 +85,7 @@ export const pollChangesTriggerInputs = {
   showNewRecords,
   showUpdatedRecords,
 };
+
 export const workspaceProjectsTriggerInputs = {
   asanaConnection: connectionInput,
   workspaceId,
@@ -104,6 +114,7 @@ export const workspaceProjectsTriggerInputs = {
       "Determines if the webhook will trigger when a project is undeleted.",
   },
 };
+
 export const projectTasksTriggerInputs = {
   asanaConnection: connectionInput,
   projectId,
@@ -129,6 +140,7 @@ export const projectTasksTriggerInputs = {
       "Determines if the webhook will trigger when a task is undeleted.",
   },
 };
+
 export const storiesTriggerInputs = {
   asanaConnection: connectionInput,
   projectId,

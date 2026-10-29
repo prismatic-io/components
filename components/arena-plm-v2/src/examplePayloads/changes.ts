@@ -10,16 +10,19 @@ import type {
   UserCompactVo,
   UserCompactVoResultRep,
 } from "../types";
+
 const sampleUser: UserCompactVo = {
   guid: "9ZY87XW65VU43TS21RQ09PO8",
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const _sampleCategoryCompact = {
   guid: "1AA22BB33CC44DD55EE66FF7",
   name: "ECO",
   path: "Changes/ECO",
 };
+
 const sampleFileDetail: FileDetailVo = {
   guid: "7GG88HH99II00JJ11KK22LL3",
   name: "assembly-drawing.pdf",
@@ -38,6 +41,7 @@ const sampleFileDetail: FileDetailVo = {
   latest: true,
   private: false,
 };
+
 const sampleChangeFull: ChangeFullVo = {
   guid: "5AB12CD34EF56GH78IJ90KL1",
   url: {
@@ -77,6 +81,7 @@ const sampleChangeFull: ChangeFullVo = {
     },
   ],
 };
+
 const sampleChangeAffectedItem = {
   guid: "6YY77ZZ88AA99BB00CC11DD2",
   item: {
@@ -99,6 +104,7 @@ const sampleChangeAffectedItem = {
   specsView: { includedInThisChange: true, containsModifications: true },
   bomView: { includedInThisChange: true, containsModifications: true },
 };
+
 const sampleImplementationTask = {
   guid: "4SS55TT66UU77VV88WW99XX0",
   name: "Update manufacturing work instructions",
@@ -108,6 +114,7 @@ const sampleImplementationTask = {
   creator: sampleUser,
   creationDateTime: "2026-03-14T10:30:00Z",
 };
+
 const sampleImplementationTaskNote = {
   guid: "1NT22OT33PT44QT55RT66ST7",
   note: "Work instructions updated and reviewed by manufacturing engineering.",
@@ -116,12 +123,13 @@ const sampleImplementationTaskNote = {
   creator: sampleUser,
   creationDateTime: "2026-03-15T08:20:00Z",
 };
+
 export const addItemToChangeExamplePayload = { data: sampleChangeAffectedItem };
-export const createChangeExamplePayload: {
-  data: ChangeFullVo;
-} = {
+
+export const createChangeExamplePayload: { data: ChangeFullVo } = {
   data: sampleChangeFull,
 };
+
 export const createChangeFileAssociationExamplePayload: {
   data: FileAssociationVo;
 } = {
@@ -130,30 +138,36 @@ export const createChangeFileAssociationExamplePayload: {
     file: sampleFileDetail,
   },
 };
+
 export const createChangeImplementationFileExamplePayload = {
   data: {
     guid: "3IF44IF55IF66IF77IF88IF9",
     file: sampleFileDetail,
   },
 };
+
 export const createChangeImplementationTaskExamplePayload = {
   data: sampleImplementationTask,
 };
+
 export const createChangeImplementationTaskFileExamplePayload = {
   data: {
     guid: "5TF66TF77TF88TF99TF00TF1",
     file: sampleFileDetail,
   },
 };
+
 export const createChangeImplementationTaskNoteExamplePayload = {
   data: sampleImplementationTaskNote,
 };
+
 export const createChangeMarkupFileExamplePayload = {
   data: {
     guid: "7MF88MF99MF00MF11MF22MF3",
     file: sampleFileDetail,
   },
 };
+
 export const deleteChangeExamplePayload = {
   data: {
     success: true,
@@ -161,6 +175,7 @@ export const deleteChangeExamplePayload = {
     message: "Change deleted successfully",
   },
 };
+
 export const deleteChangeFileAssociationExamplePayload = {
   data: {
     success: true,
@@ -169,18 +184,21 @@ export const deleteChangeFileAssociationExamplePayload = {
     changeFileAssociationGuid: "2FA33FA44FA55FA66FA77FA8",
   },
 };
+
 export const deleteChangeItemAssociationExamplePayload = {
   data: {
     success: true,
     message: "Change item association deleted successfully",
   },
 };
+
 export const deleteChangeMarkupFileExamplePayload = {
   data: {
     success: true,
     message: "Markup file deleted successfully",
   },
 };
+
 export const listChangeAlertsExamplePayload = {
   data: {
     results: [
@@ -195,11 +213,11 @@ export const listChangeAlertsExamplePayload = {
     count: 1,
   },
 };
-export const getChangeByGuidExamplePayload: {
-  data: ChangeFullVo;
-} = {
+
+export const getChangeByGuidExamplePayload: { data: ChangeFullVo } = {
   data: sampleChangeFull,
 };
+
 export const listChangeCategoryItemAttributesExamplePayload: {
   data: CategoryAttributeDefinitionResultRep;
 } = {
@@ -222,6 +240,7 @@ export const listChangeCategoryItemAttributesExamplePayload: {
     count: 1,
   },
 };
+
 export const listChangeCategoryRoutingsExamplePayload: {
   data: ChangeRoutingMiniResultRep;
 } = {
@@ -236,6 +255,7 @@ export const listChangeCategoryRoutingsExamplePayload: {
     count: 1,
   },
 };
+
 export const getChangeFileAssociationExamplePayload: {
   data: FileAssociationVo;
 } = {
@@ -244,6 +264,7 @@ export const getChangeFileAssociationExamplePayload: {
     file: sampleFileDetail,
   },
 };
+
 export const listChangeFileAssociationsExamplePayload: {
   data: FileAssociationVoResultRep;
 } = {
@@ -257,12 +278,14 @@ export const listChangeFileAssociationsExamplePayload: {
     count: 1,
   },
 };
+
 export const listChangeFilesExamplePayload = {
   data: {
     results: [sampleFileDetail],
     count: 1,
   },
 };
+
 export const listChangeHistoryExamplePayload = {
   data: {
     results: [
@@ -284,6 +307,7 @@ export const listChangeHistoryExamplePayload = {
     count: 2,
   },
 };
+
 export const listChangeImplementationFilesExamplePayload = {
   data: {
     results: [
@@ -295,9 +319,11 @@ export const listChangeImplementationFilesExamplePayload = {
     count: 1,
   },
 };
+
 export const getChangeImplementationTaskExamplePayload = {
   data: sampleImplementationTask,
 };
+
 export const listChangeImplementationTaskFilesExamplePayload = {
   data: {
     results: [
@@ -309,27 +335,32 @@ export const listChangeImplementationTaskFilesExamplePayload = {
     count: 1,
   },
 };
+
 export const listChangeImplementationTaskNotesExamplePayload = {
   data: {
     results: [sampleImplementationTaskNote],
     count: 1,
   },
 };
+
 export const listChangeImplementationTasksExamplePayload = {
   data: {
     results: [sampleImplementationTask],
     count: 1,
   },
 };
+
 export const getChangeItemAssociationExamplePayload = {
   data: sampleChangeAffectedItem,
 };
+
 export const listChangeItemsExamplePayload = {
   data: {
     results: [sampleChangeAffectedItem],
     count: 1,
   },
 };
+
 export const listChangeMarkupFilesExamplePayload = {
   data: {
     results: [
@@ -341,9 +372,8 @@ export const listChangeMarkupFilesExamplePayload = {
     count: 1,
   },
 };
-export const listChangesExamplePayload: {
-  data: ChangCompactVoResultRep;
-} = {
+
+export const listChangesExamplePayload: { data: ChangCompactVoResultRep } = {
   data: {
     results: [
       {
@@ -371,6 +401,7 @@ export const listChangesExamplePayload: {
     count: 2,
   },
 };
+
 export const listChangesAdministratorsExamplePayload: {
   data: UserCompactVoResultRep;
 } = {
@@ -390,6 +421,7 @@ export const listChangesAdministratorsExamplePayload: {
     count: 2,
   },
 };
+
 export const listNumberSequencePrefixesExamplePayload: {
   data: NumberSequencePrefixCompactResultRep;
 } = {
@@ -401,27 +433,29 @@ export const listNumberSequencePrefixesExamplePayload: {
     count: 2,
   },
 };
-export const updateChangeExamplePayload: {
-  data: ChangeFullVo;
-} = {
+
+export const updateChangeExamplePayload: { data: ChangeFullVo } = {
   data: {
     ...sampleChangeFull,
     title: "Update capacitor tolerance on main board (revised scope)",
     lifecycleDateTime: "2026-03-17T09:00:00Z",
   },
 };
+
 export const updateChangeImplementationTaskExamplePayload = {
   data: {
     ...sampleImplementationTask,
     status: "IN_PROGRESS",
   },
 };
+
 export const updateChangeImplementationTaskNoteExamplePayload = {
   data: {
     ...sampleImplementationTaskNote,
     note: "Work instructions updated; pending final QA sign-off.",
   },
 };
+
 export const updateChangeItemAssociationExamplePayload = {
   data: {
     ...sampleChangeAffectedItem,

@@ -5,6 +5,7 @@ import {
   pageFulfillments,
   pageSizeFulfillments,
 } from "./common";
+
 export const listFulfillmentsInputs = {
   connectionInput,
   fulfillmentId,

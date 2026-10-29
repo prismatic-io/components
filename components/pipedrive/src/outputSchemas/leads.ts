@@ -30,6 +30,7 @@ const leadRecordSchema = {
     cc_email: { type: "string" },
   },
 };
+
 export const getLeadsOutputSchema = {
   type: "object",
   properties: {
@@ -55,6 +56,7 @@ export const getLeadsOutputSchema = {
     },
   },
 };
+
 export const addLeadOutputSchema = {
   type: "object",
   properties: {
@@ -67,6 +69,7 @@ export const addLeadOutputSchema = {
     },
   },
 };
+
 export const getLeadOutputSchema = {
   type: "object",
   properties: {
@@ -79,6 +82,7 @@ export const getLeadOutputSchema = {
     },
   },
 };
+
 export const updateLeadOutputSchema = {
   type: "object",
   properties: {
@@ -91,6 +95,7 @@ export const updateLeadOutputSchema = {
     },
   },
 };
+
 export const deleteLeadOutputSchema = {
   type: "object",
   properties: {
@@ -108,6 +113,7 @@ export const deleteLeadOutputSchema = {
     },
   },
 };
+
 export const searchLeadsOutputSchema = {
   type: "object",
   properties: {

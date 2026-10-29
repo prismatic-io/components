@@ -4,6 +4,7 @@ import { selectCustomerExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
 import type { PaginatedDataRequest } from "../types";
 import { paginatedData } from "../util";
+
 export const selectCustomer = dataSource({
   display: {
     label: "Select Customer",
@@ -14,17 +15,21 @@ export const selectCustomer = dataSource({
   },
   perform: async (_context, { connectionInput }) => {
     const client = createHttpClient(connectionInput, true);
+
     const request: PaginatedDataRequest = {
       client,
       queryString: "select * from Customer",
       objectName: "Customer",
       fetchAll: true,
     };
+
     const data = await paginatedData(request);
+
     const objects = data.map<Element>((customer) => ({
       key: util.types.toString(customer.Id),
       label: customer.DisplayName as string,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

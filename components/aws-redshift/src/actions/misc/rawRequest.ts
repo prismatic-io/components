@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getRedshiftDataApiClient } from "../../client";
 import { rawRequestInputs } from "../../inputs";
 import { sign } from "aws4";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -14,6 +15,7 @@ export const rawRequest = action({
       awsRegion,
       context.debug.enabled,
     );
+
     const requestOpts = {
       host,
       path: "/",
@@ -26,10 +28,13 @@ export const rawRequest = action({
       },
       body,
     };
+
     sign(requestOpts, credentials);
+
     const { data } = await client.post("/", requestOpts.body, {
       headers: requestOpts.headers,
     });
+
     return { data };
   },
 });

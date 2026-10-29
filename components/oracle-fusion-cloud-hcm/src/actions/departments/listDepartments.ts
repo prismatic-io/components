@@ -5,6 +5,7 @@ import { listDepartmentsInputs } from "../../inputs";
 import { listDepartmentsOutputSchema } from "../../outputSchemas";
 import type { Department } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listDepartments = action({
   display: {
     label: "List Departments",

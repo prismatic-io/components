@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { createRecordInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const createRecord = action({
   display: {
     label: "Create Record",
@@ -31,9 +32,8 @@ export const createRecord = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createRecordOutputSchema,

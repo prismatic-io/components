@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createWorkflowClient } from "../../client";
 import { getMediaOfJobResponse } from "../../examplePayloads";
 import { connection, id } from "../../inputs";
+
 export const getMediaOfJob = action({
   display: {
     label: "Get Media of Job",

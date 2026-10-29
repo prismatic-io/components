@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateAdCreativeResponse } from "../../examplePayloads";
 import { updateAdCreativeInputs } from "../../inputs";
+
 export const updateAdCreative = action({
   display: {
     label: "Update Ad Creative",
@@ -24,6 +25,7 @@ export const updateAdCreative = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled, version);
+
     const { data } = await client.post(
       `/${adCreativeId}`,
       {},
@@ -42,6 +44,7 @@ export const updateAdCreative = action({
         data: { url_tags: urlTags },
       },
     );
+
     return {
       data,
     };

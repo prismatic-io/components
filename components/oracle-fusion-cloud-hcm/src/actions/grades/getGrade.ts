@@ -4,6 +4,7 @@ import { getGradeExamplePayload } from "../../examplePayloads/grades";
 import { getGradeInputs } from "../../inputs";
 import { gradeOutputSchema } from "../../outputSchemas";
 import type { Grade } from "../../types";
+
 export const getGrade = action({
   display: {
     label: "Get Grade",

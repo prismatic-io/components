@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { paymentDistributionPayload } from "../exampleInputs";
 import { cleanObject, cleanString } from "../util";
 import { $filter, $select, aoid, connection } from "./common";
+
 const paymentDistribution = input({
   label: "Payment Distribution",
   type: "code",
@@ -13,6 +14,7 @@ const paymentDistribution = input({
   example: JSON.stringify(paymentDistributionPayload, null, 2),
   clean: cleanObject,
 });
+
 const workAssignmentId = input({
   label: "Work Assignment ID",
   type: "string",
@@ -23,16 +25,19 @@ const workAssignmentId = input({
   example: "G3STHDEHFMJ3BY3N",
   clean: cleanString,
 });
+
 export const getPaymentDistributionsInputs = {
   aoid,
   $select,
   $filter,
   connection,
 };
+
 export const getWorkerPaymentDistributionsMetaInputs = {
   $select,
   connection,
 };
+
 export const updateWorkerPayDistributionInputs = {
   aoid,
   workAssignmentId,

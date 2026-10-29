@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createProjectExamplePayload } from "../../examplePayloads";
 import { createProjectInputs } from "../../inputs";
 import type { CreateProjectBody } from "../types/CreateProjectBody";
+
 export const createProject = action({
   display: {
     label: "Create Project",
@@ -45,4 +46,5 @@ export const createProject = action({
   },
   inputs: createProjectInputs,
 });
+
 export default { createProject };

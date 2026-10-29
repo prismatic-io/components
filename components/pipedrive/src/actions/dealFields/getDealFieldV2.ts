@@ -4,6 +4,7 @@ import { getDealFieldV2Inputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getDealFieldV2ExamplePayload } from "../../examplePayloads";
 import { getDealFieldV2OutputSchema } from "../../outputSchemas";
+
 export const getDealFieldV2 = action({
   display: {
     label: "Get Deal Field (V2)",

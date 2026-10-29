@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { deleteDataSetExamplePayload } from "../../examplePayloads";
 import { deleteDataSetInputs } from "../../inputs";
+
 export const deleteDataSet = action({
   display: {
     label: "Delete Data Set",
@@ -17,4 +18,5 @@ export const deleteDataSet = action({
   },
   inputs: deleteDataSetInputs,
 });
+
 export default { deleteDataSet };

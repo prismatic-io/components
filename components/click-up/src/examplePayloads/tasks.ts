@@ -119,24 +119,30 @@ const taskObject = {
     id: "789",
   },
 };
+
 export const getTaskExamplePayload = {
   data: taskObject,
 };
+
 const taskObjectWithStringEstimate = {
   ...taskObject,
   time_estimate: "28800000",
 };
+
 export const listTasksExamplePayload = {
   data: {
     tasks: [taskObjectWithStringEstimate],
   },
 };
+
 export const createTaskExamplePayload = {
   data: taskObjectWithStringEstimate,
 };
+
 export const updateTaskExamplePayload = {
   data: taskObjectWithStringEstimate,
 };
+
 export const deleteTaskExamplePayload = {
   data: null,
 };

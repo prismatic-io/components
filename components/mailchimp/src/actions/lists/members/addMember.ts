@@ -12,6 +12,7 @@ import {
   vip,
   connectionInput,
 } from "../../../inputs";
+
 export const addMember = action({
   display: {
     label: "Add Member",
@@ -48,4 +49,5 @@ export const addMember = action({
     connection: connectionInput,
   },
 });
+
 export default addMember;

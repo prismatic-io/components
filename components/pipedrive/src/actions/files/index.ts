@@ -4,6 +4,7 @@ import { downloadFile } from "./downloadFile";
 import { getFile } from "./getFile";
 import { getFiles } from "./getFiles";
 import { updateFile } from "./updateFile";
+
 export default {
   getFiles,
   addFile,

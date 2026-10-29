@@ -10,6 +10,7 @@ import {
 } from "./common";
 import { fileId } from "./files";
 import { folderActions } from "./folders";
+
 export const force_async = input({
   label: "Force Async",
   type: "boolean",
@@ -19,6 +20,7 @@ export const force_async = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const acl_update_policy = input({
   label: "ACL Update Policy",
   type: "string",
@@ -32,6 +34,7 @@ export const acl_update_policy = input({
   ],
   default: "",
 });
+
 export const member_policy = input({
   label: "Member Policy",
   type: "string",
@@ -47,6 +50,7 @@ export const member_policy = input({
   ],
   default: "",
 });
+
 export const shared_link_policy = input({
   label: "Shared Link Policy",
   type: "string",
@@ -62,6 +66,7 @@ export const shared_link_policy = input({
   ],
   default: "",
 });
+
 export const viewer_info_policy = input({
   label: "Viewer Info Policy",
   type: "string",
@@ -75,6 +80,7 @@ export const viewer_info_policy = input({
   ],
   default: "",
 });
+
 export const access_inheritance = input({
   label: "Access Inheritance",
   type: "string",
@@ -89,6 +95,7 @@ export const access_inheritance = input({
   ],
   default: "",
 });
+
 export const sharingPolicies = structuredObjectInput({
   label: "Sharing Policies",
   required: false,
@@ -102,6 +109,7 @@ export const sharingPolicies = structuredObjectInput({
     access_inheritance,
   },
 });
+
 export const actions = input({
   label: "Actions",
   type: "string",
@@ -170,6 +178,7 @@ export const actions = input({
   ],
   default: [],
 });
+
 export const link_settings = input({
   label: "Link Settings",
   type: "string",
@@ -184,6 +193,7 @@ export const link_settings = input({
   ],
   default: "",
 });
+
 export const shared_folder_id = input({
   label: "Shared Folder ID",
   placeholder: "Enter the shared folder ID",
@@ -193,6 +203,7 @@ export const shared_folder_id = input({
   example: "84528192421",
   clean: util.types.toString,
 });
+
 export const leave_a_copy = input({
   label: "Leave a Copy",
   type: "boolean",
@@ -202,12 +213,14 @@ export const leave_a_copy = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const getSharedMetadataForFileInputs = {
   dropboxConnection: connectionInput,
   fileId,
   userType,
   teamMemberId,
 };
+
 export const getSharedMetadataForFolderInputs = {
   dropboxConnection: connectionInput,
   fileId: {
@@ -220,6 +233,7 @@ export const getSharedMetadataForFolderInputs = {
   userType,
   teamMemberId,
 };
+
 export const listSharingFolderInputs = {
   dropboxConnection: connectionInput,
   path: { ...directoryPath, required: true },
@@ -227,6 +241,7 @@ export const listSharingFolderInputs = {
   fetchAll,
   pagination,
 };
+
 export const shareFolderInputs = {
   dropboxConnection: connectionInput,
   path: {
@@ -241,12 +256,14 @@ export const shareFolderInputs = {
   userType,
   teamMemberId,
 };
+
 export const unshareFileInputs = {
   dropboxConnection: connectionInput,
   fileId,
   userType,
   teamMemberId,
 };
+
 export const unshareFolderInputs = {
   dropboxConnection: connectionInput,
   shared_folder_id,

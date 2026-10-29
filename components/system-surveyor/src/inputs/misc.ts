@@ -1,10 +1,13 @@
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { BASE_PRODUCTION_URL } from "../constants";
 import { connectionInput } from "./common";
+
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
+
 export const healthCheckInputs = {
   ssvConnection: connectionInput,
 };
+
 export const rawRequestActionInputs = {
   connection: connectionInput,
   ...rawRequestInputs,

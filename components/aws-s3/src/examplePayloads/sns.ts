@@ -5,6 +5,7 @@ import type {
   SubscribeCommandOutput,
   UnsubscribeCommandOutput,
 } from "@aws-sdk/client-sns";
+
 export const createTopicExamplePayload: {
   data: CreateTopicCommandOutput;
 } = {
@@ -20,6 +21,7 @@ export const createTopicExamplePayload: {
     TopicArn: "arn:aws:sns:us-east-2:123456789012:MyTopic",
   },
 };
+
 export const subscribeToTopicExamplePayload: {
   data: SubscribeCommandOutput;
 } = {
@@ -36,6 +38,7 @@ export const subscribeToTopicExamplePayload: {
       "arn:aws:sns:us-east-2:123456789012:MyTopic:8a21d249-4bcd-4f7e-9abc-b1a2c3d4e5f6",
   },
 };
+
 export const updateTopicPolicyExamplePayload: {
   data: SetTopicAttributesCommandOutput;
 } = {
@@ -50,6 +53,7 @@ export const updateTopicPolicyExamplePayload: {
     },
   },
 };
+
 export const bucketEventTriggerConfigurationExamplePayload: {
   data: PutBucketNotificationConfigurationCommandOutput;
 } = {
@@ -65,6 +69,7 @@ export const bucketEventTriggerConfigurationExamplePayload: {
     },
   },
 };
+
 export const unsubscribeFromTopicExamplePayload: {
   data: UnsubscribeCommandOutput;
 } = {

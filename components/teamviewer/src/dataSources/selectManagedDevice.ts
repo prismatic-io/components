@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connection } from "../inputs/general";
 import { selectManagedDeviceDataSourceExamplePayload } from "../examplePayloads/dataSources";
 import { paginateWithPaginationToken } from "../util";
+
 export const selectManagedDevice = dataSource({
   display: {
     label: "Select Managed Device",
@@ -13,6 +14,7 @@ export const selectManagedDevice = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const data = await paginateWithPaginationToken(
       client,
       "/managed/devices",

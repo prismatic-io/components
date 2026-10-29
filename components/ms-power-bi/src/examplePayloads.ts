@@ -16,6 +16,7 @@ export const createDatasetExamplePayload = {
     targetStorageMode: "Push",
   },
 };
+
 export const listDatasetsExamplePayload = {
   data: {
     "@odata.context": "https://api.powerbi.com/v1.0/myorg/$metadata#datasets",
@@ -53,6 +54,7 @@ export const listDatasetsExamplePayload = {
     ],
   },
 };
+
 export const listTablesExamplePayload = {
   data: {
     "@odata.context":
@@ -162,6 +164,7 @@ export const listTablesExamplePayload = {
     ],
   },
 };
+
 export const updateTableExamplePayload = {
   data: {
     name: "SalesData",
@@ -228,12 +231,15 @@ export const updateTableExamplePayload = {
     source: [],
   },
 };
+
 export const createRowExamplePayload = {
   data: {},
 };
+
 export const deleteRowsExamplePayload = {
   data: {},
 };
+
 export const listGroupsExamplePayload = {
   data: {
     "@odata.context": "https://api.powerbi.com/v1.0/myorg/$metadata#groups",
@@ -268,6 +274,7 @@ export const listGroupsExamplePayload = {
     ],
   },
 };
+
 export const listReportsExamplePayload = {
   data: {
     "@odata.context": "https://api.powerbi.com/v1.0/myorg/$metadata#reports",

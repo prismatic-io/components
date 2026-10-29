@@ -9,6 +9,7 @@ import {
   version,
 } from "../../inputs";
 import { generatePayload } from "../util";
+
 export const listLocations = action({
   display: {
     label: "List Locations",

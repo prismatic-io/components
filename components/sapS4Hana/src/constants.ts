@@ -1,4 +1,5 @@
 import { mapS4HanaOptionsToModelElements } from "./util/mappers";
+
 export const ADD_ITEM_TO_PURCHASE_REQUISITION_DEFAULT_VALUE = {
   PurchaseRequisition: "string",
   PurchaseRequisitionItem: "strin",
@@ -216,6 +217,7 @@ export const ADD_ITEM_TO_PURCHASE_REQUISITION_DEFAULT_VALUE = {
     ],
   },
 };
+
 export const CREATE_PURCHASE_REQUISITION_DEFAULT_VALUE = {
   PurchaseRequisition: "string",
   PurchaseRequisitionType: "string",
@@ -435,6 +437,7 @@ export const CREATE_PURCHASE_REQUISITION_DEFAULT_VALUE = {
     ],
   },
 };
+
 export const UPDATE_PURCHASE_REQUISITION_DEFAULT_VALUE = {
   d: {
     PurchaseRequisitionType: "string",
@@ -443,6 +446,7 @@ export const UPDATE_PURCHASE_REQUISITION_DEFAULT_VALUE = {
     PurReqnDoOnlyValidation: true,
   },
 };
+
 export const GET_PURCHASE_REQUISITION_ITEM_DETAILS_ORDER_BY_MODEL = [
   "PurchaseRequisition",
   "PurchaseRequisition desc",
@@ -635,6 +639,7 @@ export const GET_PURCHASE_REQUISITION_ITEM_DETAILS_ORDER_BY_MODEL = [
   "SSPReqrUserId",
   "SSPReqrUserId desc",
 ].map(mapS4HanaOptionsToModelElements);
+
 export const GET_PURCHASE_REQUISITION_ITEM_DETAILS_SELECT_MODEL = [
   "PurchaseRequisition",
   "PurchaseRequisitionItem",
@@ -736,17 +741,21 @@ export const GET_PURCHASE_REQUISITION_ITEM_DETAILS_SELECT_MODEL = [
   "to_PurchaseReqnDeliveryAddress",
   "to_PurchaseReqnItemText",
 ].map(mapS4HanaOptionsToModelElements);
+
 export const GET_PURCHASE_REQUISITION_ITEM_DETAILS_EXPAND_MODEL = [
   "to_PurchaseReqn",
   "to_PurchaseReqnAcctAssgmt",
   "to_PurchaseReqnDeliveryAddress",
   "to_PurchaseReqnItemText",
 ].map(mapS4HanaOptionsToModelElements);
+
 export const CONNECTION_KEYS = {
   API_KEY: "apiKey",
   BASIC_AUTH: "sapBasicAuth",
 } as const;
+
 import type { PollResourceConfig } from "./types";
+
 export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
   changeRecords: {
     label: "Change Records",
@@ -763,6 +772,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     updatedAtField: "ChangedOn",
   },
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({
     label,

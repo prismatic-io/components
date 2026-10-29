@@ -1,10 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const oneDriveConnection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft OneDrive connection to use.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -14,6 +16,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const requestBody = input({
   label: "Request Body",
   type: "code",
@@ -30,6 +33,7 @@ export const requestBody = input({
   comments: "The JSON request body for the operation.",
   clean: util.types.toObject,
 });
+
 export const timeout = input({
   label: "Timeout",
   type: "string",
@@ -39,6 +43,7 @@ export const timeout = input({
   comments: "The maximum time in milliseconds to wait for a response.",
   clean: util.types.toString,
 });
+
 export const pageLimit = input({
   label: "Page Limit",
   type: "string",
@@ -48,6 +53,7 @@ export const pageLimit = input({
   comments: "The maximum number of results to return per page.",
   clean: util.types.toString,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",

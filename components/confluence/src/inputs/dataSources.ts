@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connectionInput, spaceId } from "./common";
+
 export const selectSpacesInputs = {
   connectionInput,
   sortByName: {
@@ -12,6 +13,7 @@ export const selectSpacesInputs = {
     clean: util.types.toBool,
   },
 };
+
 export const selectPagesInputs = {
   connectionInput,
   spaceId: {
@@ -22,6 +24,7 @@ export const selectPagesInputs = {
     clean: cleanStringInput,
   },
 };
+
 export const selectAttachmentsInputs = {
   connectionInput,
 };

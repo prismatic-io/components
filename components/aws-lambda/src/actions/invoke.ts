@@ -15,6 +15,7 @@ import {
   invokeType,
 } from "../inputs";
 import { getPayload, hasProperty } from "../util";
+
 export const invoke = action({
   display: {
     label: "Invoke",
@@ -41,6 +42,7 @@ export const invoke = action({
       dynamicSecretAccessKey,
       dynamicSessionToken,
     });
+
     const input: InvokeCommandInput = {
       FunctionName: functionName as string,
       InvocationType: invokeType as InvocationType,

@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../../util/clean";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Greenhouse connection to use.",
 });
+
 export const per_page = input({
   label: "Page Size",
   type: "string",
@@ -16,6 +18,7 @@ export const per_page = input({
   example: "100",
   clean: util.types.toNumber,
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -27,12 +30,14 @@ export const page = input({
   example: "1",
   clean: util.types.toNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page-size and page-number controls for the results list.",
   inputs: { per_page, page },
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -42,6 +47,7 @@ export const email = input({
   example: "john.doe@example.com",
   clean: toOptionalString,
 });
+
 export const job_id = input({
   label: "Job ID",
   type: "string",
@@ -53,6 +59,7 @@ export const job_id = input({
   example: "127817",
   dataSource: "jobs",
 });
+
 export const created_before = input({
   label: "Created Before",
   type: "string",
@@ -63,6 +70,7 @@ export const created_before = input({
   example: "2024-01-15T10:30:00Z",
   clean: toOptionalString,
 });
+
 export const created_after = input({
   label: "Created After",
   type: "string",
@@ -73,6 +81,7 @@ export const created_after = input({
   example: "2024-01-01T00:00:00Z",
   clean: toOptionalString,
 });
+
 export const updated_before = input({
   label: "Updated Before",
   type: "string",
@@ -83,6 +92,7 @@ export const updated_before = input({
   placeholder: "Enter timestamp (ISO-8601 format)",
   example: "2024-01-15T10:30:00Z",
 });
+
 export const updated_after = input({
   label: "Updated After",
   type: "string",
@@ -93,6 +103,7 @@ export const updated_after = input({
   placeholder: "Enter timestamp (ISO-8601 format)",
   example: "2024-01-01T00:00:00Z",
 });
+
 export const version = input({
   label: "API Version",
   type: "string",
@@ -110,6 +121,7 @@ export const version = input({
   placeholder: "Enter API version",
   example: "v1",
 });
+
 export const on_behalf_of_user_id = input({
   label: "On Behalf Of User ID",
   type: "string",
@@ -121,6 +133,7 @@ export const on_behalf_of_user_id = input({
   clean: util.types.toString,
   dataSource: "users",
 });
+
 export const first_name = input({
   label: "First Name",
   type: "string",
@@ -130,6 +143,7 @@ export const first_name = input({
   example: "John",
   clean: util.types.toString,
 });
+
 export const last_name = input({
   label: "Last Name",
   type: "string",
@@ -139,6 +153,7 @@ export const last_name = input({
   example: "Doe",
   clean: util.types.toString,
 });
+
 export const office_ids = input({
   label: "Office IDs",
   type: "string",
@@ -157,6 +172,7 @@ export const office_ids = input({
   },
   dataSource: "offices",
 });
+
 export const external_office_ids = input({
   label: "External Office IDs",
   type: "string",
@@ -174,6 +190,7 @@ export const external_office_ids = input({
     return undefined;
   },
 });
+
 export const department_ids = input({
   label: "Department IDs",
   type: "string",
@@ -192,6 +209,7 @@ export const department_ids = input({
   },
   dataSource: "departments",
 });
+
 export const external_department_ids = input({
   label: "External Department IDs",
   type: "string",
@@ -209,6 +227,7 @@ export const external_department_ids = input({
     return undefined;
   },
 });
+
 export const custom_fields = input({
   label: "Custom Fields",
   type: "code",
@@ -233,6 +252,7 @@ export const custom_fields = input({
     return undefined;
   },
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -243,6 +263,7 @@ export const status = input({
   example: "active",
   clean: toOptionalString,
 });
+
 export const requisition_id = input({
   label: "Requisition ID",
   type: "string",
@@ -253,6 +274,7 @@ export const requisition_id = input({
   example: "abc-123",
   clean: toOptionalString,
 });
+
 export const department_id = input({
   label: "Department ID",
   type: "string",
@@ -264,6 +286,7 @@ export const department_id = input({
   clean: toOptionalString,
   dataSource: "departments",
 });
+
 export const external_department_id = input({
   label: "External Department ID",
   type: "string",

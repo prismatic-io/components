@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPersonalContactMetaExamplePayload } from "../../examplePayloads";
 import { getPersonalContactMetaInputs } from "../../inputs";
 import { getPersonalContactMetaOutputSchema } from "../../outputSchemas";
+
 export const getPersonalContactMeta = action({
   display: {
     label: "Get Personal Contact Meta",

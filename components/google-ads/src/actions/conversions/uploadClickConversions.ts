@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { uploadClickConversionsExamplePayload } from "../../examplePayloads";
 import { uploadClickConversionsInputs } from "../../inputs";
 import { uploadClickConversionsOutputSchema } from "../../outputSchemas";
+
 export const uploadClickConversions = action({
   display: {
     label: "Upload Click Conversions",
@@ -35,8 +36,7 @@ export const uploadClickConversions = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => uploadClickConversionsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    uploadClickConversionsExamplePayload,
   examplePayload: uploadClickConversionsExamplePayload,
 });

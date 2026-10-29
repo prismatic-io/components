@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 const sampleCreatedContact = {
   ContactID: "a4c2f1e8-3d56-4b91-9f07-2e8a1c6d5b34",
   ContactStatus: "ACTIVE",
@@ -23,6 +24,7 @@ const sampleCreatedContact = {
   HasAttachments: false,
   HasValidationErrors: false,
 };
+
 const sampleUpdatedContact = {
   ...sampleCreatedContact,
   ContactID: "b5d3a2f9-4e67-4c12-8a18-3f9b2d7e6c45",
@@ -32,9 +34,8 @@ const sampleUpdatedContact = {
   IsCustomer: false,
   UpdatedDateUTC: "/Date(1650003600000+0000)/",
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -73,11 +74,9 @@ export const pollChangesTriggerExamplePayload: {
     globalDebug: false,
   },
 };
+
 export const webhookExamplePayload: {
-  response: {
-    contentType: string;
-    statusCode: number;
-  };
+  response: { contentType: string; statusCode: number };
   payload: TriggerPayload;
 } = {
   response: {

@@ -1,7 +1,6 @@
 import type { JamfUser, RichPagedResponse } from "../types";
-export const listUsersExamplePayload: {
-  data: RichPagedResponse<JamfUser>;
-} = {
+
+export const listUsersExamplePayload: { data: RichPagedResponse<JamfUser> } = {
   data: {
     results: [
       {

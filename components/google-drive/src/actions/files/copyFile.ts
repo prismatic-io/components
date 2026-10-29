@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { copyFileInputs } from "../../inputs";
 import { copyFileExamplePayload } from "../../examplePayloads";
+
 export const copyFile = action({
   display: {
     label: "Copy File",
@@ -18,6 +19,7 @@ export const copyFile = action({
       },
       supportsAllDrives: true,
     });
+
     return {
       data,
     };
@@ -26,9 +28,7 @@ export const copyFile = action({
   examplePerform: async (
     _context,
     { fileName },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...copyFileExamplePayload.data,
       name: fileName || copyFileExamplePayload.data.name,
@@ -36,4 +36,5 @@ export const copyFile = action({
   }),
   examplePayload: copyFileExamplePayload,
 });
+
 export default copyFile;

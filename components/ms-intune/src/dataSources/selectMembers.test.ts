@@ -7,10 +7,12 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listMembersExamplePayload } from "../examplePayloads";
 import { selectMember } from "./selectMembers";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
 const GROUP_ID = "45b7d2e7-b882-4a80-ba97-10b7a63b8fa4";
 const PATH = `/v1.0/groups/${GROUP_ID}/members`;
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -22,17 +24,23 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listMembersExamplePayload.data;
+
 const invokeBare = async (): Promise<Element[]> =>
   (await invokeDataSource(selectMember, {
     connection,
     groupId: GROUP_ID,
   })) as unknown as Element[];
+
 describe("selectMember", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the group member list to a bare array of label/key elements", async () => {
     nock(HOST).get(PATH).reply(200, listReply);
+
     const result = await invokeBare();
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
@@ -45,8 +53,10 @@ describe("selectMember", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty array when the group has no members", async () => {
     nock(HOST).get(PATH).reply(200, { value: [] });
+
     expect(await invokeBare()).toEqual([]);
   });
 });

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../../client";
 import { batchRegionalInventoryExamplePayload } from "../../../../examplePayloads/v2_1";
 import { batchRegionalInventoryInputs } from "../../../../inputs/v2_1";
+
 export const batchRegionalInventory = action({
   display: {
     description:

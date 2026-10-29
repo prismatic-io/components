@@ -1,11 +1,13 @@
 import type { Connection } from "@prismatic-io/spectral";
 import type { Task } from "./resources";
+
 export interface AsanaFilter {
   resource_type?: string;
   resource_subtype?: string;
   action: string;
   fields?: string[];
 }
+
 export interface AsanaWebhook {
   gid: string;
   active: boolean;
@@ -17,6 +19,7 @@ export interface AsanaWebhook {
   resource_type?: string;
   target: string;
 }
+
 export type Event = {
   action: string;
   change?: {
@@ -55,8 +58,11 @@ export type Event = {
   task?: object;
   story?: object;
 };
+
 export type CachedTasks = Record<string, Task | Record<string, never>>;
+
 export type CachedStories = Record<string, Record<string, unknown>>;
+
 export type WebhookFilterSettings = {
   triggerWhenAdded: boolean;
   triggerWhenChanged: boolean;
@@ -64,21 +70,25 @@ export type WebhookFilterSettings = {
   triggerWhenRemoved: boolean;
   triggerWhenUndeleted: boolean;
 };
+
 export interface CreateWebhookParams {
   endpoint: string;
   resourceId: string;
   filters?: AsanaFilter[];
   asanaConnection: Connection;
 }
+
 export interface DeleteWebhookParams {
   endpoint: string;
   resourceId: string;
   asanaConnection: Connection;
 }
+
 export type ResolvedWebhookSecrets = {
   value: string[];
   isLegacy: boolean;
 };
+
 export type ResolvedWebhookSecret = {
   value: string;
   isLegacy: boolean;

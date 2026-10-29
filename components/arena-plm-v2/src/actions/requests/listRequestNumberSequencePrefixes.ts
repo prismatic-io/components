@@ -4,6 +4,7 @@ import { listRequestNumberSequencePrefixesExamplePayload } from "../../examplePa
 import { listRequestNumberSequencePrefixesInputs } from "../../inputs";
 import { numberSequencePrefixCompactListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listRequestNumberSequencePrefixes = action({
   display: {
     label: "List Request Number Sequence Prefixes",
@@ -19,15 +20,19 @@ export const listRequestNumberSequencePrefixes = action({
   perform: async (context, { connection }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         "Fetching request number sequence prefixes from Arena",
       );
+
       const { data } = await client.get(
         "/settings/requests/numbersequenceprefixes",
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} request number sequence prefixes`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

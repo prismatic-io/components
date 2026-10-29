@@ -3,6 +3,7 @@ export interface ImapPollingState {
   uidValidity?: string;
   lastPolledAt?: string;
 }
+
 export interface ImapStatusResult {
   path: string;
   messages?: number;

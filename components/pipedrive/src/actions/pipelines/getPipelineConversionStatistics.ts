@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPipelineConversionStatisticsInputs } from "../../inputs";
 import { getPipelineConversionStatisticsExamplePayload } from "../../examplePayloads";
 import { getPipelineConversionStatisticsOutputSchema } from "../../outputSchemas";
+
 export const getPipelineConversionStatistics = action({
   display: {
     label: "Get Pipeline Conversion Statistics",

@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { selectCandidateExamplePayload } from "../examplePayloads";
 import { selectCandidateInputs } from "../inputs";
 import { paginateData } from "../util";
+
 export const selectCandidate = dataSource({
   display: {
     label: "Select Candidate",

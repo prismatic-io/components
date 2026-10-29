@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { connectionInput, recordType, requestBodyCode } from "../inputs";
 import { getSapClient } from "../client";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export const createRecord = action({
   display: {
     label: "Create Record",
@@ -13,16 +14,19 @@ export const createRecord = action({
       Accept: "application/json",
       "Content-Type": "application/json",
     };
+
     const client = getSapClient(connectionInput, headers);
     try {
       const { data } = await client.post(
         `/sap/opu/data/odata/sap/${recordType}`,
         requestBodyCode,
       );
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);
       const serialized = util.types.toJSON(handled);
+
       throw new Error(serialized);
     }
   },

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { listEnvironmentTemplatesExamplePayload } from "../../examplePayloads";
 import { listEnvironmentTemplatesInputs } from "../../inputs";
+
 export const listEnvironmentTemplates = action({
   display: {
     label: "List Environment Templates",
@@ -18,8 +19,7 @@ export const listEnvironmentTemplates = action({
     };
   },
   inputs: listEnvironmentTemplatesInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listEnvironmentTemplatesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listEnvironmentTemplatesExamplePayload,
   examplePayload: listEnvironmentTemplatesExamplePayload,
 });

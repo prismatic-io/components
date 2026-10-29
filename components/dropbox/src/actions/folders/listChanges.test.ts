@@ -3,12 +3,14 @@ import { oauthConnection } from "../../connections";
 import { listChangesExamplePayload } from "../../examplePayloads";
 import type { CursorData } from "../../types";
 import { listChanges } from "./listChanges";
+
 const { filesListFolderContinue, filesListFolderGetLatestCursor } = vi.hoisted(
   () => ({
     filesListFolderContinue: vi.fn(),
     filesListFolderGetLatestCursor: vi.fn(),
   }),
 );
+
 vi.mock("dropbox", () => ({
   Dropbox: class DropboxMock {
     filesListFolderContinue = filesListFolderContinue;
@@ -16,13 +18,17 @@ vi.mock("dropbox", () => ({
   },
   DropboxResponseError: class DropboxResponseError extends Error {},
 }));
+
 const NEW_STATE_KEY = "dropbox-list-changes-cursor:flowStableId:some-step";
+
 const LEGACY_STATE_KEY = "some-step_example.com";
+
 const dropboxConnection = createConnection(
   oauthConnection,
   {},
   { access_token: "exampleAccessToken" },
 );
+
 const params = {
   dropboxConnection,
   directoryPath: "/TestSubfolder",
@@ -31,21 +37,26 @@ const params = {
   userType: undefined,
   teamMemberId: undefined,
 };
+
 const storedCursorForCurrentSettings: CursorData = {
   cursor: "cursorFromPreviousRun",
   path: "/TestSubfolder",
   recursive: true,
   includeDeleted: false,
 };
+
 beforeEach(() => {
   vi.clearAllMocks();
 });
+
 describe("listChanges cursor advance", () => {
   test("first run baselines the cursor, returns no entries, and writes the new state key", async () => {
     filesListFolderGetLatestCursor.mockResolvedValueOnce({
       result: { cursor: "cursorAfterBaseline" },
     });
+
     const { result } = await invoke(listChanges, params);
+
     expect(filesListFolderGetLatestCursor).toHaveBeenCalledWith({
       path: "/TestSubfolder",
       recursive: true,
@@ -68,13 +79,16 @@ describe("listChanges cursor advance", () => {
     });
     expect(result).not.toHaveProperty("instanceState");
   });
+
   test("second run with unchanged settings continues from the stored cursor and stores the cursor Dropbox sent with that page", async () => {
     filesListFolderContinue.mockResolvedValueOnce({
       result: listChangesExamplePayload,
     });
+
     const { result } = await invoke(listChanges, params, {
       crossFlowState: { [NEW_STATE_KEY]: storedCursorForCurrentSettings },
     });
+
     expect(filesListFolderContinue).toHaveBeenCalledWith({
       cursor: "cursorFromPreviousRun",
     });
@@ -90,6 +104,7 @@ describe("listChanges cursor advance", () => {
     });
     expect(result).not.toHaveProperty("instanceState");
   });
+
   test.each([
     ["path", { ...storedCursorForCurrentSettings, path: "/SomeOtherFolder" }],
     ["recursive", { ...storedCursorForCurrentSettings, recursive: false }],
@@ -101,9 +116,11 @@ describe("listChanges cursor advance", () => {
     filesListFolderGetLatestCursor.mockResolvedValueOnce({
       result: { cursor: "cursorAfterRebaseline" },
     });
+
     const { result } = await invoke(listChanges, params, {
       crossFlowState: { [NEW_STATE_KEY]: stored },
     });
+
     expect(filesListFolderContinue).not.toHaveBeenCalled();
     expect(filesListFolderGetLatestCursor).toHaveBeenCalledTimes(1);
     expect(result.data).toEqual({
@@ -121,14 +138,17 @@ describe("listChanges cursor advance", () => {
     });
   });
 });
+
 describe("listChanges legacy state migration", () => {
   test("reads the legacy instanceState cursor, writes the new key, and nulls the legacy key", async () => {
     filesListFolderContinue.mockResolvedValueOnce({
       result: listChangesExamplePayload,
     });
+
     const { result } = await invoke(listChanges, params, {
       instanceState: { [LEGACY_STATE_KEY]: storedCursorForCurrentSettings },
     });
+
     expect(filesListFolderContinue).toHaveBeenCalledWith({
       cursor: "cursorFromPreviousRun",
     });
@@ -145,10 +165,12 @@ describe("listChanges legacy state migration", () => {
       instanceState: { [LEGACY_STATE_KEY]: null },
     });
   });
+
   test("prefers the new crossFlowState key over a legacy key and leaves the legacy key alone", async () => {
     filesListFolderContinue.mockResolvedValueOnce({
       result: listChangesExamplePayload,
     });
+
     const { result } = await invoke(listChanges, params, {
       crossFlowState: {
         [NEW_STATE_KEY]: {
@@ -163,15 +185,18 @@ describe("listChanges legacy state migration", () => {
         },
       },
     });
+
     expect(filesListFolderContinue).toHaveBeenCalledWith({
       cursor: "cursorFromNewStateKey",
     });
     expect(result).not.toHaveProperty("instanceState");
   });
+
   test("re-baselines when the legacy cursor's settings no longer match, and still nulls the legacy key", async () => {
     filesListFolderGetLatestCursor.mockResolvedValueOnce({
       result: { cursor: "cursorAfterRebaseline" },
     });
+
     const { result } = await invoke(listChanges, params, {
       instanceState: {
         [LEGACY_STATE_KEY]: {
@@ -180,6 +205,7 @@ describe("listChanges legacy state migration", () => {
         },
       },
     });
+
     expect(filesListFolderContinue).not.toHaveBeenCalled();
     expect(result).toMatchObject({
       instanceState: { [LEGACY_STATE_KEY]: null },

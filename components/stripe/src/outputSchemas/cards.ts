@@ -1222,6 +1222,7 @@ export const paymentMethodOutputSchema = {
   },
   required: ["billing_details", "created", "id", "livemode", "object", "type"],
 };
+
 export const listCardsOutputSchema = {
   type: "object" as const,
   properties: {

@@ -20,6 +20,7 @@ import {
   storeHash,
   views,
 } from "../../inputs";
+
 export const createCategory = action({
   display: {
     label: "Create Category",
@@ -51,7 +52,9 @@ export const createCategory = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/categories`;
+
     const body = {
       parent_id: Number(parentId),
       name: categoryName,
@@ -68,8 +71,10 @@ export const createCategory = action({
       image_url: imageUrl,
       custom_url: customUrl,
     };
+
     try {
       const response = await client.post(endpoint, body);
+
       return {
         data: response.data,
       };

@@ -34,6 +34,7 @@ export const getAssetResponse = {
   transformBaseUrl:
     "https://example.bynder.com/transform/D4E5F6A7-B8C9-0123-D4E5-F6A7B8C90123/Grassland",
 };
+
 export const listAssetsResponse = [
   getAssetResponse,
   {
@@ -81,16 +82,19 @@ export const listAssetsResponse = [
       "https://example.bynder.com/transform/E5F6A7B8-C9D0-1234-E5F6-A7B8C9D01234/AppInstructionVideo",
   },
 ];
+
 export const downloadSpecificAssetItemResponse = {
   disclaimer:
     "<p>1. The photographs and video in the mediabank are to be used by anyone and everyone.</p>",
   s3_file:
     "https://bynder-public-us-east-1.s3.amazonaws.com/temp/download-token/asset.jpg",
 };
+
 export const genericUpdateResponse = {
   message: "Accepted",
   statuscode: 202,
 };
+
 export const genericCreateResponse = {
   message: "Created",
   statuscode: 201,

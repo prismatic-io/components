@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput } from "../inputs";
+
 export const ping = action({
   display: {
     label: "Ping",
@@ -13,4 +14,5 @@ export const ping = action({
   },
   inputs: { connection: connectionInput },
 });
+
 export default ping;

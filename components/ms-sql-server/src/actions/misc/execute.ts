@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createConnectionPool } from "../../client";
 import { executeExamplePayload } from "../../examplePayloads";
 import { connectionInput, storedProcedure, timeout } from "../../inputs";
+
 export const execute = action({
   display: {
     label: "Execute Stored Procedure",
@@ -11,9 +12,11 @@ export const execute = action({
   examplePayload: executeExamplePayload,
   perform: async (_context, { storedProcedure, sqlConnection, timeout }) => {
     const connectionPool = createConnectionPool(sqlConnection, timeout);
+
     try {
       const connection = await connectionPool.connect();
       const request = connection.request();
+
       const result = await request.execute(storedProcedure);
       return { data: result };
     } catch (err) {

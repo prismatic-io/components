@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_UPDATE_RESPONSE } from "../../constants";
 import { updateWarehouseInputs } from "../../inputs/warehouses/update";
+
 export const updateWarehouse = action({
   display: {
     label: "Update Warehouse",
@@ -21,11 +22,13 @@ export const updateWarehouse = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(`/Warehouses('${WarehouseCode}')`, {
       WarehouseName,
       Location,
       ...bodyFields,
     });
+
     return {
       data: DEFAULT_UPDATE_RESPONSE,
     };

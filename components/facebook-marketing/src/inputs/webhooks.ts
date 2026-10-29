@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { AD_ACCOUNT_FIELDS, PAGE_FIELDS } from "../constants";
 import { cleanCodeInput, cleanValueList } from "../util/clean";
 import { version, webhookConnection } from "./common";
+
 const verifyToken = input({
   label: "Verify Token",
   type: "string",
@@ -11,6 +12,7 @@ const verifyToken = input({
   placeholder: "test",
   clean: util.types.toString,
 });
+
 const object = input({
   label: "Object",
   type: "string",
@@ -23,6 +25,7 @@ const object = input({
   ],
   clean: util.types.toString,
 });
+
 const callbackUrl = input({
   label: "Callback Url",
   type: "string",
@@ -32,6 +35,7 @@ const callbackUrl = input({
   placeholder: "https://your-domain.com/webhook",
   clean: util.types.toString,
 });
+
 const pageFields = input({
   label: "Page Fields",
   collection: "valuelist",
@@ -42,6 +46,7 @@ const pageFields = input({
   model: PAGE_FIELDS,
   clean: cleanValueList,
 });
+
 const pageFieldsJSON = input({
   label: "Dynamic Page Fields",
   type: "code",
@@ -55,6 +60,7 @@ const pageFieldsJSON = input({
   ),
   clean: (value) => cleanCodeInput(value, "Page Fields"),
 });
+
 const adAccountFields = input({
   label: "Ad Account Fields",
   collection: "valuelist",
@@ -65,6 +71,7 @@ const adAccountFields = input({
   model: AD_ACCOUNT_FIELDS,
   clean: cleanValueList,
 });
+
 const adAccountFieldsJSON = input({
   label: "Dynamic Ad Account Fields",
   type: "code",
@@ -78,6 +85,7 @@ const adAccountFieldsJSON = input({
   ),
   clean: (value) => cleanCodeInput(value, "Ad Account Fields"),
 });
+
 export const createPageWebhookInputs = {
   connection: webhookConnection,
   verifyToken,
@@ -86,6 +94,7 @@ export const createPageWebhookInputs = {
   pageFieldsJSON,
   version,
 };
+
 export const createAdAccountWebhookInputs = {
   connection: webhookConnection,
   verifyToken,
@@ -94,6 +103,7 @@ export const createAdAccountWebhookInputs = {
   adAccountFieldsJSON,
   version,
 };
+
 export const deleteWebhookInputs = {
   connection: webhookConnection,
   object: {
@@ -102,10 +112,12 @@ export const deleteWebhookInputs = {
   },
   version,
 };
+
 export const listWebhooksInputs = {
   connection: webhookConnection,
   version,
 };
+
 export const metaAdsPageTriggerInputs = {
   connection: webhookConnection,
   verifyToken,
@@ -113,6 +125,7 @@ export const metaAdsPageTriggerInputs = {
   pageFieldsJSON,
   version,
 };
+
 export const metaAdsAdAccountTriggerInputs = {
   connection: webhookConnection,
   verifyToken,

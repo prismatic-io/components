@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { getUserExamplePayload } from "../../../examplePayloads";
 import { getUserInputs } from "../../../inputs";
+
 export const getUser = action({
   display: {
     label: "Get User (V2)",

@@ -5,6 +5,7 @@ import { listTechniciansInputs } from "../../inputs";
 import { listTechniciansOutputSchema } from "../../outputSchemas";
 import type { Technician } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listTechnicians = action({
   display: {
     label: "List Technicians",
@@ -29,6 +30,7 @@ export const listTechnicians = action({
     },
   ) => {
     const client = createClient(connection, "settings", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<Technician>(client, "/technicians", {
         includeTotal,

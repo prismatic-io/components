@@ -3,6 +3,7 @@ import { deleteInstancedWebhooksInputs } from "../../inputs";
 import { createGotoWebinarClient } from "../../client";
 import { GENERAL_DELETE_MESSAGE } from "../../constants";
 import { deleteInstancedWebhooks } from "../../util";
+
 export const deleteInstancedWebhooksAction = action({
   display: {
     label: "Delete Instanced Subscriptions",
@@ -19,9 +20,11 @@ export const deleteInstancedWebhooksAction = action({
     const callbackUrls = Object.values(webhookUrls).map((url) =>
       util.types.toString(url),
     );
+
     await deleteInstancedWebhooks(client, callbackUrls, {
       product: "g2w",
     });
+
     return GENERAL_DELETE_MESSAGE;
   },
 });

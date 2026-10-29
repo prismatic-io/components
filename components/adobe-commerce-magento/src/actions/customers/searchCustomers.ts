@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { searchCustomersExamplePayload } from "../../examplePayloads";
 import { searchCustomersInputs } from "../../inputs";
 import { paginateResults, removeUndefinedValuesFromObject } from "../../utils";
+
 export const searchCustomers = action({
   display: {
     label: "Search Customers",

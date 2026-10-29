@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const odooApiKey = connection({
   key: "odooApiKey",
   display: {

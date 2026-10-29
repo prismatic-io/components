@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { callLogIdInput, connectionInput, offsetPagination } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const userIdOptional = input({
   label: "User ID",
   type: "string",
@@ -10,6 +11,7 @@ const userIdOptional = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const activityIdOptional = input({
   label: "Activity ID",
   type: "string",
@@ -20,6 +22,7 @@ const activityIdOptional = input({
   example: "123",
   placeholder: "Enter Activity ID",
 });
+
 const subject = input({
   label: "Subject",
   type: "string",
@@ -29,6 +32,7 @@ const subject = input({
   example: "Discovery call with prospect",
   placeholder: "Enter call subject",
 });
+
 const duration = input({
   label: "Duration",
   type: "string",
@@ -38,6 +42,7 @@ const duration = input({
   example: "300",
   placeholder: "Enter duration in seconds",
 });
+
 const outcome = input({
   label: "Outcome",
   type: "string",
@@ -55,6 +60,7 @@ const outcome = input({
   example: "connected",
   placeholder: "Select call outcome",
 });
+
 const fromPhoneNumber = input({
   label: "From Phone Number",
   type: "string",
@@ -64,6 +70,7 @@ const fromPhoneNumber = input({
   example: "+15551234567",
   placeholder: "Enter origin phone number",
 });
+
 const toPhoneNumber = input({
   label: "To Phone Number",
   type: "string",
@@ -73,6 +80,7 @@ const toPhoneNumber = input({
   example: "+15557654321",
   placeholder: "Enter destination phone number",
 });
+
 const startTime = input({
   label: "Start Time",
   type: "string",
@@ -83,6 +91,7 @@ const startTime = input({
   example: "2024-01-15T10:30:00Z",
   placeholder: "Enter start time (ISO 8601)",
 });
+
 const endTime = input({
   label: "End Time",
   type: "string",
@@ -92,6 +101,7 @@ const endTime = input({
   example: "2024-01-15T10:35:00Z",
   placeholder: "Enter end time (ISO 8601)",
 });
+
 const personIdOptional = input({
   label: "Person ID",
   type: "string",
@@ -101,6 +111,7 @@ const personIdOptional = input({
   example: "123",
   placeholder: "Enter Person ID",
 });
+
 const orgIdOptional = input({
   label: "Org ID",
   type: "string",
@@ -110,6 +121,7 @@ const orgIdOptional = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const dealIdOptional = input({
   label: "Deal ID",
   type: "string",
@@ -119,6 +131,7 @@ const dealIdOptional = input({
   example: "123",
   placeholder: "Enter Deal ID",
 });
+
 const note = input({
   label: "Note",
   type: "string",
@@ -128,6 +141,7 @@ const note = input({
   example: "<p>Discussed pricing and next steps.</p>",
   placeholder: "Enter call note (HTML)",
 });
+
 export const addCallLogInputs = {
   connection: connectionInput,
   userId: userIdOptional,
@@ -144,14 +158,17 @@ export const addCallLogInputs = {
   dealId: dealIdOptional,
   note,
 };
+
 export const getUserCallLogsInputs = {
   connection: connectionInput,
   pagination: offsetPagination,
 };
+
 export const deleteCallLogInputs = {
   connection: connectionInput,
   id: callLogIdInput,
 };
+
 export const getCallLogInputs = {
   connection: connectionInput,
   id: callLogIdInput,

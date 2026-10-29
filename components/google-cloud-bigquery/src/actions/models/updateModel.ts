@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateModelInputs } from "../../inputs";
+
 export const updateModel = action({
   display: {
     description: "Patch specific fields in the specified model.",

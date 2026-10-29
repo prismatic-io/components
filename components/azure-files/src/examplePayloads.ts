@@ -9,14 +9,13 @@ import type {
   ShareDeleteResponse,
   ShareItem,
 } from "@azure/storage-file-share";
+
 const staticDate = new Date("2024-01-01");
+
 type ListedEntry =
-  | ({
-      kind: "file";
-    } & FileItem)
-  | ({
-      kind: "directory";
-    } & DirectoryItem);
+  | ({ kind: "file" } & FileItem)
+  | ({ kind: "directory" } & DirectoryItem);
+
 export const listSharesExamplePayload = {
   data: [
     {
@@ -30,6 +29,7 @@ export const listSharesExamplePayload = {
     },
   ] as ShareItem[],
 };
+
 export const createShareExamplePayload: {
   data: Omit<ShareCreateResponse, "_response">;
 } = {
@@ -42,6 +42,7 @@ export const createShareExamplePayload: {
     errorCode: undefined,
   },
 };
+
 export const deleteShareExamplePayload: {
   data: Omit<ShareDeleteResponse, "_response">;
 } = {
@@ -52,6 +53,7 @@ export const deleteShareExamplePayload: {
     errorCode: undefined,
   },
 };
+
 export const listFolderExamplePayload = {
   data: [
     {
@@ -72,6 +74,7 @@ export const listFolderExamplePayload = {
     },
   ] as ListedEntry[],
 };
+
 export const createFolderExamplePayload: {
   data: Omit<DirectoryCreateResponse, "_response">;
 } = {
@@ -92,6 +95,7 @@ export const createFolderExamplePayload: {
     errorCode: "",
   },
 };
+
 export const deleteFolderExamplePayload = {
   data: {
     requestId: "60ef1f68-001a-0059-277e-ee4f1c000000",
@@ -100,6 +104,7 @@ export const deleteFolderExamplePayload = {
     errorCode: "",
   },
 };
+
 export const uploadFileExamplePayload: {
   data: Omit<FileCreateResponse, "_response">;
 } = {
@@ -120,6 +125,7 @@ export const uploadFileExamplePayload: {
     errorCode: "",
   },
 };
+
 export const saveFromUrlExamplePayload: {
   data: Omit<FileCreateResponse, "_response">;
 } = {
@@ -140,10 +146,12 @@ export const saveFromUrlExamplePayload: {
     errorCode: "",
   },
 };
+
 export const downloadFileExamplePayload = {
   data: Buffer.from("example"),
   contentType: "application/octet",
 };
+
 export const deleteFileExamplePayload: {
   data: Omit<FileDeleteResponse, "_response">;
 } = {
@@ -154,6 +162,7 @@ export const deleteFileExamplePayload: {
     errorCode: "",
   },
 };
+
 export const copyFileExamplePayload = {
   data: {
     etag: '"0x8DCBCA822E54285"',

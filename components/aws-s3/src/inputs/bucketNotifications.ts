@@ -13,6 +13,7 @@ import {
   getTopicConfigurations,
 } from "../utils";
 import { accessKeyInput, bucket } from "./common";
+
 const topicConfigurations = input({
   label: "Topic Configurations",
   type: "code",
@@ -25,6 +26,7 @@ const topicConfigurations = input({
     "List of SNS topic configurations for bucket event notifications. For more information, see [S3 Event Notifications](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventNotifications.html).",
   clean: getTopicConfigurations,
 });
+
 const queueConfigurations = input({
   label: "Queue Configurations",
   type: "code",
@@ -37,6 +39,7 @@ const queueConfigurations = input({
     "List of SQS queue configurations for bucket event notifications. For more information, see [S3 Event Notifications](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventNotifications.html).",
   clean: getQueueConfigurations,
 });
+
 const lambdaFunctionConfigurations = input({
   label: "Lambda Function Configurations",
   type: "code",
@@ -49,6 +52,7 @@ const lambdaFunctionConfigurations = input({
     "List of Lambda function configurations for bucket event notifications. For more information, see [S3 Event Notifications](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventNotifications.html).",
   clean: getLambdaFunctionConfigurations,
 });
+
 const eventBridgeConfiguration = input({
   label: "EventBridge Configuration",
   type: "code",
@@ -61,12 +65,14 @@ const eventBridgeConfiguration = input({
     "EventBridge configuration for bucket event notifications. For more information, see [Using EventBridge with S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventBridge.html).",
   clean: getEventBridgeConfiguration,
 });
+
 export const getBucketNotificationConfigurationInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
   bucket,
   awsRegion,
 };
+
 export const putBucketNotificationConfigurationInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,

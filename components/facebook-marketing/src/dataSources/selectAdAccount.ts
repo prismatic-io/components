@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { selectAdAccountInputs } from "../inputs";
 import type { AdAccount } from "../types";
 import { getPaginatedData } from "../util";
+
 export const selectAdAccount = dataSource({
   display: {
     label: "Select Ad Account",
@@ -15,10 +16,12 @@ export const selectAdAccount = dataSource({
     } = await getPaginatedData(client, "/me/adaccounts", true, {
       fields: "name,id",
     });
+
     const result: Element[] = data.map((adAccount: AdAccount) => ({
       label: `${adAccount.name} - (${adAccount.id})`,
       key: adAccount.id,
     }));
+
     return {
       result,
     };

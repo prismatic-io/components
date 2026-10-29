@@ -4,6 +4,7 @@ import { listChangeAlertsExamplePayload } from "../../examplePayloads";
 import { listChangeAlertsInputs } from "../../inputs";
 import { listChangeAlertsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listChangeAlerts = action({
   display: {
     label: "List Change Alerts",

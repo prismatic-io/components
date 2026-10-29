@@ -31,11 +31,10 @@ export const updateDispute = action({
   examplePerform: async (
     _context,
     { disputeId, evidence, metadata, submit },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const dispute = updateDisputeExamplePayload.data as Record<string, unknown>;
     const evidenceDetails = dispute.evidence_details as Record<string, unknown>;
+
     return {
       data: {
         ...dispute,
@@ -58,5 +57,6 @@ export const updateDispute = action({
     type: "actionOutput",
     schema: disputeOutputSchema,
   }),
+
   examplePayload: updateDisputeExamplePayload,
 });

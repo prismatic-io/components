@@ -3,6 +3,7 @@ import { key, value, connectionInput } from "../inputs";
 import { createClient } from "../client";
 import closeConnection from "../closeConnection";
 import { setExamplePayload } from "../examplePayloads";
+
 export const set = action({
   display: {
     label: "Set",
@@ -14,7 +15,9 @@ export const set = action({
       context.debug.enabled,
     );
     const data = await client.set(key, value);
+
     await closeConnection(client);
+
     return {
       data,
     };
@@ -24,4 +27,5 @@ export const set = action({
     data: setExamplePayload,
   },
 });
+
 export default set;

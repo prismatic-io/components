@@ -9,6 +9,7 @@ import {
   pathBasename,
   validatePath,
 } from "../../util";
+
 export const copyObject = action({
   display: {
     label: "Copy Object",
@@ -32,12 +33,7 @@ export const copyObject = action({
       handleDropboxError(err, [fromPath, toPath]);
     }
   },
-  examplePerform: async (
-    _context,
-    { toPath },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { toPath }): Promise<{ data: unknown }> => ({
     data: {
       ...copyObjectExamplePayload,
       result: {

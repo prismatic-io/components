@@ -4,6 +4,7 @@ import { ASSETS_PATH } from "../../constants";
 import { createAssetExamplePayload } from "../../examplePayloads";
 import { createAssetInputs } from "../../inputs";
 import { assetOutputSchema } from "../../outputSchemas";
+
 export const createAsset = action({
   examplePayload: createAssetExamplePayload,
   display: {
@@ -29,6 +30,7 @@ export const createAsset = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = {
       name: assetName,
       assetType: { id: assetTypeId },
@@ -37,15 +39,15 @@ export const createAsset = action({
       content: assetContent,
       ...assetExtraBody,
     };
+
     const { data } = await client.post(ASSETS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { assetName, assetDescription, assetTypeId, categoryId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createAssetExamplePayload.data,
       name: assetName,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserOutputSchema } from "../../outputSchemas";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -15,6 +16,7 @@ export const getCurrentUser = action({
     const {
       data: { user },
     } = await drive.about.get({ fields: "user" });
+
     return { data: user };
   },
   inputs: getCurrentUserInputs,

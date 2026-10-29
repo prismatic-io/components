@@ -4,6 +4,7 @@ import { getPublicWorkerExamplePayload } from "../../examplePayloads/workers";
 import { getPublicWorkerInputs } from "../../inputs";
 import { workerOutputSchema } from "../../outputSchemas";
 import type { Worker } from "../../types";
+
 export const getPublicWorker = action({
   display: {
     label: "Get Public Worker",

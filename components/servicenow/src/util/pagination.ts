@@ -1,10 +1,12 @@
 import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { DEFAULT_PAGE_SIZE } from "../constants";
+
 const stripUndefined = (
   obj: Record<string, unknown>,
 ): Record<string, unknown> =>
   Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined));
+
 export const fetchAllTableRecords = async (
   client: HttpClient,
   url: string,
@@ -15,6 +17,7 @@ export const fetchAllTableRecords = async (
   const allRecords: unknown[] = [];
   let offset = 0;
   let hasMore = true;
+
   do {
     const params = {
       ...baseParams,
@@ -24,11 +27,14 @@ export const fetchAllTableRecords = async (
     const { data } = await client.get(url, { params });
     const records: unknown[] = data?.result || [];
     allRecords.push(...records);
+
     hasMore = records.length >= pageSize;
     offset += pageSize;
   } while (hasMore);
+
   return allRecords;
 };
+
 export const fetchAllKnowledgeRecords = async (
   client: HttpClient,
   url: string,
@@ -39,6 +45,7 @@ export const fetchAllKnowledgeRecords = async (
   const allRecords: unknown[] = [];
   let offset = 0;
   let hasMore = true;
+
   do {
     const params = {
       ...baseParams,
@@ -48,8 +55,10 @@ export const fetchAllKnowledgeRecords = async (
     const { data } = await client.get(url, { params });
     const articles: unknown[] = data?.result?.articles || [];
     allRecords.push(...articles);
+
     hasMore = articles.length >= pageSize;
     offset += pageSize;
   } while (hasMore);
+
   return allRecords;
 };

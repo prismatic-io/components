@@ -12,6 +12,7 @@ import {
   version,
 } from "../../inputs";
 import { generatePayload } from "../util";
+
 export const createWarehouseReceivingOrder = action({
   display: {
     label: "Create Warehouse Receiving Order",

@@ -11,6 +11,7 @@ import {
   resourceType,
 } from "../../inputs";
 import { getFunctionExamplePayload } from "../../examplePayloads";
+
 export const createFunction = action({
   display: {
     label: "Create Function",

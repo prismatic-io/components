@@ -5,20 +5,19 @@ import {
   POLL_RESOURCE_CONFIG,
 } from "../constants";
 import type { ChangesObject, RecordChange, TableauRecord } from "../types";
+
 export const pollResourceModel = Object.keys(POLL_RESOURCE_CONFIG).map(
   (value) => ({
     value,
     label: value.charAt(0).toUpperCase() + value.slice(1),
   }),
 );
+
 export const fetchTableauRecordsSince = async (
   client: HttpClient,
   resourceType: string,
   lastPolledAt: string,
-): Promise<{
-  records: TableauRecord[];
-  truncated: boolean;
-}> => {
+): Promise<{ records: TableauRecord[]; truncated: boolean }> => {
   const config = POLL_RESOURCE_CONFIG[resourceType];
   if (!config) {
     throw new Error(`Unsupported resource type: ${resourceType}`);
@@ -37,6 +36,7 @@ export const fetchTableauRecordsSince = async (
   }
   return { records, truncated: true };
 };
+
 export const resolvePollingRecordChanges = (
   data: ChangesObject | undefined,
 ): RecordChange[] => {

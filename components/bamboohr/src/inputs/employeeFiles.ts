@@ -7,6 +7,7 @@ import {
   fileName,
   share,
 } from "./common";
+
 const employeeFileId = input({
   label: "Employee File ID",
   type: "string",
@@ -17,6 +18,7 @@ const employeeFileId = input({
   clean: util.types.toString,
   dataSource: "selectEmployeeFile",
 });
+
 const categoryName = input({
   label: "Category Name",
   type: "string",
@@ -26,24 +28,29 @@ const categoryName = input({
   clean: util.types.toString,
   example: "A new category",
 });
+
 export const listEmployeeFilesInputs = {
   connection: connectionInput,
   employeeId,
 };
+
 export const addEmployeeFileCategoryInputs = {
   connection: connectionInput,
   categoryName,
 };
+
 export const deleteEmployeeFileInputs = {
   connection: connectionInput,
   employeeId,
   employeeFileId,
 };
+
 export const getEmployeeFileInputs = {
   connection: connectionInput,
   employeeId,
   employeeFileId,
 };
+
 export const uploadEmployeeFileInputs = {
   connection: connectionInput,
   employeeId,

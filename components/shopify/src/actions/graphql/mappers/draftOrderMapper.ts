@@ -1,5 +1,6 @@
 import type { DraftOrder } from "../../../types";
 import { getNumericId } from "../../../util";
+
 export const draftOrderMapper = (draftOrder: DraftOrder) => {
   return {
     id: draftOrder.id ? getNumericId(draftOrder.id) : null,
@@ -93,6 +94,7 @@ export const draftOrderMapper = (draftOrder: DraftOrder) => {
           province_code: draftOrder.shippingAddress.provinceCode,
         }
       : null,
+
     billing_address: draftOrder.billingAddress
       ? {
           first_name: draftOrder.billingAddress.firstName,
@@ -170,6 +172,7 @@ export const draftOrderMapper = (draftOrder: DraftOrder) => {
             : null,
         }
       : null,
+
     tax_lines: (draftOrder.taxLines || []).map((taxLine) => ({
       rate: taxLine.rate,
       rate_percentage: taxLine.ratePercentage,

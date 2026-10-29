@@ -3,6 +3,7 @@ import { createClient } from "../../../client";
 import { API_VERSION } from "../../../constants";
 import { getObjectCategoryExamplePayload } from "../../../examplePayloads";
 import { getObjectCategoryInputs } from "../../../inputs";
+
 export const getObjectCategory = action({
   display: {
     label: "Get Object Category (V2)",

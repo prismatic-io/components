@@ -6,6 +6,7 @@ import { listFilesOutputSchema } from "../../outputSchemas";
 import type { FileFullVo } from "../../types";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listFiles = action({
   display: {
     label: "List Files",
@@ -34,6 +35,7 @@ export const listFiles = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         number,
         title,
@@ -44,6 +46,7 @@ export const listFiles = action({
         limit: pagination.limit,
         offset: pagination.offset,
       };
+
       context.logger.info("Searching for files in Arena", {
         queryParamCount: Object.keys(queryParams).length,
         hasLimit: !!queryParams.limit,
@@ -56,17 +59,20 @@ export const listFiles = action({
           byCategory: !!categoryGuid,
         },
       });
+
       const filesResult = await fetchArenaList<FileFullVo>(
         client,
         "/files",
         queryParams,
         fetchAll,
       );
+
       context.logger.info("Files retrieved successfully", {
         fileCount: filesResult.results?.length || 0,
         totalCount: filesResult.count,
         hasMore: filesResult.count > (filesResult.results?.length || 0),
       });
+
       return { data: filesResult };
     } catch (error) {
       handleArenaError(error, context.logger, "List Files");

@@ -4,6 +4,7 @@ import { getInProgressNewHiresExamplePayload } from "../../examplePayloads";
 import { getInProgressNewHiresInputs } from "../../inputs";
 import type { InProgressNewHire } from "../../types";
 import { fetchWithPagination, getTenantIdentifier } from "../../util";
+
 export const getInProgressNewHires = action({
   display: {
     label: "Get In Progress New Hires",
@@ -17,6 +18,7 @@ export const getInProgressNewHires = action({
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const tenantIdentifier = getTenantIdentifier(connection);
+
     const { data } = await fetchWithPagination<InProgressNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/in-progress`,
@@ -27,6 +29,7 @@ export const getInProgressNewHires = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: getInProgressNewHiresExamplePayload,

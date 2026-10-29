@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteCommentExamplePayload } from "../../examplePayloads";
 import { deleteCommentInputs } from "../../inputs";
+
 export const deleteComment = action({
   display: {
     label: "Delete Comment",
@@ -11,7 +12,9 @@ export const deleteComment = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, commentId }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(`/comment/${commentId}`);
+
     return {
       data,
     };

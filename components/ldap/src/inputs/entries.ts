@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { ATTRIBUTES_TO_ADD_EXAMPLE, CHANGES_EXAMPLE } from "../constants";
 import { cleanChanges, cleanStringInput } from "../util";
+
 export const dnToDelete = input({
   label: "DN to Delete",
   type: "string",
@@ -10,6 +11,7 @@ export const dnToDelete = input({
   placeholder: "Enter DN to delete",
   clean: util.types.toString,
 });
+
 export const dnToAdd = input({
   label: "DN to Add",
   type: "string",
@@ -19,6 +21,7 @@ export const dnToAdd = input({
   placeholder: "Enter DN to add",
   clean: util.types.toString,
 });
+
 export const attributesToAdd = input({
   label: "Attributes to Add",
   type: "code",
@@ -28,6 +31,7 @@ export const attributesToAdd = input({
   example: JSON.stringify(ATTRIBUTES_TO_ADD_EXAMPLE, null, 2),
   clean: util.types.toObject,
 });
+
 export const entryToUpdate = input({
   label: "Entry to Update",
   type: "string",
@@ -37,6 +41,7 @@ export const entryToUpdate = input({
   placeholder: "Enter entry DN",
   clean: util.types.toString,
 });
+
 export const changes = input({
   label: "Changes",
   type: "code",
@@ -47,6 +52,7 @@ export const changes = input({
   example: JSON.stringify(CHANGES_EXAMPLE, null, 2),
   clean: (value) => cleanChanges(value, "Changes"),
 });
+
 export const toRenameDn = input({
   label: "Entry to Rename",
   type: "string",
@@ -56,6 +62,7 @@ export const toRenameDn = input({
   placeholder: "Enter entry DN",
   clean: util.types.toString,
 });
+
 export const newRDn = input({
   label: "New Relative DN",
   type: "string",
@@ -65,6 +72,7 @@ export const newRDn = input({
   placeholder: "Enter new relative DN",
   clean: util.types.toString,
 });
+
 export const oid = input({
   label: "OID",
   type: "string",
@@ -74,6 +82,7 @@ export const oid = input({
   placeholder: "Enter OID",
   clean: util.types.toString,
 });
+
 export const value = input({
   label: "Value",
   type: "string",

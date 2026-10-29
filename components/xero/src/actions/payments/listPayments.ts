@@ -1,6 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { listPaymentsInputs } from "../../inputs";
+
 import type { Payment } from "../../interfaces/Payment";
 import { fetchAllData } from "../../util";
 import { listPaymentsExamplePayload } from "../../examplePayloads";

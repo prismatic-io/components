@@ -1,6 +1,7 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
 import { employeeFields, validateEmployeeFields } from "../util";
 import { connectionInput, employeeId } from "./common";
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -10,6 +11,7 @@ const firstName = input({
   example: "John",
   clean: util.types.toString,
 });
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -19,30 +21,37 @@ const lastName = input({
   example: "Doe",
   clean: util.types.toString,
 });
+
 const employeeFieldValues = input({
   label: "Employee Fields",
   type: "string",
   collection: "keyvaluelist",
   required: false,
-  comments: `The names of the fields and their values to use when creating/updating a record. Possible fields are: ${employeeFields.join(", ")}.`,
+  comments: `The names of the fields and their values to use when creating/updating a record. Possible fields are: ${employeeFields.join(
+    ", ",
+  )}.`,
   clean: (values: unknown) =>
     validateEmployeeFields(values as KeyValuePair<unknown>[]),
 });
+
 export const getEmployeeInputs = {
   connection: connectionInput,
   employeeId,
 };
+
 export const addEmployeeInputs = {
   connection: connectionInput,
   firstName,
   lastName,
   employeeFieldValues,
 };
+
 export const updateEmployeeInputs = {
   connection: connectionInput,
   employeeId,
   employeeFieldValues,
 };
+
 export const getEmployeeDirectoryInputs = {
   connection: connectionInput,
 };

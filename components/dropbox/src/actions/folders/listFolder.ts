@@ -8,6 +8,7 @@ import {
   fetchAllFolderEntries,
   handleDropboxError,
 } from "../../util";
+
 export const listFolder = action({
   display: {
     label: "List Folder",
@@ -21,6 +22,7 @@ export const listFolder = action({
       params.userType,
       params.teamMemberId,
     );
+
     try {
       const data = await fetchAllFolderEntries(dbx, {
         path: params.path,
@@ -34,9 +36,7 @@ export const listFolder = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listFolderExamplePayload,
   }),
   inputs: listFolderInputs,

@@ -4,6 +4,7 @@ import {
   oauth2Connection,
   util,
 } from "@prismatic-io/spectral";
+
 export const gongConnection = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",
@@ -58,6 +59,7 @@ export const gongConnection = oauth2Connection({
     },
   },
 });
+
 export const gongApiKey = connection({
   key: "gongApiKey",
   display: {
@@ -91,4 +93,5 @@ export const gongApiKey = connection({
     },
   },
 });
+
 export default [gongConnection, gongApiKey];

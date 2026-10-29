@@ -10,6 +10,7 @@ import {
   handleDropboxError,
   pathBasename,
 } from "../../util";
+
 export const lockFile = action({
   display: {
     label: "Lock File",
@@ -37,7 +38,9 @@ export const lockFile = action({
       teamMemberId ? "user" : undefined,
       teamMemberId,
     );
+
     const entries = getEntries(filePaths, dynamicPaths);
+
     try {
       const args = {
         entries,
@@ -53,9 +56,7 @@ export const lockFile = action({
   examplePerform: async (
     _context,
     { filePaths, dynamicPaths },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const [exampleEntry] = lockFileBatchExamplePayload.result.entries;
     return {
       data: {

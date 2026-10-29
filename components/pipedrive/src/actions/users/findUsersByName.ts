@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { findUsersByNameInputs } from "../../inputs";
 import { findUsersByNameExamplePayload } from "../../examplePayloads";
 import { findUsersByNameOutputSchema } from "../../outputSchemas";
+
 export const findUsersByName = action({
   display: {
     label: "Find Users By Name",

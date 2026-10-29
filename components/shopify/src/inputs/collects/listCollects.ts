@@ -5,6 +5,7 @@ import {
   pageInfo,
   productId,
 } from "../common";
+
 export const listCollectsInputs = {
   getAlldata,
   productId: {

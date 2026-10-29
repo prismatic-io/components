@@ -7,6 +7,7 @@ import {
   attachmentId,
 } from "../../inputs/attachments/updateAttachmentInputs";
 import { connectionInput } from "../../inputs/general";
+
 export const updateAttachment = action({
   display: {
     label: "Update Attachment",
@@ -21,6 +22,7 @@ export const updateAttachment = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(
       `/companies(${companyId}/attachments(${attachmentId})/attachmentContent`,
       attachmentContent.data,
@@ -30,6 +32,7 @@ export const updateAttachment = action({
         },
       },
     );
+
     return SUCCESS_PAYLOAD;
   },
   inputs: {

@@ -9,6 +9,7 @@ import type {
   PollingRecordChange,
   PollingTriggerObject,
 } from "../types/PollingTriggerObject";
+
 export const buildPollingQuery = (
   pollState: NetSuitePollingState | undefined,
   params: PollingQueryParams,
@@ -20,6 +21,7 @@ export const buildPollingQuery = (
     (params.additionalFilter ?? "") === ""
       ? ""
       : ` AND ${params.additionalFilter}`;
+
   if (cursor !== "") {
     return {
       query: `lastmodifieddate AFTER ${cursor}${filter}`,
@@ -27,6 +29,7 @@ export const buildPollingQuery = (
       isInitialSync: false,
     };
   }
+
   if (lookBackDate !== "") {
     return {
       query: `lastmodifieddate ON_OR_AFTER ${lookBackDate}`,
@@ -34,12 +37,14 @@ export const buildPollingQuery = (
       isInitialSync: true,
     };
   }
+
   return {
     query: `lastmodifieddate AFTER ${now}${filter}`,
     lastPolledAt: now,
     isInitialSync: false,
   };
 };
+
 export const getPollingChanges = (
   showNewRecords: boolean,
   showUpdatedRecords: boolean,
@@ -47,32 +52,43 @@ export const getPollingChanges = (
   lastPolledAtDate: Date,
 ): PollingChangesResult => {
   const changesObject: PollingChangesResult["changesObject"] = {};
+
   if (showNewRecords) {
     changesObject.createdRecords = [];
   }
+
   if (showUpdatedRecords) {
     changesObject.updatedRecords = [];
   }
+
   let changes = 0;
+
   for (const record of records) {
     const recordModifiedAt = new Date(record.lastmodifieddate);
     const recordCreatedAt = new Date(record.datecreated);
+
     const changeExists = recordModifiedAt > lastPolledAtDate;
+
     if (changeExists) {
       const isCreated = recordCreatedAt > lastPolledAtDate;
+
       if (isCreated && showNewRecords) {
         changes += 1;
         changesObject.createdRecords?.push(record);
       }
+
       const isUpdated = recordModifiedAt > recordCreatedAt && !isCreated;
+
       if (isUpdated && showUpdatedRecords) {
         changes += 1;
         changesObject.updatedRecords?.push(record);
       }
     }
   }
+
   return { changesObject, changes };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

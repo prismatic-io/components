@@ -3,6 +3,7 @@ import { createAirtableClient } from "../client";
 import { selectBaseInputs } from "../inputs";
 import type { AirtableBase } from "../types";
 import { paginateData } from "../util";
+
 export const selectBase = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -19,6 +20,7 @@ export const selectBase = dataSource({
       {},
       true,
     );
+
     return {
       result: data.map((base) => ({
         key: base.id,

@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { deleteTopicExamplePayload } from "../../examplePayloads";
 import { deleteTopicInputs } from "../../inputs";
 import { deleteTopicOutputSchema } from "../../outputSchemas";
+
 export const deleteTopic = action({
   display: {
     label: "Delete Topic",
@@ -11,7 +12,9 @@ export const deleteTopic = action({
   performSafety: "notAllowed",
   perform: async (context, { zendeskConnection, topicId }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
+
     const { data } = await client.delete(`/community/topics/${topicId}`);
+
     return { data };
   },
   examplePerform: async () => deleteTopicExamplePayload,

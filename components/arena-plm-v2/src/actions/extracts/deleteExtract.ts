@@ -4,6 +4,7 @@ import { deleteExtractExamplePayload } from "../../examplePayloads";
 import { deleteExtractInputs } from "../../inputs";
 import { deleteExtractOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteExtract = action({
   display: {
     label: "Delete Extract",

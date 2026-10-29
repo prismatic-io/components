@@ -4,6 +4,7 @@ import { ADD_MEMBERS_RESPONSE_MESSAGE, ENDPOINTS } from "../../constants";
 import { addMembersToGroupExamplePayload } from "../../examplePayloads";
 import { addMembersToGroupInputs } from "../../inputs";
 import { addObjectTypeToMemberIds, getMemberIds } from "../../util";
+
 export const addMembersToGroup = action({
   display: {
     label: "Add Group Members",
@@ -19,6 +20,7 @@ export const addMembersToGroup = action({
     await client.patch(`${ENDPOINTS.GROUPS}/${groupId}`, {
       "members@odata.bind": addObjectTypeToMemberIds(memberIdsToAdd),
     });
+
     return {
       data: {
         message: ADD_MEMBERS_RESPONSE_MESSAGE,

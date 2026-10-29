@@ -1,6 +1,7 @@
 import type { Element } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { DataSource } from "../types/resources";
+
 export const fetchMoreData = async <T>(
   client: HttpClient,
   url: string,
@@ -11,27 +12,27 @@ export const fetchMoreData = async <T>(
   const { data: records } = await client.get(url, {
     params,
   });
+
   const { data, next_page } = records;
+
   if (!fetchAll) {
     return data;
   }
+
   if (data?.length) {
     fetchedRecords.push(...data);
   }
+
   if (next_page) {
     return await fetchMoreData(client, next_page.uri, fetchedRecords, true);
   }
+
   return fetchedRecords;
 };
+
 export const handleMultipleWorkspacesError = (err: unknown) => {
   const error = err as {
-    response: {
-      data: {
-        errors: {
-          message: string;
-        }[];
-      };
-    };
+    response: { data: { errors: { message: string }[] } };
   };
   if (error) {
     if (
@@ -43,6 +44,7 @@ export const handleMultipleWorkspacesError = (err: unknown) => {
     }
   }
 };
+
 export const mapToLabelKey = (data: DataSource[]): Element[] => {
   return data.map<Element>(({ gid, name }) => ({
     label: name,

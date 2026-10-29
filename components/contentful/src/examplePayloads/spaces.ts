@@ -1,4 +1,5 @@
 import type { SpaceProps } from "contentful-management";
+
 const space = {
   sys: {
     type: "Space",
@@ -30,18 +31,21 @@ const space = {
   },
   name: "Contentful Example API",
 };
-export const getSpaceExamplePayload: {
-  data: SpaceProps;
-} = {
+
+export const getSpaceExamplePayload: { data: SpaceProps } = {
   data: space,
 };
+
 export const listSpacesExamplePayload = {
   data: [getSpaceExamplePayload.data],
 };
+
 export const createSpaceExamplePayload = {
   data: getSpaceExamplePayload.data,
 };
+
 export const updateSpaceExamplePayload = {
   data: getSpaceExamplePayload.data,
 };
+
 export const deleteSpaceExamplePayload = { data: {} };

@@ -39,6 +39,7 @@ export const listEventsExamplePayload = {
     total: 1,
   },
 };
+
 export const getEventByIdExamplePayload = {
   data: {
     subBusinessProcesses: [
@@ -75,6 +76,7 @@ export const getEventByIdExamplePayload = {
     id: "51c4a636bcbc4331b921a1e37b18f6f0",
   },
 };
+
 export const getEventAttachmentsExamplePayload = {
   data: {
     data: [

@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const StorageSharedKey = connection({
   key: "storageSharedKey",
   display: {
@@ -30,6 +31,7 @@ export const StorageSharedKey = connection({
     },
   },
 });
+
 export const connectionString = connection({
   key: "connectionString",
   display: {
@@ -51,4 +53,5 @@ export const connectionString = connection({
     },
   },
 });
+
 export default [StorageSharedKey, connectionString];

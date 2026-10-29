@@ -4,6 +4,7 @@ import { deleteRequirementExamplePayload } from "../../examplePayloads";
 import { deleteRequirementInputs } from "../../inputs";
 import { deleteRequirementOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteRequirement = action({
   display: {
     label: "Delete Requirement",

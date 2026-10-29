@@ -5,19 +5,24 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { getAccessToken, validateConnection } from "./utils";
 import { BASE_URL } from "./constants";
+
 export const createClient = async (
   connection: Connection,
   debug: boolean,
 ): Promise<HttpClient> => {
   validateConnection(connection);
+
   const baseUrl = `${util.types.toString(connection.fields.baseUrl) || BASE_URL}/v1.0`;
+
   const accessToken = await getAccessToken(connection);
+
   if (!accessToken) {
     throw new ConnectionError(
       connection,
       "Received a Connection without a valid access token.",
     );
   }
+
   const client = createHttpClient({
     baseUrl,
     headers: {
@@ -27,5 +32,6 @@ export const createClient = async (
     responseType: "json",
     debug,
   });
+
   return client;
 };

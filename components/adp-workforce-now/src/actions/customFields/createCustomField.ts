@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createCustomFieldExamplePayload } from "../../examplePayloads";
 import { createCustomFieldInputs } from "../../inputs";
+
 export const createCustomField = action({
   display: {
     label: "Create Custom Field",
@@ -54,8 +55,7 @@ export const createCustomField = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createCustomFieldExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createCustomFieldExamplePayload,
   examplePayload: createCustomFieldExamplePayload,
 });

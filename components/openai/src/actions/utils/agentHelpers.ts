@@ -10,16 +10,20 @@ import {
 import { promptWithHandoffInstructions } from "@openai/agents-core/extensions";
 import type { AgentConfigData, PendingApproval } from "../../types";
 import { buildAllTools } from "./toolBuilders";
+
 export const DEFAULT_TEMPERATURE = 0.3;
 export const DEFAULT_MAX_TOKENS = 4096;
 export const DEFAULT_MAX_TURNS = 5;
+
 export const AVAILABLE_MODELS = [
   "gpt-5-2025-08-07",
   "gpt-5-mini-2025-08-07",
   "gpt-5-nano-2025-08-07",
   "gpt-4.1-2025-04-14",
 ] as const;
+
 export type AvailableModel = (typeof AVAILABLE_MODELS)[number];
+
 export function formatError(error: Error): string {
   if (error?.message) {
     return error.message;
@@ -29,12 +33,14 @@ export function formatError(error: Error): string {
   }
   return "An unexpected error occurred";
 }
+
 export function applyHandoffInstructions(
   agentOptions: Partial<AgentOptions>,
   handoffs?: Agent[],
 ): void {
   if (handoffs && handoffs.length > 0) {
     agentOptions.handoffs = handoffs;
+
     if (agentOptions.instructions) {
       agentOptions.instructions = promptWithHandoffInstructions(
         agentOptions.instructions as string,
@@ -42,6 +48,7 @@ export function applyHandoffInstructions(
     }
   }
 }
+
 export async function createAgentFromConfig({
   configData,
   handoffs,
@@ -56,13 +63,17 @@ export async function createAgentFromConfig({
     tools: toolConfigs,
     mcpServers: mcpServerConfigs,
   } = configData;
+
   const tools = buildAllTools(toolConfigs || [], context);
+
   const mcpServers: MCPServer[] = [];
   if (mcpServerConfigs && mcpServerConfigs.length > 0) {
     for (const wrapper of mcpServerConfigs) {
       const serverConfig = wrapper.mcpServer;
+
       try {
         let server: MCPServer | undefined;
+
         if (serverConfig.type === "stdio") {
           server = new MCPServerStdio({
             name: serverConfig.label,
@@ -80,6 +91,7 @@ export async function createAgentFromConfig({
             cacheToolsList: false,
           });
         }
+
         if (server) {
           await server.connect();
           mcpServers.push(server);
@@ -92,12 +104,15 @@ export async function createAgentFromConfig({
       }
     }
   }
+
   const agentOptions: Partial<AgentOptions> = {
     ...config,
     tools,
     mcpServers,
   };
+
   applyHandoffInstructions(agentOptions, handoffs);
+
   try {
     return new Agent({
       ...agentOptions,
@@ -111,6 +126,7 @@ export async function createAgentFromConfig({
     throw error;
   }
 }
+
 export async function createHandoffAgents(
   handoffConfigs: AgentConfigData[],
   context: ActionContext,
@@ -126,6 +142,7 @@ export async function createHandoffAgents(
           ),
         };
       }
+
       return createAgentFromConfig({
         configData: enhancedConfig,
         handoffs: [],
@@ -134,6 +151,7 @@ export async function createHandoffAgents(
     }),
   );
 }
+
 export async function setupAgentWithHandoffs({
   configData,
   handoffConfigs,
@@ -150,15 +168,19 @@ export async function setupAgentWithHandoffs({
   const handoffs = handoffConfigs
     ? await createHandoffAgents(handoffConfigs, context)
     : undefined;
+
   const agent = await createAgentFromConfig({
     configData,
     handoffs,
     context,
   });
+
   const allMcpServers: MCPServer[] = [];
+
   if (agent.mcpServers) {
     allMcpServers.push(...agent.mcpServers);
   }
+
   if (handoffs) {
     for (const handoffAgent of handoffs) {
       if (handoffAgent.mcpServers) {
@@ -166,8 +188,10 @@ export async function setupAgentWithHandoffs({
       }
     }
   }
+
   return { agent, handoffs, allMcpServers };
 }
+
 export async function cleanupMcpServers(servers: MCPServer[]): Promise<void> {
   for (const server of servers) {
     try {
@@ -177,10 +201,12 @@ export async function cleanupMcpServers(servers: MCPServer[]): Promise<void> {
     }
   }
 }
+
 export function buildPendingApprovals(
   interruptions: RunToolApprovalItem[],
 ): PendingApproval[] {
   const pendingApprovals: PendingApproval[] = [];
+
   for (const interruption of interruptions) {
     const pendingApproval: PendingApproval = {
       toolName: interruption.rawItem?.name,
@@ -194,5 +220,6 @@ export function buildPendingApprovals(
     };
     pendingApprovals.push(pendingApproval);
   }
+
   return pendingApprovals;
 }

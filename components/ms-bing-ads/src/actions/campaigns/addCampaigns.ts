@@ -3,6 +3,7 @@ import { addCampaignsExamplePayload } from "../../examplePayloads";
 import { addCampaignsInputs } from "../../inputs/campaigns";
 import { getRestClient } from "../../restClient";
 import type { AddRestResponse } from "../../types";
+
 export const addCampaigns = action({
   display: {
     label: "Add Campaigns",
@@ -13,10 +14,12 @@ export const addCampaigns = action({
     { connection, accountId, customerId, campaigns },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<AddRestResponse>("/Campaigns", {
       AccountId: accountId,
       Campaigns: campaigns,
     });
+
     return { data };
   },
   inputs: addCampaignsInputs,

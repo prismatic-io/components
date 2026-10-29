@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, accountId } from "../inputs";
 import { listAccountSettingsPayload } from "../examplePayloads";
+
 export const listAccountSettings = action({
   display: {
     label: "List Account Settings",

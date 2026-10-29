@@ -5,6 +5,7 @@ import { getContactExamplePayload } from "../../examplePayloads";
 import { OBJECT_CONTACT } from "../../constants";
 import { getContactInputs } from "../../inputs";
 import { getContactOutputSchema } from "../../outputSchemas";
+
 export const getContact = action({
   display: {
     label: "Get Contact",

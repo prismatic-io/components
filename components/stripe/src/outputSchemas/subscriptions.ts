@@ -1395,6 +1395,7 @@ export const subscriptionOutputSchema = {
     "status",
   ],
 };
+
 export const listSubscriptionsOutputSchema = {
   type: "object" as const,
   properties: {

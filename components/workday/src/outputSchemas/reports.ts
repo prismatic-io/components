@@ -1,4 +1,5 @@
 import { idDescriptorReferenceSchema } from "./shared";
+
 export const runWqlQueryOutputSchema = {
   type: "object" as const,
   properties: {
@@ -31,6 +32,7 @@ export const runWqlQueryOutputSchema = {
     },
   },
 };
+
 export const getRaasReportOutputSchema = {
   type: ["object", "string"],
   properties: {

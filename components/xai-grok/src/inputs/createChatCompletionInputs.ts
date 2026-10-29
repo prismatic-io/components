@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
 import { additionalFields, connection } from "./generalInputs";
+
 const messages = input({
   label: "Messages",
   type: "code",
@@ -18,6 +19,7 @@ const messages = input({
   ),
   clean: util.types.toObject,
 });
+
 const model = input({
   label: "Model",
   type: "string",
@@ -29,6 +31,7 @@ const model = input({
   dataSource: "selectModel",
   clean: util.types.toString,
 });
+
 const temperature = input({
   label: "Temperature",
   type: "string",
@@ -40,6 +43,7 @@ const temperature = input({
   example: "1",
   clean: toOptionalNumber,
 });
+
 const topP = input({
   label: "Top P",
   type: "string",
@@ -51,6 +55,7 @@ const topP = input({
   example: "1",
   clean: toOptionalNumber,
 });
+
 const stream = input({
   label: "Stream",
   type: "boolean",
@@ -59,6 +64,7 @@ const stream = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const createChatCompletionInputs = {
   connection,
   model,

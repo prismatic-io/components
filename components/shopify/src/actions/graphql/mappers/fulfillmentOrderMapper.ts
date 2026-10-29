@@ -1,5 +1,6 @@
 import type { FulfillmentOrder } from "../../../types";
 import { getNumericId } from "../../../util";
+
 export const fulfillmentOrderMapper = (fulfillmentOrder: FulfillmentOrder) => {
   const fulfillmentOrderId = fulfillmentOrder.id
     ? getNumericId(fulfillmentOrder.id)
@@ -7,12 +8,15 @@ export const fulfillmentOrderMapper = (fulfillmentOrder: FulfillmentOrder) => {
   const orderId = fulfillmentOrder.orderId
     ? getNumericId(fulfillmentOrder.orderId)
     : null;
+
   const destinationId = fulfillmentOrder.destination.id
     ? getNumericId(fulfillmentOrder.destination.id)
     : null;
   return {
     id: fulfillmentOrderId,
+
     order_id: orderId,
+
     request_status: fulfillmentOrder.requestStatus
       ? fulfillmentOrder.requestStatus.toLowerCase()
       : null,

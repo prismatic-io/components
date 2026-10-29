@@ -13,5 +13,6 @@ export { listOutboundEventIntegrations } from "./listOutboundEventIntegrations";
 export { listOutboundEventIntegrationTriggers } from "./listOutboundEventIntegrationTriggers";
 export { listOutboundEventResources } from "./listOutboundEventResources";
 export { updateEventItemReconciled } from "./updateEventItemReconciled";
+
 export { updateOutboundEventReconciliation } from "./updateOutboundEventReconciliation";
 export { updateOutboundEventResourceReconciliation } from "./updateOutboundEventResourceReconciliation";

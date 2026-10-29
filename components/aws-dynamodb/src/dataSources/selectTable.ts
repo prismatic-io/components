@@ -5,6 +5,7 @@ import {
   ListTablesCommand,
   type ListTablesCommandOutput,
 } from "@aws-sdk/client-dynamodb";
+
 export const selectTable = dataSource({
   display: {
     label: "Select Table",
@@ -21,6 +22,7 @@ export const selectTable = dataSource({
     });
     const command = new ListTablesCommand({});
     const { TableNames }: ListTablesCommandOutput = await client.send(command);
+
     const result = TableNames
       ? TableNames.map<Element>((table) => ({
           label: table,

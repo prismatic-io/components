@@ -14,6 +14,7 @@ export const listWebhooksExamplePayload = {
     ],
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     webhookRegistrationResult: [
@@ -23,9 +24,11 @@ export const createWebhookExamplePayload = {
     ],
   },
 };
+
 export const refreshWebhookExamplePayload = {
   data: { expirationDate: "2022-12-21T09:20:20.388-0900" },
 };
+
 export const jiraBasicAuthWebhookExample = {
   name: "my first webhook via rest",
   description: "description of my first webhook",

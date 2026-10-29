@@ -16,6 +16,7 @@ export const getCampaignResponse = {
     "https://bynder-public-eu-central-1.s3.eu-central-1.amazonaws.com:443/workflow/campaign/988BBB04-F0E2-4A28-B5F892890849BAFE/FEE78434-649A-449B-A62A1C6C6D59CAC3/500x500.jpg",
   campaignMetaproperties: "E5F6A7B8-C9D0-1234-E5F6-A7B8C9D01234",
 };
+
 export const listCampaignsResponse = [
   getCampaignResponse,
   {
@@ -37,6 +38,7 @@ export const listCampaignsResponse = [
     campaignMetaproperties: "E5F6A7B8-C9D0-1234-E5F6-A7B8C9D01234",
   },
 ];
+
 export const createCampaignResponse = {
   name: "Example campaign",
   key: "excp",
@@ -46,6 +48,7 @@ export const createCampaignResponse = {
   responsibleID: "A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890",
   campaignMetaproperties: "E5F6A7B8-C9D0-1234-E5F6-A7B8C9D01234",
 };
+
 export const selectCampaignResponse = [
   {
     key: "B2C3D4E5-F6A7-8901-B2C3-D4E5F6A78901",

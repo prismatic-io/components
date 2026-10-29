@@ -9,6 +9,7 @@ import {
   signingKey,
   user,
 } from "./common";
+
 export const calendlyTriggerInputs = {
   connection,
   organization: {
@@ -27,6 +28,7 @@ export const calendlyTriggerInputs = {
   scope,
   signingKey,
 };
+
 export const pollChangesTriggerInputs = {
   connection,
   organization: {

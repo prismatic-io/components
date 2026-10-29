@@ -1,7 +1,6 @@
 import type { ListFunctionsCommandOutput } from "@aws-sdk/client-lambda";
-export const invokeExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const invokeExamplePayload: { data: Record<string, unknown> } = {
   data: {
     StatusCode: 200,
     ExecutedVersion: "$LATEST",
@@ -21,6 +20,7 @@ export const invokeExamplePayload: {
     },
   },
 };
+
 export const listFunctionsExamplePayload: {
   data: ListFunctionsCommandOutput;
 } = {

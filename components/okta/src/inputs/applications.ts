@@ -2,6 +2,7 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanObject, cleanString } from "../util/clean";
 import { connection, expand, fetchAll, filter, pagination, q } from "./general";
 import { password, sendEmail, userId } from "./users";
+
 export const applicationId = input({
   label: "Application ID",
   comments: "The unique identifier for the application.",
@@ -12,6 +13,7 @@ export const applicationId = input({
   dataSource: "selectApplication",
   clean: util.types.toString,
 });
+
 export const useOptimization = input({
   label: "Use Optimization",
   comments:
@@ -21,6 +23,7 @@ export const useOptimization = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const includeNonDeleted = input({
   label: "Include Non-Deleted",
   comments:
@@ -30,6 +33,7 @@ export const includeNonDeleted = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const scope = input({
   label: "Scope",
   type: "string",
@@ -41,6 +45,7 @@ export const scope = input({
   ],
   clean: cleanString,
 });
+
 export const username = input({
   label: "Username",
   type: "string",
@@ -51,6 +56,7 @@ export const username = input({
   placeholder: "Enter username",
   clean: cleanString,
 });
+
 export const profile = input({
   label: "Profile",
   type: "code",
@@ -68,6 +74,7 @@ export const profile = input({
   ),
   clean: cleanObject,
 });
+
 export const resultOptions = structuredObjectInput({
   label: "Result Options",
   required: false,
@@ -75,6 +82,7 @@ export const resultOptions = structuredObjectInput({
     "Options that control which records are returned and how the response is shaped.",
   inputs: { useOptimization, expand, includeNonDeleted },
 });
+
 export const assignmentDetails = structuredObjectInput({
   label: "Assignment Details",
   required: false,
@@ -88,6 +96,7 @@ export const assignmentDetails = structuredObjectInput({
     profile,
   },
 });
+
 export const listApplicationsInputs = {
   fetchAll,
   q,
@@ -96,23 +105,27 @@ export const listApplicationsInputs = {
   filter,
   connection,
 };
+
 export const getApplicationInputs = {
   applicationId,
   expand,
   connection,
 };
+
 export const getApplicationUserAssignmentsInputs = {
   applicationId,
   userId,
   expand,
   connection,
 };
+
 export const deleteApplicationUserAssignmentsInputs = {
   applicationId,
   userId,
   sendEmail,
   connection,
 };
+
 export const updateApplicationUserAssignmentsInputs = {
   applicationId,
   userId,
@@ -128,6 +141,7 @@ export const updateApplicationUserAssignmentsInputs = {
   },
   connection,
 };
+
 export const assignApplicationToUserInputs = {
   applicationId,
   userId,

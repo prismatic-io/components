@@ -1,7 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
-export const webhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const webhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       Accept:

@@ -1,7 +1,9 @@
 import { handleErrors as handleHttpClientErrors } from "@prismatic-io/spectral/dist/clients/http";
 import type { RequestError } from "../types";
+
 const isRequestError = (val: unknown): val is RequestError =>
   val && typeof val === "object" && "status" in val;
+
 export const handleErrors = (error: unknown): unknown => {
   if (isRequestError(error)) {
     if (!error.message) {
@@ -28,6 +30,7 @@ export const handleErrors = (error: unknown): unknown => {
           );
         }
       }
+
       return new Error(
         errorParts.length
           ? errorParts.join("\n")

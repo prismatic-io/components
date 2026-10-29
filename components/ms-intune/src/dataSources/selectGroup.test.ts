@@ -7,9 +7,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listGroupsExamplePayload } from "../examplePayloads";
 import { selectGroup } from "./selectGroup";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
 const PATH = "/beta/groups";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -21,16 +23,22 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listGroupsExamplePayload.data;
+
 const invokeBare = async (): Promise<Element[]> =>
   (await invokeDataSource(selectGroup, {
     connection,
   })) as unknown as Element[];
+
 describe("selectGroup", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the group list to a bare array of label/key elements", async () => {
     nock(HOST).get(PATH).reply(200, listReply);
+
     const result = await invokeBare();
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       { label: "Golf Assist", key: "45b7d2e7-b882-4a80-ba97-10b7a63b8fa4" },
@@ -41,8 +49,10 @@ describe("selectGroup", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty array when the API returns no groups", async () => {
     nock(HOST).get(PATH).reply(200, { value: [] });
+
     expect(await invokeBare()).toEqual([]);
   });
 });

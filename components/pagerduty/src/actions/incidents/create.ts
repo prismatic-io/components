@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createIncidentExamplePayload } from "../../examplePayloads";
 import { connectionInput, incident } from "../../inputs";
+
 export const createIncident = action({
   display: {
     label: "Create Incident",

@@ -11,6 +11,7 @@ import {
   toFullNameIdentifier,
 } from "../../util";
 import { subscribeRecordChangeExamplePayload } from "../../examplePayloads";
+
 export const subscribeToRecordChange = action({
   display: {
     label: "Subscribe to Record Change",
@@ -51,13 +52,18 @@ export const subscribeToRecordChange = action({
         dynamicFields,
       });
     }
+
     const uniqueName = `${name}_${Math.random().toString(36).slice(2, 7)}`;
+
     const client = await createSalesforceClient(connection, version);
+
     const integrationUser = await getIntegrationUser(
       client,
       integrationUserEmail,
     );
+
     const fullName = toFullNameIdentifier(recordType, uniqueName);
+
     const outboundResult = await createWorkflowOutboundMessageFunction(client, {
       apiVersion:
         util.types.toNumber(version) || util.types.toNumber(client.version),
@@ -68,6 +74,7 @@ export const subscribeToRecordChange = action({
       integrationUser,
       fields: processOutboundMessageFields(fields, dynamicFields),
     });
+
     const ruleResult = await createWorkflowRuleFunction(client, {
       fullName,
       active: true,
@@ -77,6 +84,7 @@ export const subscribeToRecordChange = action({
       actions: processOutboundMessageActions([outboundResult.fullName]),
       formula: formulaInput,
     });
+
     return {
       data: {
         WorkflowRule: ruleResult,
@@ -84,9 +92,8 @@ export const subscribeToRecordChange = action({
       },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => subscribeRecordChangeExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    subscribeRecordChangeExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: subscribeToRecordChangeOutputSchema,

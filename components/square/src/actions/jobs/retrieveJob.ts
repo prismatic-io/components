@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { retrieveJobExamplePayload } from "../../examplePayloads";
 import { retrieveJobInputs } from "../../inputs";
+
 export const retrieveJob = action({
   display: {
     label: "Retrieve Job",
@@ -12,6 +13,7 @@ export const retrieveJob = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/v2/team-members/jobs/${jobId}`);
     return {
       data,

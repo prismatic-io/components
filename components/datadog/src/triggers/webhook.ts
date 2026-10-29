@@ -13,6 +13,7 @@ import {
   findWebhook,
   webhookConfigurationPath,
 } from "../utils";
+
 export const webhook = trigger({
   display: {
     label: "Alert Notification Events",
@@ -35,6 +36,7 @@ export const webhook = trigger({
       const previous = context.crossFlowState[stateKey] as
         | RegisteredWebhookState
         | undefined;
+
       if (previous && previous.webhookName !== webhookName) {
         await deleteOwnedWebhook(
           client,
@@ -43,6 +45,7 @@ export const webhook = trigger({
           previous.webhookUrl,
         );
       }
+
       const body = {
         url: webhookUrl,
         encode_as: DEFAULT_WEBHOOK_ENCODE_AS,
@@ -66,6 +69,7 @@ export const webhook = trigger({
       context.logger.info(
         `Registered Datadog webhook "${webhookName}" pointing to ${webhookUrl}`,
       );
+
       const registered: RegisteredWebhookState = { webhookName, webhookUrl };
       return {
         crossFlowState: { ...context.crossFlowState, [stateKey]: registered },
@@ -77,6 +81,7 @@ export const webhook = trigger({
       const registered = context.crossFlowState[stateKey] as
         | RegisteredWebhookState
         | undefined;
+
       await deleteOwnedWebhook(
         client,
         context.logger,

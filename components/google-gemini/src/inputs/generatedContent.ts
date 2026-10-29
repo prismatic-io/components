@@ -12,6 +12,7 @@ import {
   topK,
   topP,
 } from "./common";
+
 const numberOfImages = input({
   label: "Number of Images",
   type: "string",
@@ -21,6 +22,7 @@ const numberOfImages = input({
   example: "1",
   clean: cleanNumber,
 });
+
 const language = input({
   label: "Language",
   type: "string",
@@ -38,6 +40,7 @@ const language = input({
     return cleanString(value) as ImagePromptLanguage | undefined;
   },
 });
+
 const aspectRatio = input({
   label: "Aspect Ratio",
   type: "string",
@@ -48,6 +51,7 @@ const aspectRatio = input({
   placeholder: "Enter aspect ratio",
   clean: cleanString,
 });
+
 const fps = input({
   label: "FPS",
   type: "string",
@@ -57,6 +61,7 @@ const fps = input({
   example: "30",
   clean: cleanNumber,
 });
+
 const numberOfVideos = input({
   label: "Number of Videos",
   type: "string",
@@ -66,6 +71,7 @@ const numberOfVideos = input({
   example: "1",
   clean: cleanNumber,
 });
+
 const personGeneration = input({
   label: "Person Generation",
   type: "string",
@@ -79,6 +85,7 @@ const personGeneration = input({
   ],
   clean: cleanString,
 });
+
 const resolution = input({
   label: "Resolution",
   type: "string",
@@ -92,6 +99,7 @@ const resolution = input({
   ],
   clean: cleanString,
 });
+
 const durationSeconds = input({
   label: "Duration Seconds",
   type: "string",
@@ -101,6 +109,7 @@ const durationSeconds = input({
   placeholder: "Enter duration in seconds",
   clean: cleanNumber,
 });
+
 const generationConfig = structuredObjectInput({
   label: "Generation Config",
   required: false,
@@ -108,6 +117,7 @@ const generationConfig = structuredObjectInput({
     "Sampling parameters and safety settings for controlling model output.",
   inputs: { temperature, maxOutputTokens, topK, topP, safetySettings },
 });
+
 const imageSettings = structuredObjectInput({
   label: "Image Settings",
   required: false,
@@ -115,6 +125,7 @@ const imageSettings = structuredObjectInput({
     "Output configuration for image generation including count, language, and aspect ratio.",
   inputs: { numberOfImages, language, aspectRatio },
 });
+
 const videoSettings = structuredObjectInput({
   label: "Video Settings",
   required: false,
@@ -135,6 +146,7 @@ const videoSettings = structuredObjectInput({
     durationSeconds,
   },
 });
+
 export const generateTextInputs = {
   prompt,
   model,
@@ -142,6 +154,7 @@ export const generateTextInputs = {
   extraParameters,
   connection,
 };
+
 export const generateImageInputs = {
   model,
   prompt: {
@@ -152,6 +165,7 @@ export const generateImageInputs = {
   extraParameters,
   connection,
 };
+
 export const generateVideoInputs = {
   model,
   prompt: {

@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { ENDPOINTS } from "../constants";
 import { selectManagedAppExamplePayload } from "../examplePayloads";
 import { selectManagedAppInputs } from "../inputs";
+
 export const selectManagedApp = dataSource({
   display: {
     label: "Select Managed App",
@@ -20,6 +21,7 @@ export const selectManagedApp = dataSource({
     } = await client.get(ENDPOINTS.MOBILE_APPS, {
       params,
     });
+
     return value.map((managedApp: { id: string; displayName: string }) => {
       return {
         label: managedApp.displayName,

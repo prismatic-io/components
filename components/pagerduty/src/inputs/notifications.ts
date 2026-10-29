@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
+
 export const timeZone = input({
   label: "Time Zone",
   type: "string",
@@ -10,6 +11,7 @@ export const timeZone = input({
   comments:
     "The TZInfo-formatted time zone in which results are rendered. Example: 'America/Los_Angeles'.",
 });
+
 export const filterNotifications = input({
   label: "Filter",
   type: "string",
@@ -23,6 +25,7 @@ export const filterNotifications = input({
   clean: toOptionalString,
   comments: "The notification type to filter results by.",
 });
+
 export const includeNotifications = input({
   label: "Include",
   type: "string",

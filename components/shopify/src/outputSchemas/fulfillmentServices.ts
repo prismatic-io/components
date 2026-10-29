@@ -1,4 +1,5 @@
 import { userErrorsArraySchema } from "./shared";
+
 const fulfillmentServiceSchema = {
   type: "object" as const,
   properties: {
@@ -15,6 +16,7 @@ const fulfillmentServiceSchema = {
     permitsSkuSharing: { type: "boolean" as const },
   },
 };
+
 export const createFulfillmentServiceGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -22,6 +24,7 @@ export const createFulfillmentServiceGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const deleteFulfillmentServiceGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -29,12 +32,14 @@ export const deleteFulfillmentServiceGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const getFulfillmentServiceGqlOutputSchema = {
   type: "object" as const,
   properties: {
     fulfillmentService: fulfillmentServiceSchema,
   },
 };
+
 export const listFulfillmentServicesGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -44,5 +49,6 @@ export const listFulfillmentServicesGqlOutputSchema = {
     },
   },
 };
+
 export const updateFulfillmentServiceGqlOutputSchema =
   createFulfillmentServiceGqlOutputSchema;

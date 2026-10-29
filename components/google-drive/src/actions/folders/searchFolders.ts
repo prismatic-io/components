@@ -6,6 +6,7 @@ import { searchFoldersOutputSchema } from "../../outputSchemas";
 import { escapeDriveQueryValue, getDriveQueryParams } from "../../util";
 import { fetchFiles } from "../../util/pagination";
 import { searchFoldersExamplePayload } from "../../examplePayloads";
+
 export const searchFolders = action({
   display: {
     label: "Search Folders",
@@ -14,14 +15,18 @@ export const searchFolders = action({
   performSafety: "notAllowed",
   perform: async (_context, params) => {
     const drive = createClient(params.connection);
+
     let finalQuery = "";
     if (params.folderId) {
       finalQuery += `'${escapeDriveQueryValue(params.folderId)}' in parents and `;
     }
+
     finalQuery += FOLDER_QUERY;
+
     if (params.searchQuery) {
       finalQuery += ` and name contains '${escapeDriveQueryValue(params.searchQuery)}'`;
     }
+
     const data = await fetchFiles({
       drive,
       initialParams: {
@@ -33,9 +38,11 @@ export const searchFolders = action({
       },
       fetchAll: params.fetchAll,
     });
+
     if (data.files.length === 0) {
       throw new Error(`No results found for query: ${finalQuery}`);
     }
+
     return { data };
   },
   inputs: searchFoldersInputs,
@@ -43,9 +50,9 @@ export const searchFolders = action({
     type: "actionOutput",
     schema: searchFoldersOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => searchFoldersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    searchFoldersExamplePayload,
   examplePayload: searchFoldersExamplePayload,
 });
+
 export default searchFolders;

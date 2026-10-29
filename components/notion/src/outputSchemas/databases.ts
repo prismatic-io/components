@@ -1,4 +1,5 @@
 import { coverSchema, iconSchema, richTextItemSchema } from "./shared";
+
 export const notionDatabaseObjectSchema = {
   type: "object" as const,
   properties: {
@@ -34,6 +35,9 @@ export const notionDatabaseObjectSchema = {
   },
   required: [],
 };
+
 export const retrieveDatabaseOutputSchema = notionDatabaseObjectSchema;
+
 export const updatedCreateDatabaseOutputSchema = notionDatabaseObjectSchema;
+
 export const updatedUpdateDatabaseOutputSchema = notionDatabaseObjectSchema;

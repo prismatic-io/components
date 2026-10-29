@@ -7,6 +7,7 @@ import {
   includeMetadataLinks,
   pagination,
 } from "./common";
+
 const jobId = input({
   label: "Job ID",
   type: "string",
@@ -17,12 +18,14 @@ const jobId = input({
   example: "300100012345678",
   clean: cleanId,
 });
+
 export const getJobInputs = {
   connection,
   effectiveDate,
   jobId,
   includeMetadataLinks,
 };
+
 export const listJobsInputs = {
   connection,
   fetchAll,

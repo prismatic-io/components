@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getChargeExamplePayload } from "../../examplePayloads/charges";
 import { getChargeInputs } from "../../inputs";
 import { chargeOutputSchema } from "../../outputSchemas";
+
 export const getCharge = action({
   display: {
     label: "Get Charge",
@@ -24,5 +25,6 @@ export const getCharge = action({
     type: "actionOutput",
     schema: chargeOutputSchema,
   }),
+
   examplePayload: getChargeExamplePayload,
 });

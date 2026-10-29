@@ -15,6 +15,7 @@ import {
   postGroupsInputs,
   putGroupsGroupIdInputs,
 } from "../../inputs";
+
 const getGroups = action({
   display: {
     label: "Get Groups (V1)",
@@ -32,6 +33,7 @@ const getGroups = action({
     return { data };
   },
 });
+
 const postGroups = action({
   display: {
     label: "Post Groups (V1)",
@@ -49,6 +51,7 @@ const postGroups = action({
     return { data };
   },
 });
+
 const putGroupsGroupId = action({
   display: {
     label: "Put Groups Group Id (V1)",
@@ -71,6 +74,7 @@ const putGroupsGroupId = action({
     return { data };
   },
 });
+
 const patchGroupsGroupId = action({
   display: {
     label: "Patch Groups Group Id (V1)",
@@ -93,6 +97,7 @@ const patchGroupsGroupId = action({
     return { data };
   },
 });
+
 const deleteGroupsGroupId = action({
   display: {
     label: "Delete Groups Group Id (V1)",
@@ -110,6 +115,7 @@ const deleteGroupsGroupId = action({
     return { data };
   },
 });
+
 export default {
   getGroups,
   postGroups,

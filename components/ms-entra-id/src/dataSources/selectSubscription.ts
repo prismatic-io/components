@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs/common";
 import { getValues } from "../util";
+
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
@@ -19,15 +20,8 @@ export const selectSubscription = dataSource({
           label: subscription.resource,
           key: subscription.id,
         }))
-        .sort(
-          (
-            a: {
-              label: string;
-            },
-            b: {
-              label: string;
-            },
-          ) => (a.label < b.label ? -1 : 1),
+        .sort((a: { label: string }, b: { label: string }) =>
+          a.label < b.label ? -1 : 1,
         ),
     };
   },

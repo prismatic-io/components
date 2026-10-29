@@ -12,6 +12,7 @@ import {
   taxExempt,
   verifiedEmail,
 } from "./common";
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -19,6 +20,7 @@ const additionalFields = structuredObjectInput({
     "Additional optional fields: includes Phone, Notes, Currency Format, Tax Exempt, and Metafields.",
   inputs: { phone, notes, currency, taxExempt, metafields },
 });
+
 export const createCustomerInputs = {
   shopifyConnection: connectionInput,
   firstName,

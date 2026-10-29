@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { getTaxCodePayload } from "../../examplePayloads";
 import { company, connection, site } from "../../inputs/general";
 import { taxCodeId } from "../../inputs/taxCode/getTaxCodeInputs";
+
 export const getTaxCode = action({
   display: {
     label: "Get Tax Code",

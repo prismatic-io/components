@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, showInstanceSubscriptions } from "../../inputs";
+
 export const listSubscriptions = action({
   display: {
     label: "List Subscriptions",
@@ -14,11 +15,9 @@ export const listSubscriptions = action({
     const client = await createClient(connection, context.debug.enabled);
     const { data } = await client.get<{
       "@odata.context": string;
-      value: {
-        notificationUrl: string;
-        [key: string]: unknown;
-      }[];
+      value: { notificationUrl: string; [key: string]: unknown }[];
     }>("/subscriptions");
+
     if (showInstanceSubscriptions) {
       const instanceWebhooks = new Set(Object.values(context.webhookUrls));
       const instanceSubscriptions = data.value.filter(({ notificationUrl }) =>
@@ -26,6 +25,7 @@ export const listSubscriptions = action({
       );
       return { data: { ...data, value: instanceSubscriptions } };
     }
+
     return { data };
   },
   examplePayload: {

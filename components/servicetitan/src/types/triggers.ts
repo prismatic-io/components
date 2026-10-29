@@ -3,6 +3,7 @@ export interface PollingState extends Record<string, unknown> {
   lastSeenIds?: number[];
   backfillActive?: boolean;
 }
+
 export interface PollResourceConfig {
   label: string;
   endpoint: string;
@@ -11,14 +12,17 @@ export interface PollResourceConfig {
   updatedAtField: string;
   sortField?: string;
 }
+
 export interface ServiceTitanRecord {
   id: number;
   [key: string]: unknown;
 }
+
 export interface PollingChangesObject {
   created: ServiceTitanRecord[];
   updated: ServiceTitanRecord[];
 }
+
 export interface PollingRecordChange {
   changeType: "created" | "updated";
   record: ServiceTitanRecord;

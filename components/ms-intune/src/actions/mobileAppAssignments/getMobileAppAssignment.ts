@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { getMobileAppAssignmentInputs } from "../../inputs";
+
 export const getMobileAppAssignment = action({
   display: {
     label: "Get Mobile App Assignment",
@@ -16,6 +17,7 @@ export const getMobileAppAssignment = action({
     const { data } = await client.get(
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments/${mobileAppAssignmentId}`,
     );
+
     return {
       data,
     };

@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { type HttpResponse, trigger, util } from "@prismatic-io/spectral";
 import { webhookInputs } from "../inputs";
+
 const computeSignature = (
   requestBody: string,
   signingSecret: string,
@@ -13,9 +14,11 @@ const computeSignature = (
     .digest("hex");
   return `v0=${signature}`;
 };
+
 interface Request {
   challenge?: string;
 }
+
 export const webhook = trigger({
   display: {
     label: "Events API Webhook",
@@ -34,6 +37,7 @@ export const webhook = trigger({
         branch: "Management",
       });
     }
+
     const signingSecret = util.types.toString(
       params.slackConnection.fields.signingSecret,
     );
@@ -54,12 +58,14 @@ export const webhook = trigger({
         "Error validating message signature. Check your signing secret and verify that this message came from Slack.",
       );
     }
+
     const challenge = (payload.body.data as Request)?.challenge;
     const response: HttpResponse = {
       statusCode: 200,
       contentType: "text/plain",
       body: challenge,
     };
+
     return Promise.resolve({
       payload,
       response,

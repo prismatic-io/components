@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const timestamp = input({
   label: "Timestamp",
   type: "string",
@@ -8,6 +9,7 @@ export const timestamp = input({
   comments: "A valid UNIX timestamp to be passed alongside the logs.",
   clean: util.types.toString,
 });
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",

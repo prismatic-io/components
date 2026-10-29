@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getSheetExamplePayload } from "../../examplePayloads";
 import { getSheetInputs } from "../../inputs";
+
 export const getSheet = action({
   display: {
     label: "Get Sheet",

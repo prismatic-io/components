@@ -4,6 +4,7 @@ import { updateOrganizationInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { updateOrganizationExamplePayload } from "../../examplePayloads";
 import { singleOrganizationV2OutputSchema } from "../../outputSchemas";
+
 export const updateOrganization = action({
   display: {
     label: "Update Organization",

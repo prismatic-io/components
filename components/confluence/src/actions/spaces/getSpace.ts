@@ -3,6 +3,7 @@ import { spaceSingleSchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { getSpaceInputs } from "../../inputs";
 import { getSpaceExamplePayload } from "../../examplePayloads";
+
 export const getSpace = action({
   display: {
     label: "Get Space",

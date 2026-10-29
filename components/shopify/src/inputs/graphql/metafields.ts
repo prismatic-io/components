@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
 import { getAlldata, pagination, shopifyConnection } from "./common";
+
 const resource = input({
   label: "Resource",
   type: "string",
@@ -10,6 +11,7 @@ const resource = input({
   comments: "The unique identifier for the resource.",
   clean: util.types.toString,
 });
+
 const key = input({
   label: "Key",
   type: "string",
@@ -19,6 +21,7 @@ const key = input({
   comments: "The key for the metafield.",
   clean: util.types.toString,
 });
+
 const value = input({
   label: "Value",
   type: "string",
@@ -28,6 +31,7 @@ const value = input({
   comments: "The value for the metafield.",
   clean: util.types.toString,
 });
+
 const ownerId = input({
   label: "Owner ID",
   type: "string",
@@ -37,6 +41,7 @@ const ownerId = input({
   comments: "The unique ID of the owner of the metafield.",
   clean: util.types.toString,
 });
+
 const type = input({
   label: "Type",
   type: "string",
@@ -67,6 +72,7 @@ const type = input({
     "Provide a type for the metafield. Required when there is no corresponding definition for the given namespace, key, and owner resource type.",
   clean: cleanStringInput,
 });
+
 const namespace = input({
   label: "Namespace",
   type: "string",
@@ -76,12 +82,14 @@ const namespace = input({
   comments: "The namespace for the metafield.",
   clean: cleanStringInput,
 });
+
 export const listMetafieldsInputs = {
   shopifyConnection,
   resource,
   getAlldata,
   pagination,
 };
+
 export const setMetafieldInputs = {
   shopifyConnection,
   key,
@@ -90,6 +98,7 @@ export const setMetafieldInputs = {
   type,
   namespace,
 };
+
 export const deleteMetafieldInputs = {
   shopifyConnection,
   key: input({

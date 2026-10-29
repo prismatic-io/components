@@ -6,8 +6,10 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listUsersExamplePayload } from "../examplePayloads";
 import { selectUser } from "./selectUser";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -19,12 +21,17 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listUsersExamplePayload.data;
+
 describe("selectUser", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the user list to label/key elements wrapped in result", async () => {
     nock(HOST).get("/v1.0/users").reply(200, listReply);
+
     const { result } = await invokeDataSource(selectUser, { connection });
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
@@ -41,9 +48,12 @@ describe("selectUser", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty result array when the API returns no users", async () => {
     nock(HOST).get("/v1.0/users").reply(200, { value: [] });
+
     const { result } = await invokeDataSource(selectUser, { connection });
+
     expect(result).toEqual([]);
   });
 });

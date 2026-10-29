@@ -1,4 +1,5 @@
 import type { V3Application } from "../../types";
+
 const sampleApplication: V3Application = {
   id: 69306314,
   candidate_id: 57683957,
@@ -25,12 +26,15 @@ const sampleApplication: V3Application = {
   ],
   prospective_job_ids: [],
 };
+
 export const listApplicationsV3ExamplePayload = {
   data: [sampleApplication],
 };
+
 export const getApplicationV3ExamplePayload = {
   data: sampleApplication,
 };
+
 export const editApplicationV3ExamplePayload = {
   data: {
     ...sampleApplication,
@@ -39,6 +43,7 @@ export const editApplicationV3ExamplePayload = {
     updated_at: "2026-06-05T10:00:00.000Z",
   } as V3Application,
 };
+
 export const deleteApplicationV3ExamplePayload = {
   data: {
     message: "Application 69306314 deleted successfully",
@@ -47,9 +52,11 @@ export const deleteApplicationV3ExamplePayload = {
     updated_at: "2026-06-05T10:00:00.000Z",
   },
 };
+
 export const rejectApplicationV3ExamplePayload = {
   data: { success: true },
 };
+
 export const unrejectApplicationV3ExamplePayload = {
   data: { success: true },
 };

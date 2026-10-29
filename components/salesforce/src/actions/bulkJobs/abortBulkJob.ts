@@ -3,6 +3,7 @@ import { abortBulkJobOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { abortBulkJobInputs } from "../../inputs";
 import { getBulkJobExamplePayload } from "../../examplePayloads";
+
 export const abortBulkJob = action({
   display: {
     label: "Abort Bulk Job",
@@ -23,9 +24,8 @@ export const abortBulkJob = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getBulkJobExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getBulkJobExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: abortBulkJobOutputSchema,

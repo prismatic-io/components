@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -24,8 +25,6 @@ export const deleteWebhook = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({ data: {} }),
+  examplePerform: async (): Promise<{ data: unknown }> => ({ data: {} }),
   examplePayload: deleteWebhookExamplePayload,
 });

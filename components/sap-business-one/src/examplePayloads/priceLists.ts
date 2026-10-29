@@ -17,6 +17,7 @@ export const getPriceListExamplePayload = {
     FixedAmount: 0,
   },
 };
+
 export const listPriceListsExamplePayload = {
   data: [getPriceListExamplePayload.data],
 };

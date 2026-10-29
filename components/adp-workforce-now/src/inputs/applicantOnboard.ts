@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { applicantOnboardingProcessPayload } from "../exampleInputs";
 import { cleanObject, cleanString } from "../util";
 import { $filter, connection } from "./common";
+
 const contextTemplates = input({
   label: "Context Templates",
   type: "string",
@@ -25,6 +26,7 @@ const contextTemplates = input({
   placeholder: "Select context template",
   clean: cleanString,
 });
+
 const applicantOnboarding = input({
   label: "Applicant Onboarding",
   type: "code",
@@ -36,6 +38,7 @@ const applicantOnboarding = input({
   example: JSON.stringify(applicantOnboardingProcessPayload, null, 2),
   clean: cleanObject,
 });
+
 export const getApplicantOnboardMetadataInputs = {
   contextTemplates,
   $filter: {
@@ -48,6 +51,7 @@ export const getApplicantOnboardMetadataInputs = {
   },
   connection,
 };
+
 export const postApplicantOnboardProcessInputs = {
   applicantOnboarding,
   connection,

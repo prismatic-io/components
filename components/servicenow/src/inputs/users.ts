@@ -10,6 +10,7 @@ import {
   sysId,
   sysparmQuery,
 } from "./common";
+
 const userName = input({
   label: "Username",
   type: "string",
@@ -18,6 +19,7 @@ const userName = input({
   placeholder: "Enter the username",
   clean: cleanStringInput,
 });
+
 const email = input({
   label: "Email",
   type: "string",
@@ -26,6 +28,7 @@ const email = input({
   placeholder: "Enter the email address",
   clean: cleanStringInput,
 });
+
 const firstName = input({
   label: "First Name",
   type: "string",
@@ -34,6 +37,7 @@ const firstName = input({
   placeholder: "Enter the first name",
   clean: cleanStringInput,
 });
+
 const lastName = input({
   label: "Last Name",
   type: "string",
@@ -42,12 +46,14 @@ const lastName = input({
   placeholder: "Enter the last name",
   clean: cleanStringInput,
 });
+
 const contactInfo = structuredObjectInput({
   label: "Name & Contact Information",
   required: false,
   comments: "First name, last name, and email address.",
   inputs: { firstName, lastName, email },
 });
+
 export const createUserInputs = {
   connection,
   instanceUrlInput,
@@ -56,24 +62,28 @@ export const createUserInputs = {
   contactInfo,
   userName,
 };
+
 export const deleteUserInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   sysId,
 };
+
 export const getUserInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   sysId,
 };
+
 export const getUserByUsernameInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   userName,
 };
+
 export const listUsersInputs = {
   connection,
   instanceUrlInput,
@@ -82,6 +92,7 @@ export const listUsersInputs = {
   fetchAll,
   pagination,
 };
+
 export const updateUserInputs = {
   connection,
   instanceUrlInput,

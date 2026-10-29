@@ -7,6 +7,7 @@ import {
   nameInput,
   roleInput,
 } from "../../inputs/contacts";
+
 export const searchContacts = action({
   display: {
     label: "Search Contacts",
@@ -34,6 +35,7 @@ export const searchContacts = action({
     if (email) {
       values.push({ field: "email", operator: "=", value: email });
     }
+
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.post(
       "/contacts/search",

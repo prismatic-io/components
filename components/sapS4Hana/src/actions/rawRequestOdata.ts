@@ -9,6 +9,7 @@ import {
 } from "../inputs";
 import { getSapClient } from "../client";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 const orderByOptions = [
   "FileSize",
   "FileSize desc",
@@ -25,6 +26,7 @@ const orderByOptions = [
   "ChangedDateTime",
   "ChangedDateTime desc",
 ].map((option) => ({ label: option, value: option }));
+
 const selectOptions = [
   "DocumentInfoRecordDocType",
   "DocumentInfoRecordDocNumber",
@@ -58,10 +60,12 @@ const selectOptions = [
   "Source",
   "AttachmentContentHash",
 ].map((option) => ({ label: option, value: option }));
+
 const expandOptions = ["ProjectRoleSet", "WorkPackageSet"].map((option) => ({
   label: option,
   value: option,
 }));
+
 export const rawRequestOdataOrderBy = input({
   label: "Order By",
   placeholder: "Order By",
@@ -72,6 +76,7 @@ export const rawRequestOdataOrderBy = input({
   model: orderByOptions,
   clean: util.types.toString,
 });
+
 export const rawRequestOdataSelect = input({
   label: "Select",
   placeholder: "Select",
@@ -82,6 +87,7 @@ export const rawRequestOdataSelect = input({
   model: selectOptions,
   clean: util.types.toString,
 });
+
 export const rawRequestOdataExpand = input({
   label: "Expand",
   placeholder: "Expand",
@@ -92,6 +98,7 @@ export const rawRequestOdataExpand = input({
   model: expandOptions,
   clean: util.types.toString,
 });
+
 const rawRequestOdata = action({
   display: {
     label: "Raw Request - OData",
@@ -143,13 +150,17 @@ const rawRequestOdata = action({
     if (orderBy) queryParams.push(`$orderby=${orderBy}`);
     if (select) queryParams.push(`$select=${select}`);
     if (expand) queryParams.push(`$expand=${expand}`);
+
     const queryString =
       queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
     const finalUrl = `${url}${queryString}`;
+
     const headers: Record<string, string> = {
       Accept: "application/json",
     };
+
     const client = getSapClient(connection, headers);
+
     try {
       const { data } = await client.get(finalUrl);
       return { data };
@@ -160,4 +171,5 @@ const rawRequestOdata = action({
     }
   },
 });
+
 export default rawRequestOdata;

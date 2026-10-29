@@ -4,6 +4,7 @@ import { queryInsightsSavedReportsInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { queryInsightsSavedReportsExamplePayload } from "../../examplePayloads";
 import { queryInsightsSavedReportsOutputSchema } from "../../outputSchemas";
+
 export const queryInsightsSavedReports = action({
   display: {
     label: "Query Insights Saved Reports",

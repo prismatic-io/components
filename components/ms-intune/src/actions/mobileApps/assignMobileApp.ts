@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { assignMobileAppExamplePayload } from "../../examplePayloads";
 import { assignMobileAppInputs } from "../../inputs";
 import { getMobileAppObject } from "../../util";
+
 export const assignMobileApp = action({
   display: {
     label: "Assign Mobile App",

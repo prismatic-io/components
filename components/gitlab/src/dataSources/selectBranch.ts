@@ -4,6 +4,7 @@ import { selectBranchExamplePayload } from "../examplePayloads";
 import { selectBranchInputs } from "../inputs";
 import type { Branch } from "../types";
 import { fetchAllPages } from "../utils";
+
 export const selectBranch = dataSource({
   display: {
     label: "Select Branch",

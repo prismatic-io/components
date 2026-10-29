@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_UPDATE_RESPONSE } from "../../constants";
 import { updateRecordInputs } from "../../inputs/records/update";
+
 export const updateRecord = action({
   display: {
     label: "Update Record",
@@ -21,9 +22,11 @@ export const updateRecord = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(`/${recordType}(${recordId})`, {
       ...bodyFields,
     });
+
     return {
       data: DEFAULT_UPDATE_RESPONSE,
     };

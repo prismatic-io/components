@@ -1,7 +1,6 @@
 import type { docs_v1 } from "@googleapis/docs";
-export const createDocumentExamplePayload: {
-  data: docs_v1.Schema$Document;
-} = {
+
+export const createDocumentExamplePayload: { data: docs_v1.Schema$Document } = {
   data: {
     documentId: "1BxiMVs0XRA5nFMdKvBdBZjgmUii3a4kWcLm7pQ2yXGw",
     title: "Quarterly Report Q1 2026",
@@ -144,9 +143,8 @@ export const createDocumentExamplePayload: {
     positionedObjects: {},
   },
 };
-export const getDocumentExamplePayload: {
-  data: docs_v1.Schema$Document;
-} = {
+
+export const getDocumentExamplePayload: { data: docs_v1.Schema$Document } = {
   data: {
     documentId: "1BxiMVs0XRA5nFMdKvBdBZjgmUii3a4kWcLm7pQ2yXGw",
     title: "Quarterly Report Q1 2026",
@@ -293,6 +291,7 @@ export const getDocumentExamplePayload: {
     positionedObjects: {},
   },
 };
+
 export const batchUpdateDocumentsExamplePayload: {
   data: docs_v1.Schema$BatchUpdateDocumentResponse;
 } = {

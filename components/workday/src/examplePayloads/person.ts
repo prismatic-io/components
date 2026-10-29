@@ -46,6 +46,7 @@ export const listPeopleExamplePayload = {
     total: 1,
   },
 };
+
 export const getPersonByIdExamplePayload = {
   data: {
     photos:

@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { deleteSubscriptionExamplePayload } from "../../examplePayloads/subscriptions";
 import { deleteSubscriptionInputs } from "../../inputs";
 import { subscriptionOutputSchema } from "../../outputSchemas";
+
 export const deleteSubscription = action({
   display: {
     label: "Delete Subscription",
@@ -23,13 +24,12 @@ export const deleteSubscription = action({
   examplePerform: async (
     _context,
     { subscriptionId },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const subscription = deleteSubscriptionExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...subscription,
@@ -42,5 +42,6 @@ export const deleteSubscription = action({
     type: "actionOutput",
     schema: subscriptionOutputSchema,
   }),
+
   examplePayload: deleteSubscriptionExamplePayload,
 });

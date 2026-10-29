@@ -5,6 +5,7 @@ import { listAssociationTypesExamplePayload } from "../../examplePayloads";
 import { listAssociationTypesInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
 import { mapAssociationTypes } from "../../util";
+
 export const listAssociationTypes = action({
   display: {
     label: "List Association Types",
@@ -26,6 +27,7 @@ export const listAssociationTypes = action({
         "/labels",
       ),
     );
+
     return { data: mapAssociationTypes(data) };
   },
   inputs: listAssociationTypesInputs,

@@ -1,4 +1,5 @@
 import { simpleUserSchema } from "./common";
+
 export const issueCommentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -28,11 +29,14 @@ export const issueCommentOutputSchema = {
     "updated_at",
   ],
 };
+
 export const issuesCreateCommentOutputSchema = issueCommentOutputSchema;
+
 export const issuesListCommentsOutputSchema = {
   type: "array" as const,
   items: issueCommentOutputSchema,
 };
+
 export const issuesListForRepoOutputSchema = {
   type: "array" as const,
   items: {

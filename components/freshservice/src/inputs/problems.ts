@@ -7,28 +7,34 @@ import {
   fetchAll,
   pagination,
 } from "./common";
+
 const statusOptions = [
   { label: "Open", value: "1" },
   { label: "Change Requested", value: "2" },
   { label: "Closed", value: "3" },
 ];
+
 const priorityOptions = [
   { label: "Low", value: "1" },
   { label: "Medium", value: "2" },
   { label: "High", value: "3" },
   { label: "Urgent", value: "4" },
 ];
+
 const impactOptions = [
   { label: "Low", value: "1" },
   { label: "Medium", value: "2" },
   { label: "High", value: "3" },
 ];
+
 const problemsDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#problem_attributes) for more information.";
+
 const problemsAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${problemsDocumentationComments}`,
 });
+
 const subject = input({
   label: "Subject",
   comments: "The brief summary line describing the problem.",
@@ -38,6 +44,7 @@ const subject = input({
   placeholder: "Enter problem subject",
   clean: util.types.toString,
 });
+
 const email = input({
   label: "Email",
   comments: "The email address of the person who reported the problem.",
@@ -47,6 +54,7 @@ const email = input({
   placeholder: "Enter email address",
   clean: util.types.toString,
 });
+
 const description = input({
   label: "Description",
   comments: "The HTML body content with details about the problem.",
@@ -57,6 +65,7 @@ const description = input({
   placeholder: "Enter problem description in HTML",
   clean: util.types.toString,
 });
+
 const dueBy = input({
   label: "Due By",
   comments:
@@ -67,6 +76,7 @@ const dueBy = input({
   placeholder: "Enter due date",
   clean: util.types.toString,
 });
+
 const priority = input({
   label: "Priority",
   comments: "The urgency level that determines the problem's resolution order.",
@@ -77,6 +87,7 @@ const priority = input({
   placeholder: "Select a priority",
   clean: util.types.toNumber,
 });
+
 const status = input({
   label: "Status",
   comments: "The current lifecycle stage of the problem.",
@@ -87,6 +98,7 @@ const status = input({
   placeholder: "Select a status",
   clean: util.types.toNumber,
 });
+
 const impact = input({
   label: "Impact",
   comments: "The scope of business disruption caused by the problem.",
@@ -97,6 +109,7 @@ const impact = input({
   placeholder: "Select an impact level",
   clean: util.types.toNumber,
 });
+
 const category = input({
   label: "Category",
   comments:
@@ -107,6 +120,7 @@ const category = input({
   placeholder: "Enter category",
   clean: cleanStringInput,
 });
+
 const subCategory = input({
   label: "Sub Category",
   comments: "The secondary classification within the problem's category.",
@@ -116,6 +130,7 @@ const subCategory = input({
   placeholder: "Enter sub category",
   clean: cleanStringInput,
 });
+
 const itemCategory = input({
   label: "Item Category",
   comments: "The specific item type within the sub-category.",
@@ -125,6 +140,7 @@ const itemCategory = input({
   placeholder: "Enter item category",
   clean: cleanStringInput,
 });
+
 const problemId = input({
   label: "Problem ID",
   comments: "The unique identifier for the problem.",
@@ -135,6 +151,7 @@ const problemId = input({
   dataSource: "selectProblem",
   clean: util.types.toNumber,
 });
+
 const workspaceId = input({
   label: "Workspace ID",
   comments: "The unique identifier for the target workspace.",
@@ -145,6 +162,7 @@ const workspaceId = input({
   dataSource: "selectWorkspace",
   clean: util.types.toNumber,
 });
+
 const groupId = input({
   label: "Group ID",
   comments:
@@ -155,6 +173,7 @@ const groupId = input({
   placeholder: "Enter group ID",
   clean: cleanNumberInput,
 });
+
 const ownerId = input({
   label: "Owner ID",
   comments:
@@ -165,12 +184,14 @@ const ownerId = input({
   placeholder: "Enter owner ID",
   clean: cleanNumberInput,
 });
+
 const createProblemCategorization = structuredObjectInput({
   label: "Categorization",
   required: false,
   comments: "Category, sub-category, and item-category for the record.",
   inputs: { category, subCategory, itemCategory },
 });
+
 export const createProblemInputs = {
   connection,
   subject,
@@ -183,20 +204,24 @@ export const createProblemInputs = {
   categorization: createProblemCategorization,
   problemsAdditionalFields,
 };
+
 export const deleteProblemInputs = {
   connection,
   problemId: input({ ...problemId, comments: "ID of the Problem to delete." }),
 };
+
 export const getProblemInputs = {
   connection,
   problemId,
 };
+
 export const listProblemsInputs = {
   connection,
   fetchAll,
   pagination,
   additionalQueryParams,
 };
+
 export const moveProblemInputs = {
   connection,
   problemId: input({ ...problemId, comments: "ID of the Problem to move." }),
@@ -204,12 +229,14 @@ export const moveProblemInputs = {
   groupId,
   ownerId,
 };
+
 const updateProblemCategorization = structuredObjectInput({
   label: "Categorization",
   required: false,
   comments: "Category, sub-category, and item-category for the record.",
   inputs: { category, subCategory, itemCategory },
 });
+
 const updateProblemAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -229,6 +256,7 @@ const updateProblemAdditionalFields = structuredObjectInput({
     impact: input({ ...impact, required: false, clean: cleanNumberInput }),
   },
 });
+
 export const updateProblemInputs = {
   connection,
   problemId: input({ ...problemId, comments: "ID of the Problem to update." }),

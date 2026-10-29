@@ -4,6 +4,7 @@ import { syncAssetExamplePayload } from "../../examplePayloads";
 import { syncAssetInputs } from "../../inputs";
 import { syncAssetOutputSchema } from "../../outputSchemas";
 import type { SyncAssetsResponse } from "../../types";
+
 export const syncAsset = action({
   display: {
     label: "Sync Asset",
@@ -20,6 +21,7 @@ export const syncAsset = action({
     const metadata = Object.fromEntries(
       Object.entries(connectorMetaData).filter(([, v]) => v !== undefined),
     );
+
     const response = await gatewayRequest(
       connection,
       context.debug.enabled,
@@ -32,6 +34,7 @@ export const syncAsset = action({
           },
         ),
     );
+
     return { data: response.data };
   },
   examplePerform: async () => syncAssetExamplePayload,

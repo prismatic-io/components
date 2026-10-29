@@ -6,15 +6,19 @@ import {
   reposListWebhooksExamplePayload,
 } from "../examplePayloads";
 import actions from "./index";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 const {
   reposListWebhooks,
   reposCreateWebhook,
   reposDeleteWebhook,
   reposDeleteInstanceWebhooks,
 } = actions;
+
 afterEach(() => nock.cleanAll());
+
 describe("reposListWebhooks", () => {
   test("happy path returns webhooks from a single page (no rel=next)", async () => {
     nock(BASE)
@@ -33,6 +37,7 @@ describe("reposListWebhooks", () => {
     );
     expect(result.data).toEqual(reposListWebhooksExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/hooks")
@@ -52,6 +57,7 @@ describe("reposListWebhooks", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("reposCreateWebhook", () => {
   test("happy path returns the created webhook", async () => {
     nock(BASE)
@@ -67,6 +73,7 @@ describe("reposCreateWebhook", () => {
     });
     expect(result.data).toEqual(reposCreateWebhookExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/hooks")
@@ -83,6 +90,7 @@ describe("reposCreateWebhook", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("reposDeleteWebhook", () => {
   test("happy path returns the (empty) 204 body", async () => {
     nock(BASE).delete("/repos/octocat/Hello-World/hooks/12345678").reply(204);
@@ -94,6 +102,7 @@ describe("reposDeleteWebhook", () => {
     });
     expect(result.data).toBe("");
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .delete("/repos/octocat/Hello-World/hooks/12345678")
@@ -108,6 +117,7 @@ describe("reposDeleteWebhook", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("reposDeleteInstanceWebhooks", () => {
   test("deletes only the hooks whose config.url points at this instance", async () => {
     const instanceUrl = "https://example.com/webhook";
@@ -125,6 +135,7 @@ describe("reposDeleteInstanceWebhooks", () => {
     const deleteOther = nock(BASE)
       .delete("/repos/octocat/Hello-World/hooks/12345679")
       .reply(204);
+
     const { result } = await invoke(
       reposDeleteInstanceWebhooks,
       {
@@ -134,6 +145,7 @@ describe("reposDeleteInstanceWebhooks", () => {
       },
       { webhookUrls: { flowA: instanceUrl } },
     );
+
     expect(result.data).toEqual({});
     expect(deleteInstance.isDone()).toBe(true);
     expect(deleteOther.isDone()).toBe(false);

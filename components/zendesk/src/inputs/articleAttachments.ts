@@ -10,6 +10,7 @@ import {
   locale,
   pageLimit,
 } from "./common";
+
 export const createArticleAttachmentInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -32,10 +33,12 @@ export const createArticleAttachmentInputs = {
   },
   inline,
 };
+
 export const deleteArticleAttachmentInputs = {
   zendeskConnection: connectionInput,
   articleAttachmentId,
 };
+
 export const getArticleAttachmentInputs = {
   zendeskConnection: connectionInput,
   locale: {
@@ -48,6 +51,7 @@ export const getArticleAttachmentInputs = {
   articleId,
   articleAttachmentId,
 };
+
 export const listArticleAttachmentsInputs = {
   zendeskConnection: connectionInput,
   locale: {

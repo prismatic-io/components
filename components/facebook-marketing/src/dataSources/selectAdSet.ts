@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { selectAdSetResponse } from "../examplePayloads";
 import { selectAdSetInputs } from "../inputs";
 import { getPaginatedData } from "../util";
+
 export const selectAdSet = dataSource({
   display: {
     label: "Select Ad Set",
@@ -15,6 +16,7 @@ export const selectAdSet = dataSource({
     } = await getPaginatedData(client, `/${params.adAccountId}/adsets`, true, {
       fields: "name,id",
     });
+
     const result: Element[] = data
       .map((adSet: { name: string; id: string }) => ({
         label: `${adSet.name} - (${adSet.id})`,
@@ -23,6 +25,7 @@ export const selectAdSet = dataSource({
       .sort((a: Element, b: Element) =>
         (a.label || "") < (b.label || "") ? -1 : 1,
       );
+
     return {
       result,
     };

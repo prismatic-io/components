@@ -19,29 +19,37 @@ const restWebhookSchema = {
     },
   },
 };
+
 export const createWebhookOutputSchema = {
   type: "object" as const,
   properties: {
     webhook: restWebhookSchema,
   },
 };
+
 export const listWebhooksOutputSchema = {
   type: "array" as const,
   items: restWebhookSchema,
 };
+
 export const deleteWebhookOutputSchema = {
   type: "object" as const,
   properties: {},
 };
+
 export const deleteInstanceWebhooksOutputSchema = {
   type: "object" as const,
   properties: {},
 };
+
 export const listWebhooksGqlOutputSchema = {
   type: "array" as const,
   items: restWebhookSchema,
 };
+
 export const createWebhookGqlOutputSchema = createWebhookOutputSchema;
+
 export const deleteWebhookGqlOutputSchema = deleteWebhookOutputSchema;
+
 export const deleteInstanceWebhooksGqlOutputSchema =
   deleteInstanceWebhooksOutputSchema;

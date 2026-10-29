@@ -6,15 +6,18 @@ import {
   getUserExamplePayload,
 } from "../../examplePayloads";
 import { editUserOnWorkspace } from "./editUserOnWorkspace";
+
 const API = "https://api.clickup.com";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
+
 interface Captured {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, unknown>;
 }
+
 const mockClickUp = (
   method: string,
   path: string,
@@ -37,15 +40,12 @@ const mockClickUp = (
     });
   return captured;
 };
+
 type ActionUnderTest = {
-  inputs: Record<
-    string,
-    {
-      type?: string;
-    }
-  >;
+  inputs: Record<string, { type?: string }>;
   perform: unknown;
 };
+
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
   const connectionKey = Object.keys(action.inputs).find(
     (key) => action.inputs[key].type === "connection",
@@ -55,6 +55,7 @@ const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
     { [connectionKey]: connection, ...params } as any,
   );
 };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -62,6 +63,7 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 describe("editUserOnWorkspace", () => {
   const params = {
     teamId: "9012345",
@@ -69,6 +71,7 @@ describe("editUserOnWorkspace", () => {
     admin: true,
     customRoleId: 12,
   };
+
   test("happy path keeps the current username when none is given", async () => {
     mockClickUp(
       "GET",
@@ -90,6 +93,7 @@ describe("editUserOnWorkspace", () => {
       custom_role_id: 12,
     });
   });
+
   test("sends the given username without reading the current one", async () => {
     const req = mockClickUp(
       "PUT",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection, $select } from "../../inputs/general";
 import { priceListNo } from "../../inputs/priceLists/general";
 import { getPriceListExamplePayload } from "../../examplePayloads/priceLists";
+
 export const getPriceList = action({
   display: {
     label: "Get Price List",
@@ -20,6 +21,7 @@ export const getPriceList = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/PriceLists(${priceListNo})`, {
       params: {
         $select,

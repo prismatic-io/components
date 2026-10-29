@@ -7,6 +7,7 @@ import {
   pagination,
   queryParameters,
 } from "./common";
+
 export const purgeAttachment = input({
   label: "Purge",
   type: "boolean",
@@ -15,22 +16,26 @@ export const purgeAttachment = input({
     "When true, permanently deletes the attachment instead of moving it to trash.",
   clean: util.types.toBool,
 });
+
 export const deleteAttachmentInputs = {
   connectionInput,
   attachmentId,
   purgeAttachment,
 };
+
 export const getAttachmentInputs = {
   connectionInput,
   attachmentId,
   queryParameters,
 };
+
 export const getPageAttachmentInputs = {
   connectionInput,
   pageId,
   pagination,
   queryParameters,
 };
+
 export const listAttachmentsInputs = {
   connectionInput,
   fetchAll,

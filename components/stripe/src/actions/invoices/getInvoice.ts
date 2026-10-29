@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getInvoiceExamplePayload } from "../../examplePayloads/invoices";
 import { getInvoiceInputs } from "../../inputs";
 import { invoiceOutputSchema } from "../../outputSchemas";
+
 export const getInvoice = action({
   display: {
     label: "Get Invoice",
@@ -23,5 +24,6 @@ export const getInvoice = action({
     type: "actionOutput",
     schema: invoiceOutputSchema,
   }),
+
   examplePayload: getInvoiceExamplePayload,
 });

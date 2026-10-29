@@ -4,6 +4,7 @@ import { createProductImageExamplePayload as examplePayload } from "../../../exa
 import { createProductImageInputs as inputs } from "../../../inputsGql";
 import { createProductImageGqlOutputSchema } from "../../../outputSchemas";
 import createProductImageQuery from "../queries/productImage/CreateProductImage.gql";
+
 export const createProductImageGql = action({
   display: {
     label: "Create Product Image",
@@ -20,13 +21,14 @@ export const createProductImageGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      productCreateMedia: Record<string, unknown>;
-    } = await client.request(createProductImageQuery, {
-      id: productId,
-      originalSource: imageURL,
-      alt: imageAlt,
-    });
+
+    const data: { productCreateMedia: Record<string, unknown> } =
+      await client.request(createProductImageQuery, {
+        id: productId,
+        originalSource: imageURL,
+        alt: imageAlt,
+      });
+
     return {
       data: data.productCreateMedia,
     };

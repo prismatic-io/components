@@ -4,6 +4,7 @@ import { removeRequirementQualityAssociationExamplePayload } from "../../example
 import { removeRequirementQualityAssociationInputs } from "../../inputs";
 import { removeRequirementQualityAssociationOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const removeRequirementQualityAssociation = action({
   display: {
     label: "Remove Requirement Quality Association",

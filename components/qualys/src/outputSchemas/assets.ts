@@ -39,7 +39,9 @@ export const listAssetsOutputSchema = {
     },
   },
 };
+
 export const getAssetOutputSchema = listAssetsOutputSchema;
+
 export const syncAssetOutputSchema = {
   type: "object" as const,
   properties: {

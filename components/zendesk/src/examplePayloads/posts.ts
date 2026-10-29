@@ -1,5 +1,6 @@
 import type { Post } from "../types";
 import { paginationAttributes } from "./general";
+
 const createPostRaw = {
   post: {
     author_id: 888887,
@@ -9,6 +10,7 @@ const createPostRaw = {
     title: "Post title",
   },
 };
+
 const listPostsRaw = {
   ...paginationAttributes,
   posts: [
@@ -18,26 +20,19 @@ const listPostsRaw = {
     },
   ],
 };
-export const createPostExamplePayload: {
-  data: {
-    post: Post;
-  };
-} = {
+
+export const createPostExamplePayload: { data: { post: Post } } = {
   data: createPostRaw,
 };
+
 export const deletePostExamplePayload = { data: "" };
-export const getPostExamplePayload: {
-  data: {
-    post: Post;
-  };
-} = {
+
+export const getPostExamplePayload: { data: { post: Post } } = {
   data: createPostRaw,
 };
+
 export const listPostsExamplePayload = { data: listPostsRaw };
-export const updatePostExamplePayload: {
-  data: {
-    post: Post;
-  };
-} = {
+
+export const updatePostExamplePayload: { data: { post: Post } } = {
   data: createPostRaw,
 };

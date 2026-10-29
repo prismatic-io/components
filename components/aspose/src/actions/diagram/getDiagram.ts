@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getAsposeClient } from "../../client";
 import { getDiagramExamplePayload } from "../../examplePayloads";
 import { connection, diagramName, folderPath, format } from "../../inputs";
+
 export const getDiagram = action({
   display: {
     label: "Get Diagram",
@@ -20,12 +21,14 @@ export const getDiagram = action({
   },
   perform: async (context, { connection, diagramName, format, folder }) => {
     const client = await getAsposeClient(connection, context.debug.enabled);
+
     const { data } = await client.get(`/diagram/${diagramName}`, {
       params: {
         format: format || undefined,
         folder: folder || undefined,
       },
     });
+
     return { data };
   },
   examplePayload: getDiagramExamplePayload,

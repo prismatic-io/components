@@ -26,6 +26,7 @@ import {
   fetchAll,
 } from "../inputs";
 import { paginateResults } from "../utils";
+
 const listChannels = action({
   display: {
     label: "List Channels",
@@ -37,6 +38,7 @@ const listChannels = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const data = await paginateResults(
       client,
       `/teams/${params.teamId}/channels`,
@@ -46,6 +48,7 @@ const listChannels = action({
         $select: params.select,
       },
     );
+
     return { data };
   },
   inputs: {
@@ -58,6 +61,7 @@ const listChannels = action({
   },
   examplePayload: listChannelsExamplePayload,
 });
+
 const getChannel = action({
   display: {
     label: "Get Channel",
@@ -69,6 +73,7 @@ const getChannel = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.get(
       `/teams/${params.teamId}/channels/${params.channelId}`,
     );
@@ -76,6 +81,7 @@ const getChannel = action({
   },
   inputs: { connection, teamId, channelId, timeout },
 });
+
 const deleteChannel = action({
   display: {
     label: "Delete Channel",
@@ -87,6 +93,7 @@ const deleteChannel = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(
       `/teams/${params.teamId}/channels/${params.channelId}`,
     );
@@ -94,6 +101,7 @@ const deleteChannel = action({
   },
   inputs: { connection, teamId, channelId, timeout },
 });
+
 const createChannel = action({
   display: {
     label: "Create Channel",
@@ -116,6 +124,7 @@ const createChannel = action({
       timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/teams/${teamId}/channels`, {
       displayName: channelName,
       description: channelDescription,
@@ -134,6 +143,7 @@ const createChannel = action({
     timeout,
   },
 });
+
 const updateChannel = action({
   display: {
     label: "Update Channel",
@@ -156,6 +166,7 @@ const updateChannel = action({
       timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.patch(
       `/teams/${teamId}/channels/${channelId}`,
       {
@@ -176,6 +187,7 @@ const updateChannel = action({
     timeout,
   },
 });
+
 const sendChannelMessage = action({
   display: {
     label: "Send Message To Channel",
@@ -198,6 +210,7 @@ const sendChannelMessage = action({
       timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       `/teams/${teamId}/channels/${channelId}/messages`,
       {
@@ -220,6 +233,7 @@ const sendChannelMessage = action({
     importance,
   },
 });
+
 const sendChannelAdaptiveCard = action({
   display: {
     label: "Send Adaptive Card To Channel",
@@ -234,6 +248,7 @@ const sendChannelAdaptiveCard = action({
       timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       `/teams/${teamId}/channels/${channelId}/messages`,
       {
@@ -265,6 +280,7 @@ const sendChannelAdaptiveCard = action({
     timeout,
   },
 });
+
 const listChannelMessages = action({
   display: {
     label: "List Channel Messages",
@@ -276,6 +292,7 @@ const listChannelMessages = action({
       params.timeout,
       context.debug.enabled,
     );
+
     const { data } = await client.get(
       `/teams/${params.teamId}/channels/${params.channelId}/messages`,
       {
@@ -305,6 +322,7 @@ const listChannelMessages = action({
   },
   examplePayload: listChannelMessagesExamplePayload,
 });
+
 export default {
   listChannels,
   getChannel,

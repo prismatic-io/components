@@ -1,15 +1,18 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createBambooClient } from "../client";
 import { connectionInput, employeeId } from "../inputs";
+
 interface EmployeeFile {
   id: number;
   name: string;
 }
+
 interface EmployeeFileCategory {
   id: number;
   name: string;
   files: EmployeeFile[];
 }
+
 export const selectEmployeeFile = dataSource({
   display: {
     label: "Select Employee File",
@@ -27,9 +30,10 @@ export const selectEmployeeFile = dataSource({
     const client = createBambooClient(connection, false);
     const {
       data: { categories },
-    } = await client.get<{
-      categories: EmployeeFileCategory[];
-    }>(`/v1/employees/${employeeId}/files/view`);
+    } = await client.get<{ categories: EmployeeFileCategory[] }>(
+      `/v1/employees/${employeeId}/files/view`,
+    );
+
     const result: Element[] = categories
       .flatMap((category) =>
         category.files.map((file) => ({
@@ -38,6 +42,7 @@ export const selectEmployeeFile = dataSource({
         })),
       )
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

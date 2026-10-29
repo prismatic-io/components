@@ -13,54 +13,67 @@ import {
   splitIssueChanges,
   toOptionalNumber,
 } from "./utils";
+
 describe("cleanString", () => {
   test("returns the trimmed string for a valid value", () => {
     expect(cleanString("octocat")).toBe("octocat");
   });
+
   test("returns undefined for an empty string", () => {
     expect(cleanString("")).toBeUndefined();
   });
+
   test("returns undefined for undefined", () => {
     expect(cleanString(undefined)).toBeUndefined();
   });
 });
+
 describe("toOptionalNumber", () => {
   test("parses a numeric string to a number", () => {
     expect(toOptionalNumber("5")).toBe(5);
   });
+
   test("returns undefined for an empty string", () => {
     expect(toOptionalNumber("")).toBeUndefined();
   });
+
   test("returns undefined for '0' because of the || undefined coalesce", () => {
     expect(toOptionalNumber("0")).toBeUndefined();
   });
 });
+
 describe("lookBackDateClean", () => {
   test("returns '' for an empty string", () => {
     expect(lookBackDateClean("")).toBe("");
   });
+
   test("returns '' for undefined", () => {
     expect(lookBackDateClean(undefined)).toBe("");
   });
+
   test("returns an ISO timestamp for a valid YYYY-MM-DD date", () => {
     expect(lookBackDateClean("2026-01-01")).toBe("2026-01-01T00:00:00.000Z");
   });
+
   test("throws on a non-YYYY-MM-DD string", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(
       /Look-back Date must be a date in YYYY-MM-DD format/,
     );
   });
+
   test("throws on a non-calendar date such as 2026-02-31", () => {
     expect(() => lookBackDateClean("2026-02-31")).toThrow(
       /Look-back Date must be a date in YYYY-MM-DD format/,
     );
   });
+
   test("throws on a future date, mentioning the label", () => {
     expect(() => lookBackDateClean("2999-01-01")).toThrow(
       /Look-back Date cannot be a future date/,
     );
   });
 });
+
 describe("paginateResults maxRecords", () => {
   const BASE = "https://api.github.com";
   const client = createClient(
@@ -73,6 +86,7 @@ describe("paginateResults maxRecords", () => {
     link: `<${BASE}/x?page=${n}>; rel="next"`,
   });
   afterEach(() => nock.cleanAll());
+
   test("stops requesting pages once maxRecords is reached and trims to it", async () => {
     let requests = 0;
     nock(BASE)
@@ -83,12 +97,17 @@ describe("paginateResults maxRecords", () => {
       })
       .times(4)
       .reply(200, () => page(requests * 100), next(99));
-    const out = await paginateResults<{
-      id: number;
-    }>(client, "/x", true, {}, 250);
+    const out = await paginateResults<{ id: number }>(
+      client,
+      "/x",
+      true,
+      {},
+      250,
+    );
     expect(requests).toBe(3);
     expect(out).toHaveLength(250);
   });
+
   test("fetches every page when maxRecords is undefined", async () => {
     let requests = 0;
     nock(BASE)
@@ -105,22 +124,23 @@ describe("paginateResults maxRecords", () => {
         return true;
       })
       .reply(200, () => page(200));
-    const out = await paginateResults<{
-      id: number;
-    }>(client, "/x", true, {});
+    const out = await paginateResults<{ id: number }>(client, "/x", true, {});
     expect(requests).toBe(2);
     expect(out).toHaveLength(200);
   });
 });
+
 const T0 = "2026-08-19T12:00:00Z";
 const T1 = "2026-08-19T13:00:00Z";
 const T2 = "2026-08-19T14:00:00Z";
+
 describe("floorToSecond", () => {
   test("drops milliseconds and normalizes to Z", () => {
     expect(floorToSecond("2026-08-19T12:00:00.987Z")).toBe(T0);
     expect(floorToSecond(T0)).toBe(T0);
   });
 });
+
 describe("splitIssueChanges", () => {
   const cutoff = T1;
   test("created when created_at is after the cutoff, updated when before", () => {
@@ -158,6 +178,7 @@ describe("splitIssueChanges", () => {
     ]);
   });
 });
+
 describe("nextPollingState", () => {
   test("advancing drops carried ids and keeps only ids at the new watermark", () => {
     const a: GithubIssueRecord = { id: 1, updated_at: T1 };
@@ -205,6 +226,7 @@ describe("nextPollingState", () => {
     );
   });
 });
+
 describe("fetchIssuesSince", () => {
   const BASE = "https://api.github.com";
   const client = createClient(
@@ -233,6 +255,7 @@ describe("fetchIssuesSince", () => {
     return counter;
   };
   afterEach(() => nock.cleanAll());
+
   test("fetches a same-second group whole when it fills the cap, reporting the stall", async () => {
     const counter = serveSevenPages();
     const { issues, stalled } = await fetchIssuesSince(client, "/i", T1, true);
@@ -240,6 +263,7 @@ describe("fetchIssuesSince", () => {
     expect(issues).toHaveLength(700);
     expect(stalled).toBe(true);
   });
+
   test("leaves the cap alone when the group is newer than the cursor second", async () => {
     const counter = serveSevenPages();
     const { issues, stalled } = await fetchIssuesSince(client, "/i", T0, true);

@@ -11,6 +11,7 @@ import {
   subscriptionName,
   topicName,
 } from "../inputs";
+
 export const getRule = action({
   display: {
     label: "Get Rule",
@@ -51,4 +52,5 @@ export const getRule = action({
     ruleName,
   },
 });
+
 export default { getRule };

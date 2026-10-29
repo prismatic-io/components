@@ -1,10 +1,13 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
+
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanOptionalNumber = (value: unknown): number | undefined =>
   value === undefined || value === null || value === ""
     ? undefined
     : util.types.toNumber(value);
+
 export const cleanStringList = (value: unknown): string[] | undefined => {
   if (!value) return undefined;
   const values = Array.isArray(value) ? value : [value];
@@ -13,6 +16,7 @@ export const cleanStringList = (value: unknown): string[] | undefined => {
     .filter(Boolean);
   return list.length ? list : undefined;
 };
+
 export const cleanCategoryLabels = (
   value: unknown,
 ): Record<string, string> | undefined => {
@@ -22,14 +26,10 @@ export const cleanCategoryLabels = (
   );
   return Object.keys(labels).length ? labels : undefined;
 };
+
 export const cleanChecklistItems = (
   value: unknown,
-):
-  | {
-      title: string;
-      isChecked: boolean;
-    }[]
-  | undefined => {
+): { title: string; isChecked: boolean }[] | undefined => {
   const items = ((value as KeyValuePair[] | undefined) ?? []).map(
     ({ key, value: checked }) => ({
       title: util.types.toString(key),
@@ -38,14 +38,10 @@ export const cleanChecklistItems = (
   );
   return items.length ? items : undefined;
 };
+
 export const cleanReferences = (
   value: unknown,
-):
-  | {
-      url: string;
-      alias: string;
-    }[]
-  | undefined => {
+): { url: string; alias: string }[] | undefined => {
   const references = ((value as KeyValuePair[] | undefined) ?? []).map(
     ({ key, value: alias }) => ({
       url: util.types.toString(key),

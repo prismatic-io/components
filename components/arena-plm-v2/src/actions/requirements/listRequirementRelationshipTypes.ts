@@ -4,6 +4,7 @@ import { listRequirementRelationshipTypesExamplePayload } from "../../examplePay
 import { listRequirementRelationshipTypesInputs } from "../../inputs";
 import { listRequirementRelationshipTypesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listRequirementRelationshipTypes = action({
   display: {
     label: "List Requirement Relationship Types",

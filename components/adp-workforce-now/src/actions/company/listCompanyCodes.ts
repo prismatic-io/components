@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listCompanyCodesExamplePayload } from "../../examplePayloads";
 import { listCompanyCodesInputs } from "../../inputs";
 import { listCompanyCodesOutputSchema } from "../../outputSchemas";
+
 export const listCompanyCodes = action({
   display: {
     label: "List Company Codes",
@@ -26,9 +27,8 @@ export const listCompanyCodes = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCompanyCodesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCompanyCodesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listCompanyCodesOutputSchema,

@@ -9,6 +9,7 @@ import {
   description,
 } from "../../inputs";
 import { createConfigurationItemPayload } from "../../util";
+
 export const updateConfigurationItem = action({
   display: {
     label: "Update Configuration Item",

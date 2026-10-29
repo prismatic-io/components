@@ -3,6 +3,7 @@ import { getShopifyClient } from "../../client";
 import { getOrderPayload } from "../../examplePayloads";
 import { getOrderInputs } from "../../inputs";
 import { getOrderOutputSchema } from "../../outputSchemas";
+
 export const getOrder = action({
   display: {
     label: "Get Order (Deprecated)",

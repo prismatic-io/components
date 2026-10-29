@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { discussionListAttachmentsExamplePayload } from "../../examplePayloads";
 import { discussionListAttachmentsInputs } from "../../inputs";
+
 export const discussionListAttachments = action({
   display: {
     label: "List Discussion Attachments",

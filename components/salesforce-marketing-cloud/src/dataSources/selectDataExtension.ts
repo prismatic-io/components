@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { DATA_EXTENSIONS_PATH } from "../constants";
 import { connection } from "../inputs/common";
 import { paginateResults } from "../util/pagination";
+
 export const selectDataExtension = dataSource({
   display: {
     label: "Select Data Extension",
@@ -13,16 +14,20 @@ export const selectDataExtension = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const response = await paginateResults(client, DATA_EXTENSIONS_PATH, true, {
       $pageSize: 500,
     });
+
     const items = response.items ?? [];
+
     const result = items
       .map<Element>((item) => ({
         label: util.types.toString(item.name),
         key: util.types.toString(item.id),
       }))
       .sort((a, b) => (a.label ?? "").localeCompare(b.label ?? ""));
+
     return { result };
   },
   dataSourceType: "picklist",

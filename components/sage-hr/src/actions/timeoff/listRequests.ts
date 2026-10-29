@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listTimeOffRequestsExamplePayload } from "../../examplePayloads";
 import { connectionInput, fetchAll, from, page, to } from "../../inputs";
 import { fetchAllRecords } from "../../util";
+
 export const listTimeOffRequests = action({
   display: {
     label: "List Time Off Requests",
@@ -21,6 +22,7 @@ export const listTimeOffRequests = action({
       from: from || undefined,
       to: to || undefined,
     };
+
     if (fetchAll) {
       const data = await fetchAllRecords(
         client,
@@ -29,6 +31,7 @@ export const listTimeOffRequests = action({
       );
       return { data };
     }
+
     const { data } = await client.get("/leave-management/requests", {
       params: { ...params, page: page || undefined },
     });

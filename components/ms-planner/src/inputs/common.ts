@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../utils";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Microsoft Planner connection to use.",
 });
+
 export const etagInput = input({
   label: "ETag",
   type: "string",
@@ -16,6 +18,7 @@ export const etagInput = input({
     "The last known ETag of the resource being changed. Leave blank to let the action read the current ETag before writing. Supply a value to make the change conditional on that exact version, which fails with a conflict if the resource changed.",
   clean: cleanStringInput,
 });
+
 export const groupIdInput = input({
   label: "Group ID",
   type: "string",
@@ -27,6 +30,7 @@ export const groupIdInput = input({
     "The Microsoft 365 group whose plans populate the Plan ID dropdown. Only Microsoft 365 groups can hold Planner plans. Leave blank to list the plans shared with the connection's user instead.",
   clean: cleanStringInput,
 });
+
 export const planIdInput = input({
   label: "Plan ID",
   type: "string",
@@ -37,6 +41,7 @@ export const planIdInput = input({
   comments: "The unique identifier of the plan.",
   clean: util.types.toString,
 });
+
 export const bucketIdInput = input({
   label: "Bucket ID",
   type: "string",
@@ -47,6 +52,7 @@ export const bucketIdInput = input({
   comments: "The unique identifier of the bucket.",
   clean: util.types.toString,
 });
+
 export const bucketIdOptionalInput = input({
   ...bucketIdInput,
   required: false,
@@ -54,6 +60,7 @@ export const bucketIdOptionalInput = input({
     "The unique identifier of the bucket. Leave blank to leave the task in its current bucket.",
   clean: cleanStringInput,
 });
+
 export const taskIdInput = input({
   label: "Task ID",
   type: "string",

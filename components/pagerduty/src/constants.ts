@@ -1,11 +1,18 @@
 export const DEFAULT_BATCH_SIZE = 50;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const BASE_URL = "https://api.pagerduty.com";
+
 export const EVENTS_URL = "https://events.pagerduty.com/v2";
+
 export const PAGINATION_MAX_PAGE_SIZE = 100;
+
 export const PAGINATION_MAX_RECORDS = 10000;
+
 export const PAGINATION_MAX_OFFSET =
   PAGINATION_MAX_RECORDS - PAGINATION_MAX_PAGE_SIZE;
+
 export const ENDPOINTS = {
   TEMPLATES: "/templates",
   USERS: "/users",
@@ -21,6 +28,7 @@ export const ENDPOINTS = {
   CHANGE_EVENTS_BY_ID: (changeEventId: string) =>
     `/change_events/${changeEventId}`,
 };
+
 export const incidentEvents = [
   { label: "Incident Acknowledged", value: "incident.acknowledged" },
   { label: "Incident Annotated", value: "incident.annotated" },
@@ -49,6 +57,7 @@ export const incidentEvents = [
     value: "incident.workflow.completed",
   },
 ];
+
 export const serviceEvents = [
   { label: "Service Created", value: "service.created" },
   { label: "Service Deleted", value: "service.deleted" },

@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { createBranchExamplePayload } from "../../examplePayloads";
 import { createBranchInputs } from "../../inputs";
 import { createBranchOutputSchema } from "../../outputSchemas";
+
 export const createBranch = action({
   display: {
     label: "Create Branch",
@@ -22,9 +23,8 @@ export const createBranch = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createBranchExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createBranchExamplePayload,
   examplePayload: createBranchExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

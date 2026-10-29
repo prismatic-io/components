@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { createRequesterExamplePayload as examplePayload } from "../../examplePayloads";
 import { createRequesterInputs as inputs } from "../../inputs";
 import { requesterOutputSchema } from "../../outputSchemas";
+
 export const createRequester = action({
   display: {
     label: "Create Requester",
@@ -26,6 +27,7 @@ export const createRequester = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       first_name: firstName,
       primary_email: primaryEmail,
@@ -39,7 +41,9 @@ export const createRequester = action({
       address: contactInfo.address,
       ...requestersAdditionalFields,
     };
+
     const { data } = await client.post(`/requesters`, payload);
+
     return {
       data,
     };

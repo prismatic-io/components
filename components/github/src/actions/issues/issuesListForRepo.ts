@@ -5,6 +5,7 @@ import { issuesListForRepoInputs } from "../../inputs";
 import type { Issue } from "../../interfaces/Issue";
 import { issuesListForRepoOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../utils";
+
 export const issuesListForRepo = action({
   display: {
     label: "List Repository Issues",

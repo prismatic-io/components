@@ -4,6 +4,7 @@ import { deleteInventoryLevelsExamplePayload as examplePayload } from "../../../
 import { deleteInventoryLevelsInputs as inputs } from "../../../inputsGql";
 import { deleteInventoryLevelsGqlOutputSchema } from "../../../outputSchemas";
 import deleteInventoryLevelsQuery from "../queries/inventoryLevels/DeleteInventoryLevels.gql";
+
 export const deleteInventoryLevelsGql = action({
   display: {
     label: "Delete Inventory Levels",
@@ -22,6 +23,7 @@ export const deleteInventoryLevelsGql = action({
     } = await client.request(deleteInventoryLevelsQuery, {
       inventoryLevelId: levelId,
     });
+
     return {
       data: data.inventoryDeactivate,
     };

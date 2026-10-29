@@ -5,6 +5,7 @@ import { getARAdjustmentExamplePayload } from "../../examplePayloads";
 import { OBJECT_AR_ADJUSTMENT } from "../../constants";
 import { getARAdjustmentInputs } from "../../inputs";
 import { getARAdjustmentOutputSchema } from "../../outputSchemas";
+
 export const getARAdjustment = action({
   display: {
     label: "Get AR Adjustment",

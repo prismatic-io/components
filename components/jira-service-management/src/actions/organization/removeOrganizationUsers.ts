@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { SUCCESS_RESPONSE } from "../../constants";
 import { removeOrganizationUsersExamplePayload } from "../../examplePayloads";
 import { removeOrganizationUsersInputs } from "../../inputs";
+
 export const removeOrganizationUsers = action({
   display: {
     label: "Remove Users from Organization",

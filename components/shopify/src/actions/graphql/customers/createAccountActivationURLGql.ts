@@ -4,6 +4,7 @@ import { createAccountActivationURLExamplePayload as examplePayload } from "../.
 import { createAccountActivationURLInputs as inputs } from "../../../inputsGql";
 import { createAccountActivationURLGqlOutputSchema } from "../../../outputSchemas";
 import createAccountActivationURLQuery from "../queries/customers/CreateAccountActivationURL.gql";
+
 export const createAccountActivationURLGql = action({
   display: {
     label: "Create Account Activation URL",
@@ -25,6 +26,7 @@ export const createAccountActivationURLGql = action({
     } = await client.request(createAccountActivationURLQuery, {
       customerId,
     });
+
     return {
       data: data.customerGenerateAccountActivationUrl,
     };

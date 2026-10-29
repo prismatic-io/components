@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_LIMIT } from "../../constants";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
 import { deleteInstanceWebhooksOutputSchema } from "../../outputSchemas";
 import type { AsanaWebhook, PaginatedResponse } from "../../types";
+
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -21,6 +22,7 @@ export const deleteInstanceWebhooks = action({
       params.asanaConnection,
       context.debug.enabled,
     );
+
     let webhooks: AsanaWebhook[] = [];
     let offset: string | undefined;
     let stop = false;
@@ -41,14 +43,17 @@ export const deleteInstanceWebhooks = action({
         stop = true;
       }
     }
+
     const instanceWebhookUrls = Object.values(context.webhookUrls);
     const instanceWebhooks = webhooks.filter((webhook) =>
       instanceWebhookUrls.includes(webhook.target),
     );
+
     for (const webhook of instanceWebhooks) {
       context.logger.info(`Deleting webhook ${webhook.gid}...`);
       await client.delete(`/webhooks/${webhook.gid}`);
     }
+
     return { data: {} };
   },
 });

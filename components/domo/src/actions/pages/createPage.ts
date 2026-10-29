@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createPageExamplePayload } from "../../examplePayloads";
 import { createPageInputs } from "../../inputs";
 import type { CreatePageBody } from "../types/CreatePageBody";
+
 export const createPage = action({
   display: {
     label: "Create Page",
@@ -36,4 +37,5 @@ export const createPage = action({
   },
   inputs: createPageInputs,
 });
+
 export default { createPage };

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { reposDeleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { reposDeleteInstanceWebhooksInputs } from "../../inputs";
 import { fetchWebhooks } from "../../utils";
+
 export const reposDeleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",

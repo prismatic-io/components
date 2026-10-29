@@ -4,6 +4,7 @@ import { listDepartmentsExamplePayload } from "../../examplePayloads";
 import { listDepartmentsInputs } from "../../inputs";
 import type { Department } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listDepartments = action({
   display: {
     label: "List Departments",

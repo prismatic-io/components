@@ -5,6 +5,7 @@ import { deactivateFlowInputs } from "../../inputs";
 import { deactivateFlowFunction, processMetadataResult } from "../../util";
 import { generateApiName } from "../../util";
 import { deactivateFlowExamplePayload } from "../../examplePayloads";
+
 export const deactivateFlow = action({
   display: {
     label: "Deactivate Flow",
@@ -15,12 +16,13 @@ export const deactivateFlow = action({
   perform: async (_context, { version, flowName, connection }) => {
     const client = await createSalesforceClient(connection, version);
     const fullName = generateApiName(flowName);
+
     const result = await deactivateFlowFunction(client, fullName);
+
     return { data: processMetadataResult(result) };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deactivateFlowExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deactivateFlowExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: saveFlowOutputSchema,

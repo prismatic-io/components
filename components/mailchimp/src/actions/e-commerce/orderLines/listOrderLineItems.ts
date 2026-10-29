@@ -9,6 +9,7 @@ import {
   connectionInput,
 } from "../../../inputs";
 import { paginatedRequest } from "../../../utils/pagination";
+
 export const listOrderLineItems = action({
   display: {
     label: "List Order Line Items",
@@ -16,6 +17,7 @@ export const listOrderLineItems = action({
   },
   perform: async (context, params) => {
     const client = await createClient(params.connection, context.debug.enabled);
+
     return paginatedRequest({
       client,
       endpoint: `/ecommerce/stores/${params.storeId}/orders/${params.orderId}/lines`,
@@ -34,4 +36,5 @@ export const listOrderLineItems = action({
     connection: connectionInput,
   },
 });
+
 export default listOrderLineItems;

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { mergePersonsInputs } from "../../inputs";
 import { mergePersonsExamplePayload } from "../../examplePayloads";
 import { mergePersonsOutputSchema } from "../../outputSchemas";
+
 export const mergePersons = action({
   display: {
     label: "Merge Persons",

@@ -5,6 +5,7 @@ import { listDataChangesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { listDataChangesInputs } from "../../inputs";
 import { listDataChangesOutputSchema } from "../../outputSchemas";
+
 export const listDataChanges = action({
   display: {
     label: "List Data Changes",

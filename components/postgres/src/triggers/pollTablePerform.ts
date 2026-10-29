@@ -18,25 +18,24 @@ import {
   resolveStartCursor,
   splitPage,
 } from "../util";
+
 interface FetchPageParams {
   tableName: string;
   cursorField: string;
   cursor: CursorValue;
   pageSize: number;
 }
+
 interface Page {
   emit: PollTableRow[];
   nextCursor: CursorValue | null;
 }
+
 type Queryable = {
   manyOrNone: (query: string, values: unknown) => Promise<PollTableRow[]>;
-  one: (
-    query: string,
-    values: unknown,
-  ) => Promise<{
-    cursor: CursorValue;
-  }>;
+  one: (query: string, values: unknown) => Promise<{ cursor: CursorValue }>;
 };
+
 export const fetchPage = async (
   db: Queryable,
   { tableName, cursorField, cursor, pageSize }: FetchPageParams,
@@ -47,6 +46,7 @@ export const fetchPage = async (
     cursor,
     limit: pageSize + 1,
   });
+
   const split = splitPage(rows, cursorField, pageSize);
   if (split.kind === "drained") {
     return { emit: split.emit, nextCursor: null };
@@ -54,6 +54,7 @@ export const fetchPage = async (
   if (split.kind === "more") {
     return { emit: split.emit, nextCursor: split.nextCursor };
   }
+
   const remainder = await db.manyOrNone(REMAINDER_QUERY, {
     table: tableName,
     cursorField,
@@ -61,6 +62,7 @@ export const fetchPage = async (
   });
   return { emit: remainder, nextCursor: null };
 };
+
 export const pollTablePerform = async (
   context: PollingContext,
   payload: TriggerPayload,
@@ -70,12 +72,15 @@ export const pollTablePerform = async (
     connection: params.postgresConnection,
     castTimestampsToString: params.castTimestampsToString,
   });
+
   try {
     const state = context.polling.getState() as PollingState;
     const incoming = (payload.paginationState as PaginationState | undefined)
       ?.cursor;
     const isPlatformDrivenRound = incoming !== undefined;
+
     const start = resolveStartCursor({ incoming, state, params });
+
     if (start === null) {
       const { cursor } = await db.one(MAX_CURSOR_QUERY, {
         cursorField: params.cursorField,
@@ -94,6 +99,7 @@ export const pollTablePerform = async (
         polledNoChanges: !isPlatformDrivenRound,
       };
     }
+
     const { emit, nextCursor } = await fetchPage(db, {
       tableName: params.tableName,
       cursorField: params.cursorField,
@@ -103,6 +109,7 @@ export const pollTablePerform = async (
         params.maxRecordsPerRecurrence,
       ),
     });
+
     context.polling.setState(
       nextCursor === null
         ? ({
@@ -120,6 +127,7 @@ export const pollTablePerform = async (
             inFlightCursor: nextCursor,
           } satisfies PollingState),
     );
+
     return {
       payload: {
         ...payload,

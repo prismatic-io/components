@@ -5,6 +5,7 @@ import { updateItemFileAssociationInputs } from "../../inputs";
 import { itemFileSchema } from "../../outputSchemas";
 import type { ItemFileUpdateVo, ItemFileVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const updateItemFileAssociation = action({
   display: {
     label: "Update Item File Association",
@@ -29,24 +30,30 @@ export const updateItemFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Updating item file association", {
         itemGuid,
         itemFileAssociationGuid,
         latestEditionAssociation,
         primary,
       });
+
       const requestBody: ItemFileUpdateVo = {};
+
       if (latestEditionAssociation !== undefined) {
         requestBody.latestEditionAssociation = latestEditionAssociation;
       }
+
       if (primary !== undefined) {
         requestBody.primary = primary;
       }
+
       const response = await client.put(
         `/items/${itemGuid}/files/${itemFileAssociationGuid}`,
         requestBody,
       );
       const fileAssociation: ItemFileVo = response.data;
+
       context.logger.info("Item file association updated successfully", {
         itemGuid,
         itemFileAssociationGuid,
@@ -55,6 +62,7 @@ export const updateItemFileAssociation = action({
         primary: fileAssociation.primary,
         latestEditionAssociation: fileAssociation.latestEditionAssociation,
       });
+
       return { data: fileAssociation };
     } catch (error) {
       handleArenaError(

@@ -1,4 +1,5 @@
 import type { Contact } from "./Contact";
+
 export interface Invoice {
   Type: string;
   InvoiceID: string;

@@ -26,6 +26,7 @@ import {
   type,
   website,
 } from "./fields";
+
 const shippingAddress = structuredObjectInput({
   label: "Shipping Address",
   required: false,
@@ -33,6 +34,7 @@ const shippingAddress = structuredObjectInput({
     "Street, city, state, postal code, and country for the shipping address.",
   inputs: { street, city, state, postalCode, country },
 });
+
 const billingAddress = structuredObjectInput({
   label: "Billing Address",
   required: false,
@@ -46,6 +48,7 @@ const billingAddress = structuredObjectInput({
     billingCountry,
   },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -59,6 +62,7 @@ const additionalFields = structuredObjectInput({
     revenue,
   },
 });
+
 export const createAccountInputs = {
   name,
   type,
@@ -71,12 +75,14 @@ export const createAccountInputs = {
   additionalFields,
   connection: connectionInput,
 };
+
 export const deleteAccountInputs = {
   recordId,
   version,
   fieldValues,
   connection: connectionInput,
 };
+
 export const updateAccountInputs = {
   recordId,
   name,

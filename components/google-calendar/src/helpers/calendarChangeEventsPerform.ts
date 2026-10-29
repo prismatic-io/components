@@ -16,6 +16,7 @@ import { getBase64FromUrl } from "../utils";
 import { listAllEvents } from "./listAllEvents";
 import { manageWatch } from "./manageWatch";
 import { retrieveIncrementalChanges } from "./retrieveIncrementalChanges";
+
 export const calendarChangeEventsPerform = async (
   context: ActionContext,
   payload: TriggerPayload,
@@ -29,14 +30,18 @@ export const calendarChangeEventsPerform = async (
   const previousWatch = context.crossFlowState[stateKey] as
     | CalendarWatch
     | undefined;
+
   if (!previousWatch) {
     throw new Error("No previous watch found in state");
   }
+
   if (invokeType === "Scheduled") {
     if (context.debug.enabled)
       context.logger.info("Scheduled renewal triggered");
+
     const calendar = createClient({ connection });
     const newChannelId = uuidv4();
+
     const watchResult = await manageWatch({
       calendar,
       calendarId,
@@ -45,29 +50,38 @@ export const calendarChangeEventsPerform = async (
       logger: context.logger,
       previousWatch,
     });
+
     context.crossFlowState[stateKey] = watchResult;
+
     payload.body.data = watchResult;
+
     return {
       payload,
       branch: "Log Messages",
       response: { statusCode: 200, contentType: "application/json" },
     };
   }
+
   let changeDetails = null;
+
   const resourceState = headers["x-goog-resource-state"];
   const resourceId = headers["x-goog-resource-id"];
   const changedFields = headers["x-goog-changed"];
   const channelId = headers["x-goog-channel-id"];
+
   const isValidChannel = channelId === previousWatch.channelId;
   const isValidResource = resourceId === previousWatch.resourceId;
+
   if (!isValidChannel || !isValidResource) {
     throw new Error(
       "Unauthorized webhook call: Channel or resource ID mismatch",
     );
   }
+
   if (resourceState === ResourceState.SYNC) {
     if (context.debug.enabled)
       context.logger.info("Sync notification received");
+
     payload.body.data = {
       notification: {
         resourceState,
@@ -76,44 +90,55 @@ export const calendarChangeEventsPerform = async (
         type: "sync",
       },
     };
+
     return {
       payload,
       branch: "Log Messages",
       response: { statusCode: 200, contentType: "application/json" },
     };
   }
+
   if (context.debug.enabled) context.logger.info("Notification received");
+
   if (resourceState === ResourceState.EXISTS) {
     const calendar = createClient({ connection });
+
     let calendarInfo = null;
     let changes: CategorizedEventChanges | null = null;
     let syncExpired = false;
+
     const calendarResponse = await calendar.calendars.get({
       calendarId,
     });
+
     calendarInfo = {
       id: calendarResponse.data.id,
       summary: calendarResponse.data.summary,
       description: calendarResponse.data.description,
       timeZone: calendarResponse.data.timeZone,
     };
+
     const syncStateKey = `${stateKey}_syncToken`;
     const previousSyncToken = context.crossFlowState[syncStateKey] as
       | string
       | undefined;
+
     let changedEvents: ProcessedEvent[] = [];
     let newSyncToken: string | undefined;
+
     if (!previousSyncToken) {
       throw new Error("No sync token found in state");
     }
     try {
       if (context.debug.enabled)
         context.logger.info("Using sync token to fetch incremental changes");
+
       const eventsResponse = await retrieveIncrementalChanges(
         connection,
         calendarId,
         previousSyncToken,
       );
+
       if (eventsResponse.events && eventsResponse.events.length > 0) {
         changedEvents = eventsResponse.events.map((event) => {
           let changeType: ProcessedEvent["changeType"];
@@ -127,6 +152,7 @@ export const calendarChangeEventsPerform = async (
             changeType =
               updatedTime - createdTime < 1000 ? "created" : "updated";
           }
+
           const processedEvent: ProcessedEvent = {
             changeType,
             id: event.id,
@@ -147,16 +173,15 @@ export const calendarChangeEventsPerform = async (
             recurringEventId: event.recurringEventId,
             htmlLink: event.htmlLink,
           };
+
           return processedEvent;
         });
       }
+
       newSyncToken = eventsResponse.nextSyncToken;
     } catch (e: unknown) {
-      const syncError = e as Error & {
-        response?: {
-          status: number;
-        };
-      };
+      const syncError = e as Error & { response?: { status: number } };
+
       if (syncError?.response?.status === 410) {
         context.logger.warn("Sync token expired, re-establishing baseline");
         syncExpired = true;
@@ -179,12 +204,15 @@ export const calendarChangeEventsPerform = async (
         throw syncError;
       }
     }
+
     if (!newSyncToken) {
       throw new Error("No new sync token found to continue incremental sync");
     }
+
     context.crossFlowState[syncStateKey] = newSyncToken;
     if (context.debug.enabled)
       context.logger.info("Updated sync token for next incremental sync");
+
     if (syncExpired) {
       changes = {
         summary: {
@@ -219,6 +247,7 @@ export const calendarChangeEventsPerform = async (
       const deletedEvents = changedEvents.filter(
         (e) => e.changeType === "deleted",
       );
+
       changes = {
         summary: {
           totalChanges: changedEvents.length,
@@ -256,7 +285,9 @@ export const calendarChangeEventsPerform = async (
       },
     };
   }
+
   payload.body.data = changeDetails;
+
   return {
     payload,
     branch: "Push Notifications",

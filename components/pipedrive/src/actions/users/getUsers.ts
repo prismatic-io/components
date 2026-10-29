@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUsersInputs } from "../../inputs";
 import { getUsersExamplePayload } from "../../examplePayloads";
 import { getUsersOutputSchema } from "../../outputSchemas";
+
 export const getUsers = action({
   display: {
     label: "Get Users",

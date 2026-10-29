@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateTableInputs } from "../../inputs";
+
 export const updateTable = action({
   display: {
     description: "Updates information in an existing table.",

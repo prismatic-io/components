@@ -26,6 +26,7 @@ import {
 } from "../../inputs/customers/createCustomerInputs";
 import { connectionInput } from "../../inputs/general";
 import type { Customer } from "../../interfaces";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -48,6 +49,7 @@ export const createCustomer = action({
       taxRegistrationNumber,
       type,
       blocked,
+
       shipmentMethodId,
       paymentMethodId,
       currencyCode,
@@ -89,6 +91,7 @@ export const createCustomer = action({
       `/companies(${companyId})/customers`,
       payload,
     );
+
     return {
       data,
     };

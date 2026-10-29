@@ -4,6 +4,7 @@ import { updateMergeRequestExamplePayload } from "../../examplePayloads";
 import { updateMergeRequestInputs } from "../../inputs";
 import { updateMergeRequestOutputSchema } from "../../outputSchemas";
 import { requireAnyUpdate } from "../../utils";
+
 export const updateMergeRequest = action({
   display: {
     label: "Update Merge Request",
@@ -45,9 +46,8 @@ export const updateMergeRequest = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateMergeRequestExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateMergeRequestExamplePayload,
   examplePayload: updateMergeRequestExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

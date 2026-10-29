@@ -5,6 +5,7 @@ const leadLabelRecord = {
   add_time: "2024-06-15 10:00:00",
   update_time: "2024-06-15 10:00:00",
 };
+
 export const getLeadLabelsExamplePayload = {
   data: {
     success: true,
@@ -27,18 +28,21 @@ export const getLeadLabelsExamplePayload = {
     ],
   },
 };
+
 export const addLeadLabelExamplePayload = {
   data: {
     success: true,
     data: leadLabelRecord,
   },
 };
+
 export const updateLeadLabelExamplePayload = {
   data: {
     success: true,
     data: leadLabelRecord,
   },
 };
+
 export const deleteLeadLabelExamplePayload = {
   data: {
     success: true,

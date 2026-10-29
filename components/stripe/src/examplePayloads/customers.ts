@@ -36,8 +36,11 @@ export const getCustomerExamplePayload = {
     test_clock: null,
   } as unknown,
 };
+
 export const createCustomerExamplePayload = getCustomerExamplePayload;
+
 export const updateCustomerExamplePayload = getCustomerExamplePayload;
+
 export const deleteCustomerExamplePayload = {
   data: {
     id: "cus_NffrFeUfNV2Hib",
@@ -45,6 +48,7 @@ export const deleteCustomerExamplePayload = {
     deleted: true,
   } as unknown,
 };
+
 export const listCustomersExamplePayload = {
   data: {
     object: "list",

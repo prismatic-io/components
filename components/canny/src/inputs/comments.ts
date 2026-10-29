@@ -12,6 +12,7 @@ import {
   postId,
   postIdOptional,
 } from "./common";
+
 const commentId = input({
   label: "Comment ID",
   type: "string",
@@ -21,6 +22,7 @@ const commentId = input({
   placeholder: "Enter comment ID",
   example: "553c3ef8b8cdcd1501ba2222",
 });
+
 const commentAuthorId = input({
   label: "Author ID",
   type: "string",
@@ -31,6 +33,7 @@ const commentAuthorId = input({
   placeholder: "Enter author ID",
   example: "553c3ef8b8cdcd1501ba9999",
 });
+
 const commentValue = input({
   label: "Comment Text",
   type: "text",
@@ -40,6 +43,7 @@ const commentValue = input({
   placeholder: "Enter comment text",
   example: "Great idea! We should prioritize this.",
 });
+
 const internal = input({
   label: "Internal",
   type: "boolean",
@@ -48,6 +52,7 @@ const internal = input({
     "When true, the comment is internal-only and not visible to end users.",
   clean: util.types.toBool,
 });
+
 const parentId = input({
   label: "Parent Comment ID",
   type: "string",
@@ -57,6 +62,7 @@ const parentId = input({
   placeholder: "Enter parent comment ID",
   example: "553c3ef8b8cdcd1501ba2222",
 });
+
 export const listCommentsInputs = {
   connection,
   boardId,
@@ -66,7 +72,9 @@ export const listCommentsInputs = {
   fetchAll,
   pagination: cursorPagination,
 };
+
 export const retrieveCommentInputs = { connection, commentId };
+
 const createCommentAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -74,6 +82,7 @@ const createCommentAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Internal, Image URLs, and Additional Fields.",
   inputs: { internal, imageURLs, additionalFields },
 });
+
 export const createCommentInputs = {
   connection,
   postId,
@@ -82,4 +91,5 @@ export const createCommentInputs = {
   parentId,
   additionalFields: createCommentAdditionalFields,
 };
+
 export const deleteCommentInputs = { connection, commentId };

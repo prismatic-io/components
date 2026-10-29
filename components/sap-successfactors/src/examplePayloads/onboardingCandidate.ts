@@ -35,19 +35,24 @@ const onboardingCandidateInfo = {
   lastModifiedBy: "admin",
   lastModifiedDateTime: "/Date(1673884433000)/",
 };
+
 export const createOnboardingCandidateInfoExamplePayload = {
   data: {
     d: onboardingCandidateInfo,
   },
 };
+
 export const getOnboardingCandidateInfoExamplePayload =
   createOnboardingCandidateInfoExamplePayload;
+
 export const listOnboardingCandidateInfoExamplePayload = {
   data: [onboardingCandidateInfo],
 };
+
 export const updateOnboardingCandidateInfoExamplePayload = {
   data: "",
 };
+
 export const deleteOnboardingCandidateInfoExamplePayload = {
   data: "",
 };

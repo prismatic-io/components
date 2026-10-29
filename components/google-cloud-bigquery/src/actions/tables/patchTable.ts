@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { patchTableInputs } from "../../inputs";
+
 export const patchTable = action({
   display: {
     description: "Patch information in an existing table.",

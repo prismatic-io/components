@@ -2,6 +2,7 @@ import type { Connection } from "@prismatic-io/spectral";
 import { ConnectionError, util } from "@prismatic-io/spectral";
 import type { config as Config } from "mssql";
 import { ConnectionPool } from "mssql";
+
 const createBasicConfig = (
   sqlConnection: Connection,
   timeout: number,
@@ -9,6 +10,7 @@ const createBasicConfig = (
   const connectionTimeout = sqlConnection.fields.connectionTimeout
     ? util.types.toInt(sqlConnection.fields.connectionTimeout)
     : 15000;
+
   return {
     port: util.types.toInt(sqlConnection.fields.port),
     server: util.types.toString(sqlConnection.fields.host),
@@ -26,6 +28,7 @@ const createBasicConfig = (
     },
   };
 };
+
 const createAzureADConfig = (
   sqlConnection: Connection,
   timeout: number,
@@ -33,6 +36,7 @@ const createAzureADConfig = (
   const connectionTimeout = sqlConnection.fields.connectionTimeout
     ? util.types.toInt(sqlConnection.fields.connectionTimeout)
     : 15000;
+
   return {
     port: util.types.toInt(sqlConnection.fields.port),
     server: util.types.toString(sqlConnection.fields.host),
@@ -55,12 +59,14 @@ const createAzureADConfig = (
     },
   };
 };
+
 export const createConnectionPool = (
   sqlConnection: Connection,
   timeout = 60000,
   debug = false,
 ) => {
   let config: Config;
+
   switch (sqlConnection.key) {
     case "basic":
       config = createBasicConfig(sqlConnection, timeout);
@@ -74,6 +80,7 @@ export const createConnectionPool = (
         `Unsupported authorization method ${sqlConnection.key}.`,
       );
   }
+
   if (debug) {
     const { authentication, ...safeConfig } = config as Config & {
       authentication?: unknown;
@@ -83,5 +90,6 @@ export const createConnectionPool = (
       JSON.stringify({ ...safeConfig, password: undefined }, null, 2),
     );
   }
+
   return new ConnectionPool(config);
 };

@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { updateArticleExamplePayload } from "../../examplePayloads";
 import { updateArticleInputs } from "../../inputs";
 import { updateArticleOutputSchema } from "../../outputSchemas";
+
 export const updateArticle = action({
   display: {
     label: "Update Article",
@@ -42,6 +43,7 @@ export const updateArticle = action({
         },
       },
     );
+
     return {
       data,
     };

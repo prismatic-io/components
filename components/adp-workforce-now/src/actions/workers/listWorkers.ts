@@ -4,6 +4,7 @@ import { listWorkersExamplePayload } from "../../examplePayloads";
 import { listWorkersInputs } from "../../inputs";
 import type { Worker } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listWorkers = action({
   display: {
     label: "List Workers",
@@ -43,8 +44,7 @@ export const listWorkers = action({
       },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listWorkersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listWorkersExamplePayload,
   examplePayload: listWorkersExamplePayload,
 });

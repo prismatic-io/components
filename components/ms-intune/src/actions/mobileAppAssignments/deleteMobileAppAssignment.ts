@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS, NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../constants";
 import { deleteMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { deleteMobileAppAssignmentInputs } from "../../inputs";
+
 export const deleteMobileAppAssignment = action({
   display: {
     label: "Delete Mobile App Assignment",
@@ -16,6 +17,7 @@ export const deleteMobileAppAssignment = action({
     await client.delete(
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments/${mobileAppAssignmentId}`,
     );
+
     return {
       data: NO_RESPONSE_SUCCESSFULL_PAYLOAD,
     };

@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getProjectExamplePayload } from "../../examplePayloads";
 import { getProjectInputs } from "../../inputs";
 import { getTableauClient } from "../../util";
+
 export const getProject = action({
   display: {
     label: "Get Project",
@@ -19,6 +20,7 @@ export const getProject = action({
         filter: `name:eq:${params.projectName}`,
       },
     });
+
     return {
       data: response.data,
     };

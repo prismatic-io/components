@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { capturePaymentIntentExamplePayload } from "../../examplePayloads/paymentIntents";
 import { capturePaymentIntentInputs } from "../../inputs";
 import { paymentIntentOutputSchema } from "../../outputSchemas";
+
 export const capturePaymentIntent = action({
   display: {
     label: "Capture Payment Intent",
@@ -41,13 +42,12 @@ export const capturePaymentIntent = action({
   examplePerform: async (
     _context,
     { paymentIntentId, amountToCapture, metadata, additionalFields },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const intent = capturePaymentIntentExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...intent,
@@ -71,5 +71,6 @@ export const capturePaymentIntent = action({
     type: "actionOutput",
     schema: paymentIntentOutputSchema,
   }),
+
   examplePayload: capturePaymentIntentExamplePayload,
 });

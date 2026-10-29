@@ -8,6 +8,7 @@ import {
   toPollResourceType,
 } from "../utils";
 import { connectionInput, project, projects } from "./common";
+
 const secretToken = input({
   label: "Secret Token",
   placeholder: "Enter secret token",
@@ -18,6 +19,7 @@ const secretToken = input({
   example: "4f9c2a7e1b3d5f6a8c0e2b4d6f8a0c2e",
   clean: cleanString,
 });
+
 const events = input({
   label: "Events",
   type: "string",
@@ -27,6 +29,7 @@ const events = input({
   model: WEBHOOK_EVENTS.map(({ label, value }) => ({ label, value })),
   clean: toEventList,
 });
+
 const branchFilter = input({
   label: "Branch Filter",
   placeholder: "Enter branch filter",
@@ -37,13 +40,16 @@ const branchFilter = input({
   example: "main",
   clean: cleanString,
 });
+
 export const webhookInputs = { secretToken };
+
 export const webhookEventsInputs = {
   connection: connectionInput,
   projects,
   events,
   branchFilter,
 };
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -53,6 +59,7 @@ const pollResourceType = input({
   model: pollResourceModel,
   clean: toPollResourceType,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -63,6 +70,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -72,6 +80,7 @@ const showNewRecords = input({
     "When true, records created since the last poll are returned in the trigger payload.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -81,6 +90,7 @@ const showUpdatedRecords = input({
     "When true, records updated since the last poll are returned in the trigger payload.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   project,

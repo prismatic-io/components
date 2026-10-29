@@ -43,6 +43,7 @@ export const getJobResponse = {
     id: "A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890",
   },
 };
+
 export const listJobsResponse = [
   {
     job_stages: [
@@ -94,6 +95,7 @@ export const listJobsResponse = [
   },
   getJobResponse,
 ];
+
 export const getMediaOfJobResponse = [
   {
     original_url: "https://example.bynder.com/media/original/brand-logo.png",
@@ -154,10 +156,12 @@ export const getMediaOfJobResponse = [
     ],
   },
 ];
+
 export const updateJobResponse = {
   status: "Created",
   job_id: "E5F6A7B8-C9D0-1234-E5F6-A7B8C9D01234",
 };
+
 export const createJobResponse = {
   name: "Job Example",
   description: "Job Description",
@@ -186,6 +190,7 @@ export const createJobResponse = {
     },
   ],
 };
+
 export const getJobPresetResponse = {
   preset: {
     ID: "C3D4E5F6-A7B8-9012-C3D4-E5F6A7B89012",
@@ -207,6 +212,7 @@ export const getJobPresetResponse = {
     ],
   },
 };
+
 export const selectJobResponse = [
   {
     key: "E5F6A7B8-C9D0-1234-E5F6-A7B8C9D01234",

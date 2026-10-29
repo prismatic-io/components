@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { deleteAttachmentExamplePayload } from "../../examplePayloads";
 import { deleteAttachmentInputs } from "../../inputs";
+
 export const deleteAttachment = action({
   display: {
     label: "Delete Attachment",
@@ -17,4 +18,5 @@ export const deleteAttachment = action({
   },
   inputs: deleteAttachmentInputs,
 });
+
 export default { deleteAttachment };

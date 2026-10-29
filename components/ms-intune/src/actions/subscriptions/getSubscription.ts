@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getSubscriptionExamplePayload } from "../../examplePayloads";
 import { getSubscriptionInputs } from "../../inputs";
+
 export const getSubscription = action({
   display: {
     label: "Get Subscription",
@@ -13,6 +14,7 @@ export const getSubscription = action({
     const { data } = await client.get(
       `${ENDPOINTS.SUBSCRIPTIONS}/${subscriptionId}`,
     );
+
     return {
       data,
     };

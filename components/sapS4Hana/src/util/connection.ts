@@ -4,22 +4,27 @@ import {
   sapBasicAuthConnection,
   sapOAuthConnection,
 } from "../connections";
+
 export const getBaseUrl = (connection: Connection): string => {
   switch (connection.key) {
     case sapApiKeyConnection.key:
       return util.types.toString(connection.fields?.baseUrl);
+
     case sapBasicAuthConnection.key:
       return util.types.toString(connection.fields?.tenantUrl);
+
     case sapOAuthConnection.key: {
       const tenantId = util.types.toString(connection.fields?.tenantId);
       return `https://${tenantId}-api.s4hana.cloud.sap`;
     }
+
     default:
       return util.types.toString(
         connection.fields?.baseUrl || connection.fields?.tenantUrl,
       );
   }
 };
+
 export const getAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
@@ -29,6 +34,7 @@ export const getAuthHeaders = (
         APIKey: util.types.toString(connection.fields?.apiKey),
       };
     }
+
     case sapBasicAuthConnection.key: {
       const username = util.types.toString(connection.fields?.username);
       const password = util.types.toString(connection.fields?.password);
@@ -39,6 +45,7 @@ export const getAuthHeaders = (
         Authorization: `Basic ${credentials}`,
       };
     }
+
     case sapOAuthConnection.key: {
       const accessToken = util.types.toString(connection.token?.access_token);
       if (!accessToken) {
@@ -50,6 +57,7 @@ export const getAuthHeaders = (
         Authorization: `Bearer ${accessToken}`,
       };
     }
+
     default: {
       if (connection.fields?.apiKey) {
         return {
@@ -75,6 +83,7 @@ export const getAuthHeaders = (
     }
   }
 };
+
 export const validateConnection = (connection: Connection): void => {
   switch (connection.key) {
     case sapApiKeyConnection.key: {
@@ -90,6 +99,7 @@ export const validateConnection = (connection: Connection): void => {
       }
       break;
     }
+
     case sapBasicAuthConnection.key: {
       if (!connection.fields?.tenantUrl) {
         throw new Error("Tenant URL is required for Basic Auth connection");
@@ -101,12 +111,14 @@ export const validateConnection = (connection: Connection): void => {
       }
       break;
     }
+
     case sapOAuthConnection.key: {
       if (!connection.fields?.tenantId) {
         throw new Error("Tenant ID is required for OAuth connection");
       }
       break;
     }
+
     default:
       break;
   }

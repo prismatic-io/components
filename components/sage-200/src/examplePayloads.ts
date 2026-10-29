@@ -99,6 +99,7 @@ export const createCustomerPayload = {
     id: 82660,
   },
 };
+
 export const getCustomerPayload = {
   data: {
     reference: "ABCDE",
@@ -201,6 +202,7 @@ export const getCustomerPayload = {
     date_time_updated: "2024-05-23T22:04:22.863Z",
   },
 };
+
 export const listCustomersPayload = {
   data: [
     {
@@ -309,15 +311,19 @@ export const listCustomersPayload = {
     },
   ],
 };
+
 export const selectCustomerPayload = {
   result: [{ label: "A1 Design Services", key: "27825" }],
 };
+
 export const selectProductGroupPayload = {
   result: [{ label: "Paper Products", key: "34634" }],
 };
+
 export const selectTaxCodePayload = {
   result: [{ label: "Purchase Services ROW (Reverse Charge)", key: "16" }],
 };
+
 export const searchCustomersPayload = {
   data: [
     {
@@ -340,6 +346,7 @@ export const searchCustomersPayload = {
     },
   ],
 };
+
 export const updateCustomerPayload = {
   data: {
     reference: "ABCDE",
@@ -442,6 +449,7 @@ export const updateCustomerPayload = {
     date_time_updated: "2024-05-23T22:04:20.567Z",
   },
 };
+
 export const getCustomerContactPayload = {
   data: {
     customer_id: 27825,
@@ -458,6 +466,7 @@ export const getCustomerContactPayload = {
     date_time_updated: "2024-05-23T09:25:16.827Z",
   },
 };
+
 export const listCustomerContactsPayload = {
   data: [
     {
@@ -476,6 +485,7 @@ export const listCustomerContactsPayload = {
     },
   ],
 };
+
 export const updateCustomerContactPayload = {
   data: {
     customer_id: 27825,
@@ -492,6 +502,7 @@ export const updateCustomerContactPayload = {
     date_time_updated: "2024-05-23T09:25:16.827Z",
   },
 };
+
 export const createCustomerDeliveryAddressPayload = {
   data: {
     contact: "",
@@ -517,6 +528,7 @@ export const createCustomerDeliveryAddressPayload = {
     id: 82790,
   },
 };
+
 export const getCustomerDeliveryAddressPayload = {
   data: {
     contact: "Lee Dalkin",
@@ -544,6 +556,7 @@ export const getCustomerDeliveryAddressPayload = {
     date_time_updated: "2024-02-28T14:23:46.867Z",
   },
 };
+
 export const listCustomerDeliveryAddressesPayload = {
   data: [
     {
@@ -573,6 +586,7 @@ export const listCustomerDeliveryAddressesPayload = {
     },
   ],
 };
+
 export const updateCustomerDeliveryAddressPayload = {
   data: {
     contact: "",
@@ -600,6 +614,7 @@ export const updateCustomerDeliveryAddressPayload = {
     date_time_updated: "2024-05-23T23:33:04.58Z",
   },
 };
+
 export const getCustomerPriceBandPayload = {
   data: {
     customer_id: 27828,
@@ -609,6 +624,7 @@ export const getCustomerPriceBandPayload = {
     date_time_updated: "2024-02-28T14:23:46.01Z",
   },
 };
+
 export const listCustomerPriceBandsPayload = {
   data: [
     {
@@ -620,6 +636,7 @@ export const listCustomerPriceBandsPayload = {
     },
   ],
 };
+
 export const getPriceBandPayload = {
   data: {
     name: "Standard",
@@ -635,6 +652,7 @@ export const getPriceBandPayload = {
     date_time_updated: "2024-02-28T14:23:46.183Z",
   },
 };
+
 export const listPriceBandsPayload = {
   data: [
     {
@@ -652,6 +670,7 @@ export const listPriceBandsPayload = {
     },
   ],
 };
+
 export const listPricingSourceTypesPayload = {
   data: [
     {
@@ -661,6 +680,7 @@ export const listPricingSourceTypesPayload = {
     },
   ],
 };
+
 export const listPricingTypesPayload = {
   data: [
     {
@@ -670,6 +690,7 @@ export const listPricingTypesPayload = {
     },
   ],
 };
+
 export const getProductPayload = {
   data: {
     code: "BOARD001",
@@ -769,6 +790,7 @@ export const getProductPayload = {
     date_time_updated: "2024-05-24T00:27:17.897Z",
   },
 };
+
 export const listProductsPayload = {
   data: [
     {
@@ -870,6 +892,7 @@ export const listProductsPayload = {
     },
   ],
 };
+
 export const searchProductsPayload = {
   data: [
     {
@@ -887,6 +910,7 @@ export const searchProductsPayload = {
     },
   ],
 };
+
 export const updateProductPayload = {
   data: {
     code: "BOARD001",
@@ -986,6 +1010,7 @@ export const updateProductPayload = {
     date_time_updated: "2024-05-24T00:27:17.897Z",
   },
 };
+
 export const getProductGroupPayload = {
   data: {
     code: "0001",
@@ -1021,6 +1046,7 @@ export const getProductGroupPayload = {
     date_time_updated: "2024-02-28T14:23:46.31Z",
   },
 };
+
 export const listProductGroupsPayload = {
   data: [
     {
@@ -1058,6 +1084,7 @@ export const listProductGroupsPayload = {
     },
   ],
 };
+
 export const searchProductGroupsPayload = {
   data: [
     {
@@ -1068,6 +1095,7 @@ export const searchProductGroupsPayload = {
     },
   ],
 };
+
 export const getProductPriceViewsPayload = {
   data: [
     {
@@ -1087,11 +1115,13 @@ export const getProductPriceViewsPayload = {
     },
   ],
 };
+
 export const createSalesInvoicePayload = {
   data: {
     urn: 1327,
   },
 };
+
 export const getSalesInvoiceReturnCreditViewsPayload = {
   data: [
     {
@@ -1122,6 +1152,7 @@ export const getSalesInvoiceReturnCreditViewsPayload = {
     },
   ],
 };
+
 export const createSalesOrderPayload = {
   data: {
     is_credit_limit_exceeded: true,
@@ -1412,6 +1443,7 @@ export const createSalesOrderPayload = {
     id: 82900,
   },
 };
+
 export const getSalesOrderPayload = {
   data: {
     is_credit_limit_exceeded: true,
@@ -1500,6 +1532,7 @@ export const getSalesOrderPayload = {
     date_time_updated: "2024-02-28T14:23:45.69Z",
   },
 };
+
 export const listSalesOrderPayload = {
   data: [
     {
@@ -1590,6 +1623,7 @@ export const listSalesOrderPayload = {
     },
   ],
 };
+
 export const updateSalesOrderPayload = {
   data: {
     is_credit_limit_exceeded: true,
@@ -1928,6 +1962,7 @@ export const updateSalesOrderPayload = {
     date_time_updated: "2024-05-24T00:53:12.093Z",
   },
 };
+
 export const getTaxCodePayload = {
   data: {
     code: 16,
@@ -1941,6 +1976,7 @@ export const getTaxCodePayload = {
     date_time_updated: "2024-11-06T11:41:16.86Z",
   },
 };
+
 export const listTaxCodesPayload = {
   data: [
     {
@@ -1956,6 +1992,7 @@ export const listTaxCodesPayload = {
     },
   ],
 };
+
 export const getItemsOnSalesOrderPayload = {
   data: {
     sop_order_id: 84180,
@@ -2067,6 +2104,7 @@ export const getItemsOnSalesOrderPayload = {
     date_time_updated: "2024-05-24T08:51:22.883Z",
   },
 };
+
 export const createProductPayload = {
   data: {
     code: "PAPERA4",
@@ -2233,6 +2271,7 @@ export const createProductPayload = {
     id: 84250,
   },
 };
+
 export const getSiteAndCompanyInformationPayload = {
   data: [
     {

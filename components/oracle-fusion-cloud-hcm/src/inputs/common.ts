@@ -5,12 +5,14 @@ import {
   cleanOptionalObject,
   cleanString,
 } from "../util/transforms";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Oracle Fusion Cloud HCM connection to use.",
 });
+
 export const offset = input({
   label: "Offset",
   type: "string",
@@ -20,6 +22,7 @@ export const offset = input({
   example: "25",
   clean: util.types.toNumber,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -30,6 +33,7 @@ export const limit = input({
   example: "100",
   clean: util.types.toNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -39,6 +43,7 @@ export const pagination = structuredObjectInput({
     limit,
   },
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -48,6 +53,7 @@ export const fetchAll = input({
     "When true, retrieves every page of results and ignores the pagination offset and limit. When false, returns a single page.",
   clean: util.types.toBool,
 });
+
 export const effectiveDate = input({
   label: "Effective Date",
   type: "string",
@@ -58,6 +64,7 @@ export const effectiveDate = input({
   example: "2024-01-01",
   clean: cleanString,
 });
+
 export const expand = input({
   label: "Expand",
   type: "string",
@@ -68,6 +75,7 @@ export const expand = input({
   example: "assignments",
   clean: cleanString,
 });
+
 export const includeMetadataLinks = input({
   label: "Include Metadata Links",
   type: "boolean",
@@ -77,6 +85,7 @@ export const includeMetadataLinks = input({
     "When true, includes the metadata links (_links) in the response. When false, returns only data fields.",
   clean: cleanIncludeMetadataLinks,
 });
+
 export const personId = input({
   label: "Person ID",
   type: "string",
@@ -87,6 +96,7 @@ export const personId = input({
   example: "100000012345678",
   clean: cleanId,
 });
+
 export const additionalFields = input({
   label: "Additional Fields",
   type: "code",

@@ -5,6 +5,7 @@ import { listEventsExamplePayload } from "../../examplePayloads";
 import { listEventsInputs } from "../../inputs";
 import type { ODataAttrs, ODataQueryParams } from "../../types";
 import { computeEndpointBasedOnConnection, fetchAllData } from "../../util";
+
 export const listEvents = action({
   display: {
     label: "List Events",
@@ -13,12 +14,14 @@ export const listEvents = action({
   inputs: listEventsInputs,
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     const url = computeEndpointBasedOnConnection(
       params.connection,
       params.calendarId
         ? `/me/calendars/${params.calendarId}/events`
         : "/me/events",
     );
+
     const queryParams: ODataQueryParams = {};
     if (params.pagination?.pageLimit) {
       queryParams.$top = params.pagination.pageLimit;
@@ -26,6 +29,7 @@ export const listEvents = action({
     if (params.pagination?.pageSkip) {
       queryParams.$skip = params.pagination.pageSkip;
     }
+
     const data = await fetchAllData<Event & ODataAttrs>(
       client,
       url,

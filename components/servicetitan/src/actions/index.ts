@@ -11,6 +11,7 @@ import misc from "./misc";
 import payments from "./payments";
 import projects from "./projects";
 import technician from "./technician";
+
 export default {
   ...appointmentAssignments,
   ...appointments,

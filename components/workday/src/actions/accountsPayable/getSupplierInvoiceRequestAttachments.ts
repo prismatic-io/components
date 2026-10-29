@@ -5,6 +5,7 @@ import { getSupplierInvoiceRequestAttachmentsExamplePayload } from "../../exampl
 import { paginateResults } from "../../util/pagination";
 import { getSupplierInvoiceRequestAttachmentsInputs } from "../../inputs";
 import { getSupplierInvoiceRequestAttachmentsOutputSchema } from "../../outputSchemas";
+
 export const getSupplierInvoiceRequestAttachments = action({
   display: {
     label: "Get Supplier Invoice Request Attachments",

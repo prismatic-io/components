@@ -1,5 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
+
 const orderLineId = input({
   label: "Order Line ID",
   comments:
@@ -10,6 +11,7 @@ const orderLineId = input({
   example: "38292",
   clean: cleanStringInput,
 });
+
 export default {
   orderLineId,
 };

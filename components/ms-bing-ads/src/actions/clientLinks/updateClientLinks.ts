@@ -5,6 +5,7 @@ import { updateClientLinksExamplePayload } from "../../examplePayloads";
 import { updateClientLinksInputs } from "../../inputs/clientLinks";
 import type { OperationError, UpdateClientLinksResponse } from "../../types";
 import { toArray } from "../../util";
+
 export const updateClientLinks = action({
   display: {
     label: "Update Client Link",
@@ -19,6 +20,7 @@ export const updateClientLinks = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<UpdateClientLinksResponse>({
       debug,
       args: {
@@ -36,6 +38,7 @@ export const updateClientLinks = action({
       soapAction: SOAP_ACTION.UpdateClientLinks,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data:
         response?.OperationErrors?.OperationError ||

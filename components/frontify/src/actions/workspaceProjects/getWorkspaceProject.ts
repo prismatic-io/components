@@ -3,6 +3,7 @@ import { gql } from "graphql-request";
 import { createClient } from "../../client";
 import { getWorkspaceProjectExamplePayload as examplePayload } from "../../examplePayloads";
 import { getWorkspaceProjectInputs as inputs } from "../../inputs/workspaceProjects";
+
 export const getWorkspaceProject = action({
   display: {
     label: "Get Workspace Project",
@@ -78,6 +79,7 @@ export const getWorkspaceProject = action({
       connection,
       debug: context.debug.enabled,
     }).request(query, { projectId });
+
     return {
       data: response,
     };

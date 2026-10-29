@@ -3,6 +3,7 @@ import { createGitlabClient } from "../../client";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserOutputSchema } from "../../outputSchemas";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",

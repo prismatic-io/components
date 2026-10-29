@@ -5,6 +5,7 @@ import { selectDepartmentExamplePayload } from "../examplePayloads";
 import { selectDepartmentInputs } from "../inputs";
 import type { Department } from "../types";
 import { mapToElements } from "../util";
+
 export const selectDepartment = dataSource({
   display: {
     label: "Select Department",
@@ -14,11 +15,16 @@ export const selectDepartment = dataSource({
   inputs: selectDepartmentInputs,
   perform: async (_context, { connection, effectiveDate }) => {
     const client = createClient(connection, false);
-    const { data } = await client.get<{
-      items: Department[];
-    }>("/organizations", {
-      params: { limit: DATASOURCE_PAGE_SIZE, onlyData: "true", effectiveDate },
-    });
+    const { data } = await client.get<{ items: Department[] }>(
+      "/organizations",
+      {
+        params: {
+          limit: DATASOURCE_PAGE_SIZE,
+          onlyData: "true",
+          effectiveDate,
+        },
+      },
+    );
     const result = mapToElements(
       data.items,
       (d) => d.Name,

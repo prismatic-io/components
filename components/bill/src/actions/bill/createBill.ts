@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { createBillInputs } from "../../inputs/bill";
 import { createBillExamplePayload } from "../../examplePayloads";
+
 export const createBill = action({
   display: {
     label: "Create Bill",
@@ -27,6 +28,7 @@ export const createBill = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       obj: {
         entity: "Bill",
@@ -44,17 +46,17 @@ export const createBill = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Create/Bill.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createBillExamplePayload.data,
   }),
   inputs: createBillInputs,

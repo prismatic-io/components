@@ -4,6 +4,7 @@ import actions from "./actions";
 import triggers from "./triggers";
 import connections from "./connections";
 import datasources from "./datasources";
+
 export default component({
   key: "gong",
   public: true,

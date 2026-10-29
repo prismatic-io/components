@@ -4,6 +4,7 @@ import { listCompaniesExamplePayload } from "../../examplePayloads";
 import { listCompaniesInputs } from "../../inputs";
 import { listCompaniesOutputSchema } from "../../outputSchemas";
 import { paginateCursor } from "../../util";
+
 export const listCompanies = action({
   display: {
     label: "List Companies",
@@ -34,8 +35,7 @@ export const listCompanies = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCompaniesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCompaniesExamplePayload,
   examplePayload: listCompaniesExamplePayload,
 });

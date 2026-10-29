@@ -14,6 +14,7 @@ import dataSources from "./dataSources";
 import listColumns from "./actions/listColumns";
 import triggers from "./triggers";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export default component({
   key: "google-sheets",
   documentationUrl: "https://prismatic.io/docs/components/google-sheets/",

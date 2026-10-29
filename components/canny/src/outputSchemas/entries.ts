@@ -1,4 +1,5 @@
 import { entrySchema, idOnlySchema } from "./shared";
+
 export const listEntriesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -8,4 +9,5 @@ export const listEntriesOutputSchema = {
   required: ["entries", "hasMore"],
   additionalProperties: true,
 };
+
 export const createEntryOutputSchema = idOnlySchema;

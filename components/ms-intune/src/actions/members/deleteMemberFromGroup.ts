@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { DELETE_MEMBERS_RESPONSE_MESSAGE, ENDPOINTS } from "../../constants";
 import { deleteMemberFromGroupExamplePayload } from "../../examplePayloads";
 import { deleteMemberInputs } from "../../inputs";
+
 export const deleteMemberFromGroup = action({
   display: {
     label: "Delete Group Member",
@@ -14,6 +15,7 @@ export const deleteMemberFromGroup = action({
     await client.delete(
       `${ENDPOINTS.GROUPS}/${groupId}/members/${memberId}/$ref`,
     );
+
     return {
       data: DELETE_MEMBERS_RESPONSE_MESSAGE,
     };

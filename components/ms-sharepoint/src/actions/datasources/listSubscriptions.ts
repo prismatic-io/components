@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs";
 import { sortArray } from "../../utils";
 import type { Subscription } from "../../interfaces";
+
 export const listSubscriptions = dataSource({
   display: {
     label: "List Subscriptions",
@@ -16,6 +17,7 @@ export const listSubscriptions = dataSource({
     const { data } = await client.get<{
       value: Subscription[];
     }>("/subscriptions");
+
     return {
       result: sortArray(
         data.value.map((subscription) => {

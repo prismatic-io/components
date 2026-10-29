@@ -7,6 +7,7 @@ import {
   registrantKey,
   webinarKey,
 } from "./common";
+
 export const firstName = input({
   label: "First Name",
   comments: "The first name of the registrant.",
@@ -16,6 +17,7 @@ export const firstName = input({
   placeholder: "Enter a first name",
   clean: util.types.toString,
 });
+
 export const lastName = input({
   label: "Last Name",
   comments: "The last name of the registrant.",
@@ -25,6 +27,7 @@ export const lastName = input({
   placeholder: "Enter a last name",
   clean: util.types.toString,
 });
+
 export const email = input({
   label: "Email",
   comments: "The email address of the registrant.",
@@ -34,6 +37,7 @@ export const email = input({
   placeholder: "Enter an email address",
   clean: util.types.toString,
 });
+
 export const source = input({
   label: "Source",
   comments:
@@ -45,6 +49,7 @@ export const source = input({
   placeholder: "Enter a registration source",
   clean: toOptionalString,
 });
+
 export const address = input({
   label: "Address",
   comments: "The street address of the registrant.",
@@ -54,6 +59,7 @@ export const address = input({
   placeholder: "Enter a street address",
   clean: toOptionalString,
 });
+
 export const city = input({
   label: "City",
   comments: "The city of the registrant.",
@@ -63,6 +69,7 @@ export const city = input({
   placeholder: "Enter a city",
   clean: toOptionalString,
 });
+
 export const state = input({
   label: "State",
   comments: "The state or province of the registrant.",
@@ -72,6 +79,7 @@ export const state = input({
   placeholder: "Enter a state",
   clean: toOptionalString,
 });
+
 export const zipCode = input({
   label: "Zip Code",
   comments: "The postal code of the registrant.",
@@ -81,6 +89,7 @@ export const zipCode = input({
   placeholder: "Enter a zip code",
   clean: toOptionalString,
 });
+
 export const country = input({
   label: "Country",
   comments: "The country of the registrant.",
@@ -90,6 +99,7 @@ export const country = input({
   placeholder: "Enter a country",
   clean: toOptionalString,
 });
+
 export const phone = input({
   label: "Phone",
   comments: "The phone number of the registrant.",
@@ -99,6 +109,7 @@ export const phone = input({
   placeholder: "Enter a phone number",
   clean: toOptionalString,
 });
+
 export const organization = input({
   label: "Organization",
   comments: "The organization the registrant belongs to.",
@@ -108,6 +119,7 @@ export const organization = input({
   placeholder: "Enter an organization",
   clean: toOptionalString,
 });
+
 export const jobTitle = input({
   label: "Job Title",
   comments: "The job title of the registrant.",
@@ -117,6 +129,7 @@ export const jobTitle = input({
   placeholder: "Enter a job title",
   clean: toOptionalString,
 });
+
 export const questionAndComments = input({
   label: "Questions and Comments",
   comments: "Any questions or comments submitted by the registrant.",
@@ -126,6 +139,7 @@ export const questionAndComments = input({
   placeholder: "Enter any questions or comments",
   clean: toOptionalString,
 });
+
 export const industry = input({
   label: "Industry",
   comments: "The industry the registrant works in.",
@@ -135,6 +149,7 @@ export const industry = input({
   placeholder: "Enter an industry",
   clean: toOptionalString,
 });
+
 export const numberOfEmployees = input({
   label: "Number of Employees",
   comments: "The number of employees in the registrant's organization.",
@@ -144,6 +159,7 @@ export const numberOfEmployees = input({
   placeholder: "Enter a number of employees",
   clean: toOptionalNumber,
 });
+
 export const purchasingTimeFrame = input({
   label: "Purchasing Time Frame",
   comments: "The time frame within which the product will be purchased.",
@@ -153,6 +169,7 @@ export const purchasingTimeFrame = input({
   placeholder: "Enter a purchasing time frame",
   clean: toOptionalString,
 });
+
 export const purchasingRole = input({
   label: "Purchasing Role",
   comments: "The role of the registrant in the purchasing process.",
@@ -162,6 +179,7 @@ export const purchasingRole = input({
   placeholder: "Enter a purchasing role",
   clean: toOptionalString,
 });
+
 export const responses = input({
   label: "Responses",
   comments:
@@ -176,12 +194,14 @@ export const responses = input({
   ),
   clean: toOptionalObject,
 });
+
 export const mailingAddress = structuredObjectInput({
   label: "Address",
   required: false,
   comments: "Street address, city, state, zip code, and country.",
   inputs: { address, city, state, zipCode, country },
 });
+
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -198,6 +218,7 @@ const additionalFields = structuredObjectInput({
     responses,
   },
 });
+
 export const createRegistrantInputs = {
   connection,
   firstName,
@@ -209,18 +230,22 @@ export const createRegistrantInputs = {
   mailingAddress,
   additionalFields,
 };
+
 export const getRegistrantInputs = {
   connection,
   webinarKey,
   registrantKey,
 };
+
 export const deleteRegistrantInputs = getRegistrantInputs;
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page number and page size for paginated results.",
   inputs: { page: pageNumber, limit: pageSize },
 });
+
 export const listRegistrantsInputs = {
   connection,
   webinarKey,

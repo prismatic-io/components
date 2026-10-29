@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createJobInputs } from "../../inputs";
+
 export const createJob = action({
   display: {
     description: "Starts a new asynchronous job.",

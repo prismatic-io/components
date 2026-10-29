@@ -5,6 +5,7 @@ import { selectGroupExamplePayload } from "../examplePayloads/dataSources";
 import { selectGroupInputs } from "../inputs";
 import type { Group } from "../types";
 import { fetchAllData, TComparator } from "../util";
+
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",
@@ -21,12 +22,14 @@ export const selectGroup = dataSource({
     )) as {
       data: Group[];
     };
+
     const objects = data
       .sort(TComparator<Group>)
       .map<Element>(({ id, name }) => ({
         key: id,
         label: name,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

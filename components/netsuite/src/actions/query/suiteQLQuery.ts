@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { suiteQLQueryCustomersExamplePayload } from "../../examplePayloads";
 import { suiteQLQueryInputs } from "../../inputs";
 import { suiteQlQueryOutputSchema } from "../../outputSchemas";
+
 export const suiteQLQuery = action({
   display: {
     label: "SuiteQL Query",
@@ -30,7 +31,6 @@ export const suiteQLQuery = action({
     );
     return { data: { data, headers: headers as Record<string, string> } };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => suiteQLQueryCustomersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    suiteQLQueryCustomersExamplePayload,
 });

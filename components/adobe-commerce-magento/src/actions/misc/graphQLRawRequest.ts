@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { getConfig } from "../../client";
 import { graphQLRawRequestInputs } from "../../inputs";
+
 export const graphQLRawRequest = action({
   display: {
     label: "Raw Request (GraphQL)",

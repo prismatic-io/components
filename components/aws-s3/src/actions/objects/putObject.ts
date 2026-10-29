@@ -6,6 +6,7 @@ import { putObjectExamplePayload } from "../../examplePayloads";
 import { putObjectInputs } from "../../inputs";
 import { putObjectOutputSchema } from "../../outputSchemas";
 import { encodeTags } from "../../utils";
+
 export const putObject = action({
   display: {
     label: "Put Object",

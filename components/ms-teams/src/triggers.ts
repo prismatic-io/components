@@ -1,6 +1,7 @@
 import { HttpResponse, input, trigger, util } from "@prismatic-io/spectral";
 import { responseType } from "@prismatic-io/spectral/dist/clients/http/inputs";
 import crypto from "node:crypto";
+
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -11,6 +12,7 @@ export const webhook = trigger({
     const signingSecrets = Array.isArray(params.signingSecrets)
       ? params.signingSecrets.map((secret) => util.types.toString(secret))
       : [util.types.toString(params.signingSecrets)];
+
     const triggerResponse = JSON.parse(
       params.triggerResponse
         ? util.types.toString(params.triggerResponse)
@@ -19,13 +21,16 @@ export const webhook = trigger({
     const failedResponse = params.failedResponse
       ? JSON.parse(util.types.toString(params.failedResponse))
       : undefined;
+
     const requestBody = util.types.toString(payload.rawBody.data);
+
     const verified = signingSecrets.find((secret) => {
       const signature = crypto
         .createHmac("sha256", Buffer.from(secret, "base64"))
         .update(requestBody, "utf-8")
         .digest("base64");
       const match = `HMAC ${signature}` === payload.headers.Authorization;
+
       if (params.debugVerification) {
         console.log("Authorization Header: ", payload.headers.Authorization);
         console.log("Calculated Signature: ", `HMAC ${signature}`);
@@ -39,6 +44,7 @@ export const webhook = trigger({
     const responseBody = verified
       ? JSON.stringify(triggerResponse)
       : JSON.stringify(failedResponse ? failedResponse : triggerResponse);
+
     return Promise.resolve({
       payload,
       response: {
@@ -141,4 +147,5 @@ export const webhook = trigger({
     },
   },
 });
+
 export default { webhook };

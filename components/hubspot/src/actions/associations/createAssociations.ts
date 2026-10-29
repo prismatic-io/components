@@ -5,6 +5,7 @@ import { createAssociationsExamplePayload } from "../../examplePayloads";
 import { createAssociationsInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
 import { mapCreatedAssociations, resolveAssociationSpec } from "../../util";
+
 export const createAssociations = action({
   display: {
     label: "Create Association",
@@ -30,12 +31,14 @@ export const createAssociations = action({
       timeout,
       debugRequest,
     });
+
     const spec = await resolveAssociationSpec(
       client,
       fromObjectType,
       toObjectType,
       associateType,
     );
+
     const { data } = await client.post(
       hubspotPaths.associations(fromObjectType, toObjectType, "/batch/create"),
       {
@@ -52,6 +55,7 @@ export const createAssociations = action({
         ],
       },
     );
+
     return { data: mapCreatedAssociations(data, associateType) };
   },
   examplePerform: async () => ({

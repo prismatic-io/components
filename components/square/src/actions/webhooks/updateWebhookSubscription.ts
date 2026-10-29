@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { updateWebhookSubscriptionExamplePayload } from "../../examplePayloads";
 import { updateWebhookSubscriptionInputs } from "../../inputs";
+
 export const updateWebhookSubscription = action({
   display: {
     label: "Update Webhook Subscription",
@@ -15,12 +16,14 @@ export const updateWebhookSubscription = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.put(
       `/v2/webhooks/subscriptions/${subscriptionId}`,
       {
         subscription: updatedWebhookSubscription,
       },
     );
+
     return {
       data: response.data,
     };

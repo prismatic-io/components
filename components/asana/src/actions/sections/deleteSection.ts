@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { deleteSectionExamplePayload } from "../../examplePayloads";
 import { deleteSectionInputs } from "../../inputs";
 import { emptyResponseOutputSchema } from "../../outputSchemas";
+
 export const deleteSection = action({
   display: {
     label: "Delete Section",

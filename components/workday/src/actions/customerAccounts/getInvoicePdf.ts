@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getInvoicePdfExamplePayload } from "../../examplePayloads";
 import { getInvoicePdfInputs } from "../../inputs";
+
 export const getInvoicePdf = action({
   display: {
     label: "Get Invoice PDF",

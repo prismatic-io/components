@@ -4,6 +4,7 @@ import { getBusinessEntitiesResponse } from "../../examplePayloads/businessEntit
 import { businessEntityId, connection } from "../../inputs";
 import type { BusinessEntity } from "../../interfaces/businessEntities";
 import { getBusinessEntityOutputSchema } from "../../outputSchemas";
+
 export const getBusinessEntity = action({
   display: {
     label: "Get Business Entity",
@@ -20,6 +21,7 @@ export const getBusinessEntity = action({
   performSafety: "safe",
   perform: async (context, { connection, businessEntityId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get<BusinessEntity>(
       `/entities/${businessEntityId}`,
     );

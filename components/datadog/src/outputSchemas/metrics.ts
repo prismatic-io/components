@@ -5,6 +5,7 @@ export const listMetricsOutputSchema = {
     metrics: { type: "array", items: { type: "string" } },
   },
 };
+
 export const searchMetricsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -16,6 +17,7 @@ export const searchMetricsOutputSchema = {
     },
   },
 };
+
 export const submitMetricsOutputSchema = {
   type: "object" as const,
   properties: {

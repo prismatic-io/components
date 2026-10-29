@@ -3,6 +3,7 @@ import { createApiClient } from "../client";
 import { connection } from "../inputs";
 import type { Records } from "../types";
 import { sortArray } from "../util";
+
 export const selectOrder = dataSource({
   display: {
     label: "Select Order",
@@ -14,6 +15,7 @@ export const selectOrder = dataSource({
   perform: async (_context, { connection }) => {
     const client = createApiClient(connection, false);
     const { data } = await client.get("/store/order");
+
     if (Array.isArray(data)) {
       const objects = sortArray<Records>(data, "order_ref").map<Element>(
         (order) => ({
@@ -21,6 +23,7 @@ export const selectOrder = dataSource({
           label: `${order.order_ref} (ID: ${order.id})`,
         }),
       );
+
       return { result: objects };
     }
     return { result: [] };

@@ -3,7 +3,9 @@ import nock from "nock";
 import { rawRequestInputs } from "../../inputs";
 import { accessTokenConnection, GITLAB_URL } from "../../testHelpers";
 import { rawRequest } from "./rawRequest";
+
 afterEach(() => nock.cleanAll());
+
 const cleaned = (raw: Record<string, unknown>) =>
   Object.fromEntries(
     Object.entries(raw).map(([key, value]) => {
@@ -11,6 +13,7 @@ const cleaned = (raw: Record<string, unknown>) =>
       return [key, clean ? (clean as (v: unknown) => unknown)(value) : value];
     }),
   );
+
 const rawParams = (url: string) => ({
   url,
   method: "GET",
@@ -20,6 +23,7 @@ const rawParams = (url: string) => ({
   responseType: "json",
   timeout: "",
 });
+
 test("Raw Request sends the path under /api/v4 with the access token", async () => {
   nock(GITLAB_URL, { reqheaders: { "PRIVATE-TOKEN": "glpat-test-token" } })
     .get("/api/v4/projects/1/issues")
@@ -31,6 +35,7 @@ test("Raw Request sends the path under /api/v4 with the access token", async () 
   } as never);
   expect(result?.data).toEqual([{ id: 1 }]);
 });
+
 test("Raw Request cleans blank optional inputs to undefined", () => {
   const params = cleaned(rawParams("/projects/1/issues"));
   expect(params.data).toBeUndefined();
@@ -38,6 +43,7 @@ test("Raw Request cleans blank optional inputs to undefined", () => {
   expect(params.queryParams).toEqual({ state: "opened" });
   expect(params.headers).toEqual({});
 });
+
 test.each([
   "https://evil.example.com/api/v4/user",
   "//evil.example.com/api/v4/user",

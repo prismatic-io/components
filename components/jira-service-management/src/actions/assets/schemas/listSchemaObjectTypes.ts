@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAssetsClient } from "../../../client";
 import { listSchemaObjectTypesExamplePayload } from "../../../examplePayloads";
 import { listSchemaObjectTypesInputs } from "../../../inputs";
+
 export const listSchemaObjectTypes = action({
   display: {
     label: "List Schema Object Types",

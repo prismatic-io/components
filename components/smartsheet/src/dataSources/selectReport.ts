@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectReportInputs } from "../inputs";
+
 export const selectReport = dataSource({
   display: {
     label: "Select Report",
@@ -13,13 +14,16 @@ export const selectReport = dataSource({
     const {
       data: { data: reports },
     } = await client.get("/reports");
+
     if (!reports || !Array.isArray(reports)) {
       return { result: [] };
     }
+
     const result: Element[] = reports.map(({ name: label, id: key }) => ({
       label,
       key: util.types.toString(key),
     }));
+
     return { result };
   },
 });

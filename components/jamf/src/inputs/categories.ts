@@ -9,6 +9,7 @@ import {
   resourceId,
   sort,
 } from "./common";
+
 const categoryName = input({
   label: "Name",
   type: "string",
@@ -18,6 +19,7 @@ const categoryName = input({
   placeholder: "Enter category name",
   example: "Productivity Apps",
 });
+
 const priority = input({
   label: "Priority",
   type: "string",
@@ -29,12 +31,14 @@ const priority = input({
   placeholder: "Enter priority",
   example: "9",
 });
+
 const categoryResourceId = {
   ...resourceId,
   label: "Category",
   comments: "The unique identifier of the category.",
   dataSource: "selectCategory",
 };
+
 export const createCategoryInputs = { connection, categoryName, priority };
 export const deleteCategoryInputs = {
   connection,
@@ -47,6 +51,7 @@ const pagination = structuredObjectInput({
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const listCategoriesInputs = {
   connection,
   fetchAll,
@@ -64,6 +69,7 @@ const updateCategoryPriority = {
   default: undefined,
   clean: toOptionalNumber,
 };
+
 export const updateCategoryInputs = {
   connection,
   resourceId: categoryResourceId,

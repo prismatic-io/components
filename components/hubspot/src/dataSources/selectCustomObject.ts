@@ -4,6 +4,7 @@ import { hubspotPaths } from "../constants";
 import { selectCustomObjectExamplePayload } from "../examplePayloads";
 import { selectCustomObjectInputs } from "../inputs";
 import type { CustomObjectSchema } from "../types";
+
 export const selectCustomObject = dataSource({
   display: {
     label: "Select Custom Object",
@@ -15,7 +16,9 @@ export const selectCustomObject = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
+
     const { data } = await client.get(hubspotPaths.schemas());
+
     const result = ((data.results || []) as CustomObjectSchema[]).map<Element>(
       (item) => ({
         label: item.labels?.singular || item.name || "",

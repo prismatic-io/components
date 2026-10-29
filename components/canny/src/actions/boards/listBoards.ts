@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listBoardsExamplePayload } from "../../examplePayloads";
 import { listBoardsInputs } from "../../inputs";
 import { listBoardsOutputSchema } from "../../outputSchemas";
+
 export const listBoards = action({
   display: {
     label: "List Boards",

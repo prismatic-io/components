@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { eventTypesInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { getEventTypes, extractUuidFromUri } from "../util";
+
 export const eventTypes = dataSource({
   display: {
     label: "Select Event Type",
@@ -23,6 +24,7 @@ export const eventTypes = dataSource({
     },
   ) => {
     const client = getCalendlyClient(connection, false);
+
     const data = await getEventTypes(
       client,
       adminManaged,
@@ -32,6 +34,7 @@ export const eventTypes = dataSource({
       active,
       sort,
     );
+
     return {
       result: data.map((eventType: { name: string; uri: string }) => ({
         key: returnUuidOnly ? extractUuidFromUri(eventType.uri) : eventType.uri,

@@ -5,6 +5,7 @@ import { deleteTaskExamplePayload } from "../../examplePayloads";
 import { deleteWithEtag } from "../../utils";
 import { deleteTaskInputs } from "../../inputs";
 import { deleteTaskOutputSchema } from "../../outputSchemas";
+
 export const deleteTask = action({
   display: { label: "Delete Task", description: "Delete a task." },
   inputs: deleteTaskInputs,
@@ -20,8 +21,7 @@ export const deleteTask = action({
       data: { success: true, id: taskId, message: "Task deleted successfully" },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteTaskExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteTaskExamplePayload,
   examplePayload: deleteTaskExamplePayload,
 });

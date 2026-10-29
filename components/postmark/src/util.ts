@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const fetchAllServers = async (
   client: HttpClient,
   params?: Record<string, unknown>,
@@ -7,6 +8,7 @@ export const fetchAllServers = async (
   const allServers: unknown[] = [];
   let currentOffset = 0;
   let hasMore = true;
+
   do {
     const { data } = await client.get("/servers", {
       params: {
@@ -17,8 +19,10 @@ export const fetchAllServers = async (
     });
     const servers: unknown[] = data?.Servers || [];
     allServers.push(...servers);
+
     hasMore = allServers.length < data.TotalCount && servers.length >= pageSize;
     currentOffset += pageSize;
   } while (hasMore);
+
   return allServers;
 };

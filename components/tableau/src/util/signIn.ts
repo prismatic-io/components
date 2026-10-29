@@ -1,23 +1,24 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { AxiosError } from "axios";
+
 interface SignInResponse {
   credentials: {
     site: {
       id: string;
       contentUrl: string;
     };
-    user: {
-      id: string;
-    };
+    user: { id: string };
     token: string;
     estimatedTimeToExpiration: string;
   };
 }
+
 interface SignInParams {
   tableauConnection: Connection;
   apiVersion?: string;
 }
+
 export const signIn = async ({
   tableauConnection,
   apiVersion = "3.6",
@@ -28,6 +29,7 @@ export const signIn = async ({
       `Unsupported authorization method ${tableauConnection.key}.`,
     );
   }
+
   const client = createClient({
     baseUrl: `https://${tableauConnection.fields.hostName}/api/${apiVersion}/auth/signin`,
   });
@@ -50,6 +52,7 @@ export const signIn = async ({
         },
       },
     );
+
     return await signInResult.data;
   } catch (error) {
     const axiosError = error as AxiosError;

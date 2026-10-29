@@ -8,6 +8,7 @@ import type {
   PollingState,
 } from "../types";
 import { fetchNewOpsAlertsSince, resolveOpsAlertChanges } from "../util";
+
 export const onNewOpsAlert = pollingTrigger({
   display: {
     label: "New Ops Alerts",
@@ -32,6 +33,7 @@ export const onNewOpsAlert = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const lastPolledAtMs = new Date(lastPolledAt).getTime();
+
     const { client } = await createOpsManagementClient(
       connection,
       context.debug.enabled,
@@ -41,15 +43,18 @@ export const onNewOpsAlert = pollingTrigger({
       lastPolledAtMs,
       opsAlertAdditionalQuery,
     );
+
     context.polling.setState({ lastPolledAt: now } as unknown as Record<
       string,
       unknown
     >);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ops alerts: ${newAlerts.length} new since ${lastPolledAt}`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: newAlerts } },
       polledNoChanges: newAlerts.length === 0,

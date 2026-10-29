@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deletePersonalContactExamplePayload } from "../../examplePayloads";
 import { deletePersonalContactInputs } from "../../inputs";
 import { deletePersonalContactOutputSchema } from "../../outputSchemas";
+
 export const deletePersonalContact = action({
   display: {
     label: "Delete Personal Contact",
@@ -39,9 +40,8 @@ export const deletePersonalContact = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deletePersonalContactExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deletePersonalContactExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deletePersonalContactOutputSchema,

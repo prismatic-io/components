@@ -8,18 +8,21 @@ import type {
   ServiceRequestChangesObject,
 } from "../types";
 import { getOpsPaginatedData, getPaginatedData } from "./pagination";
+
 export const resolveServiceRequestChanges = (
   data: ServiceRequestChangesObject | undefined,
 ): ServiceRequestChange[] =>
   (data ?? []).map(
     (record): ServiceRequestChange => ({ changeType: "created", record }),
   );
+
 export const resolveOpsAlertChanges = (
   data: OpsAlertChangesObject | undefined,
 ): OpsAlertChange[] =>
   (data ?? []).map(
     (record): OpsAlertChange => ({ changeType: "created", record }),
   );
+
 export const fetchNewRequestsSince = async (
   client: HttpClient,
   lastPolledAtMs: number,
@@ -40,6 +43,7 @@ export const fetchNewRequestsSince = async (
     },
   );
 };
+
 export const fetchNewOpsAlertsSince = async (
   client: HttpClient,
   lastPolledAtMs: number,

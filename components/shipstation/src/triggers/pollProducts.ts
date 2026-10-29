@@ -15,6 +15,7 @@ import {
   resolvePollingRecordChanges,
   resolvePollWindow,
 } from "./pollingUtils";
+
 export const pollProducts = pollingTrigger({
   display: {
     label: "New and Updated Products",
@@ -32,21 +33,27 @@ export const pollProducts = pollingTrigger({
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState | null;
     const window = resolvePollWindow(state, lookBackDate, now);
+
     const client = createShipStationClient(connection);
+
     const records = await fetchAllPages<TimestampedRecord>(
       client,
       "/products",
       { startDate: window.after },
       "products",
     );
+
     const result = classifyRecords(records, window);
+
     context.polling.setState({ lastPolledAt: now });
+
     if (!hasChanges(result)) {
       return {
         payload,
         polledNoChanges: true,
       };
     }
+
     return {
       payload: {
         ...payload,

@@ -5,12 +5,14 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { hubspotOAuth, privateAppAccessToken } from "./connections";
 import { BASE_URL } from "./constants";
+
 interface GetHubspotClientProps {
   hubspotConnection: Connection;
   timeout?: unknown;
   debugRequest?: boolean;
   headers?: Record<string, unknown>;
 }
+
 export const validateConnection = (connection: Connection): void => {
   if (
     connection.key !== hubspotOAuth.key &&
@@ -22,6 +24,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 const getClientConfiguration = (
   {
     hubspotConnection,
@@ -40,6 +43,7 @@ const getClientConfiguration = (
     },
     debug: debugRequest,
   };
+
   if (addBearerToken) {
     switch (hubspotConnection.key) {
       case privateAppAccessToken.key:
@@ -55,8 +59,10 @@ const getClientConfiguration = (
         );
     }
   }
+
   return toReturn;
 };
+
 export const getHubspotClient = (
   params: GetHubspotClientProps,
   addBearerToken = true,
@@ -64,5 +70,6 @@ export const getHubspotClient = (
   validateConnection(params.hubspotConnection);
   const config = getClientConfiguration(params, addBearerToken);
   const client = createClient(config);
+
   return client;
 };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getAccountInformationResponse } from "../../examplePayloads";
 import { connection } from "../../inputs";
+
 export const getAccountInformation = action({
   display: {
     label: "Get Account Information",

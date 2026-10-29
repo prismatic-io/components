@@ -4,9 +4,12 @@ import { getSapClient } from "../client";
 import type { PollingState, SapRecord } from "../types";
 import { lookBackDateClean, resolvePollingRecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 vi.mock("../client", () => ({ getSapClient: vi.fn() }));
+
 const created: SapRecord = { CreationDateTime: "2026-01-02T00:00:00Z" };
 const updated: SapRecord = { CreationDateTime: "2025-01-01T00:00:00Z" };
+
 test("New and Updated Records is opt-in batchable with a default batch size", () => {
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
@@ -14,6 +17,7 @@ test("New and Updated Records is opt-in batchable with a default batch size", ()
     Function,
   );
 });
+
 test("resolvePollingRecordChanges tags every record with how it changed", () => {
   expect(
     resolvePollingRecordChanges({ created: [created], updated: [updated] }),
@@ -22,10 +26,12 @@ test("resolvePollingRecordChanges tags every record with how it changed", () => 
     { changeType: "updated", record: updated },
   ]);
 });
+
 test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
   expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual([]);
   expect(resolvePollingRecordChanges(undefined)).toEqual([]);
 });
+
 test("resolveItems flattens the payload shape perform actually returns", () => {
   const payload = {
     ...defaultTriggerPayload(),
@@ -37,8 +43,10 @@ test("resolveItems flattens the payload shape perform actually returns", () => {
     }),
   ).toEqual([{ changeType: "created", record: created }]);
 });
+
 describe("Look-back Date initial sync", () => {
   const get = vi.fn();
+
   const run = async (
     state: PollingState | undefined,
     lookBackDate: string,
@@ -66,17 +74,13 @@ describe("Look-back Date initial sync", () => {
       } as never,
     )) as {
       payload: {
-        body: {
-          data: {
-            created: SapRecord[];
-            updated: SapRecord[];
-          };
-        };
+        body: { data: { created: SapRecord[]; updated: SapRecord[] } };
       };
       polledNoChanges: boolean;
     };
     return { result, getState: () => next };
   };
+
   beforeEach(() => {
     get.mockReset();
     get.mockResolvedValue({
@@ -97,12 +101,14 @@ describe("Look-back Date initial sync", () => {
     });
     vi.mocked(getSapClient).mockReturnValue({ get } as never);
   });
+
   test("sends the look-back day as an inclusive datetime filter", async () => {
     await run(undefined, lookBackDateClean("2026-01-01"));
     expect(get.mock.calls[0][0]).toContain(
       "$filter=LastChangeDateTime ge datetime'2026-01-01T00:00:00'",
     );
   });
+
   test("ignores the visibility filters during the initial sync", async () => {
     const { result } = await run(undefined, lookBackDateClean("2026-01-01"), {
       showNewRecords: false,
@@ -112,6 +118,7 @@ describe("Look-back Date initial sync", () => {
     expect(result.payload.body.data.created).toHaveLength(1);
     expect(result.payload.body.data.updated).toHaveLength(1);
   });
+
   test("with no state and no look-back, seeds state and honors the toggles", async () => {
     const { result, getState } = await run(undefined, "", {
       showNewRecords: false,
@@ -120,6 +127,7 @@ describe("Look-back Date initial sync", () => {
     expect(result.polledNoChanges).toBe(true);
     expect(getState()?.lastPolledAt).toBeDefined();
   });
+
   test("persisted state wins over the Look-back Date", async () => {
     await run(
       { lastPolledAt: "2026-02-01T00:00:00.000Z" },
@@ -127,6 +135,7 @@ describe("Look-back Date initial sync", () => {
     );
     expect(get.mock.calls[0][0]).toContain("datetime'2026-02-01T00:00:00'");
   });
+
   test("lookBackDateClean rejects bad, impossible, and future dates", () => {
     expect(lookBackDateClean("")).toBe("");
     expect(lookBackDateClean("2026-01-01")).toBe("2026-01-01T00:00:00.000Z");
@@ -135,13 +144,13 @@ describe("Look-back Date initial sync", () => {
     expect(() => lookBackDateClean("2999-01-01")).toThrow("future");
   });
 });
+
 describe("poll state, classification and pagination", () => {
   const get = vi.fn();
   const NOW = new Date("2026-03-01T12:00:00.000Z");
-  type Data = {
-    created: SapRecord[];
-    updated: SapRecord[];
-  };
+
+  type Data = { created: SapRecord[]; updated: SapRecord[] };
+
   const run = async (
     state: PollingState | undefined,
     {
@@ -172,16 +181,10 @@ describe("poll state, classification and pagination", () => {
         showNewRecords,
         showUpdatedRecords,
       } as never,
-    )) as {
-      payload: {
-        body: {
-          data: Data;
-        };
-      };
-      polledNoChanges: boolean;
-    };
+    )) as { payload: { body: { data: Data } }; polledNoChanges: boolean };
     return { result, getState: () => next };
   };
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(NOW);
@@ -198,9 +201,11 @@ describe("poll state, classification and pagination", () => {
     });
     vi.mocked(getSapClient).mockReturnValue({ get } as never);
   });
+
   afterEach(() => {
     vi.useRealTimers();
   });
+
   test("writes lastPolledAt equal to now, after the prior state", async () => {
     const prior = "2026-02-01T00:00:00.000Z";
     const { getState } = await run({ lastPolledAt: prior });
@@ -209,17 +214,20 @@ describe("poll state, classification and pagination", () => {
       true,
     );
   });
+
   test("a backfill run also advances lastPolledAt to now", async () => {
     const { getState } = await run(undefined, {
       lookBackDate: "2026-01-01T00:00:00.000Z",
     });
     expect(getState()?.lastPolledAt).toBe(NOW.toISOString());
   });
+
   test("classifies records created after lastPolledAt as created, the rest as updated", async () => {
     const { result } = await run({ lastPolledAt: "2026-02-01T00:00:00.000Z" });
     expect(result.payload.body.data.created.map((r) => r.id)).toEqual(["new"]);
     expect(result.payload.body.data.updated.map((r) => r.id)).toEqual(["old"]);
   });
+
   test("both visibility toggles off return empty arrays with polledNoChanges", async () => {
     const { result } = await run(
       { lastPolledAt: "2026-02-01T00:00:00.000Z" },
@@ -228,6 +236,7 @@ describe("poll state, classification and pagination", () => {
     expect(result.payload.body.data).toEqual({ created: [], updated: [] });
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("an unsupported resource type throws", async () => {
     await expect(
       run(
@@ -237,6 +246,7 @@ describe("poll state, classification and pagination", () => {
     ).rejects.toThrow("Unsupported resource type");
     expect(get).not.toHaveBeenCalled();
   });
+
   test("a full page of 500 triggers a second $skip request", async () => {
     const page = Array.from({ length: 500 }, (_, i) => ({
       CreationDateTime: "2025-01-01T00:00:00Z",
@@ -251,6 +261,7 @@ describe("poll state, classification and pagination", () => {
     expect(get.mock.calls[1][0]).toContain("$skip=500");
     expect(result.payload.body.data.updated).toHaveLength(500);
   });
+
   test("SAP /Date(ms)/ CreationDateTime is classified as updated (observed behavior)", async () => {
     get.mockResolvedValueOnce({
       data: {

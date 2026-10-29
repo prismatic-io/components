@@ -2,7 +2,9 @@ export interface PollingState {
   lastPolledAt?: string;
   knownIds?: string[];
 }
+
 export type XeroRecord = Record<string, unknown>;
+
 export interface PollResourceConfig {
   label: string;
   endpoint: string;
@@ -10,10 +12,12 @@ export interface PollResourceConfig {
   idField: string;
   paginated: boolean;
 }
+
 export interface XeroChangesObject {
   created: unknown[];
   updated: unknown[];
 }
+
 export interface XeroRecordChange {
   changeType: "created" | "updated";
   record: unknown;

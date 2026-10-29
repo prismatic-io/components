@@ -1,6 +1,7 @@
 import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
 import { connectionInput, fetchAll } from "./common";
+
 const maxPageSizeInput = input({
   label: "Max Page Size",
   placeholder: "Enter max page size",
@@ -11,6 +12,7 @@ const maxPageSizeInput = input({
   example: "100",
   clean: toOptionalNumber,
 });
+
 const nextLinkInput = input({
   label: "Next Link",
   placeholder: "Enter @odata.nextLink URL",
@@ -20,6 +22,7 @@ const nextLinkInput = input({
     "The @odata.nextLink URL from a previous response to get the next page of results.",
   clean: toOptionalString,
 });
+
 const listEntitiesPagination = structuredObjectInput({
   label: "Pagination",
   comments: "Max page size and next-link controls for paging through results.",
@@ -28,9 +31,11 @@ const listEntitiesPagination = structuredObjectInput({
     nextLink: nextLinkInput,
   },
 });
+
 export const getCurrentUserInputs = {
   connection: connectionInput,
 };
+
 export const listEntitiesInputs = {
   connection: connectionInput,
   fetchAll,

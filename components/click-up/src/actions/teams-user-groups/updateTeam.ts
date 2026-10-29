@@ -7,6 +7,7 @@ import type {
   UpdateTeamBody as Body,
   UpdateTeamMembers as Members,
 } from "../../types";
+
 export const updateTeam = action({
   display: {
     label: "Update Team",
@@ -35,14 +36,20 @@ export const updateTeam = action({
       context.debug.enabled,
     );
     const body: Body = {};
+
     if (teamName?.length) body.name = teamName;
+
     if (teamHandle?.length) body.handle = teamHandle;
+
     if (addMember || removeMember) {
       body.members = {} as Members;
+
       if (addMember?.length) body.members.add = addMember;
       if (removeMember?.length) body.members.rem = removeMember;
     }
+
     const { data } = await client.put(`/group/${groupId}`, body);
+
     return {
       data,
     };

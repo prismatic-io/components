@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { deleteManagedDeviceExamplePayload } from "../../examplePayloads";
 import { deleteManagedDeviceInputs } from "../../inputs";
+
 export const deleteManagedDevice = action({
   display: {
     label: "Delete Managed Device",

@@ -10,6 +10,7 @@ import type {
   FieldsMetric,
   FieldsProfileEvent,
 } from "../../types";
+
 export const listEvents = action({
   display: {
     label: "List Events",
@@ -39,6 +40,7 @@ export const listEvents = action({
       [],
       [],
     );
+
     return {
       data,
     };

@@ -1,5 +1,6 @@
 export type ItemsField = "items" | "definitions";
 export type PreserveField = "requestId";
+
 export interface PaginatedResponse<T = Record<string, unknown>> {
   count: number;
   page: number;
@@ -9,6 +10,7 @@ export interface PaginatedResponse<T = Record<string, unknown>> {
   requestId?: string;
   links?: Record<string, unknown>;
 }
+
 export interface PaginationOptions {
   itemsField?: ItemsField;
   preserveFields?: Array<PreserveField>;

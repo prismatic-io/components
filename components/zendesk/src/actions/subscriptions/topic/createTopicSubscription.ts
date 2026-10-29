@@ -4,6 +4,7 @@ import { createTopicSubscriptionExamplePayload } from "../../../examplePayloads"
 import { createTopicSubscriptionInputs } from "../../../inputs";
 import { createTopicSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
+
 export const createTopicSubscription = action({
   display: {
     label: "Create Topic Subscription",
@@ -19,10 +20,12 @@ export const createTopicSubscription = action({
       include_comments: includeComments,
       user_id: userId,
     };
+
     const { data } = await client.post<SubscriptionResponse>(
       `/community/topics/${topicId}/subscriptions`,
       payload,
     );
+
     return {
       data,
     };

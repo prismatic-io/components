@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createTicketMessageExamplePayload as examplePayload } from "../../examplePayloads/ticketMessages";
 import { createTicketMessageInputs as inputs } from "../../inputs/ticketMessages";
 import type { CreateTicketMessageResponse } from "../../interfaces/ticketMessages";
+
 export const createTicketMessage = action({
   display: {
     label: "Create Ticket Message",
@@ -13,6 +14,7 @@ export const createTicketMessage = action({
     { connection, ticket_id, messageTimestamps, additionalFields, ...body },
   ) => {
     const { action: actionParam, ...additionalFieldsBody } = additionalFields;
+
     const { data } = await createClient({
       connection,
       debug: context.debug.enabled,
@@ -25,6 +27,7 @@ export const createTicketMessage = action({
       },
       { params: { action: actionParam } },
     );
+
     return {
       data,
     };

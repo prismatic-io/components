@@ -4,6 +4,7 @@ import { selectTicketExamplePayload as examplePayload } from "../examplePayloads
 import { selectTicketInputs as inputs } from "../inputs/tickets";
 import type { ListTicketsResponse } from "../interfaces/tickets";
 import { fetchAllWithPagination } from "../utils/fetchAllWithPagination";
+
 export const selectTicket = dataSource({
   display: {
     label: "Select Ticket",
@@ -15,15 +16,18 @@ export const selectTicket = dataSource({
       connection,
       debug: false,
     });
+
     const { data } = await fetchAllWithPagination<ListTicketsResponse>({
       client,
       configVars,
       endpoint: "/tickets",
     });
+
     const result = data.data.map<Element>((ticket) => ({
       label: ticket.subject ?? ticket.excerpt,
       key: util.types.toString(ticket.id),
     }));
+
     return {
       result,
     };

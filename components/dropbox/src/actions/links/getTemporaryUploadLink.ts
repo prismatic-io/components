@@ -4,6 +4,7 @@ import { getTemporaryUploadLinkExamplePayload } from "../../examplePayloads";
 import { getTemporaryUploadLinkInputs } from "../../inputs";
 import { getTemporaryUploadLinkOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
+
 export const getTemporaryUploadLink = action({
   display: {
     label: "Get Temporary Upload Link",
@@ -24,9 +25,7 @@ export const getTemporaryUploadLink = action({
       handleDropboxError(err);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: getTemporaryUploadLinkExamplePayload,
   }),
   inputs: getTemporaryUploadLinkInputs,

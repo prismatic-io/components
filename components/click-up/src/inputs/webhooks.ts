@@ -9,6 +9,7 @@ import {
   getTaskId,
   getTeamId,
 } from "./common";
+
 const getWebhookId = (required: boolean, comments: string) =>
   input({
     label: "Webhook ID",
@@ -19,6 +20,7 @@ const getWebhookId = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 const getEndpoint = (required: boolean, comments: string) =>
   input({
     label: "Endpoint",
@@ -29,6 +31,7 @@ const getEndpoint = (required: boolean, comments: string) =>
     required,
     clean: util.types.toString,
   });
+
 const events = input({
   label: "Event",
   type: "string",
@@ -39,6 +42,7 @@ const events = input({
   required: true,
   clean: cleanStringArray,
 });
+
 const allEvents = input({
   label: "All Events",
   type: "boolean",
@@ -48,6 +52,7 @@ const allEvents = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const createWebhookInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
@@ -58,14 +63,17 @@ export const createWebhookInputs = {
   events,
   taskId: getTaskId(false, "The unique identifier for the task."),
 };
+
 export const deleteWebhookInputs = {
   clickUpConnection: connectionInput,
   webhookId: getWebhookId(true, "The unique identifier for the webhook."),
 };
+
 export const getWebhooksInputs = {
   clickUpConnection: connectionInput,
   teamId: getTeamId(true),
 };
+
 export const updateWebhookInputs = {
   clickUpConnection: connectionInput,
   webhookId: getWebhookId(true, "The unique identifier for the webhook."),

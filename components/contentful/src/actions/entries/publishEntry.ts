@@ -10,6 +10,7 @@ import { publishEntryExamplePayload } from "../../examplePayloads";
 import { publishEntryInputs } from "../../inputs";
 import { publishEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const publishEntry = action({
   display: {
     label: "Publish Entry",
@@ -31,9 +32,8 @@ export const publishEntry = action({
       data: data as unknown,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => publishEntryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    publishEntryExamplePayload,
   inputs: publishEntryInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

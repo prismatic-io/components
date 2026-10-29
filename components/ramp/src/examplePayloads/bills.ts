@@ -53,6 +53,7 @@ export const getBillResponse = {
     type: "BUSINESS",
   },
 };
+
 export const listBillsResponse = {
   data: [getBillResponse],
   page: {

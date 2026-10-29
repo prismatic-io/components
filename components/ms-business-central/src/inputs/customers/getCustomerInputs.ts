@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const customerId = input({
   label: "Customer ID",
   type: "string",

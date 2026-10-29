@@ -4,6 +4,7 @@ import { SHARED_ITEMS_PATH } from "../../constants";
 import { findFolderForSharedLinkExamplePayload } from "../../examplePayloads";
 import { findFolderForSharedLinkInputs } from "../../inputs";
 import { findFolderForSharedLinkOutputSchema } from "../../outputSchemas";
+
 export const findFolderForSharedLink = action({
   display: {
     label: "Find Folder for Shared Link",
@@ -14,10 +15,12 @@ export const findFolderForSharedLink = action({
     const sharedLink = params.sharedLink;
     const sharedLinkPassword = params.sharedLinkPassword || null;
     const fields = params.fields || null;
+
     const client = createBoxHttpClient(
       params.boxConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(SHARED_ITEMS_PATH, {
       headers: {
         boxapi: `shared_link=${sharedLink}&shared_link_password=${sharedLinkPassword}`,

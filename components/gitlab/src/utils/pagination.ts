@@ -2,6 +2,7 @@ import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { MAX_PER_PAGE } from "../constants";
 import type { KeysetOrder, PageOptions } from "../types";
+
 export const fetchAllPages = async <T>(
   client: HttpClient,
   path: string,
@@ -24,6 +25,7 @@ export const fetchAllPages = async <T>(
   }
   return records;
 };
+
 export const fetchAllKeysetPages = async <T>(
   client: HttpClient,
   path: string,
@@ -44,6 +46,7 @@ export const fetchAllKeysetPages = async <T>(
   }
   return records;
 };
+
 export const listRecords = async <T>(
   client: HttpClient,
   path: string,
@@ -65,6 +68,7 @@ export const listRecords = async <T>(
   });
   return expectArray<T>(data, path);
 };
+
 export const expectArray = <T>(data: unknown, path: string): T[] => {
   if (!Array.isArray(data)) {
     throw new Error(
@@ -73,6 +77,7 @@ export const expectArray = <T>(data: unknown, path: string): T[] => {
   }
   return data as T[];
 };
+
 const nextPageNumber = (header: unknown): number | undefined => {
   const value = util.types.toString(header).trim();
   if (!/^\d+$/.test(value)) {
@@ -80,6 +85,7 @@ const nextPageNumber = (header: unknown): number | undefined => {
   }
   return util.types.toNumber(value);
 };
+
 const nextLinkParams = (
   header: unknown,
 ): Record<string, string> | undefined => {

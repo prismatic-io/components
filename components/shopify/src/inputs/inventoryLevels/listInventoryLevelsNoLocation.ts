@@ -1,5 +1,6 @@
 import { connectionInput, getAlldata, limit, updatedAtMin } from "../common";
 import { inventoryItemIds, locationIds } from "./common";
+
 export const listInventoryLevelsNoLocationInputs = {
   locationIds,
   inventoryItemIds,

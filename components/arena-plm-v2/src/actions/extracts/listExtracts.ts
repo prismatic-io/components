@@ -5,6 +5,7 @@ import { listExtractsInputs } from "../../inputs";
 import { listExtractsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listExtracts = action({
   display: {
     label: "List Extracts",
@@ -20,6 +21,7 @@ export const listExtracts = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         name: params.name,
         enabled: params.enabled,
@@ -27,16 +29,20 @@ export const listExtracts = action({
         offset: params.pagination?.offset,
         limit: params.pagination?.limit,
       };
+
       context.logger.info("Fetching extracts from Arena");
+
       const data = await fetchArenaList(
         client,
         "/extracts",
         queryParams,
         params.fetchAll,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} extracts`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Extracts");

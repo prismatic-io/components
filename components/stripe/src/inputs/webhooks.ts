@@ -5,6 +5,7 @@ import {
   cleanStringListInput,
 } from "../util";
 import { connectionInput, cursorPagination, fetchAll, timeout } from "./common";
+
 export const webhookUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -14,6 +15,7 @@ export const webhookUrl = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const webhookEvents = input({
   label: "Webhook Events",
   type: "string",
@@ -25,6 +27,7 @@ export const webhookEvents = input({
   required: true,
   clean: cleanRequiredStringListInput,
 });
+
 export const webhookSecret = input({
   label: "Webhook Secret",
   type: "password",
@@ -34,6 +37,7 @@ export const webhookSecret = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const disableWebhookValidation = input({
   label: "Disable Webhook Validation",
   type: "boolean",
@@ -43,6 +47,7 @@ export const disableWebhookValidation = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -52,12 +57,14 @@ export const webhookId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const createWebhookInputs = {
   webhookUrl,
   webhookEvents,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const deleteWebhookInputs = {
   webhookId: {
     ...webhookId,
@@ -66,21 +73,25 @@ export const deleteWebhookInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const deleteWebhooksInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getWebhookInputs = {
   webhookId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listWebhooksInputs = {
   fetchAll,
   pagination: cursorPagination,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const updateWebhookInputs = {
   webhookId: {
     ...webhookId,

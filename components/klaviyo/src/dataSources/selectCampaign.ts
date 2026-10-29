@@ -4,6 +4,7 @@ import { selectCampaignExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
 import { fetchCampaigns } from "../util";
 import { KlaviyoApi } from "../constants";
+
 export const selectCampaign = dataSource({
   display: {
     label: "Select Campaign",
@@ -13,6 +14,7 @@ export const selectCampaign = dataSource({
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const campaignsApi = getApi(connection, KlaviyoApi.Campaigns);
+
     const data = await fetchCampaigns(
       campaignsApi,
       ["name"],
@@ -24,6 +26,7 @@ export const selectCampaign = dataSource({
       key: response.id,
       label: response.attributes.name,
     }));
+
     return { result: objects };
   },
   examplePayload: selectCampaignExamplePayload,

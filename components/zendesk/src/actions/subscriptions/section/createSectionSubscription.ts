@@ -4,6 +4,7 @@ import { createSectionSubscriptionExamplePayload } from "../../../examplePayload
 import { createSectionSubscriptionInputs } from "../../../inputs";
 import { createSectionSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
+
 export const createSectionSubscription = action({
   display: {
     label: "Create Section Subscription",
@@ -18,12 +19,15 @@ export const createSectionSubscription = action({
     const url = locale
       ? `/help_center/${locale}/sections/${sectionId}/subscriptions`
       : `/help_center/sections/${sectionId}/subscriptions`;
+
     const payload = {
       user_id: userId,
       source_locale: locale,
       include_comments: includeComments,
     };
+
     const { data } = await client.post<SubscriptionResponse>(url, payload);
+
     return {
       data,
     };

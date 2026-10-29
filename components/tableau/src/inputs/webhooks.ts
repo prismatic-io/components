@@ -7,6 +7,7 @@ import {
   timeout,
   webhookId,
 } from "./common";
+
 const webhookName = input({
   label: "Webhook Name",
   type: "string",
@@ -16,6 +17,7 @@ const webhookName = input({
   placeholder: "Enter webhook name",
   clean: util.types.toString,
 });
+
 export const events = input({
   label: "API Event Name",
   type: "string",
@@ -26,6 +28,7 @@ export const events = input({
     return { label: event.apiEventName, value: event.apiEventName };
   }),
 });
+
 const webhookUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -36,6 +39,7 @@ const webhookUrl = input({
   placeholder: "Enter webhook URL",
   clean: util.types.toString,
 });
+
 const webhookEnabled = input({
   label: "Webhook Enabled",
   type: "boolean",
@@ -45,6 +49,7 @@ const webhookEnabled = input({
     "When true, the newly created webhook is enabled. When false, the webhook is disabled.",
   clean: util.types.toBool,
 });
+
 const webhookDisableReason = input({
   label: "Webhook Disable Reason",
   type: "string",
@@ -54,30 +59,35 @@ const webhookDisableReason = input({
   placeholder: "Enter disable reason",
   clean: util.types.toString,
 });
+
 export const listWebhooksInputs = {
   timeout,
   pagination,
   tableauConnection: connectionInput,
   apiVersion,
 };
+
 export const getWebhookInputs = {
   tableauConnection: connectionInput,
   webhookId,
   timeout,
   apiVersion,
 };
+
 export const deleteWebhookInputs = {
   tableauConnection: connectionInput,
   webhookId,
   timeout,
   apiVersion,
 };
+
 export const testWebhookInputs = {
   tableauConnection: connectionInput,
   webhookId,
   timeout,
   apiVersion,
 };
+
 export const createWebhookInputs = {
   tableauConnection: connectionInput,
   webhookName: {
@@ -96,6 +106,7 @@ export const createWebhookInputs = {
   timeout,
   apiVersion,
 };
+
 export const updateWebhookInputs = {
   tableauConnection: connectionInput,
   webhookId,

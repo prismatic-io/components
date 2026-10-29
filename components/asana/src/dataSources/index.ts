@@ -8,6 +8,7 @@ import selectTask from "./selectTask";
 import selectTeam from "./selectTeam";
 import selectUser from "./selectUser";
 import selectWorkspace from "./selectWorkspace";
+
 export default {
   ...selectAttachment,
   ...selectCustomField,

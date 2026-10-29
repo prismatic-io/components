@@ -2,9 +2,11 @@ export interface PollingStateBase {
   errorCount: number;
   consecutiveErrors: number;
 }
+
 export interface IdocPollingState extends PollingStateBase {
   lastDocnum: string;
 }
+
 export interface IdocRecord {
   idocNumber: string;
   status: string;
@@ -14,11 +16,13 @@ export interface IdocRecord {
   createdTime: string;
   direction: string;
 }
+
 export interface IdocChangesObject {
   records: IdocRecord[];
   recordCount: number;
   lastDocnum: string;
 }
+
 export interface IdocRecordChange {
   changeType: "created";
   record: IdocRecord;

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createToastClient } from "../../client";
 import { listDepositsExamplePayload as examplePayload } from "../../examplePayloads";
 import { listDepositsInputs as inputs } from "../../inputs/deposit";
+
 export const listDeposits = action({
   display: {
     label: "List Deposits",
@@ -17,9 +18,11 @@ export const listDeposits = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+
     const { data } = await client.get(`/cashmgmt/v1/deposits`, {
       params: { businessDate },
     });
+
     return {
       data,
     };

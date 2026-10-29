@@ -4,12 +4,14 @@ import { recordTypes } from "../constants";
 import type { RecordType } from "../types/RecordType";
 import { lookBackDateClean } from "../utils";
 import { connectionInput, limitInput, offsetInput } from "./common";
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { limit: limitInput, offset: offsetInput },
 });
+
 const recordTypeInput = input({
   label: "Record Type",
   type: "string",
@@ -31,6 +33,7 @@ const recordTypeInput = input({
   },
   comments: "Record type to perform the action against.",
 });
+
 const recordIdInput = input({
   label: "Record ID",
   type: "string",
@@ -41,6 +44,7 @@ const recordIdInput = input({
   placeholder: "Enter record ID",
   clean: util.types.toNumber,
 });
+
 const payloadInput = input({
   label: "Payload",
   type: "code",
@@ -60,6 +64,7 @@ const payloadInput = input({
     2,
   ),
 });
+
 const queryInput = input({
   label: "Query",
   type: "string",
@@ -70,6 +75,7 @@ const queryInput = input({
     "Query string to filter records. Use operators like START_WITH, EQUAL, CONTAIN. See [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) for details.",
   clean: util.types.toString,
 });
+
 const recordFieldInput = input({
   label: "Record Field",
   type: "string",
@@ -80,6 +86,7 @@ const recordFieldInput = input({
     "The record field to use as the label for the picklist. If unspecified, the record ID is used.",
   clean: util.types.toString,
 });
+
 const expandSubResources = input({
   label: "Expand Sub-Resources",
   type: "boolean",
@@ -89,6 +96,7 @@ const expandSubResources = input({
     "When true, automatically expands all sublists, sublist lines, and subrecords on this record.",
   clean: util.types.toBool,
 });
+
 const simpleEnumFormat = input({
   label: "Simple Enum Format",
   type: "boolean",
@@ -98,6 +106,7 @@ const simpleEnumFormat = input({
     "When true, returns enumeration values in a format that only shows the internal ID value.",
   clean: util.types.toBool,
 });
+
 const fields = input({
   label: "Fields to Return",
   type: "string",
@@ -115,6 +124,7 @@ const fields = input({
     return values.join(",");
   },
 });
+
 const replace = input({
   label: "Replace",
   type: "string",
@@ -132,6 +142,7 @@ const replace = input({
     return values.join(",");
   },
 });
+
 const replaceSelectedFields = input({
   label: "Replace Selected Fields",
   type: "boolean",
@@ -141,6 +152,7 @@ const replaceSelectedFields = input({
     "When true, deletes all fields, including body fields, specified in the Replace input.",
   clean: util.types.toBool,
 });
+
 const showNewRecordsInput = input({
   label: "Show New Records",
   type: "boolean",
@@ -149,6 +161,7 @@ const showNewRecordsInput = input({
   comments: "When true, includes new records in the results.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecordsInput = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -157,6 +170,7 @@ const showUpdatedRecordsInput = input({
   comments: "When true, includes updated records in the results.",
   clean: util.types.toBool,
 });
+
 const lookBackDateInput = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -167,6 +181,7 @@ const lookBackDateInput = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const additionalFilterInput = input({
   label: "Additional Filter",
   type: "string",
@@ -177,12 +192,14 @@ const additionalFilterInput = input({
   placeholder: "Enter additional filter conditions",
   clean: util.types.toString,
 });
+
 export const listRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
   query: queryInput,
   pagination,
 };
+
 export const getRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
@@ -191,11 +208,13 @@ export const getRecordInputs = {
   simpleEnumFormat,
   fields,
 };
+
 export const createRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
   payload: payloadInput,
 };
+
 export const updateRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
@@ -204,11 +223,13 @@ export const updateRecordInputs = {
   replace,
   replaceSelectedFields,
 };
+
 export const deleteRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
   id: recordIdInput,
 };
+
 export const selectRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
@@ -216,6 +237,7 @@ export const selectRecordInputs = {
   query: queryInput,
   pagination,
 };
+
 export const pollRecordsInputs = {
   showNewRecords: showNewRecordsInput,
   showUpdatedRecords: showUpdatedRecordsInput,

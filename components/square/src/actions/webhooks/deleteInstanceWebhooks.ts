@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
+
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
@@ -12,11 +13,14 @@ export const deleteInstanceWebhooks = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const listResponse = await client.get("/v2/webhooks/subscriptions");
     const allSubscriptions = listResponse.data;
+
     for (const subscription of allSubscriptions) {
       await client.delete(`/v2/webhooks/subscriptions/${subscription.id}`);
     }
+
     return {
       data: "All webhooks deleted",
     };

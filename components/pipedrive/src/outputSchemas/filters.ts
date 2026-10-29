@@ -41,6 +41,7 @@ const filterRecordSchema = {
     },
   },
 };
+
 export const getFiltersOutputSchema = {
   type: "object",
   properties: {
@@ -53,6 +54,7 @@ export const getFiltersOutputSchema = {
     },
   },
 };
+
 export const getFilterOutputSchema = {
   type: "object",
   properties: {
@@ -65,6 +67,7 @@ export const getFilterOutputSchema = {
     },
   },
 };
+
 export const updateFilterOutputSchema = {
   type: "object",
   properties: {

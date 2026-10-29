@@ -7,6 +7,7 @@ import { moveTaskToBucketOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { patchWithEtag } from "../../utils";
 import { moveTaskToBucketInputs } from "../../inputs";
+
 export const moveTaskToBucket = action({
   display: {
     label: "Move Task to Bucket",
@@ -32,9 +33,7 @@ export const moveTaskToBucket = action({
   examplePerform: async (
     _context,
     { bucketId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: { ...moveTaskToBucketExamplePayload.data, bucketId },
   }),
   examplePayload: moveTaskToBucketExamplePayload,

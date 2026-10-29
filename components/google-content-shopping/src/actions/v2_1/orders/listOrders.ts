@@ -4,6 +4,7 @@ import { createClient } from "../../../client";
 import { listOrdersExamplePayload } from "../../../examplePayloads/v2_1";
 import { listOrdersInputs } from "../../../inputs/v2_1";
 import { fetchAllOrders } from "../../../util/fetchAllOrders";
+
 export const listOrders = action({
   display: {
     label: "List Orders (Legacy v2.1)",
@@ -27,7 +28,9 @@ export const listOrders = action({
     context.logger.warn(
       "'List Orders' is deprecated as Google is retiring the Orders endpoints in the Content API.",
     );
+
     const client = createClient(connectionInput);
+
     const params: content_v2_1.Params$Resource$Orders$List = {
       merchantId,
       maxResults: pagination.maxResults,
@@ -38,7 +41,9 @@ export const listOrders = action({
       acknowledged: acknowledged || undefined,
       statuses,
     };
+
     const { data } = await fetchAllOrders({ client, fetchAll, params });
+
     return {
       data,
     };

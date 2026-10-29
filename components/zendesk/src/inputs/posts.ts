@@ -22,6 +22,7 @@ import {
   sortBy,
   topicId,
 } from "./common";
+
 export const createPostInputs = {
   zendeskConnection: connectionInput,
   topicId: {
@@ -38,14 +39,17 @@ export const createPostInputs = {
   notifySubscribers,
   contentTagIds,
 };
+
 export const deletePostInputs = {
   zendeskConnection: connectionInput,
   postId,
 };
+
 export const getPostInputs = {
   zendeskConnection: connectionInput,
   postId,
 };
+
 export const listPostsInputs = {
   zendeskConnection: connectionInput,
   filterBy: postFilterBy,
@@ -61,6 +65,7 @@ export const listPostsInputs = {
   fetchAll,
   pagination,
 };
+
 export const updatePostInputs = {
   zendeskConnection: connectionInput,
   postId,

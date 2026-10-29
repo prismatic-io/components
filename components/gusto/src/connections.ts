@@ -1,4 +1,5 @@
 import { oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
+
 export const gustoOauth = oauth2Connection({
   key: "gustoOauth",
   display: {
@@ -75,4 +76,5 @@ export const gustoOauth = oauth2Connection({
     },
   },
 });
+
 export default [gustoOauth];

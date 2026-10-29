@@ -6,6 +6,7 @@ import { setExternalIdInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
 import { json2Path } from "../../util";
 import { setExternalIdOutputSchema } from "../../outputSchemas";
+
 export const setExternalId = action({
   display: {
     label: "Set External ID",
@@ -53,8 +54,7 @@ export const setExternalId = action({
     );
     return { data: created[0] };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => setExternalIdExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    setExternalIdExamplePayload,
   examplePayload: setExternalIdExamplePayload,
 });

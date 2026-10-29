@@ -1,4 +1,5 @@
 import type { async, DropboxResponse, sharing } from "dropbox";
+
 export const getSharedMetadataForFileExamplePayload: DropboxResponse<sharing.SharedFileMetadata> =
   {
     status: 200,
@@ -35,6 +36,7 @@ export const getSharedMetadataForFileExamplePayload: DropboxResponse<sharing.Sha
       time_invited: "2016-01-20T00:00:00Z",
     },
   };
+
 export const getSharedMetadataForFolderExamplePayload: DropboxResponse<sharing.SharedFolderMetadata> =
   {
     status: 200,
@@ -96,6 +98,7 @@ export const getSharedMetadataForFolderExamplePayload: DropboxResponse<sharing.S
       time_invited: "2016-01-20T00:00:00Z",
     },
   };
+
 export const listSharedFoldersExamplePayload: DropboxResponse<sharing.ListFoldersResult> =
   {
     status: 200,
@@ -162,6 +165,7 @@ export const listSharedFoldersExamplePayload: DropboxResponse<sharing.ListFolder
       ],
     },
   };
+
 export const shareFolderExamplePayload: DropboxResponse<sharing.ShareFolderLaunch> =
   {
     status: 200,
@@ -224,11 +228,13 @@ export const shareFolderExamplePayload: DropboxResponse<sharing.ShareFolderLaunc
       time_invited: "2016-01-20T00:00:00Z",
     },
   };
+
 export const unshareFileExamplePayload: DropboxResponse<void> = {
   status: 200,
   headers: {},
   result: null,
 };
+
 export const unshareFolderExamplePayload: DropboxResponse<async.LaunchEmptyResult> =
   {
     status: 200,

@@ -8,6 +8,7 @@ const leadLabelRecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 export const getLeadLabelsOutputSchema = {
   type: "object",
   properties: {
@@ -20,6 +21,7 @@ export const getLeadLabelsOutputSchema = {
     },
   },
 };
+
 export const addLeadLabelOutputSchema = {
   type: "object",
   properties: {
@@ -32,6 +34,7 @@ export const addLeadLabelOutputSchema = {
     },
   },
 };
+
 export const updateLeadLabelOutputSchema = {
   type: "object",
   properties: {
@@ -44,6 +47,7 @@ export const updateLeadLabelOutputSchema = {
     },
   },
 };
+
 export const deleteLeadLabelOutputSchema = {
   type: "object",
   properties: {

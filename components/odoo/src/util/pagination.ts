@@ -2,6 +2,7 @@ import { util } from "@prismatic-io/spectral";
 import { DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from "../constants";
 import type { Pagination } from "../types";
 import { json2Path } from "./paths";
+
 export const getFilters = (
   params: Record<string, unknown>,
 ): Array<Array<unknown>> => {
@@ -14,6 +15,7 @@ export const getFilters = (
   }
   return filters;
 };
+
 export const paginateSearch = async <T>({
   client,
   model,

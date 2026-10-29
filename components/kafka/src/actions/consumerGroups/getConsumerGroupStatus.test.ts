@@ -5,11 +5,14 @@ import { awsAccessKeySecret } from "../../connections/awsAccessKeySecret";
 import { basic } from "../../connections/basic";
 import { getConsumerGroupStatusExamplePayload } from "../../examplePayloads";
 import { getConsumerGroupStatus } from "./getConsumerGroupStatus";
+
 vi.mock("kafkajs", async () => ({
   ...(await vi.importActual<typeof import("kafkajs")>("kafkajs")),
   Kafka: vi.fn(),
 }));
+
 const mockedKafka = Kafka as unknown as Mock;
+
 const adminMock = {
   connect: vi.fn(),
   describeGroups: vi.fn(),
@@ -18,11 +21,13 @@ const adminMock = {
   fetchTopicOffsets: vi.fn(),
   disconnect: vi.fn(),
 };
+
 const connection = createConnection(basic, {
   username: "user",
   password: "pass",
   authMechanism: "plain",
 });
+
 const params = {
   connection,
   clientId: "my-app",
@@ -30,11 +35,13 @@ const params = {
   consumerGroupId: "order-processing-group",
   topicsToCheck: ["order-events"],
 };
+
 const iamConnection = createConnection(awsAccessKeySecret, {
   accessKeyId: "AKIAIOSFODNN7EXAMPLE",
   secretAccessKey: "wJalrXUtNFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
   awsRegion: "us-east-1",
 });
+
 const describeGroupsReply = {
   groups: [
     {
@@ -54,6 +61,7 @@ const describeGroupsReply = {
     },
   ],
 };
+
 const fetchOffsetsReply = [
   {
     topic: "order-events",
@@ -63,10 +71,12 @@ const fetchOffsetsReply = [
     ],
   },
 ];
+
 const fetchTopicOffsetsReply = [
   { partition: 0, offset: "1255", high: "1255", low: "0" },
   { partition: 1, offset: "980", high: "980", low: "0" },
 ];
+
 beforeEach(() => {
   vi.clearAllMocks();
   adminMock.connect.mockResolvedValue(undefined);
@@ -80,6 +90,7 @@ beforeEach(() => {
     return { admin: () => adminMock };
   });
 });
+
 describe("getConsumerGroupStatus", () => {
   test("builds a TLS + OAUTHBEARER client for an Amazon MSK IAM connection", async () => {
     await invoke(getConsumerGroupStatus, {
@@ -87,6 +98,7 @@ describe("getConsumerGroupStatus", () => {
       connection: iamConnection,
       brokers: ["b-1.cluster.kafka.us-east-1.amazonaws.com:9098"],
     });
+
     expect(mockedKafka).toHaveBeenCalledWith(
       expect.objectContaining({
         ssl: true,
@@ -94,9 +106,12 @@ describe("getConsumerGroupStatus", () => {
       }),
     );
   });
+
   test("computes per-partition lag and the summed totals as strings", async () => {
     const { result } = await invoke(getConsumerGroupStatus, params);
+
     expect(result.data).toEqual(getConsumerGroupStatusExamplePayload.data);
+
     const [topicLag] = result.data.topicsWithOffsets;
     expect(topicLag.partitions).toEqual([
       {
@@ -110,36 +125,46 @@ describe("getConsumerGroupStatus", () => {
     expect(topicLag.totalLag).toBe("5");
     expect(result.data.totalLag).toBe("5");
     expect(typeof result.data.totalLag).toBe("string");
+
     expect(adminMock.disconnect).toHaveBeenCalledTimes(1);
   });
+
   test("uses topicsToCheck verbatim and requests offsets with resolveOffsets enabled", async () => {
     await invoke(getConsumerGroupStatus, params);
+
     expect(adminMock.fetchOffsets).toHaveBeenCalledWith({
       groupId: "order-processing-group",
       topics: ["order-events"],
       resolveOffsets: true,
     });
+
     expect(adminMock.listTopics).not.toHaveBeenCalled();
   });
+
   test("rethrows a describeGroups failure after swallowing the disconnect", async () => {
     adminMock.describeGroups.mockRejectedValue(
       new Error("The group coordinator is not available"),
     );
+
     await expect(invoke(getConsumerGroupStatus, params)).rejects.toThrow(
       "The group coordinator is not available",
     );
+
     expect(adminMock.disconnect).toHaveBeenCalledTimes(1);
     expect(adminMock.fetchOffsets).not.toHaveBeenCalled();
   });
+
   test("examplePerform restamps the example payload with the supplied group id", async () => {
     const { examplePerform } = getConsumerGroupStatus;
     if (!examplePerform) {
       throw new Error("getConsumerGroupStatus has no examplePerform.");
     }
+
     const result = await examplePerform(undefined as never, {
       ...params,
       consumerGroupId: "some-other-group",
     });
+
     expect(result.data).toEqual({
       ...getConsumerGroupStatusExamplePayload.data,
       groupId: "some-other-group",

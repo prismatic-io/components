@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getPolicyInputs } from "../../inputs";
+
 export const getPolicy = action({
   display: {
     description: "Gets the access control policy for a resource.",

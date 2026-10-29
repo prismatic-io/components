@@ -9,6 +9,7 @@ export const getVendorResponse = {
   ramp_id: "649b6731-33c6-4ff5-8a5d-2333fcc90ace",
   updated_at: "2020-08-28T14:40:12+00:00",
 };
+
 export const listVendorsResponse = {
   data: [
     getVendorResponse,

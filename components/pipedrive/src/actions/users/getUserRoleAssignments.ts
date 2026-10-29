@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUserRoleAssignmentsInputs } from "../../inputs";
 import { getUserRoleAssignmentsExamplePayload } from "../../examplePayloads";
 import { getUserRoleAssignmentsOutputSchema } from "../../outputSchemas";
+
 export const getUserRoleAssignments = action({
   display: {
     label: "Get User Role Assignments",

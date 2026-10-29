@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { getOrderInfoResponse } from "../../examplePayloads";
 import { connection, id } from "../../inputs";
+
 export const getOrderInfo = action({
   display: {
     label: "Get Order Info",

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listUsersResponse } from "../../examplePayloads";
 import { connection, includeInActive, limit, page } from "../../inputs";
+
 export const listUsers = action({
   display: {
     label: "List Users",

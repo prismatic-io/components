@@ -4,6 +4,7 @@ import { listMergeRequestNotesExamplePayload } from "../../examplePayloads";
 import { listMergeRequestNotesInputs } from "../../inputs";
 import { listMergeRequestNotesOutputSchema } from "../../outputSchemas";
 import { listRecords } from "../../utils";
+
 export const listMergeRequestNotes = action({
   display: {
     label: "List Merge Request Notes",
@@ -26,9 +27,8 @@ export const listMergeRequestNotes = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listMergeRequestNotesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listMergeRequestNotesExamplePayload,
   examplePayload: listMergeRequestNotesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

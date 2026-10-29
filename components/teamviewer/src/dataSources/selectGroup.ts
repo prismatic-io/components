@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs/general";
 import { selectGroupDataSourceExamplePayload } from "../examplePayloads/dataSources";
+
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",
@@ -12,6 +13,7 @@ export const selectGroup = dataSource({
   },
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
+
     const { data } = await client.get(`/groups`);
     const result = (data.groups as []).map<Element>(({ name, id }) => ({
       label: name,

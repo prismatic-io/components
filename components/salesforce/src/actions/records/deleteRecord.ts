@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { deleteRecordInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const deleteRecord = action({
   display: {
     label: "Delete Record",
@@ -19,9 +20,8 @@ export const deleteRecord = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: deleteRecordOutputSchema,

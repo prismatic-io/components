@@ -2,6 +2,7 @@ import { action, PerformSafety, util } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { batchEntityActionsExamplePayload } from "../../examplePayloads";
 import { batchEntityActionsInputs } from "../../inputs";
+
 export const batchEntityActions = action({
   display: {
     label: "Run Batch Operations",

@@ -4,6 +4,7 @@ import { getCalendlyClient } from "../../client";
 import { listWebhookSubscriptionInputs } from "../../inputs";
 import { listWebhookSubscriptionExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
+
 export const listWebhookSubscription = action({
   display: {
     label: "List Webhook Subscription",
@@ -21,9 +22,7 @@ export const listWebhookSubscription = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listWebhookSubscriptionExamplePayload.data,
   }),
   inputs: listWebhookSubscriptionInputs,

@@ -5,6 +5,7 @@ import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { selectOrganizationExamplePayload } from "../examplePayloads";
 import type { Organization } from "../types/organization";
 import { WebhookVersion } from "../constants";
+
 export const selectOrganization = dataSource({
   display: {
     label: "Select Organization",
@@ -21,10 +22,12 @@ export const selectOrganization = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "id").map<Element>((organization) => ({
       key: organization.id.toString(),
       label: organization.org_name,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

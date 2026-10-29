@@ -5,6 +5,7 @@ import { paginateResults } from "../../util/pagination";
 import { listMessageTemplatesExamplePayload } from "../../examplePayloads";
 import { listMessageTemplatesInputs } from "../../inputs";
 import { listMessageTemplatesOutputSchema } from "../../outputSchemas";
+
 export const listMessageTemplates = action({
   display: {
     label: "List Message Templates",

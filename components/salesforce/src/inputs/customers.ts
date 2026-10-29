@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanPositiveInt, cleanStringInput } from "../util";
 import { connectionInput, listInputs, name, recordId, version } from "./common";
+
 const customerStatusType = input({
   label: "Customer Status Type",
   type: "string",
@@ -19,6 +20,7 @@ const customerStatusType = input({
   clean: cleanStringInput,
   default: "Active",
 });
+
 const lastReferenceDate = input({
   label: "Last Reference Date",
   type: "string",
@@ -29,6 +31,7 @@ const lastReferenceDate = input({
   clean: cleanStringInput,
   example: "2021-09-01T00:00:00.000Z",
 });
+
 const lastViewedDate = input({
   label: "Last Viewed Date",
   type: "string",
@@ -39,6 +42,7 @@ const lastViewedDate = input({
   clean: cleanStringInput,
   example: "2021-09-01T00:00:00.000Z",
 });
+
 const ownerId = input({
   label: "Owner ID",
   placeholder: "Enter owner ID",
@@ -48,6 +52,7 @@ const ownerId = input({
   clean: cleanStringInput,
   example: "00570000001a2fF",
 });
+
 const partyId = input({
   label: "Party ID",
   placeholder: "Enter party ID",
@@ -58,6 +63,7 @@ const partyId = input({
   clean: util.types.toString,
   example: "0697000000K2g5AAAR",
 });
+
 const totalLifeTimeValue = input({
   label: "Total Lifetime Value",
   type: "string",
@@ -67,6 +73,7 @@ const totalLifeTimeValue = input({
   clean: cleanPositiveInt,
   example: "1000",
 });
+
 export const createCustomerInputs = {
   name: {
     ...name,
@@ -82,6 +89,7 @@ export const createCustomerInputs = {
   totalLifeTimeValue,
   connection: connectionInput,
 };
+
 export const updateCustomerInputs = {
   version,
   recordId: {
@@ -101,6 +109,7 @@ export const updateCustomerInputs = {
   totalLifeTimeValue,
   connection: connectionInput,
 };
+
 export const deleteCustomerInputs = {
   version,
   recordId: {
@@ -109,6 +118,7 @@ export const deleteCustomerInputs = {
   },
   connection: connectionInput,
 };
+
 export const getCustomerInputs = {
   version,
   recordId: {
@@ -117,7 +127,9 @@ export const getCustomerInputs = {
   },
   connection: connectionInput,
 };
+
 export const listCustomersInputs = { ...listInputs };
+
 export const describeCustomerSObjectInputs = {
   version,
   connection: connectionInput,

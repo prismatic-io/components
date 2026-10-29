@@ -8,6 +8,7 @@ import {
   fetchAllSharedLinks,
   handleDropboxError,
 } from "../../util";
+
 export const listSharedLinks = action({
   display: {
     label: "List Shared Links",
@@ -21,6 +22,7 @@ export const listSharedLinks = action({
       params.userType,
       params.teamMemberId,
     );
+
     try {
       const data = await fetchAllSharedLinks(dbx, {
         path: params.path,
@@ -33,9 +35,7 @@ export const listSharedLinks = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listSharedLinksExamplePayload,
   }),
   inputs: listSharedLinksInputs,

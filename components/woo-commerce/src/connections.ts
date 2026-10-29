@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const basic = connection({
   key: "Basic",
   display: {
@@ -32,4 +33,5 @@ export const basic = connection({
     },
   },
 });
+
 export default [basic];

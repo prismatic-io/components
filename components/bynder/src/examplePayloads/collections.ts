@@ -24,6 +24,7 @@ export const getCollectionResponse = {
   description: "Collection 1 with various assets.",
   IsPublic: 1,
 };
+
 export const listCollectionsResponse = {
   collections: [
     getCollectionResponse,
@@ -56,6 +57,7 @@ export const listCollectionsResponse = {
   ],
   count: 151,
 };
+
 export const selectCollectionResponse = [
   {
     key: "B2C3D4E5-F6A7-8901-B2C3D4E5F6A78901",

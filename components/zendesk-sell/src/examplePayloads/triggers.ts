@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 const createdContactRecord = {
   id: 47912051,
   creator_id: 1290481,
@@ -39,6 +40,7 @@ const createdContactRecord = {
   created_at: "2025-02-18T08:15:00Z",
   updated_at: "2025-02-18T08:15:00Z",
 };
+
 const updatedContactRecord = {
   id: 47912050,
   creator_id: 1290481,
@@ -91,9 +93,8 @@ const updatedContactRecord = {
   created_at: "2024-08-15T09:32:17Z",
   updated_at: "2025-02-18T11:42:09Z",
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

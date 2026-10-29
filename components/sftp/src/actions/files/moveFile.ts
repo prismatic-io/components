@@ -2,6 +2,7 @@ import { action, util, input } from "@prismatic-io/spectral";
 import { connection } from "../../inputs";
 import { getSftpClient } from "../../client";
 import { moveFileExamplePayload } from "../../examplePayloads";
+
 const sourcePath = input({
   label: "Source Path",
   placeholder: "Path of file to move",
@@ -11,6 +12,7 @@ const sourcePath = input({
   example: "/my/starting/path.txt",
   clean: util.types.toString,
 });
+
 const destinationPath = input({
   label: "Destination Path",
   placeholder: "Path to move the file to",
@@ -20,6 +22,7 @@ const destinationPath = input({
   example: "/my/destination/path.txt",
   clean: util.types.toString,
 });
+
 const moveFile = action({
   display: {
     label: "Move File",
@@ -27,14 +30,17 @@ const moveFile = action({
   },
   perform: async (context, { connection, sourcePath, destinationPath }) => {
     const sftp = await getSftpClient(connection, context.debug.enabled);
+
     try {
       await sftp.rename(sourcePath, destinationPath);
     } finally {
       await sftp.end();
     }
+
     return null;
   },
   inputs: { connection, sourcePath, destinationPath },
   examplePayload: moveFileExamplePayload,
 });
+
 export default moveFile;

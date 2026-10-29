@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -25,6 +26,7 @@ import {
   summary,
   tagTypeIds,
 } from "./common";
+
 const appointments = input({
   label: "Appointments",
   type: "code",
@@ -46,6 +48,7 @@ const appointments = input({
   comments: "List of appointment information",
   clean: util.types.toObject,
 });
+
 const jobGeneratedLeadSource = input({
   label: "Job Generated Lead Source",
   type: "code",
@@ -63,6 +66,7 @@ const jobGeneratedLeadSource = input({
     "The lead source that generated this job. Provide jobId (the job this one was generated from) and employeeId (the office user or technician credited).",
   clean: cleanCodeInput,
 });
+
 const invoiceSignatureIsRequired = input({
   label: "Invoice Signature Is Required",
   type: "string",
@@ -73,6 +77,7 @@ const invoiceSignatureIsRequired = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 const customerPo = input({
   label: "Customer PO",
   type: "string",
@@ -83,6 +88,7 @@ const customerPo = input({
   clean: cleanStringInput,
   default: "",
 });
+
 const externalDataApplicationGuid = input({
   label: "External Data Application GUID",
   type: "string",
@@ -93,6 +99,7 @@ const externalDataApplicationGuid = input({
   placeholder: "Enter an application GUID",
   clean: util.types.toString,
 });
+
 const shouldUpdateInvoiceItems = input({
   label: "Should Update Invoice Items",
   type: "string",
@@ -103,6 +110,7 @@ const shouldUpdateInvoiceItems = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 const reasonId = input({
   label: "Reason ID",
   type: "string",
@@ -113,6 +121,7 @@ const reasonId = input({
   clean: util.types.toNumber,
   dataSource: "selectJobCancelReason",
 });
+
 const jobMemo = input({
   label: "Job Memo",
   type: "text",
@@ -122,6 +131,7 @@ const jobMemo = input({
   placeholder: "Enter a memo",
   clean: util.types.toString,
 });
+
 export const createJobInputs = {
   connection,
   customerId,
@@ -166,6 +176,7 @@ export const createJobInputs = {
   invoiceSignatureIsRequired,
   customerPo,
 };
+
 export const getJobInputs = {
   connection,
   jobId,
@@ -174,6 +185,7 @@ export const getJobInputs = {
     required: false,
   },
 };
+
 export const listJobsInputs = {
   connection,
   fetchAll,
@@ -182,6 +194,7 @@ export const listJobsInputs = {
   sort,
   customQueryParams,
 };
+
 export const listJobCancelReasonsInputs = {
   connection,
   fetchAll,
@@ -190,6 +203,7 @@ export const listJobCancelReasonsInputs = {
   sort,
   customQueryParams,
 };
+
 export const updateJobInputs = {
   connection,
   jobId,
@@ -235,6 +249,7 @@ export const updateJobInputs = {
   externalData,
   customerPo,
 };
+
 export const cancelJobInputs = {
   connection,
   jobId,

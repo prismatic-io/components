@@ -4,6 +4,7 @@ import { listTrainingPlanRecordsExamplePayload } from "../../examplePayloads";
 import { listTrainingPlanRecordsInputs } from "../../inputs";
 import { listTrainingPlanRecordsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listTrainingPlanRecords = action({
   display: {
     label: "List Training Plan Records",
@@ -18,13 +19,17 @@ export const listTrainingPlanRecords = action({
   perform: async (context, { connection, trainingGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(`Fetching training records for plan ${trainingGuid}`);
+
       const { data } = await client.get(
         `/trainingplans/${trainingGuid}/records`,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} training records`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List Training Plan Records");

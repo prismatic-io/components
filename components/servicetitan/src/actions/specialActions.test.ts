@@ -15,14 +15,18 @@ import { createInstalledEquipmentAttachment } from "./installedEquipment/createI
 import { listInstalledEquipmentAttachments } from "./installedEquipment/listInstalledEquipmentAttachments";
 import { rawRequest } from "./misc/rawRequest";
 import { createPayment } from "./payments/createPayment";
+
 const { "Content-type": _jsonContentType, ...MULTIPART_UPLOAD_HEADERS } =
   REQUIRED_HEADERS;
 const multipartApi = () => nock(BASE, { reqheaders: MULTIPART_UPLOAD_HEADERS });
+
 afterEach(() => nock.cleanAll());
+
 describe("createInstalledEquipmentAttachment (multipart upload)", () => {
   test("posts the file buffer under a multipart content-type carrying a boundary", async () => {
     let sentContentType = "";
     let sentBody = "";
+
     multipartApi()
       .post(`${prefix("equipmentsystems")}/installed-equipment/attachments`)
       .reply(200, function (_uri, body) {
@@ -30,11 +34,13 @@ describe("createInstalledEquipmentAttachment (multipart upload)", () => {
         sentBody = String(body);
         return createInstalledEquipmentAttachmentExamplePayload.data;
       });
+
     const { result } = await invoke(createInstalledEquipmentAttachment, {
       connection,
       file: { data: Buffer.from("id,name\n1,Acme\n"), contentType: "text/csv" },
       fileName: "equipment.csv",
     });
+
     expect(sentContentType).toMatch(/^multipart\/form-data; boundary=.+/);
     expect(sentBody).toContain('Content-Disposition: form-data; name="file"');
     expect(sentBody).toContain('filename="equipment.csv"');
@@ -44,10 +50,12 @@ describe("createInstalledEquipmentAttachment (multipart upload)", () => {
       createInstalledEquipmentAttachmentExamplePayload.data,
     );
   });
+
   test("surfaces a rejected upload", async () => {
     multipartApi()
       .post(`${prefix("equipmentsystems")}/installed-equipment/attachments`)
       .reply(413, { title: "Payload Too Large" });
+
     await expect(
       invoke(createInstalledEquipmentAttachment, {
         connection,
@@ -57,6 +65,7 @@ describe("createInstalledEquipmentAttachment (multipart upload)", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("listInstalledEquipmentAttachments (binary download)", () => {
   test("forwards the path filter and returns the body untouched", async () => {
     let sentQuery: Record<string, string | string[] | undefined> = {};
@@ -69,18 +78,22 @@ describe("listInstalledEquipmentAttachments (binary download)", () => {
       .reply(200, Buffer.from("ExampleFile"), {
         "content-type": "application/octet-stream",
       });
+
     const { result } = await invoke(listInstalledEquipmentAttachments, {
       connection,
       path: "department",
     });
+
     expect(sentQuery).toEqual({ path: "department" });
     expect(result.data).toBe("ExampleFile");
   });
+
   test("surfaces a failing download", async () => {
     api()
       .get(`${prefix("equipmentsystems")}/installed-equipment/attachments`)
       .query(true)
       .reply(404, { title: "Not Found" });
+
     await expect(
       invoke(listInstalledEquipmentAttachments, {
         connection,
@@ -89,6 +102,7 @@ describe("listInstalledEquipmentAttachments (binary download)", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("createPayment (deprecated stub)", () => {
   test("rejects with the removed-endpoint message without making a request", async () => {
     await expect(
@@ -108,15 +122,18 @@ describe("createPayment (deprecated stub)", () => {
     );
   });
 });
+
 describe("rawRequest (raw passthrough)", () => {
   test("forwards the method, path and all four headers, and returns the response untouched", async () => {
     let sentHeaders: Record<string, unknown> = {};
+
     nock(BASE)
       .get(`${prefix("jpm")}/jobs`)
       .reply(200, function () {
         sentHeaders = this.req.headers;
         return getJobExamplePayload.data;
       });
+
     const { result } = await invoke(rawRequest, {
       connection,
       urlType: "jpm",
@@ -135,6 +152,7 @@ describe("rawRequest (raw passthrough)", () => {
       maxRetries: 0,
       useExponentialBackoff: false,
     });
+
     expect(sentHeaders.authorization).toBe("Bearer test-access-token");
     expect(sentHeaders.accept).toBe("application/json");
     expect(sentHeaders["content-type"]).toBe("application/json");

@@ -3,6 +3,7 @@ import { executeXmlRequest, getDateXmlTags, handleSageError } from "../../util";
 import { createInvoiceExamplePayload } from "../../examplePayloads";
 import { createInvoiceInputs } from "../../inputs";
 import { createInvoiceOutputSchema } from "../../outputSchemas";
+
 export const createInvoice = action({
   display: {
     label: "Create Invoice",
@@ -74,12 +75,15 @@ export const createInvoice = action({
         ${invoiceLineItemsInput}
     </invoiceitems>
 </create_invoice>`;
+
     const responseFromSage = await executeXmlRequest(
       connection,
       action,
       context.debug.enabled,
     );
+
     handleSageError(responseFromSage);
+
     return {
       data: responseFromSage,
     };

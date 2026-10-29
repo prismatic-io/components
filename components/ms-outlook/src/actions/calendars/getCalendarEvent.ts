@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getCalendarEventExamplePayload } from "../../examplePayloads";
 import { getCalendarEventInputs } from "../../inputs";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const getCalendarEvent = action({
   display: {
     label: "Get Calendar Event",

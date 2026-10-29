@@ -1,4 +1,5 @@
 import { connection } from "./common";
+
 export const selectAccountInputs = { connection };
 export const selectCampaignInputs = { connection };
 export const selectEventInputs = { connection };

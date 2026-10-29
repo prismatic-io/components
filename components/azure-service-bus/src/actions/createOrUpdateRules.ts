@@ -17,6 +17,7 @@ import {
 } from "../inputs";
 import type { CreateOrUpdateRulesBody } from "../types/CreateOrUpdateRulesBody";
 import type { FilterType } from "../types/FilterType";
+
 export const createOrUpdateRules = action({
   display: {
     label: "Create or Update Rules",
@@ -76,4 +77,5 @@ export const createOrUpdateRules = action({
     sqlFilter,
   },
 });
+
 export default { createOrUpdateRules };

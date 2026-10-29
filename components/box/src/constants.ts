@@ -1,12 +1,22 @@
 export const BASE_URL = "https://api.box.com/2.0";
+
 export const API_ROOT_URL = "https://api.box.com";
+
 export const FOLDER_TYPE = "folder";
+
 export const FILE_TYPE = "file";
+
 export const MAX_PAGE_SIZE = 1000;
+
 export const DEFAULT_BATCH_SIZE = 50;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const SHARED_LINK_FIELD = "shared_link";
+
 export const SHARED_ITEMS_PATH = "/shared_items";
+
 export const HTTP_CONFLICT = 409;
+
 export const BOX_SIGNATURE_PRIMARY_HEADER = "box-signature-primary";
 export const BOX_SIGNATURE_SECONDARY_HEADER = "box-signature-secondary";

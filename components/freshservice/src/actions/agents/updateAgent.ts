@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { updateAgentExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateAgentInputs as inputs } from "../../inputs";
 import { agentOutputSchema } from "../../outputSchemas";
+
 export const updateAgent = action({
   display: {
     label: "Update Agent",
@@ -24,6 +25,7 @@ export const updateAgent = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       email: additionalFields.email,
       roles,
@@ -36,7 +38,9 @@ export const updateAgent = action({
         additionalFields.canSeeAllTicketsFromAssociatedDepartments,
       ...agentsAdditionalFields,
     };
+
     const { data } = await client.put(`/agents/${agentId}`, payload);
+
     return {
       data,
     };

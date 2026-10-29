@@ -31,6 +31,7 @@ export {
   getOpportunitiesByFilterExamplePayload,
   syncOpportunitiesExamplePayload,
 } from "./opportunities";
+
 export {
   deleteSalesPersonsExamplePayload,
   describeSalesPersonExamplePayload,

@@ -9,12 +9,15 @@ import {
   cleanString,
   cleanValueListInput,
 } from "./util";
+
 export { debugRequest } from "@prismatic-io/spectral/dist/clients/http/inputs";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const id = input({
   label: "ID",
   type: "string",
@@ -24,6 +27,7 @@ export const id = input({
   placeholder: "00000000-0000-0000-0000000000000000",
   clean: cleanString,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -33,6 +37,7 @@ export const fetchAll = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -42,6 +47,7 @@ export const page = input({
   placeholder: "1",
   clean: cleanString,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -52,6 +58,7 @@ export const limit = input({
   placeholder: "100",
   clean: cleanString,
 });
+
 export const includeInActive = input({
   label: "Include Inactive",
   type: "boolean",
@@ -59,6 +66,7 @@ export const includeInActive = input({
   comments: "Whether to include inactive users in the list of results.",
   clean: util.types.toBool,
 });
+
 export const count = input({
   label: "Count",
   type: "boolean",
@@ -67,6 +75,7 @@ export const count = input({
     "Indicating whether or not the response should include count results. This parameter when passed as true overrides the total parameter.",
   clean: util.types.toBool,
 });
+
 export const total = input({
   label: "Total",
   type: "boolean",
@@ -75,6 +84,7 @@ export const total = input({
     "Indicating whether or not the response should include the total count of results.",
   clean: util.types.toBool,
 });
+
 export const username = input({
   label: "Username",
   type: "string",
@@ -85,6 +95,7 @@ export const username = input({
   placeholder: "user123",
   clean: cleanString,
 });
+
 export const password = input({
   label: "Password",
   type: "string",
@@ -94,6 +105,7 @@ export const password = input({
   placeholder: "password",
   clean: cleanString,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -103,6 +115,7 @@ export const email = input({
   placeholder: "test@test.com",
   clean: cleanString,
 });
+
 export const profileId = input({
   label: "Profile ID",
   type: "string",
@@ -113,6 +126,7 @@ export const profileId = input({
   placeholder: "00000000-0000-0000-0000000000000000",
   clean: cleanString,
 });
+
 export const firstname = input({
   label: "First Name",
   type: "string",
@@ -122,6 +136,7 @@ export const firstname = input({
   placeholder: "John",
   clean: cleanString,
 });
+
 export const lastname = input({
   label: "Last Name",
   type: "string",
@@ -131,6 +146,7 @@ export const lastname = input({
   placeholder: "Doe",
   clean: cleanString,
 });
+
 export const bodyData = input({
   label: "Data",
   type: "code",
@@ -149,6 +165,7 @@ export const bodyData = input({
   ),
   clean: cleanCodeInput,
 });
+
 export const extraParams = input({
   label: "Extra Parameters",
   type: "string",
@@ -157,6 +174,7 @@ export const extraParams = input({
   comments: "Extra parameters to be included in the request.",
   clean: cleanKeyValueListInput,
 });
+
 export const versions = input({
   label: "Versions",
   type: "boolean",
@@ -165,6 +183,7 @@ export const versions = input({
     "Include information about the different asset media items including versions.",
   clean: util.types.toBool,
 });
+
 export const stats = input({
   label: "Stats",
   type: "boolean",
@@ -172,6 +191,7 @@ export const stats = input({
   comments: "Include information about views and downloads.",
   clean: util.types.toBool,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -182,6 +202,7 @@ export const name = input({
   placeholder: "Asset Name",
   clean: cleanString,
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -191,6 +212,7 @@ export const description = input({
   placeholder: "Extended asset description",
   clean: cleanString,
 });
+
 export const copyright = input({
   label: "Copyright",
   type: "string",
@@ -200,6 +222,7 @@ export const copyright = input({
   placeholder: "Copyright (c) Example corp",
   clean: cleanString,
 });
+
 export const metapropertyId = input({
   label: "Metaproperty ID",
   type: "string",
@@ -209,6 +232,7 @@ export const metapropertyId = input({
   placeholder: "00000000-0000-0000-0000000000000000",
   clean: cleanString,
 });
+
 export const metapropertyOptionsIds = input({
   label: "Metaproperty Options IDs",
   type: "string",
@@ -219,6 +243,7 @@ export const metapropertyOptionsIds = input({
   placeholder: "00000000-0000-0000-0000000000000000",
   clean: cleanValueListInput,
 });
+
 export const multipartParams = input({
   label: "Multipart Parameters",
   type: "code",
@@ -229,6 +254,7 @@ export const multipartParams = input({
   example: JSON.stringify(initialiseUploadResponse.multipart_params, null, 2),
   clean: cleanCodeInput,
 });
+
 export const file = input({
   label: "File",
   type: "string",
@@ -236,6 +262,7 @@ export const file = input({
   comments: "File or chunk of the file to be uploaded.",
   clean: util.types.toData,
 });
+
 export const chunks = input({
   label: "Chunks",
   type: "string",
@@ -243,6 +270,7 @@ export const chunks = input({
   comments: "Total number of chunks.",
   clean: cleanNumber,
 });
+
 export const chunk = input({
   label: "Chunk",
   type: "string",
@@ -250,6 +278,7 @@ export const chunk = input({
   comments: "Chunk index number (indexing starts from 1).",
   clean: cleanNumber,
 });
+
 export const uploadURL = input({
   label: "Upload URL",
   type: "string",
@@ -260,6 +289,7 @@ export const uploadURL = input({
   placeholder: "https://bynder-public-eu-central-1.s3.amazonaws.com/",
   clean: cleanString,
 });
+
 export const targetid = input({
   label: "Target ID",
   type: "string",
@@ -269,6 +299,7 @@ export const targetid = input({
   placeholder: "final/00000000-0000-0000-0000000000000000/Logo.png",
   clean: cleanString,
 });
+
 export const items = input({
   label: "Items",
   type: "string",
@@ -279,6 +310,7 @@ export const items = input({
   placeholder: "000000000-0000-0000-0000000000000000",
   clean: cleanString,
 });
+
 export const hash = input({
   label: "Hash",
   type: "boolean",
@@ -286,6 +318,7 @@ export const hash = input({
   comments: "Indicates whether or not to treat the itemId as a hashed item id",
   clean: util.types.toBool,
 });
+
 export const isPublic = input({
   label: "Is Public",
   type: "boolean",
@@ -294,6 +327,7 @@ export const isPublic = input({
   clean: util.types.toBool,
   default: "true",
 });
+
 export const collectionOptions = input({
   label: "Collection Options",
   type: "string",
@@ -311,6 +345,7 @@ export const collectionOptions = input({
   ],
   clean: cleanString,
 });
+
 export const recipients = input({
   label: "Recipients",
   type: "string",
@@ -321,6 +356,7 @@ export const recipients = input({
   placeholder: "user1@bynder.com,user2@bynder.com",
   clean: cleanString,
 });
+
 export const groups = input({
   label: "Groups",
   type: "string",
@@ -331,6 +367,7 @@ export const groups = input({
   placeholder: "000000000-0000-0000-0000000000000000",
   clean: cleanString,
 });
+
 export const profiles = input({
   label: "Profiles",
   type: "string",
@@ -341,6 +378,7 @@ export const profiles = input({
   placeholder: "000000000-0000-0000-0000000000000000",
   clean: cleanString,
 });
+
 export const key = input({
   label: "Key",
   type: "string",
@@ -350,6 +388,7 @@ export const key = input({
   placeholder: "excp",
   clean: cleanString,
 });
+
 export const responsibleId = input({
   label: "Responsible ID",
   type: "string",
@@ -359,6 +398,7 @@ export const responsibleId = input({
   placeholder: "00000000-0000-0000-0000-000000000000",
   clean: cleanString,
 });
+
 export const orderStatus = input({
   label: "Order Status",
   type: "string",
@@ -370,6 +410,7 @@ export const orderStatus = input({
   })),
   clean: (value: unknown) => cleanString(value) as OrderStatus,
 });
+
 export const messsage = input({
   label: "Message",
   type: "string",
@@ -379,6 +420,7 @@ export const messsage = input({
   placeholder: "Order has been delivered",
   clean: cleanString,
 });
+
 export const trackingnumber = input({
   label: "Tracking Number",
   type: "string",
@@ -388,6 +430,7 @@ export const trackingnumber = input({
   placeholder: "trackingnumber",
   clean: cleanString,
 });
+
 export const io = input({
   label: "IO",
   type: "string",
@@ -398,6 +441,7 @@ export const io = input({
   placeholder: "transform:crop,width:100,height:200",
   clean: cleanString,
 });
+
 export const focuspoint = input({
   label: "Focus Point",
   type: "string",
@@ -408,6 +452,7 @@ export const focuspoint = input({
   placeholder: "0.5,0.25",
   clean: cleanString,
 });
+
 export const format = input({
   label: "Format",
   type: "string",
@@ -418,6 +463,7 @@ export const format = input({
   placeholder: "jpg",
   clean: cleanString,
 });
+
 export const quality = input({
   label: "Format",
   type: "string",
@@ -428,6 +474,7 @@ export const quality = input({
   placeholder: "75",
   clean: cleanString,
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -441,6 +488,7 @@ export const type = input({
   })),
   clean: cleanValueListInput,
 });
+
 export const options = input({
   label: "Format",
   type: "boolean",
@@ -449,6 +497,7 @@ export const options = input({
     "Indicates whether or not the response should include the metaproperty options of each metaproperty.",
   clean: util.types.toBool,
 });
+
 export const ids = input({
   label: "IDs",
   type: "string",

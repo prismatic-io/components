@@ -1,5 +1,6 @@
 import { type KeyValuePair, util } from "@prismatic-io/spectral";
 import FormData from "form-data";
+
 export const toFormData = (
   formData: KeyValuePair<unknown>[],
   fileData: KeyValuePair<unknown>[],

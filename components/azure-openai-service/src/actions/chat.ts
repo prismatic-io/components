@@ -9,6 +9,7 @@ import {
   temperatureInput,
   topPInput,
 } from "../inputs";
+
 const createChatCompletion = action({
   display: {
     label: "Create Chat Completion",
@@ -35,4 +36,5 @@ const createChatCompletion = action({
   },
   examplePayload: createChatCompletionExamplePayload,
 });
+
 export default { createChatCompletion };

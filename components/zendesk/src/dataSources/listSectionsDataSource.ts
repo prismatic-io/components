@@ -4,6 +4,7 @@ import { listSectionsDataSourceExamplePayload } from "../examplePayloads";
 import { listSectionsDataSourceInputs } from "../inputs";
 import type { Section } from "../types";
 import { paginateResults } from "../util";
+
 export const listSectionsDataSource = dataSource({
   display: {
     label: "Select Sections",
@@ -13,12 +14,14 @@ export const listSectionsDataSource = dataSource({
     const client = rawHttpClient(zendeskConnection);
     const results: Section[] = [];
     const nextUrl = `/help_center/${locale}/sections`;
+
     const paginatedResults = await paginateResults<Section>(
       client,
       nextUrl,
       results,
       "sections",
     );
+
     return {
       result: paginatedResults.map((section) => ({
         label: section.name,

@@ -5,10 +5,13 @@ import type {
   AssociationTarget,
   AssociationTypeDefinition,
 } from "../types";
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
+
 export const resultsOf = (data: unknown): unknown[] =>
   isRecord(data) && Array.isArray(data.results) ? data.results : [];
+
 export const resolveAssociationSpec = async (
   client: HttpClient,
   fromObjectType: string,
@@ -20,6 +23,7 @@ export const resolveAssociationSpec = async (
     hubspotPaths.associations(fromObjectType, toObjectType, "/labels"),
   );
   const types = resultsOf(data) as AssociationTypeDefinition[];
+
   const match = /^\d+$/.test(wanted)
     ? types.find(({ typeId }) => typeId === Number(wanted))
     : wanted &&
@@ -28,16 +32,19 @@ export const resolveAssociationSpec = async (
           typeof label === "string" &&
           label.trim().toLowerCase() === wanted.toLowerCase(),
       );
+
   if (!match) {
     throw new Error(
       `Unable to find an association type matching "${associateType}" between "${fromObjectType}" and "${toObjectType}". Provide a numeric association type ID from the List Association Types action.`,
     );
   }
+
   return {
     associationCategory: match.category,
     associationTypeId: match.typeId,
   };
 };
+
 export const mapAssociationTypes = (data: unknown): unknown => ({
   ...(isRecord(data) ? data : {}),
   results: (resultsOf(data) as AssociationTypeDefinition[]).map(
@@ -50,6 +57,7 @@ export const mapAssociationTypes = (data: unknown): unknown => ({
     }),
   ),
 });
+
 export const mapReadAssociations = (data: unknown): unknown => ({
   ...(isRecord(data) ? data : {}),
   results: resultsOf(data).map((result) => {
@@ -73,6 +81,7 @@ export const mapReadAssociations = (data: unknown): unknown => ({
     };
   }),
 });
+
 export const mapCreatedAssociations = (
   data: unknown,
   associateType: string,

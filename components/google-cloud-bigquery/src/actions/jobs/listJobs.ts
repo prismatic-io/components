@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listJobsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
+
 export const listJobs = action({
   display: {
     description: "Lists all jobs that you started in the specified project.",

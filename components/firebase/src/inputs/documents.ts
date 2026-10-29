@@ -6,6 +6,7 @@ import {
   orderBy,
   queryOperatorCode,
 } from "./common";
+
 const document = input({
   label: "Document",
   placeholder: "Enter document ID",
@@ -16,6 +17,7 @@ const document = input({
   example: "4hJk2mX9pQrT7vWn3LsY",
   clean: util.types.toString,
 });
+
 const data = input({
   label: "Data",
   placeholder: "Data",
@@ -26,6 +28,7 @@ const data = input({
     "The fields to write to the document, as key-value pairs. Each key is a field name and each value is the value to store in that field.",
   clean: keyValuePairsToObject,
 });
+
 const fieldToRemove = input({
   label: "Field To Remove",
   placeholder: "Enter field name",
@@ -36,6 +39,7 @@ const fieldToRemove = input({
     "The name of the field to delete from the document. Use dot notation, such as address.city, to remove a nested field.",
   clean: util.types.toString,
 });
+
 const documents = input({
   type: "code",
   label: "Documents",
@@ -59,38 +63,45 @@ const documents = input({
   ),
   clean: validateJSON,
 });
+
 export const createDocumentInputs = {
   collection,
   data,
   firebaseConnection: connectionInput,
 };
+
 export const bulkCreateDocumentsInputs = {
   firebaseConnection: connectionInput,
   collection,
   documents,
 };
+
 export const listDocumentsInputs = {
   collection,
   firebaseConnection: connectionInput,
   orderBy,
   queryOperatorCode,
 };
+
 export const getDocumentInputs = {
   collection,
   document,
   firebaseConnection: connectionInput,
 };
+
 export const updateDocumentInputs = {
   collection,
   document,
   data,
   firebaseConnection: connectionInput,
 };
+
 export const deleteDocumentInputs = {
   collection,
   document,
   firebaseConnection: connectionInput,
 };
+
 export const removeFieldInputs = {
   collection,
   document,

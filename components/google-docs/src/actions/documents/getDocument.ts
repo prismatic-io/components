@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { getDocumentInputs } from "../../inputs";
 import { getDocumentExamplePayload } from "../../examplePayloads";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export const getDocument = action({
   display: {
     label: "Get Document",

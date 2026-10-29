@@ -5,6 +5,7 @@ import { defaultListInputs } from "../../inputs";
 import type { Bill } from "../../interfaces/bills";
 import { listBillsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listBills = action({
   display: {
     label: "List Bills",
@@ -23,6 +24,7 @@ export const listBills = action({
     { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const data = await fetchAllData<Bill>(
       client,
       "bills",
@@ -40,9 +42,7 @@ export const listBills = action({
   examplePerform: async (
     _context,
     { fetchAll },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listBillsResponse,
       page: fetchAll ? null : listBillsResponse.page,

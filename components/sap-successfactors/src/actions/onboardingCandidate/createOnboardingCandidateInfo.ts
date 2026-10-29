@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createOnboardingCandidateInfoExamplePayload } from "../../examplePayloads";
 import { createOnboardingCandidateInfoInputs } from "../../inputs";
+
 export const createOnboardingCandidateInfo = action({
   display: {
     label: "Create Onboarding Candidate Info",

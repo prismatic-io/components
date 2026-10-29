@@ -3,6 +3,7 @@ import { createClient } from "../../auth";
 import { listTicketsExamplePayload } from "../../examplePayloads";
 import { listTicketsInputs } from "../../inputs";
 import { listTicketsOutputSchema } from "../../outputSchemas";
+
 export const listTickets = action({
   display: {
     label: "List Tickets",
@@ -14,6 +15,7 @@ export const listTickets = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const result = await client.tickets.list();
     return {
       data: result,

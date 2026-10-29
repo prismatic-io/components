@@ -21,6 +21,7 @@ export const CREATE_CHAT_COMPLETION_EXAMPLE_PAYLOAD = {
     },
   },
 };
+
 export const LIST_MODELS_EXAMPLE_PAYLOAD = {
   data: {
     object: "list",

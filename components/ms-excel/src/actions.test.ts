@@ -1,6 +1,7 @@
 import { build } from "./actions/build";
 import { parseBuffer } from "./actions/parseBuffer";
 import { invoke } from "@prismatic-io/spectral/dist/testing";
+
 const sheetData = [
   [0, "First Name", "Last Name", "Gender", "Country", "Age", "Date", "Id"],
   [1, "Dulce", "Abril", "Female", "United States", 32, "15/10/2017", 1562],
@@ -13,6 +14,7 @@ const sheetData = [
   [8, "Earlean", "Melgar", "Female", "United States", 27, "16/08/2016", 2456],
   [9, "Vincenza", "Weiland", "Female", "United States", 40, "21/05/2015", 6548],
 ];
+
 describe("test build", () => {
   test("Ensure the component correctly builds excel files", async () => {
     const { result } = await invoke(build, {
@@ -20,9 +22,11 @@ describe("test build", () => {
       fileName: "",
       sheetData: sheetData,
     });
+
     expect(result.data);
   });
 });
+
 describe("test parse", () => {
   test("Ensure the component correctly serializes excel files", async () => {
     const { result } = await invoke(build, {
@@ -37,6 +41,7 @@ describe("test parse", () => {
         contentType: "application/octet-stream",
       },
     });
+
     expect(endResult.result.data[0].data).toStrictEqual(sheetData);
   });
 });

@@ -1,4 +1,5 @@
 import { successStringSchema, voteSchema } from "./shared";
+
 export const listVotesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -9,6 +10,9 @@ export const listVotesOutputSchema = {
   required: ["items", "hasNextPage", "cursor"],
   additionalProperties: true,
 };
+
 export const retrieveVoteOutputSchema = voteSchema;
+
 export const createVoteOutputSchema = successStringSchema;
+
 export const deleteVoteOutputSchema = successStringSchema;

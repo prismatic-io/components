@@ -3,6 +3,7 @@ import { getEventInviteeOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { getEventInviteeInputs } from "../../inputs";
 import { getEventInviteeExamplePayload } from "../../examplePayloads";
+
 export const getEventInvitee = action({
   display: {
     label: "Get Event Invitee",

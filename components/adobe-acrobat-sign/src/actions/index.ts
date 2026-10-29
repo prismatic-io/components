@@ -6,6 +6,7 @@ import resources from "./resources";
 import transientDocuments from "./transientDocuments";
 import users from "./users";
 import webhooks from "./webhooks";
+
 export default {
   ...accounts,
   ...agreements,

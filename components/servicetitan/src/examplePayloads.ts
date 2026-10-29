@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { ServiceTitanRecord } from "./types";
+
 const getAppointmentPayload = {
   id: 0,
   jobId: 0,
@@ -18,8 +19,11 @@ const getAppointmentPayload = {
   active: true,
   unused: true,
 };
+
 export const getAppointmentExamplePayload = { data: getAppointmentPayload };
+
 export const createAppointmentExamplePayload = { data: getAppointmentPayload };
+
 export const listAppointmentsExamplePayload = {
   data: {
     page: 0,
@@ -29,7 +33,9 @@ export const listAppointmentsExamplePayload = {
     data: [getAppointmentPayload, getAppointmentPayload],
   },
 };
+
 export const deleteAppointmentExamplePayload = { data: null };
+
 export const listAppointmentsAssignmentExamplePayload = {
   data: {
     page: 0,
@@ -54,6 +60,7 @@ export const listAppointmentsAssignmentExamplePayload = {
     ],
   },
 };
+
 export const assignTechniciansExamplePayload = {
   data: {
     id: 0,
@@ -69,9 +76,11 @@ export const assignTechniciansExamplePayload = {
     modifiedOn: "string",
   },
 };
+
 export const unassignTechniciansExamplePayload = {
   data: assignTechniciansExamplePayload.data,
 };
+
 const createBookingPayload = {
   id: 0,
   source: "string",
@@ -102,14 +111,19 @@ const createBookingPayload = {
   bookingProviderId: 0,
   modifiedOn: "string",
 };
+
 export const createBookingByProviderExamplePayload = {
   data: createBookingPayload,
 };
+
 export const getBookingByProviderExamplePayload = {
   data: createBookingPayload,
 };
+
 export const getBookingByTenantExamplePayload = { data: createBookingPayload };
+
 export const updateBookingExamplePayload = { data: createBookingPayload };
+
 export const listBookingByProviderExamplePayload = {
   data: {
     page: 0,
@@ -119,9 +133,11 @@ export const listBookingByProviderExamplePayload = {
     data: [createBookingPayload, createBookingPayload],
   },
 };
+
 export const listBookingByTenantExamplePayload = {
   data: listBookingByProviderExamplePayload.data,
 };
+
 const createCustomerPayload = {
   id: 0,
   active: true,
@@ -216,7 +232,9 @@ const createCustomerPayload = {
     },
   ],
 };
+
 export const createCustomerExamplePayload = { data: createCustomerPayload };
+
 const getCustomerPayload = {
   id: 0,
   active: true,
@@ -256,8 +274,11 @@ const getCustomerPayload = {
     },
   ],
 };
+
 export const getCustomerExamplePayload = { data: getCustomerPayload };
+
 export const updateCustomerExamplePayload = { data: getCustomerPayload };
+
 export const listCustomersExamplePayload = {
   data: {
     page: 0,
@@ -267,6 +288,7 @@ export const listCustomersExamplePayload = {
     data: [getCustomerPayload, getCustomerPayload],
   },
 };
+
 const createCustomerContactPayload = {
   id: 0,
   type: "MobilePhone",
@@ -279,12 +301,15 @@ const createCustomerContactPayload = {
   },
   createdOn: "string",
 };
+
 export const createCustomerContactExamplePayload = {
   data: createCustomerContactPayload,
 };
+
 export const updateCustomerContactExamplePayload = {
   data: createCustomerContactPayload,
 };
+
 export const listCustomersContactExamplePayload = {
   data: {
     page: 0,
@@ -294,7 +319,9 @@ export const listCustomersContactExamplePayload = {
     data: [createCustomerContactPayload, createCustomerContactPayload],
   },
 };
+
 export const deleteCustomerContactExamplePayload = { data: null };
+
 const getLocationPayload = {
   id: 0,
   customerId: 0,
@@ -332,8 +359,11 @@ const getLocationPayload = {
   ],
   taxZoneId: 0,
 };
+
 export const getLocationExamplePayload = { data: getLocationPayload };
+
 export const updateLocationExamplePayload = { data: getLocationPayload };
+
 export const createLocationExamplePayload = {
   data: {
     ...getLocationPayload,
@@ -347,6 +377,7 @@ export const createLocationExamplePayload = {
     ],
   },
 };
+
 export const listLocationsExamplePayload = {
   data: {
     page: 0,
@@ -356,6 +387,7 @@ export const listLocationsExamplePayload = {
     data: [getLocationPayload, getLocationPayload],
   },
 };
+
 const getJobPayload = {
   id: 0,
   jobNumber: "string",
@@ -405,7 +437,9 @@ const getJobPayload = {
   estimateIds: [0],
   equipmentIds: [0],
 };
+
 export const getJobExamplePayload = { data: getJobPayload };
+
 export const listJobsExamplePayload = {
   data: {
     page: 0,
@@ -415,9 +449,13 @@ export const listJobsExamplePayload = {
     data: [getJobPayload, getJobPayload],
   },
 };
+
 export const createJobExamplePayload = { data: getJobPayload };
+
 export const updateJobExamplePayload = { data: getJobPayload };
+
 export const cancelJobExamplePayload = { data: null };
+
 export const listJobCancelReasonsExamplePayload = {
   data: {
     page: 0,
@@ -435,6 +473,7 @@ export const listJobCancelReasonsExamplePayload = {
     ],
   },
 };
+
 const getProjectPayload = {
   id: 0,
   number: "string",
@@ -468,9 +507,13 @@ const getProjectPayload = {
   ],
   jobIds: [0],
 };
+
 export const getProjectExamplePayload = { data: getProjectPayload };
+
 export const createProjectExamplePayload = { data: getProjectPayload };
+
 export const updateProjectExamplePayload = { data: getProjectPayload };
+
 export const listProjectsExamplePayload = {
   data: {
     page: 0,
@@ -480,6 +523,7 @@ export const listProjectsExamplePayload = {
     data: [getProjectPayload, getProjectPayload],
   },
 };
+
 const getInvoicePayload = {
   id: 0,
   syncStatus: "string",
@@ -627,6 +671,7 @@ const getInvoicePayload = {
   active: true,
   invoiceConfiguration: "JobInvoice",
 };
+
 export const listInvoicesExamplePayload = {
   data: {
     page: 0,
@@ -636,11 +681,17 @@ export const listInvoicesExamplePayload = {
     data: [getInvoicePayload, getInvoicePayload],
   },
 };
+
 export const createInvoicesExamplePayload = { data: 12345 };
+
 export const updateInvoiceExamplePayload = { data: null };
+
 export const updateInvoiceCustomFieldsExamplePayload = { data: null };
+
 export const updateInvoiceItemsExamplePayload = { data: null };
+
 export const deleteInvoiceItemExamplePayload = { data: null };
+
 const createPaymentPayload = {
   id: 0,
   typeId: 0,
@@ -659,8 +710,11 @@ const createPaymentPayload = {
     },
   ],
 };
+
 export const createPaymentExamplePayload = { data: createPaymentPayload };
+
 export const updatePaymentExamplePayload = { data: createPaymentPayload };
+
 export const listPaymentsExamplePayload = {
   data: {
     page: 0,
@@ -724,7 +778,9 @@ export const listPaymentsExamplePayload = {
     ],
   },
 };
+
 export const updatePaymentCustomFieldsExamplePayload = { data: null };
+
 export const getInstalledEquipmentExamplePayload = {
   data: {
     id: 0,
@@ -777,9 +833,11 @@ export const getInstalledEquipmentExamplePayload = {
     ],
   },
 };
+
 export const updateInstalledEquipmentExamplePayload = {
   data: getInstalledEquipmentExamplePayload.data,
 };
+
 export const listInstalledEquipmentExamplePayload = {
   data: {
     page: 0,
@@ -824,6 +882,7 @@ export const listInstalledEquipmentExamplePayload = {
     ],
   },
 };
+
 export const createInstalledEquipmentExamplePayload = {
   data: {
     id: 0,
@@ -876,14 +935,17 @@ export const createInstalledEquipmentExamplePayload = {
     ],
   },
 };
+
 export const createInstalledEquipmentAttachmentExamplePayload = {
   data: {
     path: "InstalledEquipment/Documents/e2374d0c-16b8-4bb7-b3b5-1bd0ac1df1f4.csv",
   },
 };
+
 export const listInstalledEquipmentAttachmentsExamplePayload = {
   data: Buffer.from("ExampleFile"),
 };
+
 const getTechnicianPayload = {
   id: 0,
   userId: 0,
@@ -927,7 +989,9 @@ const getTechnicianPayload = {
   soldByRate: 0,
   status: "Idle",
 };
+
 export const getTechnicianExamplePayload = { data: getTechnicianPayload };
+
 export const listTechniciansExamplePayload = {
   data: {
     page: 0,
@@ -937,14 +1001,17 @@ export const listTechniciansExamplePayload = {
     data: [getTechnicianPayload, getTechnicianPayload],
   },
 };
+
 export const createTechnicianExamplePayload = {
   data: {
     id: 0,
   },
 };
+
 export const updateTechnicianExamplePayload = {
   data: createTechnicianExamplePayload.data,
 };
+
 export const listBusinessUnitsExamplePayload = {
   data: {
     page: 0,
@@ -1001,6 +1068,7 @@ export const listBusinessUnitsExamplePayload = {
     ],
   },
 };
+
 export const listUserRolesExamplePayload = {
   data: {
     page: 0,
@@ -1019,6 +1087,7 @@ export const listUserRolesExamplePayload = {
     ],
   },
 };
+
 export const selectAppointmentExamplePayload = {
   result: [
     {
@@ -1027,6 +1096,7 @@ export const selectAppointmentExamplePayload = {
     },
   ],
 };
+
 export const selectBookingExamplePayload = {
   result: [
     {
@@ -1039,6 +1109,7 @@ export const selectBookingExamplePayload = {
     },
   ],
 };
+
 export const selectCustomersExamplePayload = {
   result: [
     {
@@ -1051,6 +1122,7 @@ export const selectCustomersExamplePayload = {
     },
   ],
 };
+
 export const selectInstalledEquipmentExamplePayload = {
   result: [
     {
@@ -1063,6 +1135,7 @@ export const selectInstalledEquipmentExamplePayload = {
     },
   ],
 };
+
 export const selectInvoiceExamplePayload = {
   result: [
     {
@@ -1071,6 +1144,7 @@ export const selectInvoiceExamplePayload = {
     },
   ],
 };
+
 export const selectJobExamplePayload = {
   result: [
     {
@@ -1087,6 +1161,7 @@ export const selectJobExamplePayload = {
     },
   ],
 };
+
 export const selectLocationExamplePayload = {
   result: [
     {
@@ -1103,6 +1178,7 @@ export const selectLocationExamplePayload = {
     },
   ],
 };
+
 export const selectProjectExamplePayload = {
   result: [
     {
@@ -1115,6 +1191,7 @@ export const selectProjectExamplePayload = {
     },
   ],
 };
+
 export const selectBusinessUnitExamplePayload = {
   result: [
     {
@@ -1123,6 +1200,7 @@ export const selectBusinessUnitExamplePayload = {
     },
   ],
 };
+
 export const selectUserRoleExamplePayload = {
   result: [
     {
@@ -1131,6 +1209,7 @@ export const selectUserRoleExamplePayload = {
     },
   ],
 };
+
 export const selectJobCancelReasonExamplePayload = {
   result: [
     {
@@ -1139,6 +1218,7 @@ export const selectJobCancelReasonExamplePayload = {
     },
   ],
 };
+
 export const selectTechnicianExamplePayload = {
   result: [
     {
@@ -1151,12 +1231,15 @@ export const selectTechnicianExamplePayload = {
     },
   ],
 };
+
 export const selectPaymentExamplePayload = {
   result: [{ label: "#12345 - Check", key: "12345" }],
 };
+
 export const selectCustomerContactExamplePayload = {
   result: [{ label: "Phone: 555-1234", key: "12345" }],
 };
+
 const pollChangesJobCreated: ServiceTitanRecord = {
   id: 24815,
   jobNumber: "24815",
@@ -1192,6 +1275,7 @@ const pollChangesJobCreated: ServiceTitanRecord = {
   estimateIds: [],
   equipmentIds: [7712],
 };
+
 const pollChangesJobUpdated: ServiceTitanRecord = {
   id: 24790,
   jobNumber: "24790",
@@ -1227,6 +1311,7 @@ const pollChangesJobUpdated: ServiceTitanRecord = {
   estimateIds: [4471],
   equipmentIds: [7503, 7504],
 };
+
 const pollChangesTriggerEnvelope: Omit<TriggerPayload, "body"> = {
   headers: {},
   queryParameters: {},
@@ -1265,6 +1350,7 @@ const pollChangesTriggerEnvelope: Omit<TriggerPayload, "body"> = {
   startedAt: "2026-08-19T14:05:00.000Z",
   globalDebug: false,
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     ...pollChangesTriggerEnvelope,

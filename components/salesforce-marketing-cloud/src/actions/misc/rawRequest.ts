@@ -3,6 +3,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
 import { getAuthenticatedConnectionDetails } from "../../util";
+
 export const rawRequest = action({
   examplePayload: rawRequestExamplePayload,
   display: {
@@ -15,6 +16,7 @@ export const rawRequest = action({
   perform: async (context, { connection, ...rawRequestInputs }) => {
     const { accessToken, baseUrl } =
       getAuthenticatedConnectionDetails(connection);
+
     const { data } = await sendRawRequest(
       baseUrl,
       {

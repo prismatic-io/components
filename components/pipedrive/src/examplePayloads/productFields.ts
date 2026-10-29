@@ -20,6 +20,7 @@ const productFieldRecord = {
   mandatory_flag: true,
   options: null,
 };
+
 const productFieldV2Record = {
   id: 1,
   key: "name",
@@ -34,6 +35,7 @@ const productFieldV2Record = {
   add_time: "2024-01-01T00:00:00Z",
   update_time: "2024-01-01T00:00:00Z",
 };
+
 export const getProductFieldsExamplePayload = {
   data: {
     success: true,
@@ -47,24 +49,28 @@ export const getProductFieldsExamplePayload = {
     },
   },
 };
+
 export const getProductFieldsV2ExamplePayload = {
   data: {
     data: [productFieldV2Record],
     additional_data: { next_cursor: "eyJpZCI6Mn0" },
   },
 };
+
 export const getProductFieldExamplePayload = {
   data: {
     success: true,
     data: productFieldRecord,
   },
 };
+
 export const getProductFieldV2ExamplePayload = {
   data: {
     success: true,
     data: productFieldV2Record,
   },
 };
+
 export const deleteProductFieldExamplePayload = {
   data: {
     success: true,
@@ -73,6 +79,7 @@ export const deleteProductFieldExamplePayload = {
     },
   },
 };
+
 export const deleteProductFieldV2ExamplePayload = {
   data: {
     success: true,

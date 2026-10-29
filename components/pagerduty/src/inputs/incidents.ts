@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString, toOptionalStringArray } from "../util";
 import { createIncidentExample, manageIncidentsExample } from "./examples";
+
 export const dateRange = input({
   label: "Date Range",
   type: "string",
@@ -10,6 +11,7 @@ export const dateRange = input({
   comments:
     "When set to 'all', the since and until parameters and defaults are ignored.",
 });
+
 export const incidentKey = input({
   label: "Incident Key",
   type: "string",
@@ -20,6 +22,7 @@ export const incidentKey = input({
   comments:
     "The de-duplication key used to prevent duplicate incidents from being created.",
 });
+
 export const serviceIds = input({
   label: "Service IDs",
   type: "string",
@@ -31,6 +34,7 @@ export const serviceIds = input({
   comments:
     "The unique identifiers of the services to filter incidents by. Only incidents associated with the listed services are returned.",
 });
+
 export const userIds = input({
   label: "User IDs",
   type: "string",
@@ -42,6 +46,7 @@ export const userIds = input({
   comments:
     "The unique identifiers of the users currently assigned to the incidents to return.",
 });
+
 export const urgencies = input({
   label: "Urgencies",
   type: "string",
@@ -54,6 +59,7 @@ export const urgencies = input({
   clean: toOptionalStringArray,
   comments: "The urgency levels to filter incidents by.",
 });
+
 export const statuses = input({
   label: "Statuses",
   type: "string",
@@ -67,6 +73,7 @@ export const statuses = input({
   clean: toOptionalStringArray,
   comments: "The statuses to filter incidents by.",
 });
+
 export const sortBy = input({
   label: "Sort By",
   type: "string",
@@ -77,6 +84,7 @@ export const sortBy = input({
   comments:
     "The field and direction used to sort results. Field options: incident_number, created_at, resolved_at, urgency. Direction: asc or desc. Example: 'incident_number:desc'.",
 });
+
 export const include = input({
   label: "Include",
   type: "string",
@@ -100,6 +108,7 @@ export const include = input({
   clean: toOptionalStringArray,
   comments: "The additional details to include in the response.",
 });
+
 export const incidents = input({
   label: "Incidents",
   type: "code",
@@ -110,6 +119,7 @@ export const incidents = input({
   comments:
     "The JSON array of incidents to manage, including the parameters to update.",
 });
+
 export const incident = input({
   label: "Incident",
   type: "code",
@@ -119,6 +129,7 @@ export const incident = input({
   clean: util.types.toObject,
   comments: "The JSON object body describing the incident to create.",
 });
+
 export const incidentId = input({
   label: "Incident ID",
   type: "string",
@@ -128,6 +139,7 @@ export const incidentId = input({
   clean: util.types.toString,
   comments: "The unique identifier for the incident.",
 });
+
 export const incidentAlertId = input({
   label: "Incident Alert ID",
   type: "string",
@@ -137,6 +149,7 @@ export const incidentAlertId = input({
   clean: util.types.toString,
   comments: "The unique identifier for the incident alert.",
 });
+
 export const alertKey = input({
   label: "Alert Key",
   type: "string",
@@ -147,6 +160,7 @@ export const alertKey = input({
   comments:
     "The de-duplication key used to prevent duplicate alerts from being created.",
 });
+
 export const includeGetIncidents = input({
   label: "Include",
   type: "string",
@@ -170,6 +184,7 @@ export const includeGetIncidents = input({
   clean: toOptionalStringArray,
   comments: "The additional details to include in the response.",
 });
+
 export const updateIncidentObject = input({
   label: "Incident",
   type: "code",
@@ -179,6 +194,7 @@ export const updateIncidentObject = input({
   comments:
     "The JSON object containing the parameters of the incident to update.",
 });
+
 export const note = input({
   label: "Note",
   comments:
@@ -191,6 +207,7 @@ export const note = input({
   required: true,
   clean: util.types.toObject,
 });
+
 export const alertStatuses = input({
   label: "Statuses",
   type: "string",
@@ -203,6 +220,7 @@ export const alertStatuses = input({
   clean: toOptionalStringArray,
   comments: "The statuses to filter alerts by.",
 });
+
 export const alertSortBy = input({
   label: "Sort By",
   type: "string",
@@ -219,6 +237,7 @@ export const alertSortBy = input({
   comments:
     "The field and direction used to sort results. Field options: created_at, resolved_at. Direction: asc or desc.",
 });
+
 export const alertInclude = input({
   label: "Include",
   type: "string",
@@ -235,6 +254,7 @@ export const alertInclude = input({
   clean: toOptionalStringArray,
   comments: "The additional details to include in the response.",
 });
+
 export const alertsToUpdate = input({
   label: "Alerts",
   type: "code",

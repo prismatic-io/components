@@ -7,6 +7,7 @@ import {
   secret,
 } from "./inputs";
 import { performFunction, onInstanceDeploy, onInstanceDelete } from "./util";
+
 const formTrigger = trigger({
   display: {
     label: "Typeform Webhook Trigger",
@@ -28,6 +29,7 @@ const formTrigger = trigger({
     delete: onInstanceDelete,
   },
 });
+
 export default {
   formTrigger,
 };

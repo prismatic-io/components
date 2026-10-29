@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { selectDeviceCompliancePolicyExamplePayload } from "../examplePayloads";
 import { selectDeviceCompliancePolicyInputs } from "../inputs";
 import type { SelectableResource } from "../types";
+
 export const selectDeviceCompliancePolicy = dataSource({
   display: {
     label: "Select Device Compliance Policy",
@@ -16,12 +17,14 @@ export const selectDeviceCompliancePolicy = dataSource({
     const {
       data: { value },
     } = await client.get(ENDPOINTS.DEVICE_COMPLIANCE_POLICIES);
+
     const result = (value as SelectableResource[])
       .map<Element>((policy) => ({
         label: policy.displayName,
         key: policy.id.toString(),
       }))
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

@@ -5,6 +5,7 @@ import { selectWebhookExamplePayload } from "../examplePayloads";
 import { selectWebhookInputs } from "../inputs";
 import type { Webhook } from "../types";
 import { checkDeveloperApiKeyAndAppId } from "../util";
+
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
@@ -20,11 +21,13 @@ export const selectWebhook = dataSource({
       false,
     );
     const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(connection);
-    const { data } = await client.get<{
-      results: Webhook[];
-    }>(hubspotPaths.appWebhooks(appId, "/subscriptions"), {
-      params: { hapikey: developerApiKey },
-    });
+    const { data } = await client.get<{ results: Webhook[] }>(
+      hubspotPaths.appWebhooks(appId, "/subscriptions"),
+      {
+        params: { hapikey: developerApiKey },
+      },
+    );
+
     const result = data.results.map<Element>((webhook) => ({
       label: webhook.propertyName
         ? `${webhook.eventType} (${webhook.propertyName})`

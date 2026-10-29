@@ -22,6 +22,7 @@ import type {
 import connections, { certificateCredentials } from "./connections";
 import { ConfidentialClientApplication } from "@azure/msal-node";
 import { DELTA_NEXT_LINK_SUFFIX } from "./constants";
+
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -31,6 +32,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const paginateResults = async <T>(
   client: HttpClient,
   endpoint: string,
@@ -51,47 +53,57 @@ export const paginateResults = async <T>(
         Prefer: excludeParents ? "deltaExcludeParent" : undefined,
       },
     });
+
     const existent = results.map((r) => r.id);
     const toAdd = data.value.filter(
       (r: Record<string, unknown>) => !existent.includes(r.id),
     );
+
     results.push(...toAdd);
     nextLink = data["@odata.nextLink"];
+
     isFirstTime = false;
     fullData = data;
   } while (nextLink);
+
   if (returnFullData) {
     fullData.value = results;
     return fullData as T;
   }
+
   return results;
 };
+
 export const sortArray = (array: Element[]) => {
   return array.sort((a, b) => ((a.label || "") < (b.label || "") ? -1 : 1));
 };
+
 export const getFilesFromDriveFN = async (
   client: HttpClient,
   driveId: string,
   drives: DriveItem[] = [],
-): Promise<{
-  value: DriveItem[];
-  "@odata.context"?: string;
-}> => {
+): Promise<{ value: DriveItem[]; "@odata.context"?: string }> => {
   const allFiles: DriveItem[] = [];
   let rootContext: string | undefined;
+
   const processFolder = async (folderId: string): Promise<DriveItem[]> => {
     const folderFiles: DriveItem[] = [];
     let nextLink: string | undefined;
+
     do {
       const endpoint =
         folderId === "root"
           ? `/drives/${driveId}/root/children`
           : `/drives/${driveId}/items/${folderId}/children`;
+
       const { data } = await client.get<DriveResponse>(nextLink || endpoint);
+
       if (folderId === "root" && !rootContext) {
         rootContext = data["@odata.context"];
       }
+
       const folders: DriveItem[] = [];
+
       for (const item of data.value) {
         if (item.folder) {
           folders.push(item);
@@ -99,16 +111,20 @@ export const getFilesFromDriveFN = async (
           folderFiles.push(item);
         }
       }
+
       if (folders.length > 0) {
         const subFolderResults = await Promise.all(
           folders.map((folder) => processFolder(folder.id)),
         );
         folderFiles.push(...subFolderResults.flat());
       }
+
       nextLink = data["@odata.nextLink"];
     } while (nextLink);
+
     return folderFiles;
   };
+
   if (drives.length > 0) {
     const driveResults = await Promise.all(
       drives.map(async (drive) => {
@@ -123,11 +139,13 @@ export const getFilesFromDriveFN = async (
     const rootFiles = await processFolder("root");
     allFiles.push(...rootFiles);
   }
+
   return {
     value: allFiles,
     ...(rootContext ? { "@odata.context": rootContext } : {}),
   };
 };
+
 export const getAccessToken = async (connection: Connection) => {
   if (connection.key === certificateCredentials.key) {
     const authority = `${connection.fields.entraIdEndpoint}/${connection.fields.tenant}`;
@@ -161,6 +179,7 @@ export const getAccessToken = async (connection: Connection) => {
   }
   return util.types.toString(connection.token?.access_token);
 };
+
 const addDeleted = ({
   change,
   isDeleted,
@@ -173,6 +192,7 @@ const addDeleted = ({
     separatedChanges.deleted.push(change);
   }
 };
+
 const addUpdated = ({
   change,
   isDeleted,
@@ -190,6 +210,7 @@ const addUpdated = ({
     separatedChanges.updated.push(change);
   }
 };
+
 const addCreated = ({
   change,
   isDeleted,
@@ -202,6 +223,7 @@ const addCreated = ({
     separatedChanges.added.push(change);
   }
 };
+
 export const separateDriveChanges = (
   items: DriveItem[],
   isMatch: (change: DriveItem) => boolean = () => true,
@@ -219,8 +241,10 @@ export const separateDriveChanges = (
   }
   return separatedChanges;
 };
+
 const deltaNextLinkKey = (key: string): string =>
   `${key}${DELTA_NEXT_LINK_SUFFIX}`;
+
 export const resolveDeltaUrl = (
   state: PollingState,
   key: string,
@@ -228,19 +252,18 @@ export const resolveDeltaUrl = (
   incomingNextLink?: string,
 ): string =>
   incomingNextLink ?? state[deltaNextLinkKey(key)] ?? state[key] ?? rootDelta;
+
 const resyncLocation = (error: unknown): string | undefined | null => {
   const response = (
     error as {
-      response?: {
-        status?: number;
-        headers?: Record<string, unknown>;
-      };
+      response?: { status?: number; headers?: Record<string, unknown> };
     }
   )?.response;
   if (response?.status !== 410) return null;
   const location = response.headers?.location;
   return typeof location === "string" && location ? location : undefined;
 };
+
 const fetchDeltaPage = async (
   client: HttpClient,
   url: string,
@@ -261,6 +284,7 @@ const fetchDeltaPage = async (
     return get(location ?? rootDelta);
   }
 };
+
 export const fetchDeltaRound = async (
   client: HttpClient,
   state: PollingState,
@@ -294,6 +318,7 @@ export const fetchDeltaRound = async (
     cursorState: { [key]: page["@odata.deltaLink"] as string },
   };
 };
+
 export const folderPathFrom = (
   items: DriveItem[],
   folderId: string,
@@ -305,6 +330,7 @@ export const folderPathFrom = (
     ? `${targetFolder.parentReference.path}/${targetFolder.name}`
     : `/root:/${targetFolder.name}`;
 };
+
 export const folderMatcher =
   (
     folderId: string,
@@ -318,6 +344,7 @@ export const folderMatcher =
     }
     return isFolderItself || change.parentReference?.id === folderId;
   };
+
 export const fetchSiteDeltaRound = async (
   client: HttpClient,
   state: PollingState,
@@ -337,12 +364,14 @@ export const fetchSiteDeltaRound = async (
     incoming?.nextLink && incoming.remaining[0] === remaining[0]
       ? { nextLink: incoming.nextLink }
       : undefined;
+
   const newPollingState: PollingState = {};
   for (const drive of drives) {
     for (const key of [drive.id, deltaNextLinkKey(drive.id)]) {
       if (state[key]) newPollingState[key] = state[key];
     }
   }
+
   const changes: PollSiteChangesResult = {};
   while (remaining.length > 0) {
     const drive = drivesById.get(remaining[0]) as Drive;
@@ -356,9 +385,11 @@ export const fetchSiteDeltaRound = async (
     resume = undefined;
     delete newPollingState[deltaNextLinkKey(drive.id)];
     Object.assign(newPollingState, cursorState);
+
     const driveChanges = separateDriveChanges(page.value);
     const hasChanges = Object.keys(driveChanges).length > 0;
     if (hasChanges) changes[drive.name] = driveChanges;
+
     if (next)
       return {
         changes,
@@ -374,6 +405,7 @@ export const fetchSiteDeltaRound = async (
     newPollingState,
   };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollSiteChangesSeparatedChanges | undefined,
 ): PollingRecordChange[] => {
@@ -393,6 +425,7 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const resolveSitePollingRecordChanges = (
   data: PollSiteChangesResult | undefined,
 ): PollingRecordChange[] =>

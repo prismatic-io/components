@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, path, shareName } from "./common";
+
 export const fileContents = input({
   label: "File Contents",
   placeholder: "Output data from previous step",
@@ -10,6 +11,7 @@ export const fileContents = input({
   example: "My File Contents",
   clean: util.types.toData,
 });
+
 export const fromPath = input({
   label: "From Path",
   placeholder: "Enter source object path",
@@ -20,6 +22,7 @@ export const fromPath = input({
   example: "path/to/source/file.txt",
   clean: util.types.toString,
 });
+
 export const toPath = input({
   label: "To Path",
   placeholder: "Enter destination object path",
@@ -30,6 +33,7 @@ export const toPath = input({
   example: "path/to/destination/file.txt",
   clean: util.types.toString,
 });
+
 export const sourceUrlInput = input({
   label: "Source URL",
   placeholder: "Enter source file URL",
@@ -40,28 +44,33 @@ export const sourceUrlInput = input({
   example: "https://example.com/path/to/file.txt",
   clean: util.types.toString,
 });
+
 export const uploadFileInputs = {
   azureConnection: connectionInput,
   shareName,
   path,
   fileContents,
 };
+
 export const saveFromUrlInputs = {
   azureConnection: connectionInput,
   shareName,
   path,
   sourceUrl: sourceUrlInput,
 };
+
 export const downloadFileInputs = {
   azureConnection: connectionInput,
   shareName,
   path,
 };
+
 export const deleteFileInputs = {
   azureConnection: connectionInput,
   shareName,
   path,
 };
+
 export const copyFileInputs = {
   azureConnection: connectionInput,
   shareName,

@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connection, driveId } from "../../inputs";
 import { sortArray } from "../../utils";
+
 export const listFolders = dataSource({
   display: {
     label: "List Folders from Source",
@@ -17,6 +18,7 @@ export const listFolders = dataSource({
     const files: Record<string, string>[] = [];
     let nextLink = `${client.defaults.baseURL}${path}`;
     client.defaults.baseURL = undefined;
+
     do {
       const { data } = await client.get(nextLink);
       files.push(

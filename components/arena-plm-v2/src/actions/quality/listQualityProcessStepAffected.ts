@@ -4,6 +4,7 @@ import { listQualityProcessStepAffectedExamplePayload } from "../../examplePaylo
 import { listQualityProcessStepAffectedInputs } from "../../inputs";
 import { listQualityProcessStepAffectedOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessStepAffected = action({
   display: {
     label: "List Quality Process Step Affected Objects",
@@ -19,9 +20,11 @@ export const listQualityProcessStepAffected = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/qualityprocesses/${params.qualityProcessGuid}/steps/${params.stepGuid}/affected`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

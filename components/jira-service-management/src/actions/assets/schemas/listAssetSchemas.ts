@@ -4,6 +4,7 @@ import { listAssetSchemasExamplePayload } from "../../../examplePayloads";
 import { listAssetSchemasInputs } from "../../../inputs";
 import type { AssetSchema } from "../../../types";
 import { getAssetsPaginatedData } from "../../../util";
+
 export const listAssetSchemas = action({
   display: {
     label: "List Asset Schemas",

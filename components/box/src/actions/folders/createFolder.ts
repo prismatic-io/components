@@ -5,6 +5,7 @@ import { createFolderExamplePayload } from "../../examplePayloads";
 import { createFolderInputs } from "../../inputs";
 import { createFolderOutputSchema } from "../../outputSchemas";
 import { getPathEntries, pathLeafName } from "../../util";
+
 export const createFolder = action({
   display: {
     label: "Create Folder",
@@ -18,11 +19,14 @@ export const createFolder = action({
       util.types.toString(path),
       false,
     );
+
     const { name: newFolderName } = pathEntries.slice(-1)[0];
     const { id, type, name } = pathEntries.slice(-2)[0];
+
     if (type !== FOLDER_TYPE) {
       throw Error(`'${name}' is not a folder`);
     }
+
     const result = await client.folders.createFolder({
       name: util.types.toString(newFolderName),
       parent: { id: util.types.toString(id) },
@@ -31,12 +35,7 @@ export const createFolder = action({
       data: result.rawData,
     };
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...createFolderExamplePayload.data,
       name: pathLeafName(path),

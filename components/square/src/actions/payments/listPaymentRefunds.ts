@@ -3,6 +3,7 @@ import { createAuthorizedClient } from "../../client";
 import { listPaymentRefundsExamplePayload } from "../../examplePayloads";
 import { listPaymentRefundsInputs } from "../../inputs";
 import { fetchAllPages } from "../../util";
+
 export const listPaymentRefunds = action({
   display: {
     label: "List Payment Refunds",
@@ -27,6 +28,7 @@ export const listPaymentRefunds = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const data = await fetchAllPages(
       client,
       "/v2/refunds",
@@ -45,6 +47,7 @@ export const listPaymentRefunds = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   inputs: listPaymentRefundsInputs,

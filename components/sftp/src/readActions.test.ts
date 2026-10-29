@@ -1,6 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import statFile from "./actions/files/statFile";
 import { basic } from "./connections";
+
 describe("statFile", () => {
   test("Verify SFTP can list files in a directory", async () => {
     const connection = createConnection(basic, {

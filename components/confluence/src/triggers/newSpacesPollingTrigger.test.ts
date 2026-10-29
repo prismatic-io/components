@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import type { Space } from "../types";
 import { resolveSpaceRecordChanges } from "../util";
 import { newSpacesPollingTrigger } from "./newSpacesPollingTrigger";
+
 describe("polling trigger batching", () => {
   test("New Spaces is opt-in batchable with a default batch size", () => {
     expect(newSpacesPollingTrigger.triggerResolverSupport).toBe("valid");
@@ -12,6 +13,7 @@ describe("polling trigger batching", () => {
     ).toBeInstanceOf(Function);
   });
 });
+
 describe("resolveSpaceRecordChanges", () => {
   const spaceA: Space = {
     id: "1",
@@ -23,16 +25,19 @@ describe("resolveSpaceRecordChanges", () => {
     name: "Marketing",
     createdAt: "2026-01-02T00:00:00.000Z",
   };
+
   test("tags every space as created", () => {
     expect(resolveSpaceRecordChanges([spaceA, spaceB])).toEqual([
       { changeType: "created", record: spaceA },
       { changeType: "created", record: spaceB },
     ]);
   });
+
   test("returns [] for empty or undefined input", () => {
     expect(resolveSpaceRecordChanges([])).toEqual([]);
     expect(resolveSpaceRecordChanges(undefined)).toEqual([]);
   });
+
   test("resolveItems flattens the payload shape perform actually returns", () => {
     const payload = {
       ...defaultTriggerPayload(),

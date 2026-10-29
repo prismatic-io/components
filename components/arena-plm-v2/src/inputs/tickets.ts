@@ -23,6 +23,7 @@ import {
   templateGuidInput,
   titleInput,
 } from "./common";
+
 const ticketGuidInput = input({
   label: "Ticket GUID",
   type: "string",
@@ -32,6 +33,7 @@ const ticketGuidInput = input({
   example: "TK1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const editionNumberInput = input({
   label: "Edition Number",
   type: "string",
@@ -40,6 +42,7 @@ const editionNumberInput = input({
   comments: "Specific edition number of the file (optional).",
   clean: toOptionalString,
 });
+
 const latestRevisionAssociationInput = input({
   label: "Latest Revision Association",
   type: "boolean",
@@ -48,6 +51,7 @@ const latestRevisionAssociationInput = input({
     "When true, always associates the latest revision of the item rather than a fixed revision.",
   clean: util.types.toBool,
 });
+
 const referencedTicketGuidInput = input({
   label: "Referenced Ticket GUID",
   type: "string",
@@ -57,6 +61,7 @@ const referencedTicketGuidInput = input({
   example: "TK1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const associationGuidInput = input({
   label: "Association GUID",
   type: "string",
@@ -66,6 +71,7 @@ const associationGuidInput = input({
   example: "TK1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const ticketDescriptionInput = input({
   label: "Description",
   type: "text",
@@ -74,6 +80,7 @@ const ticketDescriptionInput = input({
   comments: "The updated description of the ticket.",
   clean: toOptionalString,
 });
+
 const ticketIncludePossibleValuesBoolInput = input({
   label: "Include Possible Values",
   type: "boolean",
@@ -82,6 +89,7 @@ const ticketIncludePossibleValuesBoolInput = input({
   comments: "When true, possible values for dropdown attributes are included.",
   clean: util.types.toBool,
 });
+
 const ticketCreatableOnlyBoolInput = input({
   label: "Creatable Only",
   type: "boolean",
@@ -91,6 +99,7 @@ const ticketCreatableOnlyBoolInput = input({
     "When true, only attributes that can be used during creation are shown.",
   clean: util.types.toBool,
 });
+
 const ticketEditableOnlyBoolInput = input({
   label: "Editable Only",
   type: "boolean",
@@ -99,6 +108,7 @@ const ticketEditableOnlyBoolInput = input({
   comments: "When true, only attributes that can be edited are shown.",
   clean: util.types.toBool,
 });
+
 const ticketSearchableOnlyBoolInput = input({
   label: "Searchable Only",
   type: "boolean",
@@ -107,6 +117,7 @@ const ticketSearchableOnlyBoolInput = input({
   comments: "When true, only searchable attributes are shown.",
   clean: util.types.toBool,
 });
+
 const fixVersionInput = input({
   label: "Fix Version",
   type: "string",
@@ -115,6 +126,7 @@ const fixVersionInput = input({
   comments: "The fix version for this ticket.",
   clean: toOptionalString,
 });
+
 const foundOnInput = input({
   label: "Found On",
   type: "string",
@@ -123,6 +135,7 @@ const foundOnInput = input({
   comments: "The version on which the issue was found.",
   clean: toOptionalString,
 });
+
 export const addTicketChangeInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -131,18 +144,21 @@ export const addTicketChangeInputs = {
     comments: "The GUID of the change to link.",
   },
 };
+
 export const addTicketFileInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
   fileGuid: { ...fileGuidInput, comments: "The GUID of the file to link." },
   editionNumber: editionNumberInput,
 };
+
 export const addTicketItemInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
   itemGuid: { ...itemGuidInput, comments: "The GUID of the item to link." },
   latestRevisionAssociation: latestRevisionAssociationInput,
 };
+
 export const addTicketQualityProcessInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -157,11 +173,13 @@ export const addTicketQualityProcessInputs = {
     example: "def456abc-789-123-jkl-mnopqrs890",
   },
 };
+
 export const addTicketReferenceInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
   referencedTicketGuid: referencedTicketGuidInput,
 };
+
 export const changeTicketStatusInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -178,6 +196,7 @@ export const changeTicketStatusInputs = {
     comments: "Optional notes for the status change.",
   },
 };
+
 export const createTicketInputs = {
   connection: connectionInput,
   templateGuid: templateGuidInput,
@@ -202,34 +221,42 @@ export const createTicketInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const deleteTicketInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const getTicketByGuidInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const listTicketChangesInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const listTicketFilesInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const listTicketItemsInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const listTicketQualityProcessesInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const listTicketReferencesInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
 };
+
 export const listTicketsInputs = {
   connection: connectionInput,
   number: {
@@ -258,6 +285,7 @@ export const listTicketsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listTicketTemplateAttributesInputs = {
   connection: connectionInput,
   templateGuid: templateGuidInput,
@@ -266,6 +294,7 @@ export const listTicketTemplateAttributesInputs = {
   editableOnly: ticketEditableOnlyBoolInput,
   searchableOnly: ticketSearchableOnlyBoolInput,
 };
+
 export const listTicketTemplatesInputs = {
   connection: connectionInput,
   name: {
@@ -279,6 +308,7 @@ export const listTicketTemplatesInputs = {
     comments: "When true, only active templates are shown.",
   },
 };
+
 export const removeTicketChangeInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -287,6 +317,7 @@ export const removeTicketChangeInputs = {
     comments: "The GUID of the change association to remove.",
   },
 };
+
 export const removeTicketFileInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -295,6 +326,7 @@ export const removeTicketFileInputs = {
     comments: "The GUID of the file association to remove.",
   },
 };
+
 export const removeTicketItemInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -303,6 +335,7 @@ export const removeTicketItemInputs = {
     comments: "The GUID of the item association to remove.",
   },
 };
+
 export const removeTicketQualityProcessInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -311,6 +344,7 @@ export const removeTicketQualityProcessInputs = {
     comments: "The GUID of the quality process association to remove.",
   },
 };
+
 export const removeTicketReferenceInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,
@@ -319,6 +353,7 @@ export const removeTicketReferenceInputs = {
     comments: "The GUID of the ticket association to remove.",
   },
 };
+
 export const updateTicketInputs = {
   connection: connectionInput,
   ticketGuid: ticketGuidInput,

@@ -3,6 +3,7 @@ import { createClickUpClient as createClient } from "../client";
 import { spacesExamplePayload } from "../examplePayloads";
 import { spacesInputs } from "../inputs";
 import type { GetSpacesResponse } from "../types";
+
 export const spaces = dataSource({
   display: {
     label: "Select Space",

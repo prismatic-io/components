@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { getAnImportExamplePayload } from "../../examplePayloads";
 import { getAnImportInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const getAnImport = action({
   display: {
     label: "Get Import",
@@ -18,7 +19,9 @@ export const getAnImport = action({
       timeout,
       debugRequest,
     });
+
     const { data } = await client.get(hubspotPaths.imports(`/${importId}`));
+
     return { data };
   },
   inputs: getAnImportInputs,

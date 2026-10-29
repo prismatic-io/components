@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listCustomersExamplePayload } from "../../examplePayloads";
 import { listRecordInputs } from "../../inputs";
 import { listRecordOutputSchema } from "../../outputSchemas";
+
 export const listRecord = action({
   display: {
     label: "List Records",
@@ -30,7 +31,6 @@ export const listRecord = action({
     });
     return { data: { data, headers: headers as Record<string, string> } };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listCustomersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listCustomersExamplePayload,
 });

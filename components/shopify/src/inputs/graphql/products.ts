@@ -9,6 +9,7 @@ import {
   tags,
 } from "./common";
 import { imageAlt, imageURL } from "./productImages";
+
 const title = input({
   label: "Title",
   type: "string",
@@ -18,6 +19,7 @@ const title = input({
   comments: "Provide a string value for the title of the product.",
   clean: util.types.toString,
 });
+
 const vendor = input({
   label: "Vendor",
   type: "string",
@@ -27,6 +29,7 @@ const vendor = input({
   comments: "Provide a value for the vendor of the product.",
   clean: util.types.toString,
 });
+
 const productType = input({
   label: "Product Type",
   type: "string",
@@ -36,6 +39,7 @@ const productType = input({
   comments: "Provide a value for the type of product.",
   clean: util.types.toString,
 });
+
 const productStatus = input({
   label: "Product Status",
   type: "string",
@@ -48,6 +52,7 @@ const productStatus = input({
   comments: "Specify the status of the product.",
   clean: util.types.toString,
 });
+
 const descriptionHtml = input({
   label: "Description HTML",
   type: "string",
@@ -57,19 +62,23 @@ const descriptionHtml = input({
   comments: "Provide an HTML string for the description of the product.",
   clean: util.types.toString,
 });
+
 export const listProducstInputs = {
   shopifyConnection,
   getAlldata,
   pagination,
 };
+
 export const getProductInputs = {
   shopifyConnection,
   productId,
 };
+
 export const deleteProductInputs = {
   shopifyConnection,
   productId,
 };
+
 export const createProductInputs = {
   shopifyConnection,
   title,
@@ -97,6 +106,7 @@ export const createProductInputs = {
   }),
   additionalFields,
 };
+
 export const updateProductInputs = {
   shopifyConnection,
   productId,
@@ -138,6 +148,7 @@ export const updateProductInputs = {
   tags,
   additionalFields,
 };
+
 export const countProductsInputs = {
   shopifyConnection,
 };

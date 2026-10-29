@@ -2,6 +2,7 @@ import { getSelf as getSelfEsri } from "@esri/arcgis-rest-portal";
 import { action } from "@prismatic-io/spectral";
 import { connection } from "../inputs";
 import { getApiKeyManager } from "../utils";
+
 export const getSelf = action({
   display: {
     label: "Get Current User",

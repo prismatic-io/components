@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getZendeskClient } from "../../client";
 import { deleteLeadExamplePayload } from "../../examplePayloads";
 import { deleteLeadInputs } from "../../inputs";
+
 export const deleteLead = action({
   display: {
     label: "Delete Lead",
@@ -12,6 +13,7 @@ export const deleteLead = action({
     try {
       const client = getZendeskClient(connection, context.debug.enabled);
       const { data } = await client.delete(`/leads/${id}`);
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);

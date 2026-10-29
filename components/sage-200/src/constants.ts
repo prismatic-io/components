@@ -1,15 +1,14 @@
 export const MAX_PAGES = 100;
 export const DEFAULT_PAGE_SIZE = 200;
+
 export const API_URLS: Record<string, string> = {
   professional: "https://api.columbus.sage.com/uk/sage200extra/accounts/v1",
   standard: "https://api.columbus.sage.com/uk/sage200/accounts/v1",
 };
+
 export const POLL_RESOURCE_CONFIG: Record<
   string,
-  {
-    endpoint: string;
-    label: string;
-  }
+  { endpoint: string; label: string }
 > = {
   customers: { endpoint: "/customers", label: "Customers" },
   customerContacts: {
@@ -30,4 +29,5 @@ export const POLL_RESOURCE_CONFIG: Record<
   salesOrders: { endpoint: "/sop_orders", label: "Sales Orders" },
   taxCodes: { endpoint: "/tax_codes", label: "Tax Codes" },
 };
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

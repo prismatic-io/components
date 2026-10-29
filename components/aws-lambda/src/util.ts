@@ -1,4 +1,5 @@
 import { util } from "@prismatic-io/spectral";
+
 export const hasProperty = (
   object: Record<string, unknown>,
   prop: string,
@@ -16,6 +17,7 @@ export const hasProperty = (
   }
   return undefined;
 };
+
 export const getPayload = (invokeArgs: unknown) => {
   if (util.types.isJSON(util.types.toString(invokeArgs))) {
     return invokeArgs;

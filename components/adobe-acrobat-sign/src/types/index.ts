@@ -2,6 +2,7 @@ export interface AgreementResponse {
   page: PageInfo;
   userAgreementList: Agreement[];
 }
+
 export interface Agreement {
   displayDate: string;
   displayParticipantSetInfos: DisplayParticipantSetInfo[];
@@ -15,6 +16,7 @@ export interface Agreement {
   status: string;
   type: string;
 }
+
 export interface AgreementInfo {
   name: string;
   participantSetsInfo: ParticipantSetInfo[];
@@ -56,9 +58,11 @@ export interface AgreementInfo {
   vaultingInfo?: VaultingInfo;
   workflowId?: string;
 }
+
 export interface VaultingInfo {
   enabled?: boolean;
 }
+
 export interface ParticipantSetInfo {
   id?: string;
   memberInfos?: ParticipantInfo[];
@@ -71,6 +75,7 @@ export interface ParticipantSetInfo {
   providerParticipationInfo?: ProviderParticipationInfo;
   visibilePages?: string[];
 }
+
 interface ParticipantInfo {
   email: string;
   id?: string;
@@ -80,51 +85,62 @@ interface ParticipantInfo {
   phoneDeliveryInfo?: PhoneDeliveryInfo;
   securityOption?: SecurityOption;
 }
+
 interface PhoneDeliveryInfo {
   countryCode?: string;
   phoneNumber?: string;
   phone?: string;
 }
+
 interface SecurityOption {
   contentProtectionPreference?: ContentProtectionPreferences;
   openPassword?: string;
 }
+
 interface ContentProtectionPreferences {
   externalContentProtectionPreferences?: ExternalContentProtectionPreferences;
   internalContentProtectionPreferences?: InternalContentProtectionPreferences;
 }
+
 interface ProviderParticipationInfo {
   label?: string;
   participationId?: string;
   participationSetId?: string;
 }
+
 interface AgreementSettingsInfo {
   canEditAgreementSettings?: boolean;
   canEditElectronicSeals?: boolean;
   canEditFiles?: boolean;
   hipaaEnabled?: boolean;
 }
+
 interface CcInfo {
   email: string;
   label?: string;
   visiblePages?: string[];
 }
+
 interface OfflineDeviceInfo {
   applicationDescription: string;
   deviceDescription: string;
   deviceTime?: string;
 }
+
 interface EmailOption {
   sendOptions?: SendOptions;
 }
+
 interface SendOptions {
   initEmails?: InitEmail;
   inFlightEmails?: InFlightEmail;
   completionEmails?: CompletionEmail;
 }
+
 interface ExternalId {
   id?: string;
 }
+
 interface FileInfo {
   document?: Document;
   label?: string;
@@ -133,11 +149,13 @@ interface FileInfo {
   transientDocumentId?: string;
   urlFileInfo?: UrlFileInfo;
 }
+
 interface UrlFileInfo {
   mimeType: string;
   url: string;
   name: string;
 }
+
 interface Document {
   createdDate: string;
   id: string;
@@ -146,6 +164,7 @@ interface Document {
   mimeType?: string;
   name?: string;
 }
+
 interface FormFieldGenerator {
   formFieldDescription: FormFieldDescription;
   formFieldNamePrefix: string;
@@ -154,6 +173,7 @@ interface FormFieldGenerator {
   anchorTextInfo?: AnchorTextInfo;
   linked?: boolean;
 }
+
 interface FormFieldDescription {
   alignment?: string;
   backgroundColor?: string;
@@ -192,15 +212,18 @@ interface FormFieldDescription {
   visible?: boolean;
   visibleOptions?: string[];
 }
+
 interface FormFieldConditionalAction {
   action?: "SHOW" | "HIDE" | "DISABLE" | "ENABLE";
   anyOrAll?: "ANY" | "ALL";
 }
+
 interface FormFieldHyperlink {
   documentLocation?: FormFieldLocation;
   linkType?: "INTERNAL" | "EXTERNAL" | "FROM_TEXT";
   url?: string;
 }
+
 interface FormFieldLocation {
   height: number;
   left: number;
@@ -208,22 +231,26 @@ interface FormFieldLocation {
   top: number;
   width: number;
 }
+
 interface AnchorTextInfo {
   anchorText: string;
   anchoredFormFIeldLocations: AnchoredFormFieldLocation;
   fileInfoLabel?: string;
   pages?: number[];
 }
+
 interface AnchoredFormFieldLocation {
   height: number;
   width: number;
   offsetX: number;
   offsetY: number;
 }
+
 interface MergeFieldInfo {
   defaultValue: string;
   fieldName: string;
 }
+
 interface NotaryInfo {
   appointment?: string;
   notaryEmail?: string;
@@ -231,31 +258,38 @@ interface NotaryInfo {
   note?: string;
   payment?: string;
 }
+
 interface PostSignOption {
   redirectDelay?: number;
   redirectUrl?: string;
 }
+
 interface RedirectOptions {
   action: string;
   url: string;
   delay?: number;
 }
+
 interface DisplayParticipantSetInfo {
   displayUserSetMemberInfos: DisplayUserSetMemberInfo[];
   displayUserSetName: string;
 }
+
 interface DisplayUserSetMemberInfo {
   email: string;
   company: string;
   fullName: string;
 }
+
 export interface PageInfo {
   nextCursor: string;
 }
+
 export interface UserResponse {
   page: PageInfo;
   userInfoList: User[];
 }
+
 export interface User {
   email: string;
   company: string;
@@ -265,6 +299,7 @@ export interface User {
   firstName: string;
   lastName: string;
 }
+
 export interface DetailedUserInfoResponse {
   email: string;
   isAccountAdmin: boolean;
@@ -282,6 +317,7 @@ export interface DetailedUserInfoResponse {
   status?: string;
   createdDate?: string;
 }
+
 export interface DetailedUserInfoPayload {
   email: string;
   isAccountAdmin: boolean;
@@ -295,16 +331,19 @@ export interface DetailedUserInfoPayload {
   title?: string;
   accountId?: string;
 }
+
 export interface DetailedUserInfoPutPayload
   extends Omit<DetailedUserInfoResponse, "email" | "isAccountAdmin"> {
   email?: string;
   initials?: string;
   status?: string;
 }
+
 export interface WebhookResponse {
   page: PageInfo;
   userWebhookList: Webhook[];
 }
+
 export interface Webhook {
   id: string;
   name: string;
@@ -320,16 +359,20 @@ export interface Webhook {
   status: string;
   state?: string;
 }
+
 export interface WebhookUrlInfo {
   url: string;
 }
+
 export interface WebhookInfo extends Webhook {
   created: string;
   webhookConditionalParams: WebhookConditionalParams;
 }
+
 export interface ProblemNotificationEmails {
   email?: string;
 }
+
 export interface WebhookConditionalParams {
   webhookAgreementEvents?: {
     includeDetailedInfo?: boolean;
@@ -352,6 +395,7 @@ export interface WebhookConditionalParams {
     includeParticipantsInfo?: boolean;
   };
 }
+
 export interface WebhookPayload {
   name: string;
   scope: string;
@@ -366,6 +410,7 @@ export interface WebhookPayload {
   status?: string;
   webhookConditionalParams?: WebhookConditionalParams;
 }
+
 export interface AccountInfoResponse {
   accountType?: string;
   company?: string;
@@ -375,20 +420,24 @@ export interface AccountInfoResponse {
   modified?: string;
   name?: string;
 }
+
 export interface AccountCreateResponse {
   accountId?: string;
   adminDetails?: AdminDetails;
 }
+
 export interface AdminDetails {
   email?: string;
   status?: string;
   userId?: string;
 }
+
 export interface SearchRequestBody {
   scope: string[];
   agreementAssetsCriteria: AgreementAssetsCriteria;
   query?: string;
 }
+
 interface AgreementAssetsCriteria {
   createdDate?: DateRangeFilter;
   expirationDate?: DateRangeFilter;
@@ -412,20 +461,28 @@ interface AgreementAssetsCriteria {
   visibility?: SearchVisibility;
   workflowId?: string[];
 }
+
 interface DateRangeFilter {
   range: DateRange;
 }
+
 interface DateRange {
   gt?: string;
   lt?: string;
   max?: string;
   min?: string;
 }
+
 export type SearchSortOrder = "ASC" | "DESC";
+
 export type SearchSubtypes = "DOCUMENT" | "FORM_FIELD_LAYER";
+
 export type SearchVisibility = "SHOW_HIDDEN" | "SHOW_VISIBLE" | "SHOW_ALL";
+
 export type ExternalContentProtectionPreferences = "ENABLE" | "DISABLE";
+
 export type InternalContentProtectionPreferences = "ENABLE" | "DISABLE";
+
 export type Role =
   | "SIGNER"
   | "APPROVER"
@@ -439,11 +496,17 @@ export type Role =
   | "DELEGATE_TO_FORM_FILLER"
   | "NOTARY_SIGNER"
   | "ELECTRONIC_SEALER";
+
 export type AgreementState = "AUTHORING" | "DRAFT" | "IN_PROCESS" | "RESTART";
+
 export type SignatureType = "ESIGN" | "WRITTEN";
+
 export type CompletionEmail = "NONE" | "ALL";
+
 export type InitEmail = "NONE" | "ALL";
+
 export type InFlightEmail = "NONE" | "ALL";
+
 export type GroupEventType =
   | "CREATED"
   | "DELETED"
@@ -454,12 +517,14 @@ export type GroupEventType =
   | "SHARE_CANCELLED"
   | "SHARE_REQUEST_RESENT"
   | "SHARE_MODIFIED";
+
 export interface Group {
   groupId: string;
   groupName: string;
   createdDate: string;
   isDefaultGroup: boolean;
 }
+
 export interface GroupUser {
   email: string;
   id: string;
@@ -468,6 +533,7 @@ export interface GroupUser {
   firstName?: string;
   lastName?: string;
 }
+
 export interface GroupEvent {
   date: string;
   groupId: string;
@@ -477,41 +543,50 @@ export interface GroupEvent {
   groupEventId?: string;
   adminUserId?: string;
 }
+
 export interface ListGroup {
   page: PageInfo;
   groupInfoList: Group[];
 }
+
 export interface ListGroupUsers {
   page: PageInfo;
   userInfoList: GroupUser[];
 }
+
 export interface ListGroupEvents {
   page: PageInfo;
   groupEvents: GroupEvent[];
 }
+
 export interface GenericCreate {
   id: string;
 }
+
 export interface CreateGroupPayload {
   groupName: string;
   created: string;
   isDefaultGroup?: boolean;
 }
+
 export interface UpdateGroupPayload {
   groupName?: string;
   created?: string;
   isDefaultGroup?: boolean;
 }
+
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
   resumeStartIndex?: number;
   isBackfilling?: boolean;
 }
+
 export interface PollingCursor {
   resumeStartIndex: number;
   isBackfilling?: boolean;
   [key: string]: unknown;
 }
+
 export interface AdobeSignAgreementRecord {
   id?: string;
   name?: string;
@@ -522,6 +597,7 @@ export interface AdobeSignAgreementRecord {
   lastEventDate?: string;
   [key: string]: unknown;
 }
+
 export interface SearchResponse {
   agreementAssetEvents?: AdobeSignAgreementRecord[];
   agreementAssetsResults?: {
@@ -531,11 +607,13 @@ export interface SearchResponse {
     nextCursor?: string;
   };
 }
+
 export interface FetchAgreementsResult {
   records: AdobeSignAgreementRecord[];
   truncated: boolean;
   latestModifiedDate?: string;
 }
+
 export interface PartitionedRecords {
   created: AdobeSignAgreementRecord[];
   updated: AdobeSignAgreementRecord[];

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { searchInvoicesExamplePayload } from "../../examplePayloads";
 import { searchInvoicesInputs } from "../../inputs";
+
 export const searchInvoices = action({
   display: {
     label: "Search Invoices",
@@ -16,12 +17,15 @@ export const searchInvoices = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       cursor: pagination.cursor,
       limit: pagination.limit || 100,
       query: invoiceQuery,
     };
+
     const response = await client.post("/v2/invoices/search", requestBody);
+
     return {
       data: response.data,
     };

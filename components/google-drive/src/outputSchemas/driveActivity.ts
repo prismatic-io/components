@@ -3,6 +3,7 @@ const emptyMarkerSchema = {
   properties: {},
   required: [],
 };
+
 const activityUserSchema = {
   type: "object" as const,
   properties: {
@@ -19,6 +20,7 @@ const activityUserSchema = {
   },
   required: [],
 };
+
 const domainSchema = {
   type: "object" as const,
   properties: {
@@ -27,6 +29,7 @@ const domainSchema = {
   },
   required: [],
 };
+
 const groupSchema = {
   type: "object" as const,
   properties: {
@@ -35,6 +38,7 @@ const groupSchema = {
   },
   required: [],
 };
+
 const driveReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -43,6 +47,7 @@ const driveReferenceSchema = {
   },
   required: [],
 };
+
 const actorSchema = {
   type: "object" as const,
   properties: {
@@ -62,6 +67,7 @@ const actorSchema = {
   },
   required: [],
 };
+
 const ownerSchema = {
   type: "object" as const,
   properties: {
@@ -72,6 +78,7 @@ const ownerSchema = {
   },
   required: [],
 };
+
 const driveItemSchema = {
   type: "object" as const,
   properties: {
@@ -94,6 +101,7 @@ const driveItemSchema = {
   },
   required: [],
 };
+
 const driveItemReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -114,6 +122,7 @@ const driveItemReferenceSchema = {
   },
   required: [],
 };
+
 const activityDriveSchema = {
   type: "object" as const,
   properties: {
@@ -123,6 +132,7 @@ const activityDriveSchema = {
   },
   required: [],
 };
+
 const targetSchema = {
   type: "object" as const,
   properties: {
@@ -142,6 +152,7 @@ const targetSchema = {
   },
   required: [],
 };
+
 const targetReferenceSchema = {
   type: "object" as const,
   properties: {
@@ -151,6 +162,7 @@ const targetReferenceSchema = {
   },
   required: [],
 };
+
 const fieldValueSchema = {
   type: "object" as const,
   properties: {
@@ -230,6 +242,7 @@ const fieldValueSchema = {
   },
   required: [],
 };
+
 const activityPermissionSchema = {
   type: "object" as const,
   properties: {
@@ -242,6 +255,7 @@ const activityPermissionSchema = {
   },
   required: [],
 };
+
 const actionDetailSchema = {
   type: "object" as const,
   properties: {
@@ -379,6 +393,7 @@ const actionDetailSchema = {
   },
   required: [],
 };
+
 const actionSchema = {
   type: "object" as const,
   properties: {
@@ -397,6 +412,7 @@ const actionSchema = {
   },
   required: [],
 };
+
 const driveActivitySchema = {
   type: "object" as const,
   properties: {
@@ -416,6 +432,7 @@ const driveActivitySchema = {
   },
   required: [],
 };
+
 export const queryDriveActivityOutputSchema = {
   type: "object" as const,
   properties: {

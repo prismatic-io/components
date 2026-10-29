@@ -3,6 +3,7 @@ import { createClickUpClient } from "../../client";
 import { removeGuestFromWorkspaceExamplePayload } from "../../examplePayloads";
 import { removeGuestFromWorkspaceInputs } from "../../inputs";
 import { removeGuestFromWorkspaceOutputSchema } from "../../outputSchemas";
+
 export const removeGuestFromWorkspace = action({
   display: {
     label: "Remove Guest from Workspace",
@@ -19,7 +20,9 @@ export const removeGuestFromWorkspace = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(`/team/${teamId}/guest/${guestId}`);
+
     return {
       data,
     };

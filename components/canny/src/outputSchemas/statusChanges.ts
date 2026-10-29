@@ -1,4 +1,5 @@
 import { statusChangeSchema } from "./shared";
+
 export const listStatusChangesOutputSchema = {
   type: "object" as const,
   properties: {

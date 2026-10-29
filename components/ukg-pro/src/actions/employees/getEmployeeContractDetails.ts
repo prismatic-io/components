@@ -4,6 +4,7 @@ import { getEmployeeContractDetailsExamplePayload } from "../../examplePayloads"
 import { getEmploymentContractDetailsInputs } from "../../inputs";
 import type { EmployeeContractDetails } from "../../types";
 import { fetchWithPagination } from "../../util";
+
 export const getEmploymentContractDetails = action({
   display: {
     label: "Get All Employment Contract Details",
@@ -15,6 +16,7 @@ export const getEmploymentContractDetails = action({
     { connection, companyId, fetchAll, filterParameters, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
+
     const { data } = await fetchWithPagination<EmployeeContractDetails>(
       client,
       "/personnel/v1/employee-contract-details",
@@ -26,6 +28,7 @@ export const getEmploymentContractDetails = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: getEmployeeContractDetailsExamplePayload,

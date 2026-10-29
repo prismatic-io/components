@@ -6,6 +6,7 @@ import type {
   MsProjectRecord,
   MsProjectRecordChange,
 } from "./types";
+
 export const getQueryString = ({
   queryString,
   url,
@@ -15,25 +16,25 @@ export const getQueryString = ({
   }
   return `${url}?${queryString}`;
 };
+
 export const toPaginationParams = (
   pageSizeValue: unknown,
   pageNumberValue: unknown,
-):
-  | {
-      $top: number;
-      $skip: number;
-    }
-  | undefined => {
+): { $top: number; $skip: number } | undefined => {
   const pageSize = util.types.toInt(pageSizeValue) || undefined;
   const pageNumber = util.types.toInt(pageNumberValue) || undefined;
+
   if (!pageSize || !pageNumber) {
     return undefined;
   }
+
   const skip = pageNumber === 1 ? 0 : pageSize * (pageNumber - 1);
   return { $top: pageSize, $skip: skip };
 };
+
 export const toODataDateTime = (iso: string): string =>
   `datetime'${iso.replace(/\.\d+Z$/, "").replace(/Z$/, "")}'`;
+
 export const buildPollingFilter = (
   createdAtField: keyof MsProjectRecord,
   updatedAtField: keyof MsProjectRecord,
@@ -48,6 +49,7 @@ export const buildPollingFilter = (
   if (clauses.length === 0) return undefined;
   return clauses.join(" or ");
 };
+
 export const resolvePollingRecordChanges = (
   data: MsProjectChangesObject | undefined,
 ): MsProjectRecordChange[] => {
@@ -61,12 +63,15 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();
   if (!str) return "";
+
   if (!LOOK_BACK_DATE_PATTERN.test(str)) {
     throw new Error("Look-back Date must be in YYYY-MM-DD format.");
   }
+
   const parts = str.split("-");
   const year = util.types.toNumber(parts[0]);
   const month = util.types.toNumber(parts[1]);
@@ -79,8 +84,10 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
   }
+
   if (parsed > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return str;
 };

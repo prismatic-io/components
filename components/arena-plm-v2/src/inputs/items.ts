@@ -30,6 +30,7 @@ import {
   pagination,
   primaryFileInput,
 } from "./common";
+
 const itemNameOptionalInput = input({
   label: "Item Name",
   type: "string",
@@ -40,6 +41,7 @@ const itemNameOptionalInput = input({
   example: "Circuit Board Assembly v2.1",
   clean: toOptionalString,
 });
+
 const itemJsonInput = input({
   label: "Item JSON Payload",
   type: "text",
@@ -74,6 +76,7 @@ const itemJsonInput = input({
     return value;
   },
 });
+
 const itemNameInput = input({
   label: "Item Name",
   type: "string",
@@ -83,6 +86,7 @@ const itemNameInput = input({
   example: "Circuit Board Assembly v2.1",
   clean: util.types.toString,
 });
+
 const itemDescriptionInput = input({
   label: "Item Description",
   type: "text",
@@ -92,6 +96,7 @@ const itemDescriptionInput = input({
   example: "Main circuit board assembly for product revision 2.1",
   clean: toOptionalString,
 });
+
 const itemRevisionNumberInput = input({
   label: "Revision Number",
   type: "string",
@@ -101,6 +106,7 @@ const itemRevisionNumberInput = input({
   example: "A",
   clean: toOptionalString,
 });
+
 const itemCategoryGuidInput = input({
   label: "Category GUID",
   type: "string",
@@ -110,6 +116,7 @@ const itemCategoryGuidInput = input({
   example: "IT1AB2CD3EF4GH5IJ6KL7MN8",
   clean: toOptionalString,
 });
+
 const itemSharedInput = input({
   label: "Shared Item",
   type: "boolean",
@@ -118,6 +125,7 @@ const itemSharedInput = input({
   comments: "When true, this item is shared across workspaces.",
   clean: util.types.toBool,
 });
+
 const itemOffTheShelfInput = input({
   label: "Off The Shelf",
   type: "boolean",
@@ -126,6 +134,7 @@ const itemOffTheShelfInput = input({
   comments: "When true, this is an off-the-shelf item.",
   clean: util.types.toBool,
 });
+
 const itemUomInput = input({
   label: "Unit of Measure",
   type: "string",
@@ -135,6 +144,7 @@ const itemUomInput = input({
   example: "EA",
   clean: toOptionalString,
 });
+
 const itemProductionCostInput = input({
   label: "Production Cost",
   type: "string",
@@ -144,6 +154,7 @@ const itemProductionCostInput = input({
   example: "25.50",
   clean: toOptionalNumber,
 });
+
 const itemPrototypeCostInput = input({
   label: "Prototype Cost",
   type: "string",
@@ -153,6 +164,7 @@ const itemPrototypeCostInput = input({
   example: "125.00",
   clean: toOptionalNumber,
 });
+
 const itemTargetPriceInput = input({
   label: "Target Price",
   type: "string",
@@ -162,6 +174,7 @@ const itemTargetPriceInput = input({
   example: "45.00",
   clean: toOptionalNumber,
 });
+
 const itemTargetCostInput = input({
   label: "Target Cost",
   type: "string",
@@ -171,6 +184,7 @@ const itemTargetCostInput = input({
   example: "30.00",
   clean: toOptionalNumber,
 });
+
 const itemStandardCostInput = input({
   label: "Standard Cost",
   type: "string",
@@ -180,6 +194,7 @@ const itemStandardCostInput = input({
   example: "28.75",
   clean: toOptionalNumber,
 });
+
 const itemOwnerFullNameInput = input({
   label: "Owner Full Name",
   type: "string",
@@ -189,6 +204,7 @@ const itemOwnerFullNameInput = input({
   example: "John Doe",
   clean: toOptionalString,
 });
+
 const itemNumberFormatGuidInput = input({
   label: "Number Format GUID",
   type: "string",
@@ -198,6 +214,7 @@ const itemNumberFormatGuidInput = input({
   example: "IT4IVLHFUC584FSNJJLVR6I2",
   clean: toOptionalString,
 });
+
 const itemNumberFormatFieldsInput = input({
   label: "Number Format Fields",
   placeholder: "Enter number format fields",
@@ -209,6 +226,7 @@ const itemNumberFormatFieldsInput = input({
   example: "K2M5JGKMXEVI1K2AXGLN: 999-0011",
   clean: toKeyValueListArray,
 });
+
 const itemFileAssociationGuidInput = input({
   label: "Item File Association GUID",
   type: "string",
@@ -218,6 +236,7 @@ const itemFileAssociationGuidInput = input({
   example: "IT1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const itemUpdateNameInput = input({
   label: "Item Name",
   type: "string",
@@ -227,6 +246,7 @@ const itemUpdateNameInput = input({
   example: "Circuit Board Assembly v2.1",
   clean: toOptionalString,
 });
+
 const itemSearchNumberInput = input({
   label: "Item Number",
   type: "string",
@@ -236,6 +256,7 @@ const itemSearchNumberInput = input({
   example: "IT-001",
   clean: toOptionalString,
 });
+
 const itemSearchNameInput = input({
   label: "Item Name",
   type: "string",
@@ -245,6 +266,7 @@ const itemSearchNameInput = input({
   example: "Circuit Board Assembly",
   clean: toOptionalString,
 });
+
 const itemSearchDescriptionInput = input({
   label: "Description",
   type: "string",
@@ -254,6 +276,7 @@ const itemSearchDescriptionInput = input({
   example: "Main circuit board",
   clean: toOptionalString,
 });
+
 const itemSearchCategoryGuidInput = input({
   label: "Category GUID",
   type: "string",
@@ -263,6 +286,7 @@ const itemSearchCategoryGuidInput = input({
   example: "IT1AB2CD3EF4GH5IJ6KL7MN8",
   clean: toOptionalString,
 });
+
 const itemSearchCategoryNameInput = input({
   label: "Category Name",
   type: "string",
@@ -272,6 +296,7 @@ const itemSearchCategoryNameInput = input({
   example: "Electronics",
   clean: toOptionalString,
 });
+
 const itemSearchRevisionNumberInput = input({
   label: "Revision Number",
   type: "string",
@@ -281,6 +306,7 @@ const itemSearchRevisionNumberInput = input({
   example: "A",
   clean: toOptionalString,
 });
+
 const itemSearchLifecyclePhaseGuidInput = input({
   label: "Lifecycle Phase GUID",
   type: "string",
@@ -290,6 +316,7 @@ const itemSearchLifecyclePhaseGuidInput = input({
   example: "IT9X6BKEEHKSJRHQRIRF3FUR",
   clean: toOptionalString,
 });
+
 const itemSearchLifecyclePhaseStageInput = input({
   label: "Lifecycle Phase Stage",
   type: "string",
@@ -299,6 +326,7 @@ const itemSearchLifecyclePhaseStageInput = input({
   example: "Production",
   clean: toOptionalString,
 });
+
 const itemSearchOwnerFullNameInput = input({
   label: "Owner Full Name",
   type: "string",
@@ -308,6 +336,7 @@ const itemSearchOwnerFullNameInput = input({
   example: "John Doe",
   clean: toOptionalString,
 });
+
 const itemSearchCreatorEmailInput = input({
   label: "Creator Email",
   type: "string",
@@ -317,6 +346,7 @@ const itemSearchCreatorEmailInput = input({
   example: "john.doe@company.com",
   clean: toOptionalString,
 });
+
 const itemSearchCreatorGuidInput = input({
   label: "Creator GUID",
   type: "string",
@@ -326,6 +356,7 @@ const itemSearchCreatorGuidInput = input({
   example: "ITP4F558HNQZKLNN3R2UQFDY",
   clean: toOptionalString,
 });
+
 const itemSearchCreatorFullNameInput = input({
   label: "Creator Full Name",
   type: "string",
@@ -335,6 +366,7 @@ const itemSearchCreatorFullNameInput = input({
   example: "Jane Smith",
   clean: toOptionalString,
 });
+
 const itemSearchModifiedBomInput = input({
   label: "Modified BOM",
   type: "string",
@@ -348,6 +380,7 @@ const itemSearchModifiedBomInput = input({
   default: "na",
   clean: toOptionalBoolean,
 });
+
 const itemSearchModifiedFilesInput = input({
   label: "Modified Files",
   type: "string",
@@ -361,6 +394,7 @@ const itemSearchModifiedFilesInput = input({
   default: "na",
   clean: toOptionalBoolean,
 });
+
 const itemSearchModifiedSourcingInput = input({
   label: "Modified Sourcing",
   type: "string",
@@ -374,6 +408,7 @@ const itemSearchModifiedSourcingInput = input({
   default: "na",
   clean: toOptionalBoolean,
 });
+
 const itemSearchModifiedSpecsInput = input({
   label: "Modified Specs",
   type: "string",
@@ -387,6 +422,7 @@ const itemSearchModifiedSpecsInput = input({
   default: "na",
   clean: toOptionalBoolean,
 });
+
 const itemSearchInAssemblyInput = input({
   label: "In Assembly",
   type: "string",
@@ -400,6 +436,7 @@ const itemSearchInAssemblyInput = input({
   default: "na",
   clean: toOptionalBoolean,
 });
+
 const itemSearchAssemblyTypeInput = input({
   label: "Assembly Type",
   type: "string",
@@ -412,6 +449,7 @@ const itemSearchAssemblyTypeInput = input({
   ],
   clean: toOptionalString,
 });
+
 const itemSearchEffectiveDateTimeInput = input({
   label: "Effective Date Time",
   type: "string",
@@ -421,6 +459,7 @@ const itemSearchEffectiveDateTimeInput = input({
   example: "2025-08-15T10:00:00Z",
   clean: toOptionalString,
 });
+
 const responseViewInput = input({
   label: "Response View",
   type: "string",
@@ -431,6 +470,7 @@ const responseViewInput = input({
   example: "compact",
   clean: toOptionalString,
 });
+
 const itemLifecyclePhaseGuidInput = input({
   label: "Target Lifecycle Phase GUID",
   type: "string",
@@ -440,6 +480,7 @@ const itemLifecyclePhaseGuidInput = input({
   example: "ITUBMHBI4KB7XU873JRVNZ2K",
   clean: util.types.toString,
 });
+
 const itemLifecycleRevisionNumberInput = input({
   label: "Revision Number",
   type: "string",
@@ -450,6 +491,7 @@ const itemLifecycleRevisionNumberInput = input({
   example: "B",
   clean: toOptionalString,
 });
+
 const itemLifecycleNotesInput = input({
   label: "Notes",
   type: "text",
@@ -459,6 +501,7 @@ const itemLifecycleNotesInput = input({
   example: "Released to production for initial launch",
   clean: toOptionalString,
 });
+
 const itemLifecycleProceedOnNoticeInput = input({
   label: "Proceed on Notice",
   type: "boolean",
@@ -468,6 +511,7 @@ const itemLifecycleProceedOnNoticeInput = input({
     "When true, the request proceeds even if it generates notices, which are warnings that do not prevent execution.",
   clean: util.types.toBool,
 });
+
 const itemImageContentInput = input({
   label: "Image Content",
   type: "data",
@@ -475,6 +519,7 @@ const itemImageContentInput = input({
   comments: "The image file content to upload, base64 encoded.",
   clean: util.types.toString,
 });
+
 const itemImageFilenameInput = input({
   label: "Filename",
   placeholder: "Enter filename",
@@ -484,6 +529,7 @@ const itemImageFilenameInput = input({
   example: "specification.pdf",
   clean: toOptionalString,
 });
+
 const formatGuidInput = input({
   label: "Format GUID",
   type: "string",
@@ -493,6 +539,7 @@ const formatGuidInput = input({
   example: "IT4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const numberFormatFieldDataInput = input({
   label: "Field Data",
   type: "data",
@@ -500,6 +547,7 @@ const numberFormatFieldDataInput = input({
   comments: "The field data to create (name, fieldType, etc.).",
   clean: util.types.toObject,
 });
+
 const numberReservationDataInput = input({
   label: "Reservation Data",
   type: "data",
@@ -507,6 +555,7 @@ const numberReservationDataInput = input({
   comments: "The reservation data to create (name, category, etc.).",
   clean: util.types.toObject,
 });
+
 const numberFormatFieldGuidInput = input({
   label: "Field GUID",
   type: "string",
@@ -516,6 +565,7 @@ const numberFormatFieldGuidInput = input({
   example: "IT4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const numberFormatActiveInput = input({
   label: "Active Only",
   type: "string",
@@ -529,6 +579,7 @@ const numberFormatActiveInput = input({
   default: "",
   clean: toOptionalString,
 });
+
 const includeItemNumbersInput = input({
   label: "Include Item Numbers",
   type: "boolean",
@@ -537,6 +588,7 @@ const includeItemNumbersInput = input({
   comments: "When true, item numbers are included in the response.",
   clean: util.types.toBool,
 });
+
 const itemFileAssocPrimaryInput = input({
   label: "Primary",
   type: "boolean",
@@ -545,6 +597,7 @@ const itemFileAssocPrimaryInput = input({
     "When true, the associated file becomes the primary file in the relationship.",
   clean: util.types.toBool,
 });
+
 export const changeItemLifecyclePhaseInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -553,6 +606,7 @@ export const changeItemLifecyclePhaseInputs = {
   notes: itemLifecycleNotesInput,
   proceedOnNotice: itemLifecycleProceedOnNoticeInput,
 };
+
 export const createItemInputs = {
   connection: connectionInput,
   name: itemNameInput,
@@ -574,6 +628,7 @@ export const createItemInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const createItemFileAssociationInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -589,6 +644,7 @@ export const createItemFileAssociationInputs = {
   latestEditionAssociation: latestEditionAssociationInput,
   primary: primaryFileInput,
 };
+
 export const createItemFromJsonInputs = {
   connection: connectionInput,
   itemJson: itemJsonInput,
@@ -608,6 +664,7 @@ export const createItemFromJsonInputs = {
   numberFormatGuid: itemNumberFormatGuidInput,
   numberFormatFields: itemNumberFormatFieldsInput,
 };
+
 export const createItemImageInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -617,6 +674,7 @@ export const createItemImageInputs = {
   content: itemImageContentInput,
   filename: itemImageFilenameInput,
 };
+
 export const createItemNumberFormatFieldInputs = {
   connection: connectionInput,
   formatGuid: {
@@ -625,19 +683,23 @@ export const createItemNumberFormatFieldInputs = {
   },
   fieldData: numberFormatFieldDataInput,
 };
+
 export const createItemNumberReservationInputs = {
   connection: connectionInput,
   reservationData: numberReservationDataInput,
 };
+
 export const deleteItemInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
 };
+
 export const deleteItemFileAssociationInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   itemFileAssociationGuid: itemFileAssociationGuidInput,
 };
+
 export const deleteItemImageInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -645,21 +707,25 @@ export const deleteItemImageInputs = {
     comments: "The GUID of the item to remove the image from.",
   },
 };
+
 export const getItemByGuidInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   includeEmptyAdditionalAttributes: includeEmptyAdditionalAttributesInput,
   responseView: responseViewInput,
 };
+
 export const getItemFileAssociationInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
   itemFileAssociationGuid: itemFileAssociationGuidInput,
 };
+
 export const listItemFileAssociationsInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
 };
+
 export const listItemFutureChangesInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -667,6 +733,7 @@ export const listItemFutureChangesInputs = {
     comments: "The GUID of the item to get future changes for.",
   },
 };
+
 export const listItemHistoryInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -674,6 +741,7 @@ export const listItemHistoryInputs = {
     comments: "The GUID of the item to get history for.",
   },
 };
+
 export const getItemImageContentInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -681,9 +749,11 @@ export const getItemImageContentInputs = {
     comments: "The GUID of the item to get image content for.",
   },
 };
+
 export const listItemLifecyclePhasesInputs = {
   connection: connectionInput,
 };
+
 export const getItemNumberFormatByGuidInputs = {
   connection: connectionInput,
   guid: {
@@ -695,11 +765,13 @@ export const getItemNumberFormatByGuidInputs = {
     clean: util.types.toString,
   },
 };
+
 export const getItemNumberFormatFieldInputs = {
   connection: connectionInput,
   formatGuid: formatGuidInput,
   fieldGuid: numberFormatFieldGuidInput,
 };
+
 export const listItemNumberFormatFieldsInputs = {
   connection: connectionInput,
   formatGuid: {
@@ -707,6 +779,7 @@ export const listItemNumberFormatFieldsInputs = {
     comments: "The GUID of the item number format to get fields for.",
   },
 };
+
 export const listItemNumberFormatsInputs = {
   connection: connectionInput,
   name: {
@@ -719,6 +792,7 @@ export const listItemNumberFormatsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listItemNumberReservationsInputs = {
   connection: connectionInput,
   name: {
@@ -735,9 +809,11 @@ export const listItemNumberReservationsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listItemRequirementsInputs = {
   connection: connectionInput,
 };
+
 export const getItemRevisionsInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -745,6 +821,7 @@ export const getItemRevisionsInputs = {
     comments: "The GUID of the item to get revisions for.",
   },
 };
+
 export const listItemsInputs = {
   connection: connectionInput,
   number: itemSearchNumberInput,
@@ -774,6 +851,7 @@ export const listItemsInputs = {
     comments: "When true, items from child categories are included.",
   },
 };
+
 export const listItemTrainingPlansInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -781,6 +859,7 @@ export const listItemTrainingPlansInputs = {
     comments: "The GUID of the item to get training plans for.",
   },
 };
+
 export const listItemTrainingRecordsInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -788,6 +867,7 @@ export const listItemTrainingRecordsInputs = {
     comments: "The GUID of the item to get training records for.",
   },
 };
+
 export const listItemWhereUsedInputs = {
   connection: connectionInput,
   itemGuid: {
@@ -795,6 +875,7 @@ export const listItemWhereUsedInputs = {
     comments: "The GUID of the item to find where it's used.",
   },
 };
+
 export const updateItemInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,
@@ -815,6 +896,7 @@ export const updateItemInputs = {
   attributeDefinitions: attributeDefinitionsInput,
   additionalAttributeJson: additionalAttributeJsonInput,
 };
+
 export const updateItemFileAssociationInputs = {
   connection: connectionInput,
   itemGuid: itemGuidInput,

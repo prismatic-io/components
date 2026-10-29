@@ -5,6 +5,7 @@ import {
   project_id,
   workspace_id,
 } from "./common";
+
 export const bookmark_id = input({
   label: "Bookmark ID",
   type: "string",
@@ -15,6 +16,7 @@ export const bookmark_id = input({
   required: true,
   example: "8947562",
 });
+
 export const queryInsightsSavedReportsInputs = {
   connection: connectionInput,
   regionAndDomain,

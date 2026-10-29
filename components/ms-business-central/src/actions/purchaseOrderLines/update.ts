@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { updatePurchaseOrderLineExamplePayload as examplePayload } from "../../examplePayloads";
 import { updatePurchaseOrderLineInputs as inputs } from "../../inputs/purchaseOrderLines/updatePurchaseOrderLineInputs";
 import type { PurchaseOrderLine } from "../../interfaces";
+
 export const updatePurchaseOrderLine = action({
   display: {
     label: "Update Purchase Order Line",
@@ -42,6 +43,7 @@ export const updatePurchaseOrderLine = action({
       quantity,
       directUnitCost,
     };
+
     const { data } = await client.patch<PurchaseOrderLine>(
       `/companies(${companyId})/purchaseOrderLines(${purchaseOrderLineId})`,
       payload,
@@ -51,6 +53,7 @@ export const updatePurchaseOrderLine = action({
         },
       },
     );
+
     return { data };
   },
   inputs,

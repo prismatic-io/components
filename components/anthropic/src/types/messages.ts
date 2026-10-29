@@ -2,6 +2,7 @@ export interface Message {
   role: "user" | "assistant";
   content: string;
 }
+
 export interface ChatRequest {
   model: string;
   messages: Message[];
@@ -10,6 +11,7 @@ export interface ChatRequest {
   temperature?: number;
   stream?: boolean;
 }
+
 export interface ChatResponse {
   id: string;
   type: "message";
@@ -26,6 +28,7 @@ export interface ChatResponse {
     output_tokens: number;
   };
 }
+
 export interface CountTokensResponse {
   input_tokens: number;
 }

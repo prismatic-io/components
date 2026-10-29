@@ -4,6 +4,7 @@ import { listApprovalsExamplePayload } from "../../examplePayloads";
 import { listApprovalsInputs } from "../../inputs";
 import type { Approval } from "../../types";
 import { getPaginatedData } from "../../util";
+
 export const listApprovals = action({
   display: {
     label: "List Approvals",

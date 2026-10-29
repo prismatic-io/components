@@ -11,4 +11,5 @@ export interface SnsMessage {
   SubscribeURL?: string;
   Token?: string;
 }
+
 export type SnsCertificateFetcher = (certificateUrl: string) => Promise<string>;

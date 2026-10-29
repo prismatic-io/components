@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { addTaskToListExamplePayload } from "../../examplePayloads";
 import { addTaskToListInputs } from "../../inputs";
+
 export const addTaskToList = action({
   display: {
     label: "Add Task to List",
@@ -14,7 +15,9 @@ export const addTaskToList = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.post(`/list/${listId}/task/${taskId}`);
+
     return {
       data,
     };

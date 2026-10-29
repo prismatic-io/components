@@ -5,6 +5,7 @@ import { getHubspotClient } from "../../client";
 import { importCRMDataExamplePayload } from "../../examplePayloads";
 import { importCRMDataInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const importCRMData = action({
   display: {
     label: "Import CRM Data",
@@ -30,7 +31,9 @@ export const importCRMData = action({
       timeout,
       debugRequest,
     });
+
     const formData = new FormData();
+
     const importRequest = {
       name,
       ...(importOptions.importOperations && {
@@ -41,22 +44,21 @@ export const importCRMData = action({
       createContactListFromImport: importOptions.createContactListFromImport,
       files,
     };
+
     formData.append("importRequest", JSON.stringify(importRequest));
+
     for (const fileName in dataFiles) {
-      const fileData = Buffer.from(
-        (
-          dataFiles[fileName] as {
-            data;
-          }
-        ).data,
-      );
+      const fileData = Buffer.from((dataFiles[fileName] as { data }).data);
+
       formData.append("files", fileData, {
         filename: fileName,
       });
     }
+
     const { data } = await client.post(hubspotPaths.imports(), formData, {
       headers: { ...formData.getHeaders() },
     });
+
     return { data };
   },
   inputs: importCRMDataInputs,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs";
 import { listSharedDocumentsExamplePayload } from "../examplePayloads/actions";
+
 const listSharedDocuments = action({
   display: {
     label: "List Shared Documents",
@@ -17,6 +18,7 @@ const listSharedDocuments = action({
   },
   examplePayload: listSharedDocumentsExamplePayload,
 });
+
 export default {
   listSharedDocuments,
 };

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createShipStationClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -12,6 +13,7 @@ export const listWebhooks = action({
       connectionInput,
       context.debug.enabled,
     );
+
     const { data } = await client.get("/webhooks");
     return { data };
   },

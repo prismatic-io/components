@@ -4,6 +4,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
 import { deleteCategoryTreesExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, category_id_in, storeHash } from "../../inputs";
+
 export const deleteCategoryTrees = action({
   display: {
     label: "Delete Category Trees",
@@ -19,11 +20,14 @@ export const deleteCategoryTrees = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/trees`;
+
     const queryParams = querystring.stringify({
       "id:in": category_id_in as string,
     });
+
     try {
       const response = await client.delete(`${endpoint}?${queryParams}`);
+
       return {
         data: response.data,
       };
@@ -33,6 +37,7 @@ export const deleteCategoryTrees = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

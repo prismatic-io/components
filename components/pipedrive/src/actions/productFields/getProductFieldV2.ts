@@ -4,6 +4,7 @@ import { getProductFieldV2Inputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getProductFieldV2ExamplePayload } from "../../examplePayloads";
 import { getProductFieldV2OutputSchema } from "../../outputSchemas";
+
 export const getProductFieldV2 = action({
   display: {
     label: "Get Product Field (V2)",

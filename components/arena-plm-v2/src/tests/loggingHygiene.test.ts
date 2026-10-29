@@ -1,12 +1,15 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+
 const SRC = path.join(__dirname, "..");
+
 const RAW_VALUE_KEYS = [
   "originalValue",
   "parsedValue",
   "requestBody",
   "responseData",
 ];
+
 const walk = (dir: string): string[] =>
   fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = path.join(dir, entry.name);
@@ -15,18 +18,13 @@ const walk = (dir: string): string[] =>
     }
     return entry.name.endsWith(".ts") ? [full] : [];
   });
+
 const sourceFiles = walk(SRC);
-const loggedObjects = (
-  src: string,
-): {
-  call: string;
-  body: string;
-}[] => {
-  const results: {
-    call: string;
-    body: string;
-  }[] = [];
+
+const loggedObjects = (src: string): { call: string; body: string }[] => {
+  const results: { call: string; body: string }[] = [];
   const opener = /logger\.(debug|info|warn|error|log|trace|metric)\(/g;
+
   let match: RegExpExecArray | null = opener.exec(src);
   while (match !== null) {
     const start = match.index + match[0].length;
@@ -40,14 +38,18 @@ const loggedObjects = (
     results.push({ call: match[1], body: src.slice(start, i - 1) });
     match = opener.exec(src);
   }
+
   return results;
 };
+
 describe("logging hygiene", () => {
   it("reads the whole source tree", () => {
     expect(sourceFiles.length).toBeGreaterThan(300);
   });
+
   it("no logger call passes a raw attribute or response value", () => {
     const offenders: string[] = [];
+
     for (const file of sourceFiles) {
       const src = fs.readFileSync(file, "utf8");
       for (const { body } of loggedObjects(src)) {
@@ -58,8 +60,10 @@ describe("logging hygiene", () => {
         }
       }
     }
+
     expect([...new Set(offenders)]).toEqual([]);
   });
+
   it("no logger call passes contact data or a whole parameter object", () => {
     const VALUE_BEARING = [
       "number",
@@ -69,7 +73,9 @@ describe("logging hygiene", () => {
       "reservationData",
       "queryParams",
     ];
+
     const offenders: string[] = [];
+
     for (const file of sourceFiles) {
       const src = fs.readFileSync(file, "utf8");
       for (const { body } of loggedObjects(src)) {
@@ -80,10 +86,13 @@ describe("logging hygiene", () => {
         }
       }
     }
+
     expect([...new Set(offenders)]).toEqual([]);
   });
+
   it("no logger call passes a whole request payload", () => {
     const offenders: string[] = [];
+
     for (const file of sourceFiles) {
       const src = fs.readFileSync(file, "utf8");
       for (const { body } of loggedObjects(src)) {
@@ -92,6 +101,7 @@ describe("logging hygiene", () => {
         }
       }
     }
+
     expect([...new Set(offenders)]).toEqual([]);
   });
 });

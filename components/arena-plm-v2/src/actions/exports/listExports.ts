@@ -5,6 +5,7 @@ import { listExportsInputs } from "../../inputs";
 import { listExportsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listExports = action({
   display: {
     label: "List Exports",
@@ -20,6 +21,7 @@ export const listExports = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         number: params.number,
         name: params.name,
@@ -30,12 +32,14 @@ export const listExports = action({
         offset: params.pagination?.offset,
         limit: params.pagination?.limit,
       };
+
       const data = await fetchArenaList(
         client,
         "/exports",
         queryParams,
         params.fetchAll,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Exports");

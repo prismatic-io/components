@@ -2,6 +2,7 @@ import { util, action } from "@prismatic-io/spectral";
 import { googleStorageClient } from "../client";
 import { getBucketExamplePayload } from "../examplePayloads";
 import { bucketName, connectionInput } from "../inputs";
+
 export const getBucket = action({
   display: {
     label: "Get Bucket",
@@ -14,6 +15,7 @@ export const getBucket = action({
     const data = await storage
       .bucket(util.types.toString(bucketName))
       .getMetadata();
+
     return { data: JSON.parse(JSON.stringify(data)) };
   },
   examplePayload: getBucketExamplePayload,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { getDeviceConfigurationExamplePayload } from "../../examplePayloads";
 import { getDeviceConfigurationsInputs } from "../../inputs";
+
 export const getDeviceConfigurations = action({
   display: {
     label: "Get Device Configuration",
@@ -13,6 +14,7 @@ export const getDeviceConfigurations = action({
     const { data } = await client.get(
       `${ENDPOINTS.DEVICE_CONFIGURATIONS}/${deviceConfigurationId}`,
     );
+
     return {
       data,
     };

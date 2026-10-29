@@ -4,6 +4,7 @@ import { listTransitionsExamplePayload } from "../../examplePayloads";
 import { listTransitionsInputs } from "../../inputs";
 import type { Transition } from "../../types";
 import { getPaginatedData } from "../../util";
+
 export const listTransitions = action({
   display: {
     label: "List Transitions",

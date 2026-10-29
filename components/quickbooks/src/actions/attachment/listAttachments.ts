@@ -6,6 +6,7 @@ import {
   attachableEntityType,
   connectionInput,
 } from "../../inputs";
+
 export const listAttachments = action({
   display: {
     label: "List Attachments",
@@ -19,8 +20,11 @@ export const listAttachments = action({
       quickbooksConnection,
       context.debug.enabled,
     );
+
     const queryString = `select * from Attachable where AttachableRef.EntityRef.Type = '${attachableEntityType}' and AttachableRef.EntityRef.value = '${attachableEntityId}'`;
+
     const { data } = await client.get(`/query?query=${queryString}`);
+
     const attachments = data.QueryResponse?.Attachable || [];
     return {
       data: attachments,

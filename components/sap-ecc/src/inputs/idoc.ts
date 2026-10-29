@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { ENDPOINTS } from "../constants";
 import { connection } from "./common";
+
 const idocEndpoint = input({
   label: "Endpoint",
   type: "string",
@@ -11,6 +12,7 @@ const idocEndpoint = input({
   placeholder: "Enter endpoint path",
   clean: util.types.toString,
 });
+
 const rfcEndpoint = input({
   label: "Endpoint",
   type: "string",
@@ -21,6 +23,7 @@ const rfcEndpoint = input({
   placeholder: "Enter endpoint path",
   clean: util.types.toString,
 });
+
 const idocData = input({
   label: "IDoc XML Data",
   type: "code",
@@ -39,6 +42,7 @@ const idocData = input({
   placeholder: "Enter IDoc XML payload",
   clean: util.types.toString,
 });
+
 const idocNumber = input({
   label: "IDoc Number",
   type: "string",
@@ -48,11 +52,13 @@ const idocNumber = input({
   placeholder: "Enter IDoc number",
   clean: util.types.toString,
 });
+
 export const sendIdocInputs = {
   connection,
   idocData,
   endpoint: idocEndpoint,
 };
+
 export const getIdocStatusInputs = {
   connection,
   idocNumber,

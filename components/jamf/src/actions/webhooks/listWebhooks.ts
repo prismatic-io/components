@@ -3,6 +3,7 @@ import { createClassicClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import type { WebhooksListResponse } from "../../types";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",

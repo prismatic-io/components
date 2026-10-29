@@ -4,11 +4,13 @@ import type {
   StatusString,
 } from "@aws-sdk/client-redshift-data";
 import type { Credentials } from "aws-utils";
+
 export interface RedshiftDataApiClientResult {
   client: HttpClient;
   credentials: Credentials;
   host: string;
 }
+
 export interface GetAllStatementsParams {
   client: RedshiftDataClient;
   databaseName: string | undefined;

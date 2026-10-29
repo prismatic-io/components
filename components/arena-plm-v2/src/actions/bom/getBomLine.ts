@@ -4,6 +4,7 @@ import { getBomLineExamplePayload } from "../../examplePayloads";
 import { getBomLineInputs } from "../../inputs";
 import { itemBomSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getBomLine = action({
   display: {
     label: "Get BOM Line",
@@ -28,12 +29,14 @@ export const getBomLine = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         ...(includeEmptyAdditionalAttributes && {
           includeEmptyAdditionalAttributes,
         }),
         ...(includeBomSubstitutes && { includeBomSubstitutes }),
       };
+
       context.logger.info(
         `Fetching BOM line ${bomLineGuid} for item ${itemGuid}`,
         {
@@ -42,13 +45,16 @@ export const getBomLine = action({
           queryParamNames: Object.keys(queryParams),
         },
       );
+
       const { data } = await client.get(
         `/items/${itemGuid}/bom/${bomLineGuid}`,
         {
           params: queryParams,
         },
       );
+
       context.logger.info("Successfully retrieved BOM line details");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Get BOM Line");

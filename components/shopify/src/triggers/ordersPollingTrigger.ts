@@ -10,10 +10,12 @@ import type {
   PollingResource,
 } from "../types";
 import { resolvePollingRecordChanges, runPollingCycle } from "../util";
+
 const ordersResource: PollingResource = {
   listKey: "orders",
   query: pollOrdersQuery,
 };
+
 export const ordersPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Orders",

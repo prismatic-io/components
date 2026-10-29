@@ -3,6 +3,7 @@ import { createCosmosDbClient } from "../../client";
 import { listCollectionsInputs } from "../../inputs";
 import { listCollectionsExamplePayload } from "../../examplePayloads";
 import { CosmosDbResourceType, HttpVerb } from "../../constants";
+
 export const listCollections = action({
   display: {
     label: "List Collections",
@@ -10,6 +11,7 @@ export const listCollections = action({
   },
   perform: async (context, { connection, databaseId }) => {
     const resourceLink = `dbs/${databaseId}`;
+
     const client = createCosmosDbClient({
       connection,
       verb: HttpVerb.GET,

@@ -7,6 +7,7 @@ import {
   getTaskId,
   getTeamId,
 } from "./common";
+
 const fieldId = input({
   label: "Field ID",
   type: "string",
@@ -16,6 +17,7 @@ const fieldId = input({
   clean: util.types.toString,
   dataSource: "customFields",
 });
+
 const fieldValue = input({
   label: "Field Value",
   type: "data",
@@ -24,6 +26,7 @@ const fieldValue = input({
   required: true,
   clean: toTimestampIfDate,
 });
+
 const valueType = input({
   label: "Value Type",
   type: "string",
@@ -33,6 +36,7 @@ const valueType = input({
   required: false,
   clean: cleanString,
 });
+
 export const getAccessibleCustomFieldsInputs = {
   connection: connectionInput,
   listId: getlistId(
@@ -40,6 +44,7 @@ export const getAccessibleCustomFieldsInputs = {
     "The unique identifier for the List whose Custom Fields are returned.",
   ),
 };
+
 export const removeCustomFieldValueInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task to update."),
@@ -54,6 +59,7 @@ export const removeCustomFieldValueInputs = {
     "Only used when the custom_task_ids parameter is set to true",
   ),
 };
+
 export const setCustomFieldValueInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task to update."),

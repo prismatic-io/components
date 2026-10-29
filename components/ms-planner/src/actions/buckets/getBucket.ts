@@ -6,6 +6,7 @@ import { getBucketExamplePayload } from "../../examplePayloads";
 import { getBucketOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { getBucketInputs } from "../../inputs";
+
 export const getBucket = action({
   display: {
     label: "Get Bucket",

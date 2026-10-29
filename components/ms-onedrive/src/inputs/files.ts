@@ -12,6 +12,7 @@ import {
   timeout,
 } from "./common";
 import { driveId } from "./drives";
+
 export const dir = input({
   label: "Directory",
   type: "string",
@@ -22,6 +23,7 @@ export const dir = input({
     "The directory path of the file. Use a forward slash (/) to access the root directory.",
   clean: cleanString,
 });
+
 export const itemId = input({
   label: "Item Id",
   type: "string",
@@ -32,6 +34,7 @@ export const itemId = input({
   dataSource: "listFilesInDirectory",
   clean: cleanString,
 });
+
 export const path = input({
   label: "Path",
   type: "string",
@@ -42,6 +45,7 @@ export const path = input({
     "The path to the desired SharePoint resource. The root directory does not need to be included.",
   clean: cleanString,
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -51,6 +55,7 @@ export const fileName = input({
   comments: "The new name for the file.",
   clean: cleanString,
 });
+
 const search = input({
   label: "Search",
   type: "string",
@@ -60,6 +65,7 @@ const search = input({
   comments: "The text to search for within the current drive.",
   clean: cleanString,
 });
+
 const fileData = input({
   label: "File Data",
   type: "data",
@@ -67,6 +73,7 @@ const fileData = input({
   comments: "The binary content of the file to upload.",
   clean: util.types.toData,
 });
+
 const deltaURL = input({
   label: "Delta URL",
   type: "string",
@@ -78,6 +85,7 @@ const deltaURL = input({
   default: "/drives/{drive-id}/root/delta",
   clean: util.types.toString,
 });
+
 const values = input({
   label: "Optional Values",
   type: "string",
@@ -86,6 +94,7 @@ const values = input({
   comments: "Optional key-value pairs to include in the request body.",
   clean: cleanKeyValueList,
 });
+
 const $select = input({
   label: "$select Parameter",
   type: "string",
@@ -96,6 +105,7 @@ const $select = input({
   placeholder: "Enter properties to select",
   clean: toOptionalString,
 });
+
 const $expand = input({
   label: "$expand Parameter",
   type: "string",
@@ -106,6 +116,7 @@ const $expand = input({
   placeholder: "Enter relationships to expand",
   clean: toOptionalString,
 });
+
 const $top = input({
   label: "$top Parameter",
   type: "string",
@@ -116,11 +127,13 @@ const $top = input({
   placeholder: "Enter maximum results",
   clean: toOptionalString,
 });
+
 export const deleteFileInputs = {
   connection: oneDriveConnection,
   driveId,
   itemId,
 };
+
 export const downloadFileInputs = {
   connection: oneDriveConnection,
   fileLocation: {
@@ -132,6 +145,7 @@ export const downloadFileInputs = {
   },
   timeout,
 };
+
 export const getItemInputs = {
   connection: oneDriveConnection,
   dir: {
@@ -142,11 +156,13 @@ export const getItemInputs = {
     example: "/folder1/myFile.txt",
   },
 };
+
 export const getItemByIdInputs = {
   connection: oneDriveConnection,
   driveId,
   itemId,
 };
+
 export const listChangesInputs = {
   oneDriveConnection,
   deltaURL,
@@ -154,6 +170,7 @@ export const listChangesInputs = {
   $expand,
   $top,
 };
+
 export const listChildrenInputs = {
   connection: oneDriveConnection,
   driveId,
@@ -162,6 +179,7 @@ export const listChildrenInputs = {
   pageLimit,
   pageToken,
 };
+
 export const listDriveItemsInputs = {
   connection: oneDriveConnection,
   dir,
@@ -169,15 +187,18 @@ export const listDriveItemsInputs = {
   pageLimit,
   pageToken,
 };
+
 export const listSharedInputs = {
   connection: oneDriveConnection,
 };
+
 export const listSharedFilesInputs = {
   connection: oneDriveConnection,
   fetchAll,
   pageLimit,
   pageToken,
 };
+
 export const moveFileInputs = {
   connection: oneDriveConnection,
   dir: {
@@ -195,10 +216,12 @@ export const moveFileInputs = {
   },
   fileName: { ...fileName, label: "New File Name", example: "myNewFile.txt" },
 };
+
 export const searchDriveInputs = {
   connection: oneDriveConnection,
   search,
 };
+
 export const updateFileInputs = {
   connection: oneDriveConnection,
   dir: {
@@ -212,6 +235,7 @@ export const updateFileInputs = {
   path: { ...path, label: "New File Path", required: false },
   values,
 };
+
 export const uploadFileInputs = {
   connection: oneDriveConnection,
   fileName: {

@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { updateBatchContactsExamplePayload } from "../../examplePayloads";
 import { updateBatchContactsInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const updateBatchContacts = action({
   display: {
     label: "Update Batch Contacts",
@@ -12,6 +13,7 @@ export const updateBatchContacts = action({
   performSafety: "notAllowed",
   perform: async (context, { timeout, hubspotConnection, batchInputs }) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
@@ -20,13 +22,16 @@ export const updateBatchContacts = action({
         "Content-Type": "application/json",
       },
     });
+
     const payload = {
       inputs: batchInputs,
     };
+
     const { data } = await client.post(
       hubspotPaths.objects("contacts", "/batch/update"),
       payload,
     );
+
     return {
       data,
     };

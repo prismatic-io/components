@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { personalContactPayload } from "../exampleInputs";
 import { cleanObject, cleanString } from "../util";
 import { $select, aoid, connection } from "./common";
+
 const personalContact = input({
   label: "Personal Contact",
   type: "code",
@@ -13,6 +14,7 @@ const personalContact = input({
   example: JSON.stringify(personalContactPayload, null, 2),
   clean: cleanObject,
 });
+
 const personalContactId = input({
   label: "Personal Contact ID",
   type: "string",
@@ -23,32 +25,38 @@ const personalContactId = input({
   clean: cleanString,
   dataSource: "selectPersonalContact",
 });
+
 export const addPersonalContactInputs = {
   aoid,
   personalContact,
   connection,
 };
+
 export const deletePersonalContactInputs = {
   aoid,
   personalContactId,
   connection,
 };
+
 export const getPersonalContactInputs = {
   aoid,
   personalContactId,
   $select,
   connection,
 };
+
 export const getPersonalContactMetaInputs = {
   aoid,
   $select,
   connection,
 };
+
 export const listPersonalContactsInputs = {
   aoid,
   $select,
   connection,
 };
+
 export const updatePersonalContactInputs = {
   aoid,
   personalContactId,

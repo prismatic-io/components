@@ -3,6 +3,7 @@ import type { CollectorType } from "../types";
 import { toOptionalString } from "../util";
 import { connectionInput, fetchAll, pagination, extraBody } from "./common";
 import { surveyId } from "./surveys";
+
 export const collectorId = input({
   label: "Collector ID",
   type: "string",
@@ -13,6 +14,7 @@ export const collectorId = input({
   dataSource: "selectCollector",
   clean: util.types.toString,
 });
+
 export const collectorName = input({
   label: "Collector Name",
   type: "string",
@@ -22,6 +24,7 @@ export const collectorName = input({
   placeholder: "Enter collector name",
   clean: toOptionalString,
 });
+
 export const collectorType = input({
   label: "Collector Type",
   type: "string",
@@ -39,6 +42,7 @@ export const collectorType = input({
   placeholder: "Select collector type",
   clean: util.types.toString,
 });
+
 export const collectorRedirectUrl = input({
   label: "Redirect URL",
   type: "string",
@@ -48,6 +52,7 @@ export const collectorRedirectUrl = input({
   placeholder: "Enter redirect URL",
   clean: toOptionalString,
 });
+
 export const collectorThankYouMessage = input({
   label: "Thank You Message",
   type: "text",
@@ -57,6 +62,7 @@ export const collectorThankYouMessage = input({
   placeholder: "Enter thank you message",
   clean: toOptionalString,
 });
+
 export const collectorCloseDate = input({
   label: "Close Date",
   type: "string",
@@ -66,6 +72,7 @@ export const collectorCloseDate = input({
   placeholder: "Enter close date (ISO 8601 format)",
   clean: toOptionalString,
 });
+
 export const allowMultipleResponses = input({
   label: "Allow Multiple Responses",
   type: "boolean",
@@ -74,6 +81,7 @@ export const allowMultipleResponses = input({
   comments: "When true, respondents can submit multiple responses.",
   clean: util.types.toBool,
 });
+
 export const allowMultipleResponsesModel = input({
   label: "Allow Multiple Responses",
   type: "string",
@@ -85,6 +93,7 @@ export const allowMultipleResponsesModel = input({
   comments: "When true, respondents can submit multiple responses.",
   clean: toOptionalString,
 });
+
 export const createCollectorSettings = structuredObjectInput({
   label: "Collector Settings",
   required: false,
@@ -97,6 +106,7 @@ export const createCollectorSettings = structuredObjectInput({
     allowMultipleResponses,
   },
 });
+
 export const updateCollectorSettings = structuredObjectInput({
   label: "Collector Settings",
   required: false,
@@ -109,16 +119,19 @@ export const updateCollectorSettings = structuredObjectInput({
     allowMultipleResponsesModel,
   },
 });
+
 export const listCollectorsInputs = {
   connection: connectionInput,
   surveyId,
   fetchAll,
   pagination,
 };
+
 export const getCollectorInputs = {
   connection: connectionInput,
   collectorId,
 };
+
 export const createCollectorInputs = {
   connection: connectionInput,
   surveyId,
@@ -127,6 +140,7 @@ export const createCollectorInputs = {
   collectorSettings: createCollectorSettings,
   extraBody,
 };
+
 export const updateCollectorInputs = {
   connection: connectionInput,
   collectorId,
@@ -134,14 +148,17 @@ export const updateCollectorInputs = {
   collectorSettings: updateCollectorSettings,
   extraBody,
 };
+
 export const deleteCollectorInputs = {
   connection: connectionInput,
   collectorId,
 };
+
 export const getCollectorStatsInputs = {
   connection: connectionInput,
   collectorId,
 };
+
 export const selectCollectorInputs = {
   connection: connectionInput,
   surveyId: { ...surveyId, dataSource: undefined },

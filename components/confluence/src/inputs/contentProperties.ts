@@ -9,6 +9,7 @@ import {
   queryParameters,
   sort,
 } from "./common";
+
 export const customContentId = input({
   label: "Custom Content ID",
   type: "string",
@@ -18,6 +19,7 @@ export const customContentId = input({
   example: "123456789",
   placeholder: "Enter custom content ID",
 });
+
 export const propertyId = input({
   label: "Property ID",
   type: "string",
@@ -27,6 +29,7 @@ export const propertyId = input({
   example: "content-prop-123",
   placeholder: "Enter property ID",
 });
+
 export const bodyData = input({
   label: "Body Data",
   type: "code",
@@ -43,6 +46,7 @@ export const bodyData = input({
   clean: jsonInputClean,
   required: true,
 });
+
 const updateBodyData = {
   ...bodyData,
   default: JSON.stringify(
@@ -58,51 +62,61 @@ const updateBodyData = {
     2,
   ),
 };
+
 export const createContentPropertyForAttachmentInputs = {
   connectionInput,
   attachmentId,
   bodyData,
 };
+
 export const createContentPropertyForCustomContentInputs = {
   connectionInput,
   customContentId,
   bodyData,
 };
+
 export const createContentPropertyForPageInputs = {
   connectionInput,
   pageId,
   bodyData,
 };
+
 export const deleteContentPropertyForAttachmentInputs = {
   connectionInput,
   attachmentId,
   propertyId,
 };
+
 export const deleteContentPropertyForCustomContentInputs = {
   connectionInput,
   customContentId,
   propertyId,
 };
+
 export const deleteContentPropertyForPageInputs = {
   connectionInput,
   pageId,
   propertyId,
 };
+
 export const getContentPropertiesForAttachmentsInputs = {
   connectionInput,
   attachmentId,
   propertyId,
 };
+
 export const getContentPropertiesForCustomContentInputs = {
   connectionInput,
   customContentId,
   propertyId,
 };
+
 export const getContentPropertiesForPageInputs = {
   connectionInput,
   pageId,
   propertyId,
 };
+
 export const listContentPropertiesForAttachmentsInputs = {
   connectionInput,
   attachmentId,
@@ -111,6 +125,7 @@ export const listContentPropertiesForAttachmentsInputs = {
   sort,
   queryParameters,
 };
+
 export const listContentPropertiesForCustomContentInputs = {
   connectionInput,
   customContentId,
@@ -119,6 +134,7 @@ export const listContentPropertiesForCustomContentInputs = {
   sort,
   queryParameters,
 };
+
 export const listContentPropertiesForPageInputs = {
   connectionInput,
   pageId,
@@ -127,18 +143,21 @@ export const listContentPropertiesForPageInputs = {
   sort,
   queryParameters,
 };
+
 export const updateContentPropertyForAttachmentInputs = {
   connectionInput,
   attachmentId,
   propertyId,
   bodyData: updateBodyData,
 };
+
 export const updateContentPropertyForCustomContentInputs = {
   connectionInput,
   customContentId,
   propertyId,
   bodyData: updateBodyData,
 };
+
 export const updateContentPropertyForPageInputs = {
   connectionInput,
   pageId,

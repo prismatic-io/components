@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { exportDataFromDataSetExamplePayload } from "../../examplePayloads";
 import { datasetId, exportDataFromDataSetInputs } from "../../inputs";
 import type { ExportDataFromDataSetQueryParams } from "../types/ExportDataFromDataSetQueryParams";
+
 export const exportDataFromDataSet = action({
   display: {
     label: "Export Data From DataSet",
@@ -14,6 +15,7 @@ export const exportDataFromDataSet = action({
     const queryParams: ExportDataFromDataSetQueryParams = {};
     if (fileName.length) queryParams.fileName = fileName;
     if (includeHeader.length) queryParams.includeHeader = includeHeader;
+
     const { data } = await client.get(`/datasets/${datasetId}/data`, {
       params: queryParams,
       headers: { Accept: "application/json" },
@@ -22,4 +24,5 @@ export const exportDataFromDataSet = action({
   },
   inputs: exportDataFromDataSetInputs,
 });
+
 export default { exportDataFromDataSet };

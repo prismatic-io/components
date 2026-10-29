@@ -49,7 +49,9 @@ export const getWebhookExamplePayload = {
     ],
   },
 };
+
 export const addWebhookExamplePayload = getWebhookExamplePayload;
+
 export const updateWebhookExamplePayload = {
   data: {
     ...getWebhookExamplePayload.data,
@@ -64,6 +66,7 @@ export const updateWebhookExamplePayload = {
     },
   },
 };
+
 export const listWebhooksExamplePayload = {
   data: [
     {
@@ -104,12 +107,14 @@ export const listWebhooksExamplePayload = {
     },
   ],
 };
+
 export const deleteWebhookExamplePayload = {
   data: {
     success: true,
     message: "Webhook deleted successfully",
   },
 };
+
 export const subscribeWebhookPayload = {
   type: "subscribe",
   fired_at: "2024-12-05T14:30:00Z",
@@ -130,6 +135,7 @@ export const subscribeWebhookPayload = {
     },
   },
 };
+
 export const unsubscribeWebhookPayload = {
   type: "unsubscribe",
   fired_at: "2024-12-05T15:45:00Z",
@@ -152,6 +158,7 @@ export const unsubscribeWebhookPayload = {
     },
   },
 };
+
 export const profileUpdateWebhookPayload = {
   type: "profile",
   fired_at: "2024-12-05T16:20:00Z",
@@ -171,6 +178,7 @@ export const profileUpdateWebhookPayload = {
     },
   },
 };
+
 export const emailChangedWebhookPayload = {
   type: "upemail",
   fired_at: "2024-12-05T17:00:00Z",
@@ -181,6 +189,7 @@ export const emailChangedWebhookPayload = {
     old_email: "john.doe@example.com",
   },
 };
+
 export const cleanedWebhookPayload = {
   type: "cleaned",
   fired_at: "2024-12-05T18:30:00Z",
@@ -191,6 +200,7 @@ export const cleanedWebhookPayload = {
     email: "bounced@example.com",
   },
 };
+
 export const campaignWebhookPayload = {
   type: "campaign",
   fired_at: "2024-12-05T19:00:00Z",
@@ -201,6 +211,7 @@ export const campaignWebhookPayload = {
     status: "sent",
   },
 };
+
 export const webhookTriggerExamplePayload = {
   payload: {
     headers: {
@@ -255,4 +266,5 @@ export const webhookTriggerExamplePayload = {
     startedAt: "2024-12-05T14:30:00.000Z",
   } as unknown as TriggerPayload,
 };
+
 export const manualWebhookExamplePayload = webhookTriggerExamplePayload;

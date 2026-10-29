@@ -1,5 +1,6 @@
 import type { Element } from "@prismatic-io/spectral";
 import type { Location, OracleHcmListResponse } from "../types";
+
 const locationExample: Location = {
   LocationId: 300100012340003,
   LocationCode: "US-NYC",
@@ -25,6 +26,7 @@ const locationExample: Location = {
   ],
   LastUpdateDate: "2024-01-15T08:00:00.000Z",
 };
+
 export const listLocationsExamplePayload: {
   data: OracleHcmListResponse<Location>;
 } = {
@@ -36,12 +38,12 @@ export const listLocationsExamplePayload: {
     offset: 0,
   },
 };
-export const getLocationExamplePayload: {
-  data: Location;
-} = { data: locationExample };
-export const createLocationExamplePayload: {
-  data: Location;
-} = {
+
+export const getLocationExamplePayload: { data: Location } = {
+  data: locationExample,
+};
+
+export const createLocationExamplePayload: { data: Location } = {
   data: {
     ...locationExample,
     LocationId: 300100099990003,
@@ -49,21 +51,17 @@ export const createLocationExamplePayload: {
     LocationName: "San Francisco Office",
   },
 };
-export const updateLocationExamplePayload: {
-  data: Location;
-} = {
+
+export const updateLocationExamplePayload: { data: Location } = {
   data: { ...locationExample, LocationName: "New York HQ" },
 };
+
 export const deleteLocationExamplePayload: {
-  data: {
-    id: string;
-    status: string;
-  };
+  data: { id: string; status: string };
 } = {
   data: { id: "300100012345678", status: "DELETED" },
 };
-export const selectLocationExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectLocationExamplePayload: { result: Element[] } = {
   result: [{ key: "300100012340003", label: "US-NYC - New York Office" }],
 };

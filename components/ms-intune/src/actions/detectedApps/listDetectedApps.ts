@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listDetectedAppsExamplePayload } from "../../examplePayloads";
 import { listDetectedAppsInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listDetectedApps = action({
   display: {
     label: "List Detected Apps",

@@ -1,11 +1,16 @@
 import { util } from "@prismatic-io/spectral";
+
 export const toOptionalString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 export const toOptionalInt = (value: unknown) =>
   value ? util.types.toInt(value) : undefined;
+
 export const toOptionalObject = <T>(value: unknown): T | undefined =>
   value ? (util.types.toObject(value) as T) : undefined;
+
 const YYYY_MM_DD = /^\d{4}-\d{2}-\d{2}$/;
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (!raw) return "";

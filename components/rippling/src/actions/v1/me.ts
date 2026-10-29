@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { getMeExamplePayload } from "../../examplePayloads";
 import { getMeInputs } from "../../inputs";
+
 const getMe = action({
   display: {
     label: "Get Me (V1)",
@@ -20,6 +21,7 @@ const getMe = action({
     return { data };
   },
 });
+
 export default {
   getMe,
 };

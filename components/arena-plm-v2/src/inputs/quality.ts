@@ -20,6 +20,7 @@ import {
   templateGuidInput,
   userGuidInput,
 } from "./common";
+
 const decisionTypeInput = input({
   label: "Decision Type",
   type: "string",
@@ -33,6 +34,7 @@ const decisionTypeInput = input({
   comments: "The type of decision requirement for the approver.",
   clean: util.types.toString,
 });
+
 const groupGuidInput = input({
   label: "Group GUID",
   type: "string",
@@ -43,6 +45,7 @@ const groupGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const requestTypeInput = input({
   label: "Request Type",
   type: "string",
@@ -56,6 +59,7 @@ const requestTypeInput = input({
     "Choose whether to change the overall quality process status or a specific step status.",
   clean: util.types.toString,
 });
+
 const targetCompletionDateTimeInput = input({
   label: "Target Completion Date Time",
   type: "string",
@@ -65,6 +69,7 @@ const targetCompletionDateTimeInput = input({
   example: "2024-12-31T23:59:59Z",
   clean: toOptionalString,
 });
+
 const ownerGuidInput = input({
   label: "Owner GUID",
   type: "string",
@@ -74,6 +79,7 @@ const ownerGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const numberFormatPrefixGuidInput = input({
   label: "Number Format Prefix GUID",
   type: "string",
@@ -83,6 +89,7 @@ const numberFormatPrefixGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: toOptionalString,
 });
+
 const typeInput = input({
   label: "Quality Process Type",
   type: "string",
@@ -91,6 +98,7 @@ const typeInput = input({
   comments: "The type of quality process.",
   clean: toOptionalString,
 });
+
 const affectedObjectGuidInput = input({
   label: "Affected Object GUID",
   type: "string",
@@ -100,6 +108,7 @@ const affectedObjectGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const affectedStepGuidInput = input({
   label: "Affected Step GUID",
   type: "string",
@@ -109,6 +118,7 @@ const affectedStepGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const linkInput = input({
   label: "URL Link",
   type: "string",
@@ -118,6 +128,7 @@ const linkInput = input({
   example: "https://example.com/document",
   clean: util.types.toString,
 });
+
 const displayInput = input({
   label: "Display Name",
   type: "string",
@@ -127,6 +138,7 @@ const displayInput = input({
   example: "Important Document",
   clean: toOptionalString,
 });
+
 const affectedGuidInput = input({
   label: "Affected Object GUID",
   type: "string",
@@ -136,6 +148,7 @@ const affectedGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const ownerFullNameInput = input({
   label: "Owner Full Name",
   type: "string",
@@ -145,6 +158,7 @@ const ownerFullNameInput = input({
   example: "Alex Chen",
   clean: toOptionalString,
 });
+
 const attributeGroupGuidInput = input({
   label: "Attribute Group GUID",
   type: "string",
@@ -154,6 +168,7 @@ const attributeGroupGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const decisionGuidInput = input({
   label: "Decision GUID",
   type: "string",
@@ -163,6 +178,7 @@ const decisionGuidInput = input({
   example: "QP4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const decisionInput = input({
   label: "Decision",
   type: "string",
@@ -175,6 +191,7 @@ const decisionInput = input({
   comments: "The decision to make on the sign-off step.",
   clean: util.types.toString,
 });
+
 const dataInput = input({
   label: "Quality Process Update Data",
   type: "data",
@@ -184,6 +201,7 @@ const dataInput = input({
   example: "2026-05-10T09:15:00Z",
   clean: util.types.toObject,
 });
+
 const affectedNotesInput = input({
   label: "Notes",
   type: "string",
@@ -192,6 +210,7 @@ const affectedNotesInput = input({
   comments: "Optional notes for the affected object.",
   clean: toOptionalString,
 });
+
 const qualityIncludePossibleValuesBoolInput = input({
   label: "Include Possible Values",
   type: "boolean",
@@ -200,6 +219,7 @@ const qualityIncludePossibleValuesBoolInput = input({
   comments: "When true, possible values for dropdown attributes are included.",
   clean: util.types.toBool,
 });
+
 const qualityCreatableOnlyBoolInput = input({
   label: "Creatable Only",
   type: "boolean",
@@ -209,6 +229,7 @@ const qualityCreatableOnlyBoolInput = input({
     "When true, only attributes that can be used during creation are returned.",
   clean: util.types.toBool,
 });
+
 const qualityEditableOnlyBoolInput = input({
   label: "Editable Only",
   type: "boolean",
@@ -217,6 +238,7 @@ const qualityEditableOnlyBoolInput = input({
   comments: "When true, only attributes that can be edited are returned.",
   clean: util.types.toBool,
 });
+
 const qualitySearchableOnlyBoolInput = input({
   label: "Searchable Only",
   type: "boolean",
@@ -226,6 +248,7 @@ const qualitySearchableOnlyBoolInput = input({
     "When true, only attributes that can be used in searches are returned.",
   clean: util.types.toBool,
 });
+
 const qualityIncludeDeletedBoolInput = input({
   label: "Include Deleted",
   type: "boolean",
@@ -234,6 +257,7 @@ const qualityIncludeDeletedBoolInput = input({
   comments: "When true, deleted attributes are included in the results.",
   clean: util.types.toBool,
 });
+
 export const addQualityStepApproverInputs = {
   connection: connectionInput,
   qualityprocessGuid: {
@@ -254,6 +278,7 @@ export const addQualityStepApproverInputs = {
   },
   groupGuid: groupGuidInput,
 };
+
 export const changeQualityProcessStatusInputs = {
   connection: connectionInput,
   requestType: requestTypeInput,
@@ -280,6 +305,7 @@ export const changeQualityProcessStatusInputs = {
     comments: "Optional comment for the status change.",
   },
 };
+
 export const createQualityProcessInputs = {
   connection: connectionInput,
   name: {
@@ -303,6 +329,7 @@ export const createQualityProcessInputs = {
   numberFormatPrefixGuid: numberFormatPrefixGuidInput,
   type: typeInput,
 };
+
 export const createQualityProcessStepAffectedInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -319,6 +346,7 @@ export const createQualityProcessStepAffectedInputs = {
   affectedObjectGuid: affectedObjectGuidInput,
   notes: affectedNotesInput,
 };
+
 export const createQualityProcessStepAffectedQualityInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -340,6 +368,7 @@ export const createQualityProcessStepAffectedQualityInputs = {
   },
   affectedStepGuid: affectedStepGuidInput,
 };
+
 export const createQualityProcessStepAffectedUrlInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -366,6 +395,7 @@ export const createQualityProcessStepAffectedUrlInputs = {
     comments: "Description for the URL.",
   },
 };
+
 export const deleteQualityProcessInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -373,6 +403,7 @@ export const deleteQualityProcessInputs = {
     comments: "The GUID of the quality process to delete.",
   },
 };
+
 export const deleteQualityProcessStepAffectedInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -391,6 +422,7 @@ export const deleteQualityProcessStepAffectedInputs = {
     comments: "The GUID of the affected object to delete.",
   },
 };
+
 export const getQualityProcessByGuidInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -398,6 +430,7 @@ export const getQualityProcessByGuidInputs = {
     comments: "The GUID of the quality process to retrieve.",
   },
 };
+
 export const listQualityProcessesInputs = {
   connection: connectionInput,
   number: {
@@ -442,6 +475,7 @@ export const listQualityProcessesInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const getQualityProcessNumberFormatByGuidInputs = {
   connection: connectionInput,
   guid: {
@@ -453,12 +487,15 @@ export const getQualityProcessNumberFormatByGuidInputs = {
     clean: util.types.toString,
   },
 };
+
 export const listQualityProcessNumberFormatsInputs = {
   connection: connectionInput,
 };
+
 export const listQualityProcessOwnersInputs = {
   connection: connectionInput,
 };
+
 export const listQualityProcessStepAffectedInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -473,6 +510,7 @@ export const listQualityProcessStepAffectedInputs = {
     clean: util.types.toString,
   },
 };
+
 export const getQualityProcessStepAffectedByGuidInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -491,13 +529,16 @@ export const getQualityProcessStepAffectedByGuidInputs = {
     comments: "The GUID of the affected object to retrieve.",
   },
 };
+
 export const getQualityProcessStepAttributeGroupByGuidInputs = {
   connection: connectionInput,
   attributeGroupGuid: attributeGroupGuidInput,
 };
+
 export const listQualityProcessStepAttributeGroupsInputs = {
   connection: connectionInput,
 };
+
 export const listQualityProcessStepAttributesInputs = {
   connection: connectionInput,
   includePossibleValues: qualityIncludePossibleValuesBoolInput,
@@ -506,6 +547,7 @@ export const listQualityProcessStepAttributesInputs = {
   searchableOnly: qualitySearchableOnlyBoolInput,
   includeDeleted: qualityIncludeDeletedBoolInput,
 };
+
 export const getQualityProcessStepByGuidInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -520,6 +562,7 @@ export const getQualityProcessStepByGuidInputs = {
   },
   includeEmptyAdditionalAttributes: includeEmptyAdditionalAttributesInput,
 };
+
 export const listQualityProcessStepsInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -527,6 +570,7 @@ export const listQualityProcessStepsInputs = {
     comments: "The GUID of the quality process to get steps for.",
   },
 };
+
 export const listQualityProcessTemplateAttributeGroupsInputs = {
   connection: connectionInput,
   templateGuid: {
@@ -534,6 +578,7 @@ export const listQualityProcessTemplateAttributeGroupsInputs = {
     comments: "The GUID of the quality process template.",
   },
 };
+
 export const listQualityProcessTemplateAttributesInputs = {
   connection: connectionInput,
   templateGuid: {
@@ -546,6 +591,7 @@ export const listQualityProcessTemplateAttributesInputs = {
   searchableOnly: qualitySearchableOnlyBoolInput,
   includeDeleted: qualityIncludeDeletedBoolInput,
 };
+
 export const getQualityProcessTemplateByGuidInputs = {
   connection: connectionInput,
   templateGuid: {
@@ -553,6 +599,7 @@ export const getQualityProcessTemplateByGuidInputs = {
     comments: "The GUID of the quality process template to retrieve.",
   },
 };
+
 export const listQualityProcessTemplatesInputs = {
   connection: connectionInput,
   name: {
@@ -566,6 +613,7 @@ export const listQualityProcessTemplatesInputs = {
     comments: "When true, only active templates are shown.",
   },
 };
+
 export const listQualityStepDecisionsInputs = {
   connection: connectionInput,
   qualityprocessGuid: {
@@ -579,6 +627,7 @@ export const listQualityStepDecisionsInputs = {
     clean: util.types.toString,
   },
 };
+
 export const submitQualityStepDecisionInputs = {
   connection: connectionInput,
   qualityprocessGuid: {
@@ -598,6 +647,7 @@ export const submitQualityStepDecisionInputs = {
     comments: "Optional comments for the decision.",
   },
 };
+
 export const updateQualityProcessInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -606,6 +656,7 @@ export const updateQualityProcessInputs = {
   },
   data: dataInput,
 };
+
 export const updateQualityProcessStepInputs = {
   connection: connectionInput,
   qualityProcessGuid: {
@@ -625,6 +676,7 @@ export const updateQualityProcessStepInputs = {
       "JSON object containing quality step update data (QualityStepUpdateVo schema).",
   },
 };
+
 export const updateQualityProcessStepAffectedInputs = {
   connection: connectionInput,
   qualityProcessGuid: {

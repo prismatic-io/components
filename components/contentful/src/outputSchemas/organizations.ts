@@ -1,5 +1,7 @@
 import { linkSchema } from "./shared";
+
 const versionSchema = { type: ["string", "number"] };
+
 const organizationSchema = {
   type: "object" as const,
   properties: {
@@ -22,11 +24,14 @@ const organizationSchema = {
     },
   },
 };
+
 export const listOrganizationsOutputSchema = {
   type: "array" as const,
   items: organizationSchema,
 };
+
 export const getOrganizationOutputSchema = organizationSchema;
+
 export const updateOrganizationOutputSchema = {
   type: "object" as const,
   properties: {

@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanNumberInput, cleanStringInput } from "../../util";
+
 const description = input({
   label: "Product Description",
   comments: "Product description.",
@@ -9,6 +10,7 @@ const description = input({
   example: "32mb PCI Video Card",
   clean: cleanStringInput,
 });
+
 const useDescriptionOnDocuments = input({
   label: "Use Description On Documents",
   comments:
@@ -18,6 +20,7 @@ const useDescriptionOnDocuments = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const barcode = input({
   label: "Product Barcode",
   comments: "Product bar code.",
@@ -27,6 +30,7 @@ const barcode = input({
   example: "1234567890123",
   clean: cleanStringInput,
 });
+
 const allowSalesOrder = input({
   label: "Allow Sales Order",
   comments:
@@ -36,6 +40,7 @@ const allowSalesOrder = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const taxCodeId = input({
   label: "Tax Code ID",
   comments:
@@ -47,6 +52,7 @@ const taxCodeId = input({
   dataSource: "selectTaxCode",
   clean: cleanNumberInput,
 });
+
 const productStatusType = input({
   label: "Product Status Type",
   comments:
@@ -57,6 +63,7 @@ const productStatusType = input({
   example: "EnumStockItemStatusTypeActive",
   clean: cleanStringInput,
 });
+
 const fulfilmentMethodType = input({
   label: "Fulfilment Method Type",
   comments:
@@ -67,6 +74,7 @@ const fulfilmentMethodType = input({
   example: "EnumFulfilmentFromStock",
   clean: cleanStringInput,
 });
+
 const fulfilmentSequenceType = input({
   label: "Fulfilment Sequence Type",
   comments:
@@ -77,6 +85,7 @@ const fulfilmentSequenceType = input({
   example: "EnumBinPriority",
   clean: cleanStringInput,
 });
+
 const inactivationDate = input({
   label: "Inactivation Date",
   comments:
@@ -87,6 +96,7 @@ const inactivationDate = input({
   example: "2024-02-28T14:06:51.697Z",
   clean: cleanStringInput,
 });
+
 const manufacturer = input({
   label: "Manufacturer",
   comments: "The product manufacturer.",
@@ -96,6 +106,7 @@ const manufacturer = input({
   example: "Nvidia",
   clean: cleanStringInput,
 });
+
 const partNumber = input({
   label: "Part Number",
   comments: "The product part number.",
@@ -105,6 +116,7 @@ const partNumber = input({
   example: "VI6874",
   clean: cleanStringInput,
 });
+
 const labelPrintingOptionType = input({
   label: "Label Printing Option Type",
   comments:
@@ -115,6 +127,7 @@ const labelPrintingOptionType = input({
   example: "EnumNotRequired",
   clean: cleanStringInput,
 });
+
 const traceableType = input({
   label: "Traceable Type",
   comments:
@@ -125,6 +138,7 @@ const traceableType = input({
   example: "EnumTraceableTypeNone",
   clean: cleanStringInput,
 });
+
 const saleFromSingleBatch = input({
   label: "Sale From Single Batch",
   comments:
@@ -134,6 +148,7 @@ const saleFromSingleBatch = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const allowDuplicateNumbers = input({
   label: "Allow Duplicate Numbers",
   comments:
@@ -143,6 +158,7 @@ const allowDuplicateNumbers = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const usesAlternativeRef = input({
   label: "Uses Alternative Reference",
   comments:
@@ -152,6 +168,7 @@ const usesAlternativeRef = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const usesSellByDate = input({
   label: "Uses Sell By Date",
   comments:
@@ -161,6 +178,7 @@ const usesSellByDate = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const usesUseByDate = input({
   label: "Uses Use By Date",
   comments:
@@ -170,6 +188,7 @@ const usesUseByDate = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const shelfLife = input({
   label: "Shelf Life",
   comments: "The shelf life of the product. (Sage 200 Professional only).",
@@ -179,6 +198,7 @@ const shelfLife = input({
   example: "",
   clean: cleanNumberInput,
 });
+
 const shelfLifeType = input({
   label: "Shelf Life Type",
   comments:
@@ -189,6 +209,7 @@ const shelfLifeType = input({
   example: "EnumTimeUnitDay",
   clean: cleanStringInput,
 });
+
 const additionalFields = input({
   label: "Additional Fields",
   type: "code",
@@ -218,6 +239,7 @@ const additionalFields = input({
   ),
   clean: cleanCodeInput,
 });
+
 export default {
   description,
   useDescriptionOnDocuments,

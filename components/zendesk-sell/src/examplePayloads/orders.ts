@@ -5,6 +5,7 @@ const orderData = {
   created_at: "2025-01-12T08:30:45Z",
   updated_at: "2025-01-12T08:30:45Z",
 };
+
 export const createOrderExamplePayload = {
   data: {
     data: orderData,
@@ -13,6 +14,7 @@ export const createOrderExamplePayload = {
     },
   },
 };
+
 export const getOrderExamplePayload = {
   data: {
     data: orderData,
@@ -21,6 +23,7 @@ export const getOrderExamplePayload = {
     },
   },
 };
+
 export const updateOrderExamplePayload = {
   data: {
     data: orderData,
@@ -29,6 +32,7 @@ export const updateOrderExamplePayload = {
     },
   },
 };
+
 export const listOrderExamplePayload = {
   data: {
     items: [
@@ -50,9 +54,11 @@ export const listOrderExamplePayload = {
     },
   },
 };
+
 export const deleteOrderExamplePayload = {
   data: null,
 };
+
 export const getOrdersStreamExamplePayload = {
   data: {
     items: [

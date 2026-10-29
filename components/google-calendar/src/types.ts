@@ -1,10 +1,12 @@
 import type { calendar_v3 } from "@googleapis/calendar";
 import type { ActionLogger, Connection } from "@prismatic-io/spectral";
+
 export type CalendarWatch = {
   channelId: string;
   resourceId: string;
   expiration: string;
 };
+
 export type ManageWatchParams = {
   calendar: calendar_v3.Calendar;
   calendarId: string;
@@ -13,24 +15,29 @@ export type ManageWatchParams = {
   previousWatch?: CalendarWatch;
   logger: ActionLogger;
 };
+
 export type StopWatchParams = {
   calendar: calendar_v3.Calendar;
   channelId: string;
   resourceId: string;
 };
+
 export type CalendarChangeEventsInputs = {
   connection: Connection;
   calendarId: string;
 };
+
 export type PollEventsTriggerParams = {
   connection: Connection;
   calendarId: string;
   lookBackDate: string;
 };
+
 export type PollEventsTriggerState = {
   syncToken: string | undefined;
   lastPolledAt: string | undefined;
 };
+
 export type ProcessedEvent = {
   changeType: "created" | "updated" | "deleted" | "unknown";
   id?: string;
@@ -51,6 +58,7 @@ export type ProcessedEvent = {
   recurringEventId?: string;
   htmlLink?: string;
 };
+
 export type EventChangeSummary = {
   totalChanges: number;
   created: number;
@@ -59,6 +67,7 @@ export type EventChangeSummary = {
   syncTokenAvailable: boolean;
   syncTokenUpdated?: boolean;
 };
+
 export type CategorizedEventChanges = {
   summary: EventChangeSummary;
   createdEvents: ProcessedEvent[];
@@ -66,19 +75,23 @@ export type CategorizedEventChanges = {
   deletedEvents: ProcessedEvent[];
   allChanges: ProcessedEvent[];
 };
+
 export interface EventChangesObject {
   createdEvents: ProcessedEvent[];
   updatedEvents: ProcessedEvent[];
   deletedEvents: ProcessedEvent[];
   allChanges: ProcessedEvent[];
 }
+
 export interface EventRecordChange {
   changeType: "created" | "updated" | "deleted" | "unknown";
   record: ProcessedEvent;
 }
+
 export interface PollEventsPage extends Record<string, unknown> {
   pageToken: string;
   drainStartedAt: string;
   syncToken?: string;
 }
+
 export type PollEventsCursor = PollEventsPage | null;

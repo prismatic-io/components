@@ -4,6 +4,7 @@ import { deleteProductImageExamplePayload as examplePayload } from "../../../exa
 import { deleteProductImageInputs as inputs } from "../../../inputsGql";
 import { deleteProductImageGqlOutputSchema } from "../../../outputSchemas";
 import deleteProductImageQuery from "../queries/productImage/DeleteProductImage.gql";
+
 export const deleteProductImageGql = action({
   display: {
     label: "Delete Product Image",
@@ -17,12 +18,13 @@ export const deleteProductImageGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      productDeleteMedia: Record<string, unknown>;
-    } = await client.request(deleteProductImageQuery, {
-      productId,
-      mediaIds: [imageId],
-    });
+
+    const data: { productDeleteMedia: Record<string, unknown> } =
+      await client.request(deleteProductImageQuery, {
+        productId,
+        mediaIds: [imageId],
+      });
+
     return {
       data: data.productDeleteMedia,
     };

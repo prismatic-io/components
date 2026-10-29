@@ -14,6 +14,7 @@ import {
   subscriptionId,
   topicName,
 } from "../inputs";
+
 export const listSubscriptionsByTopic = action({
   display: {
     label: "List Subscriptions By Topic",
@@ -35,6 +36,7 @@ export const listSubscriptionsByTopic = action({
   ) => {
     const client = getAzureServiceBusClient(connection, context.debug.enabled);
     const endpoint = `/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/${namespaceName}/topics/${topicName}/subscriptions?api-version=2021-11-01`;
+
     try {
       return await paginateResults({
         client,
@@ -63,4 +65,5 @@ export const listSubscriptionsByTopic = action({
     topicName,
   },
 });
+
 export default { listSubscriptionsByTopic };

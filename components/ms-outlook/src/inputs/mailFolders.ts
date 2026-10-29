@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connectionInput, fetchAllInput, pagination } from "./common";
+
 export const parentFolderIdInput = input({
   label: "Parent Folder ID",
   type: "string",
@@ -12,6 +13,7 @@ export const parentFolderIdInput = input({
   placeholder: "Enter Parent Folder ID",
   clean: cleanStringInput,
 });
+
 const folderDisplayNameInput = input({
   label: "Display Name",
   required: true,
@@ -21,6 +23,7 @@ const folderDisplayNameInput = input({
   placeholder: "Enter folder name",
   clean: util.types.toString,
 });
+
 const deleteFolderIdInput = input({
   label: "Folder ID",
   type: "string",
@@ -31,6 +34,7 @@ const deleteFolderIdInput = input({
   dataSource: "selectMailFolder",
   clean: util.types.toString,
 });
+
 export const listMailFoldersInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
@@ -41,6 +45,7 @@ export const listMailFoldersInputs = {
       "The unique identifier of the parent folder. Lists all folders contained within this folder. Omit to list root-level folders.",
   },
 };
+
 export const createMailFolderInputs = {
   connection: connectionInput,
   parentFolderId: {
@@ -50,6 +55,7 @@ export const createMailFolderInputs = {
   },
   name: folderDisplayNameInput,
 };
+
 export const deleteMailFolderInputs = {
   connection: connectionInput,
   folderId: deleteFolderIdInput,

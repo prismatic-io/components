@@ -5,6 +5,7 @@ import {
   resolvePollingRecordChanges,
   resolvePollWindow,
 } from "./polling";
+
 const T0 = new Date("2026-09-01T00:00:00.000Z");
 const at = (id: number, seconds: number, isNew = false): GitlabRecord => {
   const updated = new Date(T0.getTime() + seconds * 1000).toISOString();
@@ -14,6 +15,7 @@ const at = (id: number, seconds: number, isNew = false): GitlabRecord => {
     updated_at: updated,
   };
 };
+
 test("resolvePollWindow prefers the stored cursor, then the look-back date", () => {
   const now = new Date("2026-09-28T00:00:00.000Z");
   expect(
@@ -31,6 +33,7 @@ test("resolvePollWindow prefers the stored cursor, then the look-back date", () 
     isBackfill: false,
   });
 });
+
 test("unbounded plan delivers everything and advances the cursor to the newest updated_at", () => {
   const plan = planPoll(
     [at(2, 20), at(1, 10, true)],
@@ -45,6 +48,7 @@ test("unbounded plan delivers everything and advances the cursor to the newest u
   );
   expect(plan.complete).toBe(true);
 });
+
 test("clamped plan never splits a timestamp group and resumes without loss or duplicates", () => {
   const records = [at(1, 10), at(2, 20), at(3, 20), at(4, 30)];
   const first = planPoll(records, T0, undefined, 2);
@@ -61,6 +65,7 @@ test("clamped plan never splits a timestamp group and resumes without loss or du
     2, 3,
   ]);
 });
+
 test("records at the cursor already delivered are not delivered again (inclusive updated_after)", () => {
   const first = planPoll([at(1, 10)], T0, undefined, Number.POSITIVE_INFINITY);
   const since = new Date(first.nextState.lastPolledAt as string);
@@ -72,6 +77,7 @@ test("records at the cursor already delivered are not delivered again (inclusive
   );
   expect([...second.created, ...second.updated].map((r) => r.id)).toEqual([5]);
 });
+
 describe("byte bound", () => {
   const padded = (record: GitlabRecord, bytes: number): GitlabRecord => ({
     ...record,
@@ -79,6 +85,7 @@ describe("byte bound", () => {
   });
   const delivered = (plan: ReturnType<typeof planPoll>) =>
     [...plan.created, ...plan.updated].map((r) => r.id);
+
   test("stops before the serialized records exceed maxBytes and resumes from what was delivered", () => {
     const records = [1, 2, 3].map((id) => padded(at(id, id * 10), 1000));
     const first = planPoll(records, T0, undefined, 500, 2500);
@@ -97,6 +104,7 @@ describe("byte bound", () => {
     expect(delivered(second)).toEqual([3]);
     expect(second.complete).toBe(true);
   });
+
   test("never splits a timestamp group at the byte cut", () => {
     const records = [
       padded(at(1, 10), 1000),
@@ -115,6 +123,7 @@ describe("byte bound", () => {
     );
     expect(delivered(second)).toEqual([2, 3]);
   });
+
   test("delivers a single record over maxBytes alone", () => {
     const records = [padded(at(1, 10), 5000), padded(at(2, 20), 10)];
     const first = planPoll(records, T0, undefined, 500, 2500);
@@ -123,6 +132,7 @@ describe("byte bound", () => {
     expect(first.nextState.lastPolledAt).toBe(records[0].updated_at);
   });
 });
+
 test("resolvePollingRecordChanges flattens with change types", () => {
   expect(
     resolvePollingRecordChanges({
@@ -134,10 +144,12 @@ test("resolvePollingRecordChanges flattens with change types", () => {
     ["updated", 2],
   ]);
 });
+
 test("resolvePollingRecordChanges returns [] for empty or undefined changes", () => {
   expect(resolvePollingRecordChanges({})).toEqual([]);
   expect(resolvePollingRecordChanges(undefined)).toEqual([]);
 });
+
 test("resolvePollingRecordChanges tolerates an absent array", () => {
   const created: GitlabRecord = at(1, 1, true);
   const updated: GitlabRecord = at(2, 2);
@@ -148,6 +160,7 @@ test("resolvePollingRecordChanges tolerates an absent array", () => {
     { changeType: "updated", record: updated },
   ]);
 });
+
 const fakeServer = (
   initial: GitlabRecord[],
   afterRequest?: (count: number) => void,
@@ -158,11 +171,7 @@ const fakeServer = (
     get: vi.fn(
       async (
         _path: string,
-        {
-          params,
-        }: {
-          params: Record<string, unknown>;
-        },
+        { params }: { params: Record<string, unknown> },
       ) => {
         requests.push(params);
         const since = new Date(String(params.updated_after)).getTime();
@@ -186,6 +195,7 @@ const fakeServer = (
   };
   return { client: client as never, requests, edit };
 };
+
 describe("bounded fetch", () => {
   const fetchIds = async (
     server: ReturnType<typeof fakeServer>,
@@ -204,16 +214,19 @@ describe("bounded fetch", () => {
         pageSize,
       )
     ).map((r) => r.id);
+
   test("records already delivered at the cursor do not count toward the bound", async () => {
     const server = fakeServer([at(1, 0), at(2, 10), at(3, 20), at(4, 30)]);
     expect(await fetchIds(server, ["1"], 1, 2)).toEqual([1, 2, 3]);
     expect(server.requests).toHaveLength(2);
   });
+
   test("stops paging once maxRecords is reached and a newer record arrives", async () => {
     const server = fakeServer([at(1, 10), at(2, 20), at(3, 30), at(4, 40)]);
     expect(await fetchIds(server, [], 2, 3)).toEqual([1, 2, 3]);
     expect(server.requests).toHaveLength(1);
   });
+
   test("keeps paging through the tie group at the bound, then defers it whole", async () => {
     const server = fakeServer([
       at(1, 10),
@@ -240,12 +253,14 @@ describe("bounded fetch", () => {
       new Date(T0.getTime() + 10000).toISOString(),
     );
   });
+
   test("an unbounded poll walks every page", async () => {
     const server = fakeServer([at(1, 10), at(2, 20), at(3, 30)]);
     expect(await fetchIds(server, [], Number.POSITIVE_INFINITY, 2)).toEqual([
       1, 2, 3,
     ]);
   });
+
   test("pages by timestamp: each request's updated_after is the newest updated_at fetched", async () => {
     const server = fakeServer([at(1, 10), at(2, 20), at(3, 30)]);
     await fetchIds(server, [], Number.POSITIVE_INFINITY, 2);
@@ -260,6 +275,7 @@ describe("bounded fetch", () => {
       per_page: 2,
     });
   });
+
   test("a record edited between pages does not make the walk skip another", async () => {
     const server = fakeServer(
       [at(1, 10), at(2, 20), at(3, 30), at(4, 40), at(5, 50), at(6, 60)],
@@ -283,6 +299,7 @@ describe("bounded fetch", () => {
       at(2, 100).updated_at,
     );
   });
+
   test("walks a timestamp shared by more records than a page by offset, then moves on", async () => {
     const server = fakeServer([
       at(1, 20),
@@ -297,6 +314,7 @@ describe("bounded fetch", () => {
     ]);
     expect(server.requests.map((p) => p.page)).toEqual([1, 1, 2, 3, 1]);
   });
+
   test("stops when an offset page within one timestamp adds nothing new", async () => {
     const stuck = {
       get: vi.fn(async () => ({ data: [at(1, 20), at(2, 20)], headers: {} })),
@@ -314,6 +332,7 @@ describe("bounded fetch", () => {
     expect(stuck.get).toHaveBeenCalledTimes(3);
   });
 });
+
 test("one timestamp larger than the bound is split across runs with the cursor held and no duplicates", () => {
   const records = [1, 2, 3, 4, 5].map((id) => at(id, 10));
   let since = T0;

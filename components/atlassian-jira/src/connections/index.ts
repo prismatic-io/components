@@ -4,6 +4,7 @@ import {
   getAtlassianOAuth2AuthorizationCodeConnection,
   getAtlassianOAuth2ClientCredentialsConnection,
 } from "atlassian-utils";
+
 const versionInput = {
   label: "Version",
   placeholder: "Select API version",
@@ -17,6 +18,7 @@ const versionInput = {
   comments: "Select the Jira API version to use for requests.",
   default: "3",
 } as const;
+
 export const jiraBasicConnection = getAtlassianBasicAuthConnection({
   key: "basic",
   display: {
@@ -31,6 +33,7 @@ export const jiraBasicConnection = getAtlassianBasicAuthConnection({
   },
   additionalInputs: { version: versionInput },
 });
+
 export const jiraOAuthConnection =
   getAtlassianOAuth2AuthorizationCodeConnection({
     key: "oauth2",
@@ -53,6 +56,7 @@ export const jiraOAuthConnection =
     },
     additionalInputs: { version: versionInput },
   });
+
 export const jiraOAuthClientCredentialsConnection =
   getAtlassianOAuth2ClientCredentialsConnection({
     key: "jiraOauth2ClientCredentials",
@@ -75,11 +79,13 @@ export const jiraOAuthClientCredentialsConnection =
     },
     additionalInputs: { version: versionInput },
   });
+
 export const CONNECTION_KEYS: AtlassianConnectionKeys = {
   oauth2: jiraOAuthConnection.key,
   basic: jiraBasicConnection.key,
   clientCredentials: jiraOAuthClientCredentialsConnection.key,
 };
+
 export default [
   jiraOAuthConnection,
   jiraOAuthClientCredentialsConnection,

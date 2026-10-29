@@ -11,8 +11,10 @@ import type {
   OdooRecord,
   PollPageQuery,
 } from "./types";
+
 export const isLegacyConnection = (connection: Connection): boolean =>
   connection.key === LEGACY_CONNECTION_KEY;
+
 export const createOdooAwaitClient = async (
   connection: Connection,
 ): Promise<Odoo> => {
@@ -40,6 +42,7 @@ export const createOdooAwaitClient = async (
   }
   return client;
 };
+
 export const paginateSearchLegacy = async <T>({
   client,
   model,
@@ -73,6 +76,7 @@ export const paginateSearchLegacy = async <T>({
   }
   return records;
 };
+
 export const fetchOdooPageLegacy =
   (client: Odoo, model: string): FetchPollPage =>
   async ({ domain, order, limit }: PollPageQuery): Promise<OdooRecord[]> =>

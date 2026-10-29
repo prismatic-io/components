@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listProductAttributesExamplePayload } from "../../examplePayloads";
 import { listProductAttributesInputs } from "../../inputs";
 import { paginateResults, removeUndefinedValuesFromObject } from "../../utils";
+
 export const listProductAttributes = action({
   display: {
     label: "List Product Attributes",

@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { listObjectsExamplePayload } from "../../examplePayloads";
 import { listObjectsInputs } from "../../inputs";
 import { listObjectsOutputSchema } from "../../outputSchemas";
+
 export const listObjects = action({
   display: {
     label: "List Objects",
@@ -20,6 +21,7 @@ export const listObjects = action({
       logger: context.logger,
       debug: context.debug.enabled,
     });
+
     const listObjectsV2Params = {
       Bucket: params.bucket,
       Prefix: params.prefix,

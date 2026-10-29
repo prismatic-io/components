@@ -12,6 +12,7 @@ import {
   splitAssetsByChangeType,
   toQualysAssetTimestamp,
 } from "../util";
+
 export const changedAssets = pollingTrigger({
   display: {
     label: "Changed Assets",
@@ -32,13 +33,16 @@ export const changedAssets = pollingTrigger({
     const state = context.polling.getState() as PollingState | undefined;
     const now = new Date().toISOString();
     const lastPolledAt = state?.lastPolledAt || now;
+
     const assetLastUpdated = toQualysAssetTimestamp(lastPolledAt);
+
     const { assets } = await fetchGatewayAssets({
       connection: params.connection,
       debug: context.debug.enabled,
       fetchAll: true,
       extraParams: { assetLastUpdated },
     });
+
     const { createdRecords, updatedRecords } = splitAssetsByChangeType(
       assets,
       assetLastUpdated,
@@ -47,7 +51,9 @@ export const changedAssets = pollingTrigger({
         showUpdatedRecords: params.showUpdatedRecords,
       },
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

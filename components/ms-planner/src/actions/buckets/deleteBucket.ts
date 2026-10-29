@@ -5,6 +5,7 @@ import { deleteBucketExamplePayload } from "../../examplePayloads";
 import { deleteWithEtag } from "../../utils";
 import { deleteBucketInputs } from "../../inputs";
 import { deleteBucketOutputSchema } from "../../outputSchemas";
+
 export const deleteBucket = action({
   display: {
     label: "Delete Bucket",
@@ -27,8 +28,7 @@ export const deleteBucket = action({
       },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteBucketExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteBucketExamplePayload,
   examplePayload: deleteBucketExamplePayload,
 });

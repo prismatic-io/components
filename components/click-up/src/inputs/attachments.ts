@@ -5,6 +5,7 @@ import {
   getTaskId,
   getTeamId,
 } from "./common";
+
 const getFile = (required: boolean) =>
   input({
     label: "File",
@@ -14,6 +15,7 @@ const getFile = (required: boolean) =>
     required,
     clean: util.types.toBufferDataPayload,
   });
+
 const getFileName = (required: boolean) =>
   input({
     label: "File Name",
@@ -24,6 +26,7 @@ const getFileName = (required: boolean) =>
     example: "my-image.png",
     clean: util.types.toString,
   });
+
 export const createTaskAttachmentInputs = {
   connection: connectionInput,
   taskId: getTaskId(true, "The unique identifier for the task."),

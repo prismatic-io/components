@@ -6,6 +6,7 @@ import { fetchLists } from "../../util";
 import { listListsExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 import type { FieldsList } from "../../types";
+
 export const listLists = action({
   display: {
     label: "List Lists",

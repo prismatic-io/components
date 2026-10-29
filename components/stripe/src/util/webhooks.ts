@@ -4,6 +4,7 @@ import { createStripeClient } from "../client";
 import type { CreatedWebhook } from "../types";
 import { paginateStripeRecords } from "./pagination";
 import { equalUnorderedArrays } from "./transform";
+
 export const createWebhookFn = async (
   client: Stripe,
   webhookUrl: string,
@@ -17,6 +18,7 @@ export const createWebhookFn = async (
   });
   return data;
 };
+
 export const updateWebhookEventsFn = async (
   client: Stripe,
   webhookId: string,
@@ -28,10 +30,12 @@ export const updateWebhookEventsFn = async (
   });
   return data;
 };
+
 export const deleteWebhookFn = async (client: Stripe, webhookId: string) => {
   const data = await client.webhookEndpoints.del(webhookId);
   return data;
 };
+
 export const deleteWebhookEventsFn = async (
   client: Stripe,
   webhookIds: string[],
@@ -41,6 +45,7 @@ export const deleteWebhookEventsFn = async (
   );
   return data;
 };
+
 export const listWebhookEventsFn = async (
   client: Stripe.WebhookEndpointsResource,
   fetchAll: boolean,
@@ -53,6 +58,7 @@ export const listWebhookEventsFn = async (
   )) as Stripe.ApiList<Stripe.WebhookEndpoint>;
   return data;
 };
+
 export const onInstanceDeploy = async (
   context: ActionContext,
   { connection, webhookEvents },
@@ -67,10 +73,12 @@ export const onInstanceDeploy = async (
     string,
     unknown
   >;
+
   const existingWebhook = await findWebhookForUrl(
     client.webhookEndpoints,
     webhookUrl,
   );
+
   if (!existingWebhook) {
     const createdWebhook = await createWebhookFn(
       client,
@@ -83,9 +91,11 @@ export const onInstanceDeploy = async (
     };
     return;
   }
+
   if (equalUnorderedArrays(existingWebhook.enabled_events, webhookEvents)) {
     return;
   }
+
   const updatedWebhook = await updateWebhookEventsFn(
     client,
     existingWebhook.id,
@@ -101,8 +111,10 @@ export const onInstanceDeploy = async (
       secret: updatedWebhook.secret ?? previousSecret,
     },
   };
+
   return;
 };
+
 export const onInstanceDelete = async (
   context: ActionContext,
   { connection },
@@ -117,15 +129,19 @@ export const onInstanceDelete = async (
     .filter(({ url }) => url === webhookUrl)
     .map(({ id }) => deleteWebhookFn(client, id));
   await Promise.all(webhookToDelete);
+
   const previousStore = context.crossFlowState[
     context.flow.name
   ] as CreatedWebhook;
+
   context.crossFlowState[context.flow.name] = {
     ...previousStore,
     webhook: undefined,
   };
+
   return;
 };
+
 export const validateTrigger = (
   client: Stripe,
   body: string,
@@ -139,6 +155,7 @@ export const validateTrigger = (
     throw new Error(`Webhook Error ${(err as Error).message}`);
   }
 };
+
 export const getStripeHeaderSignature = (
   headers: Record<string, string>,
 ): string => {
@@ -149,12 +166,15 @@ export const getStripeHeaderSignature = (
     }
     return stripeSignature;
   }
+
   throw new Error("Missing headers");
 };
+
 export const findWebhookForUrl = async (
   client: Stripe.WebhookEndpointsResource,
   webhookUrl: string,
 ) => {
   const { data } = await listWebhookEventsFn(client, true, {});
+
   return data.find((webhook) => webhook.url === webhookUrl);
 };

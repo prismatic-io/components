@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
 import { optionalUpdateBoolean } from "../general";
 import sharedInputs from "./sharedInputs";
+
 const customerId = input({
   label: "Customer ID",
   comments: "The ID of the customer contact to update",
@@ -12,11 +13,13 @@ const customerId = input({
   dataSource: "selectCustomer",
   clean: cleanStringInput,
 });
+
 const isToDelete = input({
   ...optionalUpdateBoolean,
   label: sharedInputs.isToDelete.label,
   comments: sharedInputs.isToDelete.comments,
 });
+
 export default {
   customerId,
   ...sharedInputs,

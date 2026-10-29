@@ -13,6 +13,7 @@ export const listManagedDevicesExamplePayload = {
     ],
   },
 };
+
 export const listCompanyManagedDevicesExamplePayload = {
   data: {
     currentPaginationToken: "string",
@@ -28,6 +29,7 @@ export const listCompanyManagedDevicesExamplePayload = {
     ],
   },
 };
+
 export const getManagedDeviceExamplePayload = {
   data: {
     teamviewerPolicyId: "00000000-0000-0000-0000-000000000000",

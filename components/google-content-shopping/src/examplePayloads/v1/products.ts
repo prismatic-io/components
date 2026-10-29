@@ -1,6 +1,4 @@
-export const getProductExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+export const getProductExamplePayload: { data: Record<string, unknown> } = {
   data: {
     name: "accounts/123456789/products/en~US~1111111111",
     offerId: "1111111111",
@@ -37,6 +35,7 @@ export const getProductExamplePayload: {
     versionNumber: "1",
   },
 };
+
 const productInputExample = {
   name: "accounts/123456789/productInputs/en~US~1111111111",
   product: "accounts/123456789/products/en~US~1111111111",
@@ -57,14 +56,12 @@ const productInputExample = {
   },
   versionNumber: "1",
 };
-export const createProductExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const createProductExamplePayload: { data: Record<string, unknown> } = {
   data: productInputExample,
 };
-export const updateProductExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const updateProductExamplePayload: { data: Record<string, unknown> } = {
   data: {
     ...productInputExample,
     attributes: {
@@ -77,14 +74,12 @@ export const updateProductExamplePayload: {
     },
   },
 };
-export const deleteProductExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const deleteProductExamplePayload: { data: Record<string, unknown> } = {
   data: {},
 };
-export const listProductsExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const listProductsExamplePayload: { data: Record<string, unknown> } = {
   data: {
     products: [
       getProductExamplePayload.data,
@@ -108,9 +103,8 @@ export const listProductsExamplePayload: {
     nextPageToken: "CgwI4MSB3QYQ",
   },
 };
-export const batchProductExamplePayload: {
-  data: Record<string, unknown>;
-} = {
+
+export const batchProductExamplePayload: { data: Record<string, unknown> } = {
   data: {
     results: [
       {

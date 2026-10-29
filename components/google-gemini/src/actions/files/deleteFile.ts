@@ -3,6 +3,7 @@ import { createGeminiClient } from "../../client";
 import { DELETE_SUCCESS_MESSAGE } from "../../constants";
 import { deleteFileExamplePayload as examplePayload } from "../../examplePayloads/files";
 import { deleteFileInputs } from "../../inputs/files";
+
 export const deleteFile = action({
   display: {
     label: "Delete File",

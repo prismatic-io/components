@@ -13,6 +13,7 @@ import {
   page,
   where,
 } from "./common";
+
 export const invoiceType = input({
   label: "Invoice Type",
   type: "string",
@@ -25,6 +26,7 @@ export const invoiceType = input({
   ],
   clean: util.types.toString,
 });
+
 export const date = input({
   label: "Date",
   type: "string",
@@ -35,6 +37,7 @@ export const date = input({
   example: "2024-10-01",
   clean: cleanStringInput,
 });
+
 export const dueDate = input({
   label: "Due Date",
   type: "string",
@@ -44,6 +47,7 @@ export const dueDate = input({
   example: "2024-10-01",
   clean: cleanStringInput,
 });
+
 export const dueDateString = input({
   label: "Due Date String",
   type: "string",
@@ -54,6 +58,7 @@ export const dueDateString = input({
   example: "2021-05-27T00:00:00",
   clean: cleanStringInput,
 });
+
 export const lineAmountTypes = input({
   label: "Line Amount Type",
   type: "string",
@@ -68,6 +73,7 @@ export const lineAmountTypes = input({
   ],
   clean: util.types.toString,
 });
+
 export const lineItems = input({
   label: "Line Items",
   type: "code",
@@ -97,6 +103,7 @@ export const lineItems = input({
   ),
   clean: cleanObject,
 });
+
 export const invoiceNumber = input({
   label: "Invoice Number",
   type: "string",
@@ -106,6 +113,7 @@ export const invoiceNumber = input({
   example: "INV01",
   clean: cleanStringInput,
 });
+
 export const invoiceStatus = input({
   label: "Invoice Status",
   type: "string",
@@ -120,6 +128,7 @@ export const invoiceStatus = input({
   ],
   clean: cleanStringInput,
 });
+
 export const reference = input({
   label: "Reference",
   type: "string",
@@ -130,6 +139,7 @@ export const reference = input({
   example: "REF01",
   clean: cleanStringInput,
 });
+
 export const url = input({
   label: "URL",
   type: "string",
@@ -139,6 +149,7 @@ export const url = input({
   example: "https://example.com",
   clean: cleanStringInput,
 });
+
 export const currencyCode = input({
   label: "Currency Code",
   type: "string",
@@ -148,6 +159,7 @@ export const currencyCode = input({
   example: "USD",
   clean: cleanStringInput,
 });
+
 export const sentToContact = input({
   label: "Sent To Contact",
   type: "boolean",
@@ -156,6 +168,7 @@ export const sentToContact = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const invoiceAdditionalFields = input({
   ...additionalFields,
   example: JSON.stringify(createInvoiceAdditionalFields, null, 2),
@@ -163,11 +176,13 @@ const invoiceAdditionalFields = input({
     additionalFields.comments +
     " See [Xero API documentation](https://developer.xero.com/documentation/api/accounting/invoices#post-invoices) for additional fields.",
 });
+
 export const addNoteToInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceId,
   notes,
 };
+
 export const createInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceType,
@@ -186,18 +201,22 @@ export const createInvoiceInputs = {
   sentToContact,
   additionalFields: invoiceAdditionalFields,
 };
+
 export const deleteInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceId,
 };
+
 export const getInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceId,
 };
+
 export const getInvoiceHistoryInputs = {
   xeroConnection: connectionInput,
   contactId,
 };
+
 export const listInvoicesInputs = {
   xeroConnection: connectionInput,
   fetchAll,
@@ -205,10 +224,12 @@ export const listInvoicesInputs = {
   modifiedAfter,
   where,
 };
+
 export const sendInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceId,
 };
+
 export const voidInvoiceInputs = {
   xeroConnection: connectionInput,
   invoiceId,

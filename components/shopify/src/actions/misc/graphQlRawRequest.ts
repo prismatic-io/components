@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../client";
 import { graphQlRawRequestInputs as inputs } from "../../inputs";
+
 export const graphQlRawRequest = action({
   display: {
     label: "Raw Request",

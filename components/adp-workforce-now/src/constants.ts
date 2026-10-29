@@ -20,6 +20,7 @@ export const TOKEN_ENDPOINTS = [
     value: "https://uat-accounts.adp.com/auth/oauth/v2/token",
   },
 ];
+
 export const CUSTOM_FIELD_TYPES = [
   {
     label: "Amount",

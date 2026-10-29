@@ -1,12 +1,10 @@
 import type { PollingState } from "../types";
+
 export const resolvePollWindow = (
   state: PollingState | undefined,
   lookBackDate: string | undefined,
   now: string,
-): {
-  lastPolledAt: string;
-  isBackfill: boolean;
-} => {
+): { lastPolledAt: string; isBackfill: boolean } => {
   if (state?.lastPolledAt) {
     return { lastPolledAt: state.lastPolledAt, isBackfill: false };
   }

@@ -8,6 +8,7 @@ import {
   responseId,
 } from "../../inputs";
 import { getFileResponse } from "../../examplePayloads/responses";
+
 export const getFileFromResponse = action({
   display: {
     label: "Get File from Response",
@@ -26,6 +27,7 @@ export const getFileFromResponse = action({
     { connection, formId, fieldId, filename, responseId },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get(
       `/forms/${formId}/responses/${responseId}/fields/${fieldId}/files/${filename}`,
     );

@@ -10,6 +10,7 @@ import {
   getProductVariantsIncludeFields,
   storeHash,
 } from "../../inputs";
+
 export const getProductVariantAction = action({
   display: {
     label: "Get Product Variant",
@@ -32,10 +33,12 @@ export const getProductVariantAction = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${product_id}/variants/${variant_id}`;
+
     const params = {
       include_fields,
       exclude_fields,
     };
+
     try {
       const response = await client.get(endpoint, { params });
       return {
@@ -47,6 +50,7 @@ export const getProductVariantAction = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash: storeHash,

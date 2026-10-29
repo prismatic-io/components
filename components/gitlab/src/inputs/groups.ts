@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { toPathOrId } from "../utils";
 import { connectionInput, fetchAll, pagination, search } from "./common";
+
 const group = input({
   label: "Group",
   placeholder: "Enter group ID or path",
@@ -12,6 +13,7 @@ const group = input({
   dataSource: "selectGroup",
   clean: toPathOrId,
 });
+
 export const listGroupsInputs = {
   connection: connectionInput,
   fetchAll: {
@@ -22,4 +24,5 @@ export const listGroupsInputs = {
   pagination,
   search,
 };
+
 export const getGroupInputs = { connection: connectionInput, group };

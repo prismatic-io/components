@@ -6,7 +6,9 @@ import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage } from "../util";
 import { guidOf, resultData, resultList } from "./resultHelpers";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
@@ -14,6 +16,7 @@ const testConnection = createConnection(arenaUsernamePassword, {
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 const TEST_TRAINING_GUID = process.env.TEST_TRAINING_GUID ?? "";
 const TEST_TRAINING_USER_GUID = process.env.TEST_TRAINING_USER_GUID ?? "";
 const TEST_TRAINING_ITEM_GUID = process.env.TEST_TRAINING_ITEM_GUID ?? "";
@@ -27,8 +30,10 @@ const TEST_EXTRACT_RUN_GUID = process.env.TEST_EXTRACT_RUN_GUID ?? "";
 const TEST_EXTRACT_RUN_FILE_GUID = process.env.TEST_EXTRACT_RUN_FILE_GUID ?? "";
 const TEST_IMPORT_GUID = process.env.TEST_IMPORT_GUID ?? "";
 const TEST_IMPORT_RUN_GUID = process.env.TEST_IMPORT_RUN_GUID ?? "";
+
 describe("Training Plan domain", () => {
   let trainingGuid: string = TEST_TRAINING_GUID;
+
   beforeAll(async () => {
     if (trainingGuid) return;
     try {
@@ -42,6 +47,7 @@ describe("Training Plan domain", () => {
       }
     } catch {}
   }, 30000);
+
   describe("Action: listTrainingPlans", () => {
     test("returns a result set without any filters", async () => {
       const result = await harness.action("listTrainingPlans", {
@@ -51,6 +57,7 @@ describe("Training Plan domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by status OPEN without error", async () => {
       const result = await harness.action("listTrainingPlans", {
         connection: testConnection,
@@ -60,6 +67,7 @@ describe("Training Plan domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by name with a non-matching value returns empty results without error", async () => {
       const result = await harness.action("listTrainingPlans", {
         connection: testConnection,
@@ -69,6 +77,7 @@ describe("Training Plan domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("respects offset and limit parameters", async () => {
       const result = await harness.action("listTrainingPlans", {
         connection: testConnection,
@@ -79,6 +88,7 @@ describe("Training Plan domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: updateTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -89,6 +99,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("updates description on a discovered training plan", async () => {
       if (!trainingGuid) {
         console.warn(
@@ -119,6 +130,7 @@ describe("Training Plan domain", () => {
       }
     }, 30000);
   });
+
   describe("Action: listTrainingPlanUsers", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -128,6 +140,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns users for a discovered training plan", async () => {
       if (!trainingGuid) {
         console.warn(
@@ -143,6 +156,7 @@ describe("Training Plan domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: addUserToTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -153,6 +167,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("adds a user and removes them in the same test", async () => {
       if (!trainingGuid || !TEST_TRAINING_USER_GUID) {
         console.warn(
@@ -169,6 +184,7 @@ describe("Training Plan domain", () => {
       expect(addResult!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: listTrainingPlanQuality", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -178,6 +194,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns quality processes for a discovered training plan", async () => {
       if (!trainingGuid) {
         console.warn(
@@ -193,6 +210,7 @@ describe("Training Plan domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: addQualityToTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -203,6 +221,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("adds a quality process then removes it", async () => {
       if (!trainingGuid || !TEST_TRAINING_QUALITY_GUID) {
         console.warn(
@@ -217,6 +236,7 @@ describe("Training Plan domain", () => {
       });
       expect(addResult).toBeDefined();
       expect(addResult!.data).toBeDefined();
+
       const referenceGuid = resultData(addResult).guid;
       if (referenceGuid) {
         const removeResult = await harness.action(
@@ -231,6 +251,7 @@ describe("Training Plan domain", () => {
       }
     }, 30000);
   });
+
   describe("Action: removeQualityFromTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -242,6 +263,7 @@ describe("Training Plan domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: listTrainingPlanItems", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -251,6 +273,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns items for a discovered training plan", async () => {
       if (!trainingGuid) {
         console.warn(
@@ -266,6 +289,7 @@ describe("Training Plan domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: addItemToTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -276,6 +300,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("adds an item then removes it via removeItemFromTrainingPlan", async () => {
       if (!trainingGuid || !TEST_TRAINING_ITEM_GUID) {
         console.warn(
@@ -290,6 +315,7 @@ describe("Training Plan domain", () => {
       });
       expect(addResult).toBeDefined();
       expect(addResult!.data).toBeDefined();
+
       const trainingItemAssociationGuid = resultData(addResult).guid;
       if (trainingItemAssociationGuid) {
         const removeResult = await harness.action(
@@ -304,6 +330,7 @@ describe("Training Plan domain", () => {
       }
     }, 30000);
   });
+
   describe("Action: removeItemFromTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -315,6 +342,7 @@ describe("Training Plan domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: changeTrainingPlanStatus", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -326,6 +354,7 @@ describe("Training Plan domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: listTrainingPlanRecords", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -335,6 +364,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns records for a discovered training plan", async () => {
       if (!trainingGuid) {
         console.warn(
@@ -350,6 +380,7 @@ describe("Training Plan domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: listTrainingPlanFiles", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -359,6 +390,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns files for a discovered training plan", async () => {
       if (!trainingGuid) {
         console.warn(
@@ -374,6 +406,7 @@ describe("Training Plan domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: addFileToTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -384,6 +417,7 @@ describe("Training Plan domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("adds a file then removes it via removeFileFromTrainingPlan", async () => {
       if (!trainingGuid || !TEST_TRAINING_FILE_GUID) {
         console.warn(
@@ -399,6 +433,7 @@ describe("Training Plan domain", () => {
       });
       expect(addResult).toBeDefined();
       expect(addResult!.data).toBeDefined();
+
       const trainingFileAssociationGuid = resultData(addResult).guid;
       if (trainingFileAssociationGuid) {
         const removeResult = await harness.action(
@@ -413,6 +448,7 @@ describe("Training Plan domain", () => {
       }
     }, 30000);
   });
+
   describe("Action: removeFileFromTrainingPlan", () => {
     test("throws on an invalid training GUID", async () => {
       await expect(
@@ -424,6 +460,7 @@ describe("Training Plan domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: listTrainingManagers", () => {
     test("returns the list of training managers", async () => {
       const result = await harness.action("listTrainingManagers", {
@@ -434,9 +471,11 @@ describe("Training Plan domain", () => {
     }, 30000);
   });
 });
+
 describe("Export domain", () => {
   let exportGuid: string = TEST_EXPORT_GUID;
   let exportRunGuid: string = TEST_EXPORT_RUN_GUID;
+
   beforeAll(async () => {
     try {
       const listResult = await harness.action("listExports", {
@@ -448,6 +487,7 @@ describe("Export domain", () => {
         exportGuid = guidOf(exports[0]);
       }
     } catch {}
+
     if (exportGuid && !exportRunGuid) {
       try {
         const runsResult = await harness.action("listExportRuns", {
@@ -462,6 +502,7 @@ describe("Export domain", () => {
       } catch {}
     }
   }, 30000);
+
   describe("Action: listExports", () => {
     test("returns the full list of export definitions", async () => {
       const result = await harness.action("listExports", {
@@ -470,6 +511,7 @@ describe("Export domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by name without error", async () => {
       const result = await harness.action("listExports", {
         connection: testConnection,
@@ -478,6 +520,7 @@ describe("Export domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by description without error", async () => {
       const result = await harness.action("listExports", {
         connection: testConnection,
@@ -486,6 +529,7 @@ describe("Export domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("respects offset and limit parameters", async () => {
       const result = await harness.action("listExports", {
         connection: testConnection,
@@ -496,6 +540,7 @@ describe("Export domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: createExport", () => {
     test("throws when provided with an empty export definition", async () => {
       await expect(
@@ -506,6 +551,7 @@ describe("Export domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: getExport", () => {
     test("throws on an invalid export GUID", async () => {
       await expect(
@@ -515,6 +561,7 @@ describe("Export domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns details for a discovered export definition", async () => {
       if (!exportGuid) {
         console.warn("No export GUID available; skipping getExport happy path");
@@ -529,6 +576,7 @@ describe("Export domain", () => {
       expect(resultData(result).guid).toBe(exportGuid);
     }, 30000);
   });
+
   describe("Action: listExportRuns", () => {
     test("throws on an invalid export GUID", async () => {
       await expect(
@@ -538,6 +586,7 @@ describe("Export domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns runs for a discovered export definition", async () => {
       if (!exportGuid) {
         console.warn(
@@ -552,6 +601,7 @@ describe("Export domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by status COMPLETE without error", async () => {
       if (!exportGuid) {
         console.warn(
@@ -568,6 +618,7 @@ describe("Export domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: runExport", () => {
     test("throws on an invalid export GUID", async () => {
       await expect(
@@ -578,6 +629,7 @@ describe("Export domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: getExportRun", () => {
     test("throws on an invalid export GUID", async () => {
       await expect(
@@ -588,6 +640,7 @@ describe("Export domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns details for a discovered export run", async () => {
       if (!exportGuid || !exportRunGuid) {
         console.warn(
@@ -604,6 +657,7 @@ describe("Export domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: getLatestCompletedExportRun", () => {
     test("throws on an invalid export GUID", async () => {
       await expect(
@@ -613,6 +667,7 @@ describe("Export domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns the latest completed run for a discovered export", async () => {
       if (!exportGuid) {
         console.warn(
@@ -634,6 +689,7 @@ describe("Export domain", () => {
       }
     }, 30000);
   });
+
   describe("Action: downloadExportRunFileContent", () => {
     test("throws on invalid export, run, and file GUIDs", async () => {
       await expect(
@@ -645,6 +701,7 @@ describe("Export domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("throws with a valid export GUID but invalid run and file GUIDs", async () => {
       if (!exportGuid) {
         console.warn(
@@ -661,6 +718,7 @@ describe("Export domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("action is registered and available in the harness", async () => {
       const actionKey = "downloadExportRunFileContent";
       expect(typeof harness.action).toBe("function");
@@ -677,9 +735,11 @@ describe("Export domain", () => {
     }, 30000);
   });
 });
+
 describe("Extract domain", () => {
   let extractGuid: string = TEST_EXTRACT_GUID;
   let extractRunGuid: string = TEST_EXTRACT_RUN_GUID;
+
   beforeAll(async () => {
     try {
       const listResult = await harness.action("listExtracts", {
@@ -691,6 +751,7 @@ describe("Extract domain", () => {
         extractGuid = guidOf(extracts[0]);
       }
     } catch {}
+
     if (extractGuid && !extractRunGuid) {
       try {
         const runsResult = await harness.action("listExtractRuns", {
@@ -704,6 +765,7 @@ describe("Extract domain", () => {
       } catch {}
     }
   }, 30000);
+
   describe("Action: listExtracts", () => {
     test("returns the full list of extract definitions", async () => {
       const result = await harness.action("listExtracts", {
@@ -712,6 +774,7 @@ describe("Extract domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by name without error", async () => {
       const result = await harness.action("listExtracts", {
         connection: testConnection,
@@ -720,6 +783,7 @@ describe("Extract domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters enabled extracts without error", async () => {
       const result = await harness.action("listExtracts", {
         connection: testConnection,
@@ -728,6 +792,7 @@ describe("Extract domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("respects offset and limit parameters", async () => {
       const result = await harness.action("listExtracts", {
         connection: testConnection,
@@ -738,6 +803,7 @@ describe("Extract domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: getExtract", () => {
     test("throws on an invalid extract GUID", async () => {
       await expect(
@@ -747,6 +813,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns details for a discovered extract definition", async () => {
       if (!extractGuid) {
         console.warn(
@@ -763,6 +830,7 @@ describe("Extract domain", () => {
       expect(resultData(result).guid).toBe(extractGuid);
     }, 30000);
   });
+
   describe("Action: listExtractRuns", () => {
     test("throws on an invalid extract GUID", async () => {
       await expect(
@@ -772,6 +840,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns runs for a discovered extract definition", async () => {
       if (!extractGuid) {
         console.warn(
@@ -787,6 +856,7 @@ describe("Extract domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: runExtract", () => {
     test("throws on an invalid extract GUID", async () => {
       await expect(
@@ -797,6 +867,7 @@ describe("Extract domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: getExtractRun", () => {
     test("throws on an invalid extract GUID", async () => {
       await expect(
@@ -807,6 +878,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns details for a discovered extract run", async () => {
       if (!extractGuid || !extractRunGuid) {
         console.warn(
@@ -823,6 +895,7 @@ describe("Extract domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: listExtractRunFiles", () => {
     test("throws on an invalid extract GUID", async () => {
       await expect(
@@ -833,6 +906,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns file metadata for a discovered extract run", async () => {
       if (!extractGuid || !extractRunGuid) {
         console.warn(
@@ -849,6 +923,7 @@ describe("Extract domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: getLatestCompletedExtractRun", () => {
     test("throws on an invalid extract GUID", async () => {
       await expect(
@@ -858,6 +933,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns the latest completed run for a discovered extract", async () => {
       if (!extractGuid) {
         console.warn(
@@ -879,6 +955,7 @@ describe("Extract domain", () => {
       }
     }, 30000);
   });
+
   describe("Action: downloadExtractRunFileContent", () => {
     test("throws on fully invalid GUIDs", async () => {
       await expect(
@@ -890,6 +967,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("throws with valid extract GUID but invalid run and file GUIDs", async () => {
       if (!extractGuid) {
         console.warn(
@@ -906,6 +984,7 @@ describe("Extract domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("action is registered and callable with real GUIDs when available", async () => {
       if (!extractGuid || !extractRunGuid || !TEST_EXTRACT_RUN_FILE_GUID) {
         console.warn(
@@ -926,9 +1005,11 @@ describe("Extract domain", () => {
     }, 30000);
   });
 });
+
 describe("Import domain", () => {
   let importGuid: string = TEST_IMPORT_GUID;
   let importRunGuid: string = TEST_IMPORT_RUN_GUID;
+
   beforeAll(async () => {
     try {
       const listResult = await harness.action("listImports", {
@@ -940,6 +1021,7 @@ describe("Import domain", () => {
         importGuid = guidOf(imports[0]);
       }
     } catch {}
+
     if (importGuid && !importRunGuid) {
       try {
         const runsResult = await harness.action("listImportRuns", {
@@ -954,6 +1036,7 @@ describe("Import domain", () => {
       } catch {}
     }
   }, 30000);
+
   describe("Action: listImports", () => {
     test("returns the full list of import definitions", async () => {
       const result = await harness.action("listImports", {
@@ -962,6 +1045,7 @@ describe("Import domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by resource type without error", async () => {
       const result = await harness.action("listImports", {
         connection: testConnection,
@@ -969,6 +1053,7 @@ describe("Import domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by mode without error", async () => {
       const result = await harness.action("listImports", {
         connection: testConnection,
@@ -977,6 +1062,7 @@ describe("Import domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by name with non-matching value returns empty results", async () => {
       const result = await harness.action("listImports", {
         connection: testConnection,
@@ -985,6 +1071,7 @@ describe("Import domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("respects offset and limit parameters", async () => {
       const result = await harness.action("listImports", {
         connection: testConnection,
@@ -995,6 +1082,7 @@ describe("Import domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: createImport", () => {
     test("throws when provided with an empty import definition", async () => {
       await expect(
@@ -1005,6 +1093,7 @@ describe("Import domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: getImport", () => {
     test("throws on an invalid import GUID", async () => {
       await expect(
@@ -1014,6 +1103,7 @@ describe("Import domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns details for a discovered import definition", async () => {
       if (!importGuid) {
         console.warn("No import GUID available; skipping getImport happy path");
@@ -1028,6 +1118,7 @@ describe("Import domain", () => {
       expect(resultData(result).guid).toBe(importGuid);
     }, 30000);
   });
+
   describe("Action: updateImport", () => {
     test("throws on an invalid import GUID", async () => {
       await expect(
@@ -1039,6 +1130,7 @@ describe("Import domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: listImportRuns", () => {
     test("throws on an invalid import GUID", async () => {
       await expect(
@@ -1048,6 +1140,7 @@ describe("Import domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns runs for a discovered import definition", async () => {
       if (!importGuid) {
         console.warn(
@@ -1062,6 +1155,7 @@ describe("Import domain", () => {
       expect(result).toBeDefined();
       expect(result!.data).toBeDefined();
     }, 30000);
+
     test("filters by status without error", async () => {
       if (!importGuid) {
         console.warn(
@@ -1078,6 +1172,7 @@ describe("Import domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: getImportRun", () => {
     test("throws on an invalid import GUID", async () => {
       await expect(
@@ -1088,6 +1183,7 @@ describe("Import domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("returns details for a discovered import run", async () => {
       if (!importGuid || !importRunGuid) {
         console.warn(
@@ -1104,6 +1200,7 @@ describe("Import domain", () => {
       expect(result!.data).toBeDefined();
     }, 30000);
   });
+
   describe("Action: rerunImport", () => {
     test("throws on an invalid import GUID", async () => {
       await expect(
@@ -1115,6 +1212,7 @@ describe("Import domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: forceCompleteImport", () => {
     test("throws on an invalid import GUID", async () => {
       await expect(
@@ -1126,6 +1224,7 @@ describe("Import domain", () => {
       ).rejects.toThrow();
     }, 30000);
   });
+
   describe("Action: getImportRunSubmitContent", () => {
     test("throws on invalid import and run GUIDs", async () => {
       await expect(
@@ -1136,6 +1235,7 @@ describe("Import domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("is callable with discovered GUIDs without unhandled exception", async () => {
       if (!importGuid || !importRunGuid) {
         console.warn(
@@ -1153,6 +1253,7 @@ describe("Import domain", () => {
       } catch {}
     }, 30000);
   });
+
   describe("Action: getImportRunResultContent", () => {
     test("throws on invalid import and run GUIDs", async () => {
       await expect(
@@ -1163,6 +1264,7 @@ describe("Import domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("is callable with discovered GUIDs without unhandled exception", async () => {
       if (!importGuid || !importRunGuid) {
         console.warn(
@@ -1180,6 +1282,7 @@ describe("Import domain", () => {
       } catch {}
     }, 30000);
   });
+
   describe("Action: getImportRunErrorContent", () => {
     test("throws on invalid import and run GUIDs", async () => {
       await expect(
@@ -1190,6 +1293,7 @@ describe("Import domain", () => {
         }),
       ).rejects.toThrow();
     }, 30000);
+
     test("is callable with discovered GUIDs without unhandled exception", async () => {
       if (!importGuid || !importRunGuid) {
         console.warn(

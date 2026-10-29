@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { updateTicketExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateTicketInputs as inputs } from "../../inputs";
 import { ticketOutputSchema } from "../../outputSchemas";
+
 export const updateTicket = action({
   display: {
     label: "Update Ticket",
@@ -16,17 +17,20 @@ export const updateTicket = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       priority: additionalFields.priority,
       status: additionalFields.status,
       source: additionalFields.source,
       ...ticketsAdditionalFields,
     };
+
     const { data } = await client.put(`/tickets/${ticketId}`, payload, {
       params: {
         bypass_mandatory: additionalFields.bypassMandatory,
       },
     });
+
     return {
       data,
     };

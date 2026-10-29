@@ -3,8 +3,10 @@ import nock from "nock";
 import { getSpaceExamplePayload } from "../../examplePayloads";
 import { ACCESS_TOKEN, BASE, connection, useNock } from "../../testHelpers";
 import { rawRequest } from "./rawRequest";
+
 describe("rawRequest", () => {
   useNock();
+
   test("forwards GET /spaces/{id} with the Bearer token and returns the body untouched", async () => {
     let sentHeaders: Record<string, unknown> = {};
     const scope = nock(BASE)
@@ -13,6 +15,7 @@ describe("rawRequest", () => {
         sentHeaders = this.req.headers;
         return getSpaceExamplePayload.data;
       });
+
     const { result } = await invoke(rawRequest, {
       connection,
       url: "/spaces/yadj1kx9rmg0",
@@ -30,6 +33,7 @@ describe("rawRequest", () => {
       maxRetries: 0,
       useExponentialBackoff: false,
     } as never);
+
     expect(scope.isDone()).toBe(true);
     expect(sentHeaders.authorization).toBe(`Bearer ${ACCESS_TOKEN}`);
     expect(result).toStrictEqual({ data: getSpaceExamplePayload.data });

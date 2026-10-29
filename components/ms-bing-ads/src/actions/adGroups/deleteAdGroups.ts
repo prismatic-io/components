@@ -3,6 +3,7 @@ import { deleteAdGroupsExamplePayload } from "../../examplePayloads";
 import { deleteAdGroupsInputs } from "../../inputs/adGroups";
 import { getRestClient } from "../../restClient";
 import type { MutateRestResponse } from "../../types";
+
 export const deleteAdGroups = action({
   display: {
     label: "Delete Ad Groups",
@@ -13,9 +14,11 @@ export const deleteAdGroups = action({
     { connection, accountId, customerId, campaignId, adGroupIds },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.delete<MutateRestResponse>("/AdGroups", {
       data: { CampaignId: campaignId, AdGroupIds: adGroupIds },
     });
+
     return { data };
   },
   inputs: deleteAdGroupsInputs,

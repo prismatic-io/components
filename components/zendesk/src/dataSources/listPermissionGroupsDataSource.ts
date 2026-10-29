@@ -4,6 +4,7 @@ import { listPermissionGroupsDataSourceExamplePayload } from "../examplePayloads
 import { listPermissionGroupsDataSourceInputs } from "../inputs";
 import type { PermissionGroup } from "../types";
 import { paginateResults } from "../util";
+
 export const listPermissionGroupsDataSource = dataSource({
   display: {
     label: "Select Management Permission Groups",
@@ -20,6 +21,7 @@ export const listPermissionGroupsDataSource = dataSource({
       results,
       "permission_groups",
     );
+
     return {
       result: paginatedResults.map((pgroup: PermissionGroup) => ({
         label: pgroup.name,

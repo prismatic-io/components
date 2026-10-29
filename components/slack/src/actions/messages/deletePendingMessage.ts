@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { deletePendingMessageExamplePayload } from "../../examplePayloads";
 import { deletePendingMessageInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const deletePendingMessage = action({
   display: {
     label: "Delete Pending Scheduled Message",
@@ -23,11 +24,10 @@ export const deletePendingMessage = action({
       channel: channelId,
       scheduled_message_id: messageId,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deletePendingMessageExamplePayload,
   }),
   examplePayload: {

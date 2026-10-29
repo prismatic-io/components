@@ -1,4 +1,5 @@
 import type { SalesDetails } from "./SalesDetails";
+
 export interface Item {
   ItemID: string;
   Code: string;

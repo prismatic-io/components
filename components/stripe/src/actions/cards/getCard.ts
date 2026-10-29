@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getCardExamplePayload } from "../../examplePayloads/cards";
 import { getCardInputs } from "../../inputs";
 import { paymentMethodOutputSchema } from "../../outputSchemas";
+
 export const getCard = action({
   display: {
     label: "Get Card",
@@ -25,5 +26,6 @@ export const getCard = action({
     type: "actionOutput",
     schema: paymentMethodOutputSchema,
   }),
+
   examplePayload: getCardExamplePayload,
 });

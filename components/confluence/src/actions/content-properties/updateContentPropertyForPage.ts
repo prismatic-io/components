@@ -3,6 +3,7 @@ import { contentPropertySchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { updateContentPropertyForPageInputs } from "../../inputs";
 import { getContentPropertyExamplePayload as updateContentPropertyForPageExamplePayload } from "../../examplePayloads";
+
 export const updateContentPropertyForPage = action({
   display: {
     label: "Update Content Property for Page",
@@ -33,9 +34,7 @@ export const updateContentPropertyForPage = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: updateContentPropertyForPageExamplePayload,
   }),
   examplePayload: {

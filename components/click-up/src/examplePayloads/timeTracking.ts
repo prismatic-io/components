@@ -44,38 +44,45 @@ const timeEntryBase = {
   ],
   task_url: "https://app.clickup.com/t/9hx",
 };
+
 const timeEntryObject = {
   ...timeEntryBase,
   end: "1704070800000",
   duration: "3600000",
   at: "1704070800000",
 };
+
 export const getSingularTimeEntryExamplePayload = {
   data: {
     data: timeEntryObject,
   },
 };
+
 export const getTimeEntriesWithinDateRangeExamplePayload = {
   data: {
     data: [timeEntryObject],
   },
 };
+
 export const createTimeEntryExamplePayload = {
   data: {
     data: timeEntryObject,
   },
 };
+
 export const updateTimeEntryExamplePayload = {
   data: {
     data: timeEntryObject,
   },
 };
+
 const timerEntryObject = {
   ...timeEntryBase,
   end: 1704070800000,
   duration: 3600000,
   at: 1704070800000,
 };
+
 export const startTimeEntryExamplePayload = {
   data: {
     data: {
@@ -85,11 +92,13 @@ export const startTimeEntryExamplePayload = {
     },
   },
 };
+
 export const stopTimeEntryExamplePayload = {
   data: {
     data: timerEntryObject,
   },
 };
+
 export const deleteTimeEntryExamplePayload = {
   data: {
     data: timerEntryObject,

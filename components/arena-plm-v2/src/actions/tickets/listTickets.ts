@@ -5,6 +5,7 @@ import { listTicketsInputs } from "../../inputs";
 import { listTicketsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listTickets = action({
   display: {
     label: "List Tickets",
@@ -20,6 +21,7 @@ export const listTickets = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const queryParams = {
         number: params.number,
         title: params.title,
@@ -28,12 +30,14 @@ export const listTickets = action({
         offset: params.pagination?.offset,
         limit: params.pagination?.limit,
       };
+
       const data = await fetchArenaList(
         client,
         "/tickets",
         queryParams,
         params.fetchAll,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Tickets");

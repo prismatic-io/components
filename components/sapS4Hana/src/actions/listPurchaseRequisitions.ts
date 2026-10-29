@@ -11,6 +11,7 @@ import {
 } from "../inputs";
 import { getSapClient } from "../client";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+
 export const listPurchaseRequisitions = action({
   display: {
     label: "List Purchase Requisitions",
@@ -42,6 +43,7 @@ export const listPurchaseRequisitions = action({
       $select: select || undefined,
       $expand: expand || undefined,
     };
+
     const client = getSapClient(connectionInput, headers);
     try {
       const { data } = await client.get(
@@ -50,10 +52,12 @@ export const listPurchaseRequisitions = action({
           params,
         },
       );
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);
       const serialized = util.types.toJSON(handled);
+
       throw new Error(serialized);
     }
   },

@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { getWorkbookExamplePayload } from "./workbooks";
+
 const webhookObject = {
   id: "c4d5e6f7-a8b9-0123-4567-89abcdef0123",
   name: "Prism - 4/2/2026 - WorkbookRefreshSucceeded",
@@ -17,6 +18,7 @@ const webhookObject = {
     name: "jane.smith@example.com",
   },
 };
+
 export const listWebhooksExamplePayload = {
   data: {
     webhooks: {
@@ -24,24 +26,29 @@ export const listWebhooksExamplePayload = {
     },
   },
 };
+
 export const getWebhookExamplePayload = {
   data: {
     webhook: webhookObject,
   },
 };
+
 export const createWebhookExamplePayload = {
   data: {
     webhook: webhookObject,
   },
 };
+
 export const updateWebhookExamplePayload = {
   data: {
     webhook: webhookObject,
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: null,
 };
+
 export const testWebhookExamplePayload = {
   data: {
     webhookTestResult: {
@@ -51,9 +58,8 @@ export const testWebhookExamplePayload = {
     },
   },
 };
-export const tableauWebhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const tableauWebhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},

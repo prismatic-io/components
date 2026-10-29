@@ -3,6 +3,7 @@ import { contentPropertySchema } from "../../outputSchemas";
 import { createClient } from "../../client";
 import { createContentPropertyForAttachmentInputs } from "../../inputs";
 import { createContentPropertyExamplePayload as createContentPropertyForAttachmentExamplePayload } from "../../examplePayloads";
+
 export const createContentPropertyForAttachment = action({
   display: {
     label: "Create Content Property for Attachment",
@@ -30,9 +31,7 @@ export const createContentPropertyForAttachment = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: createContentPropertyForAttachmentExamplePayload,
   }),
   examplePayload: {

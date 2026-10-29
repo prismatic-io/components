@@ -1,5 +1,6 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import { oAuth2Inputs } from "../inputs/connections";
+
 export const oAuth2 = oauth2Connection({
   key: "gorgias-oauth2",
   display: {

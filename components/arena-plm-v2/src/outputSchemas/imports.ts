@@ -50,15 +50,19 @@ export const definitionResponseWithGuidSchema = {
     },
   },
 };
+
 export const getImportRunErrorContentOutputSchema = {
   type: "string" as const,
 };
+
 export const getImportRunResultContentOutputSchema = {
   type: "string" as const,
 };
+
 export const getImportRunSubmitContentOutputSchema = {
   type: "string" as const,
 };
+
 export const runResponseWithGuidSchema = {
   type: "object" as const,
   properties: {
@@ -103,6 +107,7 @@ export const runResponseWithGuidSchema = {
     errorCount: { type: "integer", format: "int64" },
   },
 };
+
 export const listImportRunsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -110,6 +115,7 @@ export const listImportRunsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listImportsOutputSchema = {
   type: "object" as const,
   properties: {

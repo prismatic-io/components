@@ -128,6 +128,7 @@ export const dataSetExample = {
   ],
   technicalDescription: "string",
 };
+
 export const dataAssetExample = {
   name: "string",
   tags: [],
@@ -149,6 +150,7 @@ export const dataAssetExample = {
   lastModifiedTime: "2023-10-12T17:32:07.820Z",
   technicalDescription: "string",
 };
+
 export const dataStoreExample = {
   name: "string",
   tags: [],
@@ -164,6 +166,7 @@ export const dataStoreExample = {
   lastModifiedTime: "2023-10-12T19:55:20.881Z",
   technicalDescription: "string",
 };
+
 export const reportExampleRequest = {
   type: "composition-1.0",
   output: {

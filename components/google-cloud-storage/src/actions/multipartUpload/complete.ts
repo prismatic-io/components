@@ -9,6 +9,7 @@ import {
   uploadId,
 } from "../../inputs";
 import { convertJSObjectToXML, convertXMLToJSON } from "../../util";
+
 export const completeMultipartUpload = action({
   display: {
     label: "Complete Multipart Upload",
@@ -46,6 +47,7 @@ export const completeMultipartUpload = action({
         uploadId,
       },
     });
+
     return { data: convertXMLToJSON(data) };
   },
   examplePayload: completeMultipartUploadExamplePayload,

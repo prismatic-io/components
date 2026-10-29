@@ -6,6 +6,7 @@ import {
   spreadsheetChangeEventsPerform,
 } from "../helpers";
 import { spreadsheetChangeEventsPayload } from "../examplePayloads";
+
 export const spreadsheetChangeEvents = trigger({
   display: {
     label: "Spreadsheet Change Events",

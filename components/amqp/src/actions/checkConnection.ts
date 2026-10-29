@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { checkConnectionExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
+
 export const checkConnection = action({
   display: {
     label: "Check AMQP Connection",

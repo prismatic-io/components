@@ -5,6 +5,7 @@ import { listWarehouses } from "./list";
 import { listConnectedSourcesFromWarehouse } from "./listConnectedSources";
 import { removeSourceConnectionFromWarehouse } from "./removeSourceConnection";
 import { updateWarehouse } from "./update";
+
 export default {
   addConnectionFromSourceToWarehouse,
   deleteWarehouse,

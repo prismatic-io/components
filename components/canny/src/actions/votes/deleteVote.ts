@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteVoteExamplePayload } from "../../examplePayloads";
 import { deleteVoteInputs } from "../../inputs";
 import { deleteVoteOutputSchema } from "../../outputSchemas";
+
 export const deleteVote = action({
   display: {
     label: "Delete Vote",
@@ -19,8 +20,7 @@ export const deleteVote = action({
     const data = await client.post("/votes/delete", { voteID: voteId });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteVoteExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteVoteExamplePayload,
   examplePayload: deleteVoteExamplePayload,
 });

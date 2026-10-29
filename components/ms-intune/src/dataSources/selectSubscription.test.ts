@@ -6,9 +6,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listSubscriptionsExamplePayload } from "../examplePayloads";
 import { selectSubscription } from "./selectSubscription";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
 const PATH = "/v1.0/subscriptions";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -20,14 +22,19 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listSubscriptionsExamplePayload.data;
+
 describe("selectSubscription", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the subscription list to composed label/key elements wrapped in result", async () => {
     nock(HOST).get(PATH).reply(200, listReply);
+
     const { result } = await invokeDataSource(selectSubscription, {
       connection,
     });
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
@@ -40,11 +47,14 @@ describe("selectSubscription", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty result array when the API returns no subscriptions", async () => {
     nock(HOST).get(PATH).reply(200, { value: [] });
+
     const { result } = await invokeDataSource(selectSubscription, {
       connection,
     });
+
     expect(result).toEqual([]);
   });
 });

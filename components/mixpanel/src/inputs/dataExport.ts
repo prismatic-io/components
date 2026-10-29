@@ -9,6 +9,7 @@ import {
   limit,
   where,
 } from "./common";
+
 export const event = input({
   label: "Event Name",
   type: "string",
@@ -18,6 +19,7 @@ export const event = input({
   required: false,
   example: "Page View",
 });
+
 export const gzipEncoding = input({
   label: "Gzip Encoding",
   type: "boolean",
@@ -27,6 +29,7 @@ export const gzipEncoding = input({
   required: false,
   example: "false",
 });
+
 export const filters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -43,6 +46,7 @@ export const filters = structuredObjectInput({
     gzipEncoding,
   },
 });
+
 export const downloadDataInputs = {
   connection: connectionInput,
   dataAndDomain,

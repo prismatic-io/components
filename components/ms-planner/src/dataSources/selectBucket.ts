@@ -5,6 +5,7 @@ import { selectBucketExamplePayload } from "../examplePayloads";
 import { PLANNER_ENDPOINTS } from "../constants";
 import { fetchAllPlanner } from "../utils";
 import { selectBucketInputs } from "../inputs";
+
 export const selectBucket = dataSource({
   display: {
     label: "Select Bucket",
@@ -17,6 +18,7 @@ export const selectBucket = dataSource({
       client,
       PLANNER_ENDPOINTS.PLAN_BUCKETS(planId),
     );
+
     const result = value.map<Element>((bucket) => ({
       label: util.types.toString(bucket.name),
       key: util.types.toString(bucket.id),

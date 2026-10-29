@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { batchRetrieveInventoryCountsExamplePayload } from "../../examplePayloads";
 import { batchRetrieveInventoryCountsInputs } from "../../inputs";
+
 export const batchRetrieveInventoryCounts = action({
   display: {
     label: "Batch Retrieve Inventory Counts",
@@ -23,6 +24,7 @@ export const batchRetrieveInventoryCounts = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       catalog_object_ids: catalogObjectIds,
       location_ids: locationIds,
@@ -31,10 +33,12 @@ export const batchRetrieveInventoryCounts = action({
       states: states,
       limit: pagination.limit,
     };
+
     const response = await client.post(
       "/v2/inventory/counts/batch-retrieve",
       requestBody,
     );
+
     return {
       data: response.data,
     };

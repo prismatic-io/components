@@ -5,6 +5,7 @@ import { listCompaniesExamplePayload } from "../../examplePayloads";
 import { listCompaniesInputs } from "../../inputs";
 import { paginatedListSchema } from "../../outputSchemas";
 import { getAllPaginatedData, getProps } from "../../util";
+
 export const listCompanies = action({
   display: {
     label: "List Companies",
@@ -13,11 +14,13 @@ export const listCompanies = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const debugRequest = context.debug.enabled;
+
     const client = getHubspotClient({
       hubspotConnection: params.hubspotConnection,
       timeout: params.timeout,
       debugRequest,
     });
+
     const parameterizedProperties = getProps(
       COMPANY_PROPS,
       params.additionalProperties || [],
@@ -39,6 +42,7 @@ export const listCompanies = action({
         params: configParams,
       },
     );
+
     return {
       data,
     };

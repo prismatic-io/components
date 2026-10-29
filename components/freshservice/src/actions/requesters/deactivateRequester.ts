@@ -4,6 +4,7 @@ import { SUCCESS_RESPONSE } from "../../constants";
 import { deactivateRequesterExamplePayload as examplePayload } from "../../examplePayloads";
 import { deactivateRequesterInputs as inputs } from "../../inputs";
 import { successOutputSchema } from "../../outputSchemas";
+
 export const deactivateRequester = action({
   display: {
     label: "Deactivate Requester",
@@ -14,7 +15,9 @@ export const deactivateRequester = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     await client.delete(`/requesters/${requesterId}`);
+
     return SUCCESS_RESPONSE;
   },
   outputSchema: outputSchema({

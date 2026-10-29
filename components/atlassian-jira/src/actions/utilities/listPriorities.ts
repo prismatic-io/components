@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { listPrioritiesExamplePayload } from "../../examplePayloads";
 import { connectionInput, maxResults, startAt } from "../../inputs";
+
 export const listPriorities = action({
   display: {
     label: "List Priorities",

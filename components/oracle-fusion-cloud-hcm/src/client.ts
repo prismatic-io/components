@@ -7,6 +7,7 @@ import {
   basicAuthConnection,
   oauth2ClientCredentialsConnection,
 } from "./connections";
+
 export const validateConnection = (connection: Connection): void => {
   if (
     ![basicAuthConnection.key, oauth2ClientCredentialsConnection.key].includes(
@@ -19,10 +20,12 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 const getServerUrl = (connection: Connection): string => {
   validateConnection(connection);
   return util.types.toString(connection.fields.serverUrl).replace(/\/$/, "");
 };
+
 export const getAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
@@ -43,6 +46,7 @@ export const getAuthHeaders = (
     `Unexpected connection type: ${connection.key}`,
   );
 };
+
 export const createClient = (
   connection: Connection,
   debug = false,
@@ -59,8 +63,10 @@ export const createClient = (
     debug,
   });
 };
+
 export const getBaseUrl = (connection: Connection): string =>
   `${getServerUrl(connection)}/hcmRestApi/resources/11.13.18.05`;
+
 export const createAtomFeedClient = (
   connection: Connection,
   debug = false,

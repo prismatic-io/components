@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { jsonInputClean } from "../../util";
 import { account, connectionOnlyInputs } from "./common";
 import { productIdentifierInputs } from "./products";
+
 const storeCode = input({
   label: "Store Code",
   type: "string",
@@ -12,6 +13,7 @@ const storeCode = input({
   placeholder: "Enter Store Code",
   required: true,
 });
+
 const region = input({
   label: "Region",
   type: "string",
@@ -22,6 +24,7 @@ const region = input({
   placeholder: "Enter Region ID",
   required: true,
 });
+
 const inventory = input({
   label: "Inventory",
   type: "code",
@@ -40,6 +43,7 @@ const inventory = input({
   clean: jsonInputClean,
   required: false,
 });
+
 const inventoryEntries = input({
   label: "Inventory Entries",
   type: "code",
@@ -61,12 +65,14 @@ const inventoryEntries = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const batchLocalInventoryInputs = {
   ...connectionOnlyInputs,
   account,
   ...productIdentifierInputs,
   entries: inventoryEntries,
 };
+
 export const updateProductLocalInventoryInputs = {
   ...connectionOnlyInputs,
   account,
@@ -74,12 +80,14 @@ export const updateProductLocalInventoryInputs = {
   storeCode,
   inventory,
 };
+
 export const batchRegionalInventoryInputs = {
   ...connectionOnlyInputs,
   account,
   ...productIdentifierInputs,
   entries: inventoryEntries,
 };
+
 export const updateProductRegionalInventoryInputs = {
   ...connectionOnlyInputs,
   account,

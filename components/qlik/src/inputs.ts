@@ -11,11 +11,13 @@ import {
   pollResourceModel,
   valueListInputToString,
 } from "./util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const dataSetId = input({
   label: "Data Set ID",
   type: "string",
@@ -25,6 +27,7 @@ export const dataSetId = input({
   dataSource: "selectDataSet",
   clean: util.types.toString,
 });
+
 export const spaceId = input({
   label: "Space ID",
   type: "string",
@@ -34,6 +37,7 @@ export const spaceId = input({
   dataSource: "selectSpace",
   clean: util.types.toString,
 });
+
 export const ownerId = input({
   label: "Owner ID",
   type: "string",
@@ -43,6 +47,7 @@ export const ownerId = input({
   dataSource: "selectUser",
   clean: util.types.toString,
 });
+
 export const reportId = input({
   label: "Report ID",
   type: "string",
@@ -51,6 +56,7 @@ export const reportId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const dataAssetsId = input({
   label: "Data Assets ID",
   type: "string",
@@ -60,6 +66,7 @@ export const dataAssetsId = input({
   dataSource: "selectDataAsset",
   clean: util.types.toString,
 });
+
 export const dataStoreId = input({
   label: "Data Store ID",
   type: "string",
@@ -69,6 +76,7 @@ export const dataStoreId = input({
   dataSource: "selectDataStore",
   clean: util.types.toString,
 });
+
 export const appId = input({
   label: "App ID",
   type: "string",
@@ -78,6 +86,7 @@ export const appId = input({
   dataSource: "selectApp",
   clean: util.types.toString,
 });
+
 export const dataFileId = input({
   label: "Data File ID",
   type: "string",
@@ -87,6 +96,7 @@ export const dataFileId = input({
   dataSource: "selectDataFile",
   clean: util.types.toString,
 });
+
 export const projections = input({
   label: "Projections",
   type: "string",
@@ -95,6 +105,7 @@ export const projections = input({
   comments: "Fields name to return in the response.",
   clean: valueListInputToString,
 });
+
 export const sort = input({
   label: "Sort",
   type: "string",
@@ -105,6 +116,7 @@ export const sort = input({
   clean: valueListInputToString,
   example: "name,-createdTime",
 });
+
 export const dataSetIds = input({
   label: "Data Set IDs",
   type: "string",
@@ -113,6 +125,7 @@ export const dataSetIds = input({
   comments: "The IDs of the data sets you would like to delete.",
   clean: valueListInputToString,
 });
+
 export const qri = input({
   label: "QRI",
   type: "string",
@@ -123,6 +136,7 @@ export const qri = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -131,6 +145,7 @@ export const name = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const dataSetInput = input({
   label: "Data Set",
   type: "code",
@@ -140,6 +155,7 @@ export const dataSetInput = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const attributeName = input({
   label: "Attribute Name",
   type: "string",
@@ -148,6 +164,7 @@ export const attributeName = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const attributeDescription = input({
   label: "Attribute Description",
   type: "string",
@@ -156,6 +173,7 @@ export const attributeDescription = input({
   required: false,
   clean: util.types.toString,
 });
+
 export const usage = input({
   label: "Usage",
   type: "string",
@@ -175,6 +193,7 @@ export const usage = input({
   ],
   clean: util.types.toString,
 });
+
 export const locale = input({
   label: "Locale",
   type: "string",
@@ -183,6 +202,7 @@ export const locale = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const json = input({
   label: "JSON",
   type: "code",
@@ -201,6 +221,7 @@ export const json = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const fileInput = input({
   label: "File",
   type: "data",
@@ -208,6 +229,7 @@ export const fileInput = input({
   clean: util.types.toData,
   example: "Some binary file",
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -216,6 +238,7 @@ export const fileName = input({
   clean: util.types.toString,
   example: "some-file-name.csv",
 });
+
 export const appType = input({
   label: "App Type",
   type: "string",
@@ -224,6 +247,7 @@ export const appType = input({
   clean: util.types.toString,
   example: "An App Type",
 });
+
 export const technicalName = input({
   label: "Technical Name",
   type: "string",
@@ -232,6 +256,7 @@ export const technicalName = input({
   clean: util.types.toString,
   example: "Some technical name",
 });
+
 export const secureQri = input({
   label: "Secure QRI",
   type: "string",
@@ -240,6 +265,7 @@ export const secureQri = input({
   clean: util.types.toString,
   example: "Some secure QRI",
 });
+
 export const dataAssetInput = input({
   label: "Data Asset",
   type: "code",
@@ -249,6 +275,7 @@ export const dataAssetInput = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -258,6 +285,7 @@ export const limit = input({
   default: "20",
   example: "20",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -267,6 +295,7 @@ export const page = input({
   clean: util.types.toString,
   example: "asdasl123posidcs",
 });
+
 export const paramsInputFields = input({
   label: "Query Params",
   type: "string",
@@ -281,6 +310,7 @@ export const paramsInputFields = input({
     return myObject;
   },
 });
+
 export const uri = input({
   label: "URI",
   type: "string",
@@ -289,6 +319,7 @@ export const uri = input({
   clean: util.types.toString,
   example: "https://some-uri.com",
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -297,6 +328,7 @@ export const type = input({
   clean: util.types.toString,
   example: "some-type",
 });
+
 export const dataStoreInput = input({
   label: "Data Store",
   type: "code",
@@ -306,6 +338,7 @@ export const dataStoreInput = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const reportInput = input({
   label: "Report",
   type: "code",
@@ -315,6 +348,7 @@ export const reportInput = input({
   clean: jsonInputClean,
   required: false,
 });
+
 export const spaceType = input({
   label: "Type",
   type: "string",
@@ -337,6 +371,7 @@ export const spaceType = input({
   ],
   clean: util.types.toString,
 });
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -345,6 +380,7 @@ const pollResourceType = input({
   comments: "The type of Qlik resource to poll for changes.",
   clean: util.types.toString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -354,6 +390,7 @@ const showNewRecords = input({
     "When enabled, newly created records will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -363,6 +400,7 @@ const showUpdatedRecords = input({
     "When enabled, records updated after the last poll will be included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -373,6 +411,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   pollResourceType,

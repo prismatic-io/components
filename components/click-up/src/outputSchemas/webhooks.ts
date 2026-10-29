@@ -1,4 +1,5 @@
 import { webhookSchema } from "./shared";
+
 const webhookEnvelopeSchema = {
   type: "object" as const,
   properties: {
@@ -7,8 +8,11 @@ const webhookEnvelopeSchema = {
   },
   required: ["id", "webhook"],
 };
+
 export const createWebhookOutputSchema = webhookEnvelopeSchema;
+
 export const updateWebhookOutputSchema = webhookEnvelopeSchema;
+
 export const getWebhooksOutputSchema = {
   type: "object" as const,
   properties: {

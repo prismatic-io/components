@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { listPaymentIntentsExamplePayload } from "../../examplePayloads/paymentIntents";
 import { listPaymentIntentsInputs } from "../../inputs";
 import { listPaymentIntentsOutputSchema } from "../../outputSchemas";
+
 export const listPaymentIntents = action({
   display: {
     label: "List Payment Intents",
@@ -38,5 +39,6 @@ export const listPaymentIntents = action({
     type: "actionOutput",
     schema: listPaymentIntentsOutputSchema,
   }),
+
   examplePayload: listPaymentIntentsExamplePayload,
 });

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { withFirestore } from "../../client";
 import { deleteDocumentExamplePayload } from "../../examplePayloads";
 import { deleteDocumentInputs } from "../../inputs";
+
 export const deleteDocument = action({
   display: {
     label: "Delete Document",
@@ -12,13 +13,13 @@ export const deleteDocument = action({
     const result = await withFirestore(params, (db) =>
       db.collection(params.collection).doc(params.document).delete(),
     );
+
     return {
       data: result,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteDocumentExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteDocumentExamplePayload,
   inputs: deleteDocumentInputs,
   examplePayload: deleteDocumentExamplePayload,
 });

@@ -1,5 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
@@ -7,6 +8,7 @@ export const connection = input({
   comments:
     "The Salesforce Marketing Cloud OAuth connection (Authorization Code for user context or Client Credentials for server-to-server).",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -16,6 +18,7 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -25,6 +28,7 @@ export const page = input({
   placeholder: "Enter page number",
   clean: toOptionalNumber,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -35,12 +39,14 @@ export const pageSize = input({
   placeholder: "Enter page size",
   clean: toOptionalNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const paginatedListInputs = {
   connection,
   fetchAll,

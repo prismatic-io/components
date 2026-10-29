@@ -4,6 +4,7 @@ import { WEBHOOKS_CONFIGURATION_PATH } from "../../constants";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -18,14 +19,14 @@ export const deleteWebhook = action({
   performSafety: "notAllowed",
   perform: async (_context, { connection, webhookName }) => {
     const client = createClient(connection);
+
     await client.delete(
       `${WEBHOOKS_CONFIGURATION_PATH}/${encodeURIComponent(webhookName)}`,
     );
+
     return { data: null };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...deleteWebhookExamplePayload,
   }),
   examplePayload: deleteWebhookExamplePayload,

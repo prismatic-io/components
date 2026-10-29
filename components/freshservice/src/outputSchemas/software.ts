@@ -15,12 +15,14 @@ const softwareBaseProperties = {
   created_at: { type: "string", format: "date-time" },
   updated_at: { type: "string", format: "date-time" },
 };
+
 export const softwareSchema = {
   type: "object" as const,
   properties: { ...softwareBaseProperties },
   required: ["id"],
   additionalProperties: false,
 };
+
 export const softwareOutputSchema = {
   type: "object" as const,
   properties: {
@@ -29,6 +31,7 @@ export const softwareOutputSchema = {
   required: ["application"],
   additionalProperties: false,
 };
+
 export const moveSoftwareOutputSchema = {
   type: "object" as const,
   properties: {
@@ -53,6 +56,7 @@ export const moveSoftwareOutputSchema = {
   required: ["application"],
   additionalProperties: false,
 };
+
 export const listSoftwareOutputSchema = {
   type: "object" as const,
   properties: {

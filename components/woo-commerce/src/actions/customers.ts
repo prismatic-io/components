@@ -30,6 +30,7 @@ import {
   values,
 } from "../inputs";
 import { paginateRecords } from "../util";
+
 export const listCustomers = action({
   display: {
     label: "List Customers",
@@ -81,6 +82,7 @@ export const listCustomers = action({
   },
   examplePayload: listCustomersExamplePayload,
 });
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",
@@ -97,6 +99,7 @@ export const getCustomer = action({
     };
   },
 });
+
 export const deleteCustomer = action({
   display: {
     label: "Delete Customer",
@@ -115,6 +118,7 @@ export const deleteCustomer = action({
     };
   },
 });
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -144,6 +148,7 @@ export const createCustomer = action({
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = getClient(params.connection, debug);
+
     const request = {
       ...util.types.keyValPairListToObject(params.values),
       email: util.types.toString(params.email) || undefined,
@@ -175,11 +180,13 @@ export const createCustomer = action({
         country: util.types.toString(params.shippingCountry) || undefined,
       },
     };
+
     return {
       data: await handleErrors(client.post(`/customers`, request)),
     };
   },
 });
+
 export const updateCustomer = action({
   display: {
     label: "Update Customer",
@@ -209,6 +216,7 @@ export const updateCustomer = action({
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
     const client = getClient(params.connection, debug);
+
     const request = {
       email: util.types.toString(params.email) || undefined,
       first_name: util.types.toString(params.firstName) || undefined,
@@ -239,6 +247,7 @@ export const updateCustomer = action({
         country: util.types.toString(params.shippingCountry) || undefined,
       },
     };
+
     return {
       data: await handleErrors(
         client.put(`/customers/${params.customerId}`, request),

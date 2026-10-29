@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { createManagedAppExamplePayload } from "../../examplePayloads";
 import { createManagedAppInputs } from "../../inputs";
+
 export const createManagedApp = action({
   display: {
     label: "Create Managed App",
@@ -44,6 +45,7 @@ export const createManagedApp = action({
       ...specificPlatformProperties,
     };
     const { data } = await client.post(ENDPOINTS.MOBILE_APPS, payload);
+
     return {
       data,
     };

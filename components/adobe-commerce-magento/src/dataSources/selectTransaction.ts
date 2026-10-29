@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_SIZE, ENDPOINTS } from "../constants";
 import { selectTransactionExamplePayload } from "../examplePayloads";
 import { selectTransactionInputs } from "../inputs";
 import { toSortedElements } from "../utils";
+
 export const selectTransaction = dataSource({
   display: {
     label: "Select Transaction",
@@ -24,6 +25,7 @@ export const selectTransaction = dataSource({
         "searchCriteria[pageSize]": DEFAULT_PAGE_SIZE,
       },
     });
+
     return {
       result: toSortedElements(data?.items, (item) => ({
         label: `${item.txn_id} (${item.txn_type} - Order #${item.order_id})`,

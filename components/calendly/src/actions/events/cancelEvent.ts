@@ -3,6 +3,7 @@ import { cancelEventOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { cancelEventInputs } from "../../inputs";
 import { cancelEventExamplePayload } from "../../examplePayloads";
+
 export const cancelEvent = action({
   display: {
     label: "Cancel Event",
@@ -11,9 +12,7 @@ export const cancelEvent = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, uuid, reason }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
-    const body: {
-      reason?: string;
-    } = {};
+    const body: { reason?: string } = {};
     if (reason) {
       body.reason = reason;
     }
@@ -23,9 +22,7 @@ export const cancelEvent = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: cancelEventExamplePayload.data,
   }),
   inputs: cancelEventInputs,

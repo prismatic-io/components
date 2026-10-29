@@ -6,16 +6,19 @@ import type {
   UserCompactVo,
   UserCompactVoResultRep,
 } from "../types";
+
 const sampleUser: UserCompactVo = {
   guid: "9ZY87XW65VU43TS21RQ09PO8",
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleSecondUser: UserCompactVo = {
   guid: "8XW76VU54TS32RQ10PO98NM7",
   fullName: "Priya Nadar",
   email: "priya.nadar@example.com",
 };
+
 const sampleRequestFull = {
   guid: "RQA123BCD456EFG789HIJ012",
   url: {
@@ -56,6 +59,7 @@ const sampleRequestFull = {
     },
   ],
 };
+
 const sampleRequestCompact = {
   guid: "RQA123BCD456EFG789HIJ012",
   number: "REQ-000318",
@@ -66,6 +70,7 @@ const sampleRequestCompact = {
   creator: sampleUser,
   creationDateTime: "2026-05-12T13:05:00Z",
 };
+
 const sampleEvaluationIssue = {
   guid: "ISS222KKK333LLL444MMM555",
   issue: "Power sequencing capacitor value appears out of tolerance.",
@@ -74,12 +79,14 @@ const sampleEvaluationIssue = {
   creator: sampleUser,
   creationDateTime: "2026-05-13T09:40:00Z",
 };
+
 const sampleIssueResponse = {
   guid: "RSP333NNN444OOO555PPP666",
   response: "Confirmed: measured 4.2uF against a 4.7uF nominal on three units.",
   creator: sampleSecondUser,
   creationDateTime: "2026-05-13T15:10:00Z",
 };
+
 const sampleRequestFile = {
   guid: "RFA444QQQ555RRR666SSS777",
   file: {
@@ -94,9 +101,11 @@ const sampleRequestFile = {
     creationDateTime: "2026-05-12T13:30:00Z",
   },
 };
+
 export const addEvaluationIssueResponseExamplePayload = {
   data: sampleIssueResponse,
 };
+
 export const addItemToRequestExamplePayload = {
   data: {
     guid: "RIT666WWW777XXX888YYY999",
@@ -114,7 +123,9 @@ export const addItemToRequestExamplePayload = {
     notes: "Suspected root-cause component for the power-up failure.",
   },
 };
+
 export const attachFileToRequestExamplePayload = { data: sampleRequestFile };
+
 export const changeEvaluationIssueStatusExamplePayload = {
   data: {
     ...sampleEvaluationIssue,
@@ -122,6 +133,7 @@ export const changeEvaluationIssueStatusExamplePayload = {
     response: "Resolved via corrective change ECO-000512.",
   },
 };
+
 export const changeRequestStatusExamplePayload = {
   data: {
     guid: "TRN888CCC999DDD000EEE111",
@@ -132,10 +144,13 @@ export const changeRequestStatusExamplePayload = {
     creationDateTime: "2026-05-12T14:20:00Z",
   },
 };
+
 export const createRequestExamplePayload = { data: sampleRequestFull };
+
 export const createRequestEvaluationIssueExamplePayload = {
   data: sampleEvaluationIssue,
 };
+
 export const createRequestMarkupFileExamplePayload = {
   data: {
     guid: "MRK999FFF000GGG111HHH222",
@@ -150,19 +165,24 @@ export const createRequestMarkupFileExamplePayload = {
     },
   },
 };
+
 export const deleteRequestExamplePayload = {
   data: { success: true, message: "Request deleted successfully" },
 };
+
 export const deleteRequestMarkupFileExamplePayload = {
   data: { success: true, message: "Markup file deleted successfully" },
 };
+
 export const listEvaluationIssueResponsesExamplePayload = {
   data: {
     results: [sampleIssueResponse],
     count: 1,
   },
 };
+
 export const getRequestByGuidExamplePayload = { data: sampleRequestFull };
+
 export const listRequestAdministratorsExamplePayload: {
   data: UserCompactVoResultRep;
 } = {
@@ -171,6 +191,7 @@ export const listRequestAdministratorsExamplePayload: {
     count: 2,
   },
 };
+
 export const listRequestChangesExamplePayload = {
   data: {
     results: [
@@ -186,12 +207,14 @@ export const listRequestChangesExamplePayload = {
     count: 1,
   },
 };
+
 export const listRequestEvaluationIssuesExamplePayload = {
   data: {
     results: [sampleEvaluationIssue],
     count: 1,
   },
 };
+
 export const listRequestEvaluatorGroupsExamplePayload: {
   data: RequestEvaluatorGroupShortResultRep;
 } = {
@@ -211,12 +234,14 @@ export const listRequestEvaluatorGroupsExamplePayload: {
     count: 2,
   },
 };
+
 export const listRequestFilesExamplePayload = {
   data: {
     results: [sampleRequestFile],
     count: 1,
   },
 };
+
 export const listRequestItemAttributesExamplePayload: {
   data: AttributeDefinitionFullRepResultRep;
 } = {
@@ -240,6 +265,7 @@ export const listRequestItemAttributesExamplePayload: {
     count: 1,
   },
 };
+
 export const listRequestItemsExamplePayload = {
   data: {
     results: [
@@ -262,6 +288,7 @@ export const listRequestItemsExamplePayload = {
     count: 1,
   },
 };
+
 export const listRequestMarkupFilesExamplePayload = {
   data: {
     results: [
@@ -281,6 +308,7 @@ export const listRequestMarkupFilesExamplePayload = {
     count: 1,
   },
 };
+
 export const listRequestNumberSequencePrefixesExamplePayload: {
   data: NumberSequencePrefixCompactResultRep;
 } = {
@@ -292,6 +320,7 @@ export const listRequestNumberSequencePrefixesExamplePayload: {
     count: 2,
   },
 };
+
 export const listRequestNumberSequencesExamplePayload: {
   data: NumberSequenceResultRep;
 } = {
@@ -309,6 +338,7 @@ export const listRequestNumberSequencesExamplePayload: {
     count: 1,
   },
 };
+
 export const listRequestQualityProcessesExamplePayload = {
   data: {
     results: [
@@ -324,6 +354,7 @@ export const listRequestQualityProcessesExamplePayload = {
     count: 1,
   },
 };
+
 export const listRequestsExamplePayload = {
   data: {
     results: [
@@ -345,6 +376,7 @@ export const listRequestsExamplePayload = {
     count: 2,
   },
 };
+
 export const listRequestStatusChangeAttributesExamplePayload: {
   data: AttributeDefinitionFullRepResultRep;
 } = {
@@ -368,9 +400,11 @@ export const listRequestStatusChangeAttributesExamplePayload: {
     count: 1,
   },
 };
+
 export const removeFileFromRequestExamplePayload = {
   data: { success: true, message: "File removed from request successfully" },
 };
+
 export const updateRequestExamplePayload = {
   data: {
     ...sampleRequestFull,

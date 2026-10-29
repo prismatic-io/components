@@ -1,10 +1,8 @@
 export const DEFAULT_BATCH_SIZE = 50;
+
 export const POLL_RESOURCE_CONFIG: Record<
   string,
-  {
-    label: string;
-    endpoint: string;
-  }
+  { label: string; endpoint: string }
 > = {
   employees: { label: "Employees", endpoint: "/employees" },
   time_off_requests: {
@@ -14,6 +12,7 @@ export const POLL_RESOURCE_CONFIG: Record<
   teams: { label: "Teams", endpoint: "/teams" },
   positions: { label: "Positions", endpoint: "/positions" },
 };
+
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({ label, value }),
 );

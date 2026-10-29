@@ -5,6 +5,7 @@ import { selectDeviceExamplePayload } from "../examplePayloads/dataSources";
 import { selectDeviceInputs } from "../inputs";
 import type { Device } from "../types";
 import { fetchAllData, TComparator } from "../util";
+
 export const selectDevice = dataSource({
   display: {
     label: "Select Device",
@@ -21,12 +22,14 @@ export const selectDevice = dataSource({
     )) as {
       data: Device[];
     };
+
     const objects = data
       .sort(TComparator<Device>)
       .map<Element>(({ id, name }) => ({
         key: id,
         label: name,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

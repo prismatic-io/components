@@ -78,6 +78,7 @@ export const getStaffingWorkersExamplePayload = {
     total: 1,
   },
 };
+
 export const getStaffingWorkerByIdExamplePayload = {
   data: {
     workerType: {
@@ -153,6 +154,7 @@ export const getStaffingWorkerByIdExamplePayload = {
     id: "3f5a7c9e1b0d2468ca1e3b5d7f9a0c31",
   },
 };
+
 export const getWorkerServiceDatesExamplePayload = {
   data: {
     data: [
@@ -164,6 +166,7 @@ export const getWorkerServiceDatesExamplePayload = {
     total: 1,
   },
 };
+
 export const getWorkerExplicitSkillsExamplePayload = {
   data: {
     data: [
@@ -190,6 +193,7 @@ export const getWorkerExplicitSkillsExamplePayload = {
     total: 1,
   },
 };
+
 export const initiateJobChangeExamplePayload = {
   data: {
     job: {
@@ -222,6 +226,7 @@ export const initiateJobChangeExamplePayload = {
     id: "0a2c4e6b8d1f3579ce3a5c7e9b1d0f26",
   },
 };
+
 export const initiateOrganizationAssignmentChangeExamplePayload = {
   data: {
     date: "2026-04-11T07:00:00.000Z",

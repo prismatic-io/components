@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { LIST_INVENTORY_ITEMS_DATASOURCE_REFERENCE } from "../../constants";
+
 export const ids = input({
   label: "Inventory Item IDs",
   type: "string",
@@ -10,6 +11,7 @@ export const ids = input({
   placeholder: "Enter ID",
   clean: util.types.toString,
 });
+
 export const requiresShipping = input({
   label: "Requires Shipping",
   type: "boolean",
@@ -17,6 +19,7 @@ export const requiresShipping = input({
   comments: "When true, the item requires shipping.",
   clean: util.types.toBool,
 });
+
 export const tracked = input({
   label: "Is Tracked",
   type: "boolean",
@@ -24,6 +27,7 @@ export const tracked = input({
   comments: "When true, the item is tracked.",
   clean: util.types.toBool,
 });
+
 export const inventoryItemId = input({
   label: "Inventory Item ID",
   type: "string",

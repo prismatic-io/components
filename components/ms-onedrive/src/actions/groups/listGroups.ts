@@ -3,6 +3,7 @@ import { paginateResults } from "ms-utils";
 import { getOneDriveClient } from "../../client";
 import { listGroupsExamplePayload } from "../../examplePayloads";
 import { listGroupsInputs } from "../../inputs";
+
 export const listGroups = action({
   display: {
     label: "List Groups",

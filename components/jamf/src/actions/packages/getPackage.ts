@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPackageExamplePayload } from "../../examplePayloads";
 import { getPackageInputs } from "../../inputs";
 import type { Package } from "../../types";
+
 export const getPackage = action({
   display: {
     label: "Get Package",

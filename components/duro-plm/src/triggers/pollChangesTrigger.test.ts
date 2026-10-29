@@ -3,8 +3,10 @@ import { MAX_POLL_PAGES } from "../constants";
 import type { DuroRecord, PollingChangesObject, PollingState } from "../types";
 import { lookBackDateClean, resolveRecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const { request } = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock("../client", () => ({ createDuroClient: () => ({ request }) }));
+
 const newRecord: DuroRecord = {
   id: "1",
   created: "2026-06-11T12:00:00.000Z",
@@ -15,6 +17,7 @@ const touched: DuroRecord = {
   created: "2025-12-01T12:00:00.000Z",
   lastModified: "2026-06-12T12:00:00.000Z",
 };
+
 const page = (
   nodes: DuroRecord[],
   endCursor?: string,
@@ -30,6 +33,7 @@ const page = (
     },
   },
 });
+
 describe("pollChangesTrigger batching declaration", () => {
   test("declares opt-in batching with a default batch size and no pagination cursor", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -41,6 +45,7 @@ describe("pollChangesTrigger batching declaration", () => {
       pollChangesTrigger.triggerResolver?.getNextPaginationState,
     ).toBeUndefined();
   });
+
   test("offers the Look-back Date directly below the required inputs", () => {
     expect(Object.keys(pollChangesTrigger.inputs ?? {})).toEqual([
       "connection",
@@ -51,6 +56,7 @@ describe("pollChangesTrigger batching declaration", () => {
     ]);
   });
 });
+
 describe("resolveRecordChanges", () => {
   test("tags every record with how it changed", () => {
     expect(
@@ -60,6 +66,7 @@ describe("resolveRecordChanges", () => {
       { changeType: "updated", record: touched },
     ]);
   });
+
   test("tolerates an absent envelope, an empty one, and a single absent array", () => {
     expect(resolveRecordChanges(undefined)).toEqual([]);
     expect(resolveRecordChanges({})).toEqual([]);
@@ -72,6 +79,7 @@ describe("resolveRecordChanges", () => {
     ]);
   });
 });
+
 describe("triggerResolver.resolveItems", () => {
   test("flattens the payload shape perform actually returns", () => {
     const items = pollChangesTrigger.triggerResolver?.resolveItems?.(
@@ -88,14 +96,17 @@ describe("triggerResolver.resolveItems", () => {
     ]);
   });
 });
+
 describe("lookBackDateClean", () => {
   test("returns an empty string for an empty value", () => {
     expect(lookBackDateClean(undefined)).toBe("");
     expect(lookBackDateClean("  ")).toBe("");
   });
+
   test("normalizes a valid past date to an ISO instant", () => {
     expect(lookBackDateClean("2026-01-01")).toBe("2026-01-01T00:00:00.000Z");
   });
+
   test("rejects a wrong format, a non-calendar date, and a future date", () => {
     expect(() => lookBackDateClean("01/01/2026")).toThrow(
       "Look-back Date must be",
@@ -108,11 +119,14 @@ describe("lookBackDateClean", () => {
     );
   });
 });
+
 describe("pollChangesTrigger perform and the Look-back Date", () => {
   type PerformContext = Parameters<typeof pollChangesTrigger.perform>[0];
   type PerformPayload = Parameters<typeof pollChangesTrigger.perform>[1];
+
   const LOOK_BACK = "2026-01-01T00:00:00.000Z";
   let store: PollingState;
+
   const context = () =>
     ({
       polling: {
@@ -125,6 +139,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       debug: { enabled: false },
       logger: { debug: vi.fn(), warn: vi.fn() },
     }) as unknown as PerformContext;
+
   const params = {
     connection: { key: "duroApiKey", fields: {} } as never,
     pollResourceType: "components",
@@ -132,20 +147,22 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
     showNewRecords: true,
     showUpdatedRecords: true,
   };
+
   const run = (overrides: Partial<typeof params> = {}) =>
     pollChangesTrigger.perform(context(), {} as unknown as PerformPayload, {
       ...params,
       ...overrides,
     });
+
   const data = (result: Awaited<ReturnType<typeof run>>) =>
-    result.payload.body as {
-      data: PollingChangesObject;
-    };
+    result.payload.body as { data: PollingChangesObject };
+
   beforeEach(() => {
     store = {};
     request.mockReset();
     request.mockResolvedValue(page([newRecord, touched]));
   });
+
   test("the first poll seeds from the Look-back Date", async () => {
     request.mockResolvedValue(
       page([
@@ -158,6 +175,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       data: { created: [newRecord], updated: [] },
     });
   });
+
   test("the first poll without a Look-back Date seeds from now and emits nothing old", async () => {
     const before = Date.now();
     const result = await run();
@@ -167,6 +185,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
     );
     expect(store.backfillActive).toBeUndefined();
   });
+
   test("a backfill emits records even when both Show toggles are off", async () => {
     const result = await run({
       lookBackDate: LOOK_BACK,
@@ -176,14 +195,11 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
     expect(data(result)).toEqual({
       data: { created: [newRecord], updated: [touched] },
     });
-    expect(
-      (
-        result as {
-          polledNoChanges?: boolean;
-        }
-      ).polledNoChanges,
-    ).toBe(false);
+    expect((result as { polledNoChanges?: boolean }).polledNoChanges).toBe(
+      false,
+    );
   });
+
   test("later polls ignore the Look-back Date and honor the toggles", async () => {
     store = { lastPolledAt: "2026-06-10T00:00:00.000Z" };
     request.mockResolvedValue(
@@ -199,13 +215,10 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       showUpdatedRecords: false,
     });
     expect(data(result)).toEqual({ data: { created: [], updated: [] } });
-    expect(
-      (
-        result as {
-          polledNoChanges?: boolean;
-        }
-      ).polledNoChanges,
-    ).toBe(true);
+    expect((result as { polledNoChanges?: boolean }).polledNoChanges).toBe(
+      true,
+    );
+
     store = { lastPolledAt: "2026-06-10T00:00:00.000Z" };
     const toggled = await run({
       lookBackDate: LOOK_BACK,
@@ -215,6 +228,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       data: { created: [], updated: [touched] },
     });
   });
+
   test("a non-truncated poll advances the cursor to now", async () => {
     store = { lastPolledAt: "2026-06-10T00:00:00.000Z" };
     const before = Date.now();
@@ -224,6 +238,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
     );
     expect(store.backfillActive).toBeUndefined();
   });
+
   const pendingPages = (prefix: string) => {
     let n = 0;
     request.mockImplementation(async () => {
@@ -231,16 +246,15 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       return page([newRecord], `${prefix}${n}`);
     });
   };
+
   const afterOf = (call: number) =>
-    (
-      request.mock.calls[call][1] as {
-        after?: string;
-      }
-    ).after;
+    (request.mock.calls[call][1] as { after?: string }).after;
+
   const T1 = "2026-07-01T00:00:00.000Z";
   const T2 = "2026-07-02T00:00:00.000Z";
   const T3 = "2026-07-03T00:00:00.000Z";
   const at = (iso: string) => vi.setSystemTime(new Date(iso));
+
   describe("resuming a held cursor across recurrences", () => {
     beforeEach(() => {
       vi.useFakeTimers();
@@ -248,12 +262,14 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
     afterEach(() => {
       vi.useRealTimers();
     });
+
     test("a backfill larger than the cap drains over 3 recurrences and commits the first recurrence's start", async () => {
       const off = {
         lookBackDate: LOOK_BACK,
         showNewRecords: false,
         showUpdatedRecords: false,
       };
+
       at(T1);
       pendingPages("a");
       const r1 = await run(off);
@@ -266,6 +282,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
         streamStartedAt: T1,
         pollResourceType: "components",
       });
+
       at(T2);
       request.mockReset();
       pendingPages("b");
@@ -278,6 +295,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
         streamStartedAt: T1,
         pollResourceType: "components",
       });
+
       at(T3);
       request.mockReset();
       request.mockResolvedValue(page([touched]));
@@ -286,6 +304,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       expect(data(r3)).toEqual({ data: { created: [], updated: [touched] } });
       expect(store).toEqual({ lastPolledAt: T1 });
     });
+
     test("steady state with more pending changes than the cap resumes instead of re-reading the newest window", async () => {
       store = { lastPolledAt: "2026-06-10T00:00:00.000Z" };
       at(T1);
@@ -295,6 +314,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       expect(store.endCursor).toBe(`c${MAX_POLL_PAGES}`);
       expect(store.lastPolledAt).toBe("2026-06-10T00:00:00.000Z");
       expect(store.backfillActive).toBeUndefined();
+
       at(T2);
       request.mockReset();
       request.mockResolvedValue(page([newRecord]));
@@ -302,6 +322,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       expect(afterOf(0)).toBe(`c${MAX_POLL_PAGES}`);
       expect(store).toEqual({ lastPolledAt: T1 });
     });
+
     test("a resource type change mid-drain drops the stale cursor and restarts the stream", async () => {
       store = {
         lastPolledAt: "2026-06-10T00:00:00.000Z",
@@ -315,6 +336,7 @@ describe("pollChangesTrigger perform and the Look-back Date", () => {
       expect(afterOf(0)).toBeUndefined();
       expect(store).toEqual({ lastPolledAt: T2 });
     });
+
     test("a single-round drain commits that round's start and leaves no cursor", async () => {
       store = { lastPolledAt: "2026-06-10T00:00:00.000Z" };
       at(T1);

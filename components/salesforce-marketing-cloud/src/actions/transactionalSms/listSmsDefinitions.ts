@@ -5,6 +5,7 @@ import { listSmsDefinitionsExamplePayload } from "../../examplePayloads";
 import { listSmsDefinitionsInputs } from "../../inputs";
 import { listSmsDefinitionsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listSmsDefinitions = action({
   examplePayload: listSmsDefinitionsExamplePayload,
   display: {
@@ -20,10 +21,12 @@ export const listSmsDefinitions = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(
       client,
       SMS_DEFINITIONS_PATH,
@@ -34,11 +37,10 @@ export const listSmsDefinitions = action({
         preserveFields: ["requestId"],
       },
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listSmsDefinitionsExamplePayload.data,
   }),
 });

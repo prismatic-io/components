@@ -4,6 +4,7 @@ import { listWebhooksInputs } from "../../inputs";
 import { listWebhooks as listWebhooksFn } from "../../util";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",

@@ -9,6 +9,7 @@ import {
   topicNameOrFullFormat,
   updateMask,
 } from "../../inputs";
+
 export const updateTopic = action({
   display: {
     description: "Updates an existing topic.",

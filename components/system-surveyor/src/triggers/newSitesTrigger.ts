@@ -3,6 +3,7 @@ import { listSites } from "../actions/sites/listSites";
 import { newOrUpdatedSitesTriggerInputs } from "../inputs";
 import type { SiteRecordChange } from "../util";
 import { resolveSiteChanges, todayTimestamp } from "../util";
+
 export const newOrUpdatedSitesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Sites",
@@ -18,9 +19,8 @@ export const newOrUpdatedSitesTrigger = pollingTrigger({
   },
   perform: async (context, payload, params) => {
     const now = todayTimestamp();
-    const state = context.polling.getState() as {
-      cursor?: number;
-    };
+    const state = context.polling.getState() as { cursor?: number };
+
     if (!state?.cursor) {
       const lookBack = params.lookBackDate;
       const seed = lookBack
@@ -31,11 +31,9 @@ export const newOrUpdatedSitesTrigger = pollingTrigger({
         return { payload, polledNoChanges: true };
       }
     }
-    const cursor = (
-      context.polling.getState() as {
-        cursor: number;
-      }
-    ).cursor;
+
+    const cursor = (context.polling.getState() as { cursor: number }).cursor;
+
     const { data } = await listSites.perform(context, {
       ssvConnection: params.ssvConnection,
       modifiedAfter: util.types.toString(cursor),
@@ -43,14 +41,17 @@ export const newOrUpdatedSitesTrigger = pollingTrigger({
       pageNumber: undefined,
       pageSize: undefined,
     });
+
     const sites = data as unknown[];
     context.polling.setState({ cursor: now });
+
     if (sites?.length) {
       return {
         payload: { ...payload, body: { data: sites } },
         polledNoChanges: false,
       };
     }
+
     return { payload, polledNoChanges: true };
   },
 });

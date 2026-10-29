@@ -1,5 +1,6 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { paginator } from "./common";
+
 export const getEventTypes = async (
   client: HttpClient,
   adminManaged: boolean,

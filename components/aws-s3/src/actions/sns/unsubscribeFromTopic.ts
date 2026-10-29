@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSNSClient } from "../../client";
 import { unsubscribeFromTopicExamplePayload } from "../../examplePayloads";
 import { unsubscribeFromTopicInputs } from "../../inputs";
+
 export const unsubscribeFromTopic = action({
   display: {
     label: "Unsubscribe from SNS Topic",

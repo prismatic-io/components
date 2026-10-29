@@ -12,6 +12,7 @@ import {
   nextPollingState,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -35,6 +36,7 @@ export const pollChangesTrigger = pollingTrigger({
       (!pollState.lastPolledAt && Boolean(lookBack));
     const lastPolledAt = pollState.lastPolledAt ?? (lookBack || now);
     const drainUntil = pollState.drainUntil;
+
     const { messages: fetched, truncated } = await fetchMessagesSince(
       params.connection,
       new Date(lastPolledAt),
@@ -43,11 +45,14 @@ export const pollChangesTrigger = pollingTrigger({
       params.to,
       drainUntil ? new Date(drainUntil) : undefined,
     );
+
     const delivered = new Set(pollState.boundarySids ?? []);
     const messages = fetched.filter((m) => !delivered.has(m.sid));
+
     const created: TwilioMessage[] =
       isBackfill || params.showNewRecords !== false ? messages : [];
     const updated: TwilioMessage[] = [];
+
     const { state, warnings } = nextPollingState(
       fetched,
       truncated,
@@ -60,11 +65,13 @@ export const pollChangesTrigger = pollingTrigger({
     );
     for (const warning of warnings) context.logger.warn(warning);
     context.polling.setState(state);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Twilio messages: ${fetched.length} fetched, ${created.length} created, truncated=${truncated}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

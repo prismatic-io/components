@@ -4,6 +4,7 @@ import { deleteVariantExamplePayload as examplePayload } from "../../../exampleP
 import { deleteVariantInputs as inputs } from "../../../inputsGql";
 import { deleteVariantGqlOutputSchema } from "../../../outputSchemas";
 import deleteVariantQuery from "../queries/variants/DeleteVariant.gql";
+
 export const deleteVariantGql = action({
   display: {
     label: "Delete Variant",
@@ -23,6 +24,7 @@ export const deleteVariantGql = action({
       productId,
       variantsIds: [variantId],
     });
+
     return {
       data: data.productVariantsBulkDelete,
     };

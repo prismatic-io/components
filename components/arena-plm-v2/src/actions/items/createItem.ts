@@ -9,6 +9,7 @@ import type {
   ItemFullVo,
 } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createItem = action({
   display: {
     label: "Create Item",
@@ -47,6 +48,7 @@ export const createItem = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const itemPayload: ItemCreateVo = {
         name: name || undefined,
         description: description || undefined,
@@ -87,10 +89,12 @@ export const createItem = action({
         category: categoryGuid ? { guid: categoryGuid } : undefined,
         owner: ownerFullName ? { fullName: ownerFullName } : undefined,
       };
+
       if (numberFormatGuid) {
         const numberFormatObj: CreateNumberFormatVo = {
           guid: numberFormatGuid,
         };
+
         if (numberFormatFields && Array.isArray(numberFormatFields)) {
           const validFields = numberFormatFields
             .filter((field) => {
@@ -110,12 +114,15 @@ export const createItem = action({
               guid: field.key.trim(),
               value: String(field.value),
             }));
+
           if (validFields.length > 0) {
             numberFormatObj.fields = validFields;
           }
         }
+
         itemPayload.numberFormat = numberFormatObj;
       }
+
       itemPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: additionalAttributeJson,
@@ -124,6 +131,7 @@ export const createItem = action({
         },
         context,
       );
+
       context.logger.info("Creating item in Arena", {
         itemName: name,
         hasCategory: !!categoryGuid,
@@ -137,13 +145,16 @@ export const createItem = action({
         ),
         hasAdditionalAttributeJson: !!additionalAttributeJson,
       });
+
       const { data } = await client.post("/items", itemPayload);
       const createdItem: ItemFullVo = data;
+
       context.logger.info("Item created successfully", {
         itemGuid: createdItem.guid,
         itemNumber: createdItem.number,
         itemName: createdItem.name,
       });
+
       return { data: createdItem };
     } catch (error) {
       handleArenaError(error, context.logger, "Create Item");

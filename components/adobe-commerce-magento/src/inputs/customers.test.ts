@@ -5,6 +5,7 @@ import {
   passwordHash,
   redirectUrl,
 } from "./customers";
+
 describe("customers inputs: happy-path normalization", () => {
   test("customer.clean parses a JSON string to an object", () => {
     expect(
@@ -13,6 +14,7 @@ describe("customers inputs: happy-path normalization", () => {
       customer: { email: "jdoe@example.com" },
     });
   });
+
   test.each<
     [string, ((value: unknown) => unknown) | undefined, unknown, unknown]
   >([
@@ -28,6 +30,7 @@ describe("customers inputs: happy-path normalization", () => {
   ])("%s.clean normalizes a valid value", (_label, clean, raw, expected) => {
     expect(clean?.(raw)).toEqual(expected);
   });
+
   test.each<[string, ((value: unknown) => unknown) | undefined]>([
     ["password", password.clean],
     ["redirectUrl", redirectUrl.clean],

@@ -24,7 +24,9 @@ export const getSessionExamplePayload = {
     support_session_type: "string",
   },
 };
+
 export const createSessionExamplePayload = getSessionExamplePayload;
+
 export const listSessionsExamplePayload = {
   data: {
     sessions: [getSessionExamplePayload.data],

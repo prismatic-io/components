@@ -6,11 +6,13 @@ import {
 } from "@aws-sdk/client-ses";
 import { util } from "@prismatic-io/spectral";
 import { paginateAwsResults } from "aws-utils";
+
 export const cleanStringList = (value: unknown): string[] =>
   (value as unknown[])
     .map((item) => util.types.toString(item).split(","))
     .flat()
     .filter(Boolean);
+
 export const getAllIdentities = async ({
   client,
   identityType,
@@ -28,6 +30,7 @@ export const getAllIdentities = async ({
         }),
       itemsKey: "Identities",
     });
+
   return {
     identities: allItems,
     lastResponse,

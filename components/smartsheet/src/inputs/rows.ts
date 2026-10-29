@@ -9,6 +9,7 @@ import {
   sheetId,
   validateId,
 } from "./common";
+
 const dynamicColumns = input({
   label: "Dynamic Columns Values",
   type: "code",
@@ -26,6 +27,7 @@ const dynamicColumns = input({
   ),
   clean: cleanObjectInput,
 });
+
 const sourceSheetId = input({
   label: "Source Sheet ID",
   type: "string",
@@ -35,6 +37,7 @@ const sourceSheetId = input({
   example: "4583173393803140",
   placeholder: "Enter source sheet ID",
 });
+
 const rowIds = input({
   label: "Row IDs",
   type: "string",
@@ -47,6 +50,7 @@ const rowIds = input({
     "The unique identifiers of the rows to move or copy from the source sheet.",
   placeholder: "Enter row ID",
 });
+
 const toSheetId = input({
   label: "Destination Sheet ID",
   type: "string",
@@ -56,6 +60,7 @@ const toSheetId = input({
   example: "4583173393803140",
   placeholder: "Enter destination sheet ID",
 });
+
 const columnValues = input({
   label: "Column Values",
   placeholder: "Enter column values",
@@ -64,6 +69,7 @@ const columnValues = input({
   required: false,
   comments: "A list of column names mapped to the values to write into them.",
 });
+
 const position = input({
   label: "Row Position (for new rows)",
   type: "string",
@@ -76,6 +82,7 @@ const position = input({
   clean: util.types.toString,
   comments: "The position where new rows are added to the sheet.",
 });
+
 const allowPartialSuccess = input({
   label: "Allow Partial Success",
   type: "boolean",
@@ -85,6 +92,7 @@ const allowPartialSuccess = input({
   comments:
     "When true, allows the bulk operation to partially succeed if some rows fail validation rather than failing the entire request.",
 });
+
 const overrideValidation = input({
   label: "Override Validation",
   type: "boolean",
@@ -94,6 +102,7 @@ const overrideValidation = input({
   comments:
     "When true, allows cell values outside of the validation limits defined on the column.",
 });
+
 export const attachmentsListOnRowInputs = {
   connection: connectionInput,
   sheetId,
@@ -101,28 +110,33 @@ export const attachmentsListOnRowInputs = {
   includeAll,
   pagination,
 };
+
 export const copyRowsInputs = {
   connection: connectionInput,
   sheetId: sourceSheetId,
   rowIds,
   toSheetId,
 };
+
 export const deleteRowInputs = {
   connection: connectionInput,
   sheetId,
   rowId,
 };
+
 export const moveRowsInputs = {
   connection: connectionInput,
   sheetId,
   rowIds: { ...rowIds, required: false },
   toSheetId,
 };
+
 export const rowGetInputs = {
   connection: connectionInput,
   sheetId,
   rowId,
 };
+
 export const rowsAddToSheetInputs = {
   connection: connectionInput,
   sheetId,

@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { upsertRecordInputs } from "../../inputs";
 import { genericUpsertExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const upsertRecord = action({
   display: {
     label: "Upsert Record",
@@ -17,6 +18,7 @@ export const upsertRecord = action({
     { version, recordType, externalIdFieldName, connection, records },
   ) => {
     const salesforceClient = await createSalesforceClient(connection, version);
+
     if (context.debug.enabled) {
       context.logger.debug("Payload", {
         recordType,
@@ -24,6 +26,7 @@ export const upsertRecord = action({
         records,
       });
     }
+
     const command = salesforceClient
       .sobject(recordType)
       .upsert(records, externalIdFieldName);
@@ -32,9 +35,8 @@ export const upsertRecord = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericUpsertExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericUpsertExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: upsertRecordOutputSchema,

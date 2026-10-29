@@ -33,10 +33,12 @@ export const changeItemLifecyclePhaseOutputSchema = {
     },
   },
 };
+
 export const createItemImageOutputSchema = {
   type: "object" as const,
   properties: { guid: { type: "string" } },
 };
+
 export const deleteItemFileAssociationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -47,11 +49,13 @@ export const deleteItemFileAssociationOutputSchema = {
   },
   required: ["success", "message", "itemGuid", "itemFileAssociationGuid"],
 };
+
 export const deleteItemImageOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteItemOutputSchema = {
   type: "object" as const,
   properties: {
@@ -62,6 +66,7 @@ export const deleteItemOutputSchema = {
   },
   required: ["success", "itemGuid", "message", "statusCode"],
 };
+
 export const getItemImageContentOutputSchema = {
   type: "object" as const,
   properties: {
@@ -71,6 +76,7 @@ export const getItemImageContentOutputSchema = {
   },
   required: ["content", "contentType", "size"],
 };
+
 export const getItemNumberFormatByGuidOutputSchema = {
   type: "object" as const,
   properties: {
@@ -125,6 +131,7 @@ export const getItemNumberFormatByGuidOutputSchema = {
     },
   },
 };
+
 export const itemRevisionSchema = {
   type: "object" as const,
   properties: {
@@ -154,6 +161,7 @@ export const itemRevisionSchema = {
     },
   },
 };
+
 export const getItemRevisionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -161,6 +169,7 @@ export const getItemRevisionsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const itemComplianceSettingSchema = {
   type: "object" as const,
   properties: {
@@ -195,6 +204,7 @@ export const itemComplianceSettingSchema = {
     type: { type: "string" },
   },
 };
+
 export const itemFileSchema = {
   type: "object" as const,
   properties: {
@@ -270,6 +280,7 @@ export const itemFileSchema = {
     primary: { type: "boolean" },
   },
 };
+
 export const itemFullSchema = {
   type: "object" as const,
   properties: {
@@ -380,6 +391,7 @@ export const itemFullSchema = {
     isLocked: { type: "boolean" },
   },
 };
+
 export const itemFutureChangeSchema = {
   type: "object" as const,
   properties: {
@@ -396,6 +408,7 @@ export const itemFutureChangeSchema = {
     },
   },
 };
+
 export const itemHistorySchema = {
   type: "object" as const,
   properties: {
@@ -410,6 +423,7 @@ export const itemHistorySchema = {
     user: { type: "string" },
   },
 };
+
 export const itemTrainingRecordSchema = {
   type: "object" as const,
   properties: {
@@ -422,6 +436,7 @@ export const itemTrainingRecordSchema = {
     dueDate: { type: "string" },
   },
 };
+
 export const itemWhereUsedSchema = {
   type: "object" as const,
   properties: {
@@ -447,6 +462,7 @@ export const itemWhereUsedSchema = {
     refDes: { type: "string" },
   },
 };
+
 export const listItemFileAssociationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -454,6 +470,7 @@ export const listItemFileAssociationsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listItemFutureChangesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -461,6 +478,7 @@ export const listItemFutureChangesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listItemHistoryOutputSchema = {
   type: "object" as const,
   properties: {
@@ -468,6 +486,7 @@ export const listItemHistoryOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const numberFormatFieldFullSchema = {
   type: "object" as const,
   properties: {
@@ -507,6 +526,7 @@ export const numberFormatFieldFullSchema = {
     zeroPadding: { type: "boolean" },
   },
 };
+
 export const listItemNumberFormatFieldsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -514,6 +534,7 @@ export const listItemNumberFormatFieldsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const numberFormatBasicInfoSchema = {
   type: "object" as const,
   properties: {
@@ -524,6 +545,7 @@ export const numberFormatBasicInfoSchema = {
     name: { type: "string" },
   },
 };
+
 export const listItemNumberFormatsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -531,6 +553,7 @@ export const listItemNumberFormatsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const numberReservationSchema = {
   type: "object" as const,
   properties: {
@@ -557,6 +580,7 @@ export const numberReservationSchema = {
     quantity: { type: "integer", format: "int64" },
   },
 };
+
 export const listItemNumberReservationsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -564,6 +588,7 @@ export const listItemNumberReservationsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listItemRequirementsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -571,6 +596,7 @@ export const listItemRequirementsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -578,6 +604,7 @@ export const listItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listItemTrainingRecordsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -585,6 +612,7 @@ export const listItemTrainingRecordsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listItemWhereUsedOutputSchema = {
   type: "object" as const,
   properties: {

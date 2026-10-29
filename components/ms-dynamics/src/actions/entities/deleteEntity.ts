@@ -2,6 +2,7 @@ import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { deleteEntityExamplePayload } from "../../examplePayloads";
 import { deleteEntityInputs } from "../../inputs";
+
 export const deleteEntity = action({
   display: {
     label: "Delete Entity",
@@ -11,6 +12,7 @@ export const deleteEntity = action({
   examplePayload: deleteEntityExamplePayload,
   perform: async (context, { entityType, entityId, connection }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
+
     const result = await client.deleteRecord({
       key: entityId,
       collection: entityType,

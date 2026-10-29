@@ -1,10 +1,12 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connectionInput, version } from "../inputs";
+
 interface Channel {
   id: number;
   name: string;
 }
+
 export const selectChannel = dataSource({
   display: {
     label: "Select Channel",

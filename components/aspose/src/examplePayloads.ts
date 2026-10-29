@@ -18,18 +18,23 @@ export const getFilesListExamplePayload = {
     ],
   },
 };
+
 export const downloadFileExamplePayload = {
   data: "<binary data of file downloaded>",
 };
+
 export const convertDiagramExamplePayload = {
   data: "<binary data of diagram converted>",
 };
+
 export const getDiagramExamplePayload = {
   data: "<binary data of diagram downloaded>",
 };
+
 export const saveDiagramAsExamplePayload = {
   data: "<binary data of file downloaded>",
 };
+
 export const splitDocumentExamplePayload = {
   data: {
     SplitResult: {
@@ -54,12 +59,15 @@ export const splitDocumentExamplePayload = {
     },
   },
 };
+
 export const saveDocumentAsExamplePayload = {
   data: null,
 };
+
 export const loadWebDocumentExamplePayload = {
   data: null,
 };
+
 export const getDocumentExamplePayload = {
   data: {
     Document: {
@@ -263,27 +271,32 @@ export const getDocumentExamplePayload = {
     RequestId: "Root=1-65dfb304-6d7ffbc37ba1bebb44f6103c",
   },
 };
+
 export const createDocumentExamplePayload = {
   data: {
     StatusCode: 200,
     Status: "OK",
   },
 };
+
 export const convertLocalDocumentExamplePayload = {
   data: "<binary data of file converted>",
 };
+
 export const convertHtmlToPdfExamplePayload = {
   data: {
     Code: 200,
     Status: "OK",
   },
 };
+
 export const convertPdfToDocExamplePayload = {
   data: {
     Code: 200,
     Status: "OK",
   },
 };
+
 export const convertPdfToHtmlExamplePayload = {
   data: {
     Code: 200,

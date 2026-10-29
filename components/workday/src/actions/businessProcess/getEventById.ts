@@ -4,6 +4,7 @@ import { SERVICES } from "../../constants";
 import { getEventByIdExamplePayload } from "../../examplePayloads";
 import { getEventByIdInputs } from "../../inputs";
 import { getEventByIdOutputSchema } from "../../outputSchemas";
+
 export const getEventById = action({
   display: {
     label: "Get Event by ID",

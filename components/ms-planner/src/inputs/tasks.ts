@@ -15,10 +15,12 @@ import {
   planIdInput,
   taskIdInput,
 } from "./common";
+
 const categoryModel = Array.from({ length: 25 }, (_, index) => ({
   label: `Category ${index + 1}`,
   value: `category${index + 1}`,
 }));
+
 const taskTitleInput = input({
   label: "Title",
   type: "string",
@@ -28,6 +30,7 @@ const taskTitleInput = input({
   comments: "The title of the task, shown on its card in the Planner board.",
   clean: util.types.toString,
 });
+
 const taskTitleOptionalInput = input({
   ...taskTitleInput,
   required: false,
@@ -35,6 +38,7 @@ const taskTitleOptionalInput = input({
   comments: "A new title for the task. Leave blank to keep the current title.",
   clean: cleanStringInput,
 });
+
 const startDateTimeInput = input({
   label: "Start At",
   type: "string",
@@ -44,6 +48,7 @@ const startDateTimeInput = input({
   comments: "The timestamp the task starts, in ISO 8601 format.",
   clean: cleanStringInput,
 });
+
 const dueDateTimeInput = input({
   label: "Due At",
   type: "string",
@@ -53,6 +58,7 @@ const dueDateTimeInput = input({
   comments: "The timestamp the task is due, in ISO 8601 format.",
   clean: cleanStringInput,
 });
+
 const taskScheduleInput = structuredObjectInput({
   label: "Schedule",
   required: false,
@@ -62,6 +68,7 @@ const taskScheduleInput = structuredObjectInput({
     dueDateTime: dueDateTimeInput,
   },
 });
+
 const percentCompleteInput = input({
   label: "Percent Complete",
   type: "string",
@@ -72,6 +79,7 @@ const percentCompleteInput = input({
     "How complete the task is, from 0 to 100. Planner has no separate completed flag: setting this to 100 completes the task, and the service fills in who completed it and when.",
   clean: cleanOptionalNumber,
 });
+
 const priorityInput = input({
   label: "Priority",
   type: "string",
@@ -88,6 +96,7 @@ const priorityInput = input({
     "The priority of the task. Planner stores priority as a number from 0 to 10 and displays it in four bands, so these four values are the ones the Planner interface itself uses.",
   clean: cleanOptionalNumber,
 });
+
 const applyCategoriesInput = input({
   label: "Apply",
   type: "string",
@@ -99,6 +108,7 @@ const applyCategoriesInput = input({
     "Colored categories to apply to the task. The label shown for each category is configured on the plan.",
   clean: cleanStringList,
 });
+
 const removeCategoriesInput = input({
   label: "Remove",
   type: "string",
@@ -109,6 +119,7 @@ const removeCategoriesInput = input({
   comments: "Colored categories to remove from the task.",
   clean: cleanStringList,
 });
+
 const taskCategoriesInput = structuredObjectInput({
   label: "Categories",
   required: false,
@@ -118,6 +129,7 @@ const taskCategoriesInput = structuredObjectInput({
     removeCategories: removeCategoriesInput,
   },
 });
+
 const assignToInput = input({
   label: "Assign To",
   type: "string",
@@ -130,6 +142,7 @@ const assignToInput = input({
     "Users to assign to the task, identified by object ID. Existing assignees that are not listed here are left in place.",
   clean: cleanStringList,
 });
+
 const unassignInput = input({
   label: "Unassign",
   type: "string",
@@ -141,6 +154,7 @@ const unassignInput = input({
   comments: "Users to remove from the task, identified by object ID.",
   clean: cleanStringList,
 });
+
 const taskAssignmentInput = structuredObjectInput({
   label: "Assignment",
   required: false,
@@ -150,6 +164,7 @@ const taskAssignmentInput = structuredObjectInput({
     unassign: unassignInput,
   },
 });
+
 const conversationThreadIdInput = input({
   label: "Conversation Thread ID",
   type: "string",
@@ -160,6 +175,7 @@ const conversationThreadIdInput = input({
     "The identifier of the group conversation thread associated with the task.",
   clean: cleanStringInput,
 });
+
 const descriptionInput = input({
   label: "Description",
   type: "text",
@@ -170,6 +186,7 @@ const descriptionInput = input({
     "The description of the task. Descriptions live on the task's details resource rather than the task itself, so setting one is a separate write.",
   clean: cleanStringInput,
 });
+
 const previewTypeInput = input({
   label: "Preview Type",
   type: "string",
@@ -187,6 +204,7 @@ const previewTypeInput = input({
     "Which part of the task details is shown on the task's card in the Planner board.",
   clean: cleanStringInput,
 });
+
 const addChecklistItemsInput = input({
   label: "Add Items",
   type: "string",
@@ -198,6 +216,7 @@ const addChecklistItemsInput = input({
     "Checklist items to add, where the key is the item title and the value is true if the item starts checked.",
   clean: cleanChecklistItems,
 });
+
 const removeChecklistItemIdsInput = input({
   label: "Remove Items",
   type: "string",
@@ -209,6 +228,7 @@ const removeChecklistItemIdsInput = input({
     "Identifiers of checklist items to remove. Use the Get Task Details action to read the current item identifiers.",
   clean: cleanStringList,
 });
+
 const checklistInput = structuredObjectInput({
   label: "Checklist",
   required: false,
@@ -218,6 +238,7 @@ const checklistInput = structuredObjectInput({
     removeItemIds: removeChecklistItemIdsInput,
   },
 });
+
 const addReferencesInput = input({
   label: "Add",
   type: "string",
@@ -229,6 +250,7 @@ const addReferencesInput = input({
     "External links to attach to the task, where the key is the URL and the value is the display name shown in Planner.",
   clean: cleanReferences,
 });
+
 const removeReferenceUrlsInput = input({
   label: "Remove",
   type: "string",
@@ -239,6 +261,7 @@ const removeReferenceUrlsInput = input({
   comments: "URLs of external links to remove from the task.",
   clean: cleanStringList,
 });
+
 const referencesInput = structuredObjectInput({
   label: "Links",
   required: false,
@@ -248,6 +271,7 @@ const referencesInput = structuredObjectInput({
     removeReferenceUrls: removeReferenceUrlsInput,
   },
 });
+
 const taskDetailsEtagInput = input({
   ...etagInput,
   label: "Task Details ETag",
@@ -256,6 +280,7 @@ const taskDetailsEtagInput = input({
   comments:
     "The last known ETag of the task details. Task details carry their own ETag, separate from the task's, so a task ETag cannot be used here. Leave blank to read the current value before writing.",
 });
+
 export const assignTaskInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -268,6 +293,7 @@ export const assignTaskInputs = {
   },
   etag: etagInput,
 };
+
 export const completeTaskInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -275,6 +301,7 @@ export const completeTaskInputs = {
   taskId: taskIdInput,
   etag: etagInput,
 };
+
 export const createTaskInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -292,6 +319,7 @@ export const createTaskInputs = {
   categories: taskCategoriesInput,
   description: descriptionInput,
 };
+
 export const deleteTaskInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -299,32 +327,38 @@ export const deleteTaskInputs = {
   taskId: taskIdInput,
   etag: etagInput,
 };
+
 export const getTaskInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
   taskId: taskIdInput,
 };
+
 export const getTaskDetailsInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
   taskId: taskIdInput,
 };
+
 export const listTasksForUserInputs = {
   connection: connectionInput,
 };
+
 export const listTasksInBucketInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
   bucketId: bucketIdInput,
 };
+
 export const listTasksInPlanInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
   planId: planIdInput,
 };
+
 export const moveTaskToBucketInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -333,6 +367,7 @@ export const moveTaskToBucketInputs = {
   bucketId: bucketIdInput,
   etag: etagInput,
 };
+
 export const updateTaskInputs = {
   connection: connectionInput,
   groupId: groupIdInput,
@@ -348,6 +383,7 @@ export const updateTaskInputs = {
   conversationThreadId: conversationThreadIdInput,
   etag: etagInput,
 };
+
 export const updateTaskDetailsInputs = {
   connection: connectionInput,
   groupId: groupIdInput,

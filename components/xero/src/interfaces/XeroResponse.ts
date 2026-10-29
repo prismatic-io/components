@@ -1,4 +1,5 @@
 import type { Pagination } from "./Pagination";
+
 export type XeroResponse<T, K extends string> = {
   Id: string;
   Status: string;

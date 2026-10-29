@@ -8,6 +8,7 @@ import {
 } from "../constants";
 import type { ListChange } from "../types";
 import { getDriveQueryParams } from "./query";
+
 export const getQueryDriveActivity = async (
   drive: driveactivity_v2.Driveactivity,
   params: Record<string, unknown>,
@@ -15,8 +16,10 @@ export const getQueryDriveActivity = async (
 ): Promise<driveactivity_v2.Schema$QueryDriveActivityResponse> => {
   const { pageToken, ancestorName, filter, itemName, consolidationStrategy } =
     params;
+
   const strategy = util.types.toString(consolidationStrategy);
   const consolidation = strategy ? { [strategy]: {} } : undefined;
+
   let drivePageToken: string | undefined;
   const requestBody: Record<string, unknown> = {
     pageToken,
@@ -49,17 +52,11 @@ export const getQueryDriveActivity = async (
   }
   return data;
 };
+
 export const fetchBackfillPage = async (
   client: drive_v3.Drive,
-  params: {
-    modifiedAfter: string;
-    driveId: string;
-    pageToken?: string;
-  },
-): Promise<{
-  changes: ListChange[];
-  nextPageToken?: string;
-}> => {
+  params: { modifiedAfter: string; driveId: string; pageToken?: string },
+): Promise<{ changes: ListChange[]; nextPageToken?: string }> => {
   const { data } = await client.files.list({
     q: `modifiedTime > '${params.modifiedAfter}' and trashed = false`,
     pageSize: CHANGES_PAGE_SIZE,
@@ -68,6 +65,7 @@ export const fetchBackfillPage = async (
     ...(params.pageToken ? { pageToken: params.pageToken } : {}),
     ...getDriveQueryParams(params.driveId),
   });
+
   const changes: ListChange[] = (data.files ?? []).map((file) => ({
     kind: DRIVE_CHANGE_KIND,
     changeType: CHANGE_TYPE_FILE,
@@ -81,17 +79,16 @@ export const fetchBackfillPage = async (
       name: file.name,
     },
   }));
+
   return {
     changes,
     ...(data.nextPageToken ? { nextPageToken: data.nextPageToken } : {}),
   };
 };
+
 export const fetchChangesPage = async (
   client: drive_v3.Drive,
-  params: {
-    pageToken: string;
-    driveId: string;
-  },
+  params: { pageToken: string; driveId: string },
 ): Promise<drive_v3.Schema$ChangeList> => {
   const { data } = await client.changes.list({
     pageSize: CHANGES_PAGE_SIZE,
@@ -100,6 +97,7 @@ export const fetchChangesPage = async (
   });
   return data;
 };
+
 export const fetchStartPageToken = async (
   client: drive_v3.Drive,
   driveId: string,

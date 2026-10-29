@@ -1,4 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -9,12 +10,14 @@ import {
   mapBooleanModelInput,
   mapModelValues,
 } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The ServiceTitan connection to use.",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -24,6 +27,7 @@ export const fetchAll = input({
   clean: util.types.toBool,
   default: "false",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -34,6 +38,7 @@ export const page = input({
   placeholder: "Enter a page number",
   clean: cleanNumberInput,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -44,12 +49,14 @@ export const pageSize = input({
   placeholder: "Enter the number of records per page",
   clean: cleanNumberInput,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page number and page size.",
   inputs: { page, pageSize },
 });
+
 export const includeTotal = input({
   label: "Include Total",
   type: "boolean",
@@ -58,6 +65,7 @@ export const includeTotal = input({
     "When true, includes the total count of matching records in the response. Ignored when Fetch All is true.",
   clean: util.types.toBool,
 });
+
 export const sort = input({
   label: "Sort",
   type: "string",
@@ -68,6 +76,7 @@ export const sort = input({
   placeholder: "Enter a field name prefixed with + or -",
   clean: cleanStringInput,
 });
+
 export const customQueryParams = input({
   label: "Custom Query Params",
   type: "string",
@@ -79,6 +88,7 @@ export const customQueryParams = input({
   placeholder: "Enter a query parameter name and value",
   clean: cleanKeyValueListInput,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -88,6 +98,7 @@ export const name = input({
   placeholder: "Enter a name",
   clean: cleanStringInput,
 });
+
 export const memo = input({
   label: "Memo",
   type: "string",
@@ -97,6 +108,7 @@ export const memo = input({
   placeholder: "Enter a memo",
   clean: cleanStringInput,
 });
+
 export const active = input({
   label: "Active",
   type: "string",
@@ -106,6 +118,7 @@ export const active = input({
   clean: cleanBooleanInput,
   default: "",
 });
+
 export const address = input({
   label: "Address",
   type: "code",
@@ -127,6 +140,7 @@ export const address = input({
     "The street address, including unit, city, state, ZIP code, and country.",
   clean: cleanCodeInput,
 });
+
 export const contacts = input({
   label: "Contacts",
   type: "code",
@@ -147,6 +161,7 @@ export const contacts = input({
     "The contact methods to attach, each with a type such as Phone or Email, a value, and an optional memo.",
   clean: cleanCodeInput,
 });
+
 export const customFields = input({
   label: "Custom Fields",
   type: "code",
@@ -166,6 +181,7 @@ export const customFields = input({
     "Custom field values to set, as an array of type ID and value pairs.",
   clean: cleanCodeInput,
 });
+
 export const tagTypeIds = input({
   label: "Tag Type IDs",
   type: "string",
@@ -176,6 +192,7 @@ export const tagTypeIds = input({
   placeholder: "Enter a tag type ID",
   clean: cleanNumberValueListInput,
 });
+
 export const externalData = input({
   label: "External Data",
   type: "code",
@@ -197,6 +214,7 @@ export const externalData = input({
   comments: "External data to attach to the request.",
   clean: cleanCodeInput,
 });
+
 export const summary = input({
   label: "Summary",
   type: "string",
@@ -206,6 +224,7 @@ export const summary = input({
   placeholder: "Enter a summary",
   clean: cleanStringInput,
 });
+
 export const start = input({
   label: "Start",
   type: "string",
@@ -215,6 +234,7 @@ export const start = input({
   placeholder: "Enter a start date and time in UTC",
   clean: cleanStringInput,
 });
+
 export const end = input({
   label: "End",
   type: "string",
@@ -224,6 +244,7 @@ export const end = input({
   placeholder: "Enter an end date and time in UTC",
   clean: cleanStringInput,
 });
+
 export const customerId = input({
   label: "Customer ID",
   type: "string",
@@ -234,6 +255,7 @@ export const customerId = input({
   clean: cleanNumberInput,
   dataSource: "selectCustomers",
 });
+
 export const locationId = input({
   label: "Location ID",
   type: "string",
@@ -244,6 +266,7 @@ export const locationId = input({
   clean: cleanNumberInput,
   dataSource: "selectLocation",
 });
+
 export const businessUnitId = input({
   label: "Business Unit ID",
   type: "string",
@@ -254,6 +277,7 @@ export const businessUnitId = input({
   clean: cleanStringInput,
   dataSource: "selectBusinessUnit",
 });
+
 export const campaignId = input({
   label: "Campaign ID",
   type: "string",
@@ -263,6 +287,7 @@ export const campaignId = input({
   placeholder: "Enter a campaign ID",
   clean: cleanStringInput,
 });
+
 export const jobTypeId = input({
   label: "Job Type ID",
   type: "string",
@@ -272,6 +297,7 @@ export const jobTypeId = input({
   placeholder: "Enter a job type ID",
   clean: cleanStringInput,
 });
+
 export const priority = input({
   label: "Priority",
   type: "string",
@@ -280,6 +306,7 @@ export const priority = input({
   model: mapModelValues(["Low", "Normal", "High", "Urgent"], true),
   clean: cleanStringInput,
 });
+
 export const customerType = input({
   label: "Customer Type",
   type: "string",
@@ -288,6 +315,7 @@ export const customerType = input({
   model: mapModelValues(["Residential", "Commercial"], true),
   clean: cleanStringInput,
 });
+
 export const exportId = input({
   label: "Export ID",
   type: "string",
@@ -298,6 +326,7 @@ export const exportId = input({
   placeholder: "Enter an export identifier",
   clean: cleanStringInput,
 });
+
 export const typeId = input({
   label: "Type ID",
   type: "string",
@@ -308,6 +337,7 @@ export const typeId = input({
   placeholder: "Enter a type ID",
   clean: cleanNumberInput,
 });
+
 export const operations = input({
   label: "Operations",
   type: "code",
@@ -331,6 +361,7 @@ export const operations = input({
   comments: "The operations to perform on the payment.",
   clean: util.types.toObject,
 });
+
 export const installedOn = input({
   label: "Installed On",
   type: "string",
@@ -340,6 +371,7 @@ export const installedOn = input({
   placeholder: "Enter the installation date and time in UTC",
   clean: cleanStringInput,
 });
+
 export const modifiedBefore = input({
   label: "Modified Before",
   type: "string",
@@ -349,6 +381,7 @@ export const modifiedBefore = input({
   placeholder: "Enter a date and time in UTC",
   clean: cleanStringInput,
 });
+
 export const modifiedOnOrAfter = input({
   label: "Modified On Or After",
   type: "string",
@@ -358,6 +391,7 @@ export const modifiedOnOrAfter = input({
   placeholder: "Enter a date and time in UTC",
   clean: cleanStringInput,
 });
+
 export const technicianId = input({
   label: "Technician ID",
   type: "string",
@@ -368,6 +402,7 @@ export const technicianId = input({
   clean: cleanNumberInput,
   dataSource: "selectTechnician",
 });
+
 export const jobId = input({
   label: "Job ID",
   type: "string",
@@ -378,6 +413,7 @@ export const jobId = input({
   clean: cleanNumberInput,
   dataSource: "selectJob",
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",

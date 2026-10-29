@@ -13,6 +13,7 @@ export const jobOutputSchema = {
   },
   required: ["Name", "SetId"],
 };
+
 export const listJobsOutputSchema = {
   type: "object" as const,
   properties: {

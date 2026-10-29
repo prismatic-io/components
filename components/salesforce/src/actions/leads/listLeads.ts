@@ -3,6 +3,7 @@ import { createSalesforceClient } from "../../client";
 import { listLeadsInputs } from "../../inputs";
 import { executeSFAction, getFindQuery } from "../../util";
 import { listLeadsExamplePayload } from "../../examplePayloads";
+
 export const listLeads = action({
   display: {
     label: "List Leads",
@@ -23,6 +24,7 @@ export const listLeads = action({
     },
   ) => {
     const maxRecordsToFetch = pagination.maxRecordsToFetch;
+
     if (context.debug.enabled) {
       context.logger.debug({
         version,
@@ -53,9 +55,8 @@ export const listLeads = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listLeadsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listLeadsExamplePayload,
   inputs: listLeadsInputs,
   examplePayload: listLeadsExamplePayload as unknown,
 });

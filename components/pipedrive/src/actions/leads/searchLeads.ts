@@ -4,6 +4,7 @@ import { searchLeadsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { searchLeadsExamplePayload } from "../../examplePayloads";
 import { searchLeadsOutputSchema } from "../../outputSchemas";
+
 export const searchLeads = action({
   display: {
     label: "Search Leads",

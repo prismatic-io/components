@@ -3,10 +3,12 @@ export const MAX_USERS_PAGE_SIZE = 100;
 export const MAX_WEBHOOKS_PAGE_SIZE = 100;
 export const MAX_GROUPS_PAGE_SIZE = 100;
 export const MAX_GROUP_EVENTS_PAGE_SIZE = 100;
+
 export const POLL_PAGE_SIZE = 100;
 export const MAX_POLL_PAGES = 50;
 export const POLL_BOOTSTRAP_WINDOW_MS = 24 * 60 * 60 * 1000;
 export const POLL_OWNERSHIP_SCOPE = "OWNED";
+
 export const MAX_PAGE_SIZE_BY_ITEMS_KEY: Record<string, number> = {
   userAgreementList: MAX_AGREEMENTS_PAGE_SIZE,
   userInfoList: MAX_USERS_PAGE_SIZE,
@@ -14,6 +16,7 @@ export const MAX_PAGE_SIZE_BY_ITEMS_KEY: Record<string, number> = {
   groupInfoList: MAX_GROUPS_PAGE_SIZE,
   groupEvents: MAX_GROUP_EVENTS_PAGE_SIZE,
 };
+
 export const WEBHOOK_SUBSCRIPTION_EVENT_TYPES = [
   "AGREEMENT_CREATED",
   "AGREEMENT_ACTION_DELEGATED",
@@ -65,6 +68,7 @@ export const WEBHOOK_SUBSCRIPTION_EVENT_TYPES = [
   "LIBRARY_DOCUMENT_MODIFIED",
   "LIBRARY_DOCUMENT_ALL",
 ] as const;
+
 export const PARTICIPANT_SET_INFO_ROLES = [
   "SIGNER",
   "APPROVER",
@@ -79,6 +83,7 @@ export const PARTICIPANT_SET_INFO_ROLES = [
   "NOTARY_SIGNER",
   "ELECTRONIC_SEALER",
 ] as const;
+
 export const SEARCH_USER_ROLES = [
   "SENDER",
   "CC",
@@ -96,6 +101,7 @@ export const SEARCH_USER_ROLES = [
   "SHARE",
   "OTHER",
 ] as const;
+
 export const SORT_BY_FIELD_OPTIONS = [
   "CREATED_DATE",
   "MODIFIED_DATE",
@@ -104,6 +110,7 @@ export const SORT_BY_FIELD_OPTIONS = [
   "STATUS",
   "SENDER",
 ] as const;
+
 export const STATUS_TYPES = [
   "WAITING_FOR_MY_SIGNATURE",
   "WAITING_FOR_MY_APPROVAL",
@@ -135,5 +142,6 @@ export const STATUS_TYPES = [
   "ACCEPT_BEFORE_NOTARIZATION",
   "OTHER",
 ] as const;
+
 export const DEFAULT_BATCH_SIZE = 50;
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

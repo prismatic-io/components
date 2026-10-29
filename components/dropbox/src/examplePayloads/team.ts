@@ -1,4 +1,5 @@
 import type { DropboxResponse, team } from "dropbox";
+
 export const getTeamInfoExamplePayload: DropboxResponse<team.MembersGetInfoV2Result> =
   {
     status: 200,
@@ -53,6 +54,7 @@ export const getTeamInfoExamplePayload: DropboxResponse<team.MembersGetInfoV2Res
       ],
     },
   };
+
 export const listTeamFoldersExamplePayload: DropboxResponse<team.TeamFolderListResult> =
   {
     status: 200,

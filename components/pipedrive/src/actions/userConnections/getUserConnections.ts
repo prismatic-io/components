@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getUserConnectionsInputs } from "../../inputs";
 import { getUserConnectionsExamplePayload } from "../../examplePayloads";
 import { getUserConnectionsOutputSchema } from "../../outputSchemas";
+
 export const getUserConnections = action({
   display: {
     label: "Get User Connections",

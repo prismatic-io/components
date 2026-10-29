@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { pollResourceModel } from "./constants";
 import { lookBackDateClean } from "./util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const queryString = input({
   label: "Query String",
   placeholder: "Query String",
@@ -15,6 +17,7 @@ export const queryString = input({
   required: true,
   example: "select * from department",
 });
+
 export const perPage = input({
   label: "Per Page",
   type: "string",
@@ -69,6 +72,7 @@ export const jobcodeId = input({
   comments: "The Jobcode Id",
   dataSource: "selectJobCode",
 });
+
 export const userNameReq = input({
   label: "Username",
   type: "string",
@@ -164,6 +168,7 @@ export const endDateISOReq = input({
     "End time of the timesheet, in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm). Time should reflect the user's local time.",
   example: "YYYY-MM-DDThh:mm:ss±hh:mm",
 });
+
 export const timesheetType = input({
   label: "Type",
   type: "string",
@@ -173,6 +178,7 @@ export const timesheetType = input({
     { label: "manual", value: "manual" },
   ],
 });
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -181,6 +187,7 @@ export const pollResourceType = input({
   model: pollResourceModel,
   clean: util.types.toString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -189,6 +196,7 @@ export const showNewRecords = input({
   comments: "Include newly created records in trigger results.",
   clean: util.types.toBool,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -199,6 +207,7 @@ export const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export default {
   active,
   perPage,

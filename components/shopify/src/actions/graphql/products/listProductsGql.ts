@@ -9,6 +9,7 @@ import { fetchData } from "../../../util";
 import { paginationMapper } from "../mappers/paginationMapper";
 import { productMapper } from "../mappers/productMapper";
 import listProductsQuery from "../queries/products/ListProducts.gql";
+
 export const listProductsGql = action({
   display: {
     label: "List Products",
@@ -24,6 +25,7 @@ export const listProductsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = (await fetchData<Product>(
       client,
       ["products"],
@@ -34,9 +36,8 @@ export const listProductsGql = action({
         first: getAlldata ? MAX_LIMIT : pagination.limit,
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
-    )) as Record<"products", Product[]> & {
-      pageInfo: PageInfo;
-    };
+    )) as Record<"products", Product[]> & { pageInfo: PageInfo };
+
     return {
       data: {
         data: {

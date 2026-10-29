@@ -3,6 +3,7 @@ import { createV3Client } from "../../connections/auth";
 import { getIssueExamplePayload } from "../../examplePayloads";
 import { connectionInput, issueId } from "../../inputs";
 import { getIssueById } from "../../util";
+
 export const getIssue = action({
   display: {
     label: "Get Issue",

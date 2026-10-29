@@ -1,4 +1,5 @@
 import { attachmentSchema } from "./common";
+
 const assetBaseProperties = {
   id: { type: "number" },
   workspace_id: { type: "number" },
@@ -20,6 +21,7 @@ const assetBaseProperties = {
   updated_at: { type: "string", format: "date-time" },
   type_fields: { type: "object" },
 };
+
 export const assetOutputSchema = {
   type: "object" as const,
   properties: {
@@ -31,6 +33,7 @@ export const assetOutputSchema = {
   },
   required: ["asset"],
 };
+
 export const assetsListOutputSchema = {
   type: "object" as const,
   properties: {
@@ -52,6 +55,7 @@ export const assetsListOutputSchema = {
   },
   required: ["assets"],
 };
+
 export const moveAssetOutputSchema = {
   type: "object" as const,
   properties: {

@@ -5,6 +5,7 @@ import { listEventAssociationsInputs } from "../../inputs";
 import { listEventAssociationsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
 import { fetchArenaList } from "../../util/pagination";
+
 export const listEventAssociations = action({
   display: {
     label: "List Event Associations",
@@ -31,6 +32,7 @@ export const listEventAssociations = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const params = {
         itemsReconciled,
         creationDateTimeFrom,
@@ -38,8 +40,11 @@ export const listEventAssociations = action({
         offset: pagination.offset,
         limit: pagination.limit,
       };
+
       const path = `/outboundintegrations/${integrationGuid}/events`;
+
       const data = await fetchArenaList(client, path, params, fetchAll);
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Event Associations");

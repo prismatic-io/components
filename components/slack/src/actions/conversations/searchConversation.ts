@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { searchConversationExamplePayload } from "../../examplePayloads";
 import { searchConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
+
 export const searchConversation = action({
   display: {
     label: "Search Conversation",
@@ -52,11 +53,10 @@ export const searchConversation = action({
       team_ids: team_ids as [string, ...string[]],
       total_count_only,
     });
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: searchConversationExamplePayload,
   }),
   examplePayload: {

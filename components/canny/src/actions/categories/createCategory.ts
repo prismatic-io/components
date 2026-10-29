@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createCategoryExamplePayload } from "../../examplePayloads";
 import { createCategoryInputs } from "../../inputs";
 import { createCategoryOutputSchema } from "../../outputSchemas";
+
 export const createCategory = action({
   display: {
     label: "Create Category",
@@ -33,8 +34,7 @@ export const createCategory = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createCategoryExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createCategoryExamplePayload,
   examplePayload: createCategoryExamplePayload,
 });

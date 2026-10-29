@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -14,7 +15,9 @@ export const deleteWebhook = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(`/webhook/${webhookId}`);
+
     return {
       data,
     };

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalObject } from "../util";
 import { boardId, connectionInput } from "./common";
+
 const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -11,6 +12,7 @@ const webhookId = input({
   dataSource: "selectWebhook",
   clean: util.types.toInt,
 });
+
 const webhookUrl = input({
   label: "Webhook URL",
   type: "string",
@@ -21,6 +23,7 @@ const webhookUrl = input({
   example: "https://hooks.example.com/monday/events",
   clean: util.types.toString,
 });
+
 export const webhookEvent = input({
   label: "Event",
   type: "string",
@@ -64,6 +67,7 @@ export const webhookEvent = input({
   placeholder: "Select event type",
   clean: util.types.toString,
 });
+
 export const webhookConfig = input({
   label: "Config",
   type: "code",
@@ -75,6 +79,7 @@ export const webhookConfig = input({
   example: JSON.stringify({ columnId: "status" }, null, 2),
   clean: toOptionalObject,
 });
+
 export const createWebhookInputs = {
   connection: connectionInput,
   boardId,
@@ -82,11 +87,13 @@ export const createWebhookInputs = {
   webhookEvent,
   webhookConfig,
 };
+
 export const deleteWebhookInputs = {
   connection: connectionInput,
   boardId,
   webhookId,
 };
+
 export const listWebhooksInputs = {
   connection: connectionInput,
   boardId,

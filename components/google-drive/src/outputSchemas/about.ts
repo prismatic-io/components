@@ -1,4 +1,5 @@
 import { userSchema } from "./common";
+
 export const getAboutOutputSchema = {
   type: "object" as const,
   properties: {
@@ -46,4 +47,5 @@ export const getAboutOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const getCurrentUserOutputSchema = userSchema;

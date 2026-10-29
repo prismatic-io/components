@@ -2,6 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { teamsExamplePayload } from "../examplePayloads";
 import { connectionInput, page } from "../inputs";
+
 export const teams = dataSource({
   display: {
     label: "Fetch Teams",

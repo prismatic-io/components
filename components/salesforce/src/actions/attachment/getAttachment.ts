@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { getAttachmentInputs } from "../../inputs";
 import { getAttachmentExamplePayload } from "../../examplePayloads";
+
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
@@ -16,13 +17,16 @@ export const getAttachment = action({
       connection,
       context.debug.enabled,
     );
+
     const { data, headers } = await httpClient.get(
       `/sobjects/Attachment/${fileId}/Body`,
       {
         responseType: "arraybuffer",
       },
     );
+
     const contentType = headers["content-type"];
+
     return { data, contentType };
   },
   examplePayload: getAttachmentExamplePayload,

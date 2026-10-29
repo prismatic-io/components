@@ -3,6 +3,7 @@ import { rawHttpClient } from "../../auth";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",

@@ -1,4 +1,5 @@
 import { simpleUserSchema } from "./common";
+
 const pullRefSchema = {
   type: "object" as const,
   properties: {
@@ -10,6 +11,7 @@ const pullRefSchema = {
   },
   required: ["label", "ref", "sha"],
 };
+
 export const pullsCreateOutputSchema = {
   type: "object" as const,
   properties: {
@@ -50,6 +52,7 @@ export const pullsCreateOutputSchema = {
     "base",
   ],
 };
+
 export const pullsListOutputSchema = {
   type: "array" as const,
   items: {

@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { updateRecordInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
+
 export const updateRecord = action({
   display: {
     label: "Update Record",
@@ -24,6 +25,7 @@ export const updateRecord = action({
       });
     }
     const salesforceClient = await createSalesforceClient(connection, version);
+
     const command = salesforceClient.sobject(recordType).update({
       ...dynamicValues,
       ...fieldValues,
@@ -34,9 +36,8 @@ export const updateRecord = action({
       data: response,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => genericCreateUpdateExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    genericCreateUpdateExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: updateRecordOutputSchema,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDomoClient } from "../../client";
 import { uploadDataPartExamplePayload } from "../../examplePayloads";
 import { uploadDataPartInputs } from "../../inputs";
+
 export const uploadDataPart = action({
   display: {
     label: "Upload Data Part",
@@ -25,4 +26,5 @@ export const uploadDataPart = action({
   },
   inputs: uploadDataPartInputs,
 });
+
 export default { uploadDataPart };

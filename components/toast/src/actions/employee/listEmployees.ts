@@ -3,6 +3,7 @@ import { createToastClient } from "../../client";
 import { listEmployeesExamplePayload as examplePayload } from "../../examplePayloads";
 import { listEmployeesInputs as inputs } from "../../inputs/employee";
 import { serializeRepeatedParam } from "../../utils";
+
 export const listEmployees = action({
   display: {
     label: "List Employees",
@@ -22,9 +23,11 @@ export const listEmployees = action({
       employeeIds || [],
       "employeeIds",
     );
+
     const { data } = await client.get(
       `/labor/v1/employees?${serializedEmployeeIds}`,
     );
+
     return {
       data,
     };

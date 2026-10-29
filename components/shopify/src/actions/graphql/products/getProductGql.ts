@@ -6,6 +6,7 @@ import { getProductGqlOutputSchema } from "../../../outputSchemas";
 import type { Product } from "../../../types";
 import { productMapper } from "../mappers/productMapper";
 import getProductQuery from "../queries/products/GetProduct.gql";
+
 export const getProductGql = action({
   display: {
     label: "Get Product",
@@ -19,13 +20,14 @@ export const getProductGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const {
-      product,
-    }: {
-      product: Product;
-    } = await client.request(getProductQuery, {
-      id: productId,
-    });
+
+    const { product }: { product: Product } = await client.request(
+      getProductQuery,
+      {
+        id: productId,
+      },
+    );
+
     return {
       data: { product: productMapper(product) },
     };

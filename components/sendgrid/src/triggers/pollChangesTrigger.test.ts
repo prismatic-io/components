@@ -5,23 +5,18 @@ import { POLLING_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import type { SendgridMessageRecord } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const mockFetchMessagesInWindow =
   vi.fn<
-    () => Promise<{
-      records: SendgridMessageRecord[];
-      truncated: boolean;
-    }>
+    () => Promise<{ records: SendgridMessageRecord[]; truncated: boolean }>
   >();
+
 vi.mock("../client", () => ({
   createAuthorizedClient: vi.fn().mockReturnValue({}),
 }));
-const mockComputePollWindow =
-  vi.fn<
-    () => {
-      fromIso: string;
-      toIso: string;
-    }
-  >();
+
+const mockComputePollWindow = vi.fn<() => { fromIso: string; toIso: string }>();
+
 vi.mock("../util", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../util")>();
   return {
@@ -31,13 +26,16 @@ vi.mock("../util", async (importOriginal) => {
       mockComputePollWindow(...(args as [])),
   };
 });
+
 const NOW = "2026-06-01T12:00:00.000Z";
 const SEEDED_CURSOR = "2026-05-01T00:00:00.000Z";
+
 interface PollingStore {
   currentState: () => Record<string, unknown>;
   writes: Record<string, unknown>[];
   context: Partial<ActionContext>;
 }
+
 const createPollingStore = (
   seedState: Record<string, unknown> = {},
 ): PollingStore => {
@@ -62,25 +60,25 @@ const createPollingStore = (
     } as unknown as Partial<ActionContext>,
   };
 };
+
 const freezeClockAt = (iso: string): void => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(new Date(iso));
 };
+
 const triggerUnderTest = {
   perform: pollChangesTrigger.perform,
 } as unknown as Parameters<typeof invokeTrigger>[0];
+
 interface PollChanges {
   created: SendgridMessageRecord[];
   updated: SendgridMessageRecord[];
 }
 interface PollResult {
-  payload: {
-    body: {
-      data: PollChanges;
-    };
-  };
+  payload: { body: { data: PollChanges } };
   polledNoChanges: boolean;
 }
+
 const poll = async (
   store: PollingStore,
   overrides: Partial<{
@@ -103,6 +101,7 @@ const poll = async (
   );
   return result as unknown as PollResult;
 };
+
 const makeMessage = (id: string): SendgridMessageRecord =>
   ({
     msg_id: id,
@@ -112,33 +111,40 @@ const makeMessage = (id: string): SendgridMessageRecord =>
     status: "delivered",
     last_event_time: "2026-05-27T14:30:00Z",
   }) as SendgridMessageRecord;
+
 describe("pollChangesTrigger batching declaration", () => {
   it("declares Tier 1 batching support", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   });
+
   it("declares a batchConfig of the polling batch size", () => {
     expect(pollChangesTrigger.batchConfig).toEqual({
       batchSize: POLLING_BATCH_SIZE,
     });
     expect(POLLING_BATCH_SIZE).toBe(50);
   });
+
   it("exposes a resolveItems function", () => {
     expect(typeof pollChangesTrigger.triggerResolver?.resolveItems).toBe(
       "function",
     );
   });
 });
+
 describe("pollChangesTrigger.triggerResolver.resolveItems", () => {
   const resolveItems = pollChangesTrigger.triggerResolver?.resolveItems;
   const mockContext = {} as Parameters<NonNullable<typeof resolveItems>>[0];
+
   it("resolves the documented payload shape into tagged record changes", () => {
     if (!resolveItems) {
       throw new Error(
         "pollChangesTrigger.triggerResolver.resolveItems missing",
       );
     }
+
     const { payload } = pollChangesTriggerExamplePayload;
     const items = resolveItems(mockContext, { payload });
+
     expect(items).toEqual([
       {
         changeType: "updated",
@@ -158,64 +164,81 @@ describe("pollChangesTrigger.triggerResolver.resolveItems", () => {
     ]);
   });
 });
+
 describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
   const WINDOW_FROM = "2026-06-01T06:00:00.000Z";
   const WINDOW_TO = "2026-06-01T11:59:00.000Z";
   const WINDOW_NEAR_NOW = { fromIso: WINDOW_FROM, toIso: WINDOW_TO };
+
   afterEach(() => {
     vi.useRealTimers();
     mockFetchMessagesInWindow.mockReset();
     mockComputePollWindow.mockReset();
   });
+
   test("initial sync seeds all records despite toggles=false", async () => {
     const store = createPollingStore();
+
     freezeClockAt(NOW);
     mockComputePollWindow.mockReturnValueOnce(WINDOW_NEAR_NOW);
     mockFetchMessagesInWindow.mockResolvedValueOnce({
       records: [makeMessage("msg_1"), makeMessage("msg_2")],
       truncated: false,
     });
+
     const result = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
       lookBackDate: "2026-04-01T00:00:00.000Z",
     });
+
     expect(result.payload.body.data.updated).toHaveLength(2);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("initial sync without a look-back date still ignores toggles", async () => {
     const store = createPollingStore();
+
     freezeClockAt(NOW);
     mockComputePollWindow.mockReturnValueOnce(WINDOW_NEAR_NOW);
     mockFetchMessagesInWindow.mockResolvedValueOnce({
       records: [makeMessage("msg_1"), makeMessage("msg_2")],
       truncated: false,
     });
+
     const result = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
     });
+
     expect(result.payload.body.data.updated).toHaveLength(2);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("steady-state respects toggles after initial sync", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(NOW);
     mockComputePollWindow.mockReturnValueOnce(WINDOW_NEAR_NOW);
     mockFetchMessagesInWindow.mockResolvedValueOnce({
       records: [makeMessage("msg_1")],
       truncated: false,
     });
+
     const result = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
     });
+
     expect(result.payload.body.data.updated).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("multi-recurrence backfill persists backfillActive across truncated polls", async () => {
     const store = createPollingStore();
+
     freezeClockAt(NOW);
+
     const WINDOW_FAR = {
       fromIso: "2026-04-01T00:00:00.000Z",
       toIso: "2026-04-01T06:00:00.000Z",
@@ -224,42 +247,51 @@ describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
       fromIso: "2026-04-01T06:00:00.000Z",
       toIso: "2026-04-01T12:00:00.000Z",
     };
+
     mockComputePollWindow.mockReturnValueOnce(WINDOW_FAR);
     mockFetchMessagesInWindow.mockResolvedValueOnce({
       records: [makeMessage("msg_1")],
       truncated: true,
     });
+
     const r1 = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
       lookBackDate: "2026-04-01T00:00:00.000Z",
     });
+
     expect(r1.payload.body.data.updated).toHaveLength(1);
     expect(r1.polledNoChanges).toBe(false);
     expect(store.currentState()).toHaveProperty("backfillActive", true);
+
     mockComputePollWindow.mockReturnValueOnce(WINDOW_MID);
     mockFetchMessagesInWindow.mockResolvedValueOnce({
       records: [makeMessage("msg_2")],
       truncated: true,
     });
+
     const r2 = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
       lookBackDate: "2026-04-01T00:00:00.000Z",
     });
+
     expect(r2.payload.body.data.updated).toHaveLength(1);
     expect(r2.polledNoChanges).toBe(false);
     expect(store.currentState()).toHaveProperty("backfillActive", true);
+
     mockComputePollWindow.mockReturnValueOnce(WINDOW_NEAR_NOW);
     mockFetchMessagesInWindow.mockResolvedValueOnce({
       records: [makeMessage("msg_3")],
       truncated: false,
     });
+
     const r3 = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
       lookBackDate: "2026-04-01T00:00:00.000Z",
     });
+
     expect(r3.payload.body.data.updated).toHaveLength(1);
     expect(r3.polledNoChanges).toBe(false);
     expect(store.currentState()).not.toHaveProperty("backfillActive");

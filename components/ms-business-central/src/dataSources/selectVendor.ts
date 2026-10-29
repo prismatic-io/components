@@ -4,6 +4,7 @@ import { companyId } from "../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../inputs/general";
 import type { MultipleItemsResponse, Vendor } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const selectVendor = dataSource({
   display: {
     label: "Select Vendor",
@@ -18,6 +19,7 @@ export const selectVendor = dataSource({
     const { data } = await client.get<MultipleItemsResponse<Vendor[]>>(
       `/companies(${companyId})/vendors`,
     );
+
     return {
       result: toSortedPicklist(data.value, (vendor) => ({
         key: vendor.id,

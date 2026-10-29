@@ -3,6 +3,7 @@ const sampleUser = {
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 export const listApiUsagesExamplePayload = {
   data: {
     results: [
@@ -28,6 +29,7 @@ export const listApiUsagesExamplePayload = {
     count: 2,
   },
 };
+
 export const listRecentActivityExportsExamplePayload = {
   data: {
     results: [
@@ -44,6 +46,7 @@ export const listRecentActivityExportsExamplePayload = {
     count: 1,
   },
 };
+
 export const listRecentActivityFileAccessesExamplePayload = {
   data: {
     results: [
@@ -59,6 +62,7 @@ export const listRecentActivityFileAccessesExamplePayload = {
     count: 1,
   },
 };
+
 export const listRecentActivityReportRunsExamplePayload = {
   data: {
     results: [
@@ -75,6 +79,7 @@ export const listRecentActivityReportRunsExamplePayload = {
     count: 1,
   },
 };
+
 export const listRecentActivityUserAccessesExamplePayload = {
   data: {
     results: [

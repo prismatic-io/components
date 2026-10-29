@@ -15,6 +15,7 @@ import {
   deleteWebhookExamplePayload,
   deleteInstancedWebhooksExamplePayload,
 } from "../examplePayloads";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -27,6 +28,7 @@ export const listWebhooks = action({
       context.debug.enabled,
     );
     const { data } = await client.get("/webhooks");
+
     return {
       data,
     };
@@ -36,6 +38,7 @@ export const listWebhooks = action({
     showOnlyInstanceWebhooks,
   },
 });
+
 export const getWebhook = action({
   display: {
     label: "Get Webhook",
@@ -47,6 +50,7 @@ export const getWebhook = action({
       params.postmarkConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/webhooks/${params.webhookId}`);
     return {
       data,
@@ -57,6 +61,7 @@ export const getWebhook = action({
     webhookId,
   },
 });
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -68,6 +73,7 @@ export const createWebhook = action({
       Url: params.webhookUrl,
       Triggers: params.triggers,
     };
+
     const client = createHttpClient(
       params.postmarkConnection,
       context.debug.enabled,
@@ -83,6 +89,7 @@ export const createWebhook = action({
     triggers,
   },
 });
+
 export const editWebhook = action({
   display: {
     label: "Edit Webhook",
@@ -94,6 +101,7 @@ export const editWebhook = action({
       Url: params.webhookUrl,
       Triggers: params.triggers,
     };
+
     const client = createHttpClient(
       params.postmarkConnection,
       context.debug.enabled,
@@ -113,6 +121,7 @@ export const editWebhook = action({
     triggers,
   },
 });
+
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -134,6 +143,7 @@ export const deleteWebhook = action({
     webhookId,
   },
 });
+
 export const deleteInstancedWebhooks = action({
   display: {
     label: "Delete Instanced Webhooks",
@@ -145,12 +155,14 @@ export const deleteInstancedWebhooks = action({
       postmarkConnection: params.postmarkConnection,
       showOnlyInstanceWebhooks: "true",
     });
+
     for (const webhook of allWebhooks.data.Webhooks) {
       await deleteWebhook.perform(context, {
         postmarkConnection: params.postmarkConnection,
         webhookId: webhook.ID,
       });
     }
+
     return {
       data: { message: "All listed webhooks deleted successfully." },
     };

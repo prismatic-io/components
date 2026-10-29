@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { getCustomerInputs } from "../../inputs/customer";
 import { getCustomerExamplePayload } from "../../examplePayloads";
+
 export const getCustomer = action({
   display: {
     label: "Get Customer",
@@ -15,16 +16,19 @@ export const getCustomer = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = { id: customerId };
     const stringifiedData = stringify({
       data: JSON.stringify(sendData),
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Read/Customer.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };

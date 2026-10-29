@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getTemplateExamplePayload } from "../../examplePayloads";
 import { connectionInput, templateId } from "../../inputs";
+
 export const getTemplate = action({
   display: {
     label: "Get Template",

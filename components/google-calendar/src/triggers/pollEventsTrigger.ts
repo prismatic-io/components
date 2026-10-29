@@ -8,6 +8,7 @@ import type {
   PollEventsCursor,
 } from "../types";
 import { resolvePollingRecordChanges } from "../utils";
+
 export const pollEventsTrigger = pollingTrigger({
   display: {
     label: "New and Updated Events",
@@ -20,13 +21,8 @@ export const pollEventsTrigger = pollingTrigger({
   triggerResolver: {
     resolveItems: (_context, { payload }): EventRecordChange[] =>
       resolvePollingRecordChanges(
-        (
-          payload.body.data as
-            | {
-                changes?: EventChangesObject;
-              }
-            | undefined
-        )?.changes,
+        (payload.body.data as { changes?: EventChangesObject } | undefined)
+          ?.changes,
       ),
     getNextPaginationState: (_context, { payload }): PollEventsCursor =>
       (payload.paginationState as PollEventsCursor | undefined) ?? null,

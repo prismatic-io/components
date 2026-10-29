@@ -9,6 +9,7 @@ import type { AbstractCustomer } from "@intacct/intacct-sdk/dist/Functions/Accou
 import { updateCustomerExamplePayload } from "../../examplePayloads";
 import { updateCustomerInputs } from "../../inputs";
 import { updateCustomerOutputSchema } from "../../outputSchemas";
+
 export const updateCustomer = action({
   display: {
     label: "Update Customer",
@@ -51,6 +52,7 @@ export const updateCustomer = action({
     },
   ) => {
     const updateCustomer = new Functions.AccountsReceivable.CustomerUpdate();
+
     assignParametersToObject(updateCustomer, {
       customerId: customerIdInput,
       customerName: customerNameInput,
@@ -128,6 +130,7 @@ export const updateCustomer = action({
       restrictedDepartments: restrictedDepartmentsInput,
       customFields: customFieldsInput,
     } as unknown as AbstractCustomer);
+
     if (context.debug.enabled) {
       context.logger.debug(JSON.stringify(updateCustomer, null, 2));
     }

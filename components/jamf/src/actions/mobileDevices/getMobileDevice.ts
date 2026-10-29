@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getMobileDeviceExamplePayload } from "../../examplePayloads";
 import { getMobileDeviceInputs } from "../../inputs";
 import type { MobileDeviceDetail } from "../../types";
+
 export const getMobileDevice = action({
   display: {
     label: "Get Mobile Device",

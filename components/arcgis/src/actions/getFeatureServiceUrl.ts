@@ -7,6 +7,7 @@ import { action } from "@prismatic-io/spectral";
 import { GET_FEATURE_SERVICE_URL_EXAMPLE_PAYLOAD } from "../examplePayloads";
 import { connection, featureServiceName, ownerName } from "../inputs";
 import { getApiKeyManager } from "../utils";
+
 export const getFeatureServiceUrl = action({
   display: {
     label: "Get Feature Service URL",
@@ -24,13 +25,16 @@ export const getFeatureServiceUrl = action({
       .and()
       .match("Feature Service")
       .in("type");
+
     const searchItemsResults = await searchItems({
       authentication,
       q: featureServicesQuery,
     });
+
     const foundItem = searchItemsResults.results.find(
       (item) => item.name.toLowerCase() === featureServiceName.toLowerCase(),
     );
+
     return { data: foundItem?.url };
   },
   inputs: {

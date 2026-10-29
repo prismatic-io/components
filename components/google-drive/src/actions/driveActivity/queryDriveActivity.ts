@@ -4,6 +4,7 @@ import { queryDriveActivityInputs } from "../../inputs";
 import { queryDriveActivityOutputSchema } from "../../outputSchemas";
 import { getQueryDriveActivity } from "../../util";
 import { queryDriveActivityExamplePayload } from "../../examplePayloads";
+
 export const queryDriveActivity = action({
   display: {
     label: "Query Drive Activity",
@@ -28,6 +29,7 @@ export const queryDriveActivity = action({
       { pageToken, ancestorName, filter, itemName, consolidationStrategy },
       fetchAll,
     );
+
     return {
       data,
     };
@@ -37,8 +39,7 @@ export const queryDriveActivity = action({
     type: "actionOutput",
     schema: queryDriveActivityOutputSchema,
   }),
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => queryDriveActivityExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    queryDriveActivityExamplePayload,
   examplePayload: queryDriveActivityExamplePayload,
 });

@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, bulkSendListId } from "../inputs";
+
 export const deleteBulkSendList = action({
   display: {
     label: "Delete Bulk Send List",

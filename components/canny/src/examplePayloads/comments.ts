@@ -70,6 +70,7 @@ export const retrieveCommentExamplePayload = {
     value: "Some cool comment",
   },
 };
+
 export const listCommentsExamplePayload = {
   data: {
     cursor: "eyJhZnRlciI6eyJfaWQiOiI1NTNjM2VmOGI4Y2RjZD...",
@@ -147,7 +148,9 @@ export const listCommentsExamplePayload = {
     ],
   },
 };
+
 export const createCommentExamplePayload = {
   data: { id: "553c3ef8b8cdcd1501ba2222" },
 };
+
 export const deleteCommentExamplePayload = { data: "success" };

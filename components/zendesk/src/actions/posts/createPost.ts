@@ -4,6 +4,7 @@ import { createPostExamplePayload } from "../../examplePayloads";
 import { createPostInputs } from "../../inputs";
 import { createPostOutputSchema } from "../../outputSchemas";
 import type { Post } from "../../types";
+
 export const createPost = action({
   display: {
     label: "Create Post",
@@ -37,9 +38,12 @@ export const createPost = action({
       },
       notify_subscribers: notifySubscribers,
     };
-    const { data } = await client.post<{
-      post: Post;
-    }>("/community/posts", payload);
+
+    const { data } = await client.post<{ post: Post }>(
+      "/community/posts",
+      payload,
+    );
+
     return {
       data,
     };
@@ -47,9 +51,7 @@ export const createPost = action({
   examplePerform: async (
     _context,
     { contentTagIds, isPostFeatured, postTitle },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createPostExamplePayload.data,
       post: {

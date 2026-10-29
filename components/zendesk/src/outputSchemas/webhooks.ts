@@ -26,13 +26,17 @@ export const webhookSchema = {
     updated_by: { type: "string" },
   },
 };
+
 export const createWebhookOutputSchema = {
   type: "object" as const,
   properties: { webhook: webhookSchema },
   required: ["webhook"],
 };
+
 export const deleteInstanceWebhooksOutputSchema = { type: "null" as const };
+
 export const deleteWebhookOutputSchema = { type: "string" as const };
+
 export const listWebhooksOutputSchema = {
   type: "array" as const,
   items: webhookSchema,

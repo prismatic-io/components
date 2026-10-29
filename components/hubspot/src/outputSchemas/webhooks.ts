@@ -64,6 +64,7 @@ export const webhookSubscriptionSchema = {
   },
   required: ["active", "createdAt", "eventType", "id"],
 };
+
 export const listWebhooksOutputSchema = {
   type: "object" as const,
   properties: {

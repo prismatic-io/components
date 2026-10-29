@@ -5,6 +5,7 @@ import { HttpMethod, MAX_PAGE_SIZE } from "../../constants";
 import { listUsersExamplePayload } from "../../examplePayloads";
 import { listUsersInputs } from "../../inputs";
 import { getPaginatedData } from "../../utils";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -18,6 +19,7 @@ export const listUsers = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
+
     const { data } = await getPaginatedData(
       client,
       HttpMethod.GET,
@@ -33,8 +35,7 @@ export const listUsers = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listUsersExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listUsersExamplePayload,
   examplePayload: listUsersExamplePayload,
 });

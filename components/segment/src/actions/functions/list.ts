@@ -10,6 +10,7 @@ import {
   region,
   resourceType,
 } from "../../inputs";
+
 export const listFunctions = action({
   display: {
     label: "List Functions",

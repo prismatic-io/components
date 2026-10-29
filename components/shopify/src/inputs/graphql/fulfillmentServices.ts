@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { LIST_FULFILLMENT_SERVICES_DATASOURCE_REFERENCE } from "../../constants";
 import { cleanStringInput } from "../../util";
 import { callbackUrl, optionalBoolean, shopifyConnection } from "./common";
+
 const fulfillmentServiceId = input({
   label: "Fulfillment Service ID",
   type: "string",
@@ -12,6 +13,7 @@ const fulfillmentServiceId = input({
   clean: util.types.toString,
   dataSource: LIST_FULFILLMENT_SERVICES_DATASOURCE_REFERENCE,
 });
+
 const inventoryManagement = input({
   label: "Inventory Management",
   type: "boolean",
@@ -21,6 +23,7 @@ const inventoryManagement = input({
     "Whether the fulfillment services tracks product inventory and provides updates to Shopify.",
   clean: util.types.toBool,
 });
+
 const fulfillmentServiceName = input({
   label: "Fulfillment Service Name",
   type: "string",
@@ -30,6 +33,7 @@ const fulfillmentServiceName = input({
   placeholder: "Enter fulfillment service name",
   clean: util.types.toString,
 });
+
 const trackingSupport = input({
   label: "Tracking Support",
   type: "boolean",
@@ -39,13 +43,16 @@ const trackingSupport = input({
     "Whether the fulfillment service supports tracking numbers for packages.",
   clean: util.types.toBool,
 });
+
 export const listFulfillmentServicesInputs = {
   shopifyConnection,
 };
+
 export const getFulfillmentServiceInputs = {
   shopifyConnection,
   fulfillmentServiceId,
 };
+
 export const createFulfillmentServiceInputs = {
   shopifyConnection,
   fulfillmentServiceName,
@@ -53,6 +60,7 @@ export const createFulfillmentServiceInputs = {
   inventoryManagement,
   trackingSupport,
 };
+
 export const updateFulfillmentServiceInputs = {
   shopifyConnection,
   fulfillmentServiceId,
@@ -71,12 +79,14 @@ export const updateFulfillmentServiceInputs = {
     ...optionalBoolean,
     label: "Inventory Management",
   }),
+
   trackingSupport: input({
     ...trackingSupport,
     ...optionalBoolean,
     label: "Tracking Support",
   }),
 };
+
 export const deleteFulfillmentServiceInputs = {
   shopifyConnection,
   fulfillmentServiceId,

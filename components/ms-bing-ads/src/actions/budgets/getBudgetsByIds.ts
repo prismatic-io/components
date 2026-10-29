@@ -3,6 +3,7 @@ import { getBudgetsByIdsExamplePayload } from "../../examplePayloads";
 import { getBudgetsByIdsInputs } from "../../inputs/budgets";
 import { getRestClient } from "../../restClient";
 import type { QueryRestResponse } from "../../types";
+
 export const getBudgetsByIds = action({
   display: {
     label: "Get Budgets By IDs",
@@ -14,10 +15,12 @@ export const getBudgetsByIds = action({
     { connection, accountId, customerId, budgetIds },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<QueryRestResponse>(
       "/Budgets/QueryByIds",
       budgetIds.length ? { BudgetIds: budgetIds } : {},
     );
+
     return { data };
   },
   inputs: getBudgetsByIdsInputs,

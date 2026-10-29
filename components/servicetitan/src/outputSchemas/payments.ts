@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const detailedPaymentSchema = {
   type: "object" as const,
   properties: {
@@ -180,6 +181,7 @@ const detailedPaymentSchema = {
   },
   required: ["active", "createdOn", "id", "modifiedOn"],
 };
+
 const paymentSchema = {
   type: "object" as const,
   properties: {
@@ -244,5 +246,7 @@ const paymentSchema = {
   },
   required: ["id", "splits", "typeId"],
 };
+
 export const listPaymentsOutputSchema = listEnvelope(detailedPaymentSchema);
+
 export const updatePaymentOutputSchema = paymentSchema;

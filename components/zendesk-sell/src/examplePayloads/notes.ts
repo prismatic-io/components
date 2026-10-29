@@ -11,6 +11,7 @@ const noteData = {
   created_at: "2025-01-10T10:15:22Z",
   updated_at: "2025-01-10T10:15:22Z",
 };
+
 export const createNoteExamplePayload = {
   data: {
     data: noteData,
@@ -19,6 +20,7 @@ export const createNoteExamplePayload = {
     },
   },
 };
+
 export const getNoteExamplePayload = {
   data: {
     data: noteData,
@@ -27,6 +29,7 @@ export const getNoteExamplePayload = {
     },
   },
 };
+
 export const updateNoteExamplePayload = {
   data: {
     data: noteData,
@@ -35,6 +38,7 @@ export const updateNoteExamplePayload = {
     },
   },
 };
+
 export const listNotesExamplePayload = {
   data: {
     items: [
@@ -56,9 +60,11 @@ export const listNotesExamplePayload = {
     },
   },
 };
+
 export const deleteNoteExamplePayload = {
   data: null,
 };
+
 export const getNotesStreamExamplePayload = {
   data: {
     items: [

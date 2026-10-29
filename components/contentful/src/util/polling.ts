@@ -11,15 +11,13 @@ import type {
   PollingRecordChange,
   PollingState,
 } from "../types";
+
 export const fetchEntriesSince = async (
   environment: Environment,
   lastPolledAt: string,
   contentType: string | undefined,
   maxPages: number = MAX_POLL_PAGES,
-): Promise<{
-  records: EntryProps<KeyValueMap>[];
-  truncated: boolean;
-}> => {
+): Promise<{ records: EntryProps<KeyValueMap>[]; truncated: boolean }> => {
   const recordsById = new Map<string, EntryProps<KeyValueMap>>();
   let anchor = lastPolledAt;
   let seenAtAnchor = 0;
@@ -54,14 +52,12 @@ export const fetchEntriesSince = async (
   }
   return { records: [...recordsById.values()], truncated: true };
 };
+
 export const resolvePollingWindowStart = (
   state: PollingState | undefined,
   lookBackDate: string,
   now: string,
-): {
-  since: string;
-  isInitialSync: boolean;
-} => {
+): { since: string; isInitialSync: boolean } => {
   if (state?.lastPolledAt) {
     return {
       since: state.lastPolledAt,
@@ -73,6 +69,7 @@ export const resolvePollingWindowStart = (
   }
   return { since: now, isInitialSync: false };
 };
+
 export const partitionEntryChanges = (
   records: EntryProps<KeyValueMap>[],
   since: string,
@@ -97,15 +94,13 @@ export const partitionEntryChanges = (
   }
   return { created, updated };
 };
+
 export const computeNextCursor = (
   records: EntryProps<KeyValueMap>[],
   truncated: boolean,
   since: string,
   now: string,
-): {
-  nextCursor: string;
-  stalled: boolean;
-} => {
+): { nextCursor: string; stalled: boolean } => {
   if (!truncated) {
     return { nextCursor: now, stalled: false };
   }
@@ -124,6 +119,7 @@ export const computeNextCursor = (
   const stalled = new Date(nextCursor).getTime() <= new Date(since).getTime();
   return { nextCursor, stalled };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {
@@ -137,6 +133,7 @@ export const resolvePollingRecordChanges = (
     ),
   ];
 };
+
 export const pollEntryChanges = async (
   environment: Environment,
   state: PollingState | undefined,

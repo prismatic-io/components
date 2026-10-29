@@ -13,16 +13,15 @@ import {
 import { calendars } from "./calendars";
 import { customFieldOptions } from "./customFieldOptions";
 import { tasks } from "./tasks";
+
 const API = "https://api.clickup.com/api/v2";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
-const toElements = (
-  items: {
-    id: string;
-    name: string;
-  }[],
-) => items.map(({ id, name }) => ({ label: name, key: id }));
+
+const toElements = (items: { id: string; name: string }[]) =>
+  items.map(({ id, name }) => ({ label: name, key: id }));
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -30,6 +29,7 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 describe("customFieldOptions", () => {
   test("throws when no field has the given name", async () => {
     nock(API)
@@ -44,6 +44,7 @@ describe("customFieldOptions", () => {
     ).rejects.toThrow("Unable to find custom field options");
   });
 });
+
 describe("tasks", () => {
   test("requests open, unarchived top-level tasks and maps them to {label, key} elements", async () => {
     nock(API)
@@ -57,6 +58,7 @@ describe("tasks", () => {
     expect(result).toEqual(toElements(listTasksExamplePayload.data.tasks));
   });
 });
+
 describe("calendars", () => {
   test("keeps only calendar views and maps them to {label, key} elements", async () => {
     nock(API)

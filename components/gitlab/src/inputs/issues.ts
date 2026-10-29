@@ -22,6 +22,7 @@ import {
   title,
   updatedAfter,
 } from "./common";
+
 const milestoneId = input({
   label: "Milestone ID",
   placeholder: "Enter milestone ID",
@@ -32,6 +33,7 @@ const milestoneId = input({
   dataSource: "selectMilestone",
   clean: toOptionalId,
 });
+
 const issueState = input({
   label: "State",
   type: "string",
@@ -40,6 +42,7 @@ const issueState = input({
   model: ISSUE_STATE_OPTIONS,
   clean: cleanString,
 });
+
 const dueDate = input({
   label: "Due Date",
   type: "string",
@@ -49,6 +52,7 @@ const dueDate = input({
   example: "2026-10-15",
   clean: toOptionalDate,
 });
+
 const confidential = input({
   label: "Confidential",
   type: "string",
@@ -58,10 +62,12 @@ const confidential = input({
   model: BOOLEAN_OPTIONS,
   clean: toOptionalBoolean,
 });
+
 const filterLabels = {
   ...labels,
   comments: "Return only issues that have all of these labels.",
 };
+
 export const listIssuesInputs = {
   connection: connectionInput,
   project,
@@ -76,11 +82,13 @@ export const listIssuesInputs = {
   search,
   updatedAfter,
 };
+
 export const getIssueInputs = {
   connection: connectionInput,
   project,
   issueIid,
 };
+
 const createIssueAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -88,6 +96,7 @@ const createIssueAdditionalFields = structuredObjectInput({
     "Additional optional fields: includes Description, Due Date, and Confidential.",
   inputs: { description: createDescription, dueDate, confidential },
 });
+
 const updateIssueAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -101,6 +110,7 @@ const updateIssueAdditionalFields = structuredObjectInput({
     confidential,
   },
 });
+
 export const createIssueInputs = {
   connection: connectionInput,
   project,
@@ -113,6 +123,7 @@ export const createIssueInputs = {
   milestoneId,
   additionalFields: createIssueAdditionalFields,
 };
+
 export const updateIssueInputs = {
   connection: connectionInput,
   project,
@@ -122,6 +133,7 @@ export const updateIssueInputs = {
   milestoneId,
   additionalFields: updateIssueAdditionalFields,
 };
+
 export const deleteIssueInputs = {
   connection: connectionInput,
   project,

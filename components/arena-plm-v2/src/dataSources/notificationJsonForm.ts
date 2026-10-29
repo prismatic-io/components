@@ -10,6 +10,7 @@ import {
   fetchStandardAttributes,
   resourceObjectTypes,
 } from "../util/notificationJsonFormHelpers";
+
 export const notificationJsonForm = dataSource({
   display: {
     label: "Notification JSON Form",
@@ -20,6 +21,7 @@ export const notificationJsonForm = dataSource({
   inputs: notificationJsonFormInputs,
   perform: async (context, { connection }) => {
     const actionContext = "Get Notification JSON Form Datasource";
+
     try {
       const client = await createArenaClient(context, connection);
       const [
@@ -33,18 +35,21 @@ export const notificationJsonForm = dataSource({
         fetchStandardAttributes(client, resourceObjectTypes.REQUEST),
         fetchQualityAttributes(client),
       ]);
+
       const attributesByResource: Record<ResourceType, ArenaAttribute[]> = {
         ITEM: itemAttributes,
         CHANGE: changeAttributes,
         QUALITY: qualityAttributes,
         REQUEST: requestAttributes,
       };
+
       context.logger.info("Notification JSON form attributes loaded", {
         itemCount: itemAttributes.length,
         changeCount: changeAttributes.length,
         requestCount: requestAttributes.length,
         qualityCount: qualityAttributes.length,
       });
+
       return {
         result: {
           schema: createSchema(attributesByResource),

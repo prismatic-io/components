@@ -1,6 +1,7 @@
 import { action, input, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection, siteId, listId } from "../inputs";
+
 const notificationUrlInput = input({
   label: "Notification URL",
   type: "string",
@@ -8,6 +9,7 @@ const notificationUrlInput = input({
   comments: "URL to send events of this Subscription to",
   clean: util.types.toString,
 });
+
 const expirationDateTimeInput = input({
   label: "Expiration Date/Time",
   type: "string",
@@ -17,6 +19,7 @@ const expirationDateTimeInput = input({
   clean: (rawValue) => {
     const defaultDate = new Date();
     defaultDate.setDate(defaultDate.getDate() + 29);
+
     const value = rawValue || defaultDate;
     if (value instanceof Date) {
       return value.toISOString();
@@ -24,6 +27,7 @@ const expirationDateTimeInput = input({
     return util.types.toString(value);
   },
 });
+
 const subscriptionIdInput = input({
   label: "Subscription ID",
   type: "string",
@@ -32,6 +36,7 @@ const subscriptionIdInput = input({
   dataSource: "listSubscriptions",
   clean: util.types.toString,
 });
+
 export const listSubscriptions = action({
   display: {
     label: "List Subscriptions",
@@ -52,11 +57,9 @@ export const listSubscriptions = action({
     const client = await createClient(params.connection, context.debug.enabled);
     const { data } = await client.get<{
       "@odata.context": string;
-      value: {
-        notificationUrl: string;
-        [key: string]: unknown;
-      }[];
+      value: { notificationUrl: string; [key: string]: unknown }[];
     }>("/subscriptions");
+
     if (params.showInstanceWebhooks) {
       const instanceWebhooks = new Set(Object.values(context.webhookUrls));
       const instanceSubscriptions = data.value.filter(({ notificationUrl }) =>
@@ -64,6 +67,7 @@ export const listSubscriptions = action({
       );
       return { data: { ...data, value: instanceSubscriptions } };
     }
+
     return { data };
   },
   examplePayload: {
@@ -93,6 +97,7 @@ export const listSubscriptions = action({
     },
   },
 });
+
 const createSiteListSubscription = action({
   display: {
     label: "Create Site List Subscription",
@@ -115,14 +120,13 @@ const createSiteListSubscription = action({
   },
   perform: async (context, params) => {
     const client = await createClient(params.connection, context.debug.enabled);
+
     if (!params.allowDuplicates) {
       const {
         data: { value: subscriptions },
-      } = await client.get<{
-        value: {
-          notificationUrl: string;
-        }[];
-      }>("/subscriptions");
+      } = await client.get<{ value: { notificationUrl: string }[] }>(
+        "/subscriptions",
+      );
       const [existingSubscription] = subscriptions.filter(
         ({ notificationUrl }) => params.notificationUrl === notificationUrl,
       );
@@ -133,6 +137,7 @@ const createSiteListSubscription = action({
         return { data: existingSubscription };
       }
     }
+
     const { data } = await client.post("/subscriptions", {
       resource: `sites/${params.siteId}/lists/${params.listId}`,
       notificationUrl: params.notificationUrl,
@@ -164,6 +169,7 @@ const createSiteListSubscription = action({
     },
   },
 });
+
 const updateSiteListSubscriptionExpiration = action({
   display: {
     label: "Update Site List Subscription Expiration",
@@ -208,6 +214,7 @@ const updateSiteListSubscriptionExpiration = action({
     },
   },
 });
+
 export const deleteSubscription = action({
   display: {
     label: "Delete Subscription",
@@ -223,6 +230,7 @@ export const deleteSubscription = action({
   },
   examplePayload: { data: "" },
 });
+
 export const deleteAllInstanceSubscriptions = action({
   display: {
     label: "Delete All Instance Subscriptions",
@@ -233,19 +241,19 @@ export const deleteAllInstanceSubscriptions = action({
     const client = await createClient(params.connection, context.debug.enabled);
     const {
       data: { value: subscriptions },
-    } = await client.get<{
-      value: {
-        notificationUrl: string;
-        id: string;
-      }[];
-    }>("/subscriptions");
+    } = await client.get<{ value: { notificationUrl: string; id: string }[] }>(
+      "/subscriptions",
+    );
+
     const instanceWebhooks = new Set(Object.values(context.webhookUrls));
     const subscriptionsToRemove = subscriptions
       .filter(({ notificationUrl }) => instanceWebhooks.has(notificationUrl))
       .map(({ id }) => id);
+
     await Promise.all(
       subscriptionsToRemove.map((id) => client.delete(`/subscriptions/${id}`)),
     );
+
     return { data: { subscriptionsRemoved: subscriptionsToRemove } };
   },
   examplePayload: {
@@ -257,6 +265,7 @@ export const deleteAllInstanceSubscriptions = action({
     },
   },
 });
+
 export default {
   createSiteListSubscription,
   updateSiteListSubscriptionExpiration,

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { refundPaymentExamplePayload } from "../../examplePayloads";
 import { refundPaymentInputs } from "../../inputs";
+
 export const refundPayment = action({
   display: {
     label: "Refund Payment",
@@ -22,7 +23,9 @@ export const refundPayment = action({
       amount_money: refundAmount,
       reason: reason,
     };
+
     const response = await client.post("/v2/refunds", body);
+
     return {
       data: response.data,
     };

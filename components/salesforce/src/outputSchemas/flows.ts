@@ -1,6 +1,9 @@
 import { metadataResultSchema } from "./metadataShared";
+
 export const saveFlowOutputSchema = metadataResultSchema;
+
 export const deleteMetadataComponentOutputSchema = metadataResultSchema;
+
 export const subscribeToRecordChangesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -9,6 +12,7 @@ export const subscribeToRecordChangesOutputSchema = {
   },
   required: ["outboundMessageFullName", "flowFullName"],
 };
+
 export const deleteInstancedFlowsAndOutboundMessagesOutputSchema = {
   type: "object" as const,
   properties: {

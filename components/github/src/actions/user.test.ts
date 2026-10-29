@@ -7,10 +7,14 @@ import {
   usersGetAuthenticatedExamplePayload,
 } from "../examplePayloads";
 import actions from "./index";
+
 const BASE = "https://api.github.com";
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 const { usersGetAuthenticated, orgsListForAuthenticatedUser } = actions;
+
 afterEach(() => nock.cleanAll());
+
 describe("usersGetAuthenticated", () => {
   test("happy path returns the authenticated user", async () => {
     nock(BASE)
@@ -21,6 +25,7 @@ describe("usersGetAuthenticated", () => {
     });
     expect(result.data).toEqual(usersGetAuthenticatedExamplePayload.data);
   });
+
   test("pins the GitHub REST API version on every client request", async () => {
     const scope = nock(BASE, {
       reqheaders: { "x-github-api-version": GITHUB_API_VERSION },
@@ -30,6 +35,7 @@ describe("usersGetAuthenticated", () => {
     await invoke(usersGetAuthenticated, { connection: conn });
     expect(scope.isDone()).toBe(true);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE).get("/user").reply(401, { message: "Bad credentials" });
     await expect(
@@ -37,6 +43,7 @@ describe("usersGetAuthenticated", () => {
     ).rejects.toThrow();
   });
 });
+
 describe("orgsListForAuthenticatedUser", () => {
   test("happy path returns the user's organizations", async () => {
     nock(BASE)
@@ -51,6 +58,7 @@ describe("orgsListForAuthenticatedUser", () => {
       orgsListForAuthenticatedUserExamplePayload.data,
     );
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE)
       .get("/user/orgs")

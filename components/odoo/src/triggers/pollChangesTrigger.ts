@@ -25,6 +25,7 @@ import {
   resolveStartCursor,
   splitPolledRecords,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -46,6 +47,7 @@ export const pollChangesTrigger = pollingTrigger({
     const state = context.polling.getState() as PollingState | undefined;
     const incoming = payload.paginationState as PollCursor | undefined;
     const window = resolvePollWindow(state, params.lookBackDate, now);
+
     let fetchPage: FetchPollPage;
     if (isLegacyConnection(params.connection)) {
       const client = await createOdooAwaitClient(params.connection);
@@ -54,6 +56,7 @@ export const pollChangesTrigger = pollingTrigger({
       const client = createOdooClient(params.connection, context.debug.enabled);
       fetchPage = fetchOdooPage(client, params.model);
     }
+
     const result = await drainWatermark(
       fetchPage,
       resolveStartCursor(state, incoming, window),
@@ -64,12 +67,15 @@ export const pollChangesTrigger = pollingTrigger({
       showNew: params.showNewRecords,
       showUpdated: params.showUpdatedRecords,
     });
+
     context.polling.setState(nextPollingState(state, window, result));
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Odoo ${params.model}: ${result.records.length} fetched, ${data.created.length} created, ${data.updated.length} updated, drained=${result.drained}`,
       );
     }
+
     return {
       payload: {
         ...payload,

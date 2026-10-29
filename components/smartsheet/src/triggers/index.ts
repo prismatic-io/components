@@ -2,6 +2,7 @@ import { type HttpResponse, trigger } from "@prismatic-io/spectral";
 import { smartsheetWebhookExamplePayload } from "../examplePayloads";
 import { smartsheetWebhookInputs } from "../inputs";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 export const smartsheetWebhook = trigger({
   display: {
     label: "Webhook",
@@ -23,6 +24,7 @@ export const smartsheetWebhook = trigger({
           smartsheetHookResponse: payload.headers["Smartsheet-Hook-Challenge"],
         }),
       };
+
       return Promise.resolve({
         payload,
         response,
@@ -39,4 +41,5 @@ export const smartsheetWebhook = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export default { smartsheetWebhook, pollChangesTrigger };

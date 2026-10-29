@@ -4,14 +4,17 @@ import { afterEach, describe, expect, test } from "vitest";
 import { trackEvents } from "./trackEvents";
 import { apiToken } from "../../connections";
 import { trackEventsExamplePayload } from "../../examplePayloads";
+
 const conn = createConnection(apiToken, {
   username: "svc-user",
   password: "svc-pass",
   projectToken: "proj-token",
 });
 const BASE = "https://api.mixpanel.com";
+
 describe("trackEvents", () => {
   afterEach(() => nock.cleanAll());
+
   test("happy path posts events and returns response data", async () => {
     nock(BASE).post("/track").reply(200, trackEventsExamplePayload.data);
     const { result } = await invoke(trackEvents, {
@@ -28,6 +31,7 @@ describe("trackEvents", () => {
     });
     expect(result.data).toEqual(trackEventsExamplePayload.data);
   });
+
   test("error path surfaces the failure", async () => {
     nock(BASE).post("/track").reply(422, { error: "invalid" });
     await expect(

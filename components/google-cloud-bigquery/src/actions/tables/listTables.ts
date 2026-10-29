@@ -2,6 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listTablesInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
+
 export const listTables = action({
   display: {
     description: "Lists all tables in the specified dataset.",

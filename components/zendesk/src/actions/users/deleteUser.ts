@@ -4,6 +4,7 @@ import { SUCCESS_MESSAGE } from "../../constants";
 import { deleteUserExamplePayload } from "../../examplePayloads";
 import { deleteUserInputs } from "../../inputs";
 import { deleteUserOutputSchema } from "../../outputSchemas";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",
@@ -15,7 +16,9 @@ export const deleteUser = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     await client.users.delete(util.types.toInt(params.userId));
+
     return {
       data: SUCCESS_MESSAGE,
     };

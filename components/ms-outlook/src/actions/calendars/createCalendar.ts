@@ -5,6 +5,7 @@ import { createCalendarExamplePayload } from "../../examplePayloads";
 import { createCalendarInputs } from "../../inputs";
 import type { ODataAttrs } from "../../types";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const createCalendar = action({
   display: {
     label: "Create Calendar",

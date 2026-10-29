@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { deleteBillInputs } from "../../inputs/bill";
 import { deleteBillExamplePayload } from "../../examplePayloads";
+
 export const deleteBill = action({
   display: {
     label: "Delete Bill",
@@ -15,6 +16,7 @@ export const deleteBill = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       id: billId,
     };
@@ -23,17 +25,17 @@ export const deleteBill = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Delete/Bill.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteBillExamplePayload.data,
   }),
   inputs: deleteBillInputs,

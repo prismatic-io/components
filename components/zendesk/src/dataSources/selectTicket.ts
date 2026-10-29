@@ -3,6 +3,7 @@ import { createClient } from "../auth";
 import { selectTicketExamplePayload } from "../examplePayloads";
 import { selectTicketInputs } from "../inputs";
 import { byElementLabel } from "../util";
+
 export const selectTicket = dataSource({
   display: {
     label: "Select Ticket",
@@ -12,7 +13,9 @@ export const selectTicket = dataSource({
     const client = createClient({
       zendeskConnection,
     });
+
     const result = await client.tickets.list();
+
     return {
       result: result
         .map<Element>((ticket) => ({

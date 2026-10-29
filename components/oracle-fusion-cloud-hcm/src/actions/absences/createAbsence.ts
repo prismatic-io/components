@@ -4,6 +4,7 @@ import { createAbsenceExamplePayload } from "../../examplePayloads/absences";
 import { createAbsenceInputs } from "../../inputs";
 import { absenceOutputSchema } from "../../outputSchemas";
 import type { Absence } from "../../types";
+
 export const createAbsence = action({
   display: {
     label: "Create Absence",

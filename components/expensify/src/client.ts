@@ -1,8 +1,10 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { basicConnection } from "./connections";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const baseUrl =
   "https://integrations.expensify.com/Integration-Server/ExpensifyIntegrations";
+
 export const validateConnection = (connection: Connection): void => {
   if (![basicConnection.key].includes(connection.key)) {
     throw new ConnectionError(
@@ -20,6 +22,7 @@ export const validateConnection = (connection: Connection): void => {
     );
   }
 };
+
 export const createClient = (connection: Connection, debug: boolean) => {
   validateConnection(connection);
   const client = createHttpClient({

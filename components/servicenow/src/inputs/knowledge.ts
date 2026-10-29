@@ -6,6 +6,7 @@ import {
   fetchAll,
   instanceUrlInput,
 } from "./common";
+
 const filter = input({
   label: "Filter",
   type: "string",
@@ -15,6 +16,7 @@ const filter = input({
   placeholder: "Enter the filter query",
   clean: cleanStringInput,
 });
+
 const fields = input({
   label: "Fields",
   type: "string",
@@ -25,6 +27,7 @@ const fields = input({
     "Comma-separated list of fields from the Knowledge [kb_knowledge] table to show details in results.",
   clean: cleanStringInput,
 });
+
 const kb = input({
   label: "Knowledge Base Sys IDs",
   type: "string",
@@ -35,6 +38,7 @@ const kb = input({
   placeholder: "Enter the knowledge base Sys IDs",
   clean: cleanStringInput,
 });
+
 const language = input({
   label: "Language",
   type: "string",
@@ -45,6 +49,7 @@ const language = input({
   placeholder: "Enter the language code",
   clean: cleanStringInput,
 });
+
 const limit = input({
   label: "Limit",
   type: "string",
@@ -55,6 +60,7 @@ const limit = input({
     "Maximum number of records to return. Unusually large limit values can impact system performance. For requests that exceed this number of records, use the Offset input to paginate record retrieval.",
   clean: cleanStringInput,
 });
+
 const offset = input({
   label: "Offset",
   type: "string",
@@ -65,6 +71,7 @@ const offset = input({
     "Starting record index for which to begin retrieving records. Use this value to paginate record retrieval. This functionality enables the retrieval of all records, regardless of the number of records, in small manageable chunks. For example, the first time this endpoint is called, offset is set to '0'.",
   clean: cleanStringInput,
 });
+
 const query = input({
   label: "Query",
   type: "string",
@@ -74,6 +81,7 @@ const query = input({
   placeholder: "Enter the search query",
   clean: cleanStringInput,
 });
+
 const articleSysId = input({
   label: "Article Sys ID",
   type: "string",
@@ -84,6 +92,7 @@ const articleSysId = input({
   placeholder: "Enter the article Sys ID",
   clean: util.types.toString,
 });
+
 const attachmentSysId = input({
   label: "Attachment Sys ID",
   type: "string",
@@ -93,6 +102,7 @@ const attachmentSysId = input({
   placeholder: "Enter the attachment Sys ID",
   clean: util.types.toString,
 });
+
 const articleId = input({
   label: "Article ID",
   type: "string",
@@ -103,6 +113,7 @@ const articleId = input({
   placeholder: "Enter the article ID",
   clean: util.types.toString,
 });
+
 const searchId = input({
   label: "Search ID",
   type: "string",
@@ -113,6 +124,7 @@ const searchId = input({
   placeholder: "Enter the search ID",
   clean: cleanStringInput,
 });
+
 const searchRank = input({
   label: "Search Rank",
   type: "string",
@@ -123,6 +135,7 @@ const searchRank = input({
   placeholder: "Enter the search rank",
   clean: cleanStringInput,
 });
+
 const updateView = input({
   label: "Update View",
   type: "boolean",
@@ -131,24 +144,28 @@ const updateView = input({
     "Update view count and record an entry for the article in the Knowledge Use [kb_use] table.",
   clean: util.types.toBool,
 });
+
 const knowledgePagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and offset for paginated retrieval.",
   inputs: { limit, offset },
 });
+
 const listKnowledgeArticlesFilters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Optional query controls to sort and refine the results.",
   inputs: { filter, fields, kb, language, query },
 });
+
 const listFeaturedAndMostViewedFilters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Optional query controls to sort and refine the results.",
   inputs: { fields, kb, language },
 });
+
 export const getKnowledgeArticleInputs = {
   connection,
   instanceUrlInput,
@@ -160,6 +177,7 @@ export const getKnowledgeArticleInputs = {
   searchRank,
   updateView,
 };
+
 export const getKnowledgeArticleAttachmentInputs = {
   connection,
   instanceUrlInput,
@@ -167,6 +185,7 @@ export const getKnowledgeArticleAttachmentInputs = {
   articleSysId,
   attachmentSysId,
 };
+
 export const listKnowledgeArticlesInputs = {
   connection,
   instanceUrlInput,
@@ -175,6 +194,7 @@ export const listKnowledgeArticlesInputs = {
   fetchAll,
   pagination: knowledgePagination,
 };
+
 export const listFeaturedKnowledgeArticlesInputs = {
   connection,
   instanceUrlInput,
@@ -183,6 +203,7 @@ export const listFeaturedKnowledgeArticlesInputs = {
   fetchAll,
   pagination: knowledgePagination,
 };
+
 export const listMostViewedKnowledgeArticlesInputs = {
   connection,
   instanceUrlInput,

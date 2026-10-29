@@ -4,11 +4,13 @@ import { apiKeyConnection } from "../../connections";
 import { DEFAULT_DATADOG_SITE } from "../../constants";
 import { submitSingleMetricExamplePayload } from "../../examplePayloads";
 import { submitSingleMetric } from "./submitSingleMetric";
+
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
   apiKey: "test-api-key",
   applicationKey: "test-application-key",
 });
+
 const emptyMetricFields = {
   metricType: undefined,
   metricUnit: undefined,
@@ -16,10 +18,12 @@ const emptyMetricFields = {
   resourceName: undefined,
   resourceType: undefined,
 };
+
 describe("submitSingleMetric", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("assembles a single series from the flat inputs and metric fields", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series", {
@@ -36,6 +40,7 @@ describe("submitSingleMetric", () => {
         ],
       })
       .reply(202, submitSingleMetricExamplePayload.data);
+
     const { result } = await invoke(submitSingleMetric, {
       connection: testConnection,
       metricName: "system.load.1",
@@ -50,9 +55,11 @@ describe("submitSingleMetric", () => {
         resourceType: "host",
       },
     });
+
     expect(result.data).toEqual(submitSingleMetricExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("omits resources when neither resource field is set", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series", {
@@ -65,6 +72,7 @@ describe("submitSingleMetric", () => {
         ],
       })
       .reply(202, submitSingleMetricExamplePayload.data);
+
     const { result } = await invoke(submitSingleMetric, {
       connection: testConnection,
       metricName: "system.load.1",
@@ -73,9 +81,11 @@ describe("submitSingleMetric", () => {
       metricTags: [],
       metricFields: emptyMetricFields,
     });
+
     expect(result.data).toEqual(submitSingleMetricExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("sends a resource when only the resource name is set", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series", {
@@ -89,6 +99,7 @@ describe("submitSingleMetric", () => {
         ],
       })
       .reply(202, submitSingleMetricExamplePayload.data);
+
     await invoke(submitSingleMetric, {
       connection: testConnection,
       metricName: "system.load.1",
@@ -97,12 +108,15 @@ describe("submitSingleMetric", () => {
       metricTags: [],
       metricFields: { ...emptyMetricFields, resourceName: "my-host" },
     });
+
     expect(scope.isDone()).toBe(true);
   });
+
   test("surfaces an API error", async () => {
     nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series")
       .reply(400, { errors: ["Invalid metric payload"] });
+
     await expect(
       invoke(submitSingleMetric, {
         connection: testConnection,

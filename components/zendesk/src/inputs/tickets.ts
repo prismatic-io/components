@@ -22,6 +22,7 @@ import {
   ticketType,
   userId,
 } from "./common";
+
 export const createTicketInputs = {
   requesterName,
   requesterEmail,
@@ -41,17 +42,21 @@ export const createTicketInputs = {
   zendeskConnection: connectionInput,
   externalId,
 };
+
 export const deleteTicketInputs = {
   ticketId,
   zendeskConnection: connectionInput,
 };
+
 export const getByExternalIdInputs = {
   zendeskConnection: connectionInput,
   externalId,
 };
+
 export const listTicketsInputs = {
   zendeskConnection: connectionInput,
 };
+
 export const listTicketsByUserInputs = {
   userId: {
     ...userId,
@@ -60,6 +65,7 @@ export const listTicketsByUserInputs = {
   },
   zendeskConnection: connectionInput,
 };
+
 export const listTicketsToUserInputs = {
   userId: {
     ...userId,
@@ -68,6 +74,7 @@ export const listTicketsToUserInputs = {
   },
   zendeskConnection: connectionInput,
 };
+
 export const showTicketInputs = {
   ticketId: {
     ...ticketId,
@@ -76,6 +83,7 @@ export const showTicketInputs = {
   },
   zendeskConnection: connectionInput,
 };
+
 export const updateTicketInputs = {
   ticketId,
   ticketComment,

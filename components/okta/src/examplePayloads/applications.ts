@@ -228,9 +228,11 @@ export const getApplicationExamplePayload = {
     },
   },
 };
+
 export const listApplicationsExamplePayload = {
   data: [getApplicationExamplePayload.data],
 };
+
 export const getApplicationUserAssignmentsExamplePayload = {
   data: {
     id: "00u1dnq5S0CfjlkpABCD",
@@ -333,6 +335,7 @@ export const getApplicationUserAssignmentsExamplePayload = {
     },
   },
 };
+
 export const assignApplicationToUserExamplePayload = {
   data: {
     id: "00u1dnq5S0CfjlkpABCD",
@@ -361,6 +364,7 @@ export const assignApplicationToUserExamplePayload = {
     },
   },
 };
+
 export const updateApplicationUserAssignmentsExamplePayload = {
   data: {
     credentials: {
@@ -371,6 +375,7 @@ export const updateApplicationUserAssignmentsExamplePayload = {
     },
   },
 };
+
 export const removeApplicationUserAssignmentExamplePayload = {
   data: {
     id: "00u1dnq5S0CfjlkpABCD",

@@ -1,5 +1,6 @@
 import type Stripe from "stripe";
 import { getPriceExamplePayload } from "./prices";
+
 export const createCheckoutSessionExamplePayload = {
   data: {
     id: "cs_test_b1Gk9xQvR3mLpT7wZnY4dHsJ2fCaX8eUoN6iKbMv0rQtLyPh5jWgD1SzAu",
@@ -32,6 +33,7 @@ export const createCheckoutSessionExamplePayload = {
     url: "https://checkout.stripe.com/c/pay/cs_test_b1Gk9xQvR3mLpT7wZnY4dHsJ2fCaX8eUoN6iKbMv0rQtLyPh5jWgD1SzAu",
   },
 };
+
 export const listCheckoutSessionsExamplePayload = {
   data: {
     object: "list",
@@ -40,6 +42,7 @@ export const listCheckoutSessionsExamplePayload = {
     url: "/v1/checkout/sessions",
   },
 };
+
 export const listCheckoutSessionLineItemsExamplePayload = {
   data: {
     object: "list",

@@ -3,6 +3,7 @@ import { connectionInput, type, policyName, plan } from "../../inputs";
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
 import { createPolicyExamplePayload } from "../../examplePayloads";
+
 export const createPolicy = action({
   display: {
     description: "Creates a policy.",
@@ -29,6 +30,7 @@ export const createPolicy = action({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

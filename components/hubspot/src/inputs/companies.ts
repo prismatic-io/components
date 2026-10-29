@@ -12,6 +12,7 @@ import {
   pagination,
   timeout,
 } from "./common";
+
 const companyId = input({
   label: "Company ID",
   type: "string",
@@ -22,6 +23,7 @@ const companyId = input({
   comments: "The unique identifier of the company.",
   clean: util.types.toString,
 });
+
 const companyName = input({
   label: "Company Name",
   type: "string",
@@ -31,6 +33,7 @@ const companyName = input({
   comments: "The display name for the company record.",
   clean: util.types.toString,
 });
+
 const updateCompanyName = input({
   label: "Company Name",
   type: "string",
@@ -40,6 +43,7 @@ const updateCompanyName = input({
   comments: "The updated display name for the company.",
   clean: toOptionalString,
 });
+
 const companyPhone = input({
   label: "Phone",
   type: "string",
@@ -49,6 +53,7 @@ const companyPhone = input({
   comments: "The primary contact phone number for the company.",
   clean: toOptionalString,
 });
+
 const domain = input({
   label: "Domain",
   type: "string",
@@ -59,6 +64,7 @@ const domain = input({
     "The company's web domain, used for deduplication and enrichment (e.g. example.com).",
   clean: util.types.toString,
 });
+
 const updateDomain = input({
   label: "Domain",
   type: "string",
@@ -68,6 +74,7 @@ const updateDomain = input({
   comments: "The updated web domain for the company.",
   clean: toOptionalString,
 });
+
 const city = input({
   label: "City",
   type: "string",
@@ -77,6 +84,7 @@ const city = input({
   comments: "The city where the company is headquartered.",
   clean: toOptionalString,
 });
+
 const industry = input({
   label: "Industry",
   type: "string",
@@ -87,6 +95,7 @@ const industry = input({
     "The company's industry classification, such as Software or Manufacturing.",
   clean: toOptionalString,
 });
+
 const state = input({
   label: "State",
   type: "string",
@@ -96,6 +105,7 @@ const state = input({
   comments: "The state or region where the company is located.",
   clean: toOptionalString,
 });
+
 export const listCompaniesInputs = {
   hubspotConnection: connectionInput,
   archived,
@@ -105,6 +115,7 @@ export const listCompaniesInputs = {
   associationsList,
   timeout,
 };
+
 export const createCompanyInputs = {
   companyName,
   industry,
@@ -118,6 +129,7 @@ export const createCompanyInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const updateCompanyInputs = {
   companyId,
   updateCompanyName,
@@ -132,11 +144,13 @@ export const updateCompanyInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const deleteCompanyInputs = {
   companyId,
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const getCompanyInputs = {
   companyId: { ...companyId, required: false, clean: toOptionalString },
   companyName: { ...companyName, required: false, clean: toOptionalString },

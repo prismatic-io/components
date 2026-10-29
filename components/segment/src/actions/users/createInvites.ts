@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, invites, region } from "../../inputs";
 import { createInviteExamplePayload } from "../../examplePayloads";
+
 export const createUserInvites = action({
   display: {
     label: "Create User Invite",

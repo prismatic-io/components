@@ -5,6 +5,7 @@ import { listEventsExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { listEventsInputs } from "../../inputs";
 import { listEventsOutputSchema } from "../../outputSchemas";
+
 export const listEvents = action({
   display: {
     label: "List Events",

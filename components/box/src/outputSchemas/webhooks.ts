@@ -1,4 +1,5 @@
 import { userMiniSchema } from "./common";
+
 const webhookTargetSchema = {
   type: "object" as const,
   properties: {
@@ -6,6 +7,7 @@ const webhookTargetSchema = {
     type: { type: "string", enum: ["file", "folder"] },
   },
 };
+
 export const createWebhookOutputSchema = {
   type: ["object", "null"],
   properties: {
@@ -69,6 +71,7 @@ export const createWebhookOutputSchema = {
   },
   required: ["id", "type"],
 };
+
 export const listWebhooksOutputSchema = {
   type: "object" as const,
   properties: {

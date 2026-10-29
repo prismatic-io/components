@@ -5,6 +5,7 @@ const intervalSchema = {
     to: { type: "string" },
   },
 };
+
 const availabilityRuleSchema = {
   type: "object",
   properties: {
@@ -17,6 +18,7 @@ const availabilityRuleSchema = {
     date: { type: "string" },
   },
 };
+
 const availabilityScheduleResource = {
   type: "object",
   properties: {
@@ -32,6 +34,7 @@ const availabilityScheduleResource = {
   },
   required: ["uri", "default", "user", "timezone", "rules"],
 };
+
 export const getUserAvailabilityScheduleOutputSchema = {
   type: "object",
   properties: {
@@ -39,6 +42,7 @@ export const getUserAvailabilityScheduleOutputSchema = {
   },
   required: ["resource"],
 };
+
 export const listUserAvailabilitySchedulesOutputSchema = {
   type: "object",
   properties: {
@@ -49,6 +53,7 @@ export const listUserAvailabilitySchedulesOutputSchema = {
   },
   required: ["collection"],
 };
+
 export const listUserBusyTimesOutputSchema = {
   type: "object",
   properties: {

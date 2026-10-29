@@ -1,5 +1,6 @@
 import { connection, employeeId } from "../common";
 import { customTableId, entryDataUpdate, entryId } from "./common";
+
 export const updateCustomTableEntryInputs = {
   connection,
   employeeId: {

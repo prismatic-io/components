@@ -9,6 +9,7 @@ import {
 } from "../legacy";
 import type { CustomRecord } from "../types";
 import { paginateSearch, sortByLabelASC } from "../util";
+
 export const selectRecordById = dataSource({
   display: {
     label: "Select Record",

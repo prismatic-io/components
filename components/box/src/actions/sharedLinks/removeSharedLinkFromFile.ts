@@ -5,6 +5,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { removeSharedLinkFromFileExamplePayload } from "../../examplePayloads";
 import { removeSharedLinkFromFileInputs } from "../../inputs";
 import { removeSharedLinkFromFileOutputSchema } from "../../outputSchemas";
+
 export const removeSharedLinkFromFile = action({
   display: {
     label: "Remove Shared Link from File",
@@ -13,10 +14,12 @@ export const removeSharedLinkFromFile = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const fileId = params.fileId;
+
     const client = createBoxHttpClient(
       params.boxConnection,
       context.debug.enabled,
     );
+
     try {
       const { data } = await client.put(
         `/files/${fileId}`,
@@ -38,12 +41,7 @@ export const removeSharedLinkFromFile = action({
       throw new Error(serialized);
     }
   },
-  examplePerform: async (
-    _context,
-    { fileId },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { fileId }): Promise<{ data: unknown }> => ({
     data: {
       ...removeSharedLinkFromFileExamplePayload.data,
       id: fileId,

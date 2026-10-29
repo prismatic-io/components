@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { createLineItemExamplePayload } from "../../examplePayloads";
 import { createLineItemInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const createLineItem = action({
   display: {
     label: "Create Line Item",
@@ -30,6 +31,7 @@ export const createLineItem = action({
       timeout,
       debugRequest: context.debug.enabled,
     });
+
     const { data } = await client.post(hubspotPaths.objects("line_items"), {
       properties: {
         name: lineItemName,
@@ -42,6 +44,7 @@ export const createLineItem = action({
         ...dynamicValues,
       },
     });
+
     return { data };
   },
   inputs: createLineItemInputs,

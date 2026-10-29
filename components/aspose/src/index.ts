@@ -2,6 +2,7 @@ import { component } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions/index";
 import connections from "./connections";
+
 export default component({
   key: "aspose",
   public: true,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { downloadFileInputs } from "../../inputs";
 import { downloadFileExamplePayload } from "../../examplePayloads";
 import { downloadFileOutputSchema } from "../../outputSchemas";
+
 export const downloadFile = action({
   display: {
     label: "Download File",

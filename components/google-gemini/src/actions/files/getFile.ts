@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createGeminiClient } from "../../client";
 import { getFileExamplePayload as examplePayload } from "../../examplePayloads/files";
 import { getFileInputs } from "../../inputs/files";
+
 export const getFile = action({
   display: {
     label: "Get File",

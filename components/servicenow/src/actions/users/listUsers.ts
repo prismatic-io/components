@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { listUsersInputs } from "../../inputs";
 import { listTableRecords } from "../tables/records/listTableRecords";
+
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -15,9 +16,7 @@ export const listUsers = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: [] },
   }),
   inputs: listUsersInputs,

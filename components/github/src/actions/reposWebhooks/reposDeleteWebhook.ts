@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { reposDeleteWebhookExamplePayload } from "../../examplePayloads";
 import { reposDeleteWebhookInputs } from "../../inputs";
+
 export const reposDeleteWebhook = action({
   display: {
     label: "Delete Repository Webhook",

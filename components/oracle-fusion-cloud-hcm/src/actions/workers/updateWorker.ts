@@ -5,6 +5,7 @@ import { updateWorkerInputs } from "../../inputs";
 import { workerRecordOutputSchema } from "../../outputSchemas";
 import type { WorkerRecord } from "../../types";
 import { dropEmptyRows } from "../../util";
+
 export const updateWorker = action({
   display: {
     label: "Update Worker",
@@ -38,6 +39,7 @@ export const updateWorker = action({
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const nameEntry = {
       NameType,
       LastName,
@@ -58,6 +60,7 @@ export const updateWorker = action({
       nationalIdentifiers: dropEmptyRows(nationalIdentifiers),
       workRelationships: dropEmptyRows(workRelationships),
     };
+
     const { data } = await client.patch<WorkerRecord>(
       `/workers/${personId}`,
       body,

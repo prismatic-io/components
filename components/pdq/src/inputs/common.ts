@@ -1,11 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanKeyValueList, cleanNumber, cleanString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The PDQ connection to use.",
 });
+
 const customQueryParams = input({
   label: "Custom Query Params",
   type: "string",
@@ -16,6 +18,7 @@ const customQueryParams = input({
   placeholder: "Enter key=value pairs",
   clean: cleanKeyValueList,
 });
+
 const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -25,6 +28,7 @@ const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const includes = input({
   label: "Includes",
   type: "string",
@@ -34,6 +38,7 @@ export const includes = input({
   placeholder: "Enter related resources (comma-separated)",
   clean: cleanString,
 });
+
 export const group = input({
   label: "Group ID",
   type: "string",
@@ -44,6 +49,7 @@ export const group = input({
   clean: cleanString,
   dataSource: "selectGroup",
 });
+
 const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -53,6 +59,7 @@ const pageSize = input({
   placeholder: "Enter page size (max 100)",
   clean: cleanNumber,
 });
+
 const page = input({
   label: "Page",
   type: "string",
@@ -62,12 +69,14 @@ const page = input({
   placeholder: "Enter page number",
   clean: cleanNumber,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page number and page size to control result paging.",
   inputs: { page, pageSize },
 });
+
 const sort = input({
   label: "Sort",
   type: "string",
@@ -78,6 +87,7 @@ const sort = input({
   placeholder: "Enter sort field (e.g., insertedAtDesc)",
   clean: cleanString,
 });
+
 const filter = input({
   label: "Filter",
   type: "string",
@@ -88,12 +98,14 @@ const filter = input({
   placeholder: "Enter filter as JSON",
   clean: cleanString,
 });
+
 export const filters = structuredObjectInput({
   label: "Filters",
   required: false,
   comments: "Optional query controls to sort and refine the results.",
   inputs: { sort, filter },
 });
+
 export const listDefaultInputs = {
   fetchAll,
   pagination,

@@ -19,6 +19,7 @@ import {
   resolveWatermarkWindow,
 } from "../util";
 import { hasChanges, resolvePollingRecordChanges } from "./pollingUtils";
+
 export const pollOrders = pollingTrigger({
   display: {
     label: "New and Updated Orders",
@@ -39,6 +40,7 @@ export const pollOrders = pollingTrigger({
     const state = context.polling.getState() as PollingState | null;
     const incoming = payload.paginationState as OrderPollCursor | undefined;
     const window = resolveWatermarkWindow(state, lookBackDate, now);
+
     const result = await drainWatermark(
       "pollOrders",
       fetchOrdersPage(createShipStationClient(connection)),
@@ -47,7 +49,9 @@ export const pollOrders = pollingTrigger({
       pagesPerRound(context.batch?.enabled === true),
     );
     const data = classifyWatermarkRecords(result.records, window);
+
     context.polling.setState(nextPollingState(state, window, result));
+
     return {
       payload: {
         ...payload,

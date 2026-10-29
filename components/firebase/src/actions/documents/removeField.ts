@@ -3,6 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { withFirestore } from "../../client";
 import { removeFieldExamplePayload } from "../../examplePayloads";
 import { removeFieldInputs } from "../../inputs";
+
 export const removeField = action({
   display: {
     label: "Remove Field",
@@ -19,13 +20,13 @@ export const removeField = action({
           [params.fieldToRemove]: FieldValue.delete(),
         }),
     );
+
     return {
       data: result,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => removeFieldExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    removeFieldExamplePayload,
   inputs: removeFieldInputs,
   examplePayload: removeFieldExamplePayload,
 });

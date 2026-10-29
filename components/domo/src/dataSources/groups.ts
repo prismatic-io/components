@@ -2,6 +2,7 @@ import { dataSource, input } from "@prismatic-io/spectral";
 import type { ListGroupsQueryParams } from "../actions/types/ListGroupsQueryParams";
 import { getDomoClient } from "../client";
 import { connection, limit, offset } from "../inputs";
+
 const groups = dataSource({
   display: {
     label: "Select Group",
@@ -13,6 +14,7 @@ const groups = dataSource({
     const queryParams: ListGroupsQueryParams = {};
     if (limit.length) queryParams.limit = limit;
     if (offset.length) queryParams.offset = offset;
+
     const { data } = await client.get(`/groups`, {
       params: queryParams,
       headers: { Accept: "application/json" },
@@ -40,4 +42,5 @@ const groups = dataSource({
     }),
   },
 });
+
 export default { groups };

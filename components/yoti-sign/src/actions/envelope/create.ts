@@ -17,6 +17,7 @@ import {
   recipients,
 } from "../../inputs";
 import { addNotificationsToObject, addPropertyToPayload } from "../../util";
+
 export const createEnvelope = action({
   display: {
     label: `Create Envelope`,
@@ -62,6 +63,7 @@ export const createEnvelope = action({
         contentType,
       });
     });
+
     const options = addPropertyToPayload({
       branding,
       emails,
@@ -71,18 +73,22 @@ export const createEnvelope = action({
       recipients,
       autotagging,
     });
+
     addNotificationsToObject(
       options,
       notificationDestination,
       notificationsSubscriptions,
     );
+
     options.sender = {
       event_notifications: ["envelope_completion"],
     };
     form.append("options", JSON.stringify(options));
+
     const { data } = await client.post("/envelopes", form.getBuffer(), {
       headers: form.getHeaders(),
     });
+
     return { data };
   },
   examplePayload: {

@@ -3,6 +3,7 @@ import type { Message } from "amqplib";
 import { createClient } from "../client";
 import { acknowledgeMessageExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
+
 export const acknowledgeMessage = action({
   display: {
     label: "Acknowledge Message",

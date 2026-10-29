@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getTimeCardsExamplePayload } from "../../examplePayloads";
 import { getTimeCardsInputs } from "../../inputs";
 import { getTimeCardsOutputSchema } from "../../outputSchemas";
+
 export const getTimeCards = action({
   display: {
     label: "Get Time Cards",
@@ -33,9 +34,8 @@ export const getTimeCards = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getTimeCardsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getTimeCardsExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getTimeCardsOutputSchema,

@@ -1,12 +1,14 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { MAX_LIMIT } from "../constants";
 import { toOptionalNumber } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Monday.com connection to use.",
 });
+
 export const boardId = input({
   label: "Board ID",
   type: "string",
@@ -18,6 +20,7 @@ export const boardId = input({
   dataSource: "selectBoard",
   clean: util.types.toInt,
 });
+
 export const limit = input({
   label: "Result Limit",
   type: "string",
@@ -27,6 +30,7 @@ export const limit = input({
   example: "20",
   clean: toOptionalNumber,
 });
+
 export const page = input({
   label: "Page Offset",
   type: "string",
@@ -37,6 +41,7 @@ export const page = input({
   example: "3",
   clean: toOptionalNumber,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -46,6 +51,7 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,

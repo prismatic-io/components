@@ -6,6 +6,7 @@ import { getTaskDetailsExamplePayload } from "../../examplePayloads";
 import { getTaskDetailsOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { getTaskDetailsInputs } from "../../inputs";
+
 export const getTaskDetails = action({
   display: {
     label: "Get Task Details",

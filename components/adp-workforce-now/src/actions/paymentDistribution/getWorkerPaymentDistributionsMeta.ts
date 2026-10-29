@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getWorkerPaymentDistributionsMetaExamplePayload } from "../../examplePayloads";
 import { getWorkerPaymentDistributionsMetaInputs } from "../../inputs";
 import { getWorkerPaymentDistributionsMetaOutputSchema } from "../../outputSchemas";
+
 export const getWorkerPaymentDistributionsMeta = action({
   display: {
     label: "Get Worker Payment Distributions Meta",

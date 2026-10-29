@@ -5,6 +5,7 @@ import { countCollectionsInputs as inputs } from "../../../inputsGql";
 import { countCollectionsGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";
 import countCollectionsQuery from "../queries/collections/CountCollections.gql";
+
 export const countCollectionsGql = action({
   display: {
     label: "Count Collections",
@@ -18,9 +19,11 @@ export const countCollectionsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
       collectionsCount: Count;
     } = await client.request(countCollectionsQuery);
+
     return {
       data: data.collectionsCount,
     };

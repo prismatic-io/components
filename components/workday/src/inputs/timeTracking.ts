@@ -13,6 +13,7 @@ import {
   referenceId,
   workerId,
 } from "./common";
+
 const workerTimeBlockId = input({
   label: "Worker Time Block ID",
   comments: "Identifies the worker's reported time block.",
@@ -22,6 +23,7 @@ const workerTimeBlockId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const timeClockEventId = input({
   label: "Time Clock Event ID",
   comments: "Identifies the time clock event record.",
@@ -31,6 +33,7 @@ const timeClockEventId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const clockEventOverrideRate = input({
   label: "Clock Event Override Rate",
   comments: "Optional rate that overrides the default pay rate for this event.",
@@ -40,6 +43,7 @@ const clockEventOverrideRate = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 const clockEventTimeEntryCodeId = input({
   label: "Clock Event Time Entry Code ID",
   comments: "Identifies the time entry code applied to the clock event.",
@@ -49,6 +53,7 @@ const clockEventTimeEntryCodeId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const clockEventProjectPlanTaskId = input({
   label: "Clock Event Project Plan Task ID",
   comments: "Identifies the project plan task associated with the clock event.",
@@ -58,6 +63,7 @@ const clockEventProjectPlanTaskId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const clockEventProjectId = input({
   label: "Clock Event Project ID",
   comments: "Identifies the project associated with the clock event.",
@@ -67,6 +73,7 @@ const clockEventProjectId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const clockEventComment = input({
   label: "Clock Event Comment",
   comments: "Free-text comment attached to the time clock event.",
@@ -76,6 +83,7 @@ const clockEventComment = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const assignmentIds = structuredObjectInput({
   label: "Assignment IDs",
   required: false,
@@ -87,6 +95,7 @@ const assignmentIds = structuredObjectInput({
     clockEventProjectPlanTaskId,
   },
 });
+
 const workerTimeBlockExtraBodyExample = JSON.stringify(
   {
     customWorktag07: {
@@ -238,6 +247,7 @@ const workerTimeBlockExtraBodyExample = JSON.stringify(
   2,
 );
 const postWorkerTimeBlockExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/post-/workers/-ID-/workerTimeBlock) for more information.`;
+
 const doNotBill = input({
   label: "Do Not Bill",
   comments: "When true, marks the time block as non-billable.",
@@ -246,6 +256,7 @@ const doNotBill = input({
   required: false,
   clean: util.types.toBool,
 });
+
 const comment = input({
   label: "Comment",
   comments: "Free-text comment attached to the reported time block.",
@@ -254,8 +265,11 @@ const comment = input({
   placeholder: "Enter comment",
   clean: cleanStringInput,
 });
+
 const getTimeClockEventsParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/get-/timeClockEvents).`;
+
 const getWorkersParamsComments = `${extraParameters.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/get-/workers).`;
+
 const updateTimeClockEventsByIdExtraBodyExample = JSON.stringify(
   {
     businessUnit: {
@@ -275,16 +289,20 @@ const updateTimeClockEventsByIdExtraBodyExample = JSON.stringify(
   2,
 );
 const updateTimeClockEventsByIdExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/put-/timeClockEvents/-ID-) for more information.`;
+
 const updateWorkerTimeBlockExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.timeTracking.slice(1)}/patch-/workers/-ID-/workerTimeBlock/-subresourceID-) for more information.`;
+
 export const deleteTimeClockEventsByIdInputs = {
   connection,
   timeClockEventId,
 };
+
 export const deleteWorkerTimeBlockInputs = {
   connection,
   workerId,
   workerTimeBlockId,
 };
+
 export const getTimeClockEventsInputs = {
   connection,
   ...paginationQueryStringInputs,
@@ -293,13 +311,17 @@ export const getTimeClockEventsInputs = {
     comments: getTimeClockEventsParamsComments,
   },
 };
+
 export const getTimeClockEventsByIdInputs = { connection, timeClockEventId };
+
 export const getWorkerByIdInputs = { connection, workerId };
+
 export const getWorkersInputs = {
   connection,
   ...paginationQueryStringInputs,
   extraParameters: { ...extraParameters, comments: getWorkersParamsComments },
 };
+
 export const postWorkerTimeBlockInputs = {
   connection,
   workerId,
@@ -313,6 +335,7 @@ export const postWorkerTimeBlockInputs = {
     example: workerTimeBlockExtraBodyExample,
   },
 };
+
 export const updateTimeClockEventsByIdInputs = {
   connection,
   timeClockEventId,
@@ -329,11 +352,13 @@ export const updateTimeClockEventsByIdInputs = {
     example: updateTimeClockEventsByIdExtraBodyExample,
   },
 };
+
 const {
   connection: _connection,
   workerId: _workerId,
   ...postWorkerTimeBlockFields
 } = postWorkerTimeBlockInputs;
+
 export const updateWorkerTimeBlockInputs = {
   connection,
   workerId,

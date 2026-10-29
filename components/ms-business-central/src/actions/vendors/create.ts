@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { createVendorExamplePayload } from "../../examplePayloads";
 import { createVendorInputs } from "../../inputs/vendors";
 import type { Vendor } from "../../interfaces";
+
 export const createVendor = action({
   display: {
     label: "Create Vendor",
@@ -56,6 +57,7 @@ export const createVendor = action({
       `/companies(${companyId})/vendors`,
       payload,
     );
+
     return {
       data,
     };

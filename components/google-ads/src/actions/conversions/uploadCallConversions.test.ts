@@ -4,13 +4,16 @@ import { oauth } from "../../connections";
 import { GOOGLE_ADS_API_VERSION, GOOGLE_ADS_BASE_URL } from "../../constants";
 import { uploadCallConversionsExamplePayload } from "../../examplePayloads";
 import { uploadCallConversions } from "./uploadCallConversions";
+
 const connection = createConnection(
   oauth,
   { developerToken: "test-developer-token" },
   { access_token: "test-access-token" },
 );
+
 const CUSTOMER_ID = "1234567890";
 const PATH = `/${GOOGLE_ADS_API_VERSION}/customers/${CUSTOMER_ID}:uploadCallConversions`;
+
 const params = {
   connection,
   customerId: CUSTOMER_ID,
@@ -25,8 +28,10 @@ const params = {
   ],
   validateOnly: false,
 };
+
 describe("uploadCallConversions", () => {
   afterEach(() => nock.cleanAll());
+
   test("posts the conversions and returns the upload results", async () => {
     const scope = nock(GOOGLE_ADS_BASE_URL)
       .post(PATH, {
@@ -35,14 +40,18 @@ describe("uploadCallConversions", () => {
         validateOnly: false,
       })
       .reply(200, uploadCallConversionsExamplePayload.data);
+
     const { result } = await invoke(uploadCallConversions, params);
+
     expect(result.data).toEqual(uploadCallConversionsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("surfaces an API error response", async () => {
     nock(GOOGLE_ADS_BASE_URL)
       .post(PATH)
       .reply(400, { error: { code: 400, message: "Invalid conversion" } });
+
     await expect(invoke(uploadCallConversions, params)).rejects.toThrow();
   });
 });

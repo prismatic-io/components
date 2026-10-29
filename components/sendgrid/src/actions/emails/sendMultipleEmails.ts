@@ -4,6 +4,7 @@ import { createMailClient } from "../../client";
 import { sendMultipleEmailsExamplePayload } from "../../examplePayloads";
 import { sendMultipleEmailsInputs } from "../../inputs";
 import { createPayload } from "../../util";
+
 export const sendMultipleEmails = action({
   display: {
     label: "Send Multiple Emails",
@@ -40,13 +41,17 @@ export const sendMultipleEmails = action({
     const fileData = content?.data
       ? content.data.toString("base64")
       : undefined;
+
     if ((fileData && !fileName) || (!fileData && fileName)) {
       throw new Error(
         "Missing required field. Please provide a File Name and Attachment Content.",
       );
     }
+
     const sendGrid = createMailClient(sendGridConnection);
+
     const attachments = [];
+
     if (fileData)
       attachments.push({
         content: fileData,
@@ -55,7 +60,9 @@ export const sendMultipleEmails = action({
         type: fileType,
         content_id: contentId,
       });
+
     if (multipleAttachments) attachments.push(...multipleAttachments);
+
     const payload = createPayload({
       to,
       cc,
@@ -87,9 +94,7 @@ export const sendMultipleEmails = action({
     }
   },
   inputs: sendMultipleEmailsInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: sendMultipleEmailsExamplePayload.data,
   }),
   examplePayload: sendMultipleEmailsExamplePayload,

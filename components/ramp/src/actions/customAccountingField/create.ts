@@ -9,6 +9,7 @@ import {
   name,
 } from "../../inputs";
 import { createCustomAccountingFieldOutputSchema } from "../../outputSchemas";
+
 export const createCustomAccountingField = action({
   display: {
     label: "Create Custom Accounting Field",
@@ -38,6 +39,7 @@ export const createCustomAccountingField = action({
     { connection, customAccountingFieldId, inputType, isSplittable, name },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/accounting/fields`, {
       id: customAccountingFieldId,
       name,
@@ -51,9 +53,7 @@ export const createCustomAccountingField = action({
   examplePerform: async (
     _context,
     { customAccountingFieldId, inputType, isSplittable, name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createCustomAccountingFieldResponse,
       id: customAccountingFieldId,

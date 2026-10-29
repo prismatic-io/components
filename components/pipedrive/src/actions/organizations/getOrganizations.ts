@@ -6,6 +6,7 @@ import type { Organization } from "../../types/organization";
 import { getOrganizationExamplePayload } from "../../examplePayloads";
 import { WebhookVersion } from "../../constants";
 import { getOrganizationsOutputSchema } from "../../outputSchemas";
+
 export const getOrganizations = action({
   display: {
     label: "Get Organizations",

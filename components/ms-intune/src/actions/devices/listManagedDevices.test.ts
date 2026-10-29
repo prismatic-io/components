@@ -3,9 +3,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { listManagedDevicesExamplePayload } from "../../examplePayloads";
 import { listManagedDevices } from "./listManagedDevices";
+
 const HOST = "https://graph.microsoft.com";
 const PATH = "/v1.0/deviceManagement/managedDevices";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -17,12 +19,14 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listManagedDevicesExamplePayload.data;
 const [firstDevice] = listReply.value;
 const secondDevice = {
   ...firstDevice,
   id: "705c034c-034c-705c-4c03-5c704c035c71",
 };
+
 const emptyPagination = {
   $top: undefined,
   $skip: undefined,
@@ -37,18 +41,23 @@ const emptyFilters = {
   $search: undefined,
   $format: undefined,
 };
+
 describe("listManagedDevices", () => {
   afterEach(() => nock.cleanAll());
+
   test("returns a single page of managed devices when Fetch All is false", async () => {
     nock(HOST).get(PATH).query({ $count: "false" }).reply(200, listReply);
+
     const { result } = await invoke(listManagedDevices, {
       connection,
       fetchAll: false,
       pagination: emptyPagination,
       filters: emptyFilters,
     });
+
     expect(result.data).toEqual(listReply);
   });
+
   test("follows @odata.nextLink and concatenates every page when Fetch All is true", async () => {
     nock(HOST)
       .get(PATH)
@@ -61,19 +70,23 @@ describe("listManagedDevices", () => {
       .get(PATH)
       .query({ $skiptoken: "page-2" })
       .reply(200, { value: [secondDevice] });
+
     const { result } = await invoke(listManagedDevices, {
       connection,
       fetchAll: true,
       pagination: emptyPagination,
       filters: emptyFilters,
     });
+
     expect(result.data).toEqual({ value: [firstDevice, secondDevice] });
   });
+
   test("surfaces the failure when the API rejects the request", async () => {
     nock(HOST)
       .get(PATH)
       .query({ $count: "false" })
       .reply(403, { error: { code: "Authorization_RequestDenied" } });
+
     await expect(
       invoke(listManagedDevices, {
         connection,

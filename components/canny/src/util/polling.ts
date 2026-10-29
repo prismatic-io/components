@@ -1,4 +1,5 @@
 import type { CannyPostChange, CannyPostChangesObject, Post } from "../types";
+
 export const collectPostChanges = (
   posts: Post[],
   since: string,
@@ -19,6 +20,7 @@ export const collectPostChanges = (
     updated: isInitialSync || showUpdatedRecords ? updated : [],
   };
 };
+
 export const resolvePostChanges = (
   data: CannyPostChangesObject | undefined,
 ): CannyPostChange[] => {
@@ -32,6 +34,7 @@ export const resolvePostChanges = (
     ),
   ];
 };
+
 export const classifyPostsByPollDate = (
   posts: Post[],
   since: string,
@@ -42,6 +45,7 @@ export const classifyPostsByPollDate = (
     !Number.isNaN(ms) && (inclusive ? ms >= sinceMs : ms > sinceMs);
   const created: Post[] = [];
   const updated: Post[] = [];
+
   for (const post of posts) {
     const createdMs = post.created
       ? new Date(post.created).getTime()
@@ -49,13 +53,16 @@ export const classifyPostsByPollDate = (
     const statusChangedMs = post.statusChangedAt
       ? new Date(post.statusChangedAt).getTime()
       : Number.NaN;
+
     const isNew = isAfter(createdMs);
     const isUpdated = !isNew && isAfter(statusChangedMs);
+
     if (isNew) {
       created.push(post);
     } else if (isUpdated) {
       updated.push(post);
     }
   }
+
   return { created, updated };
 };

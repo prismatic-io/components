@@ -5,6 +5,7 @@ import { listGroupsExamplePayload } from "../../examplePayloads/groups";
 import { listGroupsInputs } from "../../inputs";
 import { listGroupsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
+
 export const listGroups = action({
   display: {
     label: "List Groups",
@@ -21,6 +22,7 @@ export const listGroups = action({
     { connection, customQueryParams, fetchAll, filters = {}, pagination = {} },
   ) => {
     const client = createHttpClient(connection, context.debug.enabled);
+
     const data = await fetchAllData(
       client,
       GROUPS_ENDPOINT,
@@ -37,9 +39,7 @@ export const listGroups = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listGroupsExamplePayload.data,
   }),
   examplePayload: listGroupsExamplePayload,

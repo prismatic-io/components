@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { updateProductExamplePayload } from "../../examplePayloads/products";
 import { updateProductInputs } from "../../inputs";
 import { productOutputSchema } from "../../outputSchemas";
+
 export const updateProduct = action({
   display: {
     label: "Update Product",
@@ -29,6 +30,7 @@ export const updateProduct = action({
       stripeConnection,
       timeout,
     });
+
     return {
       data: await client.products.update(productId, {
         name: updateProductName,
@@ -54,10 +56,9 @@ export const updateProduct = action({
       productImages,
       metadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const product = updateProductExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...product,
@@ -77,5 +78,6 @@ export const updateProduct = action({
     type: "actionOutput",
     schema: productOutputSchema,
   }),
+
   examplePayload: updateProductExamplePayload,
 });

@@ -10,6 +10,7 @@ import {
   site,
 } from "../../inputs/general";
 import { filterDataChangedAfter } from "../../util";
+
 export const listTaxCodes = action({
   display: {
     label: "List Tax Codes",
@@ -25,6 +26,7 @@ export const listTaxCodes = action({
       endpoint: "/tax_codes",
       fetchAll,
     });
+
     return {
       data: filterDataAfterDate
         ? filterDataChangedAfter(data, filterDataAfterDate)

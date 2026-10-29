@@ -6,6 +6,7 @@ import {
   projectName,
   projectStartDate,
 } from "../../inputs";
+
 export const createProject = action({
   display: {
     label: "Create Project",
@@ -25,6 +26,7 @@ export const createProject = action({
         Start: params.projectStartDate || undefined,
       },
     });
+
     return {
       data,
     };
@@ -36,4 +38,5 @@ export const createProject = action({
     projectStartDate,
   },
 });
+
 export default createProject;

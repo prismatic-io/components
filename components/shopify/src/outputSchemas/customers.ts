@@ -1,4 +1,5 @@
 import { countSchema, userErrorsArraySchema } from "./shared";
+
 const restCustomerAddressSchema = {
   type: "object" as const,
   properties: {
@@ -21,6 +22,7 @@ const restCustomerAddressSchema = {
     default: { type: "boolean" as const },
   },
 };
+
 const restCustomerSchema = {
   type: "object" as const,
   properties: {
@@ -65,6 +67,7 @@ const restCustomerSchema = {
     default_address: restCustomerAddressSchema,
   },
 };
+
 const restMappedCustomerSchema = {
   type: "object" as const,
   properties: {
@@ -152,6 +155,7 @@ const restMappedCustomerSchema = {
     },
   },
 };
+
 const gqlCustomerSchema = {
   type: "object" as const,
   properties: {
@@ -233,13 +237,16 @@ const gqlCustomerSchema = {
     },
   },
 };
+
 export const createCustomerOutputSchema = {
   type: "object" as const,
   properties: {
     customer: restCustomerSchema,
   },
 };
+
 export const getCustomerOutputSchema = createCustomerOutputSchema;
+
 export const listCustomersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -265,7 +272,9 @@ export const listCustomersOutputSchema = {
     rel: { type: ["string", "null"] },
   },
 };
+
 export const countCustomersGqlOutputSchema = countSchema;
+
 export const createAccountActivationURLGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -273,10 +282,12 @@ export const createAccountActivationURLGqlOutputSchema = {
     userErrors: userErrorsArraySchema,
   },
 };
+
 export const deleteCustomerGqlOutputSchema = {
   type: "object" as const,
   properties: {},
 };
+
 export const updateCustomerGqlOutputSchema = {
   type: "object" as const,
   properties: {
@@ -284,10 +295,12 @@ export const updateCustomerGqlOutputSchema = {
     customer: gqlCustomerSchema,
   },
 };
+
 export const getCustomerGqlOutputSchema = {
   type: "object" as const,
   properties: {
     customer: restMappedCustomerSchema,
   },
 };
+
 export const listCustomersGqlOutputSchema = listCustomersOutputSchema;

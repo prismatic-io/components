@@ -5,6 +5,7 @@ import { updateSupplierItemInputs } from "../../inputs";
 import { supplierItemFullSchema } from "../../outputSchemas";
 import type { SupplierItemUpdateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateSupplierItem = action({
   display: {
     label: "Update Supplier Item",
@@ -36,6 +37,7 @@ export const updateSupplierItem = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const supplierItemPayload: SupplierItemUpdateVo = {
         name,
         number,
@@ -45,6 +47,7 @@ export const updateSupplierItem = action({
         offTheShelf,
         procurementType,
       };
+
       supplierItemPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: additionalAttributeJson,
@@ -53,6 +56,7 @@ export const updateSupplierItem = action({
         },
         context,
       );
+
       context.logger.info("Updating supplier item", {
         supplierItemGuid,
         supplierItemName: name,
@@ -69,15 +73,18 @@ export const updateSupplierItem = action({
             : 0,
         endpoint: `/supplieritems/${supplierItemGuid}`,
       });
+
       const { data } = await client.put(
         `/supplieritems/${supplierItemGuid}`,
         supplierItemPayload,
       );
+
       context.logger.info("Successfully updated supplier item", {
         supplierItemGuid: data?.guid,
         supplierItemNumber: data?.number,
         supplierItemName: data?.name,
       });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Update Supplier Item");

@@ -4,6 +4,7 @@ import { listChangeItemsExamplePayload } from "../../examplePayloads";
 import { listChangeItemsInputs } from "../../inputs";
 import { listChangeItemsOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listChangeItems = action({
   display: {
     label: "List Change Items",
@@ -19,15 +20,19 @@ export const listChangeItems = action({
   perform: async (context, { connection, changeGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Getting change items from Arena", {
         changeGuid: changeGuid,
       });
+
       const { data, status } = await client.get(`/changes/${changeGuid}/items`);
+
       context.logger.info("Change items retrieved successfully", {
         changeGuid: changeGuid,
         itemCount: data.results?.length || 0,
         statusCode: status,
       });
+
       return {
         data,
       };

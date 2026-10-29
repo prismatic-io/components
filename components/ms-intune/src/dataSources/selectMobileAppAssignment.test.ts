@@ -8,10 +8,12 @@ import { msIntuneOAuth2 } from "../connections";
 import { MANAGED_APPS_FILTER } from "../constants";
 import { listMobileAppAssignmentsExamplePayload } from "../examplePayloads";
 import { selectMobileAppAssignment } from "./selectMobileAppAssignment";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
 const MOBILE_APP_ID = "0177548a-548a-0177-8a54-77018a547701";
 const PATH = `/beta/deviceAppManagement/mobileApps/${MOBILE_APP_ID}/assignments`;
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -23,20 +25,26 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listMobileAppAssignmentsExamplePayload.data;
+
 const invokeBare = async (): Promise<Element[]> =>
   (await invokeDataSource(selectMobileAppAssignment, {
     connection,
     mobileAppId: MOBILE_APP_ID,
   })) as unknown as Element[];
+
 describe("selectMobileAppAssignment", () => {
   afterEach(() => nock.cleanAll());
+
   test("forwards the managed app filter and maps assignments to a bare array of label/key elements", async () => {
     const scope = nock(HOST)
       .get(PATH)
       .query({ $filter: MANAGED_APPS_FILTER })
       .reply(200, listReply);
+
     const result = await invokeBare();
+
     expect(scope.isDone()).toBe(true);
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
@@ -47,11 +55,13 @@ describe("selectMobileAppAssignment", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty array when the app has no assignments", async () => {
     nock(HOST)
       .get(PATH)
       .query({ $filter: MANAGED_APPS_FILTER })
       .reply(200, { value: [] });
+
     expect(await invokeBare()).toEqual([]);
   });
 });

@@ -4,6 +4,7 @@ import { getLocationsExamplePayload as examplePayload } from "../../../examplePa
 import { getLocationInputs as inputs } from "../../../inputsGql";
 import { getLocationsGqlOutputSchema } from "../../../outputSchemas";
 import getLocationsQuery from "../queries/locations/GetLocations.gql";
+
 export const getLocationsGql = action({
   display: {
     label: "Get Location",
@@ -17,9 +18,11 @@ export const getLocationsGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = await client.request(getLocationsQuery, {
       id: locationId,
     });
+
     return {
       data,
     };

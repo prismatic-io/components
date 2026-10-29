@@ -4,11 +4,13 @@ import type {
   MCPServerConfigHttp,
   MCPServerConfigWrapper,
 } from "../types";
+
 export const addLocalMcpServer = action({
   display: {
     label: "Agent: Add Local MCP Server",
     description: "Configure a local MCP server that runs via command line",
   },
+
   inputs: {
     serverLabel: input({
       label: "Server Label",
@@ -17,6 +19,7 @@ export const addLocalMcpServer = action({
       comments: "Unique identifier for the MCP server",
       example: "sequential-thinking",
     }),
+
     command: input({
       label: "Command",
       type: "string",
@@ -26,6 +29,7 @@ export const addLocalMcpServer = action({
       comments:
         "Command to execute the MCP server (currently only npx is supported)",
     }),
+
     args: input({
       label: "Arguments",
       type: "string",
@@ -34,6 +38,7 @@ export const addLocalMcpServer = action({
       comments: "Arguments to pass to the command",
       example: "-y",
     }),
+
     toolFilter: input({
       label: "Tool Filter",
       type: "string",
@@ -44,11 +49,13 @@ export const addLocalMcpServer = action({
       example: "think_forward",
     }),
   },
+
   perform: async (_, params) => {
     const serverLabel = util.types.toString(params.serverLabel);
     const command = util.types.toString(params.command);
     const args = params.args as string[] | undefined;
     const toolFilter = params.toolFilter as string[] | undefined;
+
     const config: MCPServerConfigStdio = {
       type: "stdio",
       label: serverLabel,
@@ -56,6 +63,7 @@ export const addLocalMcpServer = action({
       args: args || [],
       toolFilter: toolFilter || [],
     };
+
     return {
       data: {
         mcpServer: config,
@@ -63,11 +71,13 @@ export const addLocalMcpServer = action({
     };
   },
 });
+
 export const addRemoteMcpServer = action({
   display: {
     label: "Agent: Add Remote MCP Server",
     description: "Configure a remote MCP server accessed via HTTP",
   },
+
   inputs: {
     serverLabel: input({
       label: "Server Label",
@@ -76,6 +86,7 @@ export const addRemoteMcpServer = action({
       comments: "Unique identifier for the MCP server",
       example: "company-data-server",
     }),
+
     serverUrl: input({
       label: "Server URL",
       type: "text",
@@ -83,6 +94,7 @@ export const addRemoteMcpServer = action({
       comments: "URL endpoint for the MCP server",
       example: "https://api.company.com/mcp",
     }),
+
     headers: input({
       label: "Headers",
       type: "string",
@@ -92,6 +104,7 @@ export const addRemoteMcpServer = action({
         "HTTP headers for authentication or other needs. Key = header name, Value = header value",
       example: "Authorization -> Bearer YOUR_TOKEN",
     }),
+
     toolFilter: input({
       label: "Tool Filter",
       type: "string",
@@ -102,22 +115,22 @@ export const addRemoteMcpServer = action({
       example: "query_database",
     }),
   },
+
   perform: async (_, params) => {
     const serverLabel = util.types.toString(params.serverLabel);
     const serverUrl = util.types.toString(params.serverUrl);
     const headers = params.headers as
-      | {
-          key: string;
-          value: string;
-        }[]
+      | { key: string; value: string }[]
       | undefined;
     const toolFilter = params.toolFilter as string[] | undefined;
+
     const headersObject: Record<string, string> = {};
     if (headers) {
       for (const { key, value } of headers) {
         headersObject[key] = value;
       }
     }
+
     const config: MCPServerConfigHttp = {
       type: "http",
       label: serverLabel,
@@ -125,6 +138,7 @@ export const addRemoteMcpServer = action({
       headers: headersObject,
       toolFilter: toolFilter || [],
     };
+
     return {
       data: {
         mcpServer: config,

@@ -4,6 +4,7 @@ import { trackEventsInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { trackEventsExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
+
 export const trackEvents = action({
   display: {
     label: "Track Events",
@@ -37,8 +38,7 @@ export const trackEvents = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => trackEventsExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    trackEventsExamplePayload,
   examplePayload: trackEventsExamplePayload,
 });

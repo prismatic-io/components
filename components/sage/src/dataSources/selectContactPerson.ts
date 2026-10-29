@@ -3,6 +3,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { getSageClient } from "../client";
 import { selectContactPersonExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { connection } from "../inputs";
+
 export const selectContactPerson = dataSource({
   display: {
     label: "Select Contact Person",
@@ -12,7 +13,9 @@ export const selectContactPerson = dataSource({
   perform: async (_context, { connection }) => {
     const client = getSageClient(connection, false);
     const { data } = await client.get("/contact_persons");
+
     const items = data?.$items ?? [];
+
     const result: Element[] = items
       .map((item: { displayed_as?: string; id?: string }) => ({
         label: item.displayed_as || item.id || "",
@@ -21,6 +24,7 @@ export const selectContactPerson = dataSource({
       .sort((a: Element, b: Element) =>
         (a.label || "").localeCompare(b.label || ""),
       );
+
     return { result };
   },
   dataSourceType: "picklist",

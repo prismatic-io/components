@@ -60,12 +60,15 @@ export const createAssetExamplePayload = {
     },
   },
 };
+
 export const getAssetExamplePayload = {
   data: createAssetExamplePayload.data,
 };
+
 export const listAssetsExamplePayload = {
   data: [getAssetExamplePayload.data],
 };
+
 export const updateAssetExamplePayload = {
   data: {
     fields: {
@@ -128,6 +131,7 @@ export const updateAssetExamplePayload = {
     },
   },
 };
+
 export const publishAnAssetExamplePayload = {
   data: {
     fields: {
@@ -201,6 +205,7 @@ export const publishAnAssetExamplePayload = {
     },
   },
 };
+
 export const unpublishAnAssetExamplePayload = {
   data: {
     fields: {
@@ -263,5 +268,7 @@ export const unpublishAnAssetExamplePayload = {
     },
   },
 };
+
 export const deleteAssetExamplePayload = { data: {} };
+
 export const processAssetExamplePayload = { data: {} };

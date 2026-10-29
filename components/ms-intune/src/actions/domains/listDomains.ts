@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { listDomainsExamplePayload } from "../../examplePayloads";
 import { listDomainsInputs } from "../../inputs";
+
 export const listDomains = action({
   display: {
     label: "List Domains",

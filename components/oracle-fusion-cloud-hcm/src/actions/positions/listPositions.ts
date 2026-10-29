@@ -5,6 +5,7 @@ import { listPositionsInputs } from "../../inputs";
 import { listPositionsOutputSchema } from "../../outputSchemas";
 import type { Position } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listPositions = action({
   display: {
     label: "List Positions",

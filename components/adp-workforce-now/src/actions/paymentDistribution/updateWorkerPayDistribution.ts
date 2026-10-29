@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { updateWorkerPayDistributionExamplePayload } from "../../examplePayloads";
 import { updateWorkerPayDistributionInputs } from "../../inputs";
 import { updateWorkerPayDistributionOutputSchema } from "../../outputSchemas";
+
 export const updateWorkerPayDistribution = action({
   display: {
     label: "Update Worker Pay Distribution",
@@ -44,9 +45,8 @@ export const updateWorkerPayDistribution = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => updateWorkerPayDistributionExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    updateWorkerPayDistributionExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: updateWorkerPayDistributionOutputSchema,

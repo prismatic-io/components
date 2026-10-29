@@ -3,6 +3,7 @@ import { createOauthClient } from "../../client";
 import { listTeamsExamplePayload } from "../../examplePayloads";
 import { listTeamsInputs } from "../../inputs";
 import { debugLogger, paginateResults } from "../../util";
+
 export const listTeams = action({
   display: {
     label: "List Teams",
@@ -20,10 +21,12 @@ export const listTeams = action({
     const client = await createOauthClient({
       slackConnection: connection,
     });
+
     const params = {
       cursor: cursor || undefined,
       limit,
     };
+
     if (fetchAll) {
       return await paginateResults(
         client,
@@ -33,12 +36,12 @@ export const listTeams = action({
         params,
       );
     }
+
     const data = await client.admin.teams.list(params);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listTeamsExamplePayload,
   }),
   examplePayload: {

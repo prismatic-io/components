@@ -13,6 +13,7 @@ export const getPubSubNotificationExamplePayload: {
     nextPageToken: "CgwI4MSB3QYQ",
   },
 };
+
 export const updatePubSubNotificationExamplePayload: {
   data: Record<string, unknown>;
 } = {

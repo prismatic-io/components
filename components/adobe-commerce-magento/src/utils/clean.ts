@@ -1,9 +1,12 @@
 import { util } from "@prismatic-io/spectral";
 import { LOOK_BACK_DATE_PATTERN } from "../constants";
+
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const cleanNumber = (value: unknown): number | undefined =>
   util.types.toNumber(value) || undefined;
+
 export const asJsonObject = (
   value: unknown,
   label: string,
@@ -13,12 +16,15 @@ export const asJsonObject = (
   }
   return { ...(value as Record<string, unknown>) };
 };
+
 export const lookBackDateClean = (value: unknown): string | undefined => {
   const str = util.types.toString(value).trim();
   if (!str) return undefined;
+
   if (!LOOK_BACK_DATE_PATTERN.test(str)) {
     throw new Error("Look-back Date must be a date in YYYY-MM-DD format.");
   }
+
   const parts = str.split("-");
   const year = util.types.toNumber(parts[0]);
   const month = util.types.toNumber(parts[1]);
@@ -31,8 +37,10 @@ export const lookBackDateClean = (value: unknown): string | undefined => {
   ) {
     throw new Error("Look-back Date must be a date in YYYY-MM-DD format.");
   }
+
   if (utc > new Date()) {
     throw new Error("Look-back Date cannot be a future date.");
   }
+
   return utc.toISOString();
 };

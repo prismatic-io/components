@@ -3,6 +3,7 @@ import { createAirtableClient } from "../client";
 import { selectRecordInputs } from "../inputs";
 import type { AirtableRecord } from "../types";
 import { paginateData } from "../util";
+
 export const selectRecord = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -15,6 +16,7 @@ export const selectRecord = dataSource({
     { airtableConnection, baseId, tableName, includeId },
   ) => {
     const client = createAirtableClient(airtableConnection);
+
     const data = await paginateData<AirtableRecord>(
       client,
       `/v0/${baseId}/${tableName}`,
@@ -22,6 +24,7 @@ export const selectRecord = dataSource({
       {},
       true,
     );
+
     return {
       result: data.map((record) => {
         const label = includeId

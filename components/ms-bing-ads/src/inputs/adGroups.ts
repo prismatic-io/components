@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 import { cleanStringArray } from "../util";
 import {
   accountIdInput,
@@ -7,6 +8,7 @@ import {
   customerIdInput,
   returnAdditionalFieldsInput,
 } from "./common";
+
 const adGroupsBodyInput = input({
   label: "Ad Groups",
   type: "code",
@@ -28,6 +30,7 @@ const adGroupsBodyInput = input({
   ),
   clean: util.types.toObject,
 });
+
 const adGroupIdsInput = input({
   label: "Ad Group IDs",
   placeholder: "Enter ad group ID",
@@ -39,6 +42,7 @@ const adGroupIdsInput = input({
   example: "9012345",
   clean: cleanStringArray,
 });
+
 export const addAdGroupsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -46,6 +50,7 @@ export const addAdGroupsInputs = {
   campaignId: campaignIdInput,
   adGroups: adGroupsBodyInput,
 };
+
 export const updateAdGroupsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -69,6 +74,7 @@ export const updateAdGroupsInputs = {
     ),
   },
 };
+
 export const deleteAdGroupsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -80,6 +86,7 @@ export const deleteAdGroupsInputs = {
     comments: "An array of ad group identifiers to delete.",
   },
 };
+
 export const getAdGroupsByCampaignIdInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -87,6 +94,7 @@ export const getAdGroupsByCampaignIdInputs = {
   campaignId: campaignIdInput,
   returnAdditionalFields: returnAdditionalFieldsInput,
 };
+
 export const getAdGroupsByIdsInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true },
@@ -99,6 +107,7 @@ export const getAdGroupsByIdsInputs = {
   },
   returnAdditionalFields: returnAdditionalFieldsInput,
 };
+
 export const selectAdGroupIdInputs = {
   connection: connectionInput,
   accountId: { ...accountIdInput, required: true, dataSource: undefined },

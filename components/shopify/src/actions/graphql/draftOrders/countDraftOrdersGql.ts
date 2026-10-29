@@ -5,6 +5,7 @@ import { countDraftOrdersInputs as inputs } from "../../../inputsGql";
 import { countDraftOrdersGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";
 import countDraftOrdersQuery from "../queries/draftOrders/CountDraftOrders.gql";
+
 export const countDraftOrdersGql = action({
   display: {
     label: "Count Draft Orders",
@@ -19,9 +20,11 @@ export const countDraftOrdersGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data: {
       draftOrderCount: Count;
     } = await client.request(countDraftOrdersQuery);
+
     return {
       data: data.draftOrderCount,
     };

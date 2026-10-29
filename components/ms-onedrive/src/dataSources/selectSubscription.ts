@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../client";
 import { selectSubscriptionInputs } from "../inputs";
 import type { GraphListResponse, Subscription } from "../types";
+
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
@@ -13,6 +14,7 @@ export const selectSubscription = dataSource({
     const {
       data: { value },
     } = await client.get<GraphListResponse<Subscription>>("/subscriptions");
+
     return {
       result: value
         .map<Element>((item) => ({

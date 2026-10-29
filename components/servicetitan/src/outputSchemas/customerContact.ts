@@ -1,4 +1,5 @@
 import { listEnvelope } from "./shared";
+
 const customerContactSchema = {
   type: "object" as const,
   properties: {
@@ -66,6 +67,7 @@ const customerContactSchema = {
   },
   required: ["id", "type", "value", "modifiedOn", "phoneSettings", "createdOn"],
 };
+
 const customerContactWithCustomerIdSchema = {
   ...customerContactSchema,
   properties: {
@@ -73,8 +75,11 @@ const customerContactWithCustomerIdSchema = {
     customerId: { type: "integer", format: "int64" },
   },
 };
+
 export const createCustomerContactOutputSchema = customerContactSchema;
+
 export const updateCustomerContactOutputSchema = customerContactSchema;
+
 export const listCustomersContactOutputSchema = listEnvelope(
   customerContactWithCustomerIdSchema,
 );

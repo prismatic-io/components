@@ -6,7 +6,9 @@ import { arenaUsernamePassword } from "../connections";
 import component from "../index";
 import { getErrorMessage, getRecordString } from "../util";
 import { dataSourceResultList } from "./resultHelpers";
+
 jest.setTimeout(30000);
+
 const harness = createHarness(component);
 const testConnection = createConnection(arenaUsernamePassword, {
   baseUrl: "custom",
@@ -14,6 +16,7 @@ const testConnection = createConnection(arenaUsernamePassword, {
   email: process.env.ARENA_EMAIL || "",
   password: process.env.ARENA_PASSWORD || "",
 });
+
 let qualityProcessGuid: string = process.env.TEST_QUALITY_PROCESS_GUID ?? "";
 let qualityProcessStepGuid: string =
   process.env.TEST_QUALITY_PROCESS_STEP_GUID ?? "";
@@ -30,6 +33,7 @@ let ticketTemplateGuid: string = process.env.TEST_TICKET_TEMPLATE_GUID ?? "";
 let stepAttributeGroupGuid = "";
 let createdQualityProcessGuid = "";
 let _createdStepAffectedGuid = "";
+
 beforeAll(async () => {
   if (!qualityProcessGuid) {
     try {
@@ -37,123 +41,95 @@ beforeAll(async () => {
         connection: testConnection,
         limit: "1",
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         qualityProcessGuid = items[0].guid;
       }
     } catch {}
   }
+
   if (qualityProcessGuid && !qualityProcessStepGuid) {
     try {
       const result = await harness.action("listQualityProcessSteps", {
         connection: testConnection,
         qualityProcessGuid,
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         qualityProcessStepGuid = items[0].guid;
       }
     } catch {}
   }
+
   if (!qualityProcessTemplateGuid) {
     try {
       const result = await harness.action("listQualityProcessTemplates", {
         connection: testConnection,
         active: true,
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         qualityProcessTemplateGuid = items[0].guid;
       }
     } catch {}
   }
+
   try {
     const result = await harness.action("listQualityProcessNumberFormats", {
       connection: testConnection,
     });
-    const items = (
-      result?.data as {
-        results?: Array<{
-          guid: string;
-        }>;
-      }
-    )?.results;
+    const items = (result?.data as { results?: Array<{ guid: string }> })
+      ?.results;
     if (items && items.length > 0) {
       qualityProcessNumberFormatGuid = items[0].guid;
     }
   } catch {}
+
   if (!itemsCategoryGuid) {
     try {
       const result = await harness.action("listCategories", {
         connection: testConnection,
         objectType: "items",
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         itemsCategoryGuid = items[0].guid;
       }
     } catch {}
   }
+
   if (!changesCategoryGuid) {
     try {
       const result = await harness.action("listCategories", {
         connection: testConnection,
         objectType: "changes",
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         changesCategoryGuid = items[0].guid;
       }
     } catch {}
   }
+
   if (!requestsCategoryGuid) {
     try {
       const result = await harness.action("listCategories", {
         connection: testConnection,
         objectType: "requests",
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         requestsCategoryGuid = items[0].guid;
       }
     } catch {}
   }
+
   if (itemsCategoryGuid) {
     try {
       const result = await harness.action("listCategoryAttributes", {
@@ -161,18 +137,14 @@ beforeAll(async () => {
         objectType: "items",
         categoryGuid: itemsCategoryGuid,
       });
-      const attrs = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const attrs = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (attrs && attrs.length > 0) {
         itemsCategoryAttributeGuid = attrs[0].guid;
       }
     } catch {}
   }
+
   if (changesCategoryGuid) {
     try {
       const result = await harness.action("listCategoryAttributes", {
@@ -180,36 +152,28 @@ beforeAll(async () => {
         objectType: "changes",
         categoryGuid: changesCategoryGuid,
       });
-      const attrs = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const attrs = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (attrs && attrs.length > 0) {
         changesCategoryAttributeGuid = attrs[0].guid;
       }
     } catch {}
   }
+
   if (!ticketTemplateGuid) {
     try {
       const result = await harness.action("listTicketTemplates", {
         connection: testConnection,
         active: true,
       });
-      const items = (
-        result?.data as {
-          results?: Array<{
-            guid: string;
-          }>;
-        }
-      )?.results;
+      const items = (result?.data as { results?: Array<{ guid: string }> })
+        ?.results;
       if (items && items.length > 0) {
         ticketTemplateGuid = items[0].guid;
       }
     } catch {}
   }
+
   try {
     const result = await harness.action(
       "listQualityProcessStepAttributeGroups",
@@ -217,18 +181,14 @@ beforeAll(async () => {
         connection: testConnection,
       },
     );
-    const items = (
-      result?.data as {
-        results?: Array<{
-          guid: string;
-        }>;
-      }
-    )?.results;
+    const items = (result?.data as { results?: Array<{ guid: string }> })
+      ?.results;
     if (items && items.length > 0) {
       stepAttributeGroupGuid = items[0].guid;
     }
   } catch {}
 }, 120000);
+
 afterAll(async () => {
   if (createdQualityProcessGuid) {
     try {
@@ -239,6 +199,7 @@ afterAll(async () => {
     } catch {}
   }
 }, 30000);
+
 describe("Action: listQualityProcesses", () => {
   test("returns a list of quality processes without filters", async () => {
     const result = await harness.action("listQualityProcesses", {
@@ -247,6 +208,7 @@ describe("Action: listQualityProcesses", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("accepts limit and offset parameters", async () => {
     const result = await harness.action("listQualityProcesses", {
       connection: testConnection,
@@ -256,6 +218,7 @@ describe("Action: listQualityProcesses", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("filters by status=OPEN without error", async () => {
     const result = await harness.action("listQualityProcesses", {
       connection: testConnection,
@@ -264,6 +227,7 @@ describe("Action: listQualityProcesses", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid connection credentials", async () => {
     const badConnection = createConnection(arenaUsernamePassword, {
       baseUrl: "custom",
@@ -278,6 +242,7 @@ describe("Action: listQualityProcesses", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: getQualityProcessByGuid", () => {
   test("retrieves quality process details by GUID", async () => {
     if (!qualityProcessGuid) {
@@ -290,14 +255,9 @@ describe("Action: getQualityProcessByGuid", () => {
     });
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
-    expect(
-      (
-        result?.data as {
-          guid: string;
-        }
-      ).guid,
-    ).toBe(qualityProcessGuid);
+    expect((result?.data as { guid: string }).guid).toBe(qualityProcessGuid);
   });
+
   test("throws on invalid quality process GUID", async () => {
     await expect(async () => {
       await harness.action("getQualityProcessByGuid", {
@@ -307,6 +267,7 @@ describe("Action: getQualityProcessByGuid", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: updateQualityProcess", () => {
   test("updates quality process description without error", async () => {
     if (!qualityProcessGuid) {
@@ -321,6 +282,7 @@ describe("Action: updateQualityProcess", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid quality process GUID", async () => {
     await expect(async () => {
       await harness.action("updateQualityProcess", {
@@ -331,6 +293,7 @@ describe("Action: updateQualityProcess", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: createQualityProcess and deleteQualityProcess", () => {
   test("creates a new quality process with a template and then deletes it", async () => {
     if (!qualityProcessTemplateGuid) {
@@ -345,13 +308,10 @@ describe("Action: createQualityProcess and deleteQualityProcess", () => {
     });
     expect(createResult).toBeDefined();
     expect(createResult?.data).toBeDefined();
-    const createdGuid = (
-      createResult?.data as {
-        guid: string;
-      }
-    ).guid;
+    const createdGuid = (createResult?.data as { guid: string }).guid;
     expect(typeof createdGuid).toBe("string");
     createdQualityProcessGuid = createdGuid;
+
     const deleteResult = await harness.action("deleteQualityProcess", {
       connection: testConnection,
       qualityProcessGuid: createdGuid,
@@ -359,6 +319,7 @@ describe("Action: createQualityProcess and deleteQualityProcess", () => {
     expect(deleteResult).toBeDefined();
     createdQualityProcessGuid = "";
   });
+
   test("deleteQualityProcess throws on invalid GUID", async () => {
     await expect(async () => {
       await harness.action("deleteQualityProcess", {
@@ -367,6 +328,7 @@ describe("Action: createQualityProcess and deleteQualityProcess", () => {
       });
     }).rejects.toThrow();
   });
+
   test("createQualityProcess throws on invalid template GUID", async () => {
     await expect(async () => {
       await harness.action("createQualityProcess", {
@@ -377,6 +339,7 @@ describe("Action: createQualityProcess and deleteQualityProcess", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: changeQualityProcessStatus", () => {
   test("changes quality process status to OPEN (process-level)", async () => {
     if (!qualityProcessGuid) {
@@ -402,6 +365,7 @@ describe("Action: changeQualityProcessStatus", () => {
       throw err;
     }
   });
+
   test("throws when requestType=qualityStatus and status is missing", async () => {
     if (!qualityProcessGuid) {
       console.warn("Skipping: no quality process GUID available");
@@ -415,6 +379,7 @@ describe("Action: changeQualityProcessStatus", () => {
       });
     }).rejects.toThrow();
   });
+
   test("throws when requestType=stepWorkflow and stepGuid is missing", async () => {
     if (!qualityProcessGuid) {
       console.warn("Skipping: no quality process GUID available");
@@ -429,6 +394,7 @@ describe("Action: changeQualityProcessStatus", () => {
       });
     }).rejects.toThrow();
   });
+
   test("throws on invalid quality process GUID", async () => {
     await expect(async () => {
       await harness.action("changeQualityProcessStatus", {
@@ -440,6 +406,7 @@ describe("Action: changeQualityProcessStatus", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessSteps", () => {
   test("returns steps for a valid quality process GUID", async () => {
     if (!qualityProcessGuid) {
@@ -453,6 +420,7 @@ describe("Action: listQualityProcessSteps", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid quality process GUID", async () => {
     await expect(async () => {
       await harness.action("listQualityProcessSteps", {
@@ -462,6 +430,7 @@ describe("Action: listQualityProcessSteps", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: getQualityProcessStepByGuid", () => {
   test("retrieves step details by GUID", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
@@ -475,14 +444,11 @@ describe("Action: getQualityProcessStepByGuid", () => {
     });
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
-    expect(
-      (
-        result?.data as {
-          guid: string;
-        }
-      ).guid,
-    ).toBe(qualityProcessStepGuid);
+    expect((result?.data as { guid: string }).guid).toBe(
+      qualityProcessStepGuid,
+    );
   });
+
   test("retrieves step with includeEmptyAdditionalAttributes=true", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
       console.warn("Skipping: no quality process step GUID available");
@@ -497,6 +463,7 @@ describe("Action: getQualityProcessStepByGuid", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid step GUID", async () => {
     if (!qualityProcessGuid) {
       console.warn("Skipping: no quality process GUID available");
@@ -511,6 +478,7 @@ describe("Action: getQualityProcessStepByGuid", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: updateQualityProcessStep", () => {
   test("throws on invalid step GUID", async () => {
     if (!qualityProcessGuid) {
@@ -527,6 +495,7 @@ describe("Action: updateQualityProcessStep", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: submitQualityStepDecision", () => {
   test("throws on invalid quality process GUID", async () => {
     await expect(async () => {
@@ -540,6 +509,7 @@ describe("Action: submitQualityStepDecision", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessStepAffected", () => {
   test("returns affected objects for a valid quality process step", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
@@ -554,6 +524,7 @@ describe("Action: listQualityProcessStepAffected", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid step GUID", async () => {
     if (!qualityProcessGuid) {
       console.warn("Skipping: no quality process GUID available");
@@ -568,8 +539,10 @@ describe("Action: listQualityProcessStepAffected", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffectedByGuid, updateQualityProcessStepAffected, deleteQualityProcessStepAffected", () => {
   const knownItemGuid = process.env.TEST_ITEM_GUID ?? "";
+
   test("createQualityProcessStepAffected throws on invalid quality process GUID", async () => {
     await expect(async () => {
       await harness.action("createQualityProcessStepAffected", {
@@ -580,6 +553,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
       });
     }).rejects.toThrow();
   });
+
   test("creates, retrieves, updates, and deletes a step affected object (full lifecycle)", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid || !knownItemGuid) {
       console.warn(
@@ -587,6 +561,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
       );
       return;
     }
+
     const createResult = await harness.action(
       "createQualityProcessStepAffected",
       {
@@ -599,13 +574,10 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
     );
     expect(createResult).toBeDefined();
     expect(createResult?.data).toBeDefined();
-    const affectedGuid = (
-      createResult?.data as {
-        guid: string;
-      }
-    ).guid;
+    const affectedGuid = (createResult?.data as { guid: string }).guid;
     expect(typeof affectedGuid).toBe("string");
     _createdStepAffectedGuid = affectedGuid;
+
     const getResult = await harness.action(
       "getQualityProcessStepAffectedByGuid",
       {
@@ -617,6 +589,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
     );
     expect(getResult).toBeDefined();
     expect(getResult?.data).toBeDefined();
+
     const updateResult = await harness.action(
       "updateQualityProcessStepAffected",
       {
@@ -629,6 +602,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
     );
     expect(updateResult).toBeDefined();
     expect(updateResult?.data).toBeDefined();
+
     const deleteResult = await harness.action(
       "deleteQualityProcessStepAffected",
       {
@@ -641,6 +615,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
     expect(deleteResult).toBeDefined();
     _createdStepAffectedGuid = "";
   });
+
   test("getQualityProcessStepAffectedByGuid throws on invalid affected GUID", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
       console.warn("Skipping: no quality process step GUID available");
@@ -655,6 +630,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
       });
     }).rejects.toThrow();
   });
+
   test("deleteQualityProcessStepAffected throws on invalid affected GUID", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
       console.warn("Skipping: no quality process step GUID available");
@@ -670,6 +646,7 @@ describe("Action: createQualityProcessStepAffected, getQualityProcessStepAffecte
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityStepDecisions", () => {
   test("returns decisions for a valid quality process step", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
@@ -697,6 +674,7 @@ describe("Action: listQualityStepDecisions", () => {
       throw err;
     }
   });
+
   test("throws on invalid step GUID", async () => {
     if (!qualityProcessGuid) {
       console.warn("Skipping: no quality process GUID available");
@@ -711,6 +689,7 @@ describe("Action: listQualityStepDecisions", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: addQualityStepApprover", () => {
   test("throws when neither userGuid nor groupGuid is provided", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
@@ -726,6 +705,7 @@ describe("Action: addQualityStepApprover", () => {
       });
     }).rejects.toThrow();
   });
+
   test("throws when both userGuid and groupGuid are provided", async () => {
     if (!qualityProcessGuid || !qualityProcessStepGuid) {
       console.warn("Skipping: no quality process step GUID available");
@@ -742,6 +722,7 @@ describe("Action: addQualityStepApprover", () => {
       });
     }).rejects.toThrow();
   });
+
   test("throws on invalid quality process GUID with valid decisionType and userGuid", async () => {
     await expect(async () => {
       await harness.action("addQualityStepApprover", {
@@ -754,6 +735,7 @@ describe("Action: addQualityStepApprover", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessTemplates", () => {
   test("returns a list of quality process templates", async () => {
     const result = await harness.action("listQualityProcessTemplates", {
@@ -762,6 +744,7 @@ describe("Action: listQualityProcessTemplates", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("filters to active templates only", async () => {
     const result = await harness.action("listQualityProcessTemplates", {
       connection: testConnection,
@@ -770,6 +753,7 @@ describe("Action: listQualityProcessTemplates", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("filters to inactive templates only", async () => {
     const result = await harness.action("listQualityProcessTemplates", {
       connection: testConnection,
@@ -779,6 +763,7 @@ describe("Action: listQualityProcessTemplates", () => {
     expect(result?.data).toBeDefined();
   });
 });
+
 describe("Action: getQualityProcessTemplateByGuid", () => {
   test("retrieves a quality process template by GUID", async () => {
     if (!qualityProcessTemplateGuid) {
@@ -791,14 +776,11 @@ describe("Action: getQualityProcessTemplateByGuid", () => {
     });
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
-    expect(
-      (
-        result?.data as {
-          guid: string;
-        }
-      ).guid,
-    ).toBe(qualityProcessTemplateGuid);
+    expect((result?.data as { guid: string }).guid).toBe(
+      qualityProcessTemplateGuid,
+    );
   });
+
   test("throws on invalid template GUID", async () => {
     await expect(async () => {
       await harness.action("getQualityProcessTemplateByGuid", {
@@ -808,6 +790,7 @@ describe("Action: getQualityProcessTemplateByGuid", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessTemplateAttributes", () => {
   test("returns attributes for a quality process template", async () => {
     if (!qualityProcessTemplateGuid) {
@@ -824,6 +807,7 @@ describe("Action: listQualityProcessTemplateAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns attributes with includePossibleValues=true", async () => {
     if (!qualityProcessTemplateGuid) {
       console.warn("Skipping: no quality process template GUID available");
@@ -840,6 +824,7 @@ describe("Action: listQualityProcessTemplateAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only creatable attributes", async () => {
     if (!qualityProcessTemplateGuid) {
       console.warn("Skipping: no quality process template GUID available");
@@ -856,6 +841,7 @@ describe("Action: listQualityProcessTemplateAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid template GUID", async () => {
     await expect(async () => {
       await harness.action("listQualityProcessTemplateAttributes", {
@@ -865,6 +851,7 @@ describe("Action: listQualityProcessTemplateAttributes", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessTemplateAttributeGroups", () => {
   test("returns attribute groups for a quality process template", async () => {
     if (!qualityProcessTemplateGuid) {
@@ -881,6 +868,7 @@ describe("Action: listQualityProcessTemplateAttributeGroups", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid template GUID", async () => {
     await expect(async () => {
       await harness.action("listQualityProcessTemplateAttributeGroups", {
@@ -890,6 +878,7 @@ describe("Action: listQualityProcessTemplateAttributeGroups", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessStepAttributes", () => {
   test("returns quality process step attributes without filters", async () => {
     const result = await harness.action("listQualityProcessStepAttributes", {
@@ -898,6 +887,7 @@ describe("Action: listQualityProcessStepAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns step attributes with includePossibleValues=true", async () => {
     const result = await harness.action("listQualityProcessStepAttributes", {
       connection: testConnection,
@@ -906,6 +896,7 @@ describe("Action: listQualityProcessStepAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only editable step attributes", async () => {
     const result = await harness.action("listQualityProcessStepAttributes", {
       connection: testConnection,
@@ -915,6 +906,7 @@ describe("Action: listQualityProcessStepAttributes", () => {
     expect(result?.data).toBeDefined();
   });
 });
+
 describe("Action: listQualityProcessStepAttributeGroups", () => {
   test("returns all quality process step attribute groups", async () => {
     const result = await harness.action(
@@ -927,6 +919,7 @@ describe("Action: listQualityProcessStepAttributeGroups", () => {
     expect(result?.data).toBeDefined();
   });
 });
+
 describe("Action: getQualityProcessStepAttributeGroupByGuid", () => {
   test("retrieves a step attribute group by GUID", async () => {
     if (!stepAttributeGroupGuid) {
@@ -942,14 +935,11 @@ describe("Action: getQualityProcessStepAttributeGroupByGuid", () => {
     );
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
-    expect(
-      (
-        result?.data as {
-          guid: string;
-        }
-      ).guid,
-    ).toBe(stepAttributeGroupGuid);
+    expect((result?.data as { guid: string }).guid).toBe(
+      stepAttributeGroupGuid,
+    );
   });
+
   test("throws on invalid attribute group GUID", async () => {
     await expect(async () => {
       await harness.action("getQualityProcessStepAttributeGroupByGuid", {
@@ -959,6 +949,7 @@ describe("Action: getQualityProcessStepAttributeGroupByGuid", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listQualityProcessNumberFormats", () => {
   test("returns all quality process number formats", async () => {
     const result = await harness.action("listQualityProcessNumberFormats", {
@@ -968,6 +959,7 @@ describe("Action: listQualityProcessNumberFormats", () => {
     expect(result?.data).toBeDefined();
   });
 });
+
 describe("Action: getQualityProcessNumberFormatByGuid", () => {
   test("retrieves a quality process number format by GUID", async () => {
     if (!qualityProcessNumberFormatGuid) {
@@ -980,14 +972,11 @@ describe("Action: getQualityProcessNumberFormatByGuid", () => {
     });
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
-    expect(
-      (
-        result?.data as {
-          guid: string;
-        }
-      ).guid,
-    ).toBe(qualityProcessNumberFormatGuid);
+    expect((result?.data as { guid: string }).guid).toBe(
+      qualityProcessNumberFormatGuid,
+    );
   });
+
   test("throws on invalid number format GUID", async () => {
     await expect(async () => {
       await harness.action("getQualityProcessNumberFormatByGuid", {
@@ -997,6 +986,7 @@ describe("Action: getQualityProcessNumberFormatByGuid", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listTicketTemplateAttributes", () => {
   test("returns attributes for a ticket template", async () => {
     if (!ticketTemplateGuid) {
@@ -1023,6 +1013,7 @@ describe("Action: listTicketTemplateAttributes", () => {
       throw err;
     }
   });
+
   test("returns ticket template attributes with includePossibleValues=true", async () => {
     if (!ticketTemplateGuid) {
       console.warn("Skipping: no ticket template GUID available");
@@ -1049,6 +1040,7 @@ describe("Action: listTicketTemplateAttributes", () => {
       throw err;
     }
   });
+
   test("returns only searchable ticket template attributes", async () => {
     if (!ticketTemplateGuid) {
       console.warn("Skipping: no ticket template GUID available");
@@ -1075,6 +1067,7 @@ describe("Action: listTicketTemplateAttributes", () => {
       throw err;
     }
   });
+
   test("throws on invalid template GUID", async () => {
     await expect(async () => {
       await harness.action("listTicketTemplateAttributes", {
@@ -1084,6 +1077,7 @@ describe("Action: listTicketTemplateAttributes", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listRequestItemAttributes", () => {
   test("returns request item attributes without filters", async () => {
     const result = await harness.action("listRequestItemAttributes", {
@@ -1092,6 +1086,7 @@ describe("Action: listRequestItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns request item attributes with includePossibleValues=true", async () => {
     const result = await harness.action("listRequestItemAttributes", {
       connection: testConnection,
@@ -1100,6 +1095,7 @@ describe("Action: listRequestItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only editable request item attributes", async () => {
     const result = await harness.action("listRequestItemAttributes", {
       connection: testConnection,
@@ -1108,6 +1104,7 @@ describe("Action: listRequestItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only searchable request item attributes", async () => {
     const result = await harness.action("listRequestItemAttributes", {
       connection: testConnection,
@@ -1117,6 +1114,7 @@ describe("Action: listRequestItemAttributes", () => {
     expect(result?.data).toBeDefined();
   });
 });
+
 describe("Action: listBomAttributes", () => {
   test("returns BOM attributes without filters", async () => {
     const result = await harness.action("listBomAttributes", {
@@ -1125,6 +1123,7 @@ describe("Action: listBomAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns BOM attributes with includePossibleValues=true", async () => {
     const result = await harness.action("listBomAttributes", {
       connection: testConnection,
@@ -1133,6 +1132,7 @@ describe("Action: listBomAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only creatable BOM attributes", async () => {
     const result = await harness.action("listBomAttributes", {
       connection: testConnection,
@@ -1142,6 +1142,7 @@ describe("Action: listBomAttributes", () => {
     expect(result?.data).toBeDefined();
   });
 });
+
 describe("Action: listCategories", () => {
   test("returns categories for objectType='items'", async () => {
     const result = await harness.action("listCategories", {
@@ -1151,6 +1152,7 @@ describe("Action: listCategories", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns categories for objectType='changes'", async () => {
     const result = await harness.action("listCategories", {
       connection: testConnection,
@@ -1159,6 +1161,7 @@ describe("Action: listCategories", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns categories for objectType='requests'", async () => {
     const result = await harness.action("listCategories", {
       connection: testConnection,
@@ -1167,6 +1170,7 @@ describe("Action: listCategories", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns categories for objectType='files'", async () => {
     const result = await harness.action("listCategories", {
       connection: testConnection,
@@ -1175,6 +1179,7 @@ describe("Action: listCategories", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("filters items categories to assignable only", async () => {
     const result = await harness.action("listCategories", {
       connection: testConnection,
@@ -1184,6 +1189,7 @@ describe("Action: listCategories", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("includes deleted items categories when requested", async () => {
     const result = await harness.action("listCategories", {
       connection: testConnection,
@@ -1193,6 +1199,7 @@ describe("Action: listCategories", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid connection credentials", async () => {
     const badConnection = createConnection(arenaUsernamePassword, {
       baseUrl: "custom",
@@ -1208,6 +1215,7 @@ describe("Action: listCategories", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listCategoryAttributes", () => {
   test("returns attributes for an items category", async () => {
     if (!itemsCategoryGuid) {
@@ -1222,6 +1230,7 @@ describe("Action: listCategoryAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns attributes for a changes category", async () => {
     if (!changesCategoryGuid) {
       console.warn("Skipping: no changes category GUID available");
@@ -1235,6 +1244,7 @@ describe("Action: listCategoryAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns items category attributes with includePossibleValues=true", async () => {
     if (!itemsCategoryGuid) {
       console.warn("Skipping: no items category GUID available");
@@ -1249,6 +1259,7 @@ describe("Action: listCategoryAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only editable items category attributes", async () => {
     if (!itemsCategoryGuid) {
       console.warn("Skipping: no items category GUID available");
@@ -1263,6 +1274,7 @@ describe("Action: listCategoryAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid category GUID", async () => {
     await expect(async () => {
       await harness.action("listCategoryAttributes", {
@@ -1273,6 +1285,7 @@ describe("Action: listCategoryAttributes", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: getFileCategoryAttributeDetails", () => {
   test("retrieves details for a specific items category attribute", async () => {
     if (!itemsCategoryGuid || !itemsCategoryAttributeGuid) {
@@ -1289,14 +1302,11 @@ describe("Action: getFileCategoryAttributeDetails", () => {
     });
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
-    expect(
-      (
-        result?.data as {
-          guid: string;
-        }
-      ).guid,
-    ).toBe(itemsCategoryAttributeGuid);
+    expect((result?.data as { guid: string }).guid).toBe(
+      itemsCategoryAttributeGuid,
+    );
   });
+
   test("retrieves details for a specific changes category attribute", async () => {
     if (!changesCategoryGuid || !changesCategoryAttributeGuid) {
       console.warn(
@@ -1313,6 +1323,7 @@ describe("Action: getFileCategoryAttributeDetails", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid attribute definition GUID", async () => {
     if (!itemsCategoryGuid) {
       console.warn("Skipping: no items category GUID available");
@@ -1327,6 +1338,7 @@ describe("Action: getFileCategoryAttributeDetails", () => {
       });
     }).rejects.toThrow();
   });
+
   test("throws on invalid category GUID", async () => {
     await expect(async () => {
       await harness.action("getFileCategoryAttributeDetails", {
@@ -1338,6 +1350,7 @@ describe("Action: getFileCategoryAttributeDetails", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("Action: listChangeCategoryItemAttributes", () => {
   test("returns item attributes for a changes category", async () => {
     if (!changesCategoryGuid) {
@@ -1351,6 +1364,7 @@ describe("Action: listChangeCategoryItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns change category item attributes with includePossibleValues=true", async () => {
     if (!changesCategoryGuid) {
       console.warn("Skipping: no changes category GUID available");
@@ -1364,6 +1378,7 @@ describe("Action: listChangeCategoryItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("returns only searchable change category item attributes", async () => {
     if (!changesCategoryGuid) {
       console.warn("Skipping: no changes category GUID available");
@@ -1377,6 +1392,7 @@ describe("Action: listChangeCategoryItemAttributes", () => {
     expect(result).toBeDefined();
     expect(result?.data).toBeDefined();
   });
+
   test("throws on invalid category GUID", async () => {
     await expect(async () => {
       await harness.action("listChangeCategoryItemAttributes", {
@@ -1386,6 +1402,7 @@ describe("Action: listChangeCategoryItemAttributes", () => {
     }).rejects.toThrow();
   });
 });
+
 describe("DataSource: qualityProcessTemplatesPicklist", () => {
   test("returns an array with label + key pairs", async () => {
     const result = await harness.dataSource("qualityProcessTemplatesPicklist", {

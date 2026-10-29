@@ -4,6 +4,7 @@ import { EMAIL_DEFINITIONS_PATH } from "../../constants";
 import { deleteEmailDefinitionExamplePayload } from "../../examplePayloads";
 import { deleteEmailDefinitionInputs } from "../../inputs";
 import { deleteEmailDefinitionOutputSchema } from "../../outputSchemas";
+
 export const deleteEmailDefinition = action({
   examplePayload: deleteEmailDefinitionExamplePayload,
   display: {
@@ -19,17 +20,17 @@ export const deleteEmailDefinition = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, emailDefinitionKey }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(
       `${EMAIL_DEFINITIONS_PATH}/${emailDefinitionKey}`,
     );
+
     return { data };
   },
   examplePerform: async (
     _context,
     { emailDefinitionKey },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...deleteEmailDefinitionExamplePayload.data,
       deletedDefinitionKey: emailDefinitionKey,

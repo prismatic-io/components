@@ -7,13 +7,16 @@ import {
 } from "../../constants";
 import { detailedLeadReportsExamplePayload } from "../../examplePayloads";
 import { detailedLeadReports } from "./detailedLeadReports";
+
 const connection = createConnection(
   oauth,
   { developerToken: "test-developer-token" },
   { access_token: "test-access-token" },
 );
+
 const MANAGER_CUSTOMER_ID = "1111111111";
 const PATH = `/${GOOGLE_LOCAL_SERVICES_API_VERSION}/detailedLeadReports:search`;
+
 const params = {
   connection,
   managerCustomerIdInput: MANAGER_CUSTOMER_ID,
@@ -22,8 +25,10 @@ const params = {
   startDateInput: "01-01-2025",
   endDateInput: "12-31-2025",
 };
+
 describe("detailedLeadReports", () => {
   afterEach(() => nock.cleanAll());
+
   test("splits the date range into per-component query params", async () => {
     const scope = nock(GOOGLE_LOCAL_SERVICES_BASE_URL, {
       reqheaders: { authorization: "Bearer test-access-token" },
@@ -41,10 +46,13 @@ describe("detailedLeadReports", () => {
         "endDate.year": "2025",
       })
       .reply(200, detailedLeadReportsExamplePayload.data);
+
     const { result } = await invoke(detailedLeadReports, params);
+
     expect(result.data).toEqual(detailedLeadReportsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
+
   test("omits the date params when no date range is given", async () => {
     let requestPath = "";
     const scope = nock(GOOGLE_LOCAL_SERVICES_BASE_URL)
@@ -56,20 +64,24 @@ describe("detailedLeadReports", () => {
         return true;
       })
       .reply(200, detailedLeadReportsExamplePayload.data);
+
     await invoke(detailedLeadReports, {
       ...params,
       startDateInput: undefined,
       endDateInput: undefined,
     });
+
     expect(scope.isDone()).toBe(true);
     expect(requestPath).not.toContain("NaN");
     expect(requestPath).not.toMatch(/startDate\.|endDate\./);
   });
+
   test("surfaces an API error response", async () => {
     nock(GOOGLE_LOCAL_SERVICES_BASE_URL)
       .get(PATH)
       .query(true)
       .reply(400, { error: { code: 400, message: "Invalid date range" } });
+
     await expect(invoke(detailedLeadReports, params)).rejects.toThrow();
   });
 });

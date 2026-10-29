@@ -10,6 +10,7 @@ import {
 } from "../../inputs";
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
+
 export const updatePolicy = action({
   display: {
     description: "manage categories, tags and report fields on a policy.",
@@ -56,6 +57,7 @@ export const updatePolicy = action({
       reportFields: reportFields || undefined,
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

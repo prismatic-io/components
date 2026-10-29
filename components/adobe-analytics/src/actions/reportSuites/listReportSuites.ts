@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { listReportSuitesExamplePayload } from "../../examplePayloads";
 import { listReportSuitesInputs } from "../../inputs";
 import type { ReportSuite, ReportSuiteListResponse } from "../../types";
+
 export const listReportSuites = action({
   display: {
     label: "List Report Suites",

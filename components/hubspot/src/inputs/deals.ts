@@ -15,6 +15,7 @@ import {
   value,
 } from "./common";
 import { operator, propertyName } from "./search";
+
 const amount = input({
   label: "Amount",
   type: "string",
@@ -24,6 +25,7 @@ const amount = input({
   example: "34,000",
   clean: toOptionalString,
 });
+
 const closeDate = input({
   label: "Close Date",
   type: "string",
@@ -33,6 +35,7 @@ const closeDate = input({
   example: "2019-12-07T16:50:06.678Z",
   clean: toOptionalString,
 });
+
 const dealName = input({
   label: "Deal Name",
   type: "string",
@@ -42,6 +45,7 @@ const dealName = input({
   example: "My Example Deal",
   clean: util.types.toString,
 });
+
 const updateDealName = input({
   label: "Deal Name",
   type: "string",
@@ -51,6 +55,7 @@ const updateDealName = input({
   example: "My Example Deal",
   clean: toOptionalString,
 });
+
 const dealId = input({
   label: "Deal ID",
   type: "string",
@@ -61,6 +66,7 @@ const dealId = input({
   example: "804874",
   clean: util.types.toString,
 });
+
 const dealStage = input({
   label: "Deal Stage",
   type: "string",
@@ -71,6 +77,7 @@ const dealStage = input({
   example: "presentationscheduled",
   clean: util.types.toString,
 });
+
 const updateDealStage = input({
   label: "Deal Stage",
   type: "string",
@@ -81,6 +88,7 @@ const updateDealStage = input({
   example: "presentationscheduled",
   clean: toOptionalString,
 });
+
 const pipeline = input({
   label: "Pipeline",
   type: "string",
@@ -90,6 +98,7 @@ const pipeline = input({
   comments: "The pipeline to interact with.",
   clean: util.types.toString,
 });
+
 const updatePipeline = input({
   label: "Pipeline",
   type: "string",
@@ -99,6 +108,7 @@ const updatePipeline = input({
   comments: "The pipeline to interact with.",
   clean: toOptionalString,
 });
+
 const dealType = input({
   label: "Deal Type",
   type: "string",
@@ -109,6 +119,7 @@ const dealType = input({
     "The type of deal. By default, a deal is categorized as either New Business or Existing Business. The picklist of values for this property is configurable through HubSpot.",
   clean: toOptionalString,
 });
+
 const priority = input({
   label: "Priority",
   type: "string",
@@ -121,6 +132,7 @@ const priority = input({
   comments: "The priority level assigned to the deal: low, medium, or high.",
   clean: toOptionalString,
 });
+
 export const listDealsInputs = {
   hubspotConnection: connectionInput,
   archived,
@@ -130,6 +142,7 @@ export const listDealsInputs = {
   associationsList,
   timeout,
 };
+
 export const createDealInputs = {
   dealName,
   pipeline,
@@ -144,6 +157,7 @@ export const createDealInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const updateDealInputs = {
   dealId,
   amount,
@@ -159,11 +173,13 @@ export const updateDealInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const deleteDealInputs = {
   dealId,
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const getDealByIdInputs = {
   dealId: { ...dealId, required: false, clean: toOptionalString },
   dealName: { ...dealName, required: false, clean: toOptionalString },
@@ -173,6 +189,7 @@ export const getDealByIdInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 const searchLimit = input({
   label: "Limit",
   type: "string",
@@ -182,12 +199,14 @@ const searchLimit = input({
   comments: "The maximum number of items that will be returned by the search.",
   clean: toSearchLimit,
 });
+
 const searchPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Cursor-based pagination: page size and cursor token.",
   inputs: { limit: searchLimit, after },
 });
+
 export const searchDealsInputs = {
   propertyName,
   value,

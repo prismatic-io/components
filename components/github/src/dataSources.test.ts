@@ -16,10 +16,12 @@ import {
   selectPullRequestFromRepoExamplePayload,
   selectUserFromOrganizationExamplePayload,
 } from "./examplePayloads";
+
 const BASE = "https://api.github.com";
 const exampleRepository = reposListForOrgExamplePayload.data[0];
 const exampleUser = exampleRepository.owner;
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
+
 const {
   listReposForAuthenticatedUser,
   selectOrganizationsForAuthenticatedUser,
@@ -27,7 +29,9 @@ const {
   selectPullRequestFromRepo,
   selectUserFromOrganization,
 } = dataSources;
+
 afterEach(() => nock.cleanAll());
+
 const assertElements = (result: unknown) => {
   expect(Array.isArray(result)).toBe(true);
   for (const el of result as Array<Record<string, unknown>>) {
@@ -35,6 +39,7 @@ const assertElements = (result: unknown) => {
     expect(el).toHaveProperty("label");
   }
 };
+
 describe("listReposForAuthenticatedUser", () => {
   const repos = [
     {
@@ -46,6 +51,7 @@ describe("listReposForAuthenticatedUser", () => {
       name: "alpha-repo",
     },
   ];
+
   test("returns key/label pairs", async () => {
     nock(BASE).get("/user/repos").query(true).reply(200, repos);
     const { result } = await invokeDataSource(listReposForAuthenticatedUser, {
@@ -57,6 +63,7 @@ describe("listReposForAuthenticatedUser", () => {
       { key: "zeta-repo", label: "zeta-repo" },
     ]);
   });
+
   test("returns an empty array when the API returns no repos", async () => {
     nock(BASE).get("/user/repos").query(true).reply(200, []);
     const { result } = await invokeDataSource(listReposForAuthenticatedUser, {
@@ -65,6 +72,7 @@ describe("listReposForAuthenticatedUser", () => {
     expect(result).toEqual([]);
   });
 });
+
 describe("selectOrganizationsForAuthenticatedUser", () => {
   test("returns key/label pairs", async () => {
     nock(BASE)
@@ -80,6 +88,7 @@ describe("selectOrganizationsForAuthenticatedUser", () => {
       orgsListForAuthenticatedUserExamplePayload.data.length,
     );
   });
+
   test("returns an empty array when the API returns no orgs", async () => {
     nock(BASE).get("/user/orgs").query(true).reply(200, []);
     const { result } = await invokeDataSource(
@@ -89,6 +98,7 @@ describe("selectOrganizationsForAuthenticatedUser", () => {
     expect(result).toEqual([]);
   });
 });
+
 describe("selectIssueForAuthenticatedUser", () => {
   const baseInputs = {
     connection: conn,
@@ -101,6 +111,7 @@ describe("selectIssueForAuthenticatedUser", () => {
     direction: "asc",
     since: undefined,
   };
+
   test("returns key/label pairs", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/issues")
@@ -113,6 +124,7 @@ describe("selectIssueForAuthenticatedUser", () => {
     assertElements(result);
     expect(result.length).toBe(issuesListForRepoExamplePayload.data.length);
   });
+
   test("returns an empty array when the API returns no issues", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/issues")
@@ -125,6 +137,7 @@ describe("selectIssueForAuthenticatedUser", () => {
     expect(result).toEqual([]);
   });
 });
+
 describe("selectPullRequestFromRepo", () => {
   const baseInputs = {
     connection: conn,
@@ -136,6 +149,7 @@ describe("selectPullRequestFromRepo", () => {
     sort: "created",
     direction: "asc",
   };
+
   test("returns key/label pairs", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/pulls")
@@ -148,6 +162,7 @@ describe("selectPullRequestFromRepo", () => {
     assertElements(result);
     expect(result.length).toBe(pullsListExamplePayload.data.length);
   });
+
   test("returns an empty array when the API returns no pull requests", async () => {
     nock(BASE)
       .get("/repos/octocat/Hello-World/pulls")
@@ -160,6 +175,7 @@ describe("selectPullRequestFromRepo", () => {
     expect(result).toEqual([]);
   });
 });
+
 describe("selectUserFromOrganization", () => {
   const members = [
     exampleUser,
@@ -169,6 +185,7 @@ describe("selectUserFromOrganization", () => {
       id: 2,
     },
   ];
+
   test("returns key/label pairs", async () => {
     nock(BASE).get("/orgs/octocat-org/members").query(true).reply(200, members);
     const { result } = await invokeDataSource(selectUserFromOrganization, {
@@ -181,6 +198,7 @@ describe("selectUserFromOrganization", () => {
       { key: "octocat", label: "octocat" },
     ]);
   });
+
   test("returns an empty array when the org has no members", async () => {
     nock(BASE).get("/orgs/octocat-org/members").query(true).reply(200, []);
     const { result } = await invokeDataSource(selectUserFromOrganization, {
@@ -190,8 +208,10 @@ describe("selectUserFromOrganization", () => {
     expect(result).toEqual([]);
   });
 });
+
 describe("examplePayload matches perform output", () => {
   const repoInputs = { owner: "octocat", repo: "Hello-World" };
+
   test.each([
     {
       name: "listReposForAuthenticatedUser",

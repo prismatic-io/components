@@ -4,6 +4,7 @@ import { createClient } from "../../client";
 import { getOrganizationExamplePayload } from "../../examplePayloads";
 import { getOrganizationInputs } from "../../inputs";
 import { getOrganizationOutputSchema } from "../../outputSchemas";
+
 export const getOrganization = action({
   display: {
     label: "Get Organization",
@@ -19,9 +20,8 @@ export const getOrganization = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => getOrganizationExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    getOrganizationExamplePayload,
   inputs: getOrganizationInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

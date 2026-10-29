@@ -4,6 +4,7 @@ import { getLatestCompletedExportRunExamplePayload } from "../../examplePayloads
 import { getLatestCompletedExportRunInputs } from "../../inputs";
 import { exportRunSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getLatestCompletedExportRun = action({
   display: {
     label: "Get Latest Completed Export Run",
@@ -19,15 +20,20 @@ export const getLatestCompletedExportRun = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       let url = `/exports/${params.exportGuid}/runs/latestCompleted`;
       if (params.view) {
         url += `?view=${params.view}`;
       }
+
       context.logger.info(
         `Fetching latest completed export run for export ${params.exportGuid}`,
       );
+
       const { data } = await client.get(url);
+
       context.logger.info("Successfully retrieved latest completed export run");
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

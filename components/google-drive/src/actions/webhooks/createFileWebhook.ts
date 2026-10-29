@@ -5,6 +5,7 @@ import { WEBHOOK_CHANNEL_TYPE } from "../../constants";
 import { createFileWebhookInputs } from "../../inputs";
 import { createFileWebhookOutputSchema } from "../../outputSchemas";
 import { createFileWebhookExamplePayload } from "../../examplePayloads";
+
 export const createFileWebhook = action({
   display: {
     label: "Create Webhook for File or Folder",
@@ -34,9 +35,7 @@ export const createFileWebhook = action({
   examplePerform: async (
     _context,
     { endpoint, expiration },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createFileWebhookExamplePayload.data,
       address: endpoint,

@@ -23,6 +23,7 @@ const personFieldRecordSchema = {
     options: {},
   },
 };
+
 const personFieldV2RecordSchema = {
   type: "object",
   properties: {
@@ -40,6 +41,7 @@ const personFieldV2RecordSchema = {
     update_time: { type: "string" },
   },
 };
+
 export const getPersonFieldsOutputSchema = {
   type: "object",
   properties: {
@@ -65,6 +67,7 @@ export const getPersonFieldsOutputSchema = {
     },
   },
 };
+
 export const getPersonFieldsV2OutputSchema = {
   type: "object",
   properties: {
@@ -82,6 +85,7 @@ export const getPersonFieldsV2OutputSchema = {
     },
   },
 };
+
 export const getPersonFieldOutputSchema = {
   type: "object",
   properties: {
@@ -94,6 +98,7 @@ export const getPersonFieldOutputSchema = {
     },
   },
 };
+
 export const getPersonFieldV2OutputSchema = {
   type: "object",
   properties: {
@@ -106,6 +111,7 @@ export const getPersonFieldV2OutputSchema = {
     },
   },
 };
+
 export const deletePersonFieldOutputSchema = {
   type: "object",
   properties: {
@@ -123,6 +129,7 @@ export const deletePersonFieldOutputSchema = {
     },
   },
 };
+
 export const deletePersonFieldV2OutputSchema = {
   type: "object",
   properties: {

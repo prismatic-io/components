@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, accountId, signatureId } from "../inputs";
+
 export const deleteAccountSignature = action({
   display: {
     label: "Delete Account Signature",

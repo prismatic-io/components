@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { bulkCreateVendorBankAccountsInputs } from "../../inputs/vendor";
 import { bulkCreateVendorBankAccountsExamplePayload } from "../../examplePayloads";
+
 export const bulkCreateVendorBankAccounts = action({
   display: {
     label: "Bulk Create Vendor Bank Accounts",
@@ -22,6 +23,7 @@ export const bulkCreateVendorBankAccounts = action({
         deviceId,
       },
     );
+
     const sendData = {
       bulk: vendorBankAccountCreateBulk,
     };
@@ -30,17 +32,17 @@ export const bulkCreateVendorBankAccounts = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Bulk/Crud/Create/VendorBankAccount.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: bulkCreateVendorBankAccountsExamplePayload.data,
   }),
   inputs: bulkCreateVendorBankAccountsInputs,

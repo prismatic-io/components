@@ -10,6 +10,7 @@ import {
   partitionChangedEmployees,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "Changed Employees",
@@ -33,6 +34,7 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState | undefined;
     const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const isBackfill = !pollState?.lastPolledAt && Boolean(lookBackDate);
+
     const skipFetch = !isBackfill && !showNewEmployees && !showUpdatedEmployees;
     const changes: EmployeeChange[] = skipFetch
       ? []
@@ -41,16 +43,20 @@ export const pollChangesTrigger = pollingTrigger({
           lastPolledAt,
         );
     const { created, updated } = partitionChangedEmployees(changes);
+
     context.polling.setState({ lastPolledAt: now } as Record<string, unknown>);
+
     const result = {
       created: isBackfill || showNewEmployees ? created : [],
       updated: isBackfill || showUpdatedEmployees ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled BambooHR changes since ${lastPolledAt}: ${changes.length} total → ${created.length} new, ${updated.length} updated/deleted`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

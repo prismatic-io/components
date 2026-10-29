@@ -3,9 +3,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../../connections";
 import { listDirectoryAuditExamplePayload } from "../../examplePayloads";
 import { listDirectoryAudits } from "./listDirectoryAudits";
+
 const HOST = "https://graph.microsoft.com";
 const PATH = "/v1.0/auditLogs/directoryaudits";
 const ACCESS_TOKEN = "test-access-token";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -17,23 +19,30 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listDirectoryAuditExamplePayload.data;
 const [firstAudit] = listReply.value;
 const secondAudit = { ...firstAudit, id: "id-2" };
+
 const emptyPagination = { $top: undefined, $skipToken: undefined };
 const emptyFilters = { $filter: undefined, $orderBy: undefined };
+
 describe("listDirectoryAudits", () => {
   afterEach(() => nock.cleanAll());
+
   test("returns a single page of directory audits when Fetch All is false", async () => {
     nock(HOST).get(PATH).reply(200, listReply);
+
     const { result } = await invoke(listDirectoryAudits, {
       connection,
       fetchAll: false,
       pagination: emptyPagination,
       filters: emptyFilters,
     });
+
     expect(result.data).toEqual(listReply);
   });
+
   test("follows @odata.nextLink and concatenates every page when Fetch All is true", async () => {
     nock(HOST)
       .get(PATH)
@@ -49,21 +58,25 @@ describe("listDirectoryAudits", () => {
         "@odata.context": listReply["@odata.context"],
         value: [secondAudit],
       });
+
     const { result } = await invoke(listDirectoryAudits, {
       connection,
       fetchAll: true,
       pagination: emptyPagination,
       filters: emptyFilters,
     });
+
     expect(result.data).toEqual({
       "@odata.context": listReply["@odata.context"],
       value: [firstAudit, secondAudit],
     });
   });
+
   test("surfaces the failure when the API rejects the request", async () => {
     nock(HOST)
       .get(PATH)
       .reply(403, { error: { code: "Authorization_RequestDenied" } });
+
     await expect(
       invoke(listDirectoryAudits, {
         connection,

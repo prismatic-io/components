@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { selectProjectExamplePayload } from "../examplePayloads";
 import { selectProjectInputs } from "../inputs";
 import { queryRecordsPaginated } from "../util";
+
 export const selectProject = dataSource({
   dataSourceType: "picklist",
   display: {
@@ -15,6 +16,7 @@ export const selectProject = dataSource({
       ["*"],
       "",
     );
+
     return {
       result: projects.map(
         (project: {

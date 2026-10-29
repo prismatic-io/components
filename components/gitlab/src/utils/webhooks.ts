@@ -17,9 +17,12 @@ import type {
   WebhookState,
 } from "../types";
 import { fetchAllPages } from "./pagination";
+
 export const webhookStateKey = (context: ActionContext): string =>
   `${WEBHOOK_STATE_KEY_PREFIX}:${context.flow.stableId}`;
+
 const generateWebhookSecret = (): string => randomBytes(32).toString("hex");
+
 export const tokensMatch = (received: unknown, expected: string): boolean => {
   const token = util.types.toString(received);
   if (token === "" || expected === "") {
@@ -29,6 +32,7 @@ export const tokensMatch = (received: unknown, expected: string): boolean => {
   const b = createHash("sha256").update(expected).digest();
   return timingSafeEqual(a, b);
 };
+
 export const withoutSecretToken = (
   payload: TriggerPayload,
 ): TriggerPayload => ({
@@ -39,17 +43,14 @@ export const withoutSecretToken = (
     ),
   ),
 });
+
 export const resolveEventBranch = (headers: Record<string, string>): string =>
   WEBHOOK_EVENTS.find((event) => event.header === headers["x-gitlab-event"])
     ?.label ?? OTHER_EVENT_BRANCH;
+
 const status = (error: unknown): number | undefined =>
-  (
-    error as {
-      response?: {
-        status?: number;
-      };
-    }
-  ).response?.status;
+  (error as { response?: { status?: number } }).response?.status;
+
 const listProjectHooks = async (
   client: HttpClient,
   projectId: string,
@@ -67,6 +68,7 @@ const listProjectHooks = async (
     throw error;
   }
 };
+
 const findHooksByUrl = async (
   client: HttpClient,
   projectId: string,
@@ -76,7 +78,9 @@ const findHooksByUrl = async (
   (await listProjectHooks(client, projectId, tolerateMissing)).filter(
     (hook) => hook.url === url,
   );
+
 const NUMERIC_ID = /^\d+$/;
+
 const resolveProjectId = async (
   client: HttpClient,
   project: string,
@@ -86,9 +90,7 @@ const resolveProjectId = async (
     return project;
   }
   try {
-    const { data } = await client.get<{
-      id: number;
-    }>(`/projects/${project}`);
+    const { data } = await client.get<{ id: number }>(`/projects/${project}`);
     return util.types.toString(data.id);
   } catch (error) {
     if (tolerateMissing && status(error) === 404) {
@@ -97,6 +99,7 @@ const resolveProjectId = async (
     throw error;
   }
 };
+
 const resolveProjectIds = async (
   client: HttpClient,
   projects: string[],
@@ -111,6 +114,7 @@ const resolveProjectIds = async (
   }
   return [...ids];
 };
+
 const deleteHook = async (client: HttpClient, ref: HookRef): Promise<void> => {
   try {
     await client.delete(`/projects/${ref.projectId}/hooks/${ref.hookId}`);
@@ -120,6 +124,7 @@ const deleteHook = async (client: HttpClient, ref: HookRef): Promise<void> => {
     }
   }
 };
+
 export const reconcileHooks = async (
   client: HttpClient,
   url: string,
@@ -180,6 +185,7 @@ export const reconcileHooks = async (
   }
   return { secret, hooks, config: { ...config, projects: projectIds } };
 };
+
 const rollBackHooks = async (
   client: HttpClient,
   refs: HookRef[],
@@ -194,6 +200,7 @@ const rollBackHooks = async (
   }
   return failed;
 };
+
 export const removeHooks = async (
   client: HttpClient,
   urls: string[],
@@ -218,6 +225,7 @@ export const removeHooks = async (
   }
   return removed;
 };
+
 export const buildHookBody = (
   url: string,
   secret: string,

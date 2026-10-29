@@ -1,5 +1,6 @@
 import type { Element } from "@prismatic-io/spectral";
 import type { JamfCreateResponse, Package, PagedResponse } from "../types";
+
 const packageExample: Package = {
   id: "20",
   packageName: "Google Chrome 120.0",
@@ -38,36 +39,30 @@ const packageExample: Package = {
   format: "",
   sha3512: "",
 };
-export const getPackageExamplePayload: {
-  data: Package;
-} = {
+
+export const getPackageExamplePayload: { data: Package } = {
   data: packageExample,
 };
-export const listPackagesExamplePayload: {
-  data: PagedResponse<Package>;
-} = {
+
+export const listPackagesExamplePayload: { data: PagedResponse<Package> } = {
   data: { results: [packageExample], totalCount: 1 },
 };
-export const createPackageExamplePayload: {
-  data: JamfCreateResponse;
-} = {
+
+export const createPackageExamplePayload: { data: JamfCreateResponse } = {
   data: {
     id: "21",
     href: "https://your-instance.jamfcloud.com/api/v1/packages/21",
   },
 };
-export const updatePackageExamplePayload: {
-  data: Package;
-} = {
+
+export const updatePackageExamplePayload: { data: Package } = {
   data: packageExample,
 };
-export const deletePackageExamplePayload: {
-  data: string;
-} = {
+
+export const deletePackageExamplePayload: { data: string } = {
   data: "Successfully deleted package 20",
 };
-export const selectPackageExamplePayload: {
-  result: Element[];
-} = {
+
+export const selectPackageExamplePayload: { result: Element[] } = {
   result: [{ key: "12", label: "Google Chrome 120.0.pkg" }],
 };

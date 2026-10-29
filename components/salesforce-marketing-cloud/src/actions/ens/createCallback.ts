@@ -4,6 +4,7 @@ import { ENS_CALLBACKS_PATH } from "../../constants";
 import { createCallbackExamplePayload } from "../../examplePayloads";
 import { createCallbackInputs } from "../../inputs";
 import { createCallbackOutputSchema } from "../../outputSchemas";
+
 export const createCallback = action({
   examplePayload: createCallbackExamplePayload,
   display: {
@@ -22,6 +23,7 @@ export const createCallback = action({
     { connection, callbackName, callbackUrl, maxBatchSize },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const body = [
       {
         callbackName,
@@ -29,15 +31,15 @@ export const createCallback = action({
         maxBatchSize: maxBatchSize,
       },
     ];
+
     const { data } = await client.post(ENS_CALLBACKS_PATH, body);
+
     return { data };
   },
   examplePerform: async (
     _context,
     { callbackName, callbackUrl, maxBatchSize },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: [
       {
         ...createCallbackExamplePayload.data[0],

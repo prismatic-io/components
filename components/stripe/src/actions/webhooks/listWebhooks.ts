@@ -4,6 +4,7 @@ import { listWebhooksInputs } from "../../inputs";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
 import { listWebhookEventsFn } from "../../util";
 import { listWebhooksExamplePayload } from "../../examplePayloads/webhooks";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -27,9 +28,7 @@ export const listWebhooks = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listWebhooksExamplePayload.data,
   }),
   inputs: listWebhooksInputs,
@@ -37,5 +36,6 @@ export const listWebhooks = action({
     type: "actionOutput",
     schema: listWebhooksOutputSchema,
   }),
+
   examplePayload: listWebhooksExamplePayload,
 });

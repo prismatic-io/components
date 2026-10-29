@@ -9,6 +9,7 @@ import {
 import { createClient } from "../../client";
 import { generatePayload } from "../../util";
 import { getPolicyExamplePayload } from "../../examplePayloads";
+
 export const getPolicy = action({
   display: {
     description: "Gets specific information about listed policies.",
@@ -40,6 +41,7 @@ export const getPolicy = action({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post("", generatedJson);
     return {
       data,

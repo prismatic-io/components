@@ -1,10 +1,12 @@
 import type { BaseUrlMap } from "./types";
+
 export enum Service {
   API = "API",
   INSIGHTS = "INSIGHTS",
   LOGS = "LOGS",
   METRICS = "METRICS",
 }
+
 export const BASE_URLS: Record<Service, BaseUrlMap[string]> = {
   API: {
     US: "https://api.newrelic.com/v2",

@@ -1,8 +1,10 @@
 import { oauth2Connection, OAuth2Type } from "@prismatic-io/spectral";
 import { getMicrosoftOAuth2ClientCredentialsConnection } from "ms-utils";
+
 const oauthClientCredentials = getMicrosoftOAuth2ClientCredentialsConnection({
   key: "oauthClientCredentials",
 });
+
 export const oauth = oauth2Connection({
   key: "oauth",
   display: {
@@ -65,4 +67,5 @@ export const oauth = oauth2Connection({
     },
   },
 });
+
 export default [oauth, oauthClientCredentials];

@@ -5,6 +5,7 @@ import { selectJobExamplePayload } from "../examplePayloads";
 import { selectJobInputs } from "../inputs";
 import type { Job } from "../types";
 import { mapToElements } from "../util";
+
 export const selectJob = dataSource({
   display: {
     label: "Select Job",
@@ -14,9 +15,7 @@ export const selectJob = dataSource({
   inputs: selectJobInputs,
   perform: async (_context, { connection, effectiveDate }) => {
     const client = createClient(connection, false);
-    const { data } = await client.get<{
-      items: Job[];
-    }>("/jobs", {
+    const { data } = await client.get<{ items: Job[] }>("/jobs", {
       params: { limit: DATASOURCE_PAGE_SIZE, onlyData: "true", effectiveDate },
     });
     const result = mapToElements(

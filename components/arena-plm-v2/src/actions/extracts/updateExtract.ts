@@ -4,6 +4,7 @@ import { updateExtractExamplePayload } from "../../examplePayloads";
 import { updateExtractInputs } from "../../inputs";
 import { updateExtractOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const updateExtract = action({
   display: {
     label: "Update Extract",

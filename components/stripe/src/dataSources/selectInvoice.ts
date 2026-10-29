@@ -2,6 +2,7 @@ import { dataSource, util } from "@prismatic-io/spectral";
 import { createStripeClient } from "../client";
 import { selectInvoiceInputs } from "../inputs";
 import type { Invoice, StripeResponse } from "../types";
+
 export const selectInvoice = dataSource({
   display: {
     label: "Select Invoice",
@@ -14,6 +15,7 @@ export const selectInvoice = dataSource({
     });
     const { data } =
       (await client.invoices.list()) as unknown as StripeResponse<Invoice>;
+
     return {
       result: data.map(({ id, description, currency }) => ({
         key: util.types.toString(id),

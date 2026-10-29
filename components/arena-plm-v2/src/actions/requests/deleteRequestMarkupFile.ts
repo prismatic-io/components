@@ -4,6 +4,7 @@ import { deleteRequestMarkupFileExamplePayload } from "../../examplePayloads";
 import { deleteRequestMarkupFileInputs } from "../../inputs";
 import { deleteRequestMarkupFileOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteRequestMarkupFile = action({
   display: {
     label: "Delete Request Markup File",
@@ -21,13 +22,17 @@ export const deleteRequestMarkupFile = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Deleting markup file association ${requestFileAssociationGuid} from request ${requestGuid}`,
       );
+
       await client.delete(
         `/requests/${requestGuid}/markupfiles/${requestFileAssociationGuid}`,
       );
+
       context.logger.info("Successfully deleted markup file from request");
+
       return {
         data: { success: true, message: "Markup file deleted successfully" },
       };

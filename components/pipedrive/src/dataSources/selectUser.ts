@@ -3,12 +3,14 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { sortRecords } from "../util";
 import { selectUserExamplePayload } from "../examplePayloads";
+
 interface User {
   id: number;
   name: string;
   email: string;
   active_flag: boolean;
 }
+
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -19,10 +21,10 @@ export const selectUser = dataSource({
   },
   perform: async (_context, { connectionInput }) => {
     const client = createClient(connectionInput, false);
-    const { data } = await client.get<{
-      data: User[];
-    }>("/users");
+    const { data } = await client.get<{ data: User[] }>("/users");
+
     const users = data?.data ?? [];
+
     const result = sortRecords(
       users.filter((user) => user.active_flag),
       "name",
@@ -30,6 +32,7 @@ export const selectUser = dataSource({
       key: user.id.toString(),
       label: `${user.name} (${user.email})`,
     }));
+
     return { result };
   },
   dataSourceType: "picklist",

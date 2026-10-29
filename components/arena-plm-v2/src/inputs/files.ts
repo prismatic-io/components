@@ -30,6 +30,7 @@ import {
   titleInput,
   userInput,
 } from "./common";
+
 const fileSearchNumberInput = input({
   label: "File Number",
   type: "string",
@@ -39,6 +40,7 @@ const fileSearchNumberInput = input({
   example: "FILE-001",
   clean: toOptionalString,
 });
+
 const fileSearchTitleInput = input({
   label: "File Title",
   type: "string",
@@ -48,6 +50,7 @@ const fileSearchTitleInput = input({
   example: "Design Specification",
   clean: toOptionalString,
 });
+
 const fileSearchNameInput = input({
   label: "File Name",
   type: "string",
@@ -57,6 +60,7 @@ const fileSearchNameInput = input({
   example: "spec.pdf",
   clean: toOptionalString,
 });
+
 const fileCheckoutDataInput = input({
   label: "File Checkout Data",
   type: "data",
@@ -65,6 +69,7 @@ const fileCheckoutDataInput = input({
     "File checkout data including file GUID, action (checkin/checkout), and optional content.",
   clean: util.types.toObject,
 });
+
 const removeOriginalContentInput = input({
   label: "Remove Original Content",
   type: "boolean",
@@ -72,6 +77,7 @@ const removeOriginalContentInput = input({
   comments: "When true, the original content is removed.",
   clean: util.types.toBool,
 });
+
 const haveContentInput = input({
   label: "Have Content",
   type: "boolean",
@@ -79,6 +85,7 @@ const haveContentInput = input({
   comments: "When true, the cloud file content is downloaded.",
   clean: util.types.toBool,
 });
+
 const fileEditionStorageMethodNameInput = input({
   label: "Storage Method Name",
   type: "string",
@@ -88,6 +95,7 @@ const fileEditionStorageMethodNameInput = input({
     "Storage method: FILE (Arena servers), FTP (user FTP server), or WEB (web link).",
   clean: toOptionalString,
 });
+
 const locationInput = input({
   label: "Location",
   type: "string",
@@ -97,6 +105,7 @@ const locationInput = input({
     "Web or FTP address where the file resides (for FTP/WEB storage methods).",
   clean: toOptionalString,
 });
+
 const formatInput = input({
   label: "Format",
   type: "string",
@@ -105,6 +114,7 @@ const formatInput = input({
   comments: "The file format or extension recorded on the file edition.",
   clean: toOptionalString,
 });
+
 const reservedInput = input({
   label: "Reserved",
   type: "boolean",
@@ -112,6 +122,7 @@ const reservedInput = input({
   comments: "When true, the markup file is reserved.",
   clean: util.types.toBool,
 });
+
 const markupStorageMethodNameInput = input({
   label: "Markup Storage Method Name",
   type: "string",
@@ -121,6 +132,7 @@ const markupStorageMethodNameInput = input({
     "Storage method for the markup file: FILE (Arena servers), FTP (user FTP server), or WEB (web link).",
   clean: toOptionalString,
 });
+
 const attributeDefinitionGuidInput = input({
   label: "Attribute Definition GUID",
   type: "string",
@@ -130,6 +142,7 @@ const attributeDefinitionGuidInput = input({
   example: "FL4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const fileCorrectionCommentInput = input({
   label: "Comments",
   type: "string",
@@ -138,6 +151,7 @@ const fileCorrectionCommentInput = input({
   comments: "Comment for the file correction.",
   clean: toOptionalString,
 });
+
 export const changeFileCheckoutStatusInputs = {
   connection: connectionInput,
   fileCheckoutData: fileCheckoutDataInput,
@@ -146,6 +160,7 @@ export const changeFileCheckoutStatusInputs = {
     comments: "The file content to upload during checkin (binary format).",
   },
 };
+
 export const createFileCorrectionInputs = {
   connection: connectionInput,
   fileGuid: fileGuidInput,
@@ -155,6 +170,7 @@ export const createFileCorrectionInputs = {
   removeOriginalContent: removeOriginalContentInput,
   haveContent: haveContentInput,
 };
+
 export const createFileEditionInputs = {
   connection: connectionInput,
   fileGuid: {
@@ -178,6 +194,7 @@ export const createFileEditionInputs = {
   },
   format: formatInput,
 };
+
 export const createFileMarkupInputs = {
   connection: connectionInput,
   fileGuid: fileGuidInput,
@@ -189,6 +206,7 @@ export const createFileMarkupInputs = {
   markupFormat: fileFormatInput,
   markupAuthorFullName: fileAuthorFullNameInput,
 };
+
 export const createFileWithContentInputs = {
   connection: connectionInput,
   file: fileInput,
@@ -201,14 +219,17 @@ export const createFileWithContentInputs = {
   edition: fileEditionInput,
   private: filePrivateInput,
 };
+
 export const deleteFileInputs = {
   connection: connectionInput,
   fileGuid: fileGuidInput,
 };
+
 export const downloadFileContentInputs = {
   connection: connectionInput,
   fileGuid: { ...fileGuidInput, comments: "The GUID of the file to download." },
 };
+
 export const listFileAttributesInputs = {
   connection: connectionInput,
   includePossibleValues: includePossibleValuesInput,
@@ -220,10 +241,12 @@ export const listFileAttributesInputs = {
     comments: "Whether to include deleted attributes.",
   },
 };
+
 export const getFileByGuidInputs = {
   connection: connectionInput,
   fileGuid: fileGuidInput,
 };
+
 export const listFileCategoriesInputs = {
   connection: connectionInput,
   path: pathInput,
@@ -243,6 +266,7 @@ export const listFileCategoriesInputs = {
     comments: "Filter categories by action type.",
   },
 };
+
 export const getFileCategoryAttributeDetailsInputs = {
   connection: connectionInput,
   objectType: {
@@ -265,6 +289,7 @@ export const getFileCategoryAttributeDetailsInputs = {
   },
   attributeDefinitionGuid: attributeDefinitionGuidInput,
 };
+
 export const listFileCategoryAttributesInputs = {
   connection: connectionInput,
   categoryGuid: {
@@ -279,6 +304,7 @@ export const listFileCategoryAttributesInputs = {
   editableOnly: editableOnlyInput,
   searchableOnly: searchableOnlyInput,
 };
+
 export const getFileCategoryDetailsInputs = {
   connection: connectionInput,
   categoryGuid: {
@@ -289,10 +315,12 @@ export const getFileCategoryDetailsInputs = {
     clean: util.types.toString,
   },
 };
+
 export const getFileContentInputs = {
   connection: connectionInput,
   fileGuid: fileGuidInput,
 };
+
 export const listFileCorrectionsInputs = {
   connection: connectionInput,
   fileGuid: {
@@ -300,6 +328,7 @@ export const listFileCorrectionsInputs = {
     comments: "The GUID of the file to get corrections for.",
   },
 };
+
 export const listFileEditionsInputs = {
   connection: connectionInput,
   fileGuid: {
@@ -307,6 +336,7 @@ export const listFileEditionsInputs = {
     comments: "The GUID of the file to get editions for.",
   },
 };
+
 export const listFileMarkupsInputs = {
   connection: connectionInput,
   fileGuid: {
@@ -314,6 +344,7 @@ export const listFileMarkupsInputs = {
     comments: "The GUID of the file to get markups for.",
   },
 };
+
 export const listFilesInputs = {
   connection: connectionInput,
   number: fileSearchNumberInput,
@@ -329,6 +360,7 @@ export const listFilesInputs = {
       "When true, includes files from child categories of the specified category.",
   },
 };
+
 export const getFileWatermarkContentInputs = {
   connection: connectionInput,
   fileGuid: {
@@ -336,6 +368,7 @@ export const getFileWatermarkContentInputs = {
     comments: "The GUID of the file to get watermark content for.",
   },
 };
+
 export const updateFileContentInputs = {
   connection: connectionInput,
   fileGuid: { ...fileGuidInput, comments: "The GUID of the file to update." },

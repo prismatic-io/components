@@ -1,4 +1,5 @@
 import { attribute, option, product } from "./products";
+
 describe("products inputs: happy-path normalization", () => {
   test.each<
     [string, ((value: unknown) => unknown) | undefined, unknown, unknown]

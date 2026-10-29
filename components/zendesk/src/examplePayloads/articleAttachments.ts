@@ -1,4 +1,5 @@
 import { paginationAttributes } from "./general";
+
 const getArticleAttachmentRaw = {
   article_attachment: {
     article_id: 23,
@@ -11,6 +12,7 @@ const getArticleAttachmentRaw = {
     size: 1428,
   },
 };
+
 const listArticleAttachmentsRaw = {
   ...paginationAttributes,
   article_attachments: [
@@ -26,19 +28,25 @@ const listArticleAttachmentsRaw = {
     },
   ],
 };
+
 const createArticleAttachmentRaw = {
   article_attachment: listArticleAttachmentsRaw.article_attachments[0],
 };
+
 const deleteArticleAttachmentRaw = "";
+
 export const createArticleAttachmentExamplePayload = {
   data: createArticleAttachmentRaw,
 };
+
 export const deleteArticleAttachmentExamplePayload = {
   data: deleteArticleAttachmentRaw,
 };
+
 export const getArticleAttachmentExamplePayload = {
   data: getArticleAttachmentRaw,
 };
+
 export const listArticleAttachmentsExamplePayload = {
   data: listArticleAttachmentsRaw,
 };

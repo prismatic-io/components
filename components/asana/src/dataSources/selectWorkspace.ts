@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_LIMIT } from "../constants";
 import { selectWorkspaceInputs } from "../inputs";
 import type { DataSource } from "../types/resources";
 import { fetchMoreData, mapToLabelKey } from "../util";
+
 const selectWorkspace = dataSource({
   display: {
     label: "Select Workspace",
@@ -21,11 +22,13 @@ const selectWorkspace = dataSource({
         limit: DEFAULT_PAGE_LIMIT,
       },
     );
+
     const result = mapToLabelKey(data);
     return { result };
   },
   dataSourceType: "picklist",
 });
+
 export default {
   selectWorkspace,
 };

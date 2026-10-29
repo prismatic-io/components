@@ -1,4 +1,5 @@
 import { connection, input } from "@prismatic-io/spectral";
+
 export const jamfBearerToken = connection({
   key: "jamfBearerToken",
   display: {

@@ -9,6 +9,7 @@ import {
   targetType,
   triggerTypes,
 } from "./common";
+
 export const address = input({
   label: "Webhook URL",
   placeholder: "Enter webhook URL",
@@ -19,6 +20,7 @@ export const address = input({
   example: "https://hooks.example.com/box/abc123",
   clean: util.types.toString,
 });
+
 export const webhookId = input({
   label: "Webhook ID",
   placeholder: "Enter webhook ID",
@@ -29,6 +31,7 @@ export const webhookId = input({
   dataSource: "selectWebhook",
   clean: util.types.toString,
 });
+
 export const showOnlyInstanceWebhooks = input({
   label: "Show Only Instance Webhooks",
   comments: "When true, returns only webhooks that point to this instance.",
@@ -37,18 +40,21 @@ export const showOnlyInstanceWebhooks = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const webhookPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Marker and limit controls for paging through results.",
   inputs: { limit, marker },
 });
+
 export const listWebhooksInputs = {
   boxConnection: connectionInput,
   fetchAll,
   pagination: webhookPagination,
   showOnlyInstanceWebhooks,
 };
+
 export const createWebhookInputs = {
   address,
   targetId,
@@ -61,10 +67,12 @@ export const createWebhookInputs = {
   },
   boxConnection: connectionInput,
 };
+
 export const deleteWebhookInputs = {
   boxConnection: connectionInput,
   webhookId,
 };
+
 export const deleteInstanceWebhooksInputs = {
   boxConnection: connectionInput,
 };

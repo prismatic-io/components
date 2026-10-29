@@ -7,6 +7,7 @@ import {
   cursorPagination,
   timeout,
 } from "./common";
+
 export const source = input({
   label: "Source",
   type: "string",
@@ -17,6 +18,7 @@ export const source = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const balanceTransactionId = input({
   label: "Balance Transaction ID",
   type: "string",
@@ -26,11 +28,13 @@ export const balanceTransactionId = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const getBalanceTransactionInputs = {
   timeout,
   stripeConnection: connectionInput,
   balanceTransactionId,
 };
+
 export const listBalanceTransactionsInputs = {
   timeout,
   created,

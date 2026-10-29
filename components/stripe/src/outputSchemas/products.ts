@@ -101,6 +101,7 @@ export const productOutputSchema = {
     "updated",
   ],
 };
+
 export const listProductsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -111,6 +112,7 @@ export const listProductsOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const deleteProductOutputSchema = {
   type: "object" as const,
   properties: {

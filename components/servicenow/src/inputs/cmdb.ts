@@ -10,6 +10,7 @@ import {
   sysparmOffset,
   sysparmQuery,
 } from "./common";
+
 const className = input({
   label: "Class Name",
   type: "string",
@@ -20,6 +21,7 @@ const className = input({
   placeholder: "Enter the class name",
   clean: util.types.toString,
 });
+
 const relSysId = input({
   label: "Relationship Sys ID",
   type: "string",
@@ -29,6 +31,7 @@ const relSysId = input({
   placeholder: "Enter the relationship Sys ID",
   clean: util.types.toString,
 });
+
 const configurationItemAttributes = input({
   label: "Configuration Item Attributes",
   type: "code",
@@ -53,6 +56,7 @@ const configurationItemAttributes = input({
   ),
   clean: cleanJsonInput,
 });
+
 const configurationItemInboundRelations = input({
   label: "Configuration Item Inbound Relations",
   type: "code",
@@ -75,6 +79,7 @@ const configurationItemInboundRelations = input({
   ]),
   clean: cleanJsonInput,
 });
+
 const configurationItemOutboundRelations = input({
   label: "Configuration Item Outbound Relations",
   type: "code",
@@ -90,6 +95,7 @@ const configurationItemOutboundRelations = input({
   ]),
   clean: cleanJsonInput,
 });
+
 const configurationItemSource = input({
   label: "Configuration Item Source",
   type: "string",
@@ -100,6 +106,7 @@ const configurationItemSource = input({
   placeholder: "Enter the discovery source",
   clean: util.types.toString,
 });
+
 export const createConfigurationItemInputs = {
   connection,
   instanceUrlInput,
@@ -110,6 +117,7 @@ export const createConfigurationItemInputs = {
   configurationItemOutboundRelations,
   configurationItemSource,
 };
+
 export const deleteConfigurationItemInputs = {
   connection,
   instanceUrlInput,
@@ -118,6 +126,7 @@ export const deleteConfigurationItemInputs = {
   sysId,
   relSysId,
 };
+
 export const getConfigurationItemAttributesInputs = {
   connection,
   instanceUrlInput,
@@ -125,6 +134,7 @@ export const getConfigurationItemAttributesInputs = {
   className,
   sysId,
 };
+
 const listConfigurationItemsPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -149,6 +159,7 @@ const listConfigurationItemsPagination = structuredObjectInput({
     },
   },
 });
+
 export const listConfigurationItemsInputs = {
   connection,
   instanceUrlInput,
@@ -164,6 +175,7 @@ export const listConfigurationItemsInputs = {
     placeholder: "ORDERBY<col_name>",
   },
 };
+
 export const updateConfigurationItemInputs = {
   connection,
   instanceUrlInput,
@@ -173,6 +185,7 @@ export const updateConfigurationItemInputs = {
   configurationItemSource,
   configurationItemAttributes,
 };
+
 export const getCMDBClassMetaDataInputs = {
   connection,
   instanceUrlInput,

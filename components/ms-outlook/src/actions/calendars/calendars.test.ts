@@ -1,15 +1,20 @@
 import { testing } from "@prismatic-io/spectral";
 import { oauth } from "../../connections";
+
 import component from "../..";
+
 const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   ? describe
   : describe.skip;
+
 describeIntegrationTest("calendars", () => {
   const harness = testing.createHarness(component);
   let connection: ReturnType<typeof harness.connectionValue>;
+
   beforeAll(() => {
     connection = harness.connectionValue(oauth);
   });
+
   it("should create a calendar", async () => {
     const result = await harness.action("createCalendar", {
       connection,
@@ -18,6 +23,7 @@ describeIntegrationTest("calendars", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("should update a calendar", async () => {
     const result = await harness.action("updateCalendar", {
       connection,
@@ -27,6 +33,7 @@ describeIntegrationTest("calendars", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("should delete a calendar", async () => {
     const result = await harness.action("deleteCalendar", {
       connection,
@@ -34,6 +41,7 @@ describeIntegrationTest("calendars", () => {
     });
     expect(result).toBeDefined();
   });
+
   it("should list calendars", async () => {
     const result = await harness.action("listCalendars", {
       connection,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createTagExamplePayload } from "../../examplePayloads";
 import { createTagInputs } from "../../inputs";
 import { createTagOutputSchema } from "../../outputSchemas";
+
 export const createTag = action({
   display: {
     label: "Create Tag",
@@ -22,17 +23,13 @@ export const createTag = action({
     });
     return { data };
   },
-  examplePerform: async (
-    _context,
-    { tagName },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, { tagName }): Promise<{ data: unknown }> => {
     const slug = tagName
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
     const [boardUrl] = createTagExamplePayload.data.url.split("?");
+
     return {
       data: {
         ...createTagExamplePayload.data,

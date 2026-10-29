@@ -4,6 +4,7 @@ import { updateSpaceExamplePayload } from "../../examplePayloads";
 import { updateSpaceInputs } from "../../inputs";
 import { updateSpaceOutputSchema } from "../../outputSchemas";
 import type { SpaceBody as Body } from "../../types";
+
 export const updateSpace = action({
   display: {
     label: "Update Space",
@@ -83,7 +84,9 @@ export const updateSpace = action({
         },
       },
     };
+
     const { data } = await client.put(`/space/${spaceId}`, body);
+
     return {
       data,
     };

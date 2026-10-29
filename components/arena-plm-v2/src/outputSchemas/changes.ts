@@ -5,6 +5,7 @@ export const changeAlertSchema = {
     code: { type: "integer", format: "int32" },
   },
 };
+
 export const changeCompactSchema = {
   type: "object" as const,
   properties: {
@@ -67,6 +68,7 @@ export const changeCompactSchema = {
     },
   },
 };
+
 export const changeFullSchema = {
   type: "object" as const,
   properties: {
@@ -224,6 +226,7 @@ export const changeFullSchema = {
     },
   },
 };
+
 export const changeHistorySchema = {
   type: "object" as const,
   properties: {
@@ -237,6 +240,7 @@ export const changeHistorySchema = {
     guid: { type: "string" },
   },
 };
+
 export const changeImplementationNoteSchema = {
   type: "object" as const,
   properties: {
@@ -246,6 +250,7 @@ export const changeImplementationNoteSchema = {
     private: { type: "boolean" },
   },
 };
+
 export const changeImplementationTaskSchema = {
   type: "object" as const,
   properties: {
@@ -280,6 +285,7 @@ export const changeImplementationTaskSchema = {
     status: { type: "string" },
   },
 };
+
 export const changeItemAssociationSchema = {
   type: "object" as const,
   properties: {
@@ -379,6 +385,7 @@ export const changeItemAssociationSchema = {
     },
   },
 };
+
 export const changeMarkupFileAssociationSchema = {
   type: "object" as const,
   properties: {
@@ -438,6 +445,7 @@ export const changeMarkupFileAssociationSchema = {
     guid: { type: "string" },
   },
 };
+
 export const changeRoutingMinimalSchema = {
   type: "object" as const,
   properties: {
@@ -446,6 +454,7 @@ export const changeRoutingMinimalSchema = {
     description: { type: "string" },
   },
 };
+
 export const deleteChangeFileAssociationOutputSchema = {
   type: "object" as const,
   properties: {
@@ -456,16 +465,19 @@ export const deleteChangeFileAssociationOutputSchema = {
   },
   required: ["success", "message", "changeGuid", "changeFileAssociationGuid"],
 };
+
 export const deleteChangeItemAssociationOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteChangeMarkupFileOutputSchema = {
   type: "object" as const,
   properties: { success: { type: "boolean" }, message: { type: "string" } },
   required: ["success", "message"],
 };
+
 export const deleteChangeOutputSchema = {
   type: "object" as const,
   properties: {
@@ -475,6 +487,7 @@ export const deleteChangeOutputSchema = {
   },
   required: ["success", "changeGuid", "message"],
 };
+
 export const listChangeAlertsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -482,6 +495,7 @@ export const listChangeAlertsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangeCategoryRoutingsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -489,6 +503,7 @@ export const listChangeCategoryRoutingsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangeHistoryOutputSchema = {
   type: "object" as const,
   properties: {
@@ -496,6 +511,7 @@ export const listChangeHistoryOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangeImplementationTaskNotesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -503,6 +519,7 @@ export const listChangeImplementationTaskNotesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangeImplementationTasksOutputSchema = {
   type: "object" as const,
   properties: {
@@ -510,6 +527,7 @@ export const listChangeImplementationTasksOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangeItemsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -517,6 +535,7 @@ export const listChangeItemsOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangeMarkupFilesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -524,6 +543,7 @@ export const listChangeMarkupFilesOutputSchema = {
     count: { type: "integer", format: "int32" },
   },
 };
+
 export const listChangesOutputSchema = {
   type: "object" as const,
   properties: {

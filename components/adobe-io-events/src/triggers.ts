@@ -1,10 +1,12 @@
 import { trigger } from "@prismatic-io/spectral";
+
 const adobeIoEventWebhook = trigger({
   display: {
     label: "Webhook",
     description:
       "Receive and validate webhook requests from Adobe I/O for webhooks you configure",
   },
+
   allowsBranching: true,
   staticBranchNames: ["Trigger", "Webhook Verify"],
   perform: async (_context, payload) => {
@@ -30,4 +32,5 @@ const adobeIoEventWebhook = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export default { adobeIoEventWebhook };

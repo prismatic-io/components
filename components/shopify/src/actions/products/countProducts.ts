@@ -3,6 +3,7 @@ import { countProductsPayload } from "../../examplePayloads";
 import { countProductsInputs } from "../../inputs";
 import { countProductsOutputSchema } from "../../outputSchemas";
 import { countProductsGql } from "../graphql/products/countProductsGql";
+
 export const countProducts = action({
   display: {
     label: "Count Products",
@@ -11,6 +12,7 @@ export const countProducts = action({
   performSafety: "safe",
   perform: async (context, params) => {
     const { data } = await countProductsGql.perform(context, params);
+
     return {
       data,
     };

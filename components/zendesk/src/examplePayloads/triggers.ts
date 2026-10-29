@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { listTicketsRaw } from "./tickets";
+
 export const webhookExamplePayload = {
   payload: {
     headers: {
@@ -79,6 +80,7 @@ export const webhookExamplePayload = {
     },
   } as unknown as TriggerPayload,
 };
+
 export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},

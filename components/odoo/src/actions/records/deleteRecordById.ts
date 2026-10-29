@@ -5,6 +5,7 @@ import { deleteRecordByIdInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
 import { json2Path } from "../../util";
 import { deleteRecordByIdOutputSchema } from "../../outputSchemas";
+
 export const deleteRecordById = action({
   display: {
     label: "Delete Record By ID",
@@ -32,8 +33,7 @@ export const deleteRecordById = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteRecordByIdExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteRecordByIdExamplePayload,
   examplePayload: deleteRecordByIdExamplePayload,
 });

@@ -10,6 +10,7 @@ import { createContentTypeExamplePayload } from "../../examplePayloads";
 import { createContentTypeInputs } from "../../inputs";
 import { createContentTypeOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
+
 export const createContentType = action({
   display: {
     label: "Create Content Type",
@@ -34,6 +35,7 @@ export const createContentType = action({
       spaceId,
       environmentId,
     );
+
     const contentType: ContentTypeProps = (
       await environment.createContentType({
         name,
@@ -42,13 +44,13 @@ export const createContentType = action({
         description,
       })
     ).toPlainObject();
+
     return {
       data: contentType,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createContentTypeExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createContentTypeExamplePayload,
   inputs: createContentTypeInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

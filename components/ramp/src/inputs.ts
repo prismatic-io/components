@@ -21,11 +21,13 @@ import {
   mapModel,
   mapObjectModel,
 } from "./util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const id = input({
   label: "ID",
   type: "string",
@@ -35,48 +37,56 @@ export const id = input({
   placeholder: "Enter ID",
   clean: util.types.toString,
 });
+
 export const billId = {
   ...id,
   label: "Bill ID",
   comments: "The ID of the bill to retrieve",
   placeholder: "Enter bill ID",
 };
+
 export const businessEntityId = {
   ...id,
   label: "Business Entity ID",
   comments: "The ID of the business entity to retrieve",
   placeholder: "Enter business entity ID",
 };
+
 export const accountingConnectionId = {
   ...id,
   label: "Accounting Connection ID",
   comments: "The ID of the accounting connection to delete",
   placeholder: "Enter accounting connection ID",
 };
+
 export const customAccountingFieldId = {
   ...id,
   label: "Custom Accounting Field ID",
   comments: "The ID of the custom accounting field to retrieve",
   placeholder: "Enter custom accounting field ID",
 };
+
 export const departmentId = {
   ...id,
   label: "Department ID",
   comments: "The ID of the department to retrieve",
   placeholder: "Enter department ID",
 };
+
 export const generalLedgerAccountId = {
   ...id,
   label: "General Ledger Account ID",
   comments: "The ID of the general ledger account to retrieve",
   placeholder: "Enter general ledger account ID",
 };
+
 export const locationId = {
   ...id,
   label: "Location ID",
   comments: "The ID of the location to retrieve",
   placeholder: "Enter location ID",
 };
+
 export const entityId = {
   ...id,
   label: "Entity ID",
@@ -84,30 +94,35 @@ export const entityId = {
   placeholder: "Enter entity ID",
   required: false,
 };
+
 export const reimbursementId = {
   ...id,
   label: "Reimbursement ID",
   comments: "The ID of the reimbursement to retrieve",
   placeholder: "Enter reimbursement ID",
 };
+
 export const transactionId = {
   ...id,
   label: "Transaction ID",
   comments: "The ID of the transaction to retrieve",
   placeholder: "Enter transaction ID",
 };
+
 export const vendorId = {
   ...id,
   label: "Vendor ID",
   comments: "The ID of the vendor to retrieve",
   placeholder: "Enter vendor ID",
 };
+
 export const customAccountingFieldOptionId = {
   ...id,
   label: "Custom Accounting Field Option ID",
   comments: "The ID of the custom field option to retrieve",
   placeholder: "Enter custom accounting field option ID",
 };
+
 export const customQueryParams = input({
   label: "Custom Query Params",
   type: "string",
@@ -118,6 +133,7 @@ export const customQueryParams = input({
   placeholder: "Enter a query parameter name and value",
   clean: cleanKeyValueList,
 });
+
 export const start = input({
   label: "Start",
   type: "string",
@@ -128,6 +144,7 @@ export const start = input({
   placeholder: "Enter pagination cursor",
   clean: cleanString,
 });
+
 export const pageSize = input({
   label: "Page Size",
   type: "string",
@@ -137,6 +154,7 @@ export const pageSize = input({
   comments: "Number of results to retrieve per page",
   clean: cleanNumber,
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -146,18 +164,21 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Page size and starting point for paginated results.",
   inputs: { start, pageSize },
 });
+
 export const defaultListInputs = {
   connection,
   fetchAll,
   pagination,
   customQueryParams,
 };
+
 export const code = input({
   label: "Code",
   type: "string",
@@ -168,6 +189,7 @@ export const code = input({
   placeholder: "19566",
   clean: cleanString,
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -177,6 +199,7 @@ export const name = input({
   placeholder: "Amazon",
   clean: cleanString,
 });
+
 export const reactivate = input({
   label: "Reactivate",
   type: "string",
@@ -185,6 +208,7 @@ export const reactivate = input({
   model: mapObjectModel(BOOLEAN_VALUES),
   clean: cleanBoolean,
 });
+
 export const value = input({
   label: "Value",
   type: "string",
@@ -194,6 +218,7 @@ export const value = input({
   placeholder: "Sales & Marketing",
   clean: cleanString,
 });
+
 export const subsidiaries = input({
   label: "Subsidiaries",
   type: "code",
@@ -205,6 +230,7 @@ export const subsidiaries = input({
   placeholder: "Enter a JSON array of subsidiary IDs",
   clean: cleanCode,
 });
+
 export const failedSyncs = input({
   label: "Failed Syncs",
   type: "code",
@@ -215,6 +241,7 @@ export const failedSyncs = input({
   placeholder: "Enter a JSON array of failed sync objects",
   clean: cleanCode,
 });
+
 export const idempotencyKey = input({
   label: "Idempotency Key",
   type: "string",
@@ -225,6 +252,7 @@ export const idempotencyKey = input({
   placeholder: "d471d830-2e73-4082-8a75-68540f83e86e",
   clean: util.types.toString,
 });
+
 export const successfulSyncs = input({
   label: "Successful Syncs",
   type: "code",
@@ -235,6 +263,7 @@ export const successfulSyncs = input({
   placeholder: "Enter a JSON array of successful sync objects",
   clean: cleanCode,
 });
+
 export const syncType = input({
   label: "Sync Type",
   type: "string",
@@ -245,6 +274,7 @@ export const syncType = input({
   model: mapObjectModel(SYNC_TYPE_VALUES),
   clean: util.types.toString,
 });
+
 export const remoteProviderName = input({
   label: "Remote Provider Name",
   type: "string",
@@ -254,6 +284,7 @@ export const remoteProviderName = input({
   placeholder: "Enter remote provider name",
   clean: util.types.toString,
 });
+
 export const isSplittable = input({
   label: "Is Splittable",
   type: "string",
@@ -263,6 +294,7 @@ export const isSplittable = input({
   model: mapObjectModel(BOOLEAN_VALUES),
   clean: cleanBoolean,
 });
+
 export const inputType = input({
   label: "Input Type",
   type: "string",
@@ -271,6 +303,7 @@ export const inputType = input({
   model: mapModel(INPUT_TYPE_VALUES),
   clean: util.types.toString,
 });
+
 export const options = input({
   label: "Options",
   type: "code",
@@ -281,6 +314,7 @@ export const options = input({
   placeholder: "Enter a JSON array of field options",
   clean: util.types.toObject,
 });
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -289,6 +323,7 @@ export const pollResourceType = input({
   model: pollResourceModel,
   clean: util.types.toString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -297,6 +332,7 @@ export const showNewRecords = input({
   comments: "Include newly created records in trigger results.",
   clean: util.types.toBool,
 });
+
 export const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -305,6 +341,7 @@ export const showUpdatedRecords = input({
   comments: "Include updated records in trigger results.",
   clean: util.types.toBool,
 });
+
 export const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",

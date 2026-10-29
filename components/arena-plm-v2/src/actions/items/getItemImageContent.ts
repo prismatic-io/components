@@ -4,6 +4,7 @@ import { getItemImageContentExamplePayload } from "../../examplePayloads";
 import { getItemImageContentInputs } from "../../inputs";
 import { getItemImageContentOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getItemImageContent = action({
   display: {
     label: "Get Item Image Content",
@@ -24,7 +25,9 @@ export const getItemImageContent = action({
           responseType: "arraybuffer",
         },
       );
+
       const base64Content = Buffer.from(data).toString("base64");
+
       return {
         data: {
           content: base64Content,

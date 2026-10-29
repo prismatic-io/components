@@ -8,6 +8,7 @@ import {
 import { offlineConversionsArrayExample } from "../exampleInputs";
 import { cleanOptionalString, mapModel } from "../util";
 import { accountIdInput, connectionInput, customerIdInput } from "./common";
+
 const conversionGoalName = input({
   label: "Conversion Goal Name",
   type: "string",
@@ -18,6 +19,7 @@ const conversionGoalName = input({
   example: "My Conversion Goal",
   clean: util.types.toString,
 });
+
 const conversionGoalCategory = input({
   label: "Conversion Goal Category",
   type: "string",
@@ -28,6 +30,7 @@ const conversionGoalCategory = input({
   model: mapModel(CONVERSION_GOALS_CATEGORIES),
   clean: util.types.toString,
 });
+
 const conversionWindowInMinutes = input({
   label: "Conversion Window In Minutes",
   type: "string",
@@ -38,6 +41,7 @@ const conversionWindowInMinutes = input({
   example: "129600",
   clean: cleanOptionalString,
 });
+
 const countType = input({
   label: "Count Type",
   type: "string",
@@ -48,6 +52,7 @@ const countType = input({
   model: mapModel(COUNT_TYPE),
   clean: util.types.toString,
 });
+
 const excludeFromBidding = input({
   label: "Exclude From Bidding",
   type: "boolean",
@@ -56,6 +61,7 @@ const excludeFromBidding = input({
     "Determines whether or not to exclude data otherwise related to this conversion goal from a subset of performance report columns.",
   clean: util.types.toBool,
 });
+
 const isEnhancedConversionsEnabled = input({
   label: "Is Enhanced Conversions Enabled",
   type: "boolean",
@@ -64,6 +70,7 @@ const isEnhancedConversionsEnabled = input({
     "Determines whether enhanced conversions are enabled for a conversion goal.",
   clean: util.types.toBool,
 });
+
 const conversionScope = input({
   label: "Scope",
   type: "string",
@@ -73,6 +80,7 @@ const conversionScope = input({
   model: mapModel(CONVERSION_SCOPE),
   clean: util.types.toString,
 });
+
 const conversionStatus = input({
   label: "Status",
   type: "string",
@@ -82,6 +90,7 @@ const conversionStatus = input({
   model: mapModel(CONVERSION_STATUS),
   clean: util.types.toString,
 });
+
 const isExternallyAttributed = input({
   label: "Is Externally Attributed",
   type: "boolean",
@@ -90,6 +99,7 @@ const isExternallyAttributed = input({
     "When true, the offline conversion goal uses a custom attribution model and allows importing fractional credit for each MSCLKID.",
   clean: util.types.toBool,
 });
+
 const offlineConversionsBody = input({
   label: "Offline Conversions Body",
   placeholder: "Enter offline conversions JSON",
@@ -101,6 +111,7 @@ const offlineConversionsBody = input({
   example: JSON.stringify(offlineConversionsArrayExample, null, 2),
   clean: util.types.toObject,
 });
+
 export const addOfflineConversionsGoalInputs = {
   accountIdInput: {
     ...accountIdInput,
@@ -125,6 +136,7 @@ export const addOfflineConversionsGoalInputs = {
   isExternallyAttributed,
   connection: connectionInput,
 };
+
 export const applyOfflineConversionsInputs = {
   offlineConversionsBody,
   accountIdInput: {

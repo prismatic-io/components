@@ -3,6 +3,7 @@ import {
   oauth2Connection,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 export const sfmcOAuth2AuthorizationCode = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "sfmcOAuth2AuthorizationCode",

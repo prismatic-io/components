@@ -4,6 +4,7 @@ import { getWorkspaceExamplePayload } from "../../examplePayloads";
 import { getWorkspaceInputs } from "../../inputs";
 import { mergeMetadataChildren } from "../../util/mergeChildren";
 import { paginateByToken } from "../../util/pagination";
+
 export const getWorkspace = action({
   display: {
     label: "Get Workspace",
@@ -11,6 +12,7 @@ export const getWorkspace = action({
   },
   perform: async (context, { connection, workspaceId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const [metadataRes, children] = await Promise.all([
       client.get<Record<string, unknown>>(
         `/workspaces/${workspaceId}/metadata`,
@@ -21,6 +23,7 @@ export const getWorkspace = action({
         `/workspaces/${workspaceId}/children`,
       ),
     ]);
+
     const data = mergeMetadataChildren(metadataRes.data ?? {}, children);
     return { data };
   },

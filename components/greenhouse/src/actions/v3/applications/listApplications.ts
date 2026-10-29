@@ -4,6 +4,7 @@ import { listApplicationsV3ExamplePayload } from "../../../examplePayloads/v3/ap
 import { listApplicationsV3Inputs } from "../../../inputs/v3/applications";
 import type { V3Application } from "../../../types";
 import { generatePayload, paginateV3 } from "../../../util";
+
 export const listApplicationsV3 = action({
   display: {
     label: "List Applications",
@@ -23,6 +24,7 @@ export const listApplicationsV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const filterParams = generatePayload({
       ids: idFilters.ids,
       candidate_ids: idFilters.candidateIds,
@@ -42,12 +44,14 @@ export const listApplicationsV3 = action({
       "last_activity_at[gte]": dateRangeFilters.lastActivityAtGte,
       "last_activity_at[lte]": dateRangeFilters.lastActivityAtLte,
     });
+
     const data = await paginateV3<V3Application>(
       client,
       "/applications",
       fetchAll,
       { perPage, cursor, params: filterParams },
     );
+
     return { data };
   },
   inputs: listApplicationsV3Inputs,

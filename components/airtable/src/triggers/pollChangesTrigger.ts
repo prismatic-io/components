@@ -14,6 +14,7 @@ import type {
   PollingState,
 } from "../types";
 import { resolvePollingRecordChanges } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -39,15 +40,19 @@ export const pollChangesTrigger = pollingTrigger({
       | undefined;
     const now = incoming?.drainStartedAt ?? new Date().toISOString();
     const state = (context.polling.getState() ?? {}) as PollingState;
+
     const seedSince = params.lookBackDate
       ? new Date(params.lookBackDate).toISOString()
       : now;
     const lastPolledAt = state.lastPolledAt ?? seedSince;
+
     const isBackfill =
       state.backfillActive === true ||
       (!state.lastPolledAt && Boolean(params.lookBackDate));
+
     const maxPages =
       context.batch?.enabled === true ? BATCHED_MAX_PAGES : MAX_POLL_PAGES;
+
     const { records, offset } = await fetchAirtableRecordsSince(
       params.airtableConnection,
       params.baseId,
@@ -59,6 +64,7 @@ export const pollChangesTrigger = pollingTrigger({
       params.additionalFilter,
       incoming?.offset,
     );
+
     const endOfStream = !offset;
     const result: AirtableChangesObject = partitionRecordsByTimestamp(
       records,
@@ -69,9 +75,11 @@ export const pollChangesTrigger = pollingTrigger({
         showUpdatedRecords: params.showUpdatedRecords !== false,
       },
     );
+
     const nextCursor: AirtablePollingCursor | null = endOfStream
       ? null
       : { offset: offset as string, drainStartedAt: now };
+
     let advancedCursor = lastPolledAt;
     if (!endOfStream && context.batch?.enabled !== true) {
       const latestCreated = records
@@ -85,10 +93,12 @@ export const pollChangesTrigger = pollingTrigger({
           `Advancing cursor to ${advancedCursor}; next poll resumes from there.`,
       );
     }
+
     context.polling.setState({
       lastPolledAt: endOfStream ? now : advancedCursor,
       ...(isBackfill && !endOfStream ? { backfillActive: true } : {}),
     } satisfies PollingState);
+
     return {
       payload: {
         ...payload,

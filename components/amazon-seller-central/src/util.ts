@@ -10,6 +10,7 @@ import type {
   PollingChangesObject,
   PollingRecordChange,
 } from "./types";
+
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {
     if (value !== null && value.trim() !== "") {
@@ -18,6 +19,7 @@ export const jsonInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 export const valueListStringInputClean = (value: unknown) => {
   if (Array.isArray(value) && value.length >= 1) {
     return value.toString();
@@ -30,8 +32,10 @@ export const valueListInputClean = (value: unknown) => {
   }
   return undefined;
 };
+
 const validateDataType = (value: unknown) => {
   const type = typeof value;
+
   switch (type) {
     case "string":
       if (value === "" || value === null) {
@@ -60,22 +64,22 @@ const validateDataType = (value: unknown) => {
       return false;
   }
 };
+
 export const generateForm = (data: unknown) => {
   const formData = new FormData();
+
   for (const [key, value] of Object.entries(data)) {
     if (validateDataType(value)) {
       formData.append(key, value);
     }
   }
+
   return formData;
 };
+
 export const sortedArray = (
-  first: {
-    countryName: string;
-  },
-  second: {
-    countryName: string;
-  },
+  first: { countryName: string },
+  second: { countryName: string },
 ) => {
   if (first.countryName > second.countryName) {
     return 1;
@@ -85,9 +89,11 @@ export const sortedArray = (
   }
   return 0;
 };
+
 export const getAccessToken = (connection: Connection) => {
   return util.types.toString(connection?.token?.access_token);
 };
+
 export const getBaseUrl = (connection: Connection) => {
   const isSandboxEnvironment = util.types.toBool(
     connection.fields.isSandboxEnvironment,
@@ -101,6 +107,7 @@ export const getBaseUrl = (connection: Connection) => {
   }
   return spAPIEndpoints;
 };
+
 export const getHeaders = (baseUrl: string, accessToken: string) => {
   return {
     "x-amz-access-token": accessToken,
@@ -111,6 +118,7 @@ export const getHeaders = (baseUrl: string, accessToken: string) => {
     accept: "application/json",
   };
 };
+
 export const paginateResults = async <T>(
   client: ReturnType<typeof createHttpClient>,
   url: string,
@@ -120,35 +128,36 @@ export const paginateResults = async <T>(
 ): Promise<T[]> => {
   const results: T[] = [];
   let nextToken: string | undefined;
+
   do {
-    type Page = {
-      NextToken?: string;
-      [key: string]: unknown;
-    };
-    const { data } = await client.get<
-      Page & {
-        payload?: Page;
-      }
-    >(url, {
+    type Page = { NextToken?: string; [key: string]: unknown };
+    const { data } = await client.get<Page & { payload?: Page }>(url, {
       params: {
         ...params,
         NextToken: nextToken,
       },
     });
+
     const body = data.payload ?? data;
+
     const pageResults = body[resultArrayKey] as T[] | undefined;
     if (pageResults && Array.isArray(pageResults)) {
       results.push(...pageResults);
     }
+
     nextToken = body.NextToken;
+
     if (!fetchAll) {
       break;
     }
   } while (nextToken);
+
   return results;
 };
+
 export const toOptionalString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 const fetchOrdersSince = async (
   client: HttpClient,
   lastUpdatedAfter: string,
@@ -165,12 +174,14 @@ const fetchOrdersSince = async (
     true,
   );
 };
+
 const fetchFeedsSince = async (
   client: HttpClient,
   createdSince: string,
 ): Promise<AmazonRecord[]> => {
   const allFeeds: AmazonRecord[] = [];
   let nextToken: string | undefined;
+
   do {
     const { data } = await client.get<{
       feeds: AmazonRecord[];
@@ -184,8 +195,10 @@ const fetchFeedsSince = async (
     allFeeds.push(...(data.feeds ?? []));
     nextToken = data.nextToken;
   } while (nextToken);
+
   return allFeeds;
 };
+
 export const fetchPollingChanges = async (
   client: HttpClient,
   resourceType: string,
@@ -198,6 +211,7 @@ export const fetchPollingChanges = async (
       updated: [],
     };
   }
+
   const records = await fetchOrdersSince(client, lastPolledAt, marketplaceIds);
   const lastPolledDate = new Date(lastPolledAt);
   const created: AmazonRecord[] = [];
@@ -212,15 +226,19 @@ export const fetchPollingChanges = async (
   }
   return { created, updated };
 };
+
 const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const lookBackDateClean = (value: unknown): string => {
   if (value === undefined || value === null) {
     return "";
   }
+
   const raw = typeof value === "string" ? value.trim() : String(value);
   if (raw === "") {
     return "";
   }
+
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
@@ -228,6 +246,7 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = Number(yearStr);
   const month = Number(monthStr);
@@ -242,11 +261,14 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

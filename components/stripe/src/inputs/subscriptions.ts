@@ -12,6 +12,7 @@ import {
   timeout,
 } from "./common";
 import { collectionMethod } from "./invoices";
+
 export const cancelAt = input({
   label: "Cancel At",
   type: "string",
@@ -22,6 +23,7 @@ export const cancelAt = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 export const promotionCode = input({
   label: "Promotion Code",
   type: "string",
@@ -32,6 +34,7 @@ export const promotionCode = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const quantity = input({
   label: "Quantity",
   type: "string",
@@ -41,6 +44,7 @@ export const quantity = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 export const subscriptionPriceId = input({
   label: "Price ID",
   type: "string",
@@ -50,6 +54,7 @@ export const subscriptionPriceId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const daysUntilDue = input({
   label: "Days Until Due",
   type: "string",
@@ -59,6 +64,7 @@ export const daysUntilDue = input({
   required: false,
   clean: cleanNumberInput,
 });
+
 export const createSubscriptionInputs = {
   customerId,
   priceId,
@@ -72,21 +78,25 @@ export const createSubscriptionInputs = {
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const deleteSubscriptionInputs = {
   subscriptionId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const getSubscriptionInputs = {
   subscriptionId,
   timeout,
   stripeConnection: connectionInput,
 };
+
 export const listSubscriptionsInputs = {
   timeout,
   pagination: forwardCursorPagination,
   stripeConnection: connectionInput,
 };
+
 export const updateSubscriptionInputs = {
   subscriptionId,
   subscriptionPriceId,

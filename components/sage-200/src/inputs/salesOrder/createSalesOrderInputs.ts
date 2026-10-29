@@ -1,6 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanNumberInput, cleanStringInput } from "../../util";
 import sharedInputs from "./sharedInputs";
+
 const customerId = input({
   label: "Customer ID",
   comments: "Customer record ID to create the sales order for.",
@@ -11,6 +12,7 @@ const customerId = input({
   dataSource: "selectCustomer",
   clean: cleanNumberInput,
 });
+
 const documentNo = input({
   label: "Document Number",
   comments:
@@ -21,6 +23,7 @@ const documentNo = input({
   example: "123",
   clean: cleanStringInput,
 });
+
 export default {
   customerId,
   documentNo,

@@ -10,6 +10,7 @@ import {
   productCustomFieldsProductId,
   storeHash,
 } from "../../inputs";
+
 export const updateCustomField = action({
   display: {
     label: "Update Custom Field",
@@ -32,11 +33,13 @@ export const updateCustomField = action({
       context.debug.enabled,
     );
     const endpoint = `/stores/${storeHash}/v3/catalog/products/${productCustomFieldsProductId}/custom-fields/${customFieldIdToUpdate}`;
+
     const requestBody = {
       id: customFieldIdToUpdate,
       name: customFieldName,
       value: customFieldValue,
     };
+
     try {
       const response = await client.put(endpoint, requestBody);
       return {
@@ -48,6 +51,7 @@ export const updateCustomField = action({
       throw new Error(serialized);
     }
   },
+
   inputs: {
     bigCommerceConnection,
     storeHash,

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { DETACH_COMPANY_FROM_CONTACT_EXAMPLE_PAYLOAD } from "../../examplePayloads/contacts";
 import { connectionInput, idInput } from "../../inputs";
 import { companyIdInput } from "../../inputs/general";
+
 export const detachCompany = action({
   display: {
     label: "Detach Company from Contact",

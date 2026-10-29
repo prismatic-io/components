@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listIncidentNotesExamplePayload } from "../../examplePayloads";
 import { connectionInput, incidentId } from "../../inputs";
+
 export const listIncidentNotes = action({
   display: {
     label: "List Incident Notes",

@@ -13,6 +13,7 @@ import {
   pollEntryChanges,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Entries",
@@ -30,6 +31,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const isBatching = context.batch?.enabled === true;
     const maxPages = isBatching ? MAX_BATCHED_POLL_PAGES : MAX_POLL_PAGES;
+
     const client = createClient(params.connection, context);
     const environment = await getEnvironment(
       client,
@@ -49,6 +51,7 @@ export const pollChangesTrigger = pollingTrigger({
       },
     );
     const { created, updated } = result.changes;
+
     if (result.stalled) {
       context.logger.warn(
         `Polling truncated at the page cap and every fetched Contentful entry shares the cursor timestamp ${result.since}; the cursor cannot advance.`,
@@ -59,11 +62,13 @@ export const pollChangesTrigger = pollingTrigger({
       );
     }
     context.polling.setState(result.nextState);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Contentful entries${result.isInitialSync ? " (initial sync)" : ""}: ${result.fetched} fetched, ${created.length} created, ${updated.length} updated, truncated=${result.truncated}`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { created, updated } } },
       polledNoChanges: created.length + updated.length === 0,

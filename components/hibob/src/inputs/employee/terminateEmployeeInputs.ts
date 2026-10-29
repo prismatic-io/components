@@ -7,6 +7,7 @@ import {
   terminationDate,
   terminationReason,
 } from "./common";
+
 export const terminateEmployeeInputs = {
   connection,
   identifier: {

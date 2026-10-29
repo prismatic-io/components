@@ -6,10 +6,12 @@ import {
 import { pollChangesTrigger } from "./pollChangesTrigger";
 import { fetchMessagesSince, resolvePollingRecordChanges } from "../util";
 import type { TwilioChangesObject, TwilioMessage } from "../types";
+
 vi.mock("../util", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../util")>()),
   fetchMessagesSince: vi.fn(),
 }));
+
 const created: TwilioMessage = {
   body: "Hello",
   numSegments: "1",
@@ -34,12 +36,14 @@ const created: TwilioMessage = {
     media: "/2010-04-01/Accounts/AC123/Messages/SM123/Media.json",
   },
 };
+
 const updated: TwilioMessage = {
   ...created,
   sid: "SM456",
   status: "delivered",
   dateUpdated: new Date("2026-03-15T15:00:00.000Z"),
 };
+
 describe("pollChangesTrigger batching declaration", () => {
   test("New and Updated Records is opt-in batchable with a default batch size", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -49,6 +53,7 @@ describe("pollChangesTrigger batching declaration", () => {
     );
   });
 });
+
 describe("resolvePollingRecordChanges", () => {
   test("tags every record with how it changed", () => {
     expect(
@@ -58,6 +63,7 @@ describe("resolvePollingRecordChanges", () => {
       { changeType: "updated", record: updated },
     ]);
   });
+
   test("returns [] for empty or undefined changes", () => {
     expect(resolvePollingRecordChanges({ created: [], updated: [] })).toEqual(
       [],
@@ -65,6 +71,7 @@ describe("resolvePollingRecordChanges", () => {
     expect(resolvePollingRecordChanges(undefined)).toEqual([]);
   });
 });
+
 describe("resolveItems end-to-end", () => {
   test("flattens the payload shape perform actually returns", () => {
     const payload = {
@@ -90,6 +97,7 @@ describe("resolveItems end-to-end", () => {
       startedAt: "",
       globalDebug: false,
     } as unknown as TriggerPayload;
+
     const result = pollChangesTrigger.triggerResolver?.resolveItems?.(
       {} as never,
       { payload },
@@ -97,8 +105,10 @@ describe("resolveItems end-to-end", () => {
     expect(result).toEqual([{ changeType: "created", record: created }]);
   });
 });
+
 describe("pollChangesTrigger perform", () => {
   const FROZEN_NOW = "2026-03-20T12:00:00.000Z";
+
   const makeContext = (state: Record<string, unknown>) => {
     const store = { state };
     const context = {
@@ -113,6 +123,7 @@ describe("pollChangesTrigger perform", () => {
     } as unknown as Parameters<typeof pollChangesTrigger.perform>[0];
     return { context, store };
   };
+
   const params = (overrides: Record<string, unknown> = {}) =>
     ({
       connection: {},
@@ -123,6 +134,7 @@ describe("pollChangesTrigger perform", () => {
       showUpdatedRecords: true,
       ...overrides,
     }) as unknown as Parameters<typeof pollChangesTrigger.perform>[2];
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date(FROZEN_NOW));
@@ -131,41 +143,51 @@ describe("pollChangesTrigger perform", () => {
       truncated: false,
     });
   });
+
   afterEach(() => {
     vi.useRealTimers();
     vi.mocked(fetchMessagesSince).mockReset();
   });
+
   test("initial sync ignores the visibility filters", async () => {
     const { context, store } = makeContext({});
+
     const result = await pollChangesTrigger.perform(
       context,
       defaultTriggerPayload(),
       params({ lookBackDate: "2026-03-01", showNewRecords: false }),
     );
+
     const data = result.payload.body.data as TwilioChangesObject;
     expect(data.created).toEqual([created]);
     expect(store.state).toEqual({ lastPolledAt: FROZEN_NOW });
   });
+
   test("later recurrences still apply the visibility filters", async () => {
     const { context } = makeContext({
       lastPolledAt: "2026-03-10T00:00:00.000Z",
     });
+
     const result = await pollChangesTrigger.perform(
       context,
       defaultTriggerPayload(),
       params({ lookBackDate: "2026-03-01", showNewRecords: false }),
     );
+
     const data = result.payload.body.data as TwilioChangesObject;
     expect(data.created).toEqual([]);
   });
 });
+
 describe("pollChangesTrigger truncated drain", () => {
   const PAGE_LIMIT = 3;
+
   const message = (sid: string, sent: string): TwilioMessage => ({
     ...created,
     sid,
     dateSent: new Date(sent),
   });
+
   const fakeTwilio = (store: TwilioMessage[]) =>
     vi
       .mocked(fetchMessagesSince)
@@ -187,10 +209,9 @@ describe("pollChangesTrigger truncated drain", () => {
           };
         },
       );
+
   const runRecurrences = async (
-    store: {
-      state: Record<string, unknown>;
-    },
+    store: { state: Record<string, unknown> },
     overrides: Record<string, unknown>,
     count: number,
   ) => {
@@ -224,18 +245,21 @@ describe("pollChangesTrigger truncated drain", () => {
           (m) => m.sid,
         ),
       );
-      vi.advanceTimersByTime(60000);
+      vi.advanceTimersByTime(60_000);
     }
     return sids;
   };
+
   beforeEach(() => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-03-20T12:00:00.000Z"));
   });
+
   afterEach(() => {
     vi.useRealTimers();
     vi.mocked(fetchMessagesSince).mockReset();
   });
+
   test("walks backward through a truncated window, delivering each message once", async () => {
     fakeTwilio([
       message("SM1", "2026-03-02T00:00:01Z"),
@@ -247,11 +271,13 @@ describe("pollChangesTrigger truncated drain", () => {
       message("SM7", "2026-03-02T00:00:07Z"),
     ]);
     const store = { state: {} as Record<string, unknown> };
+
     const sids = await runRecurrences(
       store,
       { lookBackDate: "2026-03-01", showNewRecords: false },
       5,
     );
+
     expect(sids).toEqual([
       ["SM7", "SM6", "SM5"],
       ["SM4", "SM3"],
@@ -261,6 +287,7 @@ describe("pollChangesTrigger truncated drain", () => {
     ]);
     expect(store.state).toEqual({ lastPolledAt: "2026-03-20T12:04:00.000Z" });
   });
+
   test("delivers the rest of a second that the page limit split", async () => {
     fakeTwilio([
       message("SM1", "2026-03-02T00:00:02Z"),
@@ -270,11 +297,14 @@ describe("pollChangesTrigger truncated drain", () => {
       message("SM5", "2026-03-02T00:00:05Z"),
     ]);
     const store = { state: {} as Record<string, unknown> };
+
     const sids = await runRecurrences(store, { lookBackDate: "2026-03-01" }, 3);
+
     expect(sids.flat().sort()).toEqual(["SM1", "SM2", "SM3", "SM4", "SM5"]);
     expect(new Set(sids.flat()).size).toBe(5);
     expect(store.state).toEqual({ lastPolledAt: "2026-03-20T12:00:00.000Z" });
   });
+
   test("steps past a second holding more than one page instead of stalling", async () => {
     fakeTwilio([
       message("SM1", "2026-03-02T00:00:05Z"),
@@ -283,7 +313,9 @@ describe("pollChangesTrigger truncated drain", () => {
       message("SM4", "2026-03-02T00:00:05Z"),
     ]);
     const store = { state: {} as Record<string, unknown> };
+
     const sids = await runRecurrences(store, { lookBackDate: "2026-03-01" }, 3);
+
     expect(sids).toEqual([["SM4", "SM3", "SM2"], [], []]);
     expect(store.state).toEqual({ lastPolledAt: "2026-03-20T12:00:00.000Z" });
   });

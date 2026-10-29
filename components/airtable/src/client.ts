@@ -1,5 +1,6 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export const createAirtableClient = (
   airtableConnection: Connection,
   debug = false,

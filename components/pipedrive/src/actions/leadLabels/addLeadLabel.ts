@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { addLeadLabelInputs } from "../../inputs";
 import { addLeadLabelExamplePayload } from "../../examplePayloads";
 import { addLeadLabelOutputSchema } from "../../outputSchemas";
+
 export const addLeadLabel = action({
   display: {
     label: "Add Lead Label",

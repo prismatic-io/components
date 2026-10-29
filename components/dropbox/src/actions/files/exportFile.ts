@@ -4,6 +4,7 @@ import { exportFileExamplePayload } from "../../examplePayloads";
 import { exportFileInputs } from "../../inputs";
 import { exportFileOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError, pathBasename } from "../../util";
+
 export const exportFile = action({
   display: {
     label: "Export File",
@@ -17,10 +18,12 @@ export const exportFile = action({
       params.userType,
       params.teamMemberId,
     );
+
     try {
       const data = await dbx.filesExport({
         path: params.path,
       });
+
       return {
         data,
       };
@@ -28,12 +31,7 @@ export const exportFile = action({
       handleDropboxError(err, [params.path]);
     }
   },
-  examplePerform: async (
-    _context,
-    { path },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({
     data: {
       ...exportFileExamplePayload,
       result: {

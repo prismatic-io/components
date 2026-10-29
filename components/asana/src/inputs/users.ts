@@ -11,6 +11,7 @@ import {
   userId,
   workspaceId,
 } from "./common";
+
 const userName = input({
   label: "User's Full Name",
   type: "string",
@@ -21,6 +22,7 @@ const userName = input({
     "Note: if multiple users share a name, only one user will be returned.",
   clean: toOptionalString,
 });
+
 const userEmail = input({
   label: "User's Email",
   type: "string",
@@ -31,13 +33,16 @@ const userEmail = input({
     "Note: if multiple users share an email address, only one user will be returned.",
   clean: toOptionalString,
 });
+
 export const getUsersInputs = {
   asanaConnection: connectionInput,
   userId,
 };
+
 export const getCurrentUserInputs = {
   asanaConnection: connectionInput,
 };
+
 export const listUsersInputs = {
   asanaConnection: connectionInput,
   optFields: {
@@ -53,6 +58,7 @@ export const listUsersInputs = {
       "The unique identifier for the workspace. When provided, only users in this workspace are returned.",
   },
 };
+
 export const listUsersInTeamInputs = {
   asanaConnection: connectionInput,
   limit,
@@ -60,6 +66,7 @@ export const listUsersInTeamInputs = {
   teamId,
   workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
+
 export const findUserByNameOrEmailInputs = {
   asanaConnection: connectionInput,
   userName,

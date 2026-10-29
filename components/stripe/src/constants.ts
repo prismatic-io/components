@@ -1,2 +1,3 @@
 export const DEFAULT_PAGINATION_LIMIT = 100;
+
 export const DEFAULT_BATCH_SIZE = 50;

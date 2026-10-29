@@ -4,6 +4,7 @@ import {
   teamCompactSchema,
   workspaceCompactSchema,
 } from "./shared";
+
 export const teamResponseSchema = {
   type: "object" as const,
   properties: {
@@ -62,6 +63,7 @@ export const teamResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listTeamsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -71,6 +73,7 @@ export const listTeamsOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const findTeamByNameOutputSchema = {
   type: "object" as const,
   properties: {
@@ -81,6 +84,7 @@ export const findTeamByNameOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const addUserToTeamOutputSchema = {
   type: "object" as const,
   properties: {

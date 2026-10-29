@@ -6,6 +6,7 @@ import {
   fetchAll,
   offsetPagination,
 } from "./common";
+
 const tagId = input({
   label: "Tag ID",
   type: "string",
@@ -16,6 +17,7 @@ const tagId = input({
   example: "553c3ef8b8cdcd1501ba4444",
   dataSource: "selectTag",
 });
+
 const tagName = input({
   label: "Name",
   type: "string",
@@ -26,14 +28,18 @@ const tagName = input({
   placeholder: "Enter tag name",
   example: "bug",
 });
+
 export const listTagsInputs = {
   connection,
   boardId,
   fetchAll,
   pagination: offsetPagination,
 };
+
 export const retrieveTagInputs = { connection, tagId };
+
 export const createTagInputs = { connection, boardIdRequired, tagName };
+
 export const selectTagInputs = {
   connection,
   boardId: { ...boardId, dataSource: undefined },

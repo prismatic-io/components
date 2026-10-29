@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { campaignId, connectionInput } from "../../inputs";
+
 export const sendCampaign = action({
   display: {
     label: "Send Campaign",
@@ -19,4 +20,5 @@ export const sendCampaign = action({
     connection: connectionInput,
   },
 });
+
 export default sendCampaign;

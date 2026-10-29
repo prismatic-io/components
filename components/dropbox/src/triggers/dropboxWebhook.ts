@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { trigger, util } from "@prismatic-io/spectral";
 import { dropboxWebhookExamplePayload } from "../examplePayloads";
 import { dropboxWebhookInputs } from "../inputs";
+
 export const dropboxWebhook = trigger({
   display: {
     label: "Webhook",
@@ -23,12 +24,14 @@ export const dropboxWebhook = trigger({
         branch: "Verification Request",
       });
     }
+
     if (context.isSimulatedTestExecution) {
       return Promise.resolve({
         payload,
         branch: "Notification",
       });
     }
+
     const requestBody = util.types.toString(payload.rawBody.data);
     const computedSignature = crypto
       .createHmac("sha256", params.signingSecret)
@@ -43,6 +46,7 @@ export const dropboxWebhook = trigger({
         "Error validating message signature. Check your signing secret and verify that this message came from Dropbox.",
       );
     }
+
     return Promise.resolve({
       payload,
       branch: "Notification",

@@ -5,6 +5,7 @@ import { selectDataChangeExamplePayload } from "../examplePayloads";
 import { selectDataChangeInputs } from "../inputs";
 import type { PrismAnalyticsSummary } from "../types";
 import { toSortedPicklist } from "../util";
+
 export const selectDataChange = dataSource({
   display: {
     label: "Select Data Change",
@@ -18,6 +19,7 @@ export const selectDataChange = dataSource({
       `${SERVICES.prismAnalytics}/${tenant}/dataChanges`,
       { params: { type: "summary" } },
     );
+
     return {
       result: toSortedPicklist(data.data, (item: PrismAnalyticsSummary) => ({
         key: item.id,

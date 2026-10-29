@@ -8,6 +8,7 @@ import type {
   SyncCursor,
   SyncSettings,
 } from "../types";
+
 export const resolvePollingRecordChanges = (
   data: ListChangesResult | undefined,
 ): DropboxRecordChange[] =>
@@ -27,6 +28,7 @@ export const resolvePollingRecordChanges = (
       }
     }
   });
+
 export const fetchSyncPage = async (
   dbx: Dropbox,
   settings: SyncSettings,
@@ -43,6 +45,7 @@ export const fetchSyncPage = async (
       });
   return response.result as ListChangesResult;
 };
+
 export const filterEntriesByLookBackDate = (
   entries: DropboxEntry[],
   lookBackDate: string,
@@ -62,20 +65,18 @@ export const filterEntriesByLookBackDate = (
     return Number.isNaN(modified) || modified >= threshold;
   });
 };
+
 export const buildSyncRound = (
   payload: TriggerPayload,
   page: ListChangesResult,
   settings: SyncSettings,
   stateKey: string,
 ): TriggerBaseResult<
-  TriggerPayload & {
-    body: {
-      data: ListChangesResult;
-    };
-  }
+  TriggerPayload & { body: { data: ListChangesResult } }
 > => {
   const position: SyncCursor = { cursor: page.cursor, ...settings };
   const nextCursor = page.has_more ? position : undefined;
+
   return {
     payload: {
       ...payload,
@@ -87,6 +88,7 @@ export const buildSyncRound = (
       page.entries.length === 0 && !nextCursor && !payload.paginationState,
   };
 };
+
 export const readSyncSettings = (params: {
   directoryPath: string;
   recursive: boolean;
@@ -96,6 +98,7 @@ export const readSyncSettings = (params: {
   recursive: params.recursive,
   includeDeleted: params.includeDeleted,
 });
+
 export const resolveSyncPageSize = (
   batchingEnabled: boolean,
   requested: number,

@@ -4,6 +4,7 @@ import { deleteActivityInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { deleteActivityExamplePayload } from "../../examplePayloads";
 import { deleteActivityOutputSchema } from "../../outputSchemas";
+
 export const deleteActivity = action({
   display: {
     label: "Delete Activity",

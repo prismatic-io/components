@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { ENDPOINTS } from "../../constants";
 import { updateSoftwareUpdateStatusSummaryExamplePayload } from "../../examplePayloads";
 import { updateSoftwareUpdateStatusSummaryInputs } from "../../inputs";
+
 export const updateSoftwareUpdateStatusSummary = action({
   display: {
     label: "Update Software Update Status Summary",
@@ -22,6 +23,7 @@ export const updateSoftwareUpdateStatusSummary = action({
       ENDPOINTS.SOFTWARE_UPDATE_STATUS_SUMMARY,
       body,
     );
+
     return {
       data,
     };

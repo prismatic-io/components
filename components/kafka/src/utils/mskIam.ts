@@ -12,8 +12,10 @@ import {
   TOKEN_REFRESH_MARGIN_MS,
 } from "../constants";
 import type { AwsCredentialsProvider } from "../types";
+
 export const isMskIamConnection = (connection: Connection): boolean =>
   MSK_IAM_CONNECTION_KEYS.includes(connection.key);
+
 const createMskCredentialsProvider = (
   connection: Connection,
   region: string,
@@ -28,14 +30,17 @@ const createMskCredentialsProvider = (
       "Access Key ID and Secret Access Key are required.",
     );
   }
+
   if (connection.key !== awsAssumeRole.key) {
     return async () => ({ accessKeyId, secretAccessKey });
   }
+
   const roleArn = util.types.toString(connection.fields.roleARN).trim();
   if (!roleArn) {
     throw new ConnectionError(connection, "Role ARN is required.");
   }
   const externalId = util.types.toString(connection.fields.externalId).trim();
+
   return fromTemporaryCredentials({
     masterCredentials: { accessKeyId, secretAccessKey },
     params: {
@@ -46,6 +51,7 @@ const createMskCredentialsProvider = (
     clientConfig: { region },
   });
 };
+
 export const createMskOauthBearerProvider = (
   connection: Connection,
   region: string,
@@ -56,6 +62,7 @@ export const createMskOauthBearerProvider = (
   );
   let current: GenerateAuthTokenResponse | undefined;
   let pending: Promise<GenerateAuthTokenResponse> | undefined;
+
   return async () => {
     if (current && Date.now() < current.expiryTime - TOKEN_REFRESH_MARGIN_MS) {
       return { value: current.token };

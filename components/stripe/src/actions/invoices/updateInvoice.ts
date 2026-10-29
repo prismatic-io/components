@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { updateInvoiceExamplePayload } from "../../examplePayloads/invoices";
 import { updateInvoiceInputs } from "../../inputs";
 import { invoiceOutputSchema } from "../../outputSchemas";
+
 export const updateInvoice = action({
   display: {
     label: "Update Invoice",
@@ -67,10 +68,9 @@ export const updateInvoice = action({
       additionalFields,
       description,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const invoice = updateInvoiceExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...invoice,
@@ -92,5 +92,6 @@ export const updateInvoice = action({
     type: "actionOutput",
     schema: invoiceOutputSchema,
   }),
+
   examplePayload: updateInvoiceExamplePayload,
 });

@@ -5,6 +5,7 @@ import { createTaskAttachmentExamplePayload } from "../../examplePayloads";
 import { createTaskAttachmentInputs } from "../../inputs";
 import { createTaskAttachmentOutputSchema } from "../../outputSchemas";
 import type { CreateTaskAttachmentQueryParams } from "../../types";
+
 export const createTaskAttachment = action({
   display: {
     label: "Create Task Attachment",
@@ -35,6 +36,7 @@ export const createTaskAttachment = action({
         headers: formData.getHeaders(),
       },
     );
+
     return {
       data,
     };

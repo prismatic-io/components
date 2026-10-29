@@ -5,6 +5,7 @@ import { addQualityToTrainingPlanInputs } from "../../inputs";
 import { referencedQualitySchema } from "../../outputSchemas";
 import type { TrainingQualityCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const addQualityToTrainingPlan = action({
   display: {
     label: "Add Quality Process to Training Plan",
@@ -22,23 +23,29 @@ export const addQualityToTrainingPlan = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const qualityPayload: TrainingQualityCreateVo = {
         quality: { guid: qualityProcessGuid },
       };
+
       if (stepGuid) {
         qualityPayload.quality.step = { guid: stepGuid };
       }
+
       context.logger.info(
         `Adding quality process ${qualityProcessGuid} to training plan ${trainingGuid}`,
         { trainingGuid, qualityProcessGuid },
       );
+
       const { data } = await client.post(
         `/trainingplans/${trainingGuid}/quality`,
         qualityPayload,
       );
+
       context.logger.info(
         "Successfully added quality process to training plan",
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(

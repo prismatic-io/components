@@ -3,8 +3,10 @@ import type { Team } from "@slack/web-api/dist/types/response/AdminTeamsListResp
 import { createOauthClient } from "../client";
 import { selectTeamsInputs } from "../inputs";
 import { sortByAttribute } from "../util";
+
 const MAX_DROPDOWN_PAGES = 10;
 const PAGE_SIZE = 100;
+
 export const selectTeams = dataSource({
   display: {
     label: "Select Team",
@@ -19,6 +21,7 @@ export const selectTeams = dataSource({
     let teams: Team[] = [];
     let cursor = null;
     let counter = 1;
+
     do {
       const data = await client.admin.teams.list({
         cursor,
@@ -28,12 +31,14 @@ export const selectTeams = dataSource({
       cursor = data.response_metadata?.next_cursor;
       counter += 1;
     } while (cursor && counter < MAX_DROPDOWN_PAGES);
+
     const objects = sortByAttribute(teams, "name").map<Element>((team) => ({
       key: team.id,
       label: params.showIdInDropdown
         ? `${team.name} (ID: ${team.id})`
         : `${team.name}`,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

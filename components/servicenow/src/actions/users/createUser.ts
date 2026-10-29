@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createUserInputs } from "../../inputs";
 import { createTableRecord } from "../tables/records/createTableRecord";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -35,9 +36,7 @@ export const createUser = action({
       }),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: { result: {} },
   }),
   inputs: createUserInputs,

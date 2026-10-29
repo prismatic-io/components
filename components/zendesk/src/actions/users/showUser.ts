@@ -3,6 +3,7 @@ import { createClient } from "../../auth";
 import { showUserInputs } from "../../inputs";
 import { showUserOutputSchema } from "../../outputSchemas";
 import { showUserExamplePayload } from "../../examplePayloads";
+
 export const showUser = action({
   display: {
     label: "Get User",
@@ -14,7 +15,9 @@ export const showUser = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const { result } = await client.users.show(util.types.toInt(params.userId));
+
     return {
       data: result,
     };

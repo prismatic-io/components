@@ -5,11 +5,13 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { graphBaseUrl, validateConnection } from "./utils";
+
 export const createClient = (
   connection: Connection,
   debug = false,
 ): HttpClient => {
   validateConnection(connection);
+
   return createHttpClient({
     baseUrl: graphBaseUrl(connection),
     headers: {

@@ -1,6 +1,7 @@
 import { component } from "@prismatic-io/spectral";
 import actions from "./actions";
 import connections from "./connections";
+
 export default component({
   key: "mysql",
   public: true,

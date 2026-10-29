@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { searchChargesExamplePayload } from "../../examplePayloads/charges";
 import { searchChargesInputs } from "../../inputs";
 import { searchChargesOutputSchema } from "../../outputSchemas";
+
 export const searchCharges = action({
   display: {
     label: "Search Charges",
@@ -28,9 +29,7 @@ export const searchCharges = action({
       data: await client.charges.search(options),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: searchChargesExamplePayload.data,
   }),
   inputs: searchChargesInputs,
@@ -38,5 +37,6 @@ export const searchCharges = action({
     type: "actionOutput",
     schema: searchChargesOutputSchema,
   }),
+
   examplePayload: searchChargesExamplePayload,
 });

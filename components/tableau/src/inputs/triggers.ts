@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean, pollResourceModel } from "../util";
 import { apiVersion, connectionInput, timeout } from "./common";
 import { events } from "./webhooks";
+
 export const tableauTriggerInputs = {
   connectionInput,
   events: {
@@ -19,6 +20,7 @@ export const tableauTriggerInputs = {
   apiVersion,
   timeout,
 };
+
 const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -30,6 +32,7 @@ const pollResourceType = input({
   example: "workbooks",
   clean: util.types.toString,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -39,6 +42,7 @@ const showNewRecords = input({
     "When true, records whose `createdAt` falls after the last poll are emitted on the `created` branch.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -48,6 +52,7 @@ const showUpdatedRecords = input({
     "When true, records whose `updatedAt` falls after the last poll but were created earlier are emitted on the `updated` branch.",
   clean: util.types.toBool,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -58,6 +63,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const pollChangesInputs = {
   tableauConnection: connectionInput,
   pollResourceType,

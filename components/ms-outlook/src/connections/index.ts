@@ -4,10 +4,12 @@ import {
   getMicrosoftOAuth2ClientCredentialsConnection,
 } from "ms-utils";
 import { scopesForAuthorizationCodeFlow } from "../constants";
+
 export const templatedOauth = getMicrosoftOAuth2AuthorizationCodeConnection({
   key: "templatedOauth",
   defaultScopes: scopesForAuthorizationCodeFlow,
 });
+
 export const oauthClientCredentials =
   getMicrosoftOAuth2ClientCredentialsConnection({
     key: "oauthClientCredentials",
@@ -24,6 +26,7 @@ export const oauthClientCredentials =
       },
     },
   });
+
 export const oauth = oauth2Connection({
   key: "oauth",
   display: {
@@ -101,4 +104,5 @@ export const oauth = oauth2Connection({
     },
   },
 });
+
 export default [templatedOauth, oauthClientCredentials, oauth];

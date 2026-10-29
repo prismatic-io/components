@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { listDirectoryAuditExamplePayload } from "../../examplePayloads";
 import { listDirectoryAuditsInputs } from "../../inputs";
 import { paginateResults } from "../../util";
+
 export const listDirectoryAudits = action({
   display: {
     label: "List Directory Audits",
@@ -11,18 +12,21 @@ export const listDirectoryAudits = action({
   },
   perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $filter: filters.$filter,
       $orderBy: filters.$orderBy,
       $skipToken: pagination.$skipToken,
       $top: pagination.$top,
     };
+
     const data = await paginateResults(
       client,
       ENDPOINTS.DIRECTORY_AUDITS,
       fetchAll,
       params,
     );
+
     return {
       data,
     };

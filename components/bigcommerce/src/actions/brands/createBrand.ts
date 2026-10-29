@@ -12,6 +12,7 @@ import {
   searchKeywords,
   storeHash,
 } from "../../inputs";
+
 export const createBrand = action({
   display: {
     label: "Create Brand",
@@ -35,7 +36,9 @@ export const createBrand = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/brands`;
+
     const body = {
       name: brandNameToCreate,
       page_title: pageTitle,
@@ -44,8 +47,10 @@ export const createBrand = action({
       search_keywords: searchKeywords,
       image_url: imageUrl,
     };
+
     try {
       const response = await client.post(endpoint, body);
+
       return {
         data: response.data,
       };

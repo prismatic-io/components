@@ -1,4 +1,5 @@
 import { pageSchema } from "./shared";
+
 const transactionSchema = {
   type: "object" as const,
   properties: {
@@ -1360,6 +1361,7 @@ const transactionSchema = {
     "updated_at",
   ],
 };
+
 export const getTransactionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -1370,6 +1372,7 @@ export const getTransactionOutputSchema = {
   },
   required: transactionSchema.required,
 };
+
 export const listTransactionsOutputSchema = {
   type: "object" as const,
   properties: {

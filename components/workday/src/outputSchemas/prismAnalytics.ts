@@ -1,4 +1,5 @@
 import { idDescriptorReferenceSchema } from "./shared";
+
 export const tablePermissionsSchema = {
   type: "object" as const,
   properties: {
@@ -37,6 +38,7 @@ export const tablePermissionsSchema = {
     },
   },
 };
+
 export const typeSchema = {
   type: "object" as const,
   properties: {
@@ -57,6 +59,7 @@ export const typeSchema = {
     },
   },
 };
+
 export const tableSchemaFieldsSchema = {
   type: "object" as const,
   properties: {
@@ -101,6 +104,7 @@ export const tableSchemaFieldsSchema = {
     },
   },
 };
+
 export const tableStatsSchema = {
   type: "object" as const,
   properties: {
@@ -112,6 +116,7 @@ export const tableStatsSchema = {
     },
   },
 };
+
 export const tagSchema = {
   type: "object" as const,
   properties: {
@@ -123,6 +128,7 @@ export const tagSchema = {
     },
   },
 };
+
 export const userRefSchema = {
   type: "object" as const,
   properties: {
@@ -137,6 +143,7 @@ export const userRefSchema = {
     },
   },
 };
+
 export const tableResponseSchema = {
   type: "object" as const,
   properties: {
@@ -188,6 +195,7 @@ export const tableResponseSchema = {
     analyticsDataSource: idDescriptorReferenceSchema,
   },
 };
+
 export const operationSchema = {
   type: "object" as const,
   properties: {
@@ -203,6 +211,7 @@ export const operationSchema = {
     },
   },
 };
+
 export const sourceSchema = {
   type: "object" as const,
   properties: {
@@ -218,6 +227,7 @@ export const sourceSchema = {
     },
   },
 };
+
 export const dataChangeSummarySchema = {
   type: "object" as const,
   properties: {
@@ -243,6 +253,7 @@ export const dataChangeSummarySchema = {
     operation: operationSchema,
   },
 };
+
 export const fileUploadResponseSchema = {
   type: "object" as const,
   properties: {
@@ -274,6 +285,7 @@ export const fileUploadResponseSchema = {
     },
   },
 };
+
 export const getDataChangesByIdOutputSchema = {
   type: "object" as const,
   properties: {
@@ -493,6 +505,7 @@ export const getDataChangesByIdOutputSchema = {
     },
   },
 };
+
 export const getFilesByContainerIdOutputSchema = {
   type: "object" as const,
   properties: {
@@ -505,7 +518,9 @@ export const getFilesByContainerIdOutputSchema = {
     },
   },
 };
+
 export const getTableByIdOutputSchema = tableResponseSchema;
+
 export const listDataChangesOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -521,6 +536,7 @@ export const listDataChangesOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const listTablesOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -536,6 +552,7 @@ export const listTablesOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postFileContainersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -544,6 +561,9 @@ export const postFileContainersOutputSchema = {
     },
   },
 };
+
 export const postFilesByContainerIdOutputSchema = fileUploadResponseSchema;
+
 export const postTableOutputSchema = tableResponseSchema;
+
 export const updateTableByIdOutputSchema = tableResponseSchema;

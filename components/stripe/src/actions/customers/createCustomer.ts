@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { createCustomerExamplePayload } from "../../examplePayloads/customers";
 import { createCustomerInputs } from "../../inputs";
 import { customerOutputSchema } from "../../outputSchemas";
+
 export const createCustomer = action({
   display: {
     label: "Create Customer",
@@ -58,13 +59,12 @@ export const createCustomer = action({
       customerDescription,
       customerMetadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const customer = createCustomerExamplePayload.data as Record<
       string,
       unknown
     >;
+
     return {
       data: {
         ...customer,
@@ -90,5 +90,6 @@ export const createCustomer = action({
     type: "actionOutput",
     schema: customerOutputSchema,
   }),
+
   examplePayload: createCustomerExamplePayload,
 });

@@ -5,6 +5,7 @@ import { selectTableExamplePayload } from "../examplePayloads";
 import { selectTableInputs } from "../inputs";
 import type { PrismAnalyticsSummary } from "../types";
 import { toSortedPicklist } from "../util";
+
 export const selectTable = dataSource({
   display: {
     label: "Select Table",
@@ -16,6 +17,7 @@ export const selectTable = dataSource({
     const { data } = await client.get(
       `${SERVICES.prismAnalytics}/${tenant}/tables`,
     );
+
     return {
       result: toSortedPicklist(data.data, (item: PrismAnalyticsSummary) => ({
         key: item.id,

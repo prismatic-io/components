@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { listId, subscriberHash, connectionInput } from "../../../inputs";
+
 export const deleteMember = action({
   display: {
     label: "Delete Member",
@@ -16,4 +17,5 @@ export const deleteMember = action({
   },
   inputs: { listId, subscriberHash, connection: connectionInput },
 });
+
 export default deleteMember;

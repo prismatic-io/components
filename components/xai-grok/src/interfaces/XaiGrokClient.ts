@@ -6,6 +6,7 @@ import type { IMessageParams } from "./IMessageParams";
 import type { IMessageResponse } from "./IMessageResponse";
 import type { IModelResponse } from "./IModelResponse";
 import type { IModelsListResponse } from "./IModelsListResponse";
+
 export interface XaiGrokClient {
   createChatCompletion: (
     params: IChatCompletionParams,

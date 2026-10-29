@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteLeadInputs } from "../../inputs";
 import { deleteLeadExamplePayload } from "../../examplePayloads";
 import { deleteLeadOutputSchema } from "../../outputSchemas";
+
 export const deleteLead = action({
   display: {
     label: "Delete Lead",

@@ -4,6 +4,7 @@ import { getTaskCommentsExamplePayload } from "../../examplePayloads";
 import { getTaskCommentsInputs } from "../../inputs";
 import { getTaskCommentsOutputSchema } from "../../outputSchemas";
 import type { GetTaskCommentsQueryParams } from "../../types";
+
 export const getTaskComments = action({
   display: {
     label: "Get Task Comments",
@@ -26,6 +27,7 @@ export const getTaskComments = action({
       start: pagination?.startDate,
       start_id: pagination?.startId,
     };
+
     const { data } = await client.get(`/task/${taskId}/comment`, {
       params,
     });

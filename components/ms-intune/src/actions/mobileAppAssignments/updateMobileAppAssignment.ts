@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../../constants";
 import { getMobileAppAssignmentExamplePayload as updateMobileAppAssignmentExamplePayload } from "../../examplePayloads";
 import { updateMobileAppAssignmentInputs } from "../../inputs";
 import { getMobileAppObject } from "../../util";
+
 export const updateMobileAppAssignment = action({
   display: {
     label: "Update Mobile App Assignment",
@@ -26,6 +27,7 @@ export const updateMobileAppAssignment = action({
       `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments/${mobileAppAssignmentId}`,
       body,
     );
+
     return {
       data,
     };

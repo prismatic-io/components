@@ -1,12 +1,15 @@
 export const API_URL = "https://graph.microsoft.com/";
+
 export const API_VERSIONS = {
   beta: "beta",
   v1: "v1.0",
 };
+
 export const WORKBOOK_SOURCES = {
   OneDrive: "OneDrive",
   SharePoint: "SharePoint",
 };
+
 export const TABLE_STYLES = [
   "TableStyleLight1",
   "TableStyleLight2",

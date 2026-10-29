@@ -9,6 +9,7 @@ import {
   sortInput,
 } from "./common";
 import { cleanCode, cleanNumber, cleanString } from "../util";
+
 const productName = input({
   label: "Name",
   type: "string",
@@ -18,6 +19,7 @@ const productName = input({
   example: "Professional Software License",
   placeholder: "Enter product name",
 });
+
 const code = input({
   label: "Code",
   type: "string",
@@ -27,6 +29,7 @@ const code = input({
   example: "PROD-001",
   placeholder: "Enter product code",
 });
+
 const unit = input({
   label: "Unit",
   type: "string",
@@ -36,6 +39,7 @@ const unit = input({
   example: "license",
   placeholder: "Enter unit",
 });
+
 const tax = input({
   label: "Tax",
   type: "string",
@@ -46,6 +50,7 @@ const tax = input({
   example: "10",
   placeholder: "Enter tax percentage",
 });
+
 const visibleTo = input({
   label: "Visible To",
   type: "string",
@@ -60,6 +65,7 @@ const visibleTo = input({
   comments:
     "Controls which users can see this record. 1 = owner only, 3 = owner's group, 5 = owner's group and sub-groups, 7 = entire company.",
 });
+
 const ownerId = input({
   label: "Owner ID",
   type: "string",
@@ -70,6 +76,7 @@ const ownerId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const prices = input({
   label: "Prices",
   type: "code",
@@ -93,6 +100,7 @@ const prices = input({
     2,
   ),
 });
+
 const getProductsFilterId = input({
   label: "Filter ID",
   type: "string",
@@ -101,6 +109,7 @@ const getProductsFilterId = input({
   example: "123",
   placeholder: "Enter Filter ID",
 });
+
 const getProductsIds = input({
   label: "Ids",
   type: "string",
@@ -110,6 +119,7 @@ const getProductsIds = input({
   example: "123,456,789",
   placeholder: "Enter Product IDs (comma-separated)",
 });
+
 const followerUserId = input({
   label: "User ID",
   type: "string",
@@ -119,6 +129,7 @@ const followerUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const followerId = input({
   label: "Follower ID",
   type: "string",
@@ -126,6 +137,7 @@ const followerId = input({
   clean: util.types.toString,
   comments: "The ID of the relationship between the follower and the product",
 });
+
 const productDealsStatus = input({
   label: "Status",
   type: "string",
@@ -138,6 +150,7 @@ const productDealsStatus = input({
   clean: cleanString,
   comments: "Only fetch deals with a specific status",
 });
+
 const includeDeletedFiles = input({
   label: "Include Deleted Files",
   type: "string",
@@ -148,6 +161,7 @@ const includeDeletedFiles = input({
   clean: cleanNumber,
   comments: "When enabled, the list of files will also include deleted files",
 });
+
 export const addProductInputs = {
   connection: connectionInput,
   name: productName,
@@ -158,6 +172,7 @@ export const addProductInputs = {
   ownerId,
   prices,
 };
+
 export const updateProductInputs = {
   connection: connectionInput,
   id: productIdInput,
@@ -169,6 +184,7 @@ export const updateProductInputs = {
   ownerId,
   prices,
 };
+
 export const getProductsInputs = {
   connection: connectionInput,
   filterId: getProductsFilterId,
@@ -177,22 +193,26 @@ export const getProductsInputs = {
   sortBy,
   sortDirection,
 };
+
 export const addProductFollowerInputs = {
   connection: connectionInput,
   id: productIdInput,
   userId: followerUserId,
 };
+
 export const deleteProductFollowerInputs = {
   connection: connectionInput,
   id: productIdInput,
   followerId,
 };
+
 export const getProductDealsInputs = {
   connection: connectionInput,
   id: productIdInput,
   pagination: offsetPagination,
   status: productDealsStatus,
 };
+
 export const getProductFilesInputs = {
   connection: connectionInput,
   id: productIdInput,
@@ -200,18 +220,22 @@ export const getProductFilesInputs = {
   includeDeletedFiles,
   sort: sortInput,
 };
+
 export const deleteProductInputs = {
   connection: connectionInput,
   id: productIdInput,
 };
+
 export const getProductInputs = {
   connection: connectionInput,
   id: productIdInput,
 };
+
 export const getProductUsersInputs = {
   connection: connectionInput,
   id: productIdInput,
 };
+
 export const getProductFollowersInputs = {
   connection: connectionInput,
   id: productIdInput,

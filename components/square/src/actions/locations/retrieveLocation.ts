@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { retrieveLocationExamplePayload } from "../../examplePayloads";
 import { retrieveLocationInputs } from "../../inputs";
+
 export const retrieveLocation = action({
   display: {
     label: "Retrieve Location",
@@ -12,7 +13,9 @@ export const retrieveLocation = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const response = await client.get(`/v2/locations/${locationId}`);
+
     return {
       data: response.data,
     };

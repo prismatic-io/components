@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput } from "../common";
+
 export const listWebhooksInputs = {
   shopifyConnection: connectionInput,
   showOnlyInstanceWebhooks: input({

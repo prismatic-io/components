@@ -25,6 +25,7 @@ export const locationOutputSchema = {
     "EffectiveEndDate",
   ],
 };
+
 export const listLocationsOutputSchema = {
   type: "object" as const,
   properties: {

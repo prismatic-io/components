@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getPageAttachmentInputs } from "../../inputs";
 import { listAttachmentsExamplePayload } from "../../examplePayloads";
 import { listAttachmentsOutputSchema } from "../../outputSchemas";
+
 export const getPageAttachment = action({
   display: {
     label: "Get Attachments for Page",

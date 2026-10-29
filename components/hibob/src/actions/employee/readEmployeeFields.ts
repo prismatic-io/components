@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { readEmployeeFieldsExamplePayload } from "../../examplePayloads";
 import { readEmployeeFieldsInputs } from "../../inputs";
+
 export const readEmployeeFields = action({
   display: {
     label: "Read Employee Fields",
@@ -13,6 +14,7 @@ export const readEmployeeFields = action({
     { connection, identifier, fields, humanReadable },
   ) => {
     const client = getClient(connection, context.debug.enabled);
+
     const { data } = await client.post(`/people/${identifier}`, {
       fields,
       humanReadable,

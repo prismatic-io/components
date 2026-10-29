@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { getVendorInputs } from "../../inputs/vendor";
 import { getVendorExamplePayload } from "../../examplePayloads";
+
 export const getVendor = action({
   display: {
     label: "Get Vendor",
@@ -15,6 +16,7 @@ export const getVendor = action({
       connection,
       context.debug.enabled,
     );
+
     const sendData = {
       id: vendorId,
     };
@@ -23,10 +25,12 @@ export const getVendor = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
+
     const { data } = await client.post(
       "/Crud/Read/Vendor.json",
       stringifiedData,
     );
+
     return {
       data: cleanReturnData(data),
     };

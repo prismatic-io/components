@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { updateLocationExamplePayload } from "../../examplePayloads";
 import { updateLocationInputs } from "../../inputs";
+
 export const updateLocation = action({
   display: {
     label: "Update Location",
@@ -15,12 +16,15 @@ export const updateLocation = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const params: Record<string, unknown> = {};
+
     const response = await client.put(
       `/v2/locations/${locationId}`,
       { location: locationUpdate },
       { params },
     );
+
     return {
       data: response.data,
     };

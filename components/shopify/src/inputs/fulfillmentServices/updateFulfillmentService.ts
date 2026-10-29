@@ -8,6 +8,7 @@ import {
   requiresShippingMethod,
   trackingSupport,
 } from "./common";
+
 export const updateFulfillmentServiceInputs = {
   shopifyConnection: connectionInput,
   fulfillmentServiceId,

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection, fetchAll, pagination } from "./common";
+
 const smsMessageKey = input({
   label: "Message Key",
   type: "string",
@@ -11,6 +12,7 @@ const smsMessageKey = input({
   placeholder: "Enter message key",
   clean: util.types.toString,
 });
+
 const smsDefinitionKey = input({
   label: "Definition Key",
   type: "string",
@@ -21,6 +23,7 @@ const smsDefinitionKey = input({
   dataSource: "selectSmsDefinition",
   clean: util.types.toString,
 });
+
 const smsDefinitionName = input({
   label: "Definition Name",
   type: "string",
@@ -30,6 +33,7 @@ const smsDefinitionName = input({
   placeholder: "Enter definition name",
   clean: util.types.toString,
 });
+
 const smsDefinitionDescription = input({
   label: "Definition Description",
   type: "string",
@@ -39,6 +43,7 @@ const smsDefinitionDescription = input({
   placeholder: "Enter definition description",
   clean: toOptionalString,
 });
+
 const smsDefinitionExtraBody = input({
   label: "Extra Body",
   type: "code",
@@ -60,6 +65,7 @@ const smsDefinitionExtraBody = input({
   ),
   clean: util.types.toObject,
 });
+
 const smsRecipientContactKey = input({
   label: "Recipient Contact Key",
   type: "string",
@@ -69,6 +75,7 @@ const smsRecipientContactKey = input({
   placeholder: "Enter recipient contact key",
   clean: util.types.toString,
 });
+
 const smsRecipientPhone = input({
   label: "Recipient Phone",
   type: "string",
@@ -79,6 +86,7 @@ const smsRecipientPhone = input({
   placeholder: "Enter recipient phone number",
   clean: util.types.toString,
 });
+
 const smsRecipientAttributes = input({
   label: "Recipient Attributes",
   type: "code",
@@ -95,6 +103,7 @@ const smsRecipientAttributes = input({
   ),
   clean: util.types.toObject,
 });
+
 const smsBatchRecipients = input({
   label: "Recipients",
   type: "code",
@@ -120,15 +129,18 @@ const smsBatchRecipients = input({
   ),
   clean: util.types.toObject,
 });
+
 export const listSmsDefinitionsInputs = {
   connection,
   fetchAll,
   pagination,
 };
+
 export const getSmsDefinitionInputs = {
   connection,
   smsDefinitionKey,
 };
+
 export const createSmsDefinitionInputs = {
   connection,
   smsDefinitionKey,
@@ -136,6 +148,7 @@ export const createSmsDefinitionInputs = {
   smsDefinitionDescription,
   smsDefinitionExtraBody,
 };
+
 export const sendSmsInputs = {
   connection,
   smsMessageKey,
@@ -144,6 +157,7 @@ export const sendSmsInputs = {
   smsRecipientPhone,
   smsRecipientAttributes,
 };
+
 export const updateSmsDefinitionInputs = {
   connection,
   smsDefinitionKey,
@@ -155,10 +169,12 @@ export const updateSmsDefinitionInputs = {
   smsDefinitionDescription,
   smsDefinitionExtraBody,
 };
+
 export const deleteSmsDefinitionInputs = {
   connection,
   smsDefinitionKey,
 };
+
 export const sendSmsBatchInputs = {
   connection,
   smsDefinitionKey,

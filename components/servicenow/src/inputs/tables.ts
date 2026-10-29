@@ -10,6 +10,7 @@ import {
   sysparmQuery,
   tableNameInput,
 } from "./common";
+
 export const listTablesInputs = {
   connection,
   instanceUrlInput,
@@ -18,6 +19,7 @@ export const listTablesInputs = {
   fetchAll,
   pagination,
 };
+
 export const createTableRecordInputs = {
   connection,
   instanceUrlInput,
@@ -25,6 +27,7 @@ export const createTableRecordInputs = {
   tableNameInput,
   fieldValuesInput,
 };
+
 export const deleteTableRecordInputs = {
   connection,
   instanceUrlInput,
@@ -32,6 +35,7 @@ export const deleteTableRecordInputs = {
   tableNameInput,
   sysId,
 };
+
 export const getTableRecordInputs = {
   connection,
   instanceUrlInput,
@@ -39,6 +43,7 @@ export const getTableRecordInputs = {
   tableNameInput,
   sysId,
 };
+
 export const listTableRecordsInputs = {
   connection,
   instanceUrlInput,
@@ -48,6 +53,7 @@ export const listTableRecordsInputs = {
   fetchAll,
   pagination,
 };
+
 export const updateTableRecordInputs = {
   connection,
   instanceUrlInput,

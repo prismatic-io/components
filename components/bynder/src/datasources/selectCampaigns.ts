@@ -4,6 +4,7 @@ import { selectCampaignResponse } from "../examplePayloads";
 import { connection } from "../inputs";
 import type { Records } from "../types";
 import { sortArray } from "../util";
+
 export const selectCampaign = dataSource({
   display: {
     label: "Select Campaign",
@@ -23,6 +24,7 @@ export const selectCampaign = dataSource({
           label: `${campaign.name} (ID: ${campaign.ID})`,
         }),
       );
+
       return { result: objects };
     }
     return { result: [] };

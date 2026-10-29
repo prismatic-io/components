@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The FTP connection to use.",
 });
+
 export const path = input({
   label: "Path",
   placeholder: "Enter directory path",
@@ -16,6 +18,7 @@ export const path = input({
   example: "/path/to/directory",
   clean: util.types.toString,
 });
+
 export const pattern = input({
   label: "Pattern",
   default: "*",
@@ -27,6 +30,7 @@ export const pattern = input({
   example: "*.csv",
   clean: cleanString,
 });
+
 export const recursive = input({
   label: "Include Subfolders",
   comments:
@@ -36,6 +40,7 @@ export const recursive = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 export const includeSubdirectories = input({
   label: "Include Subdirectories",
   default: "false",

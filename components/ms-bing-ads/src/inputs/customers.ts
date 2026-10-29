@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanOptionalString } from "../util";
 import { connectionInput, customerIdInput } from "./common";
+
 const customerNameFilterInput = input({
   label: "Customer Name Filter",
   placeholder: "Enter customer name filter",
@@ -10,6 +11,7 @@ const customerNameFilterInput = input({
     "A partial or full name of the customers to retrieve. The operation includes the customer in the result if the customer's name begins with the specified filter name. This element is optional. To skip filtering by customer name, set this element to an empty string.",
   clean: cleanOptionalString,
 });
+
 const topNInput = input({
   label: "Top Number",
   type: "string",
@@ -20,6 +22,7 @@ const topNInput = input({
   example: "5",
   clean: util.types.toNumber,
 });
+
 const onlyParentAccountsInput = input({
   label: "Only Parent Accounts",
   type: "boolean",
@@ -29,6 +32,7 @@ const onlyParentAccountsInput = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const getCustomerInputs = {
   connection: connectionInput,
   customerId: {
@@ -38,11 +42,13 @@ export const getCustomerInputs = {
     required: true,
   },
 };
+
 export const getCustomersInfoInputs = {
   connection: connectionInput,
   customerNameFilter: customerNameFilterInput,
   topN: topNInput,
 };
+
 export const getLinkedAccountsAndCustomersInfoInputs = {
   connection: connectionInput,
   customerId: {
@@ -52,6 +58,7 @@ export const getLinkedAccountsAndCustomersInfoInputs = {
   },
   onlyParentAccounts: onlyParentAccountsInput,
 };
+
 export const selectCustomerIdInputs = {
   connection: connectionInput,
 };

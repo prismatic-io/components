@@ -17,11 +17,13 @@ import type {
 } from "../types";
 import { resolveNewHireStatusChanges } from "../util";
 import { pollNewHireStatus } from "./pollNewHireStatus";
+
 const BASE = "https://service5.ultipro.com";
 const TENANT = "ACME_CORP";
 const IN_PROGRESS = `/talent/onboarding/v2/tenants/${TENANT}/new-hires/in-progress`;
 const COMPLETED = `/talent/onboarding/v2/tenants/${TENANT}/new-hires/completed`;
 const NOW = "2026-10-01T12:00:00.000Z";
+
 const connection = createConnection(ukgProBasicAuth, {
   baseUrl: BASE,
   customerApiKey: "test-customer-key",
@@ -29,11 +31,13 @@ const connection = createConnection(ukgProBasicAuth, {
   password: "test-password",
   tenantIdentifier: TENANT,
 });
+
 const inProgress =
   getInProgressNewHiresExamplePayload.data as unknown as InProgressNewHire[];
 const completed =
   getCompletedNewHiresExamplePayload.data as unknown as InProgressNewHire[];
 const allHires = [...inProgress, ...completed];
+
 const added = (
   hire: InProgressNewHire,
   detectedAt: string,
@@ -46,12 +50,14 @@ const added = (
   currentProgress: 0,
   detectedAt,
 });
+
 const chunk = <T>(items: T[], size: number): T[][] => {
   const batches: T[][] = [];
   for (let i = 0; i < items.length; i += size)
     batches.push(items.slice(i, i + size));
   return batches;
 };
+
 describe("pollNewHireStatus batching declaration", () => {
   test("declares opt-in Tier 1 batching with a default batch size", () => {
     expect(pollNewHireStatus.triggerResolverSupport).toBe("valid");
@@ -60,10 +66,12 @@ describe("pollNewHireStatus batching declaration", () => {
       Function,
     );
   });
+
   test("offers only the connection input", () => {
     expect(Object.keys(pollNewHireStatus.inputs ?? {})).toEqual(["connection"]);
   });
 });
+
 describe("resolveNewHireStatusChanges", () => {
   test("tags every status change with its own change type", () => {
     const changes: NewHireStatusChange[] = [
@@ -75,16 +83,19 @@ describe("resolveNewHireStatusChanges", () => {
         previousProgress: 0,
       },
     ];
+
     expect(resolveNewHireStatusChanges(changes)).toEqual([
       { changeType: "NewHireAdded", record: changes[0] },
       { changeType: "StatusChange", record: changes[1] },
     ]);
   });
+
   test("tolerates an absent envelope and an empty one", () => {
     expect(resolveNewHireStatusChanges(undefined)).toEqual([]);
     expect(resolveNewHireStatusChanges([])).toEqual([]);
   });
 });
+
 describe("triggerResolver.resolveItems", () => {
   test("flattens a realistic trigger payload into tagged items, batched by batchSize", () => {
     const data = allHires.map((hire) => added(hire, NOW));
@@ -93,9 +104,11 @@ describe("triggerResolver.resolveItems", () => {
         {} as never,
         { payload: { body: { data } } } as never,
       ) ?? [];
+
     expect(items).toEqual(
       data.map((record) => ({ changeType: "NewHireAdded", record })),
     );
+
     const batches = chunk(
       items as unknown[],
       pollNewHireStatus.batchConfig?.batchSize ?? 1,
@@ -103,11 +116,14 @@ describe("triggerResolver.resolveItems", () => {
     expect(batches.flat()).toHaveLength(allHires.length);
   });
 });
+
 describe("pollNewHireStatus polling state", () => {
   let store: NewHireStatusPollingState;
+
   type PerformContext = Parameters<typeof pollNewHireStatus.perform>[0];
   type PerformPayload = Parameters<typeof pollNewHireStatus.perform>[1];
   type PerformParams = Parameters<typeof pollNewHireStatus.perform>[2];
+
   const context = () =>
     ({
       polling: {
@@ -119,6 +135,7 @@ describe("pollNewHireStatus polling state", () => {
       debug: { enabled: false },
       logger: loggerMock(),
     }) as unknown as PerformContext;
+
   const poll = async (params: PerformParams) => ({
     result: await pollNewHireStatus.perform(
       context(),
@@ -126,6 +143,7 @@ describe("pollNewHireStatus polling state", () => {
       params,
     ),
   });
+
   const mockHires = (
     inProgressBody: unknown = getInProgressNewHiresExamplePayload,
     completedBody: unknown = getCompletedNewHiresExamplePayload,
@@ -139,20 +157,25 @@ describe("pollNewHireStatus polling state", () => {
       .query({ page: "1", per_page: "100" })
       .reply(200, completedBody as nock.Body);
   };
+
   beforeEach(() => {
     store = {};
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date(NOW));
   });
+
   afterEach(() => {
     vi.useRealTimers();
     nock.cleanAll();
   });
+
   test("the first poll reports every hire as added and saves the status map", async () => {
     mockHires();
+
     const { result } = await poll({
       connection,
     });
+
     expect(nock.isDone()).toBe(true);
     expect(result?.payload.body.data).toEqual(
       allHires.map((hire) => added(hire, NOW)),
@@ -172,21 +195,26 @@ describe("pollNewHireStatus polling state", () => {
       lastPollTime: NOW,
     });
   });
+
   test("a second poll with unchanged hires reports no changes", async () => {
     mockHires();
     await poll({ connection });
+
     vi.setSystemTime(new Date("2026-10-01T12:05:00.000Z"));
     mockHires();
     const { result } = await poll({
       connection,
     });
+
     expect(result?.payload.body.data).toEqual([]);
     expect(result?.polledNoChanges).toBe(true);
     expect(store.lastPollTime).toBe("2026-10-01T12:05:00.000Z");
   });
+
   test("a hire whose onboarding status changed is reported once as a StatusChange", async () => {
     mockHires();
     await poll({ connection });
+
     const later = "2026-10-01T12:05:00.000Z";
     vi.setSystemTime(new Date(later));
     const changed = structuredClone(getInProgressNewHiresExamplePayload);
@@ -194,9 +222,11 @@ describe("pollNewHireStatus polling state", () => {
     const previousStatus = target.onboardingStatus;
     target.onboardingStatus = "Completed";
     mockHires(changed);
+
     const { result } = await poll({
       connection,
     });
+
     expect(result?.payload.body.data).toEqual([
       {
         newHireId: target.id,

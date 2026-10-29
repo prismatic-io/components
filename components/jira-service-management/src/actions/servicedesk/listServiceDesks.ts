@@ -4,6 +4,7 @@ import { listServiceDesksExamplePayload } from "../../examplePayloads";
 import { listServiceDesksInputs } from "../../inputs";
 import type { ServiceDesk } from "../../types";
 import { getPaginatedData } from "../../util";
+
 export const listServiceDesks = action({
   display: {
     label: "List Service Desks",

@@ -8,6 +8,7 @@ import {
 } from "../inputs/general";
 import { buildExampleResponse } from "../examplePayloads/general";
 import { buildMultidimensionalSheet } from "../helpers";
+
 export const buildMultiple = action({
   display: {
     label: "Build Spreadsheet with Multiple Sheets",
@@ -21,17 +22,21 @@ export const buildMultiple = action({
     const sheetNameInputToUse = alternativeSheetNames
       ? alternativeSheetNames
       : sheetNames;
+
     if (sheetNameInputToUse.length === 0) {
       throw new Error(
         "Either sheetNames or alternativeSheetNames must be provided.",
       );
     }
+
     const multipleSheets = buildMultidimensionalSheet<unknown[][]>(
       multiSheetData as unknown[][][],
       sheetNameInputToUse,
       createOptions,
     );
+
     const data = await Promise.resolve(buildXlsx(multipleSheets));
+
     return {
       data,
     };

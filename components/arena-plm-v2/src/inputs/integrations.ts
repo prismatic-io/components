@@ -6,6 +6,7 @@ import {
   nameInput,
   pagination,
 } from "./common";
+
 const integrationGuidInput = input({
   label: "Integration GUID",
   type: "string",
@@ -15,6 +16,7 @@ const integrationGuidInput = input({
   example: "IN1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const eventGuidInput = input({
   label: "Event GUID",
   type: "string",
@@ -24,6 +26,7 @@ const eventGuidInput = input({
   example: "IN1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const eventItemGuidInput = input({
   label: "Event Item GUID",
   type: "string",
@@ -33,6 +36,7 @@ const eventItemGuidInput = input({
   example: "IN1AB2CD3EF4GH5IJ6KL7MN8",
   clean: util.types.toString,
 });
+
 const reconciledInput = input({
   label: "Reconciled",
   type: "boolean",
@@ -40,6 +44,7 @@ const reconciledInput = input({
   comments: "When true, the event item is reconciled.",
   clean: util.types.toBool,
 });
+
 const nameFilterInput = input({
   label: "Name Filter",
   type: "string",
@@ -48,6 +53,7 @@ const nameFilterInput = input({
   comments: "Filter integrations by name.",
   clean: toOptionalString,
 });
+
 const enabledFilterInput = input({
   label: "Enabled Filter",
   type: "boolean",
@@ -55,6 +61,7 @@ const enabledFilterInput = input({
   comments: "When true, only integrations that are enabled are returned.",
   clean: util.types.toBool,
 });
+
 const itemsReconciledFilterInput = input({
   label: "Items Reconciled Filter",
   type: "string",
@@ -67,6 +74,7 @@ const itemsReconciledFilterInput = input({
   comments: "Filter events by whether their items have been reconciled.",
   clean: toOptionalBoolean,
 });
+
 const creationDateTimeFromInput = input({
   label: "Creation Date From",
   type: "string",
@@ -76,6 +84,7 @@ const creationDateTimeFromInput = input({
   example: "2023-01-01T00:00:00Z",
   clean: toOptionalString,
 });
+
 const creationDateTimeToInput = input({
   label: "Creation Date To",
   type: "string",
@@ -85,6 +94,7 @@ const creationDateTimeToInput = input({
   example: "2023-12-31T23:59:59Z",
   clean: toOptionalString,
 });
+
 const reconciledFilterInput = input({
   label: "Reconciled Filter",
   type: "string",
@@ -97,6 +107,7 @@ const reconciledFilterInput = input({
   comments: "Filter by reconciliation status.",
   clean: toOptionalBoolean,
 });
+
 const reconciledDateTimeFromInput = input({
   label: "Reconciled Date From",
   type: "string",
@@ -106,6 +117,7 @@ const reconciledDateTimeFromInput = input({
   example: "2023-01-01T00:00:00Z",
   clean: toOptionalString,
 });
+
 const reconciledDateTimeToInput = input({
   label: "Reconciled Date To",
   type: "string",
@@ -115,6 +127,7 @@ const reconciledDateTimeToInput = input({
   example: "2023-12-31T23:59:59Z",
   clean: toOptionalString,
 });
+
 const outboundEventIntegrationGuidInput = input({
   label: "Integration GUID",
   type: "string",
@@ -124,6 +137,7 @@ const outboundEventIntegrationGuidInput = input({
   example: "IG4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const outboundEventGuidInput = input({
   label: "Event GUID",
   type: "string",
@@ -133,6 +147,7 @@ const outboundEventGuidInput = input({
   example: "IG4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const resourcesReconciledFilterInput = input({
   label: "Resources Reconciled Filter",
   type: "string",
@@ -145,6 +160,7 @@ const resourcesReconciledFilterInput = input({
   comments: "Filter by reconciliation status of resources.",
   clean: toOptionalBoolean,
 });
+
 const orderInput = input({
   label: "Order",
   type: "string",
@@ -156,6 +172,7 @@ const orderInput = input({
   ],
   clean: toOptionalString,
 });
+
 const enableInput = input({
   label: "Enabled Status",
   type: "string",
@@ -164,6 +181,7 @@ const enableInput = input({
   comments: "Filter by enabled/disabled status ('true' or 'false').",
   clean: toOptionalString,
 });
+
 const reconciledStatusFilterInput = input({
   label: "Reconciled Status Filter",
   type: "string",
@@ -176,6 +194,7 @@ const reconciledStatusFilterInput = input({
   comments: "Filter by reconciliation status.",
   clean: toOptionalBoolean,
 });
+
 const intUpdateGuidInput = input({
   label: "Integration Update GUID",
   type: "string",
@@ -185,6 +204,7 @@ const intUpdateGuidInput = input({
   example: "IG4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const reconcilePayloadInput = input({
   label: "Resources Reconciled",
   type: "boolean",
@@ -192,6 +212,7 @@ const reconcilePayloadInput = input({
   comments: "When true, the resources have been reconciled.",
   clean: util.types.toBool,
 });
+
 const objectTypeValueListInput = input({
   label: "Object Type",
   type: "string",
@@ -206,11 +227,13 @@ const objectTypeValueListInput = input({
     "Arena resource family the outbound event applies to, such as items, changes, requests or quality processes.",
   clean: util.types.toString,
 });
+
 export const getEventInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
   eventGuid: eventGuidInput,
 };
+
 export const listEventAssociationsInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
@@ -220,18 +243,21 @@ export const listEventAssociationsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const getEventItemInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
   eventGuid: eventGuidInput,
   eventItemGuid: eventItemGuidInput,
 };
+
 export const listEventItemGuidsInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
   eventGuid: eventGuidInput,
   reconciled: reconciledFilterInput,
 };
+
 export const listEventItemsInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
@@ -242,18 +268,22 @@ export const listEventItemsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const getIntegrationInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
 };
+
 export const listIntegrationAdministratorsInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
 };
+
 export const listIntegrationFiltersInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
 };
+
 export const listIntegrationsInputs = {
   connection: connectionInput,
   name: nameFilterInput,
@@ -261,10 +291,12 @@ export const listIntegrationsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listOutboundEventIntegrationAdministratorsInputs = {
   connection: connectionInput,
   integrationGuid: outboundEventIntegrationGuidInput,
 };
+
 export const listOutboundEventIntegrationEventsInputs = {
   connection: connectionInput,
   integrationGuid: outboundEventIntegrationGuidInput,
@@ -273,6 +305,7 @@ export const listOutboundEventIntegrationEventsInputs = {
   pagination,
   order: orderInput,
 };
+
 export const listOutboundEventIntegrationsInputs = {
   connection: connectionInput,
   name: {
@@ -285,10 +318,12 @@ export const listOutboundEventIntegrationsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const listOutboundEventIntegrationTriggersInputs = {
   connection: connectionInput,
   integrationGuid: outboundEventIntegrationGuidInput,
 };
+
 export const listOutboundEventResourcesInputs = {
   connection: connectionInput,
   integrationGuid: outboundEventIntegrationGuidInput,
@@ -313,6 +348,7 @@ export const listOutboundEventResourcesInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const updateEventItemReconciledInputs = {
   connection: connectionInput,
   integrationGuid: integrationGuidInput,
@@ -320,12 +356,14 @@ export const updateEventItemReconciledInputs = {
   eventItemGuid: eventItemGuidInput,
   reconciled: reconciledInput,
 };
+
 export const updateOutboundEventReconciliationInputs = {
   connection: connectionInput,
   integrationGuid: outboundEventIntegrationGuidInput,
   eventGuid: outboundEventGuidInput,
   reconcilePayload: reconcilePayloadInput,
 };
+
 export const updateOutboundEventResourceReconciliationInputs = {
   connection: connectionInput,
   integrationGuid: outboundEventIntegrationGuidInput,

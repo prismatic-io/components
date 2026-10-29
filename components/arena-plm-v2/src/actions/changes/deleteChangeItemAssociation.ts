@@ -4,6 +4,7 @@ import { deleteChangeItemAssociationExamplePayload } from "../../examplePayloads
 import { deleteChangeItemAssociationInputs } from "../../inputs";
 import { deleteChangeItemAssociationOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteChangeItemAssociation = action({
   display: {
     label: "Delete Change Item Association",
@@ -22,18 +23,22 @@ export const deleteChangeItemAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting change item association from Arena", {
         changeGuid: changeGuid,
         changeItemAssociationGuid: changeItemAssociationGuid,
       });
+
       const { status } = await client.delete(
         `/changes/${changeGuid}/items/${changeItemAssociationGuid}`,
       );
+
       context.logger.info("Change item association deleted successfully", {
         changeGuid: changeGuid,
         changeItemAssociationGuid: changeItemAssociationGuid,
         statusCode: status,
       });
+
       return {
         data: {
           success: true,

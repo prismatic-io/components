@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection, $select } from "../../inputs/general";
 import { warehouseCode } from "../../inputs/warehouses/general";
 import { getWarehousesExamplePayload } from "../../examplePayloads/warehouses";
+
 export const getWarehouse = action({
   display: {
     label: "Get Warehouse",
@@ -20,6 +21,7 @@ export const getWarehouse = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get(`/Warehouses('${warehouseCode}')`, {
       params: {
         $select,

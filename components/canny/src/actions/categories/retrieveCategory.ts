@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { retrieveCategoryExamplePayload } from "../../examplePayloads";
 import { retrieveCategoryInputs } from "../../inputs";
 import { retrieveCategoryOutputSchema } from "../../outputSchemas";
+
 export const retrieveCategory = action({
   display: {
     label: "Retrieve Category",

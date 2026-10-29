@@ -1,25 +1,31 @@
 import { CAMPAIGN_CHANGE_RESOURCE_TYPE, CHANGE_TYPE } from "../../constants";
 import type { CampaignChange, CampaignChangeEventRow } from "../../types";
+
 export const isAllChangeTypesSelected = (changeTypes: string[]): boolean =>
   changeTypes.length === 0 || changeTypes.includes(CHANGE_TYPE.ALL);
+
 const isSelected = (changeTypes: string[], changeType: string): boolean =>
   changeTypes.includes(changeType) || isAllChangeTypesSelected(changeTypes);
+
 export const mapChangeEventsToCampaignChanges = (
   rows: CampaignChangeEventRow[],
   changeTypes: string[],
 ): CampaignChange[] => {
   const changes: CampaignChange[] = [];
+
   for (const row of [...rows].reverse()) {
     const event = row.changeEvent;
     if (!event) {
       continue;
     }
+
     const campaignId = row.campaign?.id ?? "";
     const campaignName = row.campaign?.name ?? "";
     const changedAt = event.changeDateTime;
     const operation = event.resourceChangeOperation;
     const oldCampaign = event.oldResource?.campaign;
     const newCampaign = event.newResource?.campaign;
+
     if (event.changeResourceType === CAMPAIGN_CHANGE_RESOURCE_TYPE.CAMPAIGN) {
       if (operation === "CREATE") {
         changes.push({
@@ -33,6 +39,7 @@ export const mapChangeEventsToCampaignChanges = (
         });
         continue;
       }
+
       if (operation === "REMOVE") {
         changes.push({
           changeType: "deleted",
@@ -45,6 +52,7 @@ export const mapChangeEventsToCampaignChanges = (
         });
         continue;
       }
+
       if (
         isSelected(changeTypes, CHANGE_TYPE.STATUS) &&
         oldCampaign?.status !== newCampaign?.status
@@ -59,6 +67,7 @@ export const mapChangeEventsToCampaignChanges = (
           changedAt,
         });
       }
+
       if (
         isSelected(changeTypes, CHANGE_TYPE.BIDDING) &&
         oldCampaign?.biddingStrategyType !== newCampaign?.biddingStrategyType
@@ -73,10 +82,13 @@ export const mapChangeEventsToCampaignChanges = (
           changedAt,
         });
       }
+
       continue;
     }
+
     const oldAmount = event.oldResource?.campaignBudget?.amountMicros;
     const newAmount = event.newResource?.campaignBudget?.amountMicros;
+
     if (
       isSelected(changeTypes, CHANGE_TYPE.BUDGET) &&
       oldAmount !== newAmount
@@ -92,5 +104,6 @@ export const mapChangeEventsToCampaignChanges = (
       });
     }
   }
+
   return changes.reverse();
 };

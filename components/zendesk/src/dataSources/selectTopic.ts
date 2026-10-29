@@ -4,6 +4,7 @@ import { selectTopicExamplePayload } from "../examplePayloads";
 import { selectTopicInputs } from "../inputs";
 import type { Topic } from "../types";
 import { byElementLabel, paginateResults } from "../util";
+
 export const selectTopic = dataSource({
   display: {
     label: "Select Topic",
@@ -12,12 +13,14 @@ export const selectTopic = dataSource({
   perform: async (_context, { zendeskConnection }) => {
     const client = rawHttpClient(zendeskConnection);
     const results = [] as Topic[];
+
     const paginatedResults = await paginateResults<Topic>(
       client,
       "/community/topics",
       results,
       "topics",
     );
+
     return {
       result: paginatedResults
         .map<Element>((topic) => ({

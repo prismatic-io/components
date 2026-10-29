@@ -17,6 +17,7 @@ import { unenrollUserFactor } from "./unenrollUserFactor";
 import { unlockUser } from "./unlockUser";
 import { unsuspendUser } from "./unsuspendUser";
 import { updateUser } from "./updateUser";
+
 export default {
   activateUser,
   clearUserSessions,

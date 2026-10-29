@@ -5,6 +5,7 @@ import {
   connectionInput,
   timeImportFileTrackingId,
 } from "../../inputs";
+
 export const getPayEntry = action({
   display: {
     label: "Get Pay Entry",
@@ -21,6 +22,7 @@ export const getPayEntry = action({
   ) => {
     validateV1Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data } = await client.get(
       `/payroll/v1/companies/${companyId}/payEntryImport/${timeImportFileTrackingId}`,
     );

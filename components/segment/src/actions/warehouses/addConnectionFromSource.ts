@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { connectionInput, region, sourceId, warehouseId } from "../../inputs";
 import { addConnectionFromSourceExamplePayload } from "../../examplePayloads";
+
 export const addConnectionFromSourceToWarehouse = action({
   display: {
     label: "Add Connection From Source to Warehouse",

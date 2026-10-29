@@ -5,6 +5,7 @@ import { MAX_LIMIT } from "../constants";
 import { selectInventoryItemsInputs } from "../inputs";
 import type { InventoryItemNode } from "../types";
 import { fetchData, getNumericId } from "../util";
+
 export const listInventoryItems = dataSource({
   display: {
     label: "Select Inventory Item",
@@ -19,6 +20,7 @@ export const listInventoryItems = dataSource({
       false,
       context.logger,
     );
+
     const { inventoryItems } = (await fetchData<InventoryItemNode>(
       client,
       ["inventoryItems"],
@@ -29,6 +31,7 @@ export const listInventoryItems = dataSource({
         first: MAX_LIMIT,
       },
     )) as unknown as Record<"inventoryItems", InventoryItemNode[]>;
+
     const result = inventoryItems
       .map<Element>((item) => {
         const numericId = getNumericId(item.id);
@@ -38,6 +41,7 @@ export const listInventoryItems = dataSource({
         };
       })
       .sort((a, b) => (a.label < b.label ? -1 : 1));
+
     return { result };
   },
   dataSourceType: "picklist",

@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { pollResourceModel } from "./constants";
 import { jsonInputClean, valueListInputClean } from "./util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
 });
+
 export const employee_id = input({
   label: "Employee ID",
   type: "string",
@@ -15,6 +17,7 @@ export const employee_id = input({
   example: "12323",
   dataSource: "selectEmployee",
 });
+
 export const employee_ids = input({
   label: "Employee IDs",
   type: "string",
@@ -26,6 +29,7 @@ export const employee_ids = input({
   clean: valueListInputClean,
   example: "123213",
 });
+
 export const custom_field_id = input({
   label: "Custom Field ID",
   type: "string",
@@ -34,6 +38,7 @@ export const custom_field_id = input({
   required: true,
   example: "123",
 });
+
 export const document_id = input({
   label: "Document ID",
   type: "string",
@@ -43,6 +48,7 @@ export const document_id = input({
   example: "123",
   dataSource: "selectDocument",
 });
+
 export const project_id = input({
   label: "Project ID",
   type: "string",
@@ -52,6 +58,7 @@ export const project_id = input({
   example: "123",
   dataSource: "projects",
 });
+
 export const category_id = input({
   label: "Category ID",
   type: "string",
@@ -60,6 +67,7 @@ export const category_id = input({
   required: false,
   example: "123",
 });
+
 export const location_id = input({
   label: "Location ID",
   type: "string",
@@ -68,6 +76,7 @@ export const location_id = input({
   required: false,
   example: "12323",
 });
+
 export const team_id = input({
   label: "Team ID",
   type: "string",
@@ -77,6 +86,7 @@ export const team_id = input({
   example: "12323",
   dataSource: "teams",
 });
+
 export const leader_id = input({
   label: "Leader ID",
   type: "string",
@@ -86,6 +96,7 @@ export const leader_id = input({
   example: "12323",
   dataSource: "selectEmployee",
 });
+
 export const position_id = input({
   label: "Position ID",
   type: "string",
@@ -95,6 +106,7 @@ export const position_id = input({
   example: "12323",
   dataSource: "positions",
 });
+
 export const employee_number = input({
   label: "Employee Number",
   type: "string",
@@ -103,6 +115,7 @@ export const employee_number = input({
   required: false,
   example: "12323",
 });
+
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -112,6 +125,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+
 export const page = input({
   label: "Page",
   type: "string",
@@ -120,6 +134,7 @@ export const page = input({
   required: false,
   example: "2",
 });
+
 export const team_history = input({
   label: "Team History",
   type: "boolean",
@@ -128,6 +143,7 @@ export const team_history = input({
   required: false,
   example: "false",
 });
+
 export const employment_status_history = input({
   label: "Employment Status History",
   type: "boolean",
@@ -136,6 +152,7 @@ export const employment_status_history = input({
   required: false,
   example: "false",
 });
+
 export const position_history = input({
   label: "Position History",
   type: "boolean",
@@ -144,6 +161,7 @@ export const position_history = input({
   required: false,
   example: "false",
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -152,6 +170,7 @@ export const email = input({
   required: true,
   example: "test@test.es",
 });
+
 export const first_name = input({
   label: "First Name",
   type: "string",
@@ -160,6 +179,7 @@ export const first_name = input({
   required: true,
   example: "John",
 });
+
 export const last_name = input({
   label: "Last Name",
   type: "string",
@@ -168,6 +188,7 @@ export const last_name = input({
   required: true,
   example: "Locke",
 });
+
 export const work_start_date = input({
   label: "Work Start Date",
   type: "string",
@@ -177,6 +198,7 @@ export const work_start_date = input({
   required: false,
   example: "2020-01-01",
 });
+
 export const send_email = input({
   label: "Send Email",
   type: "boolean",
@@ -185,6 +207,7 @@ export const send_email = input({
   required: false,
   example: "false",
 });
+
 export const date_of_birth = input({
   label: "Date of Birth",
   type: "string",
@@ -193,6 +216,7 @@ export const date_of_birth = input({
   required: false,
   example: "2020-01-01",
 });
+
 export const gender = input({
   label: "Gender",
   type: "string",
@@ -215,6 +239,7 @@ export const gender = input({
   required: false,
   example: "Male",
 });
+
 export const marital_status = input({
   label: "Marital Status",
   type: "string",
@@ -250,6 +275,7 @@ export const marital_status = input({
   required: false,
   example: "Single",
 });
+
 export const nationality = input({
   label: "Nationality",
   type: "string",
@@ -258,6 +284,7 @@ export const nationality = input({
   required: false,
   example: "Canadian",
 });
+
 export const country = input({
   label: "Country",
   type: "string",
@@ -266,6 +293,7 @@ export const country = input({
   required: false,
   example: "US",
 });
+
 export const state = input({
   label: "State",
   type: "string",
@@ -274,6 +302,7 @@ export const state = input({
   required: false,
   example: "Florida",
 });
+
 export const post_code = input({
   label: "Post Code",
   type: "string",
@@ -282,6 +311,7 @@ export const post_code = input({
   required: false,
   example: "32003",
 });
+
 export const street_first = input({
   label: "Street First",
   type: "string",
@@ -290,6 +320,7 @@ export const street_first = input({
   required: false,
   example: "First street",
 });
+
 export const street_second = input({
   label: "Street Second",
   type: "string",
@@ -298,6 +329,7 @@ export const street_second = input({
   required: false,
   example: "Second street",
 });
+
 export const city = input({
   label: "City",
   type: "string",
@@ -306,6 +338,7 @@ export const city = input({
   required: false,
   example: "Jacksonville",
 });
+
 export const position_title = input({
   label: "Position Title",
   type: "string",
@@ -314,6 +347,7 @@ export const position_title = input({
   required: false,
   example: "Engineer",
 });
+
 export const home_phone = input({
   label: "Home Phone",
   type: "string",
@@ -322,6 +356,7 @@ export const home_phone = input({
   required: false,
   example: "+1 123 456 789",
 });
+
 export const work_phone = input({
   label: "Work Phone",
   type: "string",
@@ -330,6 +365,7 @@ export const work_phone = input({
   required: false,
   example: "+1 123 456 789",
 });
+
 export const mobile_phone = input({
   label: "Mobile Phone",
   type: "string",
@@ -338,6 +374,7 @@ export const mobile_phone = input({
   required: false,
   example: "+1 123 456 789",
 });
+
 export const personal_identification_number = input({
   label: "Personal Identification Number",
   type: "string",
@@ -346,6 +383,7 @@ export const personal_identification_number = input({
   required: false,
   example: "1123456789",
 });
+
 export const tax_number = input({
   label: "Tax Number",
   type: "string",
@@ -354,6 +392,7 @@ export const tax_number = input({
   required: false,
   example: "1123456789",
 });
+
 export const approver_ids = input({
   label: "Approver IDs",
   type: "string",
@@ -363,6 +402,7 @@ export const approver_ids = input({
   default: ["000xxx"],
   clean: valueListInputClean,
 });
+
 export const selected_leave_types = input({
   label: "Selected Leave Types",
   type: "string",
@@ -372,6 +412,7 @@ export const selected_leave_types = input({
   default: ["000xxx"],
   clean: valueListInputClean,
 });
+
 export const value = input({
   label: "Custom Field Value",
   type: "string",
@@ -380,6 +421,7 @@ export const value = input({
   required: true,
   example: "123",
 });
+
 export const date = input({
   label: "Last Working Day",
   type: "string",
@@ -388,6 +430,7 @@ export const date = input({
   required: false,
   example: "2020-01-01",
 });
+
 export const termination_reason_id = input({
   label: "Termination Reason ID",
   type: "string",
@@ -396,6 +439,7 @@ export const termination_reason_id = input({
   required: true,
   example: "123",
 });
+
 export const comments = input({
   label: "Comments",
   type: "string",
@@ -404,6 +448,7 @@ export const comments = input({
   required: false,
   example: "No comments",
 });
+
 export const start_fresh = input({
   label: "Start Fresh",
   type: "boolean",
@@ -413,6 +458,7 @@ export const start_fresh = input({
   required: false,
   example: "No comments",
 });
+
 export const from = input({
   label: "From Date",
   type: "string",
@@ -422,6 +468,7 @@ export const from = input({
   required: false,
   example: "2018-05-20",
 });
+
 export const to = input({
   label: "To Date",
   type: "string",
@@ -431,6 +478,7 @@ export const to = input({
   required: false,
   example: "2018-05-20",
 });
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -449,6 +497,7 @@ export const type = input({
   required: false,
   example: "Multi",
 });
+
 export const time_off_policy_id = input({
   label: "Time Off Policy ID",
   type: "string",
@@ -457,6 +506,7 @@ export const time_off_policy_id = input({
   required: false,
   example: "123",
 });
+
 export const replacement_id = input({
   label: "Replacement ID",
   type: "string",
@@ -465,6 +515,7 @@ export const replacement_id = input({
   required: false,
   example: "123",
 });
+
 export const part_of_day = input({
   label: "Part of Day",
   type: "string",
@@ -491,6 +542,7 @@ export const part_of_day = input({
   required: false,
   example: "specific_timespan",
 });
+
 export const hours = input({
   label: "Hours",
   type: "string",
@@ -500,6 +552,7 @@ export const hours = input({
   required: false,
   example: "2",
 });
+
 export const details = input({
   label: "Details",
   type: "string",
@@ -508,6 +561,7 @@ export const details = input({
   required: false,
   example: "2",
 });
+
 export const fileInput = input({
   label: "File",
   type: "data",
@@ -516,6 +570,7 @@ export const fileInput = input({
   comments: "The file to upload.",
   example: "Some binary file",
 });
+
 export const description = input({
   label: "Description",
   type: "string",
@@ -524,6 +579,7 @@ export const description = input({
   comments: "Document description.",
   example: "Document description",
 });
+
 export const notify = input({
   label: "Notify",
   type: "boolean",
@@ -532,6 +588,7 @@ export const notify = input({
   comments: "'true' to notify employee by email",
   example: "true",
 });
+
 export const source = input({
   label: "Source",
   type: "string",
@@ -541,6 +598,7 @@ export const source = input({
   example: "API",
   default: "API",
 });
+
 export const shared_with_everyone = input({
   label: "Shared With Everyone",
   type: "boolean",
@@ -549,6 +607,7 @@ export const shared_with_everyone = input({
   comments: "'true' to share with all employees",
   example: "true",
 });
+
 export const shared_with_team_manager = input({
   label: "Shared With Team Manager",
   type: "boolean",
@@ -557,6 +616,7 @@ export const shared_with_team_manager = input({
   comments: "'true' to share with all team managers",
   example: "true",
 });
+
 export const shared_with_direct_manager = input({
   label: "Shared With Direct Manager",
   type: "boolean",
@@ -565,6 +625,7 @@ export const shared_with_direct_manager = input({
   comments: "'true' to share with all direct manager",
   example: "true",
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -587,6 +648,7 @@ export const status = input({
   required: false,
   example: "valid",
 });
+
 export const right_to_work_document_type = input({
   label: "Right to Work Document Type",
   type: "string",
@@ -613,6 +675,7 @@ export const right_to_work_document_type = input({
   required: false,
   example: "valid",
 });
+
 export const right_to_work_document_number = input({
   label: "Right to Work Document Number",
   type: "string",
@@ -621,6 +684,7 @@ export const right_to_work_document_number = input({
   comments: "Right to work document number",
   example: "123213",
 });
+
 export const expires = input({
   label: "Expires",
   type: "boolean",
@@ -629,6 +693,7 @@ export const expires = input({
   comments: "if 'true' expiration_date is also required",
   example: "true",
 });
+
 export const expiration_date = input({
   label: "Expiration Date",
   type: "string",
@@ -637,6 +702,7 @@ export const expiration_date = input({
   comments: "Expiration date of the document, format: YYYY-MM-DD",
   example: "2020-01-01",
 });
+
 export const override = input({
   label: "Override",
   type: "boolean",
@@ -645,6 +711,7 @@ export const override = input({
   comments: "'true' if override provided days clocked entries",
   example: "true",
 });
+
 export const clocked_time = input({
   label: "Clocked Time",
   type: "code",
@@ -664,6 +731,7 @@ export const clocked_time = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const projects = input({
   label: "Projects",
   type: "code",
@@ -682,6 +750,7 @@ export const projects = input({
   clean: jsonInputClean,
   required: true,
 });
+
 export const project_name = input({
   label: "Project Name",
   type: "string",
@@ -690,6 +759,7 @@ export const project_name = input({
   comments: "Name of the project",
   example: "New Project",
 });
+
 export const project_code = input({
   label: "Project Code",
   type: "string",
@@ -698,6 +768,7 @@ export const project_code = input({
   comments: "Code of the project",
   example: "123",
 });
+
 export const limit_total_hours = input({
   label: "Limit Total Hours",
   type: "boolean",
@@ -706,6 +777,7 @@ export const limit_total_hours = input({
   comments: "Activate the limit of hours",
   example: "true",
 });
+
 export const max_limit_total_hours = input({
   label: "Max Limit Total Hours",
   type: "string",
@@ -714,6 +786,7 @@ export const max_limit_total_hours = input({
   comments: "The limit number of hours",
   example: "123",
 });
+
 export const file_name = input({
   label: "File Name",
   type: "string",
@@ -722,6 +795,7 @@ export const file_name = input({
   comments: "The name of the file",
   example: "filename.jpg",
 });
+
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -730,6 +804,7 @@ export const pollResourceType = input({
   comments: "The type of resource to poll for new records.",
   clean: util.types.toString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records on First Run",
   type: "boolean",

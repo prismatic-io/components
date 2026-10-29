@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+
 export interface GitHubWebhook {
   id: number;
   name: string;
@@ -8,6 +9,7 @@ export interface GitHubWebhook {
     url: string;
   };
 }
+
 export interface FetchWebhooksInput {
   client: HttpClient;
   owner: string;

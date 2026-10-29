@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createSessionInputs } from "../../inputs/sessions";
 import { createSessionExamplePayload } from "../../examplePayloads/sessions";
 import { validGroupIdOrName } from "../../util";
+
 export const createSession = action({
   display: {
     label: "Create Session",
@@ -14,6 +15,7 @@ export const createSession = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
     validGroupIdOrName(group.groupid, group.groupname);
+
     const body = {
       ...customBody,
       customId,
@@ -21,7 +23,9 @@ export const createSession = action({
       groupid: group.groupid,
       groupname: group.groupname,
     };
+
     const { data } = await client.post(`/sessions`, body);
+
     return {
       data,
     };

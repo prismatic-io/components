@@ -4,6 +4,7 @@ import { listCategoriesExamplePayload } from "../../examplePayloads";
 import { listCategoriesInputs } from "../../inputs";
 import type { Category } from "../../types";
 import { paginateResults } from "../../util";
+
 export const listCategories = action({
   display: {
     label: "List Categories",

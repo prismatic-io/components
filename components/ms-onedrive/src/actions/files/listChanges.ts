@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getOneDriveClient } from "../../client";
 import { listChangesExamplePayload } from "../../examplePayloads";
 import { listChangesInputs } from "../../inputs";
+
 export const listChanges = action({
   display: {
     label: "List Changes",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteDealFieldInputs } from "../../inputs";
 import { deleteDealFieldExamplePayload } from "../../examplePayloads";
 import { deleteDealFieldOutputSchema } from "../../outputSchemas";
+
 export const deleteDealField = action({
   display: {
     label: "Delete Deal Field",

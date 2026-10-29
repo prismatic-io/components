@@ -1,9 +1,11 @@
 import { bool, list, nullableStr, num, obj, str, userSchema } from "./shared";
+
 export const noteAuthorSchema = obj({
   ...userSchema.properties,
   email: str,
   created_at: str,
 });
+
 export const noteSchema = obj({
   id: num,
   body: str,
@@ -21,8 +23,13 @@ export const noteSchema = obj({
   imported_from: nullableStr,
   commands_changes: obj({}),
 });
+
 export const noteListSchema = list(noteSchema);
+
 export const createIssueNoteOutputSchema = noteSchema;
+
 export const createMergeRequestNoteOutputSchema = noteSchema;
+
 export const listIssueNotesOutputSchema = noteListSchema;
+
 export const listMergeRequestNotesOutputSchema = noteListSchema;

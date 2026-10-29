@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { getBucketLocationExamplePayload } from "../../examplePayloads";
 import { getBucketLocationInputs } from "../../inputs";
 import { getBucketLocationOutputSchema } from "../../outputSchemas";
+
 export const getBucketLocation = action({
   display: {
     label: "Get Bucket Location",

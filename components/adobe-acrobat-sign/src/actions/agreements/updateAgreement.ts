@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { updateAgreementInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import { updateAgreementExamplePayload } from "../../examplePayloads";
+
 export const updateAgreement = action({
   display: {
     label: "Update Agreement",
@@ -43,7 +44,9 @@ export const updateAgreement = action({
       state: agreementState,
       expirationDate,
     };
+
     const { data } = await client.put(`/agreements/${agreementId}`, payload);
+
     return {
       data,
     };

@@ -11,6 +11,7 @@ import {
   properties,
   timeout,
 } from "./common";
+
 const singularLabel = input({
   label: "Singular Label",
   type: "string",
@@ -20,6 +21,7 @@ const singularLabel = input({
   required: true,
   clean: util.types.toString,
 });
+
 const pluralLabel = input({
   label: "Plural Label",
   type: "string",
@@ -30,6 +32,7 @@ const pluralLabel = input({
   required: true,
   clean: util.types.toString,
 });
+
 const requiredProperties = input({
   label: "Required Properties",
   type: "string",
@@ -41,6 +44,7 @@ const requiredProperties = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
+
 const searchableProperties = input({
   label: "Searchable Properties",
   type: "string",
@@ -52,6 +56,7 @@ const searchableProperties = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
+
 const secondaryDisplayProperties = input({
   label: "Secondary Display Properties",
   type: "string",
@@ -63,6 +68,7 @@ const secondaryDisplayProperties = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
+
 const associatedObjects = input({
   label: "Associated Objects",
   type: "string",
@@ -73,12 +79,14 @@ const associatedObjects = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
+
 export const listCustomObjectsInputs = {
   hubspotConnection: connectionInput,
   timeout,
   archived: { ...archived, required: false },
   additionalProperties,
 };
+
 export const createCustomObjectInputs = {
   hubspotConnection: connectionInput,
   name,
@@ -93,6 +101,7 @@ export const createCustomObjectInputs = {
   fieldValues,
   dynamicValues,
 };
+
 export const updateCustomObjectInputs = {
   hubspotConnection: connectionInput,
   objectType: {
@@ -107,12 +116,14 @@ export const updateCustomObjectInputs = {
   fieldValues,
   dynamicValues,
 };
+
 export const deleteCustomObjectInputs = {
   hubspotConnection: connectionInput,
   objectType,
   timeout,
   archived: { ...archived, default: "false" },
 };
+
 export const getCustomObjectInputs = {
   hubspotConnection: connectionInput,
   timeout,

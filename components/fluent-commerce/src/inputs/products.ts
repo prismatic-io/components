@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./common";
+
 const productCatalogueRef = input({
   label: "Product Catalogue Ref (ID)",
   type: "string",
@@ -9,6 +10,7 @@ const productCatalogueRef = input({
   clean: util.types.toString,
   comments: "The reference ID (ref) of an existing product catalog",
 });
+
 const productRef = input({
   label: "Product Ref ID",
   type: "string",
@@ -18,6 +20,7 @@ const productRef = input({
   clean: util.types.toString,
   comments: "The reference ID (ref) of the new product (must be unique)",
 });
+
 const productType = input({
   label: "Product Type",
   type: "string",
@@ -28,6 +31,7 @@ const productType = input({
   clean: util.types.toString,
   comments: "The type of the product",
 });
+
 const productName = input({
   label: "Product Name",
   type: "string",
@@ -37,6 +41,7 @@ const productName = input({
   clean: util.types.toString,
   comments: "The name of the product (not required to be unique)",
 });
+
 const productSummary = input({
   label: "Product Summary / Description",
   type: "string",
@@ -47,6 +52,7 @@ const productSummary = input({
   comments:
     "A short description of the product, stored as the product's summary.",
 });
+
 const gtin = input({
   label: "Global Trade Item Number (GTIN)",
   type: "string",
@@ -56,6 +62,7 @@ const gtin = input({
   clean: util.types.toString,
   comments: "The global trade number of the product",
 });
+
 const priceCurrency = input({
   label: "Price Currency",
   type: "string",
@@ -65,6 +72,7 @@ const priceCurrency = input({
   clean: util.types.toString,
   comments: "Type of currency the price is in (USD, YEN, GBP, etc)",
 });
+
 const priceValue = input({
   label: "Price Value",
   type: "string",
@@ -74,6 +82,7 @@ const priceValue = input({
   clean: util.types.toNumber,
   comments: "The price of the product (must be a floating-point number)",
 });
+
 export const createProductInputs = {
   connection: connectionInput,
   productCatalogueRef,

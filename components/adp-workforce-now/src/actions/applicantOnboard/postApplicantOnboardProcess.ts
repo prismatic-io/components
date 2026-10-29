@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { postApplicantOnboardProcessExamplePayload } from "../../examplePayloads";
 import { postApplicantOnboardProcessInputs } from "../../inputs";
 import { postApplicantOnboardProcessOutputSchema } from "../../outputSchemas";
+
 export const postApplicantOnboardProcess = action({
   display: {
     label: "Post Applicant Onboard Process",
@@ -21,9 +22,8 @@ export const postApplicantOnboardProcess = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => postApplicantOnboardProcessExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    postApplicantOnboardProcessExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: postApplicantOnboardProcessOutputSchema,

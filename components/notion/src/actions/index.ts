@@ -4,6 +4,7 @@ import miscActions from "./misc";
 import oldDatabaseActions from "./oldDatabases";
 import pageActions from "./pages";
 import userActions from "./users";
+
 export default {
   ...databaseActions,
   ...datasourceActions,

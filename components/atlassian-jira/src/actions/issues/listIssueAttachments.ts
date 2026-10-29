@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createV3Client } from "../../connections/auth";
 import { connectionInput, issueId } from "../../inputs";
 import { getAttachmentsFromIssue, getIssueById } from "../../util";
+
 export const listIssueAttachments = action({
   display: {
     label: "List Issue Attachments",

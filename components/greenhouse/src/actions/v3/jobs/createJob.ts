@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { createJobV3ExamplePayload } from "../../../examplePayloads/v3/jobs";
 import { createJobV3Inputs } from "../../../inputs/v3/jobs";
 import { generatePayload } from "../../../util";
+
 export const createJobV3 = action({
   display: {
     label: "Create Job",
@@ -28,6 +29,7 @@ export const createJobV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       template_job_id: templateJobId,
       number_of_openings: numberOfOpenings,
@@ -42,6 +44,7 @@ export const createJobV3 = action({
       opening_ids: openingIds,
       custom_fields: customFields,
     });
+
     const { data } = await client.post("/jobs", body);
     return { data };
   },

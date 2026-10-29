@@ -1,5 +1,6 @@
 import type { ElementWithLabel, GetRecordDataSource } from "../types";
 import { executeSFAction, getFindQuery, mapToElement } from "./query";
+
 export const getRecordsForDatasource = async ({
   context,
   salesforceClient,
@@ -29,6 +30,7 @@ export const getRecordsForDatasource = async ({
   const objects = mapToElement(response, labelKey, valueKey);
   return objects;
 };
+
 export const filterAndSort = (
   items: ElementWithLabel[],
   searchQuery: string | undefined,

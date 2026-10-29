@@ -5,6 +5,7 @@ import { createSourcingRelationshipInputs } from "../../inputs";
 import { itemSourcingSchema } from "../../outputSchemas";
 import type { ItemSourcingCreateVo } from "../../types";
 import { handleArenaError } from "../../util";
+
 export const createSourcingRelationship = action({
   display: {
     label: "Create Sourcing Relationship",
@@ -33,7 +34,9 @@ export const createSourcingRelationship = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const sourcingData: ItemSourcingCreateVo = {};
+
       if (amlRank !== undefined) sourcingData.amlRank = amlRank;
       if (approved !== undefined) sourcingData.approved = approved;
       if (makeItem !== undefined) sourcingData.makeItem = makeItem;
@@ -42,19 +45,23 @@ export const createSourcingRelationship = action({
       if (vendorItemGuid) sourcingData.vendorItem = { guid: vendorItemGuid };
       if (vendorItemConversionFactor !== undefined)
         sourcingData.vendorItemConversionFactor = vendorItemConversionFactor;
+
       context.logger.info("Creating sourcing relationship in Arena", {
         itemGuid: itemGuid,
         sourcingData: sourcingData,
       });
+
       const { data, status } = await client.post(
         `/items/${itemGuid}/sourcing`,
         sourcingData,
       );
+
       context.logger.info("Sourcing relationship created successfully", {
         itemGuid: itemGuid,
         sourcingRelationshipGuid: data?.guid,
         statusCode: status,
       });
+
       return {
         data,
       };

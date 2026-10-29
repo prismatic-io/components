@@ -10,6 +10,7 @@ import {
   endTime,
 } from "./common";
 import { LIVE_API_URL } from "../constants";
+
 const maxEventCount = input({
   label: "Max Event Count",
   type: "string",
@@ -20,6 +21,7 @@ const maxEventCount = input({
   placeholder: "Enter max event count",
   clean: util.types.toNumber,
 });
+
 const owner = input({
   label: "Owner",
   type: "string",
@@ -30,6 +32,7 @@ const owner = input({
   placeholder: "Enter owner URI",
   clean: util.types.toString,
 });
+
 const ownerType = input({
   label: "Owner Type",
   type: "string",
@@ -39,6 +42,7 @@ const ownerType = input({
   placeholder: "Enter owner type",
   clean: util.types.toString,
 });
+
 const name = input({
   label: "Name",
   type: "string",
@@ -48,6 +52,7 @@ const name = input({
   clean: cleanString,
   example: "15 Minute Meeting",
 });
+
 const duration = input({
   label: "Duration",
   type: "string",
@@ -57,6 +62,7 @@ const duration = input({
   clean: cleanString,
   example: "60",
 });
+
 const periodType = input({
   label: "Period Type",
   type: "string",
@@ -84,8 +90,10 @@ const periodType = input({
       value: "unlimited",
     },
   ],
+
   clean: cleanString,
 });
+
 const startDate = input({
   label: "Start Date",
   type: "string",
@@ -95,6 +103,7 @@ const startDate = input({
   clean: cleanString,
   example: "2019-01-02",
 });
+
 const endDate = input({
   label: "End Date",
   type: "string",
@@ -104,6 +113,7 @@ const endDate = input({
   clean: cleanString,
   example: "2019-01-03",
 });
+
 const maxBookingTime = input({
   label: "Max Booking Time",
   type: "string",
@@ -113,6 +123,7 @@ const maxBookingTime = input({
   clean: cleanString,
   example: "300",
 });
+
 const hideLocation = input({
   label: "Hide Location",
   type: "boolean",
@@ -121,6 +132,7 @@ const hideLocation = input({
   required: false,
   clean: util.types.toBool,
 });
+
 const locationConfigurations = input({
   label: "Location Configurations",
   type: "code",
@@ -138,6 +150,7 @@ const locationConfigurations = input({
   required: false,
   clean: util.types.toObject,
 });
+
 const availabilityRule = input({
   label: "Availability Rule",
   type: "code",
@@ -162,6 +175,7 @@ const availabilityRule = input({
   required: false,
   clean: util.types.toObject,
 });
+
 export const createShareInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
@@ -176,17 +190,20 @@ export const createShareInputs = {
   locationConfigurations,
   availabilityRule,
 };
+
 export const createSingleUseSchedulingLinkInputs = {
   connection,
   maxEventCount,
   owner,
   ownerType,
 };
+
 export const getEventTypeInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
   uuid: { ...uuid, dataSource: "eventTypes" },
 };
+
 export const listEventTypeAvailableTimesInputs = {
   connection,
   organization: { ...organization, dataSource: "organizations" },
@@ -202,7 +219,9 @@ export const listEventTypeAvailableTimesInputs = {
     comments: "Start time of the requested availability range.",
   },
 };
+
 const { debugRequest: _, ...httpRawInputs } = httpClientInputs;
+
 export const rawRequestInputs = {
   connection,
   ...httpRawInputs,

@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import { connection, organizationId, spaceId } from "./common";
+
 const spaceName = input({
   label: "Space Name",
   type: "string",
@@ -10,6 +11,7 @@ const spaceName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const defaultLocale = input({
   label: "Default Locale",
   type: "string",
@@ -20,23 +22,28 @@ const defaultLocale = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const createSpaceInputs = {
   connection,
   organizationId,
   name: spaceName,
   defaultLocale,
 };
+
 export const deleteSpaceInputs = {
   connection,
   spaceId,
 };
+
 export const getSpaceInputs = {
   connection,
   spaceId,
 };
+
 export const listSpacesInputs = {
   connection,
 };
+
 export const updateSpaceInputs = {
   connection,
   spaceId,

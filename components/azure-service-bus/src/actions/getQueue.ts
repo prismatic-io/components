@@ -9,6 +9,7 @@ import {
   resourceGroupName,
   subscriptionId,
 } from "../inputs";
+
 export const getQueue = action({
   display: {
     label: "Get Queue",
@@ -39,4 +40,5 @@ export const getQueue = action({
     queueName,
   },
 });
+
 export default { getQueue };

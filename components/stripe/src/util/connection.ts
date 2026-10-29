@@ -1,4 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
+
 export const getStripeKey = (stripeConnection: Connection) => {
   if (stripeConnection.key !== "apiKey") {
     throw new ConnectionError(

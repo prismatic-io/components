@@ -14,6 +14,7 @@ import {
   resolvePollingRecordChanges,
   windowIsEmpty,
 } from "../util/polling";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Events",
@@ -40,6 +41,7 @@ export const pollChangesTrigger = pollingTrigger({
       now,
       logger: context.logger,
     });
+
     const client = await createArenaClient(context, params.connection);
     const { records: createdRecords, nextCursor } = windowIsEmpty(cursor)
       ? { records: [], nextCursor: null }
@@ -49,15 +51,18 @@ export const pollChangesTrigger = pollingTrigger({
           cursor,
           params.itemsReconciled === "any" ? undefined : params.itemsReconciled,
         );
+
     context.polling.setState({
       lastPolledAt: nextCursor ? state.lastPolledAt : cursor.windowEnd,
       ...(nextCursor ? { cursor: nextCursor } : {}),
     } satisfies PollingState);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled integration ${params.integrationGuid} at offset ${cursor.offset}: ${createdRecords.length} events between ${cursor.windowStart} and ${cursor.windowEnd}; ${nextCursor ? "more pages remain" : "window exhausted"}`,
       );
     }
+
     return {
       payload: {
         ...payload,

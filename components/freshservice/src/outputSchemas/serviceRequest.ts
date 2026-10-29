@@ -1,4 +1,5 @@
 import { attachmentSchema, customFieldsSchema } from "./common";
+
 export const createServiceRequestOutputSchema = {
   type: "object" as const,
   properties: {

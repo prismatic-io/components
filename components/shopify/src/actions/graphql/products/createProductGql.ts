@@ -6,6 +6,7 @@ import { createProductGqlOutputSchema } from "../../../outputSchemas";
 import type { Product } from "../../../types";
 import { productMapper } from "../mappers/productMapper";
 import createProductQuery from "../queries/products/CreateProduct.gql";
+
 export const createProductGql = action({
   display: {
     label: "Create Product",
@@ -33,6 +34,7 @@ export const createProductGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const media = imageUrl
       ? [
           {
@@ -42,24 +44,21 @@ export const createProductGql = action({
           },
         ]
       : undefined;
-    const {
-      productCreate,
-    }: {
-      productCreate: {
-        product: Product;
-      };
-    } = await client.request(createProductQuery, {
-      input: {
-        title,
-        descriptionHtml,
-        vendor,
-        productType,
-        tags,
-        status: productStatus,
-        ...additionalFields,
-      },
-      media,
-    });
+
+    const { productCreate }: { productCreate: { product: Product } } =
+      await client.request(createProductQuery, {
+        input: {
+          title,
+          descriptionHtml,
+          vendor,
+          productType,
+          tags,
+          status: productStatus,
+          ...additionalFields,
+        },
+        media,
+      });
+
     return {
       data: {
         product: productMapper(productCreate.product),

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { searchOrdersExamplePayload } from "../../examplePayloads";
 import { searchOrdersInputs } from "../../inputs";
+
 export const searchOrders = action({
   display: {
     label: "Search Orders",
@@ -21,6 +22,7 @@ export const searchOrders = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       location_ids: locationIds,
       query: orderQuery,
@@ -28,7 +30,9 @@ export const searchOrders = action({
       return_entries: returnEntries || false,
       cursor: pagination.cursor,
     };
+
     const response = await client.post("/v2/orders/search", requestBody);
+
     return {
       data: response.data,
     };

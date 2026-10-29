@@ -12,6 +12,7 @@ import {
   userId,
 } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const personName = input({
   label: "Name",
   type: "string",
@@ -21,6 +22,7 @@ const personName = input({
   example: "John Doe",
   placeholder: "Enter person name",
 });
+
 const ownerId = input({
   label: "Owner ID",
   type: "string",
@@ -30,6 +32,7 @@ const ownerId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const orgId = input({
   label: "Org ID",
   type: "string",
@@ -39,6 +42,7 @@ const orgId = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const addTime = input({
   label: "Add Time",
   type: "string",
@@ -48,6 +52,7 @@ const addTime = input({
   example: "2024-01-15T10:30:00Z",
   placeholder: "Enter date & time (ISO 8601 format)",
 });
+
 const addPersonContactInfo = structuredObjectInput({
   label: "Contact Information",
   comments: "Email, phone, visibility, and marketing preferences.",
@@ -101,6 +106,7 @@ const addPersonContactInfo = structuredObjectInput({
     }),
   },
 });
+
 const updatePersonContactInfo = structuredObjectInput({
   label: "Contact Information",
   comments: "Email, phone, visibility, and marketing preferences.",
@@ -153,6 +159,7 @@ const updatePersonContactInfo = structuredObjectInput({
     }),
   },
 });
+
 const searchTerm = input({
   label: "Term",
   type: "string",
@@ -162,6 +169,7 @@ const searchTerm = input({
   example: "John Doe",
   placeholder: "Enter search term",
 });
+
 const searchFields = input({
   label: "Fields",
   type: "string",
@@ -172,6 +180,7 @@ const searchFields = input({
   example: "custom_fields,email,notes,phone,name",
   placeholder: "Enter fields (comma-separated)",
 });
+
 const exactMatch = input({
   label: "Exact Match",
   type: "boolean",
@@ -179,6 +188,7 @@ const exactMatch = input({
   comments:
     "When true, only full exact matches against the given term are returned",
 });
+
 const searchOrganizationId = input({
   label: "Organization ID",
   type: "string",
@@ -187,6 +197,7 @@ const searchOrganizationId = input({
   example: "123",
   placeholder: "Enter Organization ID",
 });
+
 const includeFields = input({
   label: "Include Fields",
   type: "string",
@@ -195,6 +206,7 @@ const includeFields = input({
   comments:
     "Supports including optional fields in the results which are not provided by default",
 });
+
 const mergeWithId = input({
   label: "Merge With ID",
   type: "string",
@@ -204,12 +216,14 @@ const mergeWithId = input({
   example: "456",
   placeholder: "Enter Person ID to merge with",
 });
+
 const done = input({
   label: "Done",
   type: "boolean",
   clean: util.types.toBool,
   comments: "When true, returns only completed activities",
 });
+
 const dealStatus = input({
   label: "Status",
   type: "string",
@@ -222,6 +236,7 @@ const dealStatus = input({
   clean: cleanString,
   comments: "Only fetch deals with a specific status",
 });
+
 const includeDeletedFiles = input({
   label: "Include Deleted Files",
   type: "string",
@@ -232,6 +247,7 @@ const includeDeletedFiles = input({
   clean: cleanNumber,
   comments: "When enabled, the list of files will also include deleted files",
 });
+
 const allChanges = input({
   label: "All Changes",
   type: "string",
@@ -240,6 +256,7 @@ const allChanges = input({
   example: "1",
   placeholder: "Enter value",
 });
+
 const items = input({
   label: "Items",
   type: "string",
@@ -248,6 +265,7 @@ const items = input({
   example: "deal,activity",
   placeholder: "Enter item types (comma-separated)",
 });
+
 const followerId = input({
   label: "Follower ID",
   type: "string",
@@ -257,6 +275,7 @@ const followerId = input({
   example: "123",
   placeholder: "Enter Follower ID",
 });
+
 export const addPersonInputs = {
   connection: connectionInput,
   name: personName,
@@ -265,6 +284,7 @@ export const addPersonInputs = {
   addTime,
   contactInfo: addPersonContactInfo,
 };
+
 export const updatePersonInputs = {
   connection: connectionInput,
   id: personIdInput,
@@ -273,6 +293,7 @@ export const updatePersonInputs = {
   orgId,
   contactInfo: updatePersonContactInfo,
 };
+
 export const searchPersonsInputs = {
   connection: connectionInput,
   term: searchTerm,
@@ -282,17 +303,20 @@ export const searchPersonsInputs = {
   includeFields,
   pagination: cursorPagination,
 };
+
 export const mergePersonsInputs = {
   connection: connectionInput,
   id: personIdInput,
   mergeWithId,
 };
+
 export const getPersonActivitiesInputs = {
   connection: connectionInput,
   id: personIdInput,
   pagination: cursorPagination,
   done,
 };
+
 export const getPersonDealsInputs = {
   connection: connectionInput,
   id: personIdInput,
@@ -301,6 +325,7 @@ export const getPersonDealsInputs = {
   sortBy,
   sortDirection,
 };
+
 export const getPersonFilesInputs = {
   connection: connectionInput,
   id: personIdInput,
@@ -308,6 +333,7 @@ export const getPersonFilesInputs = {
   includeDeletedFiles,
   sort: sortInput,
 };
+
 export const getPersonUpdatesInputs = {
   connection: connectionInput,
   id: personIdInput,
@@ -315,11 +341,13 @@ export const getPersonUpdatesInputs = {
   allChanges,
   items,
 };
+
 export const deletePersonFollowerInputs = {
   connection: connectionInput,
   id: personIdInput,
   followerId,
 };
+
 export const getPersonsInputs = {
   fetchAll,
   pagination: cursorPagination,
@@ -328,19 +356,23 @@ export const getPersonsInputs = {
   sortDirection,
   connection: connectionInput,
 };
+
 export const getPersonInputs = {
   connection: connectionInput,
   id: personIdInput,
 };
+
 export const deletePersonInputs = {
   connection: connectionInput,
   id: personIdInput,
 };
+
 export const getPersonFollowersInputs = {
   id: personIdInput,
   pagination: cursorPagination,
   connection: connectionInput,
 };
+
 export const addPersonFollowerInputs = {
   connection: connectionInput,
   id: personIdInput,
@@ -349,20 +381,24 @@ export const addPersonFollowerInputs = {
     required: true,
   },
 };
+
 export const getPersonMailMessagesInputs = {
   connection: connectionInput,
   id: personIdInput,
   pagination: offsetPagination,
 };
+
 export const getPersonProductsInputs = {
   connection: connectionInput,
   id: personIdInput,
   pagination: offsetPagination,
 };
+
 export const getPersonUsersInputs = {
   connection: connectionInput,
   id: personIdInput,
 };
+
 export const deletePersonPictureInputs = {
   connection: connectionInput,
   id: personIdInput,

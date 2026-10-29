@@ -1,6 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient, validateV2Connection } from "../client";
 import { codeResource, companyId, connectionInput } from "../inputs";
+
 export const listCompanyCodes = dataSource({
   display: {
     label: "List Company Codes",
@@ -14,6 +15,7 @@ export const listCompanyCodes = dataSource({
   perform: async (_context, { connectionInput, companyId, codeResource }) => {
     validateV2Connection(connectionInput);
     const client = await createClient(connectionInput, false);
+
     const { data } = await client.get(
       `/companies/${companyId}/codes/${codeResource}`,
     );

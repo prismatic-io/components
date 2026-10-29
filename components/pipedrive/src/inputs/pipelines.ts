@@ -7,6 +7,7 @@ import {
   sortDirection,
 } from "./common";
 import { cleanNumber, cleanString } from "../util";
+
 const pipelineName = input({
   label: "Name",
   type: "string",
@@ -16,6 +17,7 @@ const pipelineName = input({
   example: "Sales Pipeline",
   placeholder: "Enter pipeline name",
 });
+
 const pipelineNameOptional = input({
   label: "Name",
   type: "string",
@@ -25,6 +27,7 @@ const pipelineNameOptional = input({
   example: "Sales Pipeline",
   placeholder: "Enter pipeline name",
 });
+
 const isDealProbabilityEnabled = input({
   label: "Deal Probability",
   type: "boolean",
@@ -32,6 +35,7 @@ const isDealProbabilityEnabled = input({
   clean: util.types.toBool,
   comments: "Whether deal probability is disabled or enabled for this pipeline",
 });
+
 const totalsConvertCurrency = input({
   label: "Totals Convert Currency",
   type: "string",
@@ -40,6 +44,7 @@ const totalsConvertCurrency = input({
   example: "USD",
   placeholder: "Enter currency code (e.g. USD)",
 });
+
 const startDate = input({
   label: "Start Date",
   type: "string",
@@ -49,6 +54,7 @@ const startDate = input({
   example: "2024-01-01",
   placeholder: "Enter start date (YYYY-MM-DD)",
 });
+
 const endDate = input({
   label: "End Date",
   type: "string",
@@ -58,6 +64,7 @@ const endDate = input({
   example: "2024-12-31",
   placeholder: "Enter end date (YYYY-MM-DD)",
 });
+
 const statsUserId = input({
   label: "User ID",
   type: "string",
@@ -66,6 +73,7 @@ const statsUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const movementStatsUserId = input({
   label: "User ID",
   type: "string",
@@ -74,6 +82,7 @@ const movementStatsUserId = input({
   example: "123",
   placeholder: "Enter User ID",
 });
+
 const pipelineDealsFilterId = input({
   label: "Filter ID",
   type: "string",
@@ -83,6 +92,7 @@ const pipelineDealsFilterId = input({
   example: "123",
   placeholder: "Enter Filter ID",
 });
+
 const pipelineDealsStageId = input({
   label: "Stage ID",
   type: "string",
@@ -91,22 +101,26 @@ const pipelineDealsStageId = input({
   example: "123",
   placeholder: "Enter Stage ID",
 });
+
 export const addPipelineInputs = {
   connection: connectionInput,
   name: pipelineName,
   isDealProbabilityEnabled,
 };
+
 export const updatePipelineInputs = {
   connection: connectionInput,
   id: pipelineIdInput,
   name: pipelineNameOptional,
   isDealProbabilityEnabled,
 };
+
 export const getPipelineInputs = {
   connection: connectionInput,
   id: pipelineIdInput,
   totalsConvertCurrency,
 };
+
 export const getPipelineConversionStatisticsInputs = {
   connection: connectionInput,
   id: pipelineIdInput,
@@ -114,6 +128,7 @@ export const getPipelineConversionStatisticsInputs = {
   endDate,
   userId: statsUserId,
 };
+
 export const getPipelineDealsInputs = {
   id: pipelineIdInput,
   filterId: pipelineDealsFilterId,
@@ -126,6 +141,7 @@ export const getPipelineDealsInputs = {
   },
   connection: connectionInput,
 };
+
 export const getPipelineMovementStatisticsInputs = {
   connection: connectionInput,
   id: pipelineIdInput,
@@ -133,12 +149,14 @@ export const getPipelineMovementStatisticsInputs = {
   endDate,
   userId: movementStatsUserId,
 };
+
 export const getPipelinesInputs = {
   sortBy,
   sortDirection,
   pagination: cursorPagination,
   connection: connectionInput,
 };
+
 export const deletePipelineInputs = {
   connection: connectionInput,
   id: pipelineIdInput,

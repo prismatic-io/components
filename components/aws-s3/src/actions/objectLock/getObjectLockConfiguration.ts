@@ -4,6 +4,7 @@ import { createS3Client } from "../../client";
 import { getObjectLockConfigurationExamplePayload } from "../../examplePayloads";
 import { getObjectLockConfigurationInputs } from "../../inputs";
 import { getObjectLockConfigurationOutputSchema } from "../../outputSchemas";
+
 export const getObjectLockConfiguration = action({
   display: {
     label: "Get Object Lock Configuration",
@@ -34,6 +35,7 @@ export const getObjectLockConfiguration = action({
       Bucket: bucket,
     });
     const data = await s3.send(command);
+
     return {
       data,
     };

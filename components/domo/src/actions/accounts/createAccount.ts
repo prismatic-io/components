@@ -3,6 +3,7 @@ import { getDomoClient } from "../../client";
 import { createAccountExamplePayload } from "../../examplePayloads";
 import { createAccountInputs } from "../../inputs";
 import type { CreateAccountBody } from "../types/CreateAccountBody";
+
 export const createAccount = action({
   display: {
     label: "Create Account",
@@ -37,4 +38,5 @@ export const createAccount = action({
   },
   inputs: createAccountInputs,
 });
+
 export default { createAccount };

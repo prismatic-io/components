@@ -5,6 +5,7 @@ import { listStatusChangesInputs } from "../../inputs";
 import { listStatusChangesOutputSchema } from "../../outputSchemas";
 import type { StatusChange } from "../../types";
 import { paginateCursor } from "../../util";
+
 export const listStatusChanges = action({
   display: {
     label: "List Status Changes",
@@ -32,8 +33,7 @@ export const listStatusChanges = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listStatusChangesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listStatusChangesExamplePayload,
   examplePayload: listStatusChangesExamplePayload,
 });

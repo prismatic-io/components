@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhook } from "../../utils/webhooks";
+
 export default action({
   display: {
     label: "Delete Webhook",

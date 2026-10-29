@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
 import { connectionInput, customRoleId, getEmail, getTeamId } from "./common";
+
 const userId = input({
   label: "User ID",
   type: "string",
@@ -10,6 +11,7 @@ const userId = input({
   required: true,
   clean: util.types.toString,
 });
+
 const admin = input({
   label: "Admin",
   type: "boolean",
@@ -18,6 +20,7 @@ const admin = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const username = input({
   label: "Username",
   type: "string",
@@ -28,6 +31,7 @@ const username = input({
   required: false,
   clean: cleanString,
 });
+
 export const editUserOnWorkspaceInputs = {
   teamId: getTeamId(true),
   clickUpConnection: connectionInput,
@@ -36,11 +40,13 @@ export const editUserOnWorkspaceInputs = {
   userId,
   username,
 };
+
 export const getUserInputs = {
   teamId: getTeamId(true),
   userId,
   clickUpConnection: connectionInput,
 };
+
 export const inviteUserToWorkspaceInputs = {
   teamId: getTeamId(true),
   clickUpConnection: connectionInput,
@@ -48,6 +54,7 @@ export const inviteUserToWorkspaceInputs = {
   admin,
   customRoleId,
 };
+
 export const removeUserFromWorkspaceInputs = {
   teamId: getTeamId(true),
   clickUpConnection: connectionInput,

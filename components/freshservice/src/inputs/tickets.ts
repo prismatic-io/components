@@ -13,12 +13,15 @@ import {
   fetchAll,
   pagination,
 } from "./common";
+
 const ticketsDocumentationComments =
   "See [Freshservice API documentation](https://api.freshservice.com/#ticket_attributes) for more information.";
+
 const ticketsAdditionalFields = input({
   ...additionalFields,
   comments: `${additionalFields.comments} ${ticketsDocumentationComments}`,
 });
+
 const sourceOptions = [
   { label: "Email", value: "1" },
   { label: "Portal", value: "2" },
@@ -31,24 +34,28 @@ const sourceOptions = [
   { label: "Walkup", value: "9" },
   { label: "Slack", value: "10" },
 ];
+
 const statusOptions = [
   { label: "Open", value: "2" },
   { label: "Pending", value: "3" },
   { label: "Resolved", value: "4" },
   { label: "Closed", value: "5" },
 ];
+
 const priorityOptions = [
   { label: "Low", value: "1" },
   { label: "Medium", value: "2" },
   { label: "High", value: "3" },
   { label: "Urgent", value: "4" },
 ];
+
 const filterOptions = [
   { label: "New and My Open", value: "new_and_my_open" },
   { label: "Watching", value: "watching" },
   { label: "Spam", value: "spam" },
   { label: "Deleted", value: "deleted" },
 ];
+
 const description = input({
   label: "Description",
   type: "code",
@@ -59,6 +66,7 @@ const description = input({
   placeholder: "Enter ticket description in HTML",
   clean: util.types.toString,
 });
+
 const subject = input({
   label: "Subject",
   type: "string",
@@ -68,6 +76,7 @@ const subject = input({
   placeholder: "Enter ticket subject",
   clean: util.types.toString,
 });
+
 const email = input({
   label: "Email",
   type: "string",
@@ -77,6 +86,7 @@ const email = input({
   placeholder: "Enter requester email",
   clean: util.types.toString,
 });
+
 const priority = input({
   label: "Priority",
   type: "string",
@@ -87,6 +97,7 @@ const priority = input({
   placeholder: "Select a priority",
   clean: util.types.toNumber,
 });
+
 const status = input({
   label: "Status",
   type: "string",
@@ -97,6 +108,7 @@ const status = input({
   placeholder: "Select a status",
   clean: util.types.toNumber,
 });
+
 const ccEmails = input({
   label: "CC Emails",
   type: "code",
@@ -107,6 +119,7 @@ const ccEmails = input({
   example: JSON.stringify(["ex1@email.com", "ex2@email.com"], null, 2),
   clean: (value) => cleanArrayCodeInput(value, "CC Emails"),
 });
+
 const workspaceId = input({
   label: "Workspace ID",
   type: "string",
@@ -117,6 +130,7 @@ const workspaceId = input({
   dataSource: "selectWorkspace",
   clean: cleanNumberInput,
 });
+
 export const filter = input({
   label: "Filter",
   type: "string",
@@ -127,6 +141,7 @@ export const filter = input({
   model: filterOptions,
   clean: cleanStringInput,
 });
+
 const ticketId = input({
   label: "Ticket ID",
   type: "string",
@@ -137,6 +152,7 @@ const ticketId = input({
   dataSource: "selectTicket",
   clean: util.types.toNumber,
 });
+
 const source = input({
   label: "Source",
   type: "string",
@@ -147,6 +163,7 @@ const source = input({
   placeholder: "Select a source",
   clean: util.types.toNumber,
 });
+
 const bypassMandatory = input({
   label: "Bypass Mandatory",
   type: "string",
@@ -157,6 +174,7 @@ const bypassMandatory = input({
   model: BOOLEAN_INPUT_MODEL,
   clean: cleanBooleanInput,
 });
+
 const groupId = input({
   label: "Group ID",
   type: "string",
@@ -167,6 +185,7 @@ const groupId = input({
   placeholder: "Enter group ID",
   clean: cleanNumberInput,
 });
+
 const responderId = input({
   label: "Responder ID",
   type: "string",
@@ -177,6 +196,7 @@ const responderId = input({
   placeholder: "Enter responder ID",
   clean: cleanNumberInput,
 });
+
 export const createTicketInputs = {
   connection,
   description,
@@ -188,15 +208,18 @@ export const createTicketInputs = {
   workspaceId,
   ticketsAdditionalFields,
 };
+
 export const deleteTicketInputs = {
   connection,
   ticketId: input({ ...ticketId, comments: "ID of the ticket to delete." }),
 };
+
 export const getTicketInputs = {
   connection,
   ticketId: input({ ...ticketId, comments: "ID of the ticket to retrieve." }),
   additionalQueryParams,
 };
+
 export const listTicketsInputs = {
   connection,
   fetchAll,
@@ -204,6 +227,7 @@ export const listTicketsInputs = {
   filter,
   additionalQueryParams,
 };
+
 export const moveTicketInputs = {
   connection,
   ticketId: input({ ...ticketId, comments: "ID of the ticket to move." }),
@@ -216,6 +240,7 @@ export const moveTicketInputs = {
   groupId,
   responderId,
 };
+
 const updateTicketAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -228,6 +253,7 @@ const updateTicketAdditionalFields = structuredObjectInput({
     bypassMandatory,
   },
 });
+
 export const updateTicketInputs = {
   connection,
   ticketId: input({ ...ticketId, comments: "ID of the ticket to update." }),

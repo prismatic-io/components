@@ -3,6 +3,7 @@ import {
   OAuth2Type,
   templateConnectionInputs,
 } from "@prismatic-io/spectral";
+
 export const salesforceClientCredentials = oauth2Connection({
   key: "salesforceClientCredentials",
   oauth2Type: OAuth2Type.ClientCredentials,

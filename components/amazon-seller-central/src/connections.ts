@@ -5,6 +5,7 @@ import {
   util,
 } from "@prismatic-io/spectral";
 import { spAPIEndpoints } from "./inputs";
+
 export const amazonOauth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",
@@ -87,6 +88,7 @@ export const amazonOauth = oauth2Connection({
     }),
   },
 });
+
 export const amazonClientCredentials = oauth2Connection({
   oauth2Type: OAuth2Type.ClientCredentials,
   key: "clientCredentials",
@@ -171,4 +173,5 @@ export const amazonClientCredentials = oauth2Connection({
     }),
   },
 });
+
 export default [amazonOauth, amazonClientCredentials];

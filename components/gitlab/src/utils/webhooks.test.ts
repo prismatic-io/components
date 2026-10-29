@@ -9,21 +9,25 @@ import {
   resolveEventBranch,
   tokensMatch,
 } from "./webhooks";
+
 afterEach(() => nock.cleanAll());
 const client = () => createGitlabClient(accessTokenConnection, false);
 const URL_ = "https://hooks.example.com/trigger/ABC";
+
 test("tokensMatch compares in constant time and rejects blanks", () => {
   expect(tokensMatch("s3cret", "s3cret")).toBe(true);
   expect(tokensMatch("nope", "s3cret")).toBe(false);
   expect(tokensMatch(undefined, "s3cret")).toBe(false);
   expect(tokensMatch("", "")).toBe(false);
 });
+
 test("resolveEventBranch maps X-Gitlab-Event to a branch", () => {
   expect(resolveEventBranch({ "x-gitlab-event": "Merge Request Hook" })).toBe(
     "Merge Request",
   );
   expect(resolveEventBranch({ "x-gitlab-event": "Emoji Hook" })).toBe("Other");
 });
+
 test("buildHookBody sets every event flag explicitly", () => {
   const body = buildHookBody(URL_, "s", {
     projects: ["1"],
@@ -36,6 +40,7 @@ test("buildHookBody sets every event flag explicitly", () => {
   expect(body.enable_ssl_verification).toBe(true);
   expect(body.branch_filter_strategy).toBe("all_branches");
 });
+
 test("buildHookBody uses the wildcard strategy when a branch filter is set", () => {
   const body = buildHookBody(URL_, "s", {
     projects: ["1"],
@@ -45,6 +50,7 @@ test("buildHookBody uses the wildcard strategy when a branch filter is set", () 
   expect(body.push_events_branch_filter).toBe("release/*");
   expect(body.branch_filter_strategy).toBe("wildcard");
 });
+
 test("reconcile updates an existing hook, creates missing ones, and deletes hooks for removed projects", async () => {
   const previous: WebhookState = {
     secret: "keep-me",
@@ -94,6 +100,7 @@ test("reconcile updates an existing hook, creates missing ones, and deletes hook
   ]);
   expect(nock.isDone()).toBe(true);
 });
+
 test("reconcile rolls back hooks it created when a later project fails", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/1/hooks")
@@ -116,6 +123,7 @@ test("reconcile rolls back hooks it created when a later project fails", async (
   ).rejects.toThrow(/403/);
   expect(nock.isDone()).toBe(true);
 });
+
 test("removeHooks finds hooks by URL when state is lost, tolerating 404", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/5/hooks")
@@ -129,6 +137,7 @@ test("removeHooks finds hooks by URL when state is lost, tolerating 404", async 
   const removed = await removeHooks(client(), [URL_], undefined, ["5"]);
   expect(removed).toEqual([{ projectId: "5", hookId: 50 }]);
 });
+
 test("reconcile keeps the hook when a project entered as a path is redeployed as its numeric ID", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/acme%2Fapp")
@@ -147,6 +156,7 @@ test("reconcile keeps the hook when a project entered as a path is redeployed as
   expect(first.config.projects).toEqual(["7"]);
   expect(first.hooks).toEqual([{ projectId: "7", hookId: 70 }]);
   expect(nock.isDone()).toBe(true);
+
   const deletes = nock(GITLAB_URL)
     .delete(/\/hooks\//)
     .reply(204);
@@ -166,6 +176,7 @@ test("reconcile keeps the hook when a project entered as a path is redeployed as
   expect(second.hooks).toEqual([{ projectId: "7", hookId: 70 }]);
   expect(deletes.isDone()).toBe(false);
 });
+
 test("reconcile resolves paths from older state and tolerates a deleted project", async () => {
   const previous: WebhookState = {
     secret: "keep-me",
@@ -198,6 +209,7 @@ test("reconcile resolves paths from older state and tolerates a deleted project"
   expect(state.config.projects).toEqual(["7"]);
   expect(deletes.isDone()).toBe(false);
 });
+
 test("removeHooks resolves a stored path to its numeric ID before listing hooks", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/acme%2Fapp")
@@ -213,6 +225,7 @@ test("removeHooks resolves a stored path to its numeric ID before listing hooks"
   expect(removed).toEqual([{ projectId: "7", hookId: 70 }]);
   expect(nock.isDone()).toBe(true);
 });
+
 test("removeHooks skips a project from saved state that GitLab no longer has", async () => {
   const state: WebhookState = {
     secret: "s",
@@ -239,6 +252,7 @@ test("removeHooks skips a project from saved state that GitLab no longer has", a
   expect(removed).toEqual([{ projectId: "7", hookId: 70 }]);
   expect(nock.isDone()).toBe(true);
 });
+
 test("reconcile skips a deleted project from saved state when cleaning up", async () => {
   const previous: WebhookState = {
     secret: "keep-me",
@@ -270,6 +284,7 @@ test("reconcile skips a deleted project from saved state when cleaning up", asyn
   expect(state.hooks).toEqual([{ projectId: "7", hookId: 70 }]);
   expect(nock.isDone()).toBe(true);
 });
+
 test("removeHooks raises an error for a mistyped fallback project", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/acme%2Ftypo")
@@ -278,6 +293,7 @@ test("removeHooks raises an error for a mistyped fallback project", async () => 
     removeHooks(client(), [URL_], undefined, ["acme%2Ftypo"]),
   ).rejects.toThrow(/404/);
 });
+
 test("removeHooks raises an error for a missing numeric fallback project", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/404404/hooks")
@@ -287,6 +303,7 @@ test("removeHooks raises an error for a missing numeric fallback project", async
     removeHooks(client(), [URL_], undefined, ["404404"]),
   ).rejects.toThrow(/404/);
 });
+
 test("reconcile keeps the original error and names a hook the rollback could not delete", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/1/hooks")
@@ -317,6 +334,7 @@ test("reconcile keeps the original error and names a hook the rollback could not
   expect(error.message).not.toMatch(/hook 21/);
   expect(nock.isDone()).toBe(true);
 });
+
 test("reconcile rolls back created hooks when cleaning up a deselected project fails", async () => {
   const previous: WebhookState = {
     secret: "s",
@@ -344,6 +362,7 @@ test("reconcile rolls back created hooks when cleaning up a deselected project f
   ).rejects.toThrow(/403/);
   expect(nock.isDone()).toBe(true);
 });
+
 test("reconcile deletes duplicate hooks that point at the same URL", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/1/hooks")
@@ -365,6 +384,7 @@ test("reconcile deletes duplicate hooks that point at the same URL", async () =>
   expect(state.hooks).toEqual([{ projectId: "1", hookId: 10 }]);
   expect(nock.isDone()).toBe(true);
 });
+
 test("removeHooks treats null state as lost and does not skip a missing fallback project", async () => {
   nock(GITLAB_URL)
     .get("/api/v4/projects/404404/hooks")

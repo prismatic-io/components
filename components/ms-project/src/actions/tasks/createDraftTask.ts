@@ -9,6 +9,7 @@ import {
   taskName,
   taskStartDate,
 } from "../../inputs";
+
 export const createDraftTask = action({
   display: {
     label: "Create Draft Task",
@@ -21,6 +22,7 @@ export const createDraftTask = action({
       },
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       `/Projects('${params.guId}')/Draft/Tasks/add()`,
       {
@@ -33,6 +35,7 @@ export const createDraftTask = action({
         },
       },
     );
+
     return {
       data,
     };
@@ -47,4 +50,5 @@ export const createDraftTask = action({
     taskFinishDate,
   },
 });
+
 export default createDraftTask;

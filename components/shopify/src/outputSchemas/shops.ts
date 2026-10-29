@@ -60,6 +60,7 @@ const restShopSchema = {
     marketing_sms_consent_enabled_at_checkout: { type: "boolean" as const },
   },
 };
+
 export const getShopConfigOutputSchema = {
   type: "object" as const,
   properties: {
@@ -71,6 +72,7 @@ export const getShopConfigOutputSchema = {
     },
   },
 };
+
 export const getShopConfigGqlOutputSchema = {
   type: "object" as const,
   properties: {

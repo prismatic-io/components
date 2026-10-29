@@ -9,12 +9,14 @@ import type {
 } from "../types";
 import { buildSoapAction, buildSoapEnvelope } from "./soap";
 import { formatTableData, parseAndCheckFault } from "./xml";
+
 type PollingContext = Pick<ActionContext, "logger"> & {
   polling: {
     getState: () => Record<string, unknown>;
     setState: (state: Record<string, unknown>) => void;
   };
 };
+
 export const handlePollingError = (
   error: Error,
   pollState: PollingStateBase,
@@ -23,18 +25,22 @@ export const handlePollingError = (
 ): never => {
   const consecutiveErrors = (pollState.consecutiveErrors || 0) + 1;
   const errorCount = (pollState.errorCount || 0) + 1;
+
   context.polling.setState({
     ...pollState,
     errorCount,
     consecutiveErrors,
   });
+
   if (consecutiveErrors >= 3) {
     context.logger.error(
       `${serviceName} polling failed ${consecutiveErrors} times consecutively. Error: ${error.message}`,
     );
   }
+
   throw error;
 };
+
 interface FetchNewIdocsParams {
   endpoint: string;
   lastDocnum: string;
@@ -42,6 +48,7 @@ interface FetchNewIdocsParams {
   messageType?: string;
   direction?: string;
 }
+
 export const fetchNewIdocs = async (
   client: AxiosInstance,
   {
@@ -55,25 +62,30 @@ export const fetchNewIdocs = async (
   const fieldItems = EDIDC_FIELDS.map(
     (f) => `<item><FIELDNAME>${f}</FIELDNAME></item>`,
   ).join("");
+
   const options: string[] = [`DOCNUM GT '${lastDocnum}'`];
   if (messageType) options.push(`AND MESTYP EQ '${messageType}'`);
   if (direction) options.push(`AND DIRECT EQ '${direction}'`);
   const optionItems = options
     .map((t) => `<item><TEXT>${t}</TEXT></item>`)
     .join("");
+
   let params = "<QUERY_TABLE>EDIDC</QUERY_TABLE>";
   params += `<DELIMITER>${DEFAULT_DELIMITER}</DELIMITER>`;
   params += `<ROWCOUNT>${pageSize}</ROWCOUNT>`;
   params += `<FIELDS>${fieldItems}</FIELDS>`;
   params += `<OPTIONS>${optionItems}</OPTIONS>`;
   params += "<DATA/>";
+
   const { data } = await client.post(
     endpoint,
     buildSoapEnvelope(RFC_FUNCTIONS.READ_TABLE, params),
     { headers: { SOAPAction: buildSoapAction(RFC_FUNCTIONS.READ_TABLE) } },
   );
+
   const parsed = await parseAndCheckFault(data);
   const tableData = formatTableData(parsed, DEFAULT_DELIMITER);
+
   return tableData.rows.map((row) => ({
     idocNumber: row.DOCNUM,
     status: row.STATUS,
@@ -84,6 +96,7 @@ export const fetchNewIdocs = async (
     direction: row.DIRECT,
   }));
 };
+
 export const resolveIdocChanges = (
   data: IdocChangesObject | undefined,
 ): IdocRecordChange[] =>

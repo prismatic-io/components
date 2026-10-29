@@ -1,5 +1,6 @@
 import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { connection, deltaURL, odataParams, returnMinimal } from "./common";
+
 const listChangesODataQueryParams = structuredObjectInput({
   label: "OData Query Parameters",
   required: false,
@@ -16,6 +17,7 @@ const listChangesODataQueryParams = structuredObjectInput({
     $filter: odataParams.$filter,
   },
 });
+
 export const listChangesInputs = {
   connection,
   deltaURL,

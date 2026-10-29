@@ -1,5 +1,6 @@
 import type ListLibraryCollectionsResponse from "./actions/types/listLibraryCollectionts";
 import type ListUsersResponse from "./actions/types/listUsers";
+
 export const getAccountIdExamplePayload = {
   data: {
     account: {
@@ -7,6 +8,7 @@ export const getAccountIdExamplePayload = {
     },
   },
 };
+
 export const listUserGroupsExamplePayload = {
   data: {
     account: {
@@ -21,9 +23,8 @@ export const listUserGroupsExamplePayload = {
     },
   },
 };
-export const listUsersExamplePayload: {
-  data: ListUsersResponse;
-} = {
+
+export const listUsersExamplePayload: { data: ListUsersResponse } = {
   data: {
     account: {
       users: {
@@ -43,6 +44,7 @@ export const listUsersExamplePayload: {
     },
   },
 };
+
 export const createAssetExamplePayload = {
   data: {
     createAsset: {
@@ -52,6 +54,7 @@ export const createAssetExamplePayload = {
     },
   },
 };
+
 export const uploadFileExamplePayload = {
   data: {
     uploadFile: {
@@ -62,6 +65,7 @@ export const uploadFileExamplePayload = {
     },
   },
 };
+
 export const createAttachmentExamplePayload = {
   data: {
     createAttachment: {
@@ -71,6 +75,7 @@ export const createAttachmentExamplePayload = {
     },
   },
 };
+
 export const deleteAssetExamplePayload = {
   data: {
     deleteAsset: {
@@ -78,6 +83,7 @@ export const deleteAssetExamplePayload = {
     },
   },
 };
+
 export const getAssetExamplePayload = {
   data: {
     asset: {
@@ -128,6 +134,7 @@ export const getAssetExamplePayload = {
     },
   },
 };
+
 export const deleteAttachmentExamplePayload = {
   data: {
     deleteAttachment: {
@@ -135,6 +142,7 @@ export const deleteAttachmentExamplePayload = {
     },
   },
 };
+
 export const getAssetsByIdsExamplePayload = {
   data: {
     assets: [
@@ -224,6 +232,7 @@ export const getAssetsByIdsExamplePayload = {
     ],
   },
 };
+
 export const listAssetCommentsExamplePayload: {
   data: import("./actions/types/listAssetComments").default;
 } = {
@@ -264,6 +273,7 @@ export const listAssetCommentsExamplePayload: {
     },
   },
 };
+
 export const listRelatedAssetsExamplePayload = {
   data: {
     asset: {
@@ -279,6 +289,7 @@ export const listRelatedAssetsExamplePayload = {
     },
   },
 };
+
 export const moveAssetsExamplePayload = {
   data: {
     moveAssets: {
@@ -290,6 +301,7 @@ export const moveAssetsExamplePayload = {
     },
   },
 };
+
 export const updateAssetExamplePayload = {
   data: {
     updateAsset: {
@@ -299,6 +311,7 @@ export const updateAssetExamplePayload = {
     },
   },
 };
+
 export const getBrandExamplePayload = {
   data: {
     brand: {
@@ -316,6 +329,7 @@ export const getBrandExamplePayload = {
     },
   },
 };
+
 export const listBrandLibrariesExamplePayload = {
   data: {
     brand: {
@@ -336,11 +350,13 @@ export const listBrandLibrariesExamplePayload = {
     },
   },
 };
+
 export const listBrandsExamplePayload = {
   data: {
     brands: [getBrandExamplePayload.data.brand],
   },
 };
+
 export const listBrandWorkspaceProjectsExamplePayload = {
   data: {
     brand: {
@@ -361,6 +377,7 @@ export const listBrandWorkspaceProjectsExamplePayload = {
     },
   },
 };
+
 export const createCollectionExamplePayload = {
   data: {
     createCollection: {
@@ -370,6 +387,7 @@ export const createCollectionExamplePayload = {
     },
   },
 };
+
 export const deleteCollectionExamplePayload = {
   data: {
     deleteCollection: {
@@ -377,6 +395,7 @@ export const deleteCollectionExamplePayload = {
     },
   },
 };
+
 export const getLibraryExamplePayload = {
   data: {
     library: {
@@ -389,6 +408,7 @@ export const getLibraryExamplePayload = {
     },
   },
 };
+
 export const pollLibraryAssetsExamplePayload = {
   data: {
     created: [
@@ -403,6 +423,7 @@ export const pollLibraryAssetsExamplePayload = {
     updated: [],
   },
 };
+
 export const listLibraryAssetsExamplePayload = {
   data: {
     library: {
@@ -484,6 +505,7 @@ export const listLibraryAssetsExamplePayload = {
     },
   },
 };
+
 export const listLibraryCollaboratorsExamplePayload = {
   data: {
     library: {
@@ -507,6 +529,7 @@ export const listLibraryCollaboratorsExamplePayload = {
     },
   },
 };
+
 export const listLibraryCollectionsExamplePayload: {
   data: ListLibraryCollectionsResponse;
 } = {
@@ -540,6 +563,7 @@ export const listLibraryCollectionsExamplePayload: {
     },
   },
 };
+
 export const listLibraryFoldersExamplePayload = {
   data: {
     library: {
@@ -557,6 +581,7 @@ export const listLibraryFoldersExamplePayload = {
     },
   },
 };
+
 export const updateCollectionExamplePayload = {
   data: {
     updateCollection: {
@@ -566,6 +591,7 @@ export const updateCollectionExamplePayload = {
     },
   },
 };
+
 export const installWebhookExamplePayload = {
   data: {
     installProjectWebhook: {
@@ -585,6 +611,7 @@ export const installWebhookExamplePayload = {
     },
   },
 };
+
 export const listWebhooksExamplePayload = {
   data: {
     webhooks: {
@@ -613,6 +640,7 @@ export const listWebhooksExamplePayload = {
     },
   },
 };
+
 export const uninstallWebhookExamplePayload = {
   data: {
     uninstallWebhook: {
@@ -622,6 +650,7 @@ export const uninstallWebhookExamplePayload = {
     },
   },
 };
+
 export const getWorkspaceProjectExamplePayload = {
   data: {
     workspaceProject: {
@@ -653,6 +682,7 @@ export const getWorkspaceProjectExamplePayload = {
     },
   },
 };
+
 export const listWorkspaceProjectAssetsExamplePayload = {
   data: {
     workspaceProject: {
@@ -718,6 +748,7 @@ export const listWorkspaceProjectAssetsExamplePayload = {
     },
   },
 };
+
 export const listWorkspaceProjectFoldersExamplePayload = {
   data: {
     workspaceProject: {
@@ -752,6 +783,7 @@ export const listWorkspaceProjectFoldersExamplePayload = {
     },
   },
 };
+
 export const createFolderExamplePayload = {
   data: {
     createFolder: {
@@ -761,6 +793,7 @@ export const createFolderExamplePayload = {
     },
   },
 };
+
 export const deleteFoldersExamplePayload = {
   data: {
     deleteFolders: {
@@ -768,6 +801,7 @@ export const deleteFoldersExamplePayload = {
     },
   },
 };
+
 export const moveFoldersExamplePayload = {
   data: {
     moveFolders: {
@@ -775,6 +809,7 @@ export const moveFoldersExamplePayload = {
     },
   },
 };
+
 export const updateFolderExamplePayload = {
   data: {
     updateFolder: {
@@ -784,6 +819,7 @@ export const updateFolderExamplePayload = {
     },
   },
 };
+
 export const getCurrentUserExamplePayload = {
   data: {
     currentUser: {

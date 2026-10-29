@@ -20,6 +20,7 @@ export const getCurrentUserExamplePayload = {
     ],
   },
 };
+
 export const listCompaniesExamplePayload = {
   data: [
     {
@@ -34,6 +35,7 @@ export const listCompaniesExamplePayload = {
     },
   ],
 };
+
 export const getReportSuiteExamplePayload = {
   data: {
     collectionItemType: "reportsuite",
@@ -42,6 +44,7 @@ export const getReportSuiteExamplePayload = {
     name: "Example Suite",
   },
 };
+
 export const listReportSuitesExamplePayload = {
   data: [
     {
@@ -52,6 +55,7 @@ export const listReportSuitesExamplePayload = {
     },
   ],
 };
+
 export const listVirtualReportSuitesExamplePayload = {
   data: [
     {
@@ -62,6 +66,7 @@ export const listVirtualReportSuitesExamplePayload = {
     },
   ],
 };
+
 export const listReportSuiteMetricsExamplePayload = {
   data: [
     {
@@ -81,6 +86,7 @@ export const listReportSuiteMetricsExamplePayload = {
     },
   ],
 };
+
 export const listReportSuiteDimensionsExamplePayload = {
   data: [
     {
@@ -101,6 +107,7 @@ export const listReportSuiteDimensionsExamplePayload = {
     },
   ],
 };
+
 export const runReportExamplePayload = {
   data: {
     totalPages: 1,
@@ -138,13 +145,9 @@ export const runReportExamplePayload = {
     },
   },
 };
+
 // biome-ignore lint/suspicious/noExplicitAny: Raw request returns dynamic response data
-export const rawRequestExamplePayload: {
-  data: {
-    data: any;
-    headers: any;
-  };
-} = {
+export const rawRequestExamplePayload: { data: { data: any; headers: any } } = {
   data: {
     data: {},
     headers: {},

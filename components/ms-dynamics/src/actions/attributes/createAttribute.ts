@@ -2,6 +2,7 @@ import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { createAttributeExamplePayload } from "../../examplePayloads";
 import { createAttributeInputs } from "../../inputs";
+
 export const createAttribute = action({
   display: {
     label: "Create Attribute",
@@ -14,10 +15,12 @@ export const createAttribute = action({
       params.connection,
       context.debug.enabled,
     );
+
     const result = await client.createAttribute({
       entityKey: params.entityId,
       data: params.attributeBody,
     });
+
     return { data: result };
   },
   performSafety: PerformSafety.NOT_ALLOWED,

@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { searchPaymentIntentsExamplePayload } from "../../examplePayloads/paymentIntents";
 import { searchPaymentIntentInputs } from "../../inputs";
 import { searchPaymentIntentsOutputSchema } from "../../outputSchemas";
+
 export const searchPaymentIntent = action({
   display: {
     label: "Search Payment Intents",
@@ -28,9 +29,7 @@ export const searchPaymentIntent = action({
       data: await client.paymentIntents.search(params),
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: searchPaymentIntentsExamplePayload.data,
   }),
   inputs: searchPaymentIntentInputs,
@@ -38,5 +37,6 @@ export const searchPaymentIntent = action({
     type: "actionOutput",
     schema: searchPaymentIntentsOutputSchema,
   }),
+
   examplePayload: searchPaymentIntentsExamplePayload,
 });

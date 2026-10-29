@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection, id } from "../../inputs";
 import { genericDeleteResponse } from "../../examplePayloads/general";
 import { DELETED_RESOURCE } from "../../constants";
+
 export const deleteWorkspace = action({
   display: {
     label: "Delete Workspace",
@@ -19,6 +20,7 @@ export const deleteWorkspace = action({
   },
   perform: async (context, { connection, id }) => {
     const client = createClient(connection, context.debug.enabled);
+
     await client.delete(`/workspaces/${id}`);
     return {
       data: {

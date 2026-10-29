@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getZendeskClient } from "../../client";
 import { listAccountDetailsExamplePayload } from "../../examplePayloads";
 import { connection } from "../../inputs";
+
 export const listAccountDetails = action({
   display: {
     label: "List Account Details",

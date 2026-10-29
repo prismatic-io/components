@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, fetchAllInput, paginationInput } from "./common";
+
 const userIdInput = input({
   label: "User ID",
   required: true,
@@ -11,13 +12,16 @@ const userIdInput = input({
   clean: util.types.toString,
   dataSource: "selectUser",
 });
+
 export const getCurrentUserInputs = {
   connection: connectionInput,
 };
+
 export const getUserInputs = {
   connection: connectionInput,
   userId: userIdInput,
 };
+
 export const listUsersInputs = {
   connection: connectionInput,
   fetchAll: {

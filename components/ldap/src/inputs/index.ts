@@ -38,6 +38,7 @@ import {
   sAMAccountName as userSAMAccountName,
   userToUpdate,
 } from "./users";
+
 export { connection } from "./common";
 export {
   attributesToAdd,
@@ -71,9 +72,11 @@ export {
   userPrincipalName,
   userToUpdate,
 } from "./users";
+
 export const bindInputs = {
   connection,
 };
+
 export const searchInputs = {
   connection,
   searchBase,
@@ -82,41 +85,50 @@ export const searchInputs = {
   attributes,
   includeReferences,
 };
+
 export const deleteEntryInputs = {
   connection,
   dnToDelete,
 };
+
 export const addEntryInputs = {
   connection,
   dnToAdd,
   attributesToAdd,
 };
+
 export const moveUserToOrganizationalUnitInputs = {
   connection,
   ouUserDn,
   newOuUserDn,
 };
+
 export const isAuthenticatedInputs = {
   connection,
 };
+
 export const extendedOperationInputs = {
   connection,
   oid,
   value,
 };
+
 export const searchUsersInputs = {
   connection,
   additionalAttributes,
 };
+
 export const searchGroupsInputs = {
   connection,
   additionalAttributes,
 };
+
 export const updateEntryInputs = {
   connection,
   entryToUpdate,
   changes,
 };
+
 export const updateUserInputs = {
   connection,
   userToUpdate,
@@ -126,16 +138,19 @@ export const updateUserInputs = {
       "The changes to apply to the user. Must be an array of operations.",
   }),
 };
+
 export const removeUserFromGroupInputs = {
   connection,
   groupDn,
   userDnToRemove,
 };
+
 export const setPasswordToUserInputs = {
   connection,
   userDn,
   newPassword,
 };
+
 export const addUserToGroupInputs = {
   connection,
   groupDn: input({
@@ -144,6 +159,7 @@ export const addUserToGroupInputs = {
   }),
   userDnToAdd,
 };
+
 export const disableUserAccountInputs = {
   connection,
   userDn: input({
@@ -151,6 +167,7 @@ export const disableUserAccountInputs = {
     comments: "The DN of the user to disable.",
   }),
 };
+
 export const addGroupInputs = {
   connection,
   groupDn: input({
@@ -161,6 +178,7 @@ export const addGroupInputs = {
   groupType,
   sAMAccountName: groupSAMAccountName,
 };
+
 export const addUserInputs = {
   connection,
   userDn: input({
@@ -172,4 +190,5 @@ export const addUserInputs = {
   userPrincipalName,
   password,
 };
+
 export const renameEntryInputs = { connection, toRenameDn, newRDn };

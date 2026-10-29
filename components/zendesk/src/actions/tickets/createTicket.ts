@@ -4,6 +4,7 @@ import { createTicketExamplePayload } from "../../examplePayloads";
 import { createTicketInputs } from "../../inputs";
 import { createTicketOutputSchema } from "../../outputSchemas";
 import { isPriority, isStatus, isType, validateComment } from "../../util";
+
 export const createTicket = action({
   display: {
     label: "Create Ticket",
@@ -15,7 +16,9 @@ export const createTicket = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const { ticketPriority, ticketStatus, ticketType } = params.classification;
+
     const { result } = await client.tickets.create({
       ticket: {
         requester: {
@@ -26,6 +29,7 @@ export const createTicket = action({
         assignee_id: util.types.isInt(params.assigneeId)
           ? util.types.toInt(params.assigneeId)
           : undefined,
+
         priority: (isPriority(ticketPriority)
           ? ticketPriority
           : undefined) as undefined,
@@ -33,10 +37,12 @@ export const createTicket = action({
         follower_ids:
           params.followers?.map((follower) => util.types.toInt(follower)) ||
           undefined,
+
         comment: validateComment({
           bodyValue: params.ticketComment,
           htmlValue: params.ticketCommentHTML,
         }),
+
         status: (isStatus(ticketStatus)
           ? ticketStatus
           : undefined) as undefined,
@@ -48,16 +54,12 @@ export const createTicket = action({
         external_id: params.externalId,
       },
     });
+
     return {
       data: result,
     };
   },
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const {
       ticketPriority: priority,
       ticketStatus: status,
@@ -67,6 +69,7 @@ export const createTicket = action({
     const recipient = params.recipientEmail;
     const externalId = params.externalId;
     const organizationId = params.requesterOrganization;
+
     return {
       data: {
         ...createTicketExamplePayload.data,

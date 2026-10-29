@@ -5,6 +5,7 @@ import { submitQualityStepDecisionInputs } from "../../inputs";
 import { workflowDecisionResponseSchema } from "../../outputSchemas";
 import type { SignOffStepDecisionVo } from "../../types";
 import { handleArenaError, toOptionalString } from "../../util";
+
 export const submitQualityStepDecision = action({
   display: {
     label: "Submit Quality Step Decision",
@@ -20,14 +21,17 @@ export const submitQualityStepDecision = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: SignOffStepDecisionVo = {
         decision: params.decision,
         comments: toOptionalString(params.comments),
       };
+
       const { data } = await client.put(
         `/qualityprocesses/${params.qualityprocessGuid}/steps/${params.stepGuid}/decisions/${params.decisionGuid}`,
         requestPayload,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "Submit Quality Step Decision");

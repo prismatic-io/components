@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { connectionInput, resourceId, resourceType } from "../../inputs";
+
 export const findResource = action({
   display: {
     label: "Find Resource by ID",

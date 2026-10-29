@@ -7,6 +7,7 @@ import {
   fieldsInput,
   recordNoInput,
 } from "./common";
+
 const paymentDateInput = input({
   label: "Payment Date",
   type: "string",
@@ -16,6 +17,7 @@ const paymentDateInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 const receiptDateInput = input({
   label: "Receipt Date",
   type: "string",
@@ -26,6 +28,7 @@ const receiptDateInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 const paymentMethodInput = input({
   label: "Payment Method",
   type: "string",
@@ -52,6 +55,7 @@ const paymentMethodInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 const financialEntityInput = input({
   label: "Financial Entity",
   type: "string",
@@ -62,6 +66,7 @@ const financialEntityInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const undepositedAccountNoInput = input({
   label: "Undeposited Account No",
   type: "string",
@@ -72,6 +77,7 @@ const undepositedAccountNoInput = input({
   required: false,
   clean: util.types.toString,
 });
+
 const arAdvanceItemsInput = input({
   label: "AR Advance Items",
   type: "code",
@@ -87,6 +93,7 @@ const arAdvanceItemsInput = input({
       </ARADVANCEITEM>`,
   clean: cleanFunctionForXml,
 });
+
 export const updateARAdvanceInputs = {
   connection,
   recordNoInput: {
@@ -141,6 +148,7 @@ export const updateARAdvanceInputs = {
               `,
   },
 };
+
 export const createARAdvanceInputs = {
   connection,
   paymentDateInput,
@@ -157,6 +165,7 @@ export const createARAdvanceInputs = {
       "<ACTION>Draft</ACTION>",
   },
 };
+
 export const getARAdvanceInputs = {
   connection,
   fieldsInput,

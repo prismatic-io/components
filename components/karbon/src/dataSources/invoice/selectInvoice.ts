@@ -3,6 +3,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connection } from "../../inputs/shared";
 import { cleanOdata } from "../../utils";
 import type { Invoice } from "../../interfaces/Invoice";
+
 export const selectInvoice = dataSource({
   display: {
     label: "Select Invoice",
@@ -19,6 +20,7 @@ export const selectInvoice = dataSource({
       key: invoice.InvoiceKey,
       label: invoice.InvoiceNumber,
     }));
+
     return { result: objects };
   },
 });

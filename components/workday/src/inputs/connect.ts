@@ -9,6 +9,7 @@ import {
   paginationQueryStringInputs,
   referenceId,
 } from "./common";
+
 const createdById = input({
   label: "Created By ID",
   comments: "Identifies the user who created the record.",
@@ -18,6 +19,7 @@ const createdById = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const messageTemplateId = input({
   label: "Message Template ID",
   comments: "Identifies the Connect message template.",
@@ -28,6 +30,7 @@ const messageTemplateId = input({
   clean: util.types.toString,
   dataSource: "selectMessageTemplate",
 });
+
 const emailDetailName = input({
   label: "Name",
   comments: "Name of the email content.",
@@ -37,6 +40,7 @@ const emailDetailName = input({
   placeholder: "Enter email name",
   clean: cleanStringInput,
 });
+
 const emailDetailSubject = input({
   label: "Subject",
   comments: "Subject line of the email.",
@@ -46,6 +50,7 @@ const emailDetailSubject = input({
   placeholder: "Enter email subject",
   clean: cleanStringInput,
 });
+
 const emailDetailBody = input({
   label: "Body",
   comments: "Body text of the email.",
@@ -56,6 +61,7 @@ const emailDetailBody = input({
   placeholder: "Enter email body",
   clean: cleanStringInput,
 });
+
 const emailDetailReplyTo = input({
   label: "Reply To",
   comments: "Email address that replies are sent to.",
@@ -65,6 +71,7 @@ const emailDetailReplyTo = input({
   placeholder: "Enter reply-to email address",
   clean: cleanStringInput,
 });
+
 const emailDetail = structuredObjectInput({
   label: "Email Detail",
   required: false,
@@ -76,6 +83,7 @@ const emailDetail = structuredObjectInput({
     replyTo: emailDetailReplyTo,
   },
 });
+
 const pushDetailMessage = input({
   label: "Message",
   comments: "Text of the mobile push notification.",
@@ -85,6 +93,7 @@ const pushDetailMessage = input({
   placeholder: "Enter push notification message",
   clean: cleanStringInput,
 });
+
 const pushDetailRedirectURL = input({
   label: "Redirect URL",
   comments: "URL the push notification opens when selected.",
@@ -94,6 +103,7 @@ const pushDetailRedirectURL = input({
   placeholder: "Enter redirect URL",
   clean: cleanStringInput,
 });
+
 const pushDetailId = input({
   label: "ID",
   comments: "Identifies the push notification detail.",
@@ -103,6 +113,7 @@ const pushDetailId = input({
   placeholder: "Enter push detail ID",
   clean: cleanStringInput,
 });
+
 const pushDetail = structuredObjectInput({
   label: "Push Detail",
   required: false,
@@ -114,6 +125,7 @@ const pushDetail = structuredObjectInput({
     id: pushDetailId,
   },
 });
+
 const senderOverrideId = input({
   label: "Sender Override ID",
   comments: "Overrides the icon displayed for the sender.",
@@ -123,6 +135,7 @@ const senderOverrideId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const commId = input({
   label: "Communication ID",
   comments: "Identifier of the Workday communication group.",
@@ -132,6 +145,7 @@ const commId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const contacts = input({
   label: "Contacts",
   type: "code",
@@ -152,6 +166,7 @@ const contacts = input({
   ),
   clean: (value: unknown) => cleanArrayCodeInput(value, "Contacts"),
 });
+
 const notificationTypeId = input({
   label: "Notification Type ID",
   comments: "Identifies the notification type used for delivery.",
@@ -161,6 +176,7 @@ const notificationTypeId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const postMessageTemplatesExtraBodyExample = JSON.stringify(
   {
     lastUpdated: "2024-06-08T07:00:00.000Z",
@@ -174,6 +190,7 @@ const postMessageTemplatesExtraBodyExample = JSON.stringify(
   2,
 );
 const postMessageTemplatesExtraBodyComments = `${extraBody.comments} See [Workday API documentation](${WORKDAY_API_DOCS_URL}#${SERVICES.connect.slice(1)}/post-/messageTemplates) for more information.`;
+
 const messageTemplateName = input({
   label: "Message Template Name",
   comments: "Display name given to the message template.",
@@ -183,6 +200,7 @@ const messageTemplateName = input({
   required: true,
   clean: util.types.toString,
 });
+
 const templateInactive = input({
   label: "Template Inactive",
   comments: "When true, marks the template as inactive.",
@@ -191,6 +209,7 @@ const templateInactive = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const templateDescriptor = input({
   label: "Template Descriptor",
   comments: "Human-readable descriptor for the template.",
@@ -200,6 +219,7 @@ const templateDescriptor = input({
   required: false,
   clean: cleanStringInput,
 });
+
 const templateId = input({
   label: "Template ID",
   comments:
@@ -210,15 +230,18 @@ const templateId = input({
   required: false,
   clean: cleanStringInput,
 });
+
 export const getMessageTemplateByIdInputs = {
   connection,
   messageTemplateId,
 };
+
 export const listMessageTemplatesInputs = {
   connection,
   ...paginationQueryStringInputs,
   extraParameters,
 };
+
 export const postMessageTemplatesInputs = {
   connection,
   messageTemplateName,
@@ -242,6 +265,7 @@ export const postMessageTemplatesInputs = {
     comments: postMessageTemplatesExtraBodyComments,
   },
 };
+
 const messageDetails = structuredObjectInput({
   label: "Message Details",
   required: false,
@@ -269,6 +293,7 @@ const messageDetails = structuredObjectInput({
     contacts,
   },
 });
+
 export const sendMessageInputs = {
   connection,
   senderOverrideId,
@@ -280,8 +305,10 @@ export const sendMessageInputs = {
   },
   notificationTypeId,
 };
+
 const { connection: _connection, ...postMessageTemplatesFields } =
   postMessageTemplatesInputs;
+
 export const updateMessageTemplateByIdInputs = {
   connection,
   messageTemplateId,

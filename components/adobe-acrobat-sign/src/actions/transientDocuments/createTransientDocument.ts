@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createTransientDocumentInputs } from "../../inputs";
 import { getAdobeSignClient } from "../../client";
 import { createTransientDocumentExamplePayload } from "../../examplePayloads";
+
 export const createTransientDocument = action({
   display: {
     label: "Create Transient Document",
@@ -23,6 +24,7 @@ export const createTransientDocument = action({
         },
       },
     );
+
     return {
       data,
     };

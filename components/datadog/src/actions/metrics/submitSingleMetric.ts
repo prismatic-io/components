@@ -5,6 +5,7 @@ import { submitSingleMetricExamplePayload } from "../../examplePayloads";
 import { submitSingleMetricInputs } from "../../inputs";
 import { submitMetricsOutputSchema } from "../../outputSchemas";
 import type { MetricSeries, SubmitMetricsResponse } from "../../types";
+
 export const submitSingleMetric = action({
   display: {
     label: "Submit Single Metric",
@@ -29,6 +30,7 @@ export const submitSingleMetric = action({
     },
   ) => {
     const client = createClient(connection);
+
     const series: MetricSeries = {
       metric: metricName,
       points: [{ timestamp: metricTimestamp, value: metricValue }],
@@ -47,15 +49,15 @@ export const submitSingleMetric = action({
           }
         : {}),
     };
+
     const response = await client.post<SubmitMetricsResponse>(
       SUBMIT_METRICS_PATH,
       { series: [series] },
     );
+
     return { data: response.data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     ...submitSingleMetricExamplePayload,
   }),
   examplePayload: submitSingleMetricExamplePayload,

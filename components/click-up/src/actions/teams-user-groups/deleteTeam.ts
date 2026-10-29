@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteTeamExamplePayload } from "../../examplePayloads";
 import { deleteTeamInputs } from "../../inputs";
+
 export const deleteTeam = action({
   display: {
     label: "Delete Team",
@@ -14,7 +15,9 @@ export const deleteTeam = action({
       clickUpConnection,
       context.debug.enabled,
     );
+
     const { data } = await client.delete(`/group/${groupId}`);
+
     return {
       data,
     };

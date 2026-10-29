@@ -15,6 +15,7 @@ import { getOrganizations } from "./getOrganizations";
 import { mergeOrganizations } from "./mergeOrganizations";
 import { searchOrganization } from "./searchOrganization";
 import { updateOrganization } from "./updateOrganization";
+
 export default {
   getOrganizations,
   addOrganization,

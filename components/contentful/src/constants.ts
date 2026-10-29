@@ -1,5 +1,7 @@
 export const API_BASE_URL = "https://api.contentful.com";
+
 export const API_UPLOAD_URL = "https://upload.contentful.com";
+
 export const FIELDS_DEFAULT = [
   {
     id: "title",
@@ -16,8 +18,10 @@ export const FIELDS_DEFAULT = [
     type: "Text",
   },
 ];
+
 export const ENTRY_TITLE_DEFAULT = { "en-US": "Hello, World!" };
 export const ENTRY_BODY_DEFAULT = { "en-US": "Bacon is healthy!" };
+
 export const ENTRY_DEFAULT = {
   fields: {
     title: ENTRY_TITLE_DEFAULT,
@@ -35,10 +39,13 @@ export const ENTRY_DEFAULT = {
     ],
   },
 };
+
 export const ASSET_TITLE_DEFAULT = { "en-US": "Example Asset" };
+
 export const ASSET_DESCRIPTION_DEFAULT = {
   "en-US": "Streamliner description",
 };
+
 export const ASSET_FILE_DEFAULT = {
   "en-US": {
     contentType: "image/jpeg",
@@ -46,6 +53,7 @@ export const ASSET_FILE_DEFAULT = {
     upload: "https://example.com/example.jpg",
   },
 };
+
 export const BULK_ACTION_ITEMS_DEFAULT = [
   {
     sys: {
@@ -64,10 +72,12 @@ export const BULK_ACTION_ITEMS_DEFAULT = [
     },
   },
 ];
+
 export const BULK_ACTION_UNPUBLISH_ITEMS_DEFAULT = [
   { sys: { linkType: "Entry", type: "Link", id: "<entry_id>" } },
   { sys: { linkType: "Asset", type: "Link", id: "<asset_id>" } },
 ];
+
 export const CONTENT_TYPE_TEMPLATES_DEFAULT = [
   {
     name: "Blogpost",
@@ -83,6 +93,7 @@ export const CONTENT_TYPE_TEMPLATES_DEFAULT = [
     id: "blogpost",
   },
 ];
+
 export const EDITOR_INTERFACE_TEMPLATES_DEFAULT = [
   {
     contentTypeTemplate: {
@@ -104,8 +115,11 @@ export const EDITOR_INTERFACE_TEMPLATES_DEFAULT = [
     ],
   },
 ];
+
 export const PAGINATION_LIMIT = 100;
+
 export const MAX_POLL_PAGES = 50;
+
 export const WEBHOOK_EVENTS = [
   { label: "Content Type Created", value: "ContentType.create" },
   { label: "Content Type Saved", value: "ContentType.save" },
@@ -165,5 +179,7 @@ export const WEBHOOK_EVENTS = [
   { label: "Scheduled Action Deleted", value: "ScheduledAction.delete" },
   { label: "Scheduled Action All", value: "ScheduledAction.*" },
 ];
+
 export const MAX_BATCHED_POLL_PAGES = 5;
+
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

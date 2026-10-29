@@ -7,15 +7,18 @@ import {
   testConnection,
 } from "../../testHelpers";
 import { rawRequest } from "./rawRequest";
+
 describe("rawRequest", () => {
   beforeAll(() => nock.disableNetConnect());
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
+
   test("forwards the method and path and returns the unwrapped response", async () => {
     const scope = nock(SANDBOX_BASE)
       .get("/Crud/Read/Bill.json")
       .query({ id: "00n02XNWHOPPXWV9ewx0" })
       .reply(200, envelope(getBillExamplePayload.data));
+
     const { result } = await invoke(rawRequest, {
       connection: testConnection,
       method: "GET",
@@ -33,6 +36,7 @@ describe("rawRequest", () => {
       maxRetries: 0,
       useExponentialBackoff: false,
     });
+
     expect(result.data).toEqual(getBillExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });

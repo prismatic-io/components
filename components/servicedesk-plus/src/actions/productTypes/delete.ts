@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { deleteResponse as deleteProductTypeResponse } from "../../examplePayloads";
 import { connectionInput, id } from "../../inputs";
+
 export const deleteProductType = action({
   display: {
     label: "Delete Product Type",

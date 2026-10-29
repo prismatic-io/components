@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getDocuSignClient } from "../client";
 import { connection, jsonInput } from "../inputs";
 import { contactJson } from "../json/contactJson";
+
 export const updateContact = action({
   display: {
     label: "Update Contact",

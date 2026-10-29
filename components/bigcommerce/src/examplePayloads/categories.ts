@@ -18,6 +18,7 @@ const categoryObject = {
     is_customized: false,
   },
 };
+
 const paginationMeta = {
   pagination: {
     total: 6,
@@ -30,33 +31,39 @@ const paginationMeta = {
     },
   },
 };
+
 export const getAllCategoriesExamplePayload = {
   data: {
     data: [categoryObject],
     meta: paginationMeta,
   },
 };
+
 export const getCategoryExamplePayload = {
   data: {
     data: categoryObject,
     meta: {},
   },
 };
+
 export const createCategoryExamplePayload = {
   data: {
     data: categoryObject,
     meta: {},
   },
 };
+
 export const updateCategoryExamplePayload = {
   data: {
     data: categoryObject,
     meta: {},
   },
 };
+
 export const deleteCategoriesExamplePayload = {
   data: null,
 };
+
 export const createCategoryImageExamplePayload = {
   data: {
     data: {
@@ -65,6 +72,7 @@ export const createCategoryImageExamplePayload = {
     meta: {},
   },
 };
+
 export const deleteCategoryImageExamplePayload = {
   data: null,
 };

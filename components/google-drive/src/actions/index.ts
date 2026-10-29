@@ -5,6 +5,7 @@ import filesActions from "./files";
 import foldersActions from "./folders";
 import miscActions from "./misc";
 import webhooksActions from "./webhooks";
+
 export default {
   ...filesActions,
   ...foldersActions,

@@ -4,6 +4,7 @@ import {
   resourceLinksSchema,
   toManyRelationshipSchema,
 } from "./shared";
+
 const campaignResourceObject = {
   type: "object" as const,
   properties: {
@@ -80,6 +81,7 @@ const campaignResourceObject = {
   },
   required: ["type", "id", "attributes", "links"],
 };
+
 export const createCampaignOutputSchema = {
   type: "object" as const,
   properties: {
@@ -88,6 +90,7 @@ export const createCampaignOutputSchema = {
   },
   required: ["data"],
 };
+
 export const getCampaignOutputSchema = {
   type: "object" as const,
   properties: {
@@ -100,6 +103,7 @@ export const getCampaignOutputSchema = {
   },
   required: ["data"],
 };
+
 export const listCampaignsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -115,7 +119,9 @@ export const listCampaignsOutputSchema = {
   },
   required: ["data", "links"],
 };
+
 export const updateCampaignOutputSchema = createCampaignOutputSchema;
+
 export const deleteCampaignOutputSchema = {
   type: "string" as const,
 };

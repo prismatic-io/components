@@ -9,13 +9,17 @@ import type {
   PollingState,
   PollWindow,
 } from "./types";
+
 export const cleanTimestamp = (value: unknown): string => {
   return util.types.toString(value);
 };
+
 export const cleanObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
+
 export const cleanString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
+
 const fetchData = async <T>(
   client: HttpClient,
   url: string,
@@ -35,6 +39,7 @@ const fetchData = async <T>(
     pages,
   };
 };
+
 export const paginateRecords = async <T>(
   client: HttpClient,
   params: Record<string, unknown> | undefined = undefined,
@@ -51,11 +56,13 @@ export const paginateRecords = async <T>(
       pages,
     };
   }
+
   let records: T[] = [];
   const per_page = 50;
   const keepFetching = true;
   let starting_after: string | undefined;
   let pagesObject: Pages | null = null;
+
   while (keepFetching) {
     const {
       data,
@@ -67,6 +74,7 @@ export const paginateRecords = async <T>(
       per_page,
       starting_after: starting_after,
     });
+
     records = records.concat(data);
     starting_after = pages.next?.starting_after;
     if (!starting_after) {
@@ -74,11 +82,13 @@ export const paginateRecords = async <T>(
       break;
     }
   }
+
   return {
     data: records,
     pages: pagesObject,
   };
 };
+
 const searchContactsSince = async (
   client: HttpClient,
   lastPolledUnix: number,
@@ -87,9 +97,11 @@ const searchContactsSince = async (
     operator: "AND",
     value: [{ field: "updated_at", operator: ">", value: lastPolledUnix }],
   };
+
   const allContacts: IntercomRecord[] = [];
   let startingAfter: string | undefined;
   let hasMore = true;
+
   while (hasMore) {
     const { data } = await client.post<{
       data: IntercomRecord[];
@@ -105,8 +117,10 @@ const searchContactsSince = async (
     startingAfter = data.pages?.next?.starting_after;
     hasMore = !!startingAfter;
   }
+
   return allContacts;
 };
+
 const fetchAllCompanies = async (
   client: HttpClient,
 ): Promise<IntercomRecord[]> => {
@@ -118,15 +132,14 @@ const fetchAllCompanies = async (
   );
   return data;
 };
+
 const filterByUnixTimestamp = (
   records: IntercomRecord[],
   lastPolledUnix: number,
-): {
-  created: IntercomRecord[];
-  updated: IntercomRecord[];
-} => {
+): { created: IntercomRecord[]; updated: IntercomRecord[] } => {
   const created: IntercomRecord[] = [];
   const updated: IntercomRecord[] = [];
+
   for (const record of records) {
     if (record.created_at > lastPolledUnix) {
       created.push(record);
@@ -134,20 +147,25 @@ const filterByUnixTimestamp = (
       updated.push(record);
     }
   }
+
   return { created, updated };
 };
+
 const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 export const lookBackDateClean = (value: unknown): string => {
   const raw = util.types.toString(value).trim();
   if (raw === "") {
     return "";
   }
+
   const match = raw.match(LOOK_BACK_DATE_PATTERN);
   if (!match) {
     throw new Error(
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   const [, yearStr, monthStr, dayStr] = match;
   const year = util.types.toNumber(yearStr);
   const month = util.types.toNumber(monthStr);
@@ -162,13 +180,17 @@ export const lookBackDateClean = (value: unknown): string => {
       `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
     );
   }
+
   if (parsed.getTime() > Date.now()) {
     throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
   }
+
   return parsed.toISOString();
 };
+
 const toUnixSeconds = (iso: string): number =>
   Math.floor(new Date(iso).getTime() / 1000);
+
 export const resolvePollWindow = (
   state: PollingState | undefined,
   lookBackDate: string | undefined,
@@ -197,17 +219,12 @@ export const resolvePollWindow = (
     isBackfill: false,
   };
 };
+
 export const fetchChangedRecords = async (
   client: HttpClient,
   resourceType: string,
   window: PollWindow,
-  {
-    showNew,
-    showUpdated,
-  }: {
-    showNew: boolean;
-    showUpdated: boolean;
-  },
+  { showNew, showUpdated }: { showNew: boolean; showUpdated: boolean },
 ): Promise<PollingChangesObject> => {
   const records =
     resourceType === PollResource.CONTACTS
@@ -222,6 +239,7 @@ export const fetchChangedRecords = async (
     updated: window.isBackfill || showUpdated ? updated : [],
   };
 };
+
 export const resolvePollingRecordChanges = (
   data: PollingChangesObject | undefined,
 ): PollingRecordChange[] => {

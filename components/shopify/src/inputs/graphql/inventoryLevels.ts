@@ -6,6 +6,7 @@ import {
   pagination,
   shopifyConnection,
 } from "./common";
+
 const levelId = input({
   label: "Inventory Level ID",
   type: "string",
@@ -16,16 +17,19 @@ const levelId = input({
   placeholder: "Enter inventory level ID",
   clean: util.types.toString,
 });
+
 export const listInventoryLevelsInputs = {
   shopifyConnection,
   locationId,
   getAlldata,
   pagination,
 };
+
 export const getInventoryLevelsInputs = {
   shopifyConnection,
   levelId,
 };
+
 export const deleteInventoryLevelsInputs = {
   shopifyConnection,
   levelId: input({
@@ -34,6 +38,7 @@ export const deleteInventoryLevelsInputs = {
       "gid://shopify/InventoryLevel/820859520?inventory_item_id=826867926",
   }),
 };
+
 export const connectInventoryLevelInputs = {
   shopifyConnection,
   locationId,

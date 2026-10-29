@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createDataClient } from "../client";
 import { pipelinesInputs } from "../inputs";
 import { Authorization } from "../enums/authorization";
+
 export const pipelines = dataSource({
   display: {
     label: "Fetch Pipelines",
@@ -31,6 +32,7 @@ export const pipelines = dataSource({
       }
       return { result };
     }
+
     return { result: [] };
   },
   dataSourceType: "picklist",

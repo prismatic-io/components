@@ -1,4 +1,5 @@
 import { idDescriptorReferenceSchema, instanceReferenceSchema } from "./shared";
+
 export const emailDetailSchema = {
   type: "object" as const,
   properties: {
@@ -17,6 +18,7 @@ export const emailDetailSchema = {
   },
   required: ["body", "subject"],
 };
+
 export const pushDetailSchema = {
   type: "object" as const,
   properties: {
@@ -32,6 +34,7 @@ export const pushDetailSchema = {
   },
   required: ["message"],
 };
+
 export const messageTemplateDetailSchema = {
   type: "object" as const,
   properties: {
@@ -69,7 +72,9 @@ export const messageTemplateDetailSchema = {
   },
   required: ["name", "notificationType"],
 };
+
 export const getMessageTemplateByIdOutputSchema = messageTemplateDetailSchema;
+
 export const listMessageTemplatesOutputSchema = {
   type: ["object", "array"],
   properties: {
@@ -86,7 +91,9 @@ export const listMessageTemplatesOutputSchema = {
   required: [],
   additionalProperties: true,
 };
+
 export const postMessageTemplatesOutputSchema = messageTemplateDetailSchema;
+
 export const sendMessageOutputSchema = {
   type: "object" as const,
   properties: {
@@ -107,5 +114,6 @@ export const sendMessageOutputSchema = {
     commID: instanceReferenceSchema,
   },
 };
+
 export const updateMessageTemplateByIdOutputSchema =
   messageTemplateDetailSchema;

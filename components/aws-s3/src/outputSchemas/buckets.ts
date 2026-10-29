@@ -1,7 +1,9 @@
 import { dateTimeSchema } from "./shared";
+
 export const getBucketLocationOutputSchema = {
   type: "string" as const,
 };
+
 export const listBucketsOutputSchema = {
   type: ["array", "null"],
   items: {
@@ -15,6 +17,7 @@ export const listBucketsOutputSchema = {
     required: [],
   },
 };
+
 export const headBucketOutputSchema = {
   type: "object" as const,
   properties: {

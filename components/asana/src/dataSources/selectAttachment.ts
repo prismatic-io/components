@@ -4,6 +4,7 @@ import { selectAttachmentExamplePayload } from "../examplePayloads";
 import { selectAttachmentInputs } from "../inputs";
 import type { DataSource } from "../types/resources";
 import { fetchMoreData, mapToLabelKey } from "../util";
+
 const selectAttachment = dataSource({
   display: {
     label: "Select Attachment",
@@ -18,12 +19,14 @@ const selectAttachment = dataSource({
       [],
       true,
     );
+
     const result = mapToLabelKey(data);
     return { result };
   },
   dataSourceType: "picklist",
   examplePayload: selectAttachmentExamplePayload,
 });
+
 export default {
   selectAttachment,
 };

@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { productOptionTypesExamplePayload } from "../examplePayloads";
 import { productOptionTypesInputs } from "../inputs";
 import { toSortedElements } from "../utils";
+
 export const productOptionTypes = dataSource({
   display: {
     label: "Product Option Types",

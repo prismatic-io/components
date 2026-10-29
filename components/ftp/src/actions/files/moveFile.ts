@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { moveFileExamplePayload } from "../../examplePayloads";
 import { moveFileInputs } from "../../inputs";
+
 export const moveFile = action({
   display: {
     label: "Move File",
@@ -14,9 +15,11 @@ export const moveFile = action({
     } finally {
       client.close();
     }
+
     return null;
   },
   inputs: moveFileInputs,
   examplePayload: moveFileExamplePayload,
 });
+
 export default moveFile;

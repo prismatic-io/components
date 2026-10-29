@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../../../client";
 import { createOrderReturnExamplePayload } from "../../../../examplePayloads/v2_1";
 import { createOrderReturnInputs } from "../../../../inputs/v2_1";
+
 export const createOrderReturn = action({
   display: {
     label: "Create Order Return (Legacy v2.1)",
@@ -22,6 +23,7 @@ export const createOrderReturn = action({
     context.logger.warn(
       "'Create Order Return' is deprecated as Google is retiring the Orders endpoints in the Content API.",
     );
+
     const client = createClient(connectionInput);
     const { data } = await client.orderreturns.createorderreturn({
       merchantId,

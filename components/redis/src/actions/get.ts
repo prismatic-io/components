@@ -3,6 +3,7 @@ import { connectionInput, key } from "../inputs";
 import { createClient } from "../client";
 import closeConnection from "../closeConnection";
 import { getExamplePayload } from "../examplePayloads";
+
 export const get = action({
   display: {
     label: "Get",
@@ -14,7 +15,9 @@ export const get = action({
       context.debug.enabled,
     );
     const data = await client.get(key);
+
     await closeConnection(client);
+
     return {
       data,
     };
@@ -24,4 +27,5 @@ export const get = action({
     data: getExamplePayload,
   },
 });
+
 export default get;

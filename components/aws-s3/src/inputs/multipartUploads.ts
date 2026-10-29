@@ -9,6 +9,7 @@ import {
   objectKey,
   tagging,
 } from "./common";
+
 const urlsToGenerate = input({
   label: "URLs to Generate",
   type: "string",
@@ -19,6 +20,7 @@ const urlsToGenerate = input({
   comments: "The number of presigned URLs to generate for multipart uploads.",
   clean: (value: unknown) => toPositiveInt(value, 5),
 });
+
 const uploadId = input({
   label: "Upload ID",
   type: "string",
@@ -30,6 +32,7 @@ const uploadId = input({
     "xadcOB_7YPBOJuoFiQ9cz4P3Pe6FIZwO4f7wN93uHsNBEw97pl5eNwzExg0LAT2dUN91cOmrEQHDsP3WA60CEg",
   placeholder: "Enter multipart upload ID",
 });
+
 const fileChunk = input({
   label: "File Chunk",
   type: "data",
@@ -39,6 +42,7 @@ const fileChunk = input({
   placeholder: "Select file chunk data",
   clean: toBufferFromData,
 });
+
 const partNumber = input({
   label: "Part Number",
   type: "string",
@@ -49,6 +53,7 @@ const partNumber = input({
   example: "1",
   clean: util.types.toInt,
 });
+
 const parts = input({
   label: "Parts",
   type: "data",
@@ -58,6 +63,7 @@ const parts = input({
   required: true,
   clean: toPartList,
 });
+
 export const abortMultipartUploadInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -66,6 +72,7 @@ export const abortMultipartUploadInputs = {
   uploadId,
   awsRegion,
 };
+
 export const completeMultipartUploadInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -75,6 +82,7 @@ export const completeMultipartUploadInputs = {
   parts,
   awsRegion,
 };
+
 export const createMultipartUploadInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -84,6 +92,7 @@ export const createMultipartUploadInputs = {
   acl,
   awsRegion,
 };
+
 export const generatePresignedForMultiparUploadsInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -94,12 +103,14 @@ export const generatePresignedForMultiparUploadsInputs = {
   expirationSeconds,
   awsRegion,
 };
+
 export const listMultipartUploadsInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
   bucket,
   awsRegion,
 };
+
 export const listPartsInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,
@@ -108,6 +119,7 @@ export const listPartsInputs = {
   uploadId,
   awsRegion,
 };
+
 export const uploadPartInputs = {
   accessKey: accessKeyInput,
   ...dynamicAccessAllInputs,

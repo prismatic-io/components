@@ -9,6 +9,7 @@ import {
   resourceId,
   sort,
 } from "./common";
+
 const optionalBoolean = (label: string, comments: string) =>
   input({
     label,
@@ -21,6 +22,7 @@ const optionalBoolean = (label: string, comments: string) =>
     comments,
     clean: toOptionalBool,
   });
+
 const packageName = input({
   label: "Package Name",
   type: "string",
@@ -30,6 +32,7 @@ const packageName = input({
   placeholder: "Enter package name",
   example: "Google Chrome 120.0.pkg",
 });
+
 const packageFileName = input({
   label: "File Name",
   type: "string",
@@ -40,6 +43,7 @@ const packageFileName = input({
   placeholder: "Enter file name",
   example: "GoogleChrome-120.0.6099.199.pkg",
 });
+
 const packageCategoryId = input({
   label: "Category ID",
   type: "string",
@@ -50,6 +54,7 @@ const packageCategoryId = input({
   placeholder: "Enter category ID",
   example: "3",
 });
+
 const packageInfo = input({
   label: "Info",
   type: "string",
@@ -60,6 +65,7 @@ const packageInfo = input({
   placeholder: "Enter package info",
   example: "Google Chrome browser installer.",
 });
+
 const packageNotes = input({
   label: "Notes",
   type: "string",
@@ -69,6 +75,7 @@ const packageNotes = input({
   placeholder: "Enter notes",
   example: "Downloaded from https://dl.google.com/chrome/mac/stable/",
 });
+
 const packagePriority = input({
   label: "Priority",
   type: "string",
@@ -79,6 +86,7 @@ const packagePriority = input({
   placeholder: "Enter priority (1–20)",
   example: "10",
 });
+
 const packageRebootRequired = input({
   label: "Reboot Required",
   type: "boolean",
@@ -86,6 +94,7 @@ const packageRebootRequired = input({
   comments: "Whether the device must reboot after installing this package.",
   clean: util.types.toBool,
 });
+
 const packageOsInstall = input({
   label: "OS Install",
   type: "boolean",
@@ -93,6 +102,7 @@ const packageOsInstall = input({
   comments: "Whether this package is an OS installer.",
   clean: util.types.toBool,
 });
+
 const packageFillUserTemplate = input({
   label: "Fill User Template",
   type: "boolean",
@@ -100,6 +110,7 @@ const packageFillUserTemplate = input({
   comments: "Whether to fill the user template with the package contents.",
   clean: util.types.toBool,
 });
+
 const packageSuppressUpdates = input({
   label: "Suppress Updates",
   type: "boolean",
@@ -107,6 +118,7 @@ const packageSuppressUpdates = input({
   comments: "Whether to suppress software updates during installation.",
   clean: util.types.toBool,
 });
+
 const packageSuppressEula = input({
   label: "Suppress EULA",
   type: "boolean",
@@ -115,6 +127,7 @@ const packageSuppressEula = input({
     "Whether to suppress the End User License Agreement during installation.",
   clean: util.types.toBool,
 });
+
 const packageSuppressFromDock = input({
   label: "Suppress From Dock",
   type: "boolean",
@@ -123,6 +136,7 @@ const packageSuppressFromDock = input({
     "Whether to suppress the package icon from the Dock during installation.",
   clean: util.types.toBool,
 });
+
 const packageSuppressRegistration = input({
   label: "Suppress Registration",
   type: "boolean",
@@ -130,6 +144,7 @@ const packageSuppressRegistration = input({
   comments: "Whether to suppress the registration window during installation.",
   clean: util.types.toBool,
 });
+
 const createPackageAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -148,6 +163,7 @@ const createPackageAdditionalFields = structuredObjectInput({
     packageSuppressRegistration,
   },
 });
+
 export const createPackageInputs = {
   connection,
   packageName,
@@ -161,6 +177,7 @@ const packageResourceId = {
   comments: "The unique identifier of the package.",
   dataSource: "selectPackage",
 };
+
 export const deletePackageInputs = {
   connection,
   resourceId: packageResourceId,
@@ -172,6 +189,7 @@ const pagination = structuredObjectInput({
   comments: "Page and page-size controls.",
   inputs: { page, pageSize },
 });
+
 export const listPackagesInputs = {
   connection,
   fetchAll,
@@ -217,6 +235,7 @@ const updatePackageSuppressRegistration = optionalBoolean(
   "Suppress Registration",
   "Whether to suppress the registration window during installation.",
 );
+
 const updatePackageAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
@@ -237,6 +256,7 @@ const updatePackageAdditionalFields = structuredObjectInput({
     packageSuppressRegistration: updatePackageSuppressRegistration,
   },
 });
+
 export const updatePackageInputs = {
   connection,
   resourceId: packageResourceId,

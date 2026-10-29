@@ -2,18 +2,16 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { MAX_PAGES } from "../constants";
 import type { GraphCollectionResponse } from "../types";
 import { newestCreatedDateTime } from "./polling";
+
 export const fetchAllPlanner = async <T>(
   client: HttpClient,
   endpoint: string,
-): Promise<
-  GraphCollectionResponse<T> & {
-    truncated: boolean;
-  }
-> => {
+): Promise<GraphCollectionResponse<T> & { truncated: boolean }> => {
   const results: T[] = [];
   let nextLink: string | undefined;
   let context: string | undefined;
   let pages = 0;
+
   do {
     const { data } = await client.get<GraphCollectionResponse<T>>(
       nextLink || endpoint,
@@ -23,12 +21,14 @@ export const fetchAllPlanner = async <T>(
     nextLink = data["@odata.nextLink"];
     pages += 1;
   } while (nextLink && pages < MAX_PAGES);
+
   return {
     "@odata.context": context,
     value: results,
     truncated: Boolean(nextLink),
   };
 };
+
 export const fetchAllDirectory = async <T>(
   client: HttpClient,
   endpoint: string,
@@ -38,6 +38,7 @@ export const fetchAllDirectory = async <T>(
   let nextLink: string | undefined;
   let context: string | undefined;
   let pages = 0;
+
   do {
     const { data } = await client.get<GraphCollectionResponse<T>>(
       nextLink || endpoint,
@@ -48,12 +49,12 @@ export const fetchAllDirectory = async <T>(
     nextLink = data["@odata.nextLink"];
     pages += 1;
   } while (nextLink && pages < MAX_PAGES);
+
   return { "@odata.context": context, value: results };
 };
+
 export const fetchTasksCreatedSince = async <
-  T extends {
-    createdDateTime?: string | null;
-  },
+  T extends { createdDateTime?: string | null },
 >(
   client: HttpClient,
   endpoint: string,
@@ -66,10 +67,12 @@ export const fetchTasksCreatedSince = async <
 }> => {
   const { value, truncated } = await fetchAllPlanner<T>(client, endpoint);
   const sinceDate = since ? new Date(since) : undefined;
+
   const created = value.filter((record) => {
     if (!sinceDate || !record.createdDateTime) return false;
     return new Date(record.createdDateTime) > sinceDate;
   });
+
   return {
     fetched: value.length,
     created,

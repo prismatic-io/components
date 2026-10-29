@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../client";
 import { connectionInput } from "../inputs/general";
 import type { Company, MultipleItemsResponse } from "../interfaces";
 import { toSortedPicklist } from "./helpers";
+
 export const listCompanies = dataSource({
   display: {
     label: "Select Companies",
@@ -13,6 +14,7 @@ export const listCompanies = dataSource({
     const client = getMsBusinessCentralClient(connection, context, false);
     const { data } =
       await client.get<MultipleItemsResponse<Company[]>>(`/companies`);
+
     return {
       result: toSortedPicklist(data.value, (company) => ({
         key: company.id,

@@ -7,6 +7,7 @@ export const connectionInput = input({
   required: true,
   comments: "The Anthropic API connection to use.",
 });
+
 export const modelInput = input({
   label: "Model",
   type: "string",
@@ -18,6 +19,7 @@ export const modelInput = input({
   placeholder: "Enter a Claude model name",
   example: "claude-sonnet-4-6",
 });
+
 export const beforeIdInput = input({
   label: "Before ID",
   type: "string",
@@ -28,6 +30,7 @@ export const beforeIdInput = input({
   placeholder: "Enter a model ID to paginate before",
   example: "claude-sonnet-4-6",
 });
+
 export const afterIdInput = input({
   label: "After ID",
   type: "string",
@@ -38,6 +41,7 @@ export const afterIdInput = input({
   placeholder: "Enter a model ID to paginate after",
   example: "claude-sonnet-4-6",
 });
+
 export const limitInput = input({
   label: "Limit",
   type: "string",
@@ -48,6 +52,7 @@ export const limitInput = input({
   placeholder: "Enter number of items per page",
   example: "10",
 });
+
 export const fetchAllInput = input({
   label: "Fetch All",
   type: "boolean",
@@ -57,6 +62,7 @@ export const fetchAllInput = input({
     "When true, automatically fetches all pages of results. The Limit, After ID, and Before ID inputs are ignored.",
   clean: util.types.toBool,
 });
+
 export const messageInput = input({
   label: "Message",
   type: "string",

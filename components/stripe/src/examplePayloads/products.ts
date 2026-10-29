@@ -20,8 +20,11 @@ export const getProductExamplePayload = {
     url: "https://example.com/products/tshirt",
   } as unknown,
 };
+
 export const createProductExamplePayload = getProductExamplePayload;
+
 export const updateProductExamplePayload = getProductExamplePayload;
+
 export const deleteProductExamplePayload = {
   data: {
     id: "prod_NWjs8kKbJWmuuc",
@@ -29,6 +32,7 @@ export const deleteProductExamplePayload = {
     deleted: true,
   } as unknown,
 };
+
 export const listProductsExamplePayload = {
   data: {
     object: "list",

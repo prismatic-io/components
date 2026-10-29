@@ -33,6 +33,7 @@ const publicUserProperties = {
   created_at: { type: "string", format: "date-time" },
   updated_at: { type: "string", format: "date-time" },
 };
+
 const publicUserRequired = [
   "login",
   "id",
@@ -49,11 +50,13 @@ const publicUserRequired = [
   "created_at",
   "updated_at",
 ];
+
 export const usersGetByUsernameOutputSchema = {
   type: "object" as const,
   properties: publicUserProperties,
   required: publicUserRequired,
 };
+
 export const usersGetAuthenticatedOutputSchema = {
   type: "object" as const,
   properties: {

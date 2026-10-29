@@ -3,6 +3,7 @@ import { getMsBusinessCentralClient } from "../../client";
 import { getPurchaseReceiptLineExamplePayload as examplePayload } from "../../examplePayloads";
 import { getPurchaseReceiptLineInputs as inputs } from "../../inputs/purchaseReceiptLines/getPurchaseReceiptLineInputs";
 import type { PurchaseReceiptLine } from "../../interfaces";
+
 export const getPurchaseReceiptLine = action({
   display: {
     label: "Get Purchase Receipt Line",
@@ -21,6 +22,7 @@ export const getPurchaseReceiptLine = action({
     const { data } = await client.get<PurchaseReceiptLine>(
       `/companies(${companyId})/purchaseReceiptLines(${purchaseReceiptLineId})`,
     );
+
     return { data };
   },
   inputs,

@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { listCardsExamplePayload } from "../../examplePayloads/cards";
 import { listCardsInputs } from "../../inputs";
 import { listCardsOutputSchema } from "../../outputSchemas";
+
 export const listCards = action({
   display: {
     label: "List Cards",
@@ -32,5 +33,6 @@ export const listCards = action({
     type: "actionOutput",
     schema: listCardsOutputSchema,
   }),
+
   examplePayload: listCardsExamplePayload,
 });

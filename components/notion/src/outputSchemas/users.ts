@@ -43,8 +43,11 @@ export const notionUserObjectSchema = {
   },
   required: [],
 };
+
 export const getUserOutputSchema = notionUserObjectSchema;
+
 export const getCurrentUserOutputSchema = notionUserObjectSchema;
+
 export const listUsersOutputSchema = {
   type: "object" as const,
   properties: {

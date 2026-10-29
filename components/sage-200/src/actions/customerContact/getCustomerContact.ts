@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { getCustomerContactPayload } from "../../examplePayloads";
 import getCustomerContactInputs from "../../inputs/customerContact/getCustomerContactInputs";
 import { company, connection, site } from "../../inputs/general";
+
 export const getCustomerContact = action({
   display: {
     label: "Get Customer Contact",

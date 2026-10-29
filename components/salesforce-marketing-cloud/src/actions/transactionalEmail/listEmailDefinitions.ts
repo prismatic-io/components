@@ -5,6 +5,7 @@ import { listEmailDefinitionsExamplePayload } from "../../examplePayloads";
 import { listEmailDefinitionsInputs } from "../../inputs";
 import { listEmailDefinitionsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
+
 export const listEmailDefinitions = action({
   examplePayload: listEmailDefinitionsExamplePayload,
   display: {
@@ -20,10 +21,12 @@ export const listEmailDefinitions = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const params = {
       $pageSize: pagination.pageSize,
       $page: pagination.page,
     };
+
     const data = await paginateResults(
       client,
       EMAIL_DEFINITIONS_PATH,
@@ -34,11 +37,10 @@ export const listEmailDefinitions = action({
         preserveFields: ["requestId"],
       },
     );
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: listEmailDefinitionsExamplePayload.data,
   }),
 });

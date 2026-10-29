@@ -10,6 +10,7 @@ import {
 import type { Refund } from "../interfaces/Refund";
 import type { WooCommerceResponse } from "../interfaces/WooComerResponse";
 import { paginateRecords } from "../util";
+
 export const selectRefund = dataSource({
   display: {
     label: "Select Refund",
@@ -39,6 +40,7 @@ export const selectRefund = dataSource({
       },
       true,
     );
+
     return {
       result: data.map(({ id, amount, reason, refunded_by, parent_id }) => ({
         label: `${amount} - ${reason} - ${refunded_by} - ${parent_id}`,

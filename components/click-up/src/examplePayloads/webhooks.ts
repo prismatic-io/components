@@ -15,23 +15,27 @@ const webhookObject = {
   },
   secret: "7x1PK3mISQG0jBqeNYuhWn8alZdRtf5E",
 };
+
 export const createWebhookExamplePayload = {
   data: {
     id: "4b67ac88-e506-4a29-9d42-26e504e3435e",
     webhook: webhookObject,
   },
 };
+
 export const getWebhooksExamplePayload = {
   data: {
     webhooks: [webhookObject],
   },
 };
+
 export const updateWebhookExamplePayload = {
   data: {
     id: "4b67ac88-e506-4a29-9d42-26e504e3435e",
     webhook: webhookObject,
   },
 };
+
 export const deleteWebhookExamplePayload = {
   data: {},
 };

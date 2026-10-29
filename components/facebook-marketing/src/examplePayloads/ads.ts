@@ -3,6 +3,7 @@ export const createAdResponse = {
     id: "23849551358310668",
   },
 };
+
 export const getAdResponse = {
   data: {
     name: "Example Ad",
@@ -13,16 +14,19 @@ export const getAdResponse = {
     id: "23849551358310668",
   },
 };
+
 export const deleteAdResponse = {
   data: {
     success: true,
   },
 };
+
 export const updateAdResponse = {
   data: {
     success: true,
   },
 };
+
 export const getAdPreviewResponse = {
   data: {
     data: [
@@ -32,6 +36,7 @@ export const getAdPreviewResponse = {
     ],
   },
 };
+
 export const listAdsInAccountResponse = {
   data: {
     data: [
@@ -49,6 +54,7 @@ export const listAdsInAccountResponse = {
     },
   },
 };
+
 export const listAdsInAdsetResponse = {
   data: {
     data: [
@@ -60,6 +66,7 @@ export const listAdsInAdsetResponse = {
     ],
   },
 };
+
 export const listAdLeadsResponse = {
   data: {
     data: [

@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getLdapClient } from "../client";
 import { renameEntryExamplePayload as examplePayload } from "../examplePayloads";
 import { renameEntryInputs as inputs } from "../inputs";
+
 export const renameEntry = action({
   display: {
     label: "Rename Entry",
@@ -9,11 +10,14 @@ export const renameEntry = action({
   },
   perform: async (context, { connection, toRenameDn, newRDn }) => {
     const client = await getLdapClient(connection);
+
     if (context.debug.enabled) {
       context.logger.debug({ toRenameDn, newRDn });
     }
+
     try {
       await client.modifyDN(toRenameDn, newRDn);
+
       return {
         data: `Successfully renamed entry to ${newRDn}.`,
       };

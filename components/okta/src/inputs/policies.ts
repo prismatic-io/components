@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
 import { TYPE_MODEL } from "../util/constants";
 import { connection, expand, fetchAll, pagination, q, sortBy } from "./general";
+
 export const type = input({
   label: "Type",
   type: "string",
@@ -11,6 +12,7 @@ export const type = input({
   clean: util.types.toString,
   required: true,
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -22,6 +24,7 @@ export const status = input({
   clean: cleanString,
   required: false,
 });
+
 export const resourceId = input({
   label: "Resource ID",
   type: "string",
@@ -31,6 +34,7 @@ export const resourceId = input({
   required: false,
   clean: cleanString,
 });
+
 export const listPoliciesInputs = {
   type,
   status,

@@ -134,6 +134,7 @@ export const balanceTransactionOutputSchema = {
     "type",
   ],
 };
+
 export const listBalanceTransactionsOutputSchema = {
   type: "object" as const,
   properties: {

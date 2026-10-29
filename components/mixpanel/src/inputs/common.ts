@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Mixpanel connection to use.",
 });
+
 export const verbose = input({
   label: "Verbose",
   type: "string",
@@ -16,6 +18,7 @@ export const verbose = input({
   required: false,
   example: "1",
 });
+
 export const redirect = input({
   label: "Redirect",
   type: "string",
@@ -26,6 +29,7 @@ export const redirect = input({
   required: false,
   example: "https://example.com/redirect",
 });
+
 export const region = input({
   label: "Region",
   type: "string",
@@ -45,6 +49,7 @@ export const region = input({
   ],
   required: true,
 });
+
 export const regionAndDomain = input({
   label: "Region and Domain",
   type: "string",
@@ -64,6 +69,7 @@ export const regionAndDomain = input({
   ],
   required: true,
 });
+
 export const dataAndDomain = input({
   label: "Data and Domain",
   type: "string",
@@ -83,6 +89,7 @@ export const dataAndDomain = input({
   ],
   required: true,
 });
+
 export const project_id = input({
   label: "Project ID",
   type: "string",
@@ -93,6 +100,7 @@ export const project_id = input({
   required: false,
   example: "2891273",
 });
+
 export const workspace_id = input({
   label: "Workspace ID",
   type: "string",
@@ -103,6 +111,7 @@ export const workspace_id = input({
   required: false,
   example: "3847562",
 });
+
 export const from_date = input({
   label: "From Date",
   type: "string",
@@ -113,6 +122,7 @@ export const from_date = input({
   required: true,
   example: "2024-01-01",
 });
+
 export const to_date = input({
   label: "To Date",
   type: "string",
@@ -123,6 +133,7 @@ export const to_date = input({
   required: true,
   example: "2024-01-31",
 });
+
 export const where = input({
   label: "Where",
   type: "string",
@@ -133,6 +144,7 @@ export const where = input({
   required: false,
   example: "properties['account_id'] in [1,2,3,4]",
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -143,6 +155,7 @@ export const limit = input({
   required: false,
   example: "100",
 });
+
 export const useProjectToken = input({
   label: "Use Project Token",
   type: "boolean",

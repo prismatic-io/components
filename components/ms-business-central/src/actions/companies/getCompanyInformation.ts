@@ -4,6 +4,7 @@ import { getCompanyInformationExamplePayload } from "../../examplePayloads";
 import { companyId } from "../../inputs/accounts/getAccountsInputs";
 import { connectionInput } from "../../inputs/general";
 import type { CompanyInformation } from "../../interfaces";
+
 export const getCompanyInformation = action({
   display: {
     label: "Get Company Information",
@@ -16,9 +17,11 @@ export const getCompanyInformation = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.get<CompanyInformation>(
       `/companies(${companyId})/companyInformation`,
     );
+
     return { data };
   },
   inputs: {

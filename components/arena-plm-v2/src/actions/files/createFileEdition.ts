@@ -5,6 +5,7 @@ import { createFileEditionExamplePayload } from "../../examplePayloads";
 import { createFileEditionInputs } from "../../inputs";
 import { fileDetailSchema } from "../../outputSchemas";
 import { appendFilePart, handleArenaError } from "../../util";
+
 export const createFileEdition = action({
   display: {
     label: "Create File Edition",
@@ -19,11 +20,15 @@ export const createFileEdition = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       context.logger.info(
         `Creating new file edition for file ${params.fileGuid}`,
       );
+
       const formData = new FormData();
+
       appendFilePart(formData, "content", params.fileContent, "new_edition");
+
       if (params.storageMethodName) {
         formData.append("storageMethodName", params.storageMethodName);
       }
@@ -39,6 +44,7 @@ export const createFileEdition = action({
       if (params.format) {
         formData.append("format", params.format);
       }
+
       const { data } = await client.post(
         `/files/${params.fileGuid}/editions`,
         formData,
@@ -48,9 +54,11 @@ export const createFileEdition = action({
           },
         },
       );
+
       context.logger.info(
         `Successfully created new file edition for ${params.fileGuid}`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create File Edition");

@@ -10,12 +10,14 @@ import {
   validateId,
   validateUserId,
 } from "../util";
+
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Asana connection to use.",
 });
+
 export const workspaceId = input({
   label: "Workspace ID",
   type: "string",
@@ -27,6 +29,7 @@ export const workspaceId = input({
   dataSource: "selectWorkspace",
   clean: validateId,
 });
+
 export const userId = input({
   label: "User ID",
   type: "string",
@@ -38,6 +41,7 @@ export const userId = input({
   dataSource: "selectUser",
   clean: validateUserId,
 });
+
 export const optFields = input({
   label: "Optional Properties",
   type: "string",
@@ -48,6 +52,7 @@ export const optFields = input({
     "A comma-separated list of fields to include in the API response. The default value contains the standard fields for this action. Add or remove fields as needed.",
   clean: toCommaSeparatedList,
 });
+
 export const limit = input({
   label: "Limit",
   type: "string",
@@ -58,6 +63,7 @@ export const limit = input({
   required: false,
   clean: toOptionalInt,
 });
+
 export const offset = input({
   label: "Offset",
   type: "string",
@@ -68,12 +74,14 @@ export const offset = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Limit and offset for paginated results.",
   inputs: { limit, offset },
 });
+
 export const name = input({
   label: "Name",
   type: "string",
@@ -84,6 +92,7 @@ export const name = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const notes = input({
   label: "Notes",
   type: "text",
@@ -94,6 +103,7 @@ export const notes = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const htmlNotes = input({
   label: "HTML Notes",
   type: "code",
@@ -104,6 +114,7 @@ export const htmlNotes = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const dueOn = input({
   label: "Due On",
   type: "string",
@@ -114,6 +125,7 @@ export const dueOn = input({
   required: false,
   clean: toOptionalDate,
 });
+
 export const startOn = input({
   label: "Start On",
   type: "string",
@@ -124,6 +136,7 @@ export const startOn = input({
   required: false,
   clean: toOptionalDate,
 });
+
 export const followers = input({
   label: "Followers",
   type: "string",
@@ -134,6 +147,7 @@ export const followers = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const projectId = input({
   label: "Project ID",
   type: "string",
@@ -144,6 +158,7 @@ export const projectId = input({
   dataSource: "selectProject",
   clean: validateId,
 });
+
 export const taskId = input({
   label: "Task ID",
   type: "string",
@@ -154,6 +169,7 @@ export const taskId = input({
   dataSource: "selectTask",
   clean: validateId,
 });
+
 export const fieldId = input({
   label: "Field ID",
   type: "string",
@@ -164,6 +180,7 @@ export const fieldId = input({
   dataSource: "selectCustomField",
   clean: validateId,
 });
+
 export const members = input({
   label: "Members",
   type: "string",
@@ -175,6 +192,7 @@ export const members = input({
   collection: "valuelist",
   clean: toStringArray,
 });
+
 export const color = input({
   label: "Color",
   type: "string",
@@ -184,6 +202,7 @@ export const color = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const tagId = input({
   label: "Tag ID",
   type: "string",
@@ -194,6 +213,7 @@ export const tagId = input({
   dataSource: "selectTag",
   clean: validateId,
 });
+
 export const portfolioId = input({
   label: "Portfolio ID",
   type: "string",
@@ -204,6 +224,7 @@ export const portfolioId = input({
   dataSource: "selectPortfolio",
   clean: validateId,
 });
+
 export const followersList = input({
   label: "Followers List",
   type: "string",
@@ -215,6 +236,7 @@ export const followersList = input({
   required: false,
   clean: toStringArray,
 });
+
 export const insertAfter = input({
   label: "Insert After",
   type: "string",
@@ -225,6 +247,7 @@ export const insertAfter = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const insertBefore = input({
   label: "Insert Before",
   type: "string",
@@ -235,6 +258,7 @@ export const insertBefore = input({
   required: false,
   clean: toOptionalString,
 });
+
 export const isImportant = input({
   label: "Is Important",
   type: "boolean",
@@ -244,6 +268,7 @@ export const isImportant = input({
   required: true,
   clean: util.types.toBool,
 });
+
 export const teamId = input({
   label: "Team ID",
   type: "string",
@@ -254,6 +279,7 @@ export const teamId = input({
   dataSource: "selectTeam",
   clean: validateId,
 });
+
 export const assigneeId = input({
   label: "Assignee ID",
   type: "string",

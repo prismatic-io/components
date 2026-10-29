@@ -3,6 +3,7 @@ import { connectionInput, domain, type } from "../inputs";
 import { createClient } from "../client";
 import { generatePayload } from "../util";
 import type { Cards } from "../interfaces";
+
 export const listCards = dataSource({
   display: {
     label: "List Cards",
@@ -32,7 +33,9 @@ export const listCards = dataSource({
       },
     };
     const generatedJson = generatePayload(json, connectionInput);
+
     const { data } = await client.post<Cards>("", generatedJson);
+
     if (data?.domainCardList?.length > 0) {
       const { domainCardList } = data;
       const result = domainCardList.map<Element>(({ cardName, cardID }) => ({

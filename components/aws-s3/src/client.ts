@@ -7,12 +7,14 @@ import {
 } from "@prismatic-io/spectral";
 import { type ClientProps, getClientParams } from "aws-utils";
 import { accessKeySecretPair } from "./connections";
+
 const throwConnectionError = (connection: Connection, error: Error): void => {
   throw new ConnectionError(
     connection,
     `Invalid AWS Credentials have been configured. This is sometimes caused by missing characters from a copy/paste. Original AWS error message: ${error.message}`,
   );
 };
+
 export const createS3Client = async ({
   awsRegion,
   awsConnection,
@@ -33,6 +35,7 @@ export const createS3Client = async ({
     dynamicSecretAccessKey,
     dynamicSessionToken,
   });
+
   try {
     return new S3Client({
       region,
@@ -43,6 +46,7 @@ export const createS3Client = async ({
     throwConnectionError(awsConnection, error as Error);
   }
 };
+
 export const createSNSClient = async ({
   awsRegion,
   awsConnection,
@@ -63,6 +67,7 @@ export const createSNSClient = async ({
     dynamicSecretAccessKey,
     dynamicSessionToken,
   });
+
   try {
     return new SNSClient({
       region,

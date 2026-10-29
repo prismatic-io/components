@@ -11,6 +11,7 @@ import {
   searchCriteriaSortField,
   searchCriteriaValue,
 } from "./common";
+
 export const product = input({
   label: "Product",
   type: "code",
@@ -22,6 +23,7 @@ export const product = input({
   default: JSON.stringify(productJson, null, 2),
   clean: util.types.toObject,
 });
+
 export const attribute = input({
   label: "Product Attribute",
   type: "code",
@@ -33,6 +35,7 @@ export const attribute = input({
   default: JSON.stringify(attributeJson, null, 2),
   clean: util.types.toObject,
 });
+
 export const option = input({
   label: "Product Option",
   type: "code",
@@ -44,18 +47,22 @@ export const option = input({
   default: JSON.stringify(optionJson, null, 2),
   clean: util.types.toObject,
 });
+
 export const createProductAttributesInputs = {
   connection: connectionInput,
   attribute,
 };
+
 export const createProductOptionsInputs = {
   connection: connectionInput,
   option,
 };
+
 export const createProductsInputs = {
   connection: connectionInput,
   product,
 };
+
 export const listProductAttributesInputs = {
   connection: connectionInput,
   fetchAll,
@@ -67,9 +74,11 @@ export const listProductAttributesInputs = {
   searchCriteriaSortDirection,
   searchCriteriaSortField,
 };
+
 export const listProductOptionTypesInputs = {
   connection: connectionInput,
 };
+
 export const listProductsInputs = {
   connection: connectionInput,
   fetchAll,
@@ -81,6 +90,7 @@ export const listProductsInputs = {
   searchCriteriaSortDirection,
   searchCriteriaSortField,
 };
+
 export const listProductTypesInputs = {
   connection: connectionInput,
 };

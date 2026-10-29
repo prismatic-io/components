@@ -5,6 +5,7 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { rawRequestInputs } from "../../inputs";
 import { getBasicAuthString } from "../../util";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -13,6 +14,7 @@ export const rawRequest = action({
   inputs: rawRequestInputs,
   perform: async (context, { twilioConnection, ...rawRequestParams }) => {
     const authorization: string = getBasicAuthString(twilioConnection);
+
     try {
       const { data } = await sendRawRequest(
         "https://api.twilio.com/2010-04-01",

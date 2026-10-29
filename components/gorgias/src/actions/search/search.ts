@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { searchExamplePayload as examplePayload } from "../../examplePayloads/search";
 import { searchInputs as inputs } from "../../inputs/search";
 import type { SearchResponse } from "../../interfaces/search";
+
 export const search = action({
   display: {
     label: "Search",
@@ -13,6 +14,7 @@ export const search = action({
       connection,
       debug: context.debug.enabled,
     }).post<SearchResponse>("/search", body);
+
     return {
       data,
     };

@@ -4,6 +4,7 @@ import { createUserExamplePayload } from "../../examplePayloads";
 import { createUserInputs } from "../../inputs";
 import { createUserOutputSchema } from "../../outputSchemas";
 import { isRole } from "../../util";
+
 export const createUser = action({
   display: {
     label: "Create User",
@@ -15,6 +16,7 @@ export const createUser = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const { userRole } = params.accountSettings;
     const optionalItems = Object.fromEntries(
       Object.entries({
@@ -29,6 +31,7 @@ export const createUser = action({
         organization_id: params.organizationId,
       }).filter(([, value]) => Boolean(value)),
     );
+
     const { result } = await client.users.create({
       user: {
         ...optionalItems,
@@ -36,22 +39,19 @@ export const createUser = action({
         name: params.userName,
       },
     });
+
     return {
       data: result,
     };
   },
-  examplePerform: async (
-    _context,
-    params,
-  ): Promise<{
-    data: unknown;
-  }> => {
+  examplePerform: async (_context, params): Promise<{ data: unknown }> => {
     const name = params.userName;
     const email = params.userEmail;
     const phone = params.userPhone;
     const { userAlias: alias } = params.profileDetails;
     const { isVerified: verified } = params.accountSettings;
     const organizationId = params.organizationId;
+
     return {
       data: {
         ...createUserExamplePayload.data,

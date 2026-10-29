@@ -11,6 +11,7 @@ export interface UpdateEventSubscription {
     endpointType: string;
   };
 }
+
 export interface EventSubscription {
   name: string;
   id: string;

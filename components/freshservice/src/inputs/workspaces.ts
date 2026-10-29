@@ -5,6 +5,7 @@ import {
   fetchAll,
   pagination,
 } from "./common";
+
 const workspaceId = input({
   label: "Workspace ID",
   type: "string",
@@ -15,6 +16,7 @@ const workspaceId = input({
   dataSource: "selectWorkspace",
   clean: util.types.toNumber,
 });
+
 export const getWorkspaceInputs = {
   connection,
   workspaceId: input({
@@ -25,6 +27,7 @@ export const getWorkspaceInputs = {
   }),
   additionalQueryParams,
 };
+
 export const listWorkspacesInputs = {
   connection,
   fetchAll,

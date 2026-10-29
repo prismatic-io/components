@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { connection } from "../../inputs/general";
 import { DEFAULT_UPDATE_RESPONSE } from "../../constants";
 import { updatePriceListsInputs } from "../../inputs/priceLists/update";
+
 export const updatePriceList = action({
   display: {
     label: "Update Price List",
@@ -21,10 +22,12 @@ export const updatePriceList = action({
       context,
       context.debug.enabled,
     );
+
     await client.patch(`/PriceLists(${PriceListNo})`, {
       PriceListName,
       ...bodyFields,
     });
+
     return {
       data: DEFAULT_UPDATE_RESPONSE,
     };

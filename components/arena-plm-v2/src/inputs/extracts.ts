@@ -7,6 +7,7 @@ import {
   pagination,
   runDataInput,
 } from "./common";
+
 const extractGuidInput = input({
   label: "Extract GUID",
   type: "string",
@@ -16,6 +17,7 @@ const extractGuidInput = input({
   example: "ET4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const extractRunGuidInput = input({
   label: "Extract Run GUID",
   type: "string",
@@ -25,6 +27,7 @@ const extractRunGuidInput = input({
   example: "ET4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const runFileAssociationGuidInput = input({
   label: "Run File Association GUID",
   type: "string",
@@ -34,6 +37,7 @@ const runFileAssociationGuidInput = input({
   example: "ET4KL5MN6OP7QR8ST9UV0WX1",
   clean: util.types.toString,
 });
+
 const extractDataInput = input({
   label: "Extract Data",
   type: "data",
@@ -41,6 +45,7 @@ const extractDataInput = input({
   comments: "Extract definition data including name, description, etc.",
   clean: util.types.toObject,
 });
+
 const enabledInput = input({
   label: "Enabled",
   type: "boolean",
@@ -48,10 +53,12 @@ const enabledInput = input({
   comments: "When true, only enabled extracts are returned.",
   clean: util.types.toBool,
 });
+
 export const createExtractInputs = {
   connection: connectionInput,
   extractData: extractDataInput,
 };
+
 export const deleteExtractInputs = {
   connection: connectionInput,
   extractGuid: {
@@ -59,12 +66,14 @@ export const deleteExtractInputs = {
     comments: "The GUID of the extract definition to delete.",
   },
 };
+
 export const downloadExtractRunFileContentInputs = {
   connection: connectionInput,
   extractGuid: extractGuidInput,
   extractRunGuid: extractRunGuidInput,
   runFileAssociationGuid: runFileAssociationGuidInput,
 };
+
 export const getExtractInputs = {
   connection: connectionInput,
   extractGuid: {
@@ -72,6 +81,7 @@ export const getExtractInputs = {
     comments: "The GUID of the extract definition to retrieve.",
   },
 };
+
 export const getExtractRunInputs = {
   connection: connectionInput,
   extractGuid: extractGuidInput,
@@ -80,15 +90,18 @@ export const getExtractRunInputs = {
     comments: "The GUID of the extract run to retrieve.",
   },
 };
+
 export const listExtractRunFilesInputs = {
   connection: connectionInput,
   extractGuid: extractGuidInput,
   extractRunGuid: extractRunGuidInput,
 };
+
 export const listExtractRunsInputs = {
   connection: connectionInput,
   extractGuid: extractGuidInput,
 };
+
 export const listExtractsInputs = {
   connection: connectionInput,
   name: {
@@ -106,10 +119,12 @@ export const listExtractsInputs = {
   fetchAll: fetchAllInput,
   pagination,
 };
+
 export const getLatestCompletedExtractRunInputs = {
   connection: connectionInput,
   extractGuid: extractGuidInput,
 };
+
 export const runExtractInputs = {
   connection: connectionInput,
   extractGuid: {
@@ -121,6 +136,7 @@ export const runExtractInputs = {
     comments: "Optional parameters for the extract run.",
   },
 };
+
 export const updateExtractInputs = {
   connection: connectionInput,
   extractGuid: {

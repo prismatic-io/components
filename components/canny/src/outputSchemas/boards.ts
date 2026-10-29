@@ -1,4 +1,5 @@
 import { boardListItemSchema, boardSchema } from "./shared";
+
 export const listBoardsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -6,4 +7,5 @@ export const listBoardsOutputSchema = {
   },
   required: ["boards"],
 };
+
 export const retrieveBoardOutputSchema = boardSchema;

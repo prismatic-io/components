@@ -4,6 +4,7 @@ import { categoryAttributesObjectSelectionExamplePayload } from "../examplePaylo
 import { categoryAttributesObjectSelectionInputs } from "../inputs";
 import type { CategoryAttributeDefinitionResultRep } from "../types";
 import { handleArenaError } from "../util";
+
 export const categoryAttributesObjectSelection = dataSource({
   display: {
     label: "Select Category Attributes",
@@ -17,27 +18,34 @@ export const categoryAttributesObjectSelection = dataSource({
     { connection, objectType, categoryGuid, includeInactive },
   ) => {
     const actionContext = "Get Category Attributes for Object Selection";
+
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Fetching category attributes from Arena", {
         objectType,
         categoryGuid,
         includeInactive,
       });
+
       const response = await client.get(
         `/settings/${objectType}/categories/${categoryGuid}/attributes`,
       );
+
       const responseData =
         response.data as CategoryAttributeDefinitionResultRep;
       const attributes = responseData.results || [];
+
       const filteredAttributes = includeInactive
         ? attributes
         : attributes.filter((attr) => attr.active);
+
       if (filteredAttributes.length === 0) {
         context.logger.warn(
           `No ${includeInactive ? "" : "active "}attributes found for category GUID: ${categoryGuid}`,
         );
       }
+
       const objects = filteredAttributes.map((attribute) => ({
         object: {
           key: attribute.guid,
@@ -55,9 +63,11 @@ export const categoryAttributesObjectSelection = dataSource({
           { key: "description", label: "Description" },
         ],
       }));
+
       context.logger.info(
         `Successfully retrieved ${objects.length} category attributes for object selection`,
       );
+
       return {
         result: objects,
       };

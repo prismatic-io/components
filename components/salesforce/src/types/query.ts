@@ -1,4 +1,5 @@
 import type { Connection, Query, Schema, SObjectFieldType } from "jsforce";
+
 export interface SFQueryParams {
   salesforceClient: Connection<Schema>;
   dynamicValues?: Record<string, unknown>;
@@ -11,6 +12,7 @@ export interface SFQueryParams {
   pageSize?: number;
   sortValue?: string;
 }
+
 export interface Pagination {
   query: QueryType;
   fetchAll: boolean;
@@ -18,12 +20,14 @@ export interface Pagination {
   limit?: number;
   offset?: number;
 }
+
 export type QueryType = Query<
   Schema,
   string,
   Record<string, SObjectFieldType> & Record<string, unknown>,
   "Records"
 >;
+
 export interface SOQLQueryParams {
   recordType: string;
   fields: string[];

@@ -7,23 +7,27 @@ export const withDropboxEnvelope = <T>(result: T) => ({
   },
   required: ["status", "headers", "result"],
 });
+
 export const openTaggedUnionSchema = {
   type: "object" as const,
   properties: { ".tag": { type: "string" } },
   required: [".tag"],
   additionalProperties: true,
 };
+
 export const openStructSchema = {
   type: "object" as const,
   properties: {},
   required: [],
   additionalProperties: true,
 };
+
 export const enumTagSchema = (values: string[]) => ({
   type: "object" as const,
   properties: { ".tag": { type: "string", enum: values } },
   required: [".tag"],
 });
+
 export const propertyGroupSchema = {
   type: "object" as const,
   properties: {
@@ -39,6 +43,7 @@ export const propertyGroupSchema = {
   },
   required: ["template_id", "fields"],
 };
+
 export const fileSharingInfoSchema = {
   type: "object" as const,
   properties: {
@@ -48,6 +53,7 @@ export const fileSharingInfoSchema = {
   },
   required: ["read_only", "parent_shared_folder_id"],
 };
+
 export const folderSharingInfoSchema = {
   type: "object" as const,
   properties: {
@@ -59,6 +65,7 @@ export const folderSharingInfoSchema = {
   },
   required: ["read_only"],
 };
+
 export const mediaInfoSchema = {
   oneOf: [
     enumTagSchema(["pending"]),
@@ -96,6 +103,7 @@ export const mediaInfoSchema = {
     },
   ],
 };
+
 export const fileLockMetadataSchema = {
   type: "object" as const,
   properties: {
@@ -106,6 +114,7 @@ export const fileLockMetadataSchema = {
   },
   required: [],
 };
+
 export const fileMetadataSchema = {
   type: "object" as const,
   properties: {
@@ -144,6 +153,7 @@ export const fileMetadataSchema = {
   },
   required: ["name", "id", "client_modified", "server_modified", "rev", "size"],
 };
+
 export const folderMetadataSchema = {
   type: "object" as const,
   properties: {
@@ -160,6 +170,7 @@ export const folderMetadataSchema = {
   },
   required: ["name", "id"],
 };
+
 export const deletedMetadataSchema = {
   type: "object" as const,
   properties: {
@@ -173,14 +184,17 @@ export const deletedMetadataSchema = {
   },
   required: ["name"],
 };
+
 export const metadataSchema = {
   oneOf: [fileMetadataSchema, folderMetadataSchema, deletedMetadataSchema],
 };
+
 export const teamInfoSchema = {
   type: "object" as const,
   properties: { id: { type: "string" }, name: { type: "string" } },
   required: ["id", "name"],
 };
+
 export const nameSchema = {
   type: "object" as const,
   properties: {
@@ -198,6 +212,7 @@ export const nameSchema = {
     "abbreviated_name",
   ],
 };
+
 export const accessLevelSchema = enumTagSchema([
   "owner",
   "editor",
@@ -207,6 +222,7 @@ export const accessLevelSchema = enumTagSchema([
   "no_access",
   "other",
 ]);
+
 export const linkAudienceSchema = enumTagSchema([
   "public",
   "team",
@@ -215,6 +231,7 @@ export const linkAudienceSchema = enumTagSchema([
   "members",
   "other",
 ]);
+
 export const folderPolicySchema = {
   type: "object" as const,
   properties: {
@@ -236,6 +253,7 @@ export const folderPolicySchema = {
   },
   required: ["acl_update_policy", "shared_link_policy"],
 };
+
 export const permissionSchema = {
   type: "object" as const,
   properties: {
@@ -245,6 +263,7 @@ export const permissionSchema = {
   },
   required: ["action", "allow"],
 };
+
 export const sharedContentLinkMetadataSchema = {
   type: "object" as const,
   properties: {
@@ -288,6 +307,7 @@ export const sharedContentLinkMetadataSchema = {
     "url",
   ],
 };
+
 export const linkPermissionsSchema = {
   type: "object" as const,
   properties: {
@@ -365,6 +385,7 @@ export const linkPermissionsSchema = {
     "team_restricts_comments",
   ],
 };
+
 export const sharingTeamMemberInfoSchema = {
   type: "object" as const,
   properties: {
@@ -374,6 +395,7 @@ export const sharingTeamMemberInfoSchema = {
   },
   required: ["team_info", "display_name"],
 };
+
 export const sharedLinkMetadataSchema = {
   type: "object" as const,
   properties: {
@@ -393,6 +415,7 @@ export const sharedLinkMetadataSchema = {
   },
   required: [".tag", "url", "name", "link_permissions"],
 };
+
 export const sharedFolderMetadataSchema = {
   type: "object" as const,
   properties: {

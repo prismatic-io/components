@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { getContactInputs } from "../../inputs";
 import { getContactExamplePayload } from "../../examplePayloads";
 import type { Contact } from "../../types";
+
 export const getContact = action({
   display: {
     label: "Get Contact",
@@ -11,7 +12,9 @@ export const getContact = action({
   inputs: getContactInputs,
   perform: async (context, { connection, contactId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.get<Contact>(`/contacts/${contactId}`);
+
     return { data };
   },
   examplePayload: getContactExamplePayload,

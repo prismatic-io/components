@@ -3,6 +3,7 @@ import { listFulfillmentsExamplePayload } from "../../examplePayloads";
 import { listFulfillmentsInputs } from "../../inputs";
 import { listFulfillmentsOutputSchema } from "../../outputSchemas";
 import { listFulfillmentsGql } from "../graphql/fulfillments/listFulfillmentsGql";
+
 export const listFulfillments = action({
   display: {
     label: "List Fulfillments",

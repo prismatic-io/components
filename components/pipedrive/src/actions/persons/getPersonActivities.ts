@@ -4,6 +4,7 @@ import { getPersonActivitiesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { getPersonActivitiesExamplePayload } from "../../examplePayloads";
 import { getPersonActivitiesOutputSchema } from "../../outputSchemas";
+
 export const getPersonActivities = action({
   display: {
     label: "Get Person Activities",

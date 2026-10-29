@@ -10,6 +10,7 @@ export interface Subscription {
   source_locale?: string;
   url?: string;
 }
+
 export interface SubscriptionResponse {
   subscription: Subscription;
 }

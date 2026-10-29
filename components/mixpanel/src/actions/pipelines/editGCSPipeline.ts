@@ -3,6 +3,7 @@ import { createDataClient } from "../../client";
 import { editGCSPipelineInputs } from "../../inputs";
 import { Authorization } from "../../enums/authorization";
 import { editGCSPipelineExamplePayload } from "../../examplePayloads";
+
 export const editGCSPipeline = action({
   display: {
     label: "Edit GCS Pipeline",
@@ -36,8 +37,7 @@ export const editGCSPipeline = action({
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => editGCSPipelineExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    editGCSPipelineExamplePayload,
   examplePayload: editGCSPipelineExamplePayload,
 });

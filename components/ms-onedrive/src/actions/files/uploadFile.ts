@@ -4,6 +4,7 @@ import { getOneDriveClient } from "../../client";
 import { handleErrors } from "../../errors";
 import { uploadFileExamplePayload } from "../../examplePayloads";
 import { uploadFileInputs } from "../../inputs";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -17,6 +18,7 @@ export const uploadFile = action({
       timeout,
     );
     const { data } = fileData;
+
     return {
       data: await handleErrors(
         client.put(`/me/drive/root:${fileName}:/content`, Readable.from(data)),

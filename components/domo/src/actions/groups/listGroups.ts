@@ -4,6 +4,7 @@ import { listGroupsExamplePayload } from "../../examplePayloads";
 import { listGroupsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 import type { ListGroupsQueryParams } from "../types/ListGroupsQueryParams";
+
 export const listGroups = action({
   display: {
     label: "List Groups",
@@ -24,4 +25,5 @@ export const listGroups = action({
   },
   inputs: listGroupsInputs,
 });
+
 export default { listGroups };

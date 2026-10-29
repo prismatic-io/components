@@ -7,6 +7,7 @@ import {
 } from "../util";
 import { connection, fields } from "./common";
 import { FIELDS_CAMPAIGN_MODEL } from "../constants";
+
 const filterCampaigns = input({
   label: "Filter Campaigns",
   comments: "A Klaviyo JSON:API filter expression to narrow the campaign list.",
@@ -16,12 +17,15 @@ const filterCampaigns = input({
   required: true,
   clean: util.types.toString,
 });
+
 const fieldsCampaign = input({ ...fields, model: FIELDS_CAMPAIGN_MODEL });
+
 export const listCampaignsInputs = {
   connection,
   filterCampaigns,
   fieldsCampaign,
 };
+
 const campaignName = input({
   label: "Campaign Name",
   comments: "A display name to identify the campaign.",
@@ -31,6 +35,7 @@ const campaignName = input({
   placeholder: "Enter a campaign name",
   clean: util.types.toString,
 });
+
 const campaignMessages = input({
   label: "Campaign Messages",
   placeholder: "Enter campaign messages as a JSON array",
@@ -65,6 +70,7 @@ const campaignMessages = input({
   ),
   clean: (value) => cleanArrayCodeInput(value, "Campaign Messages"),
 });
+
 const includedAudiences = input({
   label: "Included Audiences",
   comments: "The IDs of lists or segments to receive the campaign.",
@@ -75,6 +81,7 @@ const includedAudiences = input({
   required: true,
   clean: cleanValueListInput,
 });
+
 const excludedAudiences = input({
   label: "Excluded Audiences",
   comments: "The IDs of lists or segments to exclude from the campaign.",
@@ -85,6 +92,7 @@ const excludedAudiences = input({
   required: true,
   clean: cleanValueListInput,
 });
+
 const trackingOptions = input({
   label: "Tracking Options",
   placeholder: "Enter tracking options as JSON",
@@ -111,6 +119,7 @@ const trackingOptions = input({
   required: false,
   clean: (value) => cleanCodeInput(value, "Tracking Options"),
 });
+
 const sendOptions = input({
   label: "Send Options",
   placeholder: "Enter send options as JSON",
@@ -128,6 +137,7 @@ const sendOptions = input({
   required: false,
   clean: (value) => cleanCodeInput(value, "Send Options"),
 });
+
 const sendStrategy = input({
   label: "Send Strategy",
   placeholder: "Enter a send strategy as JSON",
@@ -150,12 +160,14 @@ const sendStrategy = input({
   required: false,
   clean: (value) => cleanCodeInput(value, "Send Strategy"),
 });
+
 const campaignConfig = structuredObjectInput({
   label: "Campaign Configuration",
   required: false,
   comments: "Tracking options, send options, and send strategy.",
   inputs: { trackingOptions, sendOptions, sendStrategy },
 });
+
 export const createCampaignInputs = {
   connection,
   campaignName,
@@ -164,6 +176,7 @@ export const createCampaignInputs = {
   excludedAudiences,
   campaignConfig,
 };
+
 const campaignId = input({
   label: "Campaign ID",
   comments: "The unique identifier for the campaign.",
@@ -174,15 +187,18 @@ const campaignId = input({
   dataSource: "selectCampaign",
   clean: util.types.toString,
 });
+
 export const getCampaignInputs = {
   connection,
   campaignId,
   fieldsCampaign,
 };
+
 export const deleteCampaignInputs = {
   connection,
   campaignId,
 };
+
 export const updateCampaignInputs = {
   connection,
   campaignId,

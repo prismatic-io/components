@@ -18,11 +18,13 @@ import type {
   SupplierPhoneNumberVoResultRep,
   UserCompactVo,
 } from "../types";
+
 const sampleUser: UserCompactVo = {
   guid: "9ZY87XW65VU43TS21RQ09PO8",
   fullName: "Jordan Rivera",
   email: "jordan.rivera@example.com",
 };
+
 const sampleFileDetail: FileDetailVo = {
   guid: "7GG88HH99II00JJ11KK22LL3",
   name: "supplier-datasheet.pdf",
@@ -41,6 +43,7 @@ const sampleFileDetail: FileDetailVo = {
   latest: true,
   private: false,
 };
+
 const sampleSupplierFull: SupplierFullVo = {
   guid: "ABC123DEF456GHI789JKL012",
   name: "Acme Electronics Supply",
@@ -58,6 +61,7 @@ const sampleSupplierFull: SupplierFullVo = {
   creator: sampleUser,
   modifyUser: sampleUser,
 };
+
 const sampleSupplierItemFull: SupplierItemFullVo = {
   guid: "MNO345PQR678STU901VWX234",
   number: "SUP-ITEM-002210",
@@ -84,6 +88,7 @@ const sampleSupplierItemFull: SupplierItemFullVo = {
     },
   ],
 };
+
 const sampleSupplierAddress: SupplierAddressCompactVo = {
   primary: true,
   address: {
@@ -98,6 +103,7 @@ const sampleSupplierAddress: SupplierAddressCompactVo = {
     country: "United States",
   },
 };
+
 const sampleSupplierPhoneNumber: SupplierPhoneNumberVo = {
   guid: "PHN789JKL012MNO345PQR678",
   label: "Main",
@@ -105,6 +111,7 @@ const sampleSupplierPhoneNumber: SupplierPhoneNumberVo = {
   extension: "204",
   comment: "Primary sales contact line.",
 };
+
 const sampleItemSourcing = {
   guid: "SRC901VWX234YZA567BCD890",
   amlRank: 1,
@@ -124,16 +131,15 @@ const sampleItemSourcing = {
   },
   vendorItemConversionFactor: 1,
 };
-export const createSupplierExamplePayload: {
-  data: SupplierFullVo;
-} = {
+
+export const createSupplierExamplePayload: { data: SupplierFullVo } = {
   data: sampleSupplierFull,
 };
-export const getSupplierByGuidExamplePayload: {
-  data: SupplierFullVo;
-} = {
+
+export const getSupplierByGuidExamplePayload: { data: SupplierFullVo } = {
   data: sampleSupplierFull,
 };
+
 export const listSuppliersExamplePayload: {
   data: QueryResultRepSupplierFullVo;
 } = {
@@ -157,15 +163,15 @@ export const listSuppliersExamplePayload: {
     count: 2,
   },
 };
-export const updateSupplierExamplePayload: {
-  data: SupplierFullVo;
-} = {
+
+export const updateSupplierExamplePayload: { data: SupplierFullVo } = {
   data: {
     ...sampleSupplierFull,
     name: "Acme Electronics Supply (Global)",
     modificationDateTime: "2026-03-20T09:00:00Z",
   },
 };
+
 export const deleteSupplierExamplePayload = {
   data: {
     success: true,
@@ -173,6 +179,7 @@ export const deleteSupplierExamplePayload = {
     supplierGuid: "ABC123DEF456GHI789JKL012",
   },
 };
+
 export const listSupplierApprovalStatusesExamplePayload: {
   data: SupplierApprovalStatusResultRep;
 } = {
@@ -202,11 +209,13 @@ export const listSupplierApprovalStatusesExamplePayload: {
     count: 2,
   },
 };
+
 export const createSupplierAddressExamplePayload: {
   data: SupplierAddressCompactVo;
 } = {
   data: sampleSupplierAddress,
 };
+
 export const updateSupplierAddressExamplePayload: {
   data: SupplierAddressCompactVo;
 } = {
@@ -218,6 +227,7 @@ export const updateSupplierAddressExamplePayload: {
     },
   },
 };
+
 export const listSupplierAddressesExamplePayload: {
   data: SupplierAddressCompactVoResultRep;
 } = {
@@ -240,6 +250,7 @@ export const listSupplierAddressesExamplePayload: {
     count: 2,
   },
 };
+
 export const deleteSupplierAddressExamplePayload = {
   data: {
     success: true,
@@ -248,11 +259,13 @@ export const deleteSupplierAddressExamplePayload = {
     addressGuid: "ADR567GHI890JKL123MNO456",
   },
 };
+
 export const createSupplierPhoneNumberExamplePayload: {
   data: SupplierPhoneNumberVo;
 } = {
   data: sampleSupplierPhoneNumber,
 };
+
 export const updateSupplierPhoneNumberExamplePayload: {
   data: SupplierPhoneNumberVo;
 } = {
@@ -262,6 +275,7 @@ export const updateSupplierPhoneNumberExamplePayload: {
     comment: "Updated after-hours support line.",
   },
 };
+
 export const listSupplierPhoneNumbersExamplePayload: {
   data: SupplierPhoneNumberVoResultRep;
 } = {
@@ -278,6 +292,7 @@ export const listSupplierPhoneNumbersExamplePayload: {
     count: 2,
   },
 };
+
 export const deleteSupplierPhoneNumberExamplePayload = {
   data: {
     success: true,
@@ -286,6 +301,7 @@ export const deleteSupplierPhoneNumberExamplePayload = {
     phoneNumberGuid: "PHN789JKL012MNO345PQR678",
   },
 };
+
 export const createSupplierFileAssociationExamplePayload: {
   data: FileAssociationVo;
 } = {
@@ -294,6 +310,7 @@ export const createSupplierFileAssociationExamplePayload: {
     file: sampleFileDetail,
   },
 };
+
 export const updateSupplierFileAssociationExamplePayload: {
   data: FileAssociationVo;
 } = {
@@ -306,6 +323,7 @@ export const updateSupplierFileAssociationExamplePayload: {
     },
   },
 };
+
 export const listSupplierFileAssociationsExamplePayload: {
   data: FileAssociationVoResultRep;
 } = {
@@ -319,6 +337,7 @@ export const listSupplierFileAssociationsExamplePayload: {
     count: 1,
   },
 };
+
 export const deleteSupplierFileAssociationExamplePayload = {
   data: {
     success: true,
@@ -327,6 +346,7 @@ export const deleteSupplierFileAssociationExamplePayload = {
     supplierFileAssociationGuid: "SFA234NOP567QRS890TUV123",
   },
 };
+
 export const getSupplierQualityProcessAssociationExamplePayload: {
   data: QualityAssociationVo;
 } = {
@@ -341,6 +361,7 @@ export const getSupplierQualityProcessAssociationExamplePayload: {
     },
   },
 };
+
 export const listSupplierQualityProcessAssociationsExamplePayload: {
   data: ChangeQualityAssociationVoResultRep;
 } = {
@@ -360,16 +381,17 @@ export const listSupplierQualityProcessAssociationsExamplePayload: {
     count: 1,
   },
 };
-export const createSupplierItemExamplePayload: {
-  data: SupplierItemFullVo;
-} = {
+
+export const createSupplierItemExamplePayload: { data: SupplierItemFullVo } = {
   data: sampleSupplierItemFull,
 };
+
 export const getSupplierItemByGuidExamplePayload: {
   data: SupplierItemFullVo;
 } = {
   data: sampleSupplierItemFull,
 };
+
 export const listSupplierItemsExamplePayload: {
   data: QueryResultRepSupplierItemFullVo;
 } = {
@@ -396,15 +418,15 @@ export const listSupplierItemsExamplePayload: {
     count: 2,
   },
 };
-export const updateSupplierItemExamplePayload: {
-  data: SupplierItemFullVo;
-} = {
+
+export const updateSupplierItemExamplePayload: { data: SupplierItemFullVo } = {
   data: {
     ...sampleSupplierItemFull,
     name: "Ceramic Capacitor 10uF 25V X7R",
     description: "Updated specification to X7R dielectric.",
   },
 };
+
 export const deleteSupplierItemExamplePayload = {
   data: {
     success: true,
@@ -413,6 +435,7 @@ export const deleteSupplierItemExamplePayload = {
     guid: "MNO345PQR678STU901VWX234",
   },
 };
+
 export const listSupplierItemComplianceExamplePayload: {
   data: SupplierItemComplianceVoResultRep;
 } = {
@@ -431,6 +454,7 @@ export const listSupplierItemComplianceExamplePayload: {
     count: 1,
   },
 };
+
 export const listSupplierItemRequirementsExamplePayload = {
   data: {
     results: [
@@ -448,6 +472,7 @@ export const listSupplierItemRequirementsExamplePayload = {
     count: 2,
   },
 };
+
 const sampleSupplierItemFile: SupplierItemFileVo = {
   guid: "SIF890UVW123XYZ456ABC789",
   name: "capacitor-datasheet.pdf",
@@ -461,11 +486,13 @@ const sampleSupplierItemFile: SupplierItemFileVo = {
   creationDateTime: "2026-03-15T08:25:00Z",
   lastModifiedDateTime: "2026-03-15T08:25:00Z",
 };
+
 export const createSupplierItemFileExamplePayload: {
   data: SupplierItemFileVo;
 } = {
   data: sampleSupplierItemFile,
 };
+
 export const listSupplierItemFilesExamplePayload: {
   data: SupplierItemFileVoResultRep;
 } = {
@@ -474,19 +501,23 @@ export const listSupplierItemFilesExamplePayload: {
     count: 1,
   },
 };
+
 export const getSupplierItemFileContentExamplePayload = {
   data: Buffer.from("sample binary file content"),
   contentType: "application/pdf",
 };
+
 export const listSupplierItemSourcingExamplePayload = {
   data: {
     results: [sampleItemSourcing],
     count: 1,
   },
 };
+
 export const createSourcingRelationshipExamplePayload = {
   data: sampleItemSourcing,
 };
+
 export const listSourcingRelationshipsExamplePayload = {
   data: {
     results: [
@@ -503,6 +534,7 @@ export const listSourcingRelationshipsExamplePayload = {
     count: 2,
   },
 };
+
 export const updateSourcingRelationshipExamplePayload = {
   data: {
     ...sampleItemSourcing,
@@ -511,6 +543,7 @@ export const updateSourcingRelationshipExamplePayload = {
     notes: "Rank adjusted after dual-sourcing decision.",
   },
 };
+
 export const deleteSourcingRelationshipExamplePayload = {
   data: {
     success: true,

@@ -2,12 +2,15 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { Auth, google, type pubsub_v1 } from "googleapis";
 import { googleConnection, googlePrivateKeyConnection } from "./connections";
 import type { Version } from "./types";
+
 const UNKNOWN_CONNECTION_ERROR = "Unknown Connection type provided.";
+
 const validKeys = [googleConnection.key, googlePrivateKeyConnection.key];
 const validateConnection = (connection: Connection) => {
   if (!validKeys.includes(connection.key)) {
     throw new ConnectionError(connection, UNKNOWN_CONNECTION_ERROR);
   }
+
   if (
     connection.key === googleConnection.key &&
     !connection.token?.access_token
@@ -18,6 +21,7 @@ const validateConnection = (connection: Connection) => {
     );
   }
 };
+
 const getPrivateKeyAuth = (connection: Connection): Auth.GoogleAuth => {
   const cleanedScopesString = util.types
     .toString(connection.fields.scopes)
@@ -34,6 +38,7 @@ const getPrivateKeyAuth = (connection: Connection): Auth.GoogleAuth => {
     scopes: scopesArray,
   });
 };
+
 export const getGoogleAuth = (
   connection: Connection,
 ): Auth.GoogleAuth | Auth.OAuth2Client => {
@@ -43,6 +48,7 @@ export const getGoogleAuth = (
         util.types.toString(connection.fields.clientId),
         util.types.toString(connection.fields.clientSecret),
       );
+
       const token = util.types.toString(connection.token?.access_token);
       oauth2Client.setCredentials({
         access_token: token,
@@ -57,6 +63,7 @@ export const getGoogleAuth = (
       throw new ConnectionError(connection, UNKNOWN_CONNECTION_ERROR);
   }
 };
+
 function getClient(
   connection: Connection,
   version: Version = "v1",
@@ -67,6 +74,7 @@ function getClient(
     auth,
   });
 }
+
 export const createClient = (
   connection: Connection,
   version: Version = "v1",

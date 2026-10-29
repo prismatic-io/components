@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, createModelWithAReadableInput } from "./utils";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Aspose connection to use.",
 });
+
 export const folderPath = input({
   label: "Folder Path",
   comments: "Target folder's path. The folders will be created recursively.",
@@ -15,6 +17,7 @@ export const folderPath = input({
   type: "string",
   clean: util.types.toString,
 });
+
 export const storageName = input({
   label: "Storage Name",
   comments: "Aspose storage name where the folder gets read or created.",
@@ -24,6 +27,7 @@ export const storageName = input({
   type: "string",
   clean: cleanString,
 });
+
 export const recursive = input({
   label: "Recursive",
   comments: "When true, deletes folders, subfolders, and files recursively.",
@@ -32,6 +36,7 @@ export const recursive = input({
   type: "boolean",
   clean: util.types.toBool,
 });
+
 export const destinationPath = input({
   ...folderPath,
   label: "Destination Folder Path",
@@ -39,21 +44,25 @@ export const destinationPath = input({
   example: "/destination",
   placeholder: "Enter destination folder path",
 });
+
 export const sourcePath = input({
   ...folderPath,
   label: "Source Folder Path",
   comments: "Source folder path.",
 });
+
 export const sourceStorageName = input({
   ...storageName,
   label: "Source Storage Name",
   comments: "Source storage name.",
 });
+
 export const destinationStorageName = input({
   ...storageName,
   label: "Destination Storage Name",
   comments: "Destination storage name.",
 });
+
 export const filePath = input({
   label: "File Path",
   type: "string",
@@ -63,6 +72,7 @@ export const filePath = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const fileVersionId = input({
   label: "File Version ID",
   type: "string",
@@ -73,6 +83,7 @@ export const fileVersionId = input({
   required: false,
   clean: cleanString,
 });
+
 export const fileContent = input({
   label: "File Content",
   type: "data",
@@ -81,6 +92,7 @@ export const fileContent = input({
   required: true,
   clean: util.types.toData,
 });
+
 export const fileName = input({
   label: "File Name",
   type: "string",
@@ -90,6 +102,7 @@ export const fileName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const loadingDocumentUrl = input({
   label: "Loading Document URL",
   type: "string",
@@ -99,6 +112,7 @@ export const loadingDocumentUrl = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const diagramName = input({
   label: "Diagram Name",
   type: "string",
@@ -108,6 +122,7 @@ export const diagramName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const format = input({
   label: "Format",
   type: "string",
@@ -117,6 +132,7 @@ export const format = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const overwrite = input({
   label: "Overwrite",
   type: "boolean",
@@ -125,6 +141,7 @@ export const overwrite = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const defaultFont = input({
   label: "Default Font",
   type: "string",
@@ -134,6 +151,7 @@ export const defaultFont = input({
   required: false,
   clean: cleanString,
 });
+
 export const destinationFileName = input({
   label: "Destination File Name",
   type: "string",
@@ -143,6 +161,7 @@ export const destinationFileName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const loadEncoding = input({
   label: "Load Encoding",
   type: "string",
@@ -153,6 +172,7 @@ export const loadEncoding = input({
   required: false,
   clean: cleanString,
 });
+
 export const documentPassword = input({
   label: "Password",
   type: "password",
@@ -161,6 +181,7 @@ export const documentPassword = input({
   required: false,
   clean: cleanString,
 });
+
 export const fileNameFieldValue = input({
   label: "File Name Field Value",
   type: "string",
@@ -171,6 +192,7 @@ export const fileNameFieldValue = input({
   placeholder: "Enter output file name",
   clean: cleanString,
 });
+
 export const uploadToStorage = input({
   label: "Upload to Storage",
   type: "boolean",
@@ -179,6 +201,7 @@ export const uploadToStorage = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const htmlFileName = input({
   label: "HTML File Name",
   type: "string",
@@ -188,6 +211,7 @@ export const htmlFileName = input({
   required: true,
   clean: util.types.toString,
 });
+
 export const height = input({
   label: "Page Height",
   type: "string",
@@ -197,6 +221,7 @@ export const height = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const width = input({
   label: "Page Width",
   type: "string",
@@ -206,6 +231,7 @@ export const width = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const isLandscape = input({
   label: "Is Landscape",
   type: "boolean",
@@ -214,6 +240,7 @@ export const isLandscape = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const marginLeft = input({
   label: "Margin Left",
   type: "string",
@@ -223,6 +250,7 @@ export const marginLeft = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const marginRight = input({
   label: "Margin Right",
   type: "string",
@@ -232,6 +260,7 @@ export const marginRight = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const marginTop = input({
   label: "Margin Top",
   type: "string",
@@ -241,6 +270,7 @@ export const marginTop = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const marginBottom = input({
   label: "Margin Bottom",
   type: "string",
@@ -250,6 +280,7 @@ export const marginBottom = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const addReturnToLineEnd = input({
   label: "Add Return to Line End",
   type: "boolean",
@@ -258,6 +289,7 @@ export const addReturnToLineEnd = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const imageResolutionX = input({
   label: "Image Resolution X",
   type: "string",
@@ -267,6 +299,7 @@ export const imageResolutionX = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const imageResolutionY = input({
   label: "Image Resolution Y",
   type: "string",
@@ -276,6 +309,7 @@ export const imageResolutionY = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const maxDistanceBetweenTextLines = input({
   label: "Max Distance Between Text Lines",
   type: "string",
@@ -285,6 +319,7 @@ export const maxDistanceBetweenTextLines = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const mode = input({
   label: "Conversion Mode",
   type: "string",
@@ -295,6 +330,7 @@ export const mode = input({
   placeholder: "Select conversion mode",
   clean: cleanString,
 });
+
 export const recognizeBullets = input({
   label: "Recognize Bullets",
   type: "boolean",
@@ -303,6 +339,7 @@ export const recognizeBullets = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const relativeHorizontalProximity = input({
   label: "Relative Horizontal Proximity",
   type: "string",
@@ -312,6 +349,7 @@ export const relativeHorizontalProximity = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const outPath = input({
   label: "Out Path",
   type: "string",
@@ -322,6 +360,7 @@ export const outPath = input({
   required: false,
   clean: cleanString,
 });
+
 export const fromPage = input({
   label: "From Page",
   comments: "The start page from where to start the splitting process.",
@@ -331,6 +370,7 @@ export const fromPage = input({
   clean: util.types.toNumber,
   required: false,
 });
+
 export const toPage = input({
   label: "To Page",
   comments: "The end page where to end the splitting process.",
@@ -340,6 +380,7 @@ export const toPage = input({
   clean: util.types.toNumber,
   required: false,
 });
+
 export const zipOutput = input({
   label: "Zip Output",
   comments: "When true, compresses the output into a ZIP file.",
@@ -348,6 +389,7 @@ export const zipOutput = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const additionalMarginWidthInPoints = input({
   label: "Additional Margin Width In Points",
   type: "string",
@@ -358,6 +400,7 @@ export const additionalMarginWidthInPoints = input({
   required: false,
   clean: util.types.toNumber,
 });
+
 export const compressSvgGraphicsIfAny = input({
   label: "Compress SVG Graphics If Any",
   type: "boolean",
@@ -367,6 +410,7 @@ export const compressSvgGraphicsIfAny = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const convertMarkedContentToLayers = input({
   label: "Convert Marked Content To Layers",
   type: "boolean",
@@ -376,6 +420,7 @@ export const convertMarkedContentToLayers = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const defaultFontName = input({
   label: "Default Font Name",
   type: "string",
@@ -386,6 +431,7 @@ export const defaultFontName = input({
   required: false,
   clean: cleanString,
 });
+
 export const fixedLayout = input({
   label: "Fixed Layout",
   type: "boolean",
@@ -394,6 +440,7 @@ export const fixedLayout = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const imageResolution = input({
   label: "Image Resolution",
   type: "string",
@@ -403,6 +450,7 @@ export const imageResolution = input({
   placeholder: "Enter image resolution",
   clean: util.types.toNumber,
 });
+
 export const minimalLineWidth = input({
   label: "Minimal Line Width",
   type: "string",
@@ -412,6 +460,7 @@ export const minimalLineWidth = input({
   placeholder: "Enter line width",
   clean: util.types.toNumber,
 });
+
 export const preventGlyphsGrouping = input({
   label: "Prevent Glyphs Grouping",
   type: "boolean",
@@ -421,6 +470,7 @@ export const preventGlyphsGrouping = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const splitCssIntoPages = input({
   label: "Split CSS Into Pages",
   type: "boolean",
@@ -430,6 +480,7 @@ export const splitCssIntoPages = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const splitIntoPages = input({
   label: "Split Into Pages",
   type: "boolean",
@@ -439,6 +490,7 @@ export const splitIntoPages = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const useZOrder = input({
   label: "Use Z-Order",
   type: "boolean",
@@ -448,6 +500,7 @@ export const useZOrder = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const antialiasingProcessing = input({
   label: "Antialiasing Processing",
   type: "string",
@@ -460,6 +513,7 @@ export const antialiasingProcessing = input({
   required: false,
   clean: cleanString,
 });
+
 export const cssClassNamesPrefix = input({
   label: "CSS Class Names Prefix",
   type: "string",
@@ -470,6 +524,7 @@ export const cssClassNamesPrefix = input({
   required: false,
   clean: cleanString,
 });
+
 export const fontEncodingStrategy = input({
   label: "Font Encoding Strategy",
   type: "string",
@@ -482,6 +537,7 @@ export const fontEncodingStrategy = input({
   required: false,
   clean: cleanString,
 });
+
 export const fontSavingMode = input({
   label: "Font Saving Mode",
   type: "string",
@@ -496,6 +552,7 @@ export const fontSavingMode = input({
     "SaveInAllFormats",
   ].map(createModelWithAReadableInput),
 });
+
 export const htmlMarkupGenerationMode = input({
   label: "HTML Markup Generation Mode",
   type: "string",
@@ -509,6 +566,7 @@ export const htmlMarkupGenerationMode = input({
   ),
   clean: cleanString,
 });
+
 export const lettersPositioningMethod = input({
   label: "Letters Positioning Method",
   type: "string",
@@ -521,6 +579,7 @@ export const lettersPositioningMethod = input({
   ].map(createModelWithAReadableInput),
   clean: cleanString,
 });
+
 export const pagesFlowTypeDependsOnViewersScreenSize = input({
   label: "Pages Flow Type Depends On Viewers Screen Size",
   type: "boolean",
@@ -529,6 +588,7 @@ export const pagesFlowTypeDependsOnViewersScreenSize = input({
     "When true, flow areas representing PDF pages in the result HTML adapt to the viewer's screen resolution. Only applies when 'Split Into Pages' is false.",
   clean: util.types.toBool,
 });
+
 export const partsEmbeddingMode = input({
   label: "Parts Embedding Mode",
   type: "string",
@@ -541,6 +601,7 @@ export const partsEmbeddingMode = input({
   ),
   clean: cleanString,
 });
+
 export const rasterImagesSavingMode = input({
   label: "Raster Images Saving Mode",
   type: "string",
@@ -555,6 +616,7 @@ export const rasterImagesSavingMode = input({
   ].map(createModelWithAReadableInput),
   clean: cleanString,
 });
+
 export const removeEmptyAreasOnTopAndBottom = input({
   label: "Remove Empty Areas On Top And Bottom",
   type: "boolean",
@@ -563,6 +625,7 @@ export const removeEmptyAreasOnTopAndBottom = input({
     "When true, removes empty areas at the top and bottom of the created HTML that have no content.",
   clean: util.types.toBool,
 });
+
 export const saveShadowedTextsAsTransparentTexts = input({
   label: "Save Shadowed Texts As Transparent Texts",
   type: "boolean",
@@ -571,6 +634,7 @@ export const saveShadowedTextsAsTransparentTexts = input({
     "When true, saves text that is shadowed by other elements (e.g., images with OCR text) as transparent selectable text in the result HTML, mimicking Acrobat Reader behavior.",
   clean: util.types.toBool,
 });
+
 export const saveTransparentTexts = input({
   label: "Save Transparent Texts",
   type: "boolean",
@@ -579,6 +643,7 @@ export const saveTransparentTexts = input({
     "When true, saves transparent text (typically OCR text from images) as transparent selectable text in the result HTML.",
   clean: util.types.toBool,
 });
+
 export const specialFolderForAllImages = input({
   label: "Special Folder For All Images",
   type: "string",
@@ -589,6 +654,7 @@ export const specialFolderForAllImages = input({
     "The path to directory where images will be saved during HTML conversion. If empty, images are saved with other HTML-linked files.",
   clean: cleanString,
 });
+
 export const specialFolderForSvgImages = input({
   label: "Special Folder For SVG Images",
   type: "string",
@@ -599,6 +665,7 @@ export const specialFolderForSvgImages = input({
     "The path to directory where SVG images will be saved during HTML conversion. If empty, SVG images are saved with other HTML-linked files.",
   clean: cleanString,
 });
+
 export const trySaveTextUnderliningAndStrikeoutingInCss = input({
   label: "Try Save Text Underlining And Strikethrough In CSS",
   type: "boolean",
@@ -608,6 +675,7 @@ export const trySaveTextUnderliningAndStrikeoutingInCss = input({
     "When true, attempts to detect text underlining and strikethrough (which PDF emulates with lines) and represent them using CSS instead of graphical elements.",
   clean: util.types.toBool,
 });
+
 export const saveOptions = input({
   label: "Save Options Data",
   type: "code",

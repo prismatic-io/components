@@ -4,6 +4,7 @@ import actions from "./actions";
 import { googleConnection } from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
+
 export default component({
   key: "google-content-shopping",
   public: true,

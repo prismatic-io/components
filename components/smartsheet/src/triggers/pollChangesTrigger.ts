@@ -14,6 +14,7 @@ import {
   partitionSheetsByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Sheets",
@@ -35,28 +36,35 @@ export const pollChangesTrigger = pollingTrigger({
   ) => {
     const pollState = context.polling.getState() as PollingState;
     const now = new Date();
+
     const isInitialSync = !pollState?.lastPolledAt && Boolean(lookBackDate);
     const lastPolledAt =
       pollState?.lastPolledAt ?? (lookBackDate || now.toISOString());
     const sinceDate = new Date(lastPolledAt);
+
     const client = createClient(connection, context.debug.enabled);
     const sheets = await fetchSheetsSince(
       client,
       formatSmartsheetTimestamp(sinceDate),
     );
+
     const { created, updated } = partitionSheetsByTimestamp(sheets, sinceDate);
+
     context.polling.setState({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
+
     const result = {
       created: isInitialSync || showNewRecords ? created : [],
       updated: isInitialSync || showUpdatedRecords ? updated : [],
     };
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled sheets: ${sheets.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: result } },
       polledNoChanges:

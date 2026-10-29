@@ -4,6 +4,7 @@ import { BRANCH_DELETED_MESSAGE } from "../../constants";
 import { deleteBranchExamplePayload } from "../../examplePayloads";
 import { deleteBranchInputs } from "../../inputs";
 import { deleteBranchOutputSchema } from "../../outputSchemas";
+
 export const deleteBranch = action({
   display: {
     label: "Delete Branch",
@@ -21,9 +22,8 @@ export const deleteBranch = action({
       data: { success: true, message: BRANCH_DELETED_MESSAGE },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => deleteBranchExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    deleteBranchExamplePayload,
   examplePayload: deleteBranchExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",

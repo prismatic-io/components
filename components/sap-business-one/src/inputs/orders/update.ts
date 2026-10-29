@@ -2,6 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import { cleanString } from "../../util";
 import { bodyFields } from "../general";
 import { docEntry } from "./general";
+
 export const comments = input({
   label: "Comments",
   type: "string",
@@ -11,6 +12,7 @@ export const comments = input({
   required: true,
   clean: cleanString,
 });
+
 export const updateOrderInputs = {
   DocEntry: docEntry,
   Comments: comments,

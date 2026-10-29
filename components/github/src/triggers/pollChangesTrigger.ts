@@ -15,6 +15,7 @@ import {
   resolvePollingRecordChanges,
   splitIssueChanges,
 } from "../utils";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -40,6 +41,7 @@ export const pollChangesTrigger = pollingTrigger({
     const isInitialSync =
       pollState?.backfillActive === true ||
       (!pollState?.lastPolledAt && Boolean(params.lookBackDate));
+
     const client = createClient(params.connection, context.debug.enabled);
     const { issues, stalled } = await fetchIssuesSince(
       client,
@@ -47,6 +49,7 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt,
       isBatching,
     );
+
     const { created, updated } = splitIssueChanges(
       issues,
       lastPolledAt,
@@ -56,6 +59,7 @@ export const pollChangesTrigger = pollingTrigger({
       isInitialSync || params.showNewRecords !== false ? created : [];
     const filteredUpdated =
       isInitialSync || params.showUpdatedRecords !== false ? updated : [];
+
     const capped =
       isBatching && !stalled && issues.length >= MAX_BATCHED_RECORDS;
     context.polling.setState(
@@ -67,11 +71,13 @@ export const pollChangesTrigger = pollingTrigger({
         isInitialSync && capped,
       ),
     );
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled GitHub ${params.owner}/${params.repo} issues: ${issues.length} fetched, ${filteredCreated.length} created, ${filteredUpdated.length} updated`,
       );
     }
+
     return {
       payload: {
         ...payload,

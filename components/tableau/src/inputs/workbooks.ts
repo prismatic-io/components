@@ -9,6 +9,7 @@ import {
   userId,
   workbookId,
 } from "./common";
+
 const workbookName = input({
   label: "Workbook Name",
   type: "string",
@@ -18,6 +19,7 @@ const workbookName = input({
   placeholder: "Enter workbook name",
   clean: util.types.toString,
 });
+
 const showTabs = input({
   label: "Show Tabs",
   type: "boolean",
@@ -26,6 +28,7 @@ const showTabs = input({
   comments: "When true, the updated workbook shows views in tabs.",
   clean: toOptionalBoolean,
 });
+
 const workbookSearchField = input({
   label: "Search Field",
   type: "string",
@@ -39,6 +42,7 @@ const workbookSearchField = input({
     { label: "Tags", value: "tags" },
   ],
 });
+
 const filterOperator = input({
   label: "Filter Operator",
   type: "string",
@@ -51,6 +55,7 @@ const filterOperator = input({
     { label: "In", value: "in" },
   ],
 });
+
 const uploadSessionId = input({
   label: "Upload Session ID",
   type: "string",
@@ -61,6 +66,7 @@ const uploadSessionId = input({
   placeholder: "Enter upload session ID",
   clean: toOptionalString,
 });
+
 const workbookType = input({
   label: "Workbook Type",
   type: "string",
@@ -75,6 +81,7 @@ const workbookType = input({
   default: "",
   clean: util.types.toString,
 });
+
 const overwrite = input({
   label: "Overwrite",
   type: "boolean",
@@ -84,6 +91,7 @@ const overwrite = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const asJob = input({
   label: "As Job",
   type: "boolean",
@@ -93,6 +101,7 @@ const asJob = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const skipConnectionCheck = input({
   label: "Skip Connection Check",
   type: "boolean",
@@ -102,6 +111,7 @@ const skipConnectionCheck = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const publishOptions = structuredObjectInput({
   label: "Publish Options",
   required: false,
@@ -115,6 +125,7 @@ const publishOptions = structuredObjectInput({
     skipConnectionCheck,
   },
 });
+
 const workbookXml = input({
   label: "Workbook XML",
   type: "code",
@@ -129,6 +140,7 @@ const workbookXml = input({
 </tsRequest>`,
   clean: util.types.toString,
 });
+
 const workbookFileContents = input({
   label: "Workbook File Contents",
   type: "data",
@@ -136,11 +148,13 @@ const workbookFileContents = input({
   comments: "The twbx file to upload as binary data.",
   clean: util.types.toBufferDataPayload,
 });
+
 export const listWorkbooksInputs = {
   timeout,
   pagination,
   tableauConnection: connectionInput,
 };
+
 export const searchWorkbooksInputs = {
   searchField: workbookSearchField,
   filterOperator: filterOperator,
@@ -149,16 +163,19 @@ export const searchWorkbooksInputs = {
   tableauConnection: connectionInput,
   pagination,
 };
+
 export const getWorkbookInputs = {
   workbookId,
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const deleteWorkbookInputs = {
   workbookId,
   timeout,
   tableauConnection: connectionInput,
 };
+
 export const publishWorkbookInputs = {
   timeout,
   tableauConnection: connectionInput,
@@ -166,6 +183,7 @@ export const publishWorkbookInputs = {
   workbookXml,
   workbookFileContents,
 };
+
 export const updateWorkbookInputs = {
   workbookId,
   workbookName,

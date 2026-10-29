@@ -10,6 +10,7 @@ const guestUser = {
   date_joined: null,
   date_invited: "1704067200000",
 };
+
 const workspaceGuestUser = {
   ...guestUser,
   custom_role: {
@@ -17,6 +18,7 @@ const workspaceGuestUser = {
     name: "External Reviewer",
   },
 };
+
 const invitedByObject = {
   id: 81942670,
   username: "Jane Smith",
@@ -26,16 +28,19 @@ const invitedByObject = {
   profilePicture:
     "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
 };
+
 const guestPermissions = {
   can_edit_tags: true,
   can_see_time_spent: true,
   can_see_time_estimated: true,
 };
+
 const workspaceGuestPermissions = {
   ...guestPermissions,
   can_create_views: false,
   can_see_points_estimated: false,
 };
+
 const guestObject = {
   guest: {
     user: guestUser,
@@ -48,6 +53,7 @@ const guestObject = {
     },
   },
 };
+
 const workspaceGuestObject = {
   guest: {
     user: workspaceGuestUser,
@@ -60,6 +66,7 @@ const workspaceGuestObject = {
     },
   },
 };
+
 const sharedTask = {
   id: "9hx",
   name: "Design Homepage",
@@ -105,6 +112,7 @@ const sharedTask = {
   folder: { id: "457", name: "Website Redesign", hidden: false, access: false },
   space: { id: "790" },
 };
+
 const sharedListStatuses = [
   {
     id: "p90110061901_BEV3ofnq",
@@ -121,6 +129,7 @@ const sharedListStatuses = [
     type: "closed",
   },
 ];
+
 const sharedList = {
   id: "124",
   name: "Sprint Backlog",
@@ -136,6 +145,7 @@ const sharedList = {
   statuses: sharedListStatuses,
   permission_level: "read",
 };
+
 const sharedFolder = {
   id: "457",
   name: "Website Redesign",
@@ -148,9 +158,11 @@ const sharedFolder = {
   lists: [],
   permission_level: "read",
 };
+
 export const getGuestExamplePayload = {
   data: workspaceGuestObject,
 };
+
 export const inviteGuestToWorkspaceExamplePayload = {
   data: {
     team: {
@@ -174,9 +186,11 @@ export const inviteGuestToWorkspaceExamplePayload = {
     },
   },
 };
+
 export const editGuestOnWorkspaceExamplePayload = {
   data: workspaceGuestObject,
 };
+
 export const removeGuestFromWorkspaceExamplePayload = {
   data: {
     team: {
@@ -188,6 +202,7 @@ export const removeGuestFromWorkspaceExamplePayload = {
     },
   },
 };
+
 export const addGuestToTaskExamplePayload = {
   data: {
     guest: {
@@ -196,9 +211,11 @@ export const addGuestToTaskExamplePayload = {
     },
   },
 };
+
 export const removeGuestFromTaskExamplePayload = {
   data: guestObject,
 };
+
 export const addGuestToListExamplePayload = {
   data: {
     guest: {
@@ -207,9 +224,11 @@ export const addGuestToListExamplePayload = {
     },
   },
 };
+
 export const removeGuestFromListExamplePayload = {
   data: guestObject,
 };
+
 export const addGuestToFolderExamplePayload = {
   data: {
     guest: {
@@ -218,6 +237,7 @@ export const addGuestToFolderExamplePayload = {
     },
   },
 };
+
 export const removeGuestFromFolderExamplePayload = {
   data: guestObject,
 };

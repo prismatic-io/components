@@ -3,6 +3,7 @@ import { createStripeClient } from "../../client";
 import { getBalanceTransactionExamplePayload } from "../../examplePayloads/balanceTransactions";
 import { getBalanceTransactionInputs } from "../../inputs";
 import { balanceTransactionOutputSchema } from "../../outputSchemas";
+
 export const getBalanceTransaction = action({
   display: {
     label: "Get Balance Transaction",

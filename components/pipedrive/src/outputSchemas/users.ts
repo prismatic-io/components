@@ -22,6 +22,7 @@ const userRecordSchema = {
     is_you: { type: "boolean" },
   },
 };
+
 const permissionsSchema = {
   type: "object",
   properties: {
@@ -52,6 +53,7 @@ const permissionsSchema = {
     can_use_email_tracking: { type: "boolean" },
   },
 };
+
 export const getUsersOutputSchema = {
   type: "object",
   properties: {
@@ -64,6 +66,7 @@ export const getUsersOutputSchema = {
     },
   },
 };
+
 export const findUsersByNameOutputSchema = {
   type: "object",
   properties: {
@@ -87,6 +90,7 @@ export const findUsersByNameOutputSchema = {
     },
   },
 };
+
 export const getCurrentUserOutputSchema = {
   type: "object",
   properties: {
@@ -115,6 +119,7 @@ export const getCurrentUserOutputSchema = {
     },
   },
 };
+
 export const getUserOutputSchema = {
   type: "object",
   properties: {
@@ -127,6 +132,7 @@ export const getUserOutputSchema = {
     },
   },
 };
+
 export const getUserFollowersOutputSchema = {
   type: "object",
   properties: {
@@ -155,6 +161,7 @@ export const getUserFollowersOutputSchema = {
     },
   },
 };
+
 export const getUserPermissionsOutputSchema = {
   type: "object",
   properties: {
@@ -167,6 +174,7 @@ export const getUserPermissionsOutputSchema = {
     },
   },
 };
+
 export const getUserRoleAssignmentsOutputSchema = {
   type: "object",
   properties: {
@@ -204,6 +212,7 @@ export const getUserRoleAssignmentsOutputSchema = {
     },
   },
 };
+
 export const getUserRoleSettingsOutputSchema = {
   type: "object",
   properties: {

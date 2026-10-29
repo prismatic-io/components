@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { createVoteExamplePayload } from "../../examplePayloads";
 import { createVoteInputs } from "../../inputs";
 import { createVoteOutputSchema } from "../../outputSchemas";
+
 export const createVote = action({
   display: {
     label: "Create Vote",
@@ -26,8 +27,7 @@ export const createVote = action({
     });
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => createVoteExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createVoteExamplePayload,
   examplePayload: createVoteExamplePayload,
 });

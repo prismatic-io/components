@@ -1,4 +1,5 @@
 import { connection } from "@prismatic-io/spectral";
+
 export const oauth = connection({
   key: "oauth",
   display: {
@@ -33,4 +34,5 @@ export const oauth = connection({
     },
   },
 });
+
 export default [oauth];

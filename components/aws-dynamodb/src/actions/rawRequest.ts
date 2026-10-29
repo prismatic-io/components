@@ -14,6 +14,7 @@ import {
 } from "../inputs";
 import { createDynamoClient } from "../auth";
 import { rawRequestExamplePayload } from "../examplePayloads";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -42,8 +43,10 @@ export const rawRequest = action({
       Parameters: parameters as AttributeValue[],
       ...queryParameters,
     };
+
     const command = new ExecuteStatementCommand(statementCommand);
     const response = await docClient.send(command);
+
     return {
       data: response,
     };

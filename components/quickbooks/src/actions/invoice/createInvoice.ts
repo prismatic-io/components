@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createHttpClient } from "../../client";
 import { connectionInput, data } from "../../inputs";
+
 export const createInvoice = action({
   display: {
     label: "Create Invoice (JSON)",
@@ -17,6 +18,7 @@ export const createInvoice = action({
         "Content-Type": "application/json",
       },
     });
+
     return {
       data: data.Invoice,
     };

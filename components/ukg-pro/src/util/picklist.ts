@@ -1,4 +1,5 @@
 import type { PicklistItem, PicklistMapConfig } from "../types";
+
 export const toPicklistResult = <T>(
   items: T[],
   config: PicklistMapConfig<T>,

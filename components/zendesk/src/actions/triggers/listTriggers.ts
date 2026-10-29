@@ -4,6 +4,7 @@ import { listTriggersExamplePayload } from "../../examplePayloads";
 import { listTriggersInputs } from "../../inputs";
 import { listTriggersOutputSchema } from "../../outputSchemas";
 import { fetchTriggers } from "../../util";
+
 export const listTriggers = action({
   display: {
     label: "List Triggers",

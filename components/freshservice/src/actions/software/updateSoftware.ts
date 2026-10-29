@@ -3,6 +3,7 @@ import { createFreshserviceClient } from "../../client";
 import { updateSoftwareExamplePayload as examplePayload } from "../../examplePayloads";
 import { updateSoftwareInputs as inputs } from "../../inputs";
 import { softwareOutputSchema } from "../../outputSchemas";
+
 export const updateSoftware = action({
   display: {
     label: "Update Software",
@@ -22,6 +23,7 @@ export const updateSoftware = action({
     const client = createFreshserviceClient(connection, {
       debug: context.debug.enabled,
     });
+
     const payload = {
       application: {
         name: additionalFields.name,
@@ -35,10 +37,12 @@ export const updateSoftware = action({
         ...softwareAdditionalFields,
       },
     };
+
     const { data } = await client.put(
       `/applications/${applicationId}`,
       payload,
     );
+
     return {
       data,
     };

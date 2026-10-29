@@ -8,6 +8,7 @@ import {
   pagination,
   personId as personIdFilter,
 } from "./common";
+
 const absenceEntryId = input({
   label: "Absence Entry ID",
   type: "string",
@@ -18,6 +19,7 @@ const absenceEntryId = input({
   example: "300100012345678",
   clean: cleanId,
 });
+
 const personId = input({
   label: "Person ID",
   type: "string",
@@ -27,6 +29,7 @@ const personId = input({
   example: "100000012345678",
   clean: cleanOptionalNumber,
 });
+
 const absenceTypeId = input({
   label: "Absence Type ID",
   type: "string",
@@ -36,6 +39,7 @@ const absenceTypeId = input({
   example: "300100000000001",
   clean: cleanOptionalNumber,
 });
+
 const legalEntityId = input({
   label: "Legal Entity ID",
   type: "string",
@@ -46,6 +50,7 @@ const legalEntityId = input({
   example: "300100000000002",
   clean: cleanOptionalNumber,
 });
+
 const startDate = input({
   label: "Start Date",
   type: "string",
@@ -55,6 +60,7 @@ const startDate = input({
   example: "2024-06-01",
   clean: cleanString,
 });
+
 const endDate = input({
   label: "End Date",
   type: "string",
@@ -64,6 +70,7 @@ const endDate = input({
   example: "2024-06-05",
   clean: cleanString,
 });
+
 const duration = input({
   label: "Duration",
   type: "string",
@@ -74,6 +81,7 @@ const duration = input({
   example: "5",
   clean: cleanOptionalNumber,
 });
+
 const unitOfMeasure = input({
   label: "Unit of Measure",
   type: "string",
@@ -83,6 +91,7 @@ const unitOfMeasure = input({
   example: "DAYS",
   clean: cleanString,
 });
+
 const absenceReason = input({
   label: "Absence Reason",
   type: "string",
@@ -92,6 +101,7 @@ const absenceReason = input({
   example: "Vacation",
   clean: cleanString,
 });
+
 const absenceStatusCd = input({
   label: "Absence Status Code",
   type: "string",
@@ -102,6 +112,7 @@ const absenceStatusCd = input({
   example: "SUBMITTED",
   clean: cleanString,
 });
+
 const comments = input({
   label: "Comments",
   type: "string",
@@ -111,6 +122,7 @@ const comments = input({
   example: "Annual leave",
   clean: cleanString,
 });
+
 const absenceDetails = structuredObjectInput({
   label: "Absence Details",
   required: false,
@@ -126,6 +138,7 @@ const absenceDetails = structuredObjectInput({
     comments,
   },
 });
+
 export const createAbsenceInputs = {
   connection,
   personId: { ...personId, required: true },
@@ -134,15 +147,18 @@ export const createAbsenceInputs = {
   absenceDetails,
   additionalFields,
 };
+
 export const deleteAbsenceInputs = {
   connection,
   absenceEntryId,
 };
+
 export const getAbsenceInputs = {
   connection,
   absenceEntryId,
   includeMetadataLinks,
 };
+
 export const listAbsencesInputs = {
   connection,
   fetchAll,
@@ -155,6 +171,7 @@ export const listAbsencesInputs = {
   },
   includeMetadataLinks,
 };
+
 export const updateAbsenceInputs = {
   connection,
   absenceEntryId,

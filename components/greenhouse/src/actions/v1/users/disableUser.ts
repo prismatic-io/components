@@ -7,6 +7,7 @@ import {
   on_behalf_of_user_id,
   version,
 } from "../../../inputs";
+
 export const disableUser = action({
   display: {
     label: "Disable User (Harvest v1/v2)",
@@ -14,6 +15,7 @@ export const disableUser = action({
   },
   perform: async (context, { connection, email, user_id, version }) => {
     const client = createClient(connection, version, context.debug.enabled);
+
     const newUser = {
       user: { email },
     };

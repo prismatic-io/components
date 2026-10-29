@@ -3,24 +3,23 @@ import nock from "nock";
 import { STORE_HOST, storeConnection } from "../testHelpers";
 import type { MagentoRecord } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
   nock.cleanAll();
   vi.useRealTimers();
 });
+
 const ORDERS_PATH = "/rest/default/V1/orders";
+
 type PollChangesResult = {
   payload: {
-    body?: {
-      data?: {
-        created: MagentoRecord[];
-        updated: MagentoRecord[];
-      };
-    };
+    body?: { data?: { created: MagentoRecord[]; updated: MagentoRecord[] } };
   };
   polledNoChanges?: boolean;
 };
+
 const invokeTrigger = invokeTriggerUntyped as unknown as (
   triggerDef: unknown,
   context: {
@@ -31,10 +30,8 @@ const invokeTrigger = invokeTriggerUntyped as unknown as (
   },
   payload: Record<string, unknown>,
   params: Record<string, unknown>,
-) => Promise<{
-  result: PollChangesResult;
-  loggerMock: unknown;
-}>;
+) => Promise<{ result: PollChangesResult; loggerMock: unknown }>;
+
 const createPollingContext = (initialState: Record<string, unknown> = {}) => {
   let state: Record<string, unknown> = { ...initialState };
   return {
@@ -46,6 +43,7 @@ const createPollingContext = (initialState: Record<string, unknown> = {}) => {
     },
   };
 };
+
 const baseParams = {
   connection: storeConnection(),
   pollResourceType: "orders",
@@ -53,6 +51,7 @@ const baseParams = {
   showNewRecords: true,
   showUpdatedRecords: true,
 };
+
 describe("pollChangesTrigger: first poll, no stored state", () => {
   test("seeds the cursor from the supplied look-back date", async () => {
     const scope = nock(STORE_HOST)
@@ -63,6 +62,7 @@ describe("pollChangesTrigger: first poll, no stored state", () => {
           "2026-01-01 00:00:00",
       )
       .reply(200, { items: [] });
+
     const context = createPollingContext();
     const { result } = await invokeTrigger(
       pollChangesTrigger,
@@ -73,12 +73,15 @@ describe("pollChangesTrigger: first poll, no stored state", () => {
         lookBackDate: "2026-01-01T00:00:00.000Z",
       },
     );
+
     expect(scope.isDone()).toBe(true);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("seeds the cursor from now when no look-back date is supplied either", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-02-01T10:00:00.000Z"));
+
     const scope = nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(
@@ -87,29 +90,37 @@ describe("pollChangesTrigger: first poll, no stored state", () => {
           "2026-02-01 10:00:00",
       )
       .reply(200, { items: [] });
+
     const context = createPollingContext();
     await invokeTrigger(pollChangesTrigger, context, {}, baseParams);
+
     expect(scope.isDone()).toBe(true);
   });
 });
+
 describe("pollChangesTrigger: not truncated", () => {
   test("advances the cursor to now", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-01T00:00:00.000Z"));
+
     nock(STORE_HOST).get(ORDERS_PATH).query(true).reply(200, { items: [] });
+
     const context = createPollingContext({
       lastPolledAt: "2026-02-01T00:00:00.000Z",
     });
     await invokeTrigger(pollChangesTrigger, context, {}, baseParams);
+
     expect(context.polling.getState().lastPolledAt).toBe(
       "2026-03-01T00:00:00.000Z",
     );
   });
 });
+
 describe("pollChangesTrigger: truncated", () => {
   test("advances the cursor to the newest fetched record, not to now, and the next poll resumes from there", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-04-01T00:00:00.000Z"));
+
     const page = {
       items: Array.from({ length: 100 }, (_, i) => ({
         entity_id: i + 1,
@@ -122,6 +133,7 @@ describe("pollChangesTrigger: truncated", () => {
       .query(true)
       .times(50)
       .reply(200, page);
+
     const context = createPollingContext();
     const { result: firstResult } = await invokeTrigger(
       pollChangesTrigger,
@@ -129,6 +141,7 @@ describe("pollChangesTrigger: truncated", () => {
       {},
       baseParams,
     );
+
     expect(firstPollScope.isDone()).toBe(true);
     expect(firstResult.polledNoChanges).toBe(false);
     expect(context.polling.getState().lastPolledAt).toBe(
@@ -137,6 +150,7 @@ describe("pollChangesTrigger: truncated", () => {
     expect(context.polling.getState().lastPolledAt).not.toBe(
       "2026-04-01T00:00:00.000Z",
     );
+
     const secondPollScope = nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(
@@ -145,10 +159,13 @@ describe("pollChangesTrigger: truncated", () => {
           "2026-01-05 12:00:00",
       )
       .reply(200, { items: [] });
+
     await invokeTrigger(pollChangesTrigger, context, {}, baseParams);
+
     expect(secondPollScope.isDone()).toBe(true);
   });
 });
+
 describe("pollChangesTrigger: created vs updated partition", () => {
   const lastPolledAt = "2026-05-01T00:00:00.000Z";
   const newRecord = {
@@ -161,11 +178,13 @@ describe("pollChangesTrigger: created vs updated partition", () => {
     created_at: "2026-01-01 00:00:00",
     updated_at: "2026-05-03 00:00:00",
   };
+
   test("a record created after the cursor is classified as created; one created earlier but modified since is classified as updated", async () => {
     nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(true)
       .reply(200, { items: [newRecord, changedRecord] });
+
     const context = createPollingContext({ lastPolledAt });
     const { result } = await invokeTrigger(
       pollChangesTrigger,
@@ -173,16 +192,19 @@ describe("pollChangesTrigger: created vs updated partition", () => {
       {},
       baseParams,
     );
+
     const data = result.payload.body?.data;
     expect(data?.created).toEqual([newRecord]);
     expect(data?.updated).toEqual([changedRecord]);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("Show New Records: false drops a new record entirely, rather than reclassifying it as updated", async () => {
     nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(true)
       .reply(200, { items: [newRecord] });
+
     const context = createPollingContext({ lastPolledAt });
     const { result } = await invokeTrigger(
       pollChangesTrigger,
@@ -193,16 +215,19 @@ describe("pollChangesTrigger: created vs updated partition", () => {
         showNewRecords: false,
       },
     );
+
     const data = result.payload.body?.data;
     expect(data?.created).toEqual([]);
     expect(data?.updated).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("Show Updated Records: false suppresses an updated record", async () => {
     nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(true)
       .reply(200, { items: [changedRecord] });
+
     const context = createPollingContext({ lastPolledAt });
     const { result } = await invokeTrigger(
       pollChangesTrigger,
@@ -213,14 +238,17 @@ describe("pollChangesTrigger: created vs updated partition", () => {
         showUpdatedRecords: false,
       },
     );
+
     const data = result.payload.body?.data;
     expect(data?.updated).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
   });
 });
+
 describe("pollChangesTrigger: unsupported resource type", () => {
   test("throws before making any request", async () => {
     const context = createPollingContext();
+
     await expect(
       invokeTrigger(
         pollChangesTrigger,
@@ -234,6 +262,7 @@ describe("pollChangesTrigger: unsupported resource type", () => {
     ).rejects.toThrow("Unsupported resource type: invalidType");
   });
 });
+
 describe("pollChangesTrigger: the initial sync bypasses the visibility filters", () => {
   const newRecord = {
     entity_id: 3,
@@ -249,11 +278,13 @@ describe("pollChangesTrigger: the initial sync bypasses the visibility filters",
     ...baseParams,
     lookBackDate: "2026-01-01T00:00:00.000Z",
   };
+
   test("Show New Records: false does not suppress a created record while seeding history", async () => {
     nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(true)
       .reply(200, { items: [newRecord] });
+
     const context = createPollingContext();
     const { result } = await invokeTrigger(
       pollChangesTrigger,
@@ -264,15 +295,18 @@ describe("pollChangesTrigger: the initial sync bypasses the visibility filters",
         showNewRecords: false,
       },
     );
+
     const data = result.payload.body?.data;
     expect(data?.created).toEqual([newRecord]);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("Show Updated Records: false does not suppress an updated record while seeding history", async () => {
     nock(STORE_HOST)
       .get(ORDERS_PATH)
       .query(true)
       .reply(200, { items: [changedRecord] });
+
     const context = createPollingContext();
     const { result } = await invokeTrigger(
       pollChangesTrigger,
@@ -283,6 +317,7 @@ describe("pollChangesTrigger: the initial sync bypasses the visibility filters",
         showUpdatedRecords: false,
       },
     );
+
     const data = result.payload.body?.data;
     expect(data?.updated).toEqual([changedRecord]);
     expect(result.polledNoChanges).toBe(false);

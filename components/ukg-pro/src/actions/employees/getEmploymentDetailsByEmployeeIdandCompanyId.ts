@@ -4,6 +4,7 @@ import { getEmployeeEmploymentDetailsExamplePayload as getEmployeeEmploymentDeta
 import { getEmployeeEmploymentDetailsByEmployeeIdAndCompanyIdInputs } from "../../inputs";
 import type { EmployeeEmploymentDetails } from "../../types";
 import { fetchWithPagination } from "../../util";
+
 export const getEmployeeEmploymentDetailsByEmployeeIdAndCompanyId = action({
   display: {
     label: "Get Employee Employment Details by Employee ID and Company ID",
@@ -23,6 +24,7 @@ export const getEmployeeEmploymentDetailsByEmployeeIdAndCompanyId = action({
     },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
+
     const { data } = await fetchWithPagination<EmployeeEmploymentDetails>(
       client,
       `/personnel/v1/companies/${companyId}/employees/${employeeId}/employment-details`,
@@ -33,6 +35,7 @@ export const getEmployeeEmploymentDetailsByEmployeeIdAndCompanyId = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload:

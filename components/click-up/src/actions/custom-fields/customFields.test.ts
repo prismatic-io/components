@@ -7,15 +7,18 @@ import {
 } from "../../examplePayloads";
 import { removeCustomFieldValue } from "./removeCustomFieldValue";
 import { setCustomFieldValue } from "./setCustomFieldValue";
+
 const API = "https://api.clickup.com";
 const connection = createConnection(clickUpApiKeyConnection, {
   apiKey: "test-key",
 });
+
 interface Captured {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, unknown>;
 }
+
 const mockClickUp = (
   method: string,
   path: string,
@@ -38,15 +41,12 @@ const mockClickUp = (
     });
   return captured;
 };
+
 type ActionUnderTest = {
-  inputs: Record<
-    string,
-    {
-      type?: string;
-    }
-  >;
+  inputs: Record<string, { type?: string }>;
   perform: unknown;
 };
+
 const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
   const connectionKey = Object.keys(action.inputs).find(
     (key) => action.inputs[key].type === "connection",
@@ -56,6 +56,7 @@ const run = (action: ActionUnderTest, params: Record<string, unknown>) => {
     { [connectionKey]: connection, ...params } as any,
   );
 };
+
 beforeAll(() => nock.disableNetConnect());
 afterAll(() => nock.enableNetConnect());
 afterEach(() => {
@@ -63,6 +64,7 @@ afterEach(() => {
   nock.cleanAll();
   expect(consumed).toBe(true);
 });
+
 describe("removeCustomFieldValue", () => {
   const params = {
     taskId: "9hx",
@@ -70,6 +72,7 @@ describe("removeCustomFieldValue", () => {
     customTaskIds: false,
     teamId: "",
   };
+
   test("happy path deletes the value and omits an empty team_id", async () => {
     const req = mockClickUp(
       "DELETE",
@@ -82,6 +85,7 @@ describe("removeCustomFieldValue", () => {
     expect(req.query).toEqual({ custom_task_ids: "false" });
   });
 });
+
 describe("setCustomFieldValue", () => {
   const params = {
     taskId: "9hx",
@@ -89,6 +93,7 @@ describe("setCustomFieldValue", () => {
     fieldValue: "2026-01-01T00:00:00.000Z",
     valueType: "date",
   };
+
   test("happy path converts a date value to Unix milliseconds and returns the response", async () => {
     const req = mockClickUp(
       "POST",

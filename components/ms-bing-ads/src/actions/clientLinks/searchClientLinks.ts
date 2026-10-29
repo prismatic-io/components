@@ -5,6 +5,7 @@ import { searchClientLinksExamplePayload } from "../../examplePayloads";
 import { searchClientLinksInputs } from "../../inputs/clientLinks";
 import type { Args, ClientLink, SearchClientLinksResponse } from "../../types";
 import { toArray } from "../../util";
+
 export const searchClientLinks = action({
   display: {
     label: "Search Client Links",
@@ -26,6 +27,7 @@ export const searchClientLinks = action({
       connection,
       wsdl: BING_API.CUSTOMER_MANAGEMENT_API.WSDL,
     });
+
     const response = await sendAsync<SearchClientLinksResponse>({
       debug,
       args: {
@@ -70,6 +72,7 @@ export const searchClientLinks = action({
       soapAction: SOAP_ACTION.SearchClientLinks,
       targetNamespace: BING_API.CUSTOMER_MANAGEMENT_API.TN,
     });
+
     return {
       data: response?.ClientLinks?.ClientLink
         ? {

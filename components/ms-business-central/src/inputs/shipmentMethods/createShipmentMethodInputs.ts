@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+
 export const shipmentCode = input({
   label: "Shipment Code",
   type: "string",
@@ -8,6 +9,7 @@ export const shipmentCode = input({
   placeholder: "Enter shipment code",
   clean: util.types.toString,
 });
+
 export const shipmentMethodName = input({
   label: "Shipment Method Name",
   type: "string",

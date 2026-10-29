@@ -12,6 +12,7 @@ import {
   getEmployeesInputs,
 } from "../../inputs";
 import { paginateV1Results } from "../../utils/pagination";
+
 const getEmployees = action({
   display: {
     label: "Get Employees (V1)",
@@ -31,6 +32,7 @@ const getEmployees = action({
     });
   },
 });
+
 const getEmployeesEmployeeId = action({
   display: {
     label: "Get Employees Employee Id (V1)",
@@ -48,6 +50,7 @@ const getEmployeesEmployeeId = action({
     return { data };
   },
 });
+
 const getEmployeesIncludeTerminated = action({
   display: {
     label: "Get Employees Include Terminated (V1)",
@@ -73,6 +76,7 @@ const getEmployeesIncludeTerminated = action({
     );
   },
 });
+
 export default {
   getEmployees,
   getEmployeesEmployeeId,

@@ -14,6 +14,7 @@ import {
   timeout,
 } from "./common";
 import { batchInputs } from "./engagements";
+
 const contactId = input({
   label: "Contact ID",
   type: "string",
@@ -24,6 +25,7 @@ const contactId = input({
   comments: "The unique identifier of the contact.",
   clean: util.types.toString,
 });
+
 const contactCompany = input({
   label: "Company",
   type: "string",
@@ -33,6 +35,7 @@ const contactCompany = input({
   comments: "The name of the company the contact is associated with.",
   clean: util.types.toString,
 });
+
 const contactEmail = input({
   label: "Email",
   type: "string",
@@ -43,6 +46,7 @@ const contactEmail = input({
     "The email of the contact. Getting contacts by email performs a search function and will return a successful output even when no results are found.",
   clean: util.types.toString,
 });
+
 const contactFirstName = input({
   label: "First Name",
   type: "string",
@@ -52,6 +56,7 @@ const contactFirstName = input({
   comments: "The contact's given name, mapped to the firstname property.",
   clean: util.types.toString,
 });
+
 const contactlastName = input({
   label: "Last Name",
   type: "string",
@@ -61,6 +66,7 @@ const contactlastName = input({
   comments: "The contact's family name, mapped to the lastname property.",
   clean: util.types.toString,
 });
+
 const phone = input({
   label: "Phone",
   type: "string",
@@ -70,6 +76,7 @@ const phone = input({
   comments: "The primary phone number for the contact.",
   clean: util.types.toString,
 });
+
 const website = input({
   label: "Website",
   type: "string",
@@ -79,6 +86,7 @@ const website = input({
   comments: "The contact's website, such as a company or personal homepage.",
   clean: util.types.toString,
 });
+
 const contactUpdateCompany = input({
   label: "Company",
   type: "string",
@@ -88,6 +96,7 @@ const contactUpdateCompany = input({
   comments: "The updated company association for the contact.",
   clean: toOptionalString,
 });
+
 const contactUpdateEmail = input({
   label: "Email",
   type: "string",
@@ -97,6 +106,7 @@ const contactUpdateEmail = input({
   comments: "The updated email address for the contact.",
   clean: toOptionalString,
 });
+
 const contactUpdateFirstName = input({
   label: "First Name",
   type: "string",
@@ -106,6 +116,7 @@ const contactUpdateFirstName = input({
   comments: "The updated given name for the contact.",
   clean: toOptionalString,
 });
+
 const contactUpdatelastName = input({
   label: "Last Name",
   type: "string",
@@ -115,6 +126,7 @@ const contactUpdatelastName = input({
   comments: "The updated family name for the contact.",
   clean: toOptionalString,
 });
+
 const updatePhone = input({
   label: "Phone",
   type: "string",
@@ -124,6 +136,7 @@ const updatePhone = input({
   comments: "The updated primary phone number for the contact.",
   clean: toOptionalString,
 });
+
 const updateWebsite = input({
   label: "Website",
   type: "string",
@@ -133,6 +146,7 @@ const updateWebsite = input({
   comments: "The updated website URL for the contact.",
   clean: toOptionalString,
 });
+
 const contactIds = input({
   label: "Contact Ids",
   type: "string",
@@ -142,6 +156,7 @@ const contactIds = input({
   dataSource: "selectContact",
   clean: valueListInputClean,
 });
+
 export const listContactsInputs = {
   hubspotConnection: connectionInput,
   archived,
@@ -151,6 +166,7 @@ export const listContactsInputs = {
   associationsList,
   timeout,
 };
+
 export const createContactInputs = {
   contactFirstName,
   contactlastName,
@@ -178,6 +194,7 @@ export const createContactInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const updateContactInputs = {
   contactId,
   contactUpdateFirstName,
@@ -198,11 +215,13 @@ export const updateContactInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const deleteContactInputs = {
   contactId,
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const getContactInputs = {
   contactId: { ...contactId, required: false, clean: toOptionalString },
   contactEmail: { ...contactEmail, required: false, clean: toOptionalString },
@@ -212,6 +231,7 @@ export const getContactInputs = {
   timeout,
   hubspotConnection: connectionInput,
 };
+
 export const createBatchContactsInputs = {
   hubspotConnection: connectionInput,
   batchInputs: {
@@ -251,6 +271,7 @@ export const createBatchContactsInputs = {
   },
   timeout,
 };
+
 export const getBatchContactsInputs = {
   hubspotConnection: connectionInput,
   archived,
@@ -263,6 +284,7 @@ export const getBatchContactsInputs = {
   contactIds: { ...contactIds, required: false },
   timeout,
 };
+
 export const updateBatchContactsInputs = {
   hubspotConnection: connectionInput,
   batchInputs: {
@@ -291,6 +313,7 @@ export const updateBatchContactsInputs = {
   },
   timeout,
 };
+
 export const archiveBatchContactsInputs = {
   contactIds,
   timeout,

@@ -3,6 +3,7 @@ import { type TriggerPayload, trigger, util } from "@prismatic-io/spectral";
 import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { signaturesMatch } from "../util";
+
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -55,4 +56,5 @@ export const webhook = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export default { webhook };

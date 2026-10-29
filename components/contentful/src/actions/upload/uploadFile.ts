@@ -4,6 +4,7 @@ import { API_UPLOAD_URL } from "../../constants";
 import { uploadFileExamplePayload } from "../../examplePayloads";
 import { uploadFileInputs } from "../../inputs";
 import { uploadFileOutputSchema } from "../../outputSchemas";
+
 export const uploadFile = action({
   display: {
     label: "Upload File",
@@ -25,13 +26,13 @@ export const uploadFile = action({
         },
       },
     );
+
     return {
       data,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => uploadFileExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    uploadFileExamplePayload,
   inputs: uploadFileInputs,
   outputSchema: outputSchema({
     type: "actionOutput",

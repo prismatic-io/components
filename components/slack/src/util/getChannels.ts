@@ -5,12 +5,14 @@ import type {
 } from "@slack/web-api/dist/types/response/ConversationsListResponse";
 import { ChannelType } from "../constants";
 import { paginateResults } from "./paginateResults";
+
 interface GenerateChannelTypesParams {
   includePublicChannels: boolean;
   includePrivateChannels: boolean;
   includeMultiPartyImchannels: boolean;
   includeImChannels: boolean;
 }
+
 export const generateChannelTypesString = ({
   includePublicChannels,
   includePrivateChannels,
@@ -32,6 +34,7 @@ export const generateChannelTypesString = ({
   }
   return types.join(",");
 };
+
 export const getChannels = async (
   client: WebClient,
   params: Record<string, unknown>,
@@ -50,16 +53,20 @@ export const getChannels = async (
       include: params.includeMultiPartyImchannels,
     },
   ];
+
   for (const channel of channelsMapper) {
     if (channel.include) {
       promiseArray.push(listChannels(client, params, fetchAll, channel.type));
     }
   }
+
   const channels = await Promise.all(promiseArray).then((channels) =>
     channels.flat(),
   );
+
   return { ok: channels?.length > 0, channels: channels };
 };
+
 export const listChannels = async (
   client: WebClient,
   params: Record<string, unknown>,
@@ -75,8 +82,10 @@ export const listChannels = async (
       { ...params, types, limit: params.limit || 200 },
     );
     const { channels } = response.data as ConversationsListResponse;
+
     return channels;
   }
+
   const { channels } = await client.conversations.list({ ...params, types });
   return channels;
 };

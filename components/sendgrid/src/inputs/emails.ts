@@ -1,6 +1,7 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanArrayCodeInput, cleanDataInput, cleanStringInput } from "../util";
 import { connectionInput } from "./common";
+
 const dynamicTemplateData = input({
   label: "Dynamic Template Data",
   type: "code",
@@ -30,6 +31,7 @@ const dynamicTemplateData = input({
   ),
   clean: util.types.toObject,
 });
+
 const templateId = input({
   label: "Template ID",
   type: "string",
@@ -40,6 +42,7 @@ const templateId = input({
   example: "1234567890",
   clean: util.types.toString,
 });
+
 const to = input({
   label: "To",
   placeholder: "Enter recipient email address(es)",
@@ -50,6 +53,7 @@ const to = input({
   example: "john.doe@example.com,jane.smith@example.com",
   clean: util.types.toString,
 });
+
 const cc = input({
   label: "CC",
   placeholder: "Enter CC email address(es)",
@@ -60,6 +64,7 @@ const cc = input({
   example: "john.doe@example.com,jane.smith@example.com",
   clean: cleanStringInput,
 });
+
 const bcc = input({
   label: "BCC",
   placeholder: "Enter BCC email address(es)",
@@ -70,6 +75,7 @@ const bcc = input({
   example: "john.doe@example.com,jane.smith@example.com",
   clean: cleanStringInput,
 });
+
 const fromEmail = input({
   label: "From Email",
   placeholder: "Enter sender email address",
@@ -80,6 +86,7 @@ const fromEmail = input({
   example: "sender@example.com",
   clean: util.types.toString,
 });
+
 const fromName = input({
   label: "From Name",
   placeholder: "Enter sender name",
@@ -90,6 +97,7 @@ const fromName = input({
   example: "John Doe",
   clean: cleanStringInput,
 });
+
 const replyToName = input({
   label: "Reply To Name",
   placeholder: "Enter reply-to name",
@@ -100,6 +108,7 @@ const replyToName = input({
   example: "John Doe",
   clean: cleanStringInput,
 });
+
 const replyToEmail = input({
   label: "Reply To Email",
   placeholder: "Enter reply-to email address",
@@ -110,6 +119,7 @@ const replyToEmail = input({
   example: "support@example.com",
   clean: cleanStringInput,
 });
+
 const subject = input({
   label: "Subject",
   placeholder: "Enter email subject",
@@ -120,6 +130,7 @@ const subject = input({
   example: "Hello from Acme!",
   clean: util.types.toString,
 });
+
 const text = input({
   label: "Text",
   placeholder: "Enter email text content",
@@ -130,6 +141,7 @@ const text = input({
   example: "Here's the body of a notification.",
   clean: util.types.toString,
 });
+
 const html = input({
   label: "HTML",
   placeholder: "Enter HTML email content",
@@ -140,6 +152,7 @@ const html = input({
   example: "Hello from <b>Acme!</b>",
   clean: cleanStringInput,
 });
+
 const personalizations = input({
   label: "Personalizations",
   type: "code",
@@ -169,6 +182,7 @@ const personalizations = input({
   default: "[]",
   clean: (code: unknown) => cleanArrayCodeInput(code, "Personalizations"),
 });
+
 const content = input({
   label: "Attachment Content",
   placeholder: "Select file data from previous step",
@@ -176,8 +190,10 @@ const content = input({
   required: false,
   comments:
     "Provide attachment data to send with the email. The 'File Name' field is required when using this input and should reference the data output from a previous action.",
+
   clean: cleanDataInput,
 });
+
 const fileName = input({
   label: "File Name",
   placeholder: "Enter file name with extension",
@@ -188,6 +204,7 @@ const fileName = input({
   example: "reports.csv",
   clean: cleanStringInput,
 });
+
 const disposition = input({
   label: "Disposition",
   placeholder: "Select attachment display mode",
@@ -202,6 +219,7 @@ const disposition = input({
   example: "inline",
   clean: cleanStringInput,
 });
+
 const fileType = input({
   label: "File Type",
   placeholder: "Enter MIME type",
@@ -212,6 +230,7 @@ const fileType = input({
   example: "text/plain",
   clean: cleanStringInput,
 });
+
 const contentId = input({
   label: "Content ID",
   placeholder: "Enter content ID",
@@ -222,6 +241,7 @@ const contentId = input({
   example: "12345",
   clean: cleanStringInput,
 });
+
 const attachmentDetails = structuredObjectInput({
   label: "Attachment Details",
   required: false,
@@ -229,6 +249,7 @@ const attachmentDetails = structuredObjectInput({
     "Configure a single file attachment including its display mode, MIME type, and content ID.",
   inputs: { disposition, fileType, contentId },
 });
+
 const multipleAttachments = input({
   label: "Multiple Attachments",
   type: "code",
@@ -246,6 +267,7 @@ const multipleAttachments = input({
     "Provide an array of attachments to send with the email. See [SendGrid API documentation](https://www.twilio.com/docs/sendgrid/api-reference/mail-send/mail-send#request-body) for more information.",
   clean: (code: unknown) => cleanArrayCodeInput(code, "Multiple Attachments"),
 });
+
 const subscriptionTracking = input({
   label: "Subscription Tracking",
   comments:
@@ -255,6 +277,7 @@ const subscriptionTracking = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const sendEmailInputs = {
   sendGridConnection: connectionInput,
   to,
@@ -274,6 +297,7 @@ export const sendEmailInputs = {
   multipleAttachments,
   subscriptionTracking,
 };
+
 export const sendMultipleEmailsInputs = {
   sendGridConnection: connectionInput,
   to,
@@ -292,6 +316,7 @@ export const sendMultipleEmailsInputs = {
   attachmentDetails,
   multipleAttachments,
 };
+
 export const sendEmailWithDynamicTemplateInputs = {
   sendGridConnection: connectionInput,
   templateId,

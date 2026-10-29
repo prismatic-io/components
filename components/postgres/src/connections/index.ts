@@ -1,4 +1,5 @@
 import { onPremConnection, util } from "@prismatic-io/spectral";
+
 export const postgresConnection = onPremConnection({
   key: "postgres",
   display: {
@@ -71,4 +72,5 @@ export const postgresConnection = onPremConnection({
     },
   },
 });
+
 export default [postgresConnection];

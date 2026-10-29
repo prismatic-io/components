@@ -4,6 +4,7 @@ import { listProductImagesExamplePayload } from "../../examplePayloads";
 import { listProductImagesInputs } from "../../inputs";
 import { listProductImagesOutputSchema } from "../../outputSchemas";
 import { listProductImagesGql } from "../graphql/productImage/listProductImagesGql";
+
 export const listProductImages = action({
   display: {
     label: "List Product Images",

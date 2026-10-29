@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { updateCustomerContactPayload } from "../../examplePayloads";
 import updateCustomerContactInputs from "../../inputs/customerContact/updateCustomerContactInputs";
 import { company, connection, site } from "../../inputs/general";
+
 export const updateCustomerContact = action({
   display: {
     label: "Update Customer Contact",

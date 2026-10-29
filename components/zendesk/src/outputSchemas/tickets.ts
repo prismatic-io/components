@@ -420,23 +420,31 @@ export const ticketSchema = {
     },
   },
 };
+
 export const createTicketOutputSchema = ticketSchema;
+
 export const deleteTicketOutputSchema = { type: "string" as const };
+
 export const getByExternalIdOutputSchema = {
   type: "array" as const,
   items: ticketSchema,
 };
+
 export const listTicketsByUserOutputSchema = {
   type: "array" as const,
   items: ticketSchema,
 };
+
 export const listTicketsOutputSchema = {
   type: "array" as const,
   items: ticketSchema,
 };
+
 export const listTicketsToUserOutputSchema = {
   type: "array" as const,
   items: ticketSchema,
 };
+
 export const showTicketOutputSchema = ticketSchema;
+
 export const updateTicketOutputSchema = ticketSchema;

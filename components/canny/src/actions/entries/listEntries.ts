@@ -4,6 +4,7 @@ import { listEntriesExamplePayload } from "../../examplePayloads";
 import { listEntriesInputs } from "../../inputs";
 import { listEntriesOutputSchema } from "../../outputSchemas";
 import { paginateOffset } from "../../util";
+
 export const listEntries = action({
   display: {
     label: "List Changelog Entries",
@@ -34,8 +35,7 @@ export const listEntries = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listEntriesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listEntriesExamplePayload,
   examplePayload: listEntriesExamplePayload,
 });

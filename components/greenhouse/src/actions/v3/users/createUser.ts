@@ -3,6 +3,7 @@ import { createV3Client } from "../../../client";
 import { createUserV3ExamplePayload } from "../../../examplePayloads/v3/users";
 import { createUserV3Inputs } from "../../../inputs/v3/users";
 import { generatePayload } from "../../../util";
+
 export const createUserV3 = action({
   display: {
     label: "Create User",
@@ -28,6 +29,7 @@ export const createUserV3 = action({
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
+
     const body = generatePayload({
       first_name: firstName,
       last_name: lastName,
@@ -42,6 +44,7 @@ export const createUserV3 = action({
       interviewer_tag_ids: interviewerTagIds,
       custom_fields: customFields,
     });
+
     const { data } = await client.post("/users", body);
     return { data };
   },

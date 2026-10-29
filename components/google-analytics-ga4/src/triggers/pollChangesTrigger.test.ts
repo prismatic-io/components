@@ -2,12 +2,15 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import type { Account, GA4Record, Property } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const mockGet = vi.fn();
+
 vi.mock("../client", () => ({
   createAnalyticsClient: vi
     .fn()
     .mockReturnValue({ get: (...args: unknown[]) => mockGet(...args) }),
 }));
+
 vi.mock("../util", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../util")>();
   return {
@@ -24,13 +27,16 @@ vi.mock("../util", async (importOriginal) => {
     },
   };
 });
+
 const POLL_ONE_AT = "2026-06-01T12:00:00.000Z";
 const SEEDED_CURSOR = "2026-05-01T00:00:00.000Z";
+
 interface PollingStore {
   currentState: () => Record<string, unknown>;
   writes: Record<string, unknown>[];
   context: Partial<ActionContext>;
 }
+
 const createPollingStore = (
   seedState: Record<string, unknown> = {},
 ): PollingStore => {
@@ -55,25 +61,25 @@ const createPollingStore = (
     } as unknown as Partial<ActionContext>,
   };
 };
+
 const freezeClockAt = (iso: string): void => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(new Date(iso));
 };
+
 const triggerUnderTest = {
   perform: pollChangesTrigger.perform,
 } as unknown as Parameters<typeof invokeTrigger>[0];
+
 interface PollChanges {
   created: GA4Record[];
   updated: GA4Record[];
 }
 interface PollResult {
-  payload: {
-    body: {
-      data: PollChanges;
-    };
-  };
+  payload: { body: { data: PollChanges } };
   polledNoChanges: boolean;
 }
+
 const poll = async (
   store: PollingStore,
   overrides: Partial<{
@@ -100,6 +106,7 @@ const poll = async (
   );
   return result as unknown as PollResult;
 };
+
 const makeAccount = (
   name: string,
   createTime: string,
@@ -111,6 +118,7 @@ const makeAccount = (
   displayName: name,
   regionCode: "US",
 });
+
 const makeProperty = (
   name: string,
   createTime: string,
@@ -123,14 +131,17 @@ const makeProperty = (
     updateTime,
     displayName: name,
   }) as Property;
+
 describe("pollChangesTrigger", () => {
   afterEach(() => {
     vi.useRealTimers();
     mockGet.mockReset();
   });
+
   describe("accounts", () => {
     test("advances cursor and splits records into created and updated", async () => {
       const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
@@ -153,7 +164,9 @@ describe("pollChangesTrigger", () => {
           ],
         },
       });
+
       const result = await poll(store);
+
       expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
         "acct/1",
       ]);
@@ -163,8 +176,10 @@ describe("pollChangesTrigger", () => {
       expect(result.polledNoChanges).toBe(false);
       expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
     });
+
     test("cold first poll seeds cursor and emits nothing", async () => {
       const store = createPollingStore();
+
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
@@ -177,23 +192,29 @@ describe("pollChangesTrigger", () => {
           ],
         },
       });
+
       const result = await poll(store);
+
       expect(result.payload.body.data.created).toEqual([]);
       expect(result.payload.body.data.updated).toEqual([]);
       expect(result.polledNoChanges).toBe(true);
       expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
     });
   });
+
   describe("properties", () => {
     test("throws when accountId is not provided", async () => {
       const store = createPollingStore();
       freezeClockAt(POLL_ONE_AT);
+
       await expect(
         poll(store, { pollResourceType: "properties" }),
       ).rejects.toThrow("Account ID is required when polling Properties");
     });
+
     test("fetches properties with account filter", async () => {
       const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
@@ -206,19 +227,23 @@ describe("pollChangesTrigger", () => {
           ],
         },
       });
+
       const result = await poll(store, {
         pollResourceType: "properties",
         accountId: "accounts/123",
       });
+
       expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
         "prop/1",
       ]);
       expect(result.polledNoChanges).toBe(false);
     });
   });
+
   describe("initial sync ignores visibility toggles", () => {
     test("initial sync seeds all records despite toggles=false", async () => {
       const store = createPollingStore();
+
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
@@ -236,11 +261,13 @@ describe("pollChangesTrigger", () => {
           ],
         },
       });
+
       const result = await poll(store, {
         showNewRecords: false,
         showUpdatedRecords: false,
         lookBackDate: "2026-04-01T00:00:00.000Z",
       });
+
       expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
         "acct/new",
       ]);
@@ -249,8 +276,10 @@ describe("pollChangesTrigger", () => {
       ]);
       expect(result.polledNoChanges).toBe(false);
     });
+
     test("steady-state respects toggles after initial sync", async () => {
       const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
       freezeClockAt(POLL_ONE_AT);
       mockGet.mockResolvedValueOnce({
         data: {
@@ -268,27 +297,35 @@ describe("pollChangesTrigger", () => {
           ],
         },
       });
+
       const result = await poll(store, {
         showNewRecords: false,
         showUpdatedRecords: false,
       });
+
       expect(result.payload.body.data.created).toEqual([]);
       expect(result.payload.body.data.updated).toEqual([]);
       expect(result.polledNoChanges).toBe(true);
     });
   });
+
   test("throws for unsupported resource type", async () => {
     const store = createPollingStore();
     freezeClockAt(POLL_ONE_AT);
+
     await expect(poll(store, { pollResourceType: "invalid" })).rejects.toThrow(
       "Unsupported resource type: invalid",
     );
   });
+
   test("polledNoChanges when no records match", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockGet.mockResolvedValueOnce({ data: { accounts: [] } });
+
     const result = await poll(store);
+
     expect(result.polledNoChanges).toBe(true);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });

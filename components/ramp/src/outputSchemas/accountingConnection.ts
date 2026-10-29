@@ -1,4 +1,5 @@
 import { deleteResponseSchema } from "./shared";
+
 const accountingProviderSchema = {
   type: "object" as const,
   properties: {
@@ -71,7 +72,9 @@ const accountingProviderSchema = {
     "status",
   ],
 };
+
 export const createAccountingConnectionOutputSchema = accountingProviderSchema;
+
 export const getAccountConnectionOutputSchema = {
   type: "object" as const,
   properties: {
@@ -136,4 +139,5 @@ export const getAccountConnectionOutputSchema = {
     },
   },
 };
+
 export const deleteAccountConnectionOutputSchema = deleteResponseSchema;

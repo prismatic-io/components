@@ -15,14 +15,12 @@ import {
   OPS_EVENTS_BASE_URL,
 } from "./constants";
 import { resolveAtlassianCloudId } from "./util/cloudId";
+
 export const createClient = async (
   connection: Connection,
   debug: boolean,
   useExperimentalApiHeader = false,
-): Promise<{
-  client: HttpClient;
-  baseUrl: string;
-}> => {
+): Promise<{ client: HttpClient; baseUrl: string }> => {
   const client = await createAtlassianClient(connection, {
     keys: CONNECTION_KEYS,
     apiPath: API_PATH,
@@ -34,13 +32,11 @@ export const createClient = async (
   const baseUrl = client.defaults.baseURL ?? "";
   return { client, baseUrl };
 };
+
 export const createOpsManagementClient = async (
   connection: Connection,
   debug: boolean,
-): Promise<{
-  client: HttpClient;
-  baseUrl: string;
-}> => {
+): Promise<{ client: HttpClient; baseUrl: string }> => {
   const cloudId = await resolveAtlassianCloudId(connection);
   const baseUrl = `https://${OPS_API_HOST}${OPS_API_PATH_PREFIX}/${cloudId}`;
   const client = createHttpClient({
@@ -54,13 +50,11 @@ export const createOpsManagementClient = async (
   });
   return { client, baseUrl };
 };
+
 export const createOpsEventsClient = (
   connection: Connection,
   debug: boolean,
-): {
-  client: HttpClient;
-  baseUrl: string;
-} => {
+): { client: HttpClient; baseUrl: string } => {
   if (connection.key !== OPS_GENIE_KEY) {
     throw new ConnectionError(
       connection,
@@ -79,6 +73,7 @@ export const createOpsEventsClient = (
   });
   return { client, baseUrl: OPS_EVENTS_BASE_URL };
 };
+
 const resolveAssetsWorkspaceId = async (
   connection: Connection,
   debug: boolean,
@@ -89,9 +84,7 @@ const resolveAssetsWorkspaceId = async (
     debug,
   });
   const { data } = await lookupClient.get<{
-    values?: {
-      workspaceId: string;
-    }[];
+    values?: { workspaceId: string }[];
   }>("");
   const workspaceId = data?.values?.[0]?.workspaceId;
   if (!workspaceId) {
@@ -102,14 +95,11 @@ const resolveAssetsWorkspaceId = async (
   }
   return workspaceId;
 };
+
 export const createAssetsClient = async (
   connection: Connection,
   debug: boolean,
-): Promise<{
-  client: HttpClient;
-  baseUrl: string;
-  workspaceId: string;
-}> => {
+): Promise<{ client: HttpClient; baseUrl: string; workspaceId: string }> => {
   const workspaceId = await resolveAssetsWorkspaceId(connection, debug);
   const cloudId = await resolveAtlassianCloudId(connection);
   const baseUrl = `https://${ASSETS_API_HOST}/ex/jira/${cloudId}/jsm/assets/workspace/${workspaceId}/v1`;

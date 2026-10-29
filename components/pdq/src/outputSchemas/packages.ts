@@ -1,4 +1,5 @@
 import { metaSchema } from "./common";
+
 export const packageSchema = {
   type: "object" as const,
   properties: {
@@ -11,12 +12,14 @@ export const packageSchema = {
   },
   required: ["id"],
 };
+
 export const getPackageOutputSchema = {
   type: "object" as const,
   properties: {
     data: packageSchema,
   },
 };
+
 export const listPackagesOutputSchema = {
   type: "object" as const,
   properties: {

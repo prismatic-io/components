@@ -7,11 +7,13 @@ import {
   expirationDateTimeInput,
   folderIdInput,
 } from "./common";
+
 export const createWebhookSubscriptionInputs = {
   connection: connectionInput,
   expirationDateTime: expirationDateTimeInput,
   allowDuplicates: allowDuplicatesInput,
 };
+
 export const createMailFolderWebhookInputs = {
   connection: connectionInput,
   changeTypes: changeTypesInput,
@@ -23,6 +25,7 @@ export const createMailFolderWebhookInputs = {
   expirationDateTime: expirationDateTimeInput,
   allowDuplicates: allowDuplicatesInput,
 };
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -33,6 +36,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const pollFolderId = input({
   label: "Mail Folder ID",
   type: "string",
@@ -44,6 +48,7 @@ const pollFolderId = input({
   dataSource: "selectMailFolder",
   clean: cleanStringInput,
 });
+
 const showNewMessages = input({
   label: "Show New Messages",
   type: "boolean",
@@ -54,6 +59,7 @@ const showNewMessages = input({
     "When true, messages created since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 const showUpdatedMessages = input({
   label: "Show Updated Messages",
   type: "boolean",
@@ -64,6 +70,7 @@ const showUpdatedMessages = input({
     "When true, messages updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   connection: connectionInput,
   lookBackDate,

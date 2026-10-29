@@ -6,6 +6,7 @@ import {
   webhookEventOptions,
 } from "../util";
 import { connection } from "./common";
+
 const authHeaderName = input({
   label: "Auth Header Name",
   type: "string",
@@ -16,6 +17,7 @@ const authHeaderName = input({
   placeholder: "X-Jamf-Signature",
   example: "X-Jamf-Signature",
 });
+
 const authHeaderValue = input({
   label: "Auth Header Value",
   type: "string",
@@ -25,7 +27,9 @@ const authHeaderValue = input({
   clean: toOptionalString,
   placeholder: "Enter the expected header value",
 });
+
 export const webhookInputs = { authHeaderName, authHeaderValue };
+
 const events = input({
   label: "Events",
   type: "string",
@@ -37,6 +41,7 @@ const events = input({
     "The Jamf Pro events to subscribe to. One webhook is created per selected event.",
   clean: asStringArray,
 });
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -47,6 +52,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 export const webhookEventsInputs = { connection, events };
 export const pollComputersInputs = { connection, lookBackDate };
 export const pollMobileDevicesInputs = { connection };

@@ -3,6 +3,7 @@ import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getAuthHeaders, getBaseUrl } from "../../client";
 import { rawRequestInputs } from "../../inputs";
 import { validateConnection } from "../../utils";
+
 export const rawRequest = action({
   display: {
     label: "Raw Request",

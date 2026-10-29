@@ -5,6 +5,7 @@ import {
   requestedPolicyVersion,
   resource,
 } from "../../inputs";
+
 export const getPolicy = action({
   display: {
     description: "Gets the access control policy for a resource.",

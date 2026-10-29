@@ -2,6 +2,7 @@ import {
   createClient,
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
+
 import { MsAdsRestService } from "./constants";
 import type { GetRestClientProps } from "./types";
 import {
@@ -9,6 +10,7 @@ import {
   getRestBaseUrl,
   validateRestConnection,
 } from "./util";
+
 export const getRestClient = ({
   connection,
   debug = false,
@@ -16,6 +18,7 @@ export const getRestClient = ({
   customerId,
 }: GetRestClientProps): HttpClient => {
   validateRestConnection(connection);
+
   return createClient({
     baseUrl: getRestBaseUrl(connection, MsAdsRestService.CampaignManagement),
     debug,

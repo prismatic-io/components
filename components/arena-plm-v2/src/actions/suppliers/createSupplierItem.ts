@@ -5,6 +5,7 @@ import { createSupplierItemInputs } from "../../inputs";
 import { supplierItemFullSchema } from "../../outputSchemas";
 import type { SupplierItemCreateVo } from "../../types";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const createSupplierItem = action({
   display: {
     label: "Create Supplier Item",
@@ -36,6 +37,7 @@ export const createSupplierItem = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const supplierItemPayload: SupplierItemCreateVo = {
         name,
         number,
@@ -46,6 +48,7 @@ export const createSupplierItem = action({
         offTheShelf,
         procurementType,
       };
+
       supplierItemPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: additionalAttributeJson,
@@ -54,6 +57,7 @@ export const createSupplierItem = action({
         },
         context,
       );
+
       context.logger.info("Creating supplier item", {
         supplierItemName: name,
         supplierGuid: supplierGuid,
@@ -70,12 +74,15 @@ export const createSupplierItem = action({
             : 0,
         endpoint: "/supplieritems",
       });
+
       const { data } = await client.post("/supplieritems", supplierItemPayload);
+
       context.logger.info("Successfully created supplier item", {
         supplierItemGuid: data?.guid,
         supplierItemNumber: data?.number,
         supplierItemName: data?.name,
       });
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "Create Supplier Item");

@@ -4,6 +4,7 @@ import { getBucketNotificationConfigurationExamplePayload } from "../../exampleP
 import { getBucketNotificationConfigurationInputs } from "../../inputs";
 import { getBucketNotificationConfigurationOutputSchema } from "../../outputSchemas";
 import { getBucketNotificationConfiguration as getBucketNotificationConfigurationFn } from "../../utils";
+
 export const getBucketNotificationConfiguration = action({
   display: {
     label: "Get Bucket Notification Configuration",

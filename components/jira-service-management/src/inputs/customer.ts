@@ -6,6 +6,7 @@ import {
   pagination,
   serviceDeskId,
 } from "./common";
+
 const customerEmail = input({
   label: "Email",
   type: "string",
@@ -15,6 +16,7 @@ const customerEmail = input({
   example: "jane.smith@example.com",
   clean: util.types.toString,
 });
+
 const customerFullName = input({
   label: "Display Name",
   type: "string",
@@ -25,6 +27,7 @@ const customerFullName = input({
   example: "Jane Smith",
   clean: util.types.toString,
 });
+
 const accountId = input({
   label: "Account ID",
   type: "string",
@@ -34,33 +37,39 @@ const accountId = input({
   example: "5b10ac8d82e05b22cc7d4ef5",
   clean: util.types.toString,
 });
+
 export const createCustomerInputs = {
   connection,
   serviceDeskId,
   customerEmail,
   customerFullName,
 };
+
 export const createPortalOnlyCustomerInputs = {
   connection,
   customerEmail,
   customerFullName,
 };
+
 export const listCustomersInputs = {
   connection,
   serviceDeskId,
   fetchAll,
   pagination,
 };
+
 export const addCustomersInputs = {
   connection,
   serviceDeskId,
   accountIds,
 };
+
 export const removeCustomersInputs = {
   connection,
   serviceDeskId,
   accountIds,
 };
+
 export const revokePortalAccessInputs = {
   connection,
   accountId,

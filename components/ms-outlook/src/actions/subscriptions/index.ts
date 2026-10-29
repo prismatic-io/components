@@ -4,6 +4,7 @@ import { updateEventSubscription } from "./updateEventSubscription";
 import { deleteSubscription } from "./deleteSubscription";
 import { deleteAllInstanceSubscriptions } from "./deleteAllInstanceSubscriptions";
 import { createMailFolderSubscription } from "./createMailFolderSubscription";
+
 export default {
   listSubscriptions,
   createEventSubscription,

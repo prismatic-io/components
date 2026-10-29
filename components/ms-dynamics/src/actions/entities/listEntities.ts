@@ -5,6 +5,7 @@ import { listEntitiesExamplePayload } from "../../examplePayloads";
 import { listEntitiesInputs } from "../../inputs";
 import { listEntitiesOutputSchema } from "../../outputSchemas";
 import { getAuthorizationHeader, paginateListEntities } from "../../util";
+
 export const listEntities = action({
   display: {
     label: "List Entity Types",
@@ -17,6 +18,7 @@ export const listEntities = action({
   perform: async (context, { connection, fetchAll, pagination }) => {
     const { maxPageSize, nextLink } = pagination;
     const webApiUrl = await getWebApiUrl(connection, context.debug.enabled);
+
     const createPageClient = (url?: string) =>
       createHttpClient({
         baseUrl: url ? "" : webApiUrl,
@@ -29,6 +31,7 @@ export const listEntities = action({
           Prefer: `odata.maxpagesize=${maxPageSize}`,
         },
       });
+
     try {
       if (fetchAll) {
         const fetchPage = async (url?: string) => {
@@ -36,8 +39,10 @@ export const listEntities = action({
           const response = await client.get(url || nextLink || "");
           return { data: response.data as Record<string, unknown> };
         };
+
         const { data } = await paginateListEntities(fetchPage, true);
         const allValues = (data as Record<string, unknown>)?.value;
+
         const entities = Array.isArray(allValues)
           ? allValues.map((entity: any) => ({
               name: entity.name,
@@ -45,6 +50,7 @@ export const listEntities = action({
               url: entity.url,
             }))
           : [];
+
         return {
           data: {
             entities,
@@ -54,8 +60,10 @@ export const listEntities = action({
           },
         };
       }
+
       const client = createPageClient(nextLink);
       let result: any;
+
       if (nextLink) {
         const response = await client.get(nextLink);
         result = response.data;
@@ -63,18 +71,21 @@ export const listEntities = action({
         const response = await client.get("");
         result = response.data;
       }
+
       const entities =
         result.value?.map((entity: any) => ({
           name: entity.name,
           kind: entity.kind,
           url: entity.url,
         })) || [];
+
       const responseData = {
         entities,
         totalCount: entities.length,
         nextLink: result["@odata.nextLink"] || null,
         hasMore: Boolean(result["@odata.nextLink"]),
       };
+
       return { data: responseData };
     } catch (error: any) {
       if (error.response?.status === 404) {

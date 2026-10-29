@@ -4,6 +4,7 @@ import { listBomSubstitutesExamplePayload } from "../../examplePayloads";
 import { listBomSubstitutesInputs } from "../../inputs";
 import { listBomSubstitutesOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listBomSubstitutes = action({
   display: {
     label: "List BOM Substitutes",
@@ -19,6 +20,7 @@ export const listBomSubstitutes = action({
   perform: async (context, { connection, itemGuid, bomLineGuid }) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info(
         `Fetching substitutes for BOM line ${bomLineGuid} in item ${itemGuid}`,
         {
@@ -26,12 +28,15 @@ export const listBomSubstitutes = action({
           bomLineGuid,
         },
       );
+
       const { data } = await client.get(
         `/items/${itemGuid}/bom/${bomLineGuid}/substitutes`,
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} BOM substitutes`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List BOM Substitutes");

@@ -5,6 +5,7 @@ import { getTimeEntriesWithinDateRange } from "./getTimeEntriesWithinDateRange";
 import { startTimeEntry } from "./startTimeEntry";
 import { stopTimeEntry } from "./stopTimeEntry";
 import { updateTimeEntry } from "./updateTimeEntry";
+
 export default {
   createTimeEntry,
   deleteTimeEntry,

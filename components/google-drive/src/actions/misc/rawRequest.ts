@@ -5,6 +5,7 @@ import {
 } from "@prismatic-io/spectral/dist/clients/http";
 import { rawRequestInputs } from "../../inputs";
 import { rawRequestExamplePayload } from "../../examplePayloads";
+
 const rawRequest = action({
   display: {
     label: "Raw Request",
@@ -28,4 +29,5 @@ const rawRequest = action({
   },
   examplePayload: rawRequestExamplePayload,
 });
+
 export default rawRequest;

@@ -4,6 +4,7 @@ import { createStripeClient } from "../../client";
 import { createPriceExamplePayload } from "../../examplePayloads/prices";
 import { createPriceInputs } from "../../inputs";
 import { priceOutputSchema } from "../../outputSchemas";
+
 export const createPrice = action({
   display: {
     label: "Create Price",
@@ -57,10 +58,9 @@ export const createPrice = action({
       recurringInterval,
       metadata,
     },
-  ): Promise<{
-    data: unknown;
-  }> => {
+  ): Promise<{ data: unknown }> => {
     const price = createPriceExamplePayload.data as Record<string, unknown>;
+
     return {
       data: {
         ...price,
@@ -86,5 +86,6 @@ export const createPrice = action({
     type: "actionOutput",
     schema: priceOutputSchema,
   }),
+
   examplePayload: createPriceExamplePayload,
 });

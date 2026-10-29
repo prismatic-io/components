@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getMsBusinessCentralClient } from "../../client";
 import { postPurchaseInvoiceExamplePayload } from "../../examplePayloads";
 import { postPurchaseInvoiceInputs } from "../../inputs/purchaseInvoices";
+
 export const postPurchaseInvoice = action({
   display: {
     label: "Post Purchase Invoice",
@@ -15,10 +16,12 @@ export const postPurchaseInvoice = action({
       context,
       context.debug.enabled,
     );
+
     const { data } = await client.post(
       `/companies(${companyId})/purchaseInvoices(${purchaseInvoiceId})/Microsoft.NAV.post`,
       {},
     );
+
     return {
       data: data || { message: "Purchase invoice posted successfully" },
     };

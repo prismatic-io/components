@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+
 const exampleUser = {
   login: "octocat",
   id: 1,
@@ -19,6 +20,7 @@ const exampleUser = {
   type: "User",
   site_admin: false,
 };
+
 const exampleRepository = {
   id: 1296269,
   node_id: "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
@@ -129,6 +131,7 @@ const exampleRepository = {
   temp_clone_token: null,
   delete_branch_on_merge: false,
 };
+
 const exampleSecurityAndAnalysis = {
   advanced_security: { status: "enabled" },
   secret_scanning: { status: "enabled" },
@@ -136,6 +139,7 @@ const exampleSecurityAndAnalysis = {
   secret_scanning_non_provider_patterns: { status: "disabled" },
   secret_scanning_delegated_alert_dismissal: { status: "disabled" },
 };
+
 const examplePullRequestRepository = {
   ...exampleRepository,
   license: {
@@ -147,6 +151,7 @@ const examplePullRequestRepository = {
   allow_merge_commit: true,
   allow_auto_merge: false,
 };
+
 export const reposListForOrgExamplePayload = {
   data: [
     { ...exampleRepository, security_and_analysis: exampleSecurityAndAnalysis },
@@ -255,6 +260,7 @@ export const reposListForOrgExamplePayload = {
     },
   ],
 };
+
 export const reposCreateWebhookExamplePayload = {
   data: {
     type: "Repository",
@@ -283,6 +289,7 @@ export const reposCreateWebhookExamplePayload = {
     },
   },
 };
+
 export const reposListWebhooksExamplePayload = {
   data: [
     reposCreateWebhookExamplePayload.data,
@@ -314,9 +321,11 @@ export const reposListWebhooksExamplePayload = {
     },
   ],
 };
+
 export const reposDeleteWebhookExamplePayload = {
   data: {},
 };
+
 export const reposDeleteInstanceWebhooksExamplePayload = {
   data: {
     message: "Successfully deleted 2 webhook(s)",
@@ -324,6 +333,7 @@ export const reposDeleteInstanceWebhooksExamplePayload = {
     deletedHookIds: [12345678, 12345679],
   },
 };
+
 export const issuesListForRepoExamplePayload = {
   data: [
     {
@@ -410,6 +420,7 @@ export const issuesListForRepoExamplePayload = {
     },
   ],
 };
+
 export const issuesCreateCommentExamplePayload = {
   data: {
     id: 1,
@@ -427,6 +438,7 @@ export const issuesCreateCommentExamplePayload = {
     minimized: null,
   },
 };
+
 export const issuesListCommentsExamplePayload = {
   data: [
     issuesCreateCommentExamplePayload.data,
@@ -447,6 +459,7 @@ export const issuesListCommentsExamplePayload = {
     },
   ],
 };
+
 export const pullsCreateExamplePayload = {
   data: {
     id: 1,
@@ -539,6 +552,7 @@ export const pullsCreateExamplePayload = {
     changed_files: 5,
   },
 };
+
 const {
   merged,
   mergeable,
@@ -554,6 +568,7 @@ const {
   changed_files,
   ...examplePullRequestSimple
 } = pullsCreateExamplePayload.data;
+
 export const pullsListExamplePayload = {
   data: [
     examplePullRequestSimple,
@@ -614,6 +629,7 @@ export const pullsListExamplePayload = {
     },
   ],
 };
+
 export const usersGetByUsernameExamplePayload = {
   data: {
     login: "octocat",
@@ -651,6 +667,7 @@ export const usersGetByUsernameExamplePayload = {
     updated_at: "2024-01-15T10:00:00Z",
   },
 };
+
 export const usersGetAuthenticatedExamplePayload = {
   data: {
     ...usersGetByUsernameExamplePayload.data,
@@ -668,6 +685,7 @@ export const usersGetAuthenticatedExamplePayload = {
     },
   },
 };
+
 export const orgsListForAuthenticatedUserExamplePayload = {
   data: [
     {
@@ -702,12 +720,14 @@ export const orgsListForAuthenticatedUserExamplePayload = {
     },
   ],
 };
+
 export const gitCreateBlobExamplePayload = {
   data: {
     sha: "3a0f86fb8db8eea7ccbb9a95f325ddbedfb25e15",
     url: "https://api.github.com/repos/octocat/Hello-World/git/blobs/3a0f86fb8db8eea7ccbb9a95f325ddbedfb25e15",
   },
 };
+
 export const gitCreateRefExamplePayload = {
   data: {
     ref: "refs/heads/feature-branch",
@@ -720,6 +740,7 @@ export const gitCreateRefExamplePayload = {
     },
   },
 };
+
 export const gitGetRefExamplePayload = {
   data: {
     ref: "refs/heads/main",
@@ -732,6 +753,7 @@ export const gitGetRefExamplePayload = {
     },
   },
 };
+
 export const gitCreateTreeExamplePayload = {
   data: {
     sha: "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
@@ -749,6 +771,7 @@ export const gitCreateTreeExamplePayload = {
     truncated: false,
   },
 };
+
 export const actionsCreateWorkflowDispatchExamplePayload = {
   data: {
     workflow_run_id: 30433642,
@@ -757,38 +780,43 @@ export const actionsCreateWorkflowDispatchExamplePayload = {
     html_url: "https://github.com/octocat/Hello-World/actions/runs/30433642",
   },
 };
+
 export const rawRequestExamplePayload = {
   data: {
     message: "Example response from custom API endpoint",
   },
 };
+
 export const listReposForAuthenticatedUserExamplePayload = {
   result: [{ key: "Hello-World", label: "Hello-World" }],
 };
+
 export const selectOrganizationsForAuthenticatedUserExamplePayload = {
   result: [
     { key: "1", label: "https://api.github.com/orgs/github" },
     { key: "2", label: "https://api.github.com/orgs/octocat-org" },
   ],
 };
+
 export const selectIssueForAuthenticatedUserExamplePayload = {
   result: [
     { key: "1348", label: "Feature request: add dark mode" },
     { key: "1347", label: "Found a bug" },
   ],
 };
+
 export const selectPullRequestFromRepoExamplePayload = {
   result: [
     { key: "1", label: "Amazing new feature" },
     { key: "2", label: "Fix bug in authentication" },
   ],
 };
+
 export const selectUserFromOrganizationExamplePayload = {
   result: [{ key: "octocat", label: "octocat" }],
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -851,9 +879,8 @@ export const pollChangesTriggerExamplePayload: {
     globalDebug: false,
   },
 };
-export const webhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const webhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "content-type": "application/json",
@@ -901,9 +928,8 @@ export const webhookExamplePayload: {
     globalDebug: false,
   },
 };
-export const eventWebhookExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const eventWebhookExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "content-type": "application/json",

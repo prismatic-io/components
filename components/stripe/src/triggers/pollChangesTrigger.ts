@@ -9,6 +9,7 @@ import type {
   StripeRecordChange,
 } from "../types";
 import { fetchEventsSince, resolvePollingRecordChanges } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -26,13 +27,16 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
+
     const lastPolledAt = pollState?.lastPolledAt ?? now;
     const createdGte = Math.floor(new Date(lastPolledAt).getTime() / 1000);
+
     const { events, truncated } = await fetchEventsSince(
       params.connection,
       createdGte,
       params.pollEventTypes,
     );
+
     const created: StripeEvent[] = [];
     const updated: StripeEvent[] = [];
     for (const event of events) {
@@ -42,6 +46,7 @@ export const pollChangesTrigger = pollingTrigger({
       else if (!isNew && params.showUpdatedRecords !== false)
         updated.push(event);
     }
+
     const nextCursor = truncated ? lastPolledAt : now;
     if (truncated) {
       context.logger.warn(
@@ -49,11 +54,13 @@ export const pollChangesTrigger = pollingTrigger({
       );
     }
     context.polling.setState({ lastPolledAt: nextCursor });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Stripe events: ${events.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },

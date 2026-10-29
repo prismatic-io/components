@@ -4,6 +4,7 @@ import { listGroupsExamplePayload } from "../../examplePayloads/groups";
 import { listGroupsInputs } from "../../inputs/groups";
 import type { Group } from "../../interfaces/group";
 import { paginateRecordsWithLink } from "../../util/util";
+
 export const listGroups = action({
   display: {
     label: "List Groups",
@@ -22,6 +23,7 @@ export const listGroups = action({
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
+
     const data = await paginateRecordsWithLink<Group>(
       client,
       "/groups",
@@ -37,6 +39,7 @@ export const listGroups = action({
         ...extraParameters,
       },
     );
+
     return {
       data,
     };

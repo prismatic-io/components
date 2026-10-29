@@ -3,6 +3,7 @@ import { createClient } from "../../auth";
 import { getByExternalIdExamplePayload } from "../../examplePayloads";
 import { getByExternalIdInputs } from "../../inputs";
 import { getByExternalIdOutputSchema } from "../../outputSchemas";
+
 export const getByExternalId = action({
   display: {
     label: "Get Ticket By External ID",
@@ -14,6 +15,7 @@ export const getByExternalId = action({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
+
     const result = await client.tickets.listWithFilter(
       "external_id",
       params.externalId as string | number,

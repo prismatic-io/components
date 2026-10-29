@@ -1,5 +1,6 @@
 import { structuredObjectInput } from "@prismatic-io/spectral";
 import { connection, odataParams } from "./common";
+
 const pagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -10,6 +11,7 @@ const pagination = structuredObjectInput({
     $skipToken: odataParams.$skipToken,
   },
 });
+
 const filters = structuredObjectInput({
   label: "Filters",
   required: false,
@@ -24,6 +26,7 @@ const filters = structuredObjectInput({
     $format: odataParams.$format,
   },
 });
+
 export const listDomainsInputs = {
   connection,
   pagination,

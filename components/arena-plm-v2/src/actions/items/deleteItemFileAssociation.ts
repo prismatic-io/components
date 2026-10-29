@@ -4,6 +4,7 @@ import { deleteItemFileAssociationExamplePayload } from "../../examplePayloads";
 import { deleteItemFileAssociationInputs } from "../../inputs";
 import { deleteItemFileAssociationOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteItemFileAssociation = action({
   display: {
     label: "Delete Item File Association",
@@ -21,17 +22,21 @@ export const deleteItemFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting item file association", {
         itemGuid,
         itemFileAssociationGuid,
       });
+
       await client.delete(
         `/items/${itemGuid}/files/${itemFileAssociationGuid}`,
       );
+
       context.logger.info("Item file association deleted successfully", {
         itemGuid,
         itemFileAssociationGuid,
       });
+
       return {
         data: {
           success: true,

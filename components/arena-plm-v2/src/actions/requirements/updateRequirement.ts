@@ -4,6 +4,7 @@ import { updateRequirementExamplePayload } from "../../examplePayloads";
 import { updateRequirementInputs } from "../../inputs";
 import { requirementSchema } from "../../outputSchemas";
 import { handleArenaError, resolveAdditionalAttributes } from "../../util";
+
 export const updateRequirement = action({
   display: {
     label: "Update Requirement",
@@ -18,6 +19,7 @@ export const updateRequirement = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const requestPayload: Record<string, unknown> = {
         title: params.title,
         description: params.description,
@@ -26,6 +28,7 @@ export const updateRequirement = action({
           ? { guid: params.assigneeGuid }
           : undefined,
       };
+
       requestPayload.additionalAttributes = resolveAdditionalAttributes(
         {
           additionalAttributeJson: params.additionalAttributeJson,
@@ -34,7 +37,9 @@ export const updateRequirement = action({
         },
         context,
       );
+
       const queryParams = { setnull: params.setNull };
+
       const { data } = await client.put(
         `/requirements/${params.requirementGuid}`,
         requestPayload,

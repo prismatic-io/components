@@ -8,10 +8,13 @@ import { deleteIssue } from "./deleteIssue";
 import { getIssue } from "./getIssue";
 import { listIssues } from "./listIssues";
 import { updateIssue } from "./updateIssue";
+
 const exampleIssue = getIssueExamplePayload.data;
+
 afterEach(() => nock.cleanAll());
 const connection = accessTokenConnection;
 const project = "278964";
+
 test("List Issues maps filters to GitLab parameters", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/issues`)
@@ -33,6 +36,7 @@ test("List Issues maps filters to GitLab parameters", async () => {
   });
   expect(result?.data).toEqual([exampleIssue]);
 });
+
 test("Get Issue uses the IID route", async () => {
   nock(GITLAB_URL)
     .get(`/api/v4/projects/${project}/issues/42`)
@@ -44,6 +48,7 @@ test("Get Issue uses the IID route", async () => {
   });
   expect(result?.data).toEqual(exampleIssue);
 });
+
 test("Create Issue sends only provided fields", async () => {
   nock(GITLAB_URL)
     .post(`/api/v4/projects/${project}/issues`, {
@@ -67,6 +72,7 @@ test("Create Issue sends only provided fields", async () => {
   });
   expect(result?.data).toEqual(exampleIssue);
 });
+
 test("Update Issue closes via state_event and leaves unset fields out", async () => {
   nock(GITLAB_URL)
     .put(`/api/v4/projects/${project}/issues/42`, { state_event: "close" })
@@ -86,14 +92,9 @@ test("Update Issue closes via state_event and leaves unset fields out", async ()
       confidential: undefined,
     },
   });
-  expect(
-    (
-      result?.data as {
-        state: string;
-      }
-    ).state,
-  ).toBe("closed");
+  expect((result?.data as { state: string }).state).toBe("closed");
 });
+
 test("Delete Issue returns a success message", async () => {
   nock(GITLAB_URL).delete(`/api/v4/projects/${project}/issues/42`).reply(204);
   const { result } = await invoke(deleteIssue, {
@@ -106,6 +107,7 @@ test("Delete Issue returns a success message", async () => {
     message: ISSUE_DELETED_MESSAGE,
   });
 });
+
 describe("error paths", () => {
   afterEach(() => expect(nock.isDone()).toBe(true));
   const notFound = { message: "404 Not Found" };
@@ -114,6 +116,7 @@ describe("error paths", () => {
     assigneeIds: undefined,
     milestoneId: undefined,
   };
+
   test("List Issues rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/issues`)
@@ -132,6 +135,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Get Issue rejects on 404", async () => {
     nock(GITLAB_URL)
       .get(`/api/v4/projects/${project}/issues/999`)
@@ -140,6 +144,7 @@ describe("error paths", () => {
       invoke(getIssue, { connection, project, issueIid: 999 }),
     ).rejects.toThrow();
   });
+
   test("Create Issue rejects on 400", async () => {
     nock(GITLAB_URL)
       .post(`/api/v4/projects/${project}/issues`)
@@ -154,6 +159,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Update Issue rejects on 422", async () => {
     nock(GITLAB_URL)
       .put(`/api/v4/projects/${project}/issues/42`)
@@ -168,6 +174,7 @@ describe("error paths", () => {
       }),
     ).rejects.toThrow();
   });
+
   test("Delete Issue rejects on 403", async () => {
     nock(GITLAB_URL)
       .delete(`/api/v4/projects/${project}/issues/42`)
@@ -177,6 +184,7 @@ describe("error paths", () => {
     ).rejects.toThrow();
   });
 });
+
 test("Create Issue sends the additional fields", async () => {
   nock(GITLAB_URL)
     .post(`/api/v4/projects/${project}/issues`, {
@@ -201,6 +209,7 @@ test("Create Issue sends the additional fields", async () => {
   });
   expect(result?.data).toEqual(exampleIssue);
 });
+
 test("Update Issue rejects an update with every field empty", async () => {
   await expect(
     invoke(updateIssue, {

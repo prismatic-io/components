@@ -4,6 +4,7 @@ import { getCompletedNewHiresExamplePayload } from "../../examplePayloads";
 import { getCompletedNewHiresInputs } from "../../inputs";
 import type { CompletedNewHire } from "../../types";
 import { fetchWithPagination, getTenantIdentifier } from "../../util";
+
 export const getCompletedNewHires = action({
   display: {
     label: "Get Completed New Hires",
@@ -17,6 +18,7 @@ export const getCompletedNewHires = action({
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const tenantIdentifier = getTenantIdentifier(connection);
+
     const { data } = await fetchWithPagination<CompletedNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/completed`,
@@ -27,6 +29,7 @@ export const getCompletedNewHires = action({
       },
       fetchAll,
     );
+
     return { data };
   },
   examplePayload: getCompletedNewHiresExamplePayload,

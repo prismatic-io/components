@@ -13,6 +13,7 @@ export const getOrganizationsOutputSchema = {
     },
   },
 };
+
 export const singleOrganizationV2OutputSchema = {
   type: "object",
   properties: {
@@ -53,6 +54,7 @@ export const singleOrganizationV2OutputSchema = {
     },
   },
 };
+
 export const deleteOrganizationOutputSchema = {
   type: "object",
   properties: {
@@ -64,6 +66,7 @@ export const deleteOrganizationOutputSchema = {
     },
   },
 };
+
 export const searchOrganizationOutputSchema = {
   type: "object",
   properties: {
@@ -113,6 +116,7 @@ export const searchOrganizationOutputSchema = {
     },
   },
 };
+
 export const mergeOrganizationsOutputSchema = {
   type: "object",
   properties: {
@@ -138,6 +142,7 @@ export const mergeOrganizationsOutputSchema = {
     },
   },
 };
+
 export const getOrganizationActivitiesOutputSchema = {
   type: "object",
   properties: {
@@ -174,6 +179,7 @@ export const getOrganizationActivitiesOutputSchema = {
     },
   },
 };
+
 export const getOrganizationDealsOutputSchema = {
   type: "object",
   properties: {
@@ -206,6 +212,7 @@ export const getOrganizationDealsOutputSchema = {
     },
   },
 };
+
 export const getOrganizationFilesOutputSchema = {
   type: "object",
   properties: {
@@ -243,6 +250,7 @@ export const getOrganizationFilesOutputSchema = {
     },
   },
 };
+
 export const getOrganizationFollowersOutputSchema = {
   type: "object",
   properties: {
@@ -266,6 +274,7 @@ export const getOrganizationFollowersOutputSchema = {
     },
   },
 };
+
 export const addOrganizationFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -280,6 +289,7 @@ export const addOrganizationFollowerOutputSchema = {
     },
   },
 };
+
 export const deleteOrganizationFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -291,6 +301,7 @@ export const deleteOrganizationFollowerOutputSchema = {
     },
   },
 };
+
 export const getOrganizationMailMessagesOutputSchema = {
   type: "object",
   properties: {
@@ -332,6 +343,7 @@ export const getOrganizationMailMessagesOutputSchema = {
     },
   },
 };
+
 export const getOrganizationUpdatesOutputSchema = {
   type: "object",
   properties: {
@@ -367,6 +379,7 @@ export const getOrganizationUpdatesOutputSchema = {
     },
   },
 };
+
 export const getOrganizationUsersOutputSchema = {
   type: "object",
   properties: {
@@ -377,6 +390,7 @@ export const getOrganizationUsersOutputSchema = {
     },
   },
 };
+
 export const getOrganizationPersonsOutputSchema = {
   type: "object",
   properties: {

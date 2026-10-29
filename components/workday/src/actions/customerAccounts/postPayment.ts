@@ -5,6 +5,7 @@ import { postPaymentExamplePayload } from "../../examplePayloads";
 import { postPaymentInputs } from "../../inputs";
 import { getIdObject } from "../../util";
 import { postPaymentOutputSchema } from "../../outputSchemas";
+
 export const postPayment = action({
   display: {
     label: "Create Payment",

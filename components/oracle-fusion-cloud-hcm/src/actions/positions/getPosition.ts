@@ -4,6 +4,7 @@ import { getPositionExamplePayload } from "../../examplePayloads/positions";
 import { getPositionInputs } from "../../inputs";
 import { positionOutputSchema } from "../../outputSchemas";
 import type { Position } from "../../types";
+
 export const getPosition = action({
   display: {
     label: "Get Position",

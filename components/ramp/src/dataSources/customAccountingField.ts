@@ -3,6 +3,7 @@ import { createClient } from "../client";
 import { connection } from "../inputs";
 import type { CustomAccountingField } from "../interfaces/customAccountingField";
 import { fetchAllData } from "../util";
+
 export const selectCustomAccountingField = dataSource({
   display: {
     label: "Select Custom Accounting Field",
@@ -19,12 +20,14 @@ export const selectCustomAccountingField = dataSource({
       {},
       true,
     );
+
     const objects = data
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map<Element>((field) => ({
         key: field.id,
         label: field.name,
       }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

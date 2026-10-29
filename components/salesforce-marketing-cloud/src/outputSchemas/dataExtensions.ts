@@ -38,6 +38,7 @@ export const dataExtensionOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const listDataExtensionsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +50,7 @@ export const listDataExtensionsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const getDataExtensionFieldsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -80,6 +82,7 @@ export const getDataExtensionFieldsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const asyncUpsertRowsOutputSchema = {
   type: "object" as const,
   properties: {
@@ -100,6 +103,7 @@ export const asyncUpsertRowsOutputSchema = {
   },
   additionalProperties: true,
 };
+
 export const upsertRowOutputSchema = {
   type: "array" as const,
   items: {

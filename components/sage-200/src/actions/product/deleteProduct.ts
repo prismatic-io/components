@@ -3,6 +3,7 @@ import { getClient } from "../../client";
 import { emptyPayload } from "../../examplePayloads";
 import { company, connection, site } from "../../inputs/general";
 import deleteProductInputs from "../../inputs/product/deleteProductInputs";
+
 export const deleteProduct = action({
   display: {
     label: "Delete Product",

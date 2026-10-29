@@ -9,6 +9,7 @@ import {
   sourceBucketName,
   sourceFileName,
 } from "../inputs";
+
 export const moveFile = action({
   display: {
     label: "Move File",
@@ -40,6 +41,7 @@ export const moveFile = action({
           .bucket(util.types.toString(destinationBucketName))
           .file(util.types.toString(destinationFileName)),
       )) as unknown as [File];
+
     const [metadata] = await file.getMetadata();
     return { data: metadata as typeof moveFileExamplePayload.data };
   },

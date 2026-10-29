@@ -3,6 +3,7 @@ import {
   projectCompactSchema,
   sectionCompactSchema,
 } from "./shared";
+
 export const sectionResponseSchema = {
   type: "object" as const,
   properties: {
@@ -38,6 +39,7 @@ export const sectionResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listSectionsOutputSchema = {
   type: "object" as const,
   properties: {

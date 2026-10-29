@@ -8,6 +8,7 @@ import { getCustomerBankAccount } from "./getCustomerBankAccount";
 import { listCustomer } from "./listCustomer";
 import { listCustomerBankAccount } from "./listCustomerBankAccount";
 import { updateCustomer } from "./updateCustomer";
+
 export default {
   bulkCreateCustomers,
   bulkUpdateCustomers,

@@ -3,11 +3,13 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { sortRecords } from "../util";
 import { selectFilterExamplePayload } from "../examplePayloads";
+
 interface Filter {
   id: number;
   name: string;
   type: string;
 }
+
 export const selectFilter = dataSource({
   display: {
     label: "Select Filter",
@@ -18,14 +20,15 @@ export const selectFilter = dataSource({
   },
   perform: async (_context, { connectionInput }) => {
     const client = createClient(connectionInput, false);
-    const { data } = await client.get<{
-      data: Filter[];
-    }>("/filters");
+    const { data } = await client.get<{ data: Filter[] }>("/filters");
+
     const filters = data?.data ?? [];
+
     const result = sortRecords(filters, "name").map<Element>((filter) => ({
       key: filter.id.toString(),
       label: filter.type ? `${filter.name} (${filter.type})` : filter.name,
     }));
+
     return { result };
   },
   dataSourceType: "picklist",

@@ -6,6 +6,7 @@ import { getPlanExamplePayload } from "../../examplePayloads";
 import { getPlanOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { getPlanInputs } from "../../inputs";
+
 export const getPlan = action({
   display: {
     label: "Get Plan",

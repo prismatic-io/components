@@ -8,6 +8,7 @@ import {
   query,
   shopifyConnection,
 } from "./common";
+
 const cost = input({
   label: "Cost",
   type: "string",
@@ -18,6 +19,7 @@ const cost = input({
     "Unit cost associated with the inventory item, the currency is the shop's default currency.",
   clean: cleanStringInput,
 });
+
 const sku = input({
   label: "SKU",
   type: "string",
@@ -26,21 +28,25 @@ const sku = input({
   placeholder: "Enter SKU",
   comments: "The SKU (stock keeping unit) of the inventory item.",
 });
+
 const tracked = input({
   ...optionalBoolean,
   label: "Tracked",
   comments: "Whether the inventory item is tracked.",
 });
+
 export const listInventoryItemsInputs = {
   shopifyConnection,
   getAlldata,
   query,
   pagination,
 };
+
 export const getInventoryItemsInputs = {
   itemId,
   shopifyConnection,
 };
+
 export const updateInventoryItemsInputs = {
   shopifyConnection,
   itemId,

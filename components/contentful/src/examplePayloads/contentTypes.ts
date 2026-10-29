@@ -1,7 +1,6 @@
 import type { ContentTypeProps } from "contentful-management";
-export const createContentTypeExamplePayload: {
-  data: ContentTypeProps;
-} = {
+
+export const createContentTypeExamplePayload: { data: ContentTypeProps } = {
   data: {
     sys: {
       type: "ContentType",
@@ -65,9 +64,11 @@ export const createContentTypeExamplePayload: {
     ],
   },
 };
+
 export const listContentTypesExamplePayload = {
   data: [createContentTypeExamplePayload.data],
 };
+
 export const updateContentTypeExamplePayload = {
   data: createContentTypeExamplePayload.data,
 };

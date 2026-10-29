@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { lookBackDateClean } from "../util";
 import { connection, model } from "./common";
+
 const lookBackDate = input({
   label: "Look-back Date",
   placeholder: "Enter look-back date (YYYY-MM-DD)",
@@ -11,6 +12,7 @@ const lookBackDate = input({
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
+
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -20,6 +22,7 @@ const showNewRecords = input({
     "When true, records whose `create_date` falls after the last poll are emitted in the `created` bucket.",
   clean: util.types.toBool,
 });
+
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -29,6 +32,7 @@ const showUpdatedRecords = input({
     "When true, records whose `write_date` falls after the last poll but were created earlier are emitted in the `updated` bucket.",
   clean: util.types.toBool,
 });
+
 export const pollChangesInputs = {
   connection,
   model,

@@ -1,6 +1,7 @@
 export const pathDetailsExamplePayload = {
   data: [{ id: "12345", type: "file", name: "Quarterly Report.pdf" }],
 };
+
 export const moveObjectExamplePayload = {
   data: {
     type: "folder",
@@ -9,6 +10,7 @@ export const moveObjectExamplePayload = {
     parent: { id: "0", type: "folder", name: "All Files" },
   },
 };
+
 export const copyObjectExamplePayload = {
   data: {
     type: "folder",
@@ -17,6 +19,7 @@ export const copyObjectExamplePayload = {
     parent: { id: "0", type: "folder", name: "All Files" },
   },
 };
+
 export const deleteObjectExamplePayload = {
   data: {},
 };

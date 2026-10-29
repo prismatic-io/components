@@ -7,9 +7,11 @@ import nock from "nock";
 import { msIntuneOAuth2 } from "../connections";
 import { listManagedDevicesExamplePayload } from "../examplePayloads";
 import { selectManagedDevice } from "./selectManagedDevice";
+
 const HOST = "https://graph.microsoft.com";
 const ACCESS_TOKEN = "test-access-token";
 const PATH = "/v1.0/deviceManagement/managedDevices";
+
 const connection = createConnection(
   msIntuneOAuth2,
   {
@@ -21,16 +23,22 @@ const connection = createConnection(
   },
   { access_token: ACCESS_TOKEN },
 );
+
 const listReply = listManagedDevicesExamplePayload.data;
+
 const invokeBare = async (): Promise<Element[]> =>
   (await invokeDataSource(selectManagedDevice, {
     connection,
   })) as unknown as Element[];
+
 describe("selectManagedDevice", () => {
   afterEach(() => nock.cleanAll());
+
   test("maps the managed device list to a bare array of label/key elements", async () => {
     nock(HOST).get(PATH).reply(200, listReply);
+
     const result = await invokeBare();
+
     expect(Array.isArray(result)).toBe(true);
     expect(result).toEqual([
       {
@@ -43,8 +51,10 @@ describe("selectManagedDevice", () => {
       expect(element).toHaveProperty("key");
     }
   });
+
   test("returns an empty array when the API returns no managed devices", async () => {
     nock(HOST).get(PATH).reply(200, { value: [] });
+
     expect(await invokeBare()).toEqual([]);
   });
 });

@@ -4,6 +4,7 @@ import { createClient } from "../client";
 import { fetchAllData, mapPicklistArray, validateArray } from "../util";
 import { businessPartnerDataSourceExamplePayload as recordDataSourceExamplePayload } from "../examplePayloads/datasources";
 import { recordType } from "../inputs/records/general";
+
 export const selectRecord = dataSource({
   display: {
     label: "Select Record",
@@ -21,6 +22,7 @@ export const selectRecord = dataSource({
     { connection, recordType, keyField, labelField, $filter },
   ) => {
     const client = await createClient(connection, context, true);
+
     const data = await fetchAllData(
       client,
       recordType,
@@ -31,13 +33,16 @@ export const selectRecord = dataSource({
       true,
       1000,
     );
+
     const array = validateArray(data);
+
     const objects = mapPicklistArray({
       data: array,
       keyName: keyField,
       keyLabel: labelField,
       orderKey: keyField,
     });
+
     return { result: objects };
   },
   dataSourceType: "picklist",

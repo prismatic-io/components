@@ -1,5 +1,6 @@
 import type { CannyClient, CursorResult, OffsetResult } from "../types";
 import { DEFAULT_PAGE_SIZE } from "./constants";
+
 export const paginateOffset = async <K extends string, T = unknown>(
   post: CannyClient["post"],
   path: string,
@@ -10,9 +11,11 @@ export const paginateOffset = async <K extends string, T = unknown>(
   if (!fetchAll) {
     return post<OffsetResult<K, T>>(path, params);
   }
+
   const allItems: T[] = [];
   let hasMore = true;
   let skipCount = 0;
+
   while (hasMore) {
     const page = await post<OffsetResult<K, T>>(path, {
       ...params,
@@ -24,8 +27,10 @@ export const paginateOffset = async <K extends string, T = unknown>(
     hasMore = page.hasMore;
     skipCount += items.length;
   }
+
   return { [resourceKey]: allItems, hasMore: false } as OffsetResult<K, T>;
 };
+
 export const paginateCursor = async <K extends string, T = unknown>(
   postV2: CannyClient["postV2"],
   path: string,
@@ -36,9 +41,11 @@ export const paginateCursor = async <K extends string, T = unknown>(
   if (!fetchAll) {
     return postV2<CursorResult<K, T>>(path, params);
   }
+
   const allItems: T[] = [];
   let hasNextPage = true;
   let currentCursor: string | undefined;
+
   while (hasNextPage) {
     const page = await postV2<CursorResult<K, T>>(path, {
       ...params,
@@ -50,6 +57,7 @@ export const paginateCursor = async <K extends string, T = unknown>(
     hasNextPage = page.hasNextPage;
     currentCursor = page.cursor;
   }
+
   return {
     [resourceKey]: allItems,
     hasNextPage: false,

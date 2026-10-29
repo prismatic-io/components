@@ -1,4 +1,5 @@
 import { onPremConnection } from "@prismatic-io/spectral";
+
 export const mySQLConnection = onPremConnection({
   key: "mySQL",
   display: {
@@ -52,4 +53,5 @@ export const mySQLConnection = onPremConnection({
     },
   },
 });
+
 export default [mySQLConnection];

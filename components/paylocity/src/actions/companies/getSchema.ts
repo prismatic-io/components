@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient, validateV2Connection } from "../../client";
 import { companyId, connectionInput } from "../../inputs";
+
 export const getCompanySpecificSchema = action({
   display: {
     label: "Get Company Specific Schema",
@@ -14,6 +15,7 @@ export const getCompanySpecificSchema = action({
   perform: async (context, { connectionInput, companyId }) => {
     validateV2Connection(connectionInput);
     const client = await createClient(connectionInput, context.debug.enabled);
+
     const { data } = await client.get(`/companies/${companyId}/openapi`);
     return {
       data,

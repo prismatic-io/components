@@ -6,6 +6,7 @@ import { createBucketExamplePayload } from "../../examplePayloads";
 import { createBucketOutputSchema } from "../../outputSchemas";
 import type { Etagged } from "../../types";
 import { createBucketInputs } from "../../inputs";
+
 export const createBucket = action({
   display: {
     label: "Create Bucket",
@@ -19,6 +20,7 @@ export const createBucket = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, planId, name }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.post<PlannerBucket & Etagged>(
       PLANNER_ENDPOINTS.BUCKETS,
       {
@@ -32,9 +34,7 @@ export const createBucket = action({
   examplePerform: async (
     _context,
     { planId, name },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: { ...createBucketExamplePayload.data, name, planId },
   }),
   examplePayload: createBucketExamplePayload,

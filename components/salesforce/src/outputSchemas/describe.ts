@@ -1,5 +1,6 @@
 const nstr = { type: ["string", "null"] };
 const urlMap = { type: "object", additionalProperties: { type: "string" } };
+
 const describeFieldSchema = {
   type: "object" as const,
   properties: {
@@ -58,6 +59,7 @@ const describeFieldSchema = {
     writeRequiresMasterRead: { type: "boolean" },
   },
 };
+
 const describeSObjectResultSchema = {
   type: "object" as const,
   properties: {
@@ -163,7 +165,9 @@ const describeSObjectResultSchema = {
     urls: urlMap,
   },
 };
+
 export const describeObjectOutputSchema = describeSObjectResultSchema;
+
 export const describePermissionsOutputSchema = {
   type: "array" as const,
   items: describeFieldSchema,

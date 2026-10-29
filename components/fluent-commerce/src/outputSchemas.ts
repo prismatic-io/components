@@ -7,6 +7,7 @@ const attributeItemSchema = {
   },
   required: ["name", "type", "value"],
 };
+
 export const createCustomerOutputSchema = {
   type: "object" as const,
   properties: {
@@ -51,6 +52,7 @@ export const createCustomerOutputSchema = {
   },
   required: ["createCustomer"],
 };
+
 export const getCustomerByEmailAddressOutputSchema = {
   type: "object" as const,
   properties: {
@@ -107,6 +109,7 @@ export const getCustomerByEmailAddressOutputSchema = {
   },
   required: ["customers"],
 };
+
 export const getCurrentUserOutputSchema = {
   type: "object" as const,
   properties: {
@@ -229,6 +232,7 @@ export const getCurrentUserOutputSchema = {
   },
   required: ["me"],
 };
+
 export const createProductOutputSchema = {
   type: "object" as const,
   properties: {

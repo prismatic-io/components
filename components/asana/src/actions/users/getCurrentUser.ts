@@ -3,6 +3,7 @@ import { createAsanaClient } from "../../client";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
 import { userResponseSchema } from "../../outputSchemas";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",

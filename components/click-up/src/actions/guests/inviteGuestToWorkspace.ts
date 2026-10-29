@@ -4,6 +4,7 @@ import { inviteGuestToWorkspaceExamplePayload } from "../../examplePayloads";
 import { inviteGuestToWorkspaceInputs } from "../../inputs";
 import { inviteGuestToWorkspaceOutputSchema } from "../../outputSchemas";
 import type { InviteGuestToWorkspaceBody } from "../../types";
+
 export const inviteGuestToWorkspace = action({
   display: {
     label: "Invite Guest to Workspace",
@@ -40,7 +41,9 @@ export const inviteGuestToWorkspace = action({
       can_create_views: canCreateViews,
       custom_role_id: customRoleId,
     };
+
     const { data } = await client.post(`/team/${teamId}/guest`, body);
+
     return {
       data,
     };

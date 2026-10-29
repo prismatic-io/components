@@ -5,6 +5,7 @@ import { listAbsencesInputs } from "../../inputs";
 import { listAbsencesOutputSchema } from "../../outputSchemas";
 import type { Absence } from "../../types";
 import { paginateResults } from "../../util/pagination";
+
 export const listAbsences = action({
   display: {
     label: "List Absences",

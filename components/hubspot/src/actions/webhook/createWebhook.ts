@@ -5,6 +5,7 @@ import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { checkDeveloperApiKeyAndAppId } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -27,6 +28,7 @@ export const createWebhook = action({
     );
     const { developerApiKey, appId } =
       checkDeveloperApiKeyAndAppId(hubspotConnection);
+
     const { data } = await client.post(
       hubspotPaths.appWebhooks(appId, "/subscriptions"),
       {
@@ -38,6 +40,7 @@ export const createWebhook = action({
         params: { hapikey: developerApiKey },
       },
     );
+
     return { data };
   },
   examplePerform: async () => ({

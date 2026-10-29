@@ -17,6 +17,7 @@ import {
 } from "../inputs";
 import { createHttpClient } from "../client";
 import { sendSingleEmailExamplePayload } from "../examplePayloads";
+
 export const sendSingleEmail = action({
   display: {
     label: "Send Email",
@@ -39,6 +40,7 @@ export const sendSingleEmail = action({
       Metadata: params.metadata,
       Attachments: params.attachments,
     };
+
     const client = createHttpClient(
       params.postmarkConnection,
       context.debug.enabled,

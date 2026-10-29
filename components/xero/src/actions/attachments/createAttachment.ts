@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getXeroClient } from "../../client";
 import { createAttachmentInputs } from "../../inputs";
+
 export const createAttachment = action({
   display: {
     label: "Create Attachment",

@@ -5,6 +5,7 @@ import { selectContactExamplePayload } from "../examplePayloads";
 import { selectContactInputs } from "../inputs";
 import type { Contact } from "../types";
 import { getAllPaginatedData } from "../util";
+
 export const selectContact = dataSource({
   display: {
     label: "Select Contact",
@@ -16,12 +17,14 @@ export const selectContact = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
+
     const contacts = (await getAllPaginatedData<Contact>(
       client,
       hubspotPaths.objects("contacts"),
       true,
       true,
     )) as Contact[];
+
     const result = contacts.map<Element>((contact) => ({
       label: `${contact.properties.firstname ? contact.properties.firstname : ""} ${contact.properties.lastname ? contact.properties.lastname : ""} ${contact.properties.email ? `(${contact.properties.email})` : ""}`,
       key: util.types.toString(contact.id),

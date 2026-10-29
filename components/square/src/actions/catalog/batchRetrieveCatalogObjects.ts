@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { batchRetrieveCatalogObjectsExamplePayload } from "../../examplePayloads";
 import { batchRetrieveCatalogObjectsInputs } from "../../inputs";
+
 export const batchRetrieveCatalogObjects = action({
   display: {
     label: "Batch Retrieve Catalog Objects",
@@ -21,16 +22,19 @@ export const batchRetrieveCatalogObjects = action({
       squareConnection,
       context.debug.enabled,
     );
+
     const requestBody = {
       object_ids: objectIds,
       include_related_objects: includeRelatedObjects,
       catalog_version: catalogVersion,
       include_deleted_objects: includeDeletedObjects,
     };
+
     const response = await client.post(
       "/v2/catalog/batch-retrieve",
       requestBody,
     );
+
     return {
       data: response.data,
     };

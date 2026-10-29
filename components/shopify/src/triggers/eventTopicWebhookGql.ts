@@ -9,6 +9,7 @@ import {
   listWebhooks,
   performFunction,
 } from "../util";
+
 export const eventTopicWebhookGql = trigger({
   display: {
     label: "Event Topic Subscription",
@@ -23,12 +24,14 @@ export const eventTopicWebhookGql = trigger({
   webhookLifecycleHandlers: {
     create: async (context, { shopifyConnection, webhookTopics }) => {
       const endpoint = context.webhookUrls[context.flow.name];
+
       const client = getShopifyGraphQlClient(
         shopifyConnection,
         undefined,
         false,
         context.logger,
       );
+
       const promises = webhookTopics.map((webhookTopic) =>
         createWebhook(client, {
           topic: webhookTopic,
@@ -38,6 +41,7 @@ export const eventTopicWebhookGql = trigger({
           },
         }),
       );
+
       await Promise.all(promises);
     },
     delete: async (context, { shopifyConnection }) => {
@@ -48,6 +52,7 @@ export const eventTopicWebhookGql = trigger({
         false,
         context.logger,
       );
+
       const { webhookSubscriptions } = await listWebhooks(
         client,
         true,

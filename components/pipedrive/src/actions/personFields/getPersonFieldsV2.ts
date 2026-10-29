@@ -5,6 +5,7 @@ import { paginateRecordsWithCursor } from "../../util";
 import { WebhookVersion } from "../../constants";
 import { getPersonFieldsV2ExamplePayload } from "../../examplePayloads";
 import { getPersonFieldsV2OutputSchema } from "../../outputSchemas";
+
 export const getPersonFieldsV2 = action({
   display: {
     label: "Get Person Fields (V2)",
@@ -20,6 +21,7 @@ export const getPersonFieldsV2 = action({
       context.debug.enabled,
       WebhookVersion.V2,
     );
+
     const data = await paginateRecordsWithCursor(
       client,
       "personFields",

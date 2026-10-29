@@ -3,6 +3,7 @@ import type ListBrandLibrariesResponse from "../actions/types/listBrandLibraries
 import { createClient } from "../client";
 import { LIST_BRAND_LIBRARIES_QUERY } from "../constants";
 import { libraryInputs as inputs } from "../inputs/dataSources";
+
 export const libraryDataSource = dataSource({
   display: {
     label: "Select Library",
@@ -19,6 +20,7 @@ export const libraryDataSource = dataSource({
         label: library.name,
       };
     });
+
     return {
       result,
     };

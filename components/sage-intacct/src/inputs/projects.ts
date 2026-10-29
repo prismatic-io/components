@@ -6,6 +6,7 @@ import {
   TO_BE_UPDATED_TEXT,
 } from "../constants";
 import { connection, fieldsInput, recordNoInput } from "./common";
+
 const projectIdInput = input({
   label: "Project ID",
   type: "string",
@@ -17,6 +18,7 @@ const projectIdInput = input({
   clean: util.types.toString,
   dataSource: "selectProject",
 });
+
 const projectNameInput = input({
   label: "Project Name",
   type: "string",
@@ -26,6 +28,7 @@ const projectNameInput = input({
   required: true,
   clean: util.types.toString,
 });
+
 const projectCategoryInput = input({
   label: "Project Category",
   type: "string",
@@ -36,6 +39,7 @@ const projectCategoryInput = input({
   placeholder: "Enter project category",
   clean: util.types.toString,
 });
+
 const projectDescriptionInput = input({
   label: "Project Description",
   type: "string",
@@ -45,6 +49,7 @@ const projectDescriptionInput = input({
   placeholder: "Enter project description",
   clean: util.types.toString,
 });
+
 const parentProjectIdInput = input({
   label: "Parent Project ID",
   type: "string",
@@ -55,6 +60,7 @@ const parentProjectIdInput = input({
   placeholder: "Enter project ID",
   clean: util.types.toString,
 });
+
 const invoiceWithParentInput = input({
   label: "Invoice with Parent",
   type: "boolean",
@@ -63,6 +69,7 @@ const invoiceWithParentInput = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 const projectTypeInput = input({
   label: "Project Type",
   type: "string",
@@ -72,6 +79,7 @@ const projectTypeInput = input({
   placeholder: "Enter project type",
   clean: util.types.toString,
 });
+
 const projectStatusInput = input({
   label: "Project Status",
   type: "string",
@@ -82,6 +90,7 @@ const projectStatusInput = input({
   placeholder: "Enter project status",
   clean: util.types.toString,
 });
+
 const statusInput = input({
   label: "Status",
   type: "boolean",
@@ -89,6 +98,7 @@ const statusInput = input({
   default: "true",
   clean: util.types.toBool,
 });
+
 const additionalFields = input({
   label: "Additional Fields",
   type: "code",
@@ -98,6 +108,7 @@ const additionalFields = input({
   example: JSON.stringify({}, null, 2),
   clean: cleanCodeInput,
 });
+
 const modelBooleanUpdateInput = input({
   label: "",
   type: "string",
@@ -110,6 +121,7 @@ const modelBooleanUpdateInput = input({
   })),
   clean: cleanBooleanInput,
 });
+
 export const createProjectInputs = {
   connection,
   projectNameInput: {
@@ -144,6 +156,7 @@ export const createProjectInputs = {
     example: JSON.stringify(CREATE_PROJECT_ADDITIONAL_FIELDS, null, 2),
   },
 };
+
 export const getProjectInputs = {
   connection,
   fieldsInput,
@@ -153,6 +166,7 @@ export const getProjectInputs = {
     dataSource: "selectProject",
   },
 };
+
 export const updateProjectInputs = {
   connection,
   projectIdInput: {

@@ -3,6 +3,7 @@ import { createClientMerchant } from "../../../../client";
 import { updateRegionalInventoryExamplePayload } from "../../../../examplePayloads/v1";
 import { updateProductRegionalInventoryInputs } from "../../../../inputs/v1/inventory";
 import { productResourceName } from "../../../../util/resourceNames";
+
 export const updateProductRegionalInventoryMerchant = action({
   display: {
     description:
@@ -37,6 +38,7 @@ export const updateProductRegionalInventoryMerchant = action({
           (inventory as Record<string, unknown>) ?? {},
       },
     );
+
     return { data };
   },
   examplePayload: updateRegionalInventoryExamplePayload,

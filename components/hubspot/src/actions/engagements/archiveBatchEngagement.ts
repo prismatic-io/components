@@ -4,6 +4,7 @@ import { archiveBatchEngagementExamplePayload } from "../../examplePayloads";
 import { archiveBatchEngagementInputs } from "../../inputs";
 import { getArrayOfObjectsWithKey } from "../../util";
 import { hubspotPaths } from "../../constants";
+
 export const archiveBatchEngagement = action({
   display: {
     label: "Archive Batch Engagement",
@@ -23,13 +24,16 @@ export const archiveBatchEngagement = action({
         "Content-Type": "application/json",
       },
     });
+
     const payload = {
       inputs: getArrayOfObjectsWithKey(engagementIds, "id"),
     };
+
     const { data } = await client.post(
       hubspotPaths.objects(engagementObject, "/batch/archive"),
       payload,
     );
+
     return {
       data,
     };

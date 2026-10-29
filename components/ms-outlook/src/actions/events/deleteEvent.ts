@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteEventExamplePayload } from "../../examplePayloads";
 import { deleteEventInputs } from "../../inputs";
 import { computeEndpointBasedOnConnection } from "../../util";
+
 export const deleteEvent = action({
   display: {
     label: "Delete Event",

@@ -45,6 +45,7 @@ export const listFolderWithPaginationExamplePayload = {
     },
   },
 };
+
 export const createFolderExamplePayload = {
   data: {
     type: "folder",

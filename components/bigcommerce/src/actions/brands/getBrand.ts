@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
 import { getBrandExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, brandId, storeHash } from "../../inputs";
+
 export const getBrand = action({
   display: {
     label: "Get Brand",
@@ -14,9 +15,12 @@ export const getBrand = action({
       bigCommerceConnection,
       context.debug.enabled,
     );
+
     const endpoint = `/stores/${storeHash}/v3/catalog/brands/${brandId}`;
+
     try {
       const response = await client.get(endpoint);
+
       return {
         data: response.data,
       };

@@ -10,6 +10,7 @@ const userIdObjectSchema = {
     value: { type: "integer" },
   },
 };
+
 const personIdObjectSchema = {
   type: "object",
   properties: {
@@ -39,6 +40,7 @@ const personIdObjectSchema = {
     value: { type: "integer" },
   },
 };
+
 const orgIdObjectSchema = {
   type: "object",
   properties: {
@@ -53,6 +55,7 @@ const orgIdObjectSchema = {
     value: { type: "integer" },
   },
 };
+
 const singleDealSchema = {
   type: "object",
   properties: {
@@ -122,6 +125,7 @@ const singleDealSchema = {
     person_hidden: { type: "boolean" },
   },
 };
+
 export const getDealsOutputSchema = {
   type: "object",
   properties: {
@@ -137,6 +141,7 @@ export const getDealsOutputSchema = {
     },
   },
 };
+
 export const addDealOutputSchema = {
   type: "object",
   properties: {
@@ -144,6 +149,7 @@ export const addDealOutputSchema = {
     data: singleDealSchema,
   },
 };
+
 export const getDealOutputSchema = {
   type: "object",
   properties: {
@@ -151,6 +157,7 @@ export const getDealOutputSchema = {
     data: singleDealSchema,
   },
 };
+
 export const updateDealOutputSchema = {
   type: "object",
   properties: {
@@ -158,6 +165,7 @@ export const updateDealOutputSchema = {
     data: singleDealSchema,
   },
 };
+
 export const deleteDealOutputSchema = {
   type: "object",
   properties: {
@@ -170,6 +178,7 @@ export const deleteDealOutputSchema = {
     },
   },
 };
+
 export const searchDealsOutputSchema = {
   type: "object",
   properties: {
@@ -244,6 +253,7 @@ export const searchDealsOutputSchema = {
     },
   },
 };
+
 export const getDealsSummaryOutputSchema = {
   type: "object",
   properties: {
@@ -262,6 +272,7 @@ export const getDealsSummaryOutputSchema = {
     },
   },
 };
+
 export const getDealsTimelineOutputSchema = {
   type: "object",
   properties: {
@@ -314,6 +325,7 @@ export const getDealsTimelineOutputSchema = {
     },
   },
 };
+
 export const mergeDealsOutputSchema = {
   type: "object",
   properties: {
@@ -381,6 +393,7 @@ export const mergeDealsOutputSchema = {
     },
   },
 };
+
 export const getDealActivitiesOutputSchema = {
   type: "object",
   properties: {
@@ -454,6 +467,7 @@ export const getDealActivitiesOutputSchema = {
     },
   },
 };
+
 export const getDealFilesOutputSchema = {
   type: "object",
   properties: {
@@ -511,6 +525,7 @@ export const getDealFilesOutputSchema = {
     },
   },
 };
+
 export const getDealFollowersOutputSchema = {
   type: "object",
   properties: {
@@ -535,6 +550,7 @@ export const getDealFollowersOutputSchema = {
     },
   },
 };
+
 export const addDealFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -550,6 +566,7 @@ export const addDealFollowerOutputSchema = {
     },
   },
 };
+
 export const deleteDealFollowerOutputSchema = {
   type: "object",
   properties: {
@@ -562,6 +579,7 @@ export const deleteDealFollowerOutputSchema = {
     },
   },
 };
+
 export const getDealMailMessagesOutputSchema = {
   type: "object",
   properties: {
@@ -641,6 +659,7 @@ export const getDealMailMessagesOutputSchema = {
     },
   },
 };
+
 const participantPersonSchema = {
   type: "object",
   properties: {
@@ -675,6 +694,7 @@ const participantPersonSchema = {
     owner_id: { type: "integer" },
   },
 };
+
 const participantSchema = {
   type: "object",
   properties: {
@@ -695,6 +715,7 @@ const participantSchema = {
     },
   },
 };
+
 export const getDealParticipantsOutputSchema = {
   type: "object",
   properties: {
@@ -718,6 +739,7 @@ export const getDealParticipantsOutputSchema = {
     },
   },
 };
+
 export const addDealParticipantOutputSchema = {
   type: "object",
   properties: {
@@ -725,6 +747,7 @@ export const addDealParticipantOutputSchema = {
     data: participantSchema,
   },
 };
+
 export const deleteDealParticipantOutputSchema = {
   type: "object",
   properties: {
@@ -737,6 +760,7 @@ export const deleteDealParticipantOutputSchema = {
     },
   },
 };
+
 export const getDealUsersOutputSchema = {
   type: "object",
   properties: {
@@ -747,6 +771,7 @@ export const getDealUsersOutputSchema = {
     },
   },
 };
+
 const dealProductSchema = {
   type: "object",
   properties: {
@@ -771,6 +796,7 @@ const dealProductSchema = {
     tax_method: { type: "string" },
   },
 };
+
 export const getDealProductsOutputSchema = {
   type: "object",
   properties: {
@@ -804,6 +830,7 @@ export const getDealProductsOutputSchema = {
     },
   },
 };
+
 export const addDealProductOutputSchema = {
   type: "object",
   properties: {
@@ -811,6 +838,7 @@ export const addDealProductOutputSchema = {
     data: dealProductSchema,
   },
 };
+
 export const updateDealProductOutputSchema = {
   type: "object",
   properties: {
@@ -818,6 +846,7 @@ export const updateDealProductOutputSchema = {
     data: dealProductSchema,
   },
 };
+
 export const deleteDealProductOutputSchema = {
   type: "object",
   properties: {

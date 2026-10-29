@@ -1,4 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
+
 export interface CreateWebhookParams {
   subscriptionUrl: string;
   eventAction: string;
@@ -8,6 +9,7 @@ export interface CreateWebhookParams {
   httpAuthPassword?: string;
   version: string;
 }
+
 export interface WebhookParams {
   connection: Connection;
   version: string;
@@ -17,6 +19,7 @@ export interface WebhookParams {
   httpAuthUser?: string;
   httpAuthPassword?: string;
 }
+
 export interface Webhook {
   subscription_url: string;
   id: string;

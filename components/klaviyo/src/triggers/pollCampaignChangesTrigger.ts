@@ -13,6 +13,7 @@ import {
   filterByTimestamp,
   resolvePollingRecordChanges,
 } from "../util";
+
 export const pollCampaignChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Campaigns",
@@ -30,12 +31,14 @@ export const pollCampaignChangesTrigger = pollingTrigger({
   async perform(context, payload, params) {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+
     const isBackfill = !state?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt =
       state?.lastPolledAt ??
       (params.lookBackDate
         ? new Date(`${params.lookBackDate}T00:00:00Z`).toISOString()
         : now);
+
     if (!isBackfill && !params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {
@@ -43,8 +46,11 @@ export const pollCampaignChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
+
     const filter = `${KLAVIYO_FILTER_OPS.AND}(${KLAVIYO_FILTER_OPS.EQUALS}(${KLAVIYO_FILTER_FIELDS.MESSAGES_CHANNEL},'${params.pollMessageChannel}'),${KLAVIYO_FILTER_OPS.GREATER_THAN}(${CAMPAIGN_RESOURCE_CONFIG.updatedAtField},${lastPolledAt}))`;
+
     const allRecords = await fetchCampaignRecords(params.connection, filter);
+
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
@@ -55,11 +61,15 @@ export const pollCampaignChangesTrigger = pollingTrigger({
       isBackfill || params.showNewRecords,
       isBackfill || params.showUpdatedRecords,
     );
+
     const totalMatched = created.length + updated.length;
+
     context.logger.debug(
       `Polled ${allRecords.length} ${params.pollMessageChannel} campaigns (server-side filtered), ${created.length} new and ${updated.length} updated since last poll.`,
     );
+
     context.polling.setState({ lastPolledAt: now });
+
     return {
       payload: {
         ...payload,

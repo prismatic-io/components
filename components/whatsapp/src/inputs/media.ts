@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connection } from "./common";
+
 const getMediaMediaId = input({
   label: "Media ID",
   comments: "The ID of the media to retrieve.",
@@ -10,6 +11,7 @@ const getMediaMediaId = input({
   example: "1234567890123456",
   clean: util.types.toString,
 });
+
 const getMediaPhoneNumberId = input({
   label: "Phone Number ID",
   comments:
@@ -20,6 +22,7 @@ const getMediaPhoneNumberId = input({
   example: "912345678912345",
   clean: cleanStringInput,
 });
+
 const url = input({
   label: "URL",
   comments: "The URL returned by the Get Media action to download media from.",
@@ -30,6 +33,7 @@ const url = input({
   required: true,
   clean: util.types.toString,
 });
+
 const deleteMediaMediaId = input({
   label: "Media ID",
   comments: "The ID of the media file to delete.",
@@ -39,6 +43,7 @@ const deleteMediaMediaId = input({
   placeholder: "Enter a Media ID",
   clean: util.types.toString,
 });
+
 const uploadMediaPhoneNumberId = input({
   label: "Phone Number ID",
   comments: "The ID of the phone number to upload media to.",
@@ -48,6 +53,7 @@ const uploadMediaPhoneNumberId = input({
   placeholder: "Enter a phone number ID",
   clean: util.types.toString,
 });
+
 const file = input({
   label: "File",
   comments:
@@ -56,6 +62,7 @@ const file = input({
   required: true,
   clean: util.types.toData,
 });
+
 const filename = input({
   label: "Filename",
   comments: "The filename to use for the uploaded file.",
@@ -65,13 +72,17 @@ const filename = input({
   placeholder: "Enter the filename",
   clean: util.types.toString,
 });
+
 export const getMediaInputs = {
   connection,
   mediaId: getMediaMediaId,
   phoneNumberId: getMediaPhoneNumberId,
 };
+
 export const getMediafromURLInputs = { connection, url };
+
 export const deleteMediaInputs = { connection, mediaId: deleteMediaMediaId };
+
 export const uploadMediaInputs = {
   connection,
   phoneNumberId: uploadMediaPhoneNumberId,

@@ -8,6 +8,7 @@ import { selectTeam } from "./selectTeam";
 import { selectUser } from "./selectUser";
 import { selectWorker } from "./selectWorker";
 import { selectWorkLocation } from "./selectWorkLocation";
+
 export default {
   selectBusinessPartnerGroup,
   selectDepartment,

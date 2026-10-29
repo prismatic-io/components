@@ -4,6 +4,7 @@ import { listFileCategoryAttributesExamplePayload } from "../../examplePayloads"
 import { listFileCategoryAttributesInputs } from "../../inputs";
 import { categoryAttributeDefinitionListSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listFileCategoryAttributes = action({
   display: {
     label: "List File Category Attributes",
@@ -29,25 +30,30 @@ export const listFileCategoryAttributes = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = {
         includePossibleValues,
         creatableOnly,
         editableOnly,
         searchableOnly,
       };
+
       context.logger.info("Fetching file category attributes from Arena", {
         categoryGuid,
         queryParamNames: Object.keys(queryParams),
       });
+
       const { data } = await client.get(
         `/settings/files/categories/${categoryGuid}/attributes`,
         {
           params: queryParams,
         },
       );
+
       context.logger.info(
         `Successfully retrieved ${data?.count || 0} file category attributes`,
       );
+
       return { data };
     } catch (error: unknown) {
       handleArenaError(error, context.logger, "List File Category Attributes");

@@ -8,6 +8,7 @@ import {
 } from "./common";
 import { entryFilter, recursive } from "./files";
 import { folderActions } from "./folders";
+
 export const listFoldersInputs = {
   connection: connectionInput,
   path: {
@@ -24,6 +25,7 @@ export const listFoldersInputs = {
   teamMemberId,
   entryFilter,
 };
+
 export const listSharedFoldersInputs = {
   connection: connectionInput,
   path: {
@@ -34,6 +36,7 @@ export const listSharedFoldersInputs = {
   limit,
   folderActions,
 };
+
 export const listTeamFoldersInputs = {
   connection: connectionInput,
   path: {

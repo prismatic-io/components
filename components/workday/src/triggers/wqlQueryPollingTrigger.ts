@@ -15,6 +15,7 @@ import {
   resolveRecordChanges,
   selectChangedRecords,
 } from "../util";
+
 export const wqlQueryPollingTrigger = pollingTrigger({
   display: {
     label: "Changed WQL Query Rows",
@@ -40,6 +41,7 @@ export const wqlQueryPollingTrigger = pollingTrigger({
     const state = (context.polling.getState() ?? {}) as PollingState;
     const overlapMs = (params.overlapMinutes ?? 0) * MS_PER_MINUTE;
     const window = getWqlWindow(state, params.lookBackDate, now, overlapMs);
+
     const client = getClient(params.connection, context.debug.enabled);
     const response = await queryWqlAll(
       client,
@@ -69,11 +71,13 @@ export const wqlQueryPollingTrigger = pollingTrigger({
       watermark: cursor.watermark,
       seen: cursor.seen ?? state.seen ?? [],
     });
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled WQL query from ${window.since}: ${response.data.length} rows, ${changed.length} changed`,
       );
     }
+
     return {
       payload: { ...payload, body: { data: { changed } } },
       polledNoChanges: changed.length === 0,

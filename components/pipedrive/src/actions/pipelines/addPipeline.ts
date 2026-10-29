@@ -4,6 +4,7 @@ import { addPipelineInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
 import { addPipelineExamplePayload } from "../../examplePayloads";
 import { addPipelineOutputSchema } from "../../outputSchemas";
+
 export const addPipeline = action({
   display: {
     label: "Add Pipeline",

@@ -19,6 +19,7 @@ import {
   fetchQuickBooksRecordsSince,
   resolvePollingRecordChanges,
 } from "./util/polling";
+
 export const webhook = trigger({
   display: {
     label: "Entity Change Events",
@@ -34,6 +35,7 @@ export const webhook = trigger({
         `format: ${normalizedOutput.format}, ` +
         `first event: ${normalizedOutput.entity}.${normalizedOutput.operation}`,
     );
+
     const finalPayload: TriggerPayload = {
       ...payload,
       body: {
@@ -41,6 +43,7 @@ export const webhook = trigger({
         data: normalizedOutput,
       },
     };
+
     return Promise.resolve({
       payload: finalPayload,
     });
@@ -49,6 +52,7 @@ export const webhook = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -69,6 +73,7 @@ export const pollChangesTrigger = pollingTrigger({
     const now = new Date().toISOString();
     const state = (context.polling.getState() ?? {}) as PollingState;
     const incoming = payload.paginationState as PollingCursor | undefined;
+
     const lastPolledAt =
       state.lastPolledAt ??
       (params.lookBackDate ? new Date(params.lookBackDate).toISOString() : now);
@@ -79,10 +84,12 @@ export const pollChangesTrigger = pollingTrigger({
     const windowStart = incoming?.windowStart ?? state.windowStart ?? now;
     const isBatching = context.batch?.enabled === true;
     const maxPages = isBatching ? MAX_BATCHED_POLL_PAGES : MAX_POLL_PAGES;
+
     const config = POLL_RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
+
     const { records, truncated, nextPosition } =
       await fetchQuickBooksRecordsSince(
         params.connection,
@@ -94,9 +101,11 @@ export const pollChangesTrigger = pollingTrigger({
           resumePosition: incoming?.resumePosition ?? state.resumePosition,
         },
       );
+
     const lastPolledAtDate = new Date(lastPolledAt);
     const created: QuickBooksRecord[] = [];
     const updated: QuickBooksRecord[] = [];
+
     for (const record of records) {
       const createTime = record.MetaData?.CreateTime;
       const createdAtDate =
@@ -107,6 +116,7 @@ export const pollChangesTrigger = pollingTrigger({
       else if (!isNew && (isBackfill || params.showUpdatedRecords !== false))
         updated.push(record);
     }
+
     const drained = !truncated;
     const nextPaginationState: PollingCursor | null = drained
       ? null
@@ -115,17 +125,20 @@ export const pollChangesTrigger = pollingTrigger({
           isBackfilling: isBackfill || undefined,
           windowStart,
         };
+
     context.polling.setState({
       lastPolledAt: drained ? windowStart : lastPolledAt,
       resumePosition: drained ? undefined : nextPosition,
       isBackfilling: drained ? undefined : isBackfill || undefined,
       windowStart: drained ? undefined : windowStart,
     } as PollingState);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled QuickBooks ${config.entity}: ${records.length} fetched, ${created.length} created, ${updated.length} updated, ${drained ? "stream drained" : "more pending"}`,
       );
     }
+
     const totalMatched = created.length + updated.length;
     return {
       payload: {
@@ -138,4 +151,5 @@ export const pollChangesTrigger = pollingTrigger({
     };
   },
 });
+
 export default { webhook, pollChangesTrigger };

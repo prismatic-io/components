@@ -5,21 +5,18 @@ import { MAX_BATCHED_PAGE_SIZE } from "../constants";
 import type { PollingChangesObject, PollingState } from "../types/polling";
 import type { Task } from "../types/resources";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 vi.mock("../client", () => ({ createAsanaClient: vi.fn() }));
+
 const NOW = new Date("2026-03-01T12:00:00.000Z");
 const T0 = "2026-02-01T00:00:00.000Z";
+
 let serverTasks: Task[] = [];
 const sentSince: string[] = [];
+
 const fakeClient = {
   get: vi.fn(
-    async (
-      _url: string,
-      {
-        params,
-      }: {
-        params: Record<string, unknown>;
-      },
-    ) => {
+    async (_url: string, { params }: { params: Record<string, unknown> }) => {
       const since = new Date(String(params.modified_since)).getTime();
       sentSince.push(String(params.modified_since));
       const data = serverTasks
@@ -29,6 +26,7 @@ const fakeClient = {
     },
   ),
 };
+
 const makeTask = (gid: string, createdAt: string, modifiedAt: string): Task =>
   ({
     gid,
@@ -36,6 +34,7 @@ const makeTask = (gid: string, createdAt: string, modifiedAt: string): Task =>
     created_at: createdAt,
     modified_at: modifiedAt,
   }) as Task;
+
 const taskAt = (
   gid: string,
   base: string,
@@ -47,6 +46,7 @@ const taskAt = (
   ).toISOString();
   return makeTask(gid, isNew ? modified : "2025-01-01T00:00:00.000Z", modified);
 };
+
 const createContext = (
   initial: PollingState | undefined,
   batch?: BatchInfo,
@@ -65,11 +65,13 @@ const createContext = (
   };
   return { context, getState: () => state };
 };
+
 interface Params {
   lookBackDate?: string;
   showNewRecords?: boolean;
   showUpdatedRecords?: boolean;
 }
+
 const poll = async (
   context: ReturnType<typeof createContext>["context"],
   {
@@ -96,7 +98,9 @@ const poll = async (
     gids: [...data.created, ...data.updated].map((t) => t.gid),
   };
 };
+
 const BATCHED: BatchInfo = { enabled: true, batchSize: 50 };
+
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(NOW);
@@ -104,9 +108,11 @@ beforeEach(() => {
   serverTasks = [];
   sentSince.length = 0;
 });
+
 afterEach(() => {
   vi.useRealTimers();
 });
+
 test("New and Updated Tasks is opt-in batchable with a default batch size", () => {
   expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
   expect(pollChangesTrigger.batchConfig).toEqual({ batchSize: 50 });
@@ -114,6 +120,7 @@ test("New and Updated Tasks is opt-in batchable with a default batch size", () =
     Function,
   );
 });
+
 test("resolveItems flattens the payload shape perform actually returns", () => {
   const task = makeTask("1", T0, T0);
   const payload = {
@@ -127,6 +134,7 @@ test("resolveItems flattens the payload shape perform actually returns", () => {
     ),
   ).toEqual([{ changeType: "created", record: task }]);
 });
+
 describe("unbatched path", () => {
   test.each([
     ["context.batch absent", undefined],
@@ -138,19 +146,23 @@ describe("unbatched path", () => {
       makeTask("edge", T0, T0),
     ];
     const { context, getState } = createContext({ lastPolledAt: T0 }, batch);
+
     const { data, result } = await poll(context, { showUpdatedRecords: false });
+
     expect(sentSince).toEqual([T0]);
     expect(data.created.map((t) => t.gid)).toEqual(["new"]);
     expect(data.updated).toEqual([]);
     expect(result.polledNoChanges).toBe(false);
     expect(getState()).toEqual({ lastPolledAt: NOW.toISOString() });
   });
+
   test("an initial sync ignores the visibility filters on its single recurrence", async () => {
     serverTasks = [
       taskAt("new", "2026-01-01T00:00:00.000Z", 10, true),
       taskAt("upd", T0, 20),
     ];
     const { context, getState } = createContext(undefined);
+
     const first = await poll(context, {
       lookBackDate: "2026-01-01",
       showNewRecords: false,
@@ -158,8 +170,9 @@ describe("unbatched path", () => {
     });
     expect(first.gids.sort()).toEqual(["new", "upd"]);
     expect(getState()).toEqual({ lastPolledAt: NOW.toISOString() });
+
     serverTasks = [taskAt("later", NOW.toISOString(), 5)];
-    vi.setSystemTime(new Date(NOW.getTime() + 60000));
+    vi.setSystemTime(new Date(NOW.getTime() + 60_000));
     const second = await poll(context, {
       lookBackDate: "2026-01-01",
       showNewRecords: false,
@@ -169,6 +182,7 @@ describe("unbatched path", () => {
     expect(second.result.polledNoChanges).toBe(true);
   });
 });
+
 describe("batched path", () => {
   test("truncates at MAX_BATCHED_PAGE_SIZE, oldest first, and advances the cursor to the last delivered task", async () => {
     const total = MAX_BATCHED_PAGE_SIZE + 5;
@@ -176,6 +190,7 @@ describe("batched path", () => {
       taskAt(`t${String(i).padStart(4, "0")}`, T0, i + 1),
     );
     const { context, getState } = createContext({ lastPolledAt: T0 }, BATCHED);
+
     const first = await poll(context);
     const expectedFirst = serverTasks.slice(0, MAX_BATCHED_PAGE_SIZE);
     expect(first.data.updated).toEqual(expectedFirst);
@@ -190,6 +205,7 @@ describe("batched path", () => {
         first.result as never,
       ),
     ).toHaveLength(MAX_BATCHED_PAGE_SIZE);
+
     const second = await poll(context);
     expect(sentSince[1]).toBe(lastDelivered.modified_at);
     expect(second.gids).toEqual(
@@ -197,6 +213,7 @@ describe("batched path", () => {
     );
     expect(getState()?.lastPolledAt).toBe(serverTasks[total - 1].modified_at);
   });
+
   test("boundary dedupe drops ids already delivered at the cursor timestamp only", async () => {
     const cursor = "2026-02-10T00:00:00.000Z";
     serverTasks = [
@@ -208,7 +225,9 @@ describe("batched path", () => {
       { lastPolledAt: cursor, lastSeenIds: ["seen"] },
       BATCHED,
     );
+
     const { gids } = await poll(context);
+
     expect(sentSince).toEqual([cursor]);
     expect(gids).toEqual(["sibling", "after"]);
     expect(getState()).toEqual({
@@ -216,6 +235,7 @@ describe("batched path", () => {
       lastSeenIds: ["after"],
     });
   });
+
   test("a cut never splits a group of tasks sharing one modified_at", async () => {
     const tied = "2026-02-20T00:00:00.000Z";
     serverTasks = [
@@ -226,22 +246,27 @@ describe("batched path", () => {
       makeTask("tie2", "2025-01-01T00:00:00.000Z", tied),
     ];
     const { context, getState } = createContext({ lastPolledAt: T0 }, BATCHED);
+
     const first = await poll(context);
     expect(first.gids).toHaveLength(MAX_BATCHED_PAGE_SIZE - 1);
     expect(first.gids).not.toContain("tie1");
     expect(getState()?.lastPolledAt).toBe(
       serverTasks[MAX_BATCHED_PAGE_SIZE - 2].modified_at,
     );
+
     const second = await poll(context);
     expect(second.gids).toEqual(["tie1", "tie2"]);
   });
+
   test("an old state holding only lastPolledAt is still readable", async () => {
     serverTasks = [
       taskAt("new", T0, 5, true),
       makeTask("edge", "2025-01-01T00:00:00.000Z", T0),
     ];
     const { context, getState } = createContext({ lastPolledAt: T0 }, BATCHED);
+
     const { data } = await poll(context);
+
     expect(data.created.map((t) => t.gid)).toEqual(["new"]);
     expect(data.updated).toEqual([]);
     expect(getState()).toEqual({
@@ -249,6 +274,7 @@ describe("batched path", () => {
       lastSeenIds: ["new"],
     });
   });
+
   test("the initial sync ignores Show New/Updated Records across two clamped recurrences, then the filters return", async () => {
     const lookBack = "2026-01-01T00:00:00.000Z";
     const total = MAX_BATCHED_PAGE_SIZE + 10;
@@ -261,12 +287,14 @@ describe("batched path", () => {
       showUpdatedRecords: false,
     };
     const { context, getState } = createContext(undefined, BATCHED);
+
     const first = await poll(context, params);
     expect(sentSince[0]).toBe(lookBack);
     expect(first.gids).toHaveLength(MAX_BATCHED_PAGE_SIZE);
     expect(first.data.created.length).toBeGreaterThan(0);
     expect(first.data.updated.length).toBeGreaterThan(0);
     expect(getState()?.isBackfill).toBe(true);
+
     const second = await poll(context, params);
     expect(second.gids.sort()).toEqual(
       serverTasks
@@ -275,6 +303,7 @@ describe("batched path", () => {
         .sort(),
     );
     expect(getState()?.isBackfill).toBeUndefined();
+
     serverTasks = [
       ...serverTasks,
       taskAt("after", serverTasks[total - 1].modified_at, 60, true),
@@ -282,6 +311,7 @@ describe("batched path", () => {
     const third = await poll(context, params);
     expect(third.gids).toEqual([]);
     expect(third.result.polledNoChanges).toBe(true);
+
     serverTasks = [
       ...serverTasks,
       taskAt("shown", serverTasks[total].modified_at, 60, true),

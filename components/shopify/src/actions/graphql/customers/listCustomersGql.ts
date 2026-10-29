@@ -8,6 +8,7 @@ import { fetchData } from "../../../util";
 import { customerMapper } from "../mappers/customerMapper";
 import { paginationMapper } from "../mappers/paginationMapper";
 import listCustomersQuery from "../queries/customers/ListCustomers.gql";
+
 export const listCustomersGql = action({
   display: {
     label: "List Customers",
@@ -23,6 +24,7 @@ export const listCustomersGql = action({
       context.debug.enabled,
       context.logger,
     );
+
     const data = await fetchData<Customer>(
       client,
       ["customers"],
@@ -34,6 +36,7 @@ export const listCustomersGql = action({
         cursor: getAlldata ? undefined : pagination.endCursor,
       },
     );
+
     return {
       data: {
         data: {

@@ -26,6 +26,7 @@ import {
   viewInfoUrl,
   workspaceId,
 } from "../../inputs";
+
 export const customViewedEvent = action({
   display: {
     label: "Custom Viewed Event",

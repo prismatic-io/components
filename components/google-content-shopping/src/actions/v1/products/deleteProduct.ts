@@ -6,6 +6,7 @@ import {
   dataSourceResourceName,
   productInputResourceName,
 } from "../../../util/resourceNames";
+
 export const deleteProductMerchant = action({
   display: {
     description: "Deletes a product input from the Merchant Center account.",
@@ -28,6 +29,7 @@ export const deleteProductMerchant = action({
       `/products/v1/${productInputResourceName(account, contentLanguage, feedLabel, offerId)}`,
       { params: { dataSource: dataSourceResourceName(account, dataSource) } },
     );
+
     return { data };
   },
   examplePayload: deleteProductExamplePayload,

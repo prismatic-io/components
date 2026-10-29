@@ -4,6 +4,7 @@ import { getQualityProcessStepAffectedByGuidExamplePayload } from "../../example
 import { getQualityProcessStepAffectedByGuidInputs } from "../../inputs";
 import { qualityAffectedSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const getQualityProcessStepAffectedByGuid = action({
   display: {
     label: "Get Quality Process Step Affected Object by GUID",
@@ -19,9 +20,11 @@ export const getQualityProcessStepAffectedByGuid = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get(
         `/qualityprocesses/${params.qualityProcessGuid}/steps/${params.stepGuid}/affected/${params.affectedGuid}`,
       );
+
       return { data };
     } catch (error) {
       handleArenaError(

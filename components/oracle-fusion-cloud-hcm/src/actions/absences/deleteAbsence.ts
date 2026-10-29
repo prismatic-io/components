@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { deleteAbsenceExamplePayload } from "../../examplePayloads/absences";
 import { deleteAbsenceInputs } from "../../inputs";
 import { deleteResultOutputSchema } from "../../outputSchemas";
+
 export const deleteAbsence = action({
   display: {
     label: "Delete Absence",

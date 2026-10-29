@@ -4,6 +4,7 @@ import {
   queryCriteriaSchema,
   underscoreConfirmMessageSchema,
 } from "./common";
+
 export const getApplicantOnboardMetadataOutputSchema = {
   type: "object" as const,
   properties: {
@@ -25,6 +26,7 @@ export const getApplicantOnboardMetadataOutputSchema = {
     },
   },
 };
+
 export const postApplicantOnboardProcessOutputSchema = {
   type: "object" as const,
   properties: {

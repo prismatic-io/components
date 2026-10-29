@@ -1,11 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanOrganizationInput, cleanString } from "../util";
+
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
   comments: "The Calendly connection to use.",
 });
+
 export const uuid = input({
   label: "UUID",
   type: "string",
@@ -15,6 +17,7 @@ export const uuid = input({
   placeholder: "Enter UUID",
   clean: util.types.toString,
 });
+
 export const count = input({
   label: "Count",
   type: "string",
@@ -23,6 +26,7 @@ export const count = input({
   placeholder: "Enter count",
   clean: util.types.toNumber,
 });
+
 export const email = input({
   label: "Email",
   type: "string",
@@ -32,6 +36,7 @@ export const email = input({
   required: false,
   clean: cleanString,
 });
+
 export const pageToken = input({
   label: "Page Token",
   type: "string",
@@ -41,6 +46,7 @@ export const pageToken = input({
   placeholder: "Enter page token",
   clean: cleanString,
 });
+
 export const sort = input({
   label: "Sort",
   type: "string",
@@ -50,6 +56,7 @@ export const sort = input({
   placeholder: "Enter sort expression",
   clean: cleanString,
 });
+
 export const status = input({
   label: "Status",
   type: "string",
@@ -59,6 +66,7 @@ export const status = input({
   placeholder: "Enter status",
   clean: cleanString,
 });
+
 export const inviteeEmail = input({
   label: "Invitee Email",
   type: "string",
@@ -69,6 +77,7 @@ export const inviteeEmail = input({
   required: false,
   clean: cleanString,
 });
+
 export const maxStartTime = input({
   label: "Max Start Time",
   type: "string",
@@ -79,6 +88,7 @@ export const maxStartTime = input({
   required: false,
   clean: cleanString,
 });
+
 export const minStartTime = input({
   label: "Min Start Time",
   type: "string",
@@ -89,6 +99,7 @@ export const minStartTime = input({
   required: false,
   clean: cleanString,
 });
+
 export const organization = input({
   label: "Organization",
   type: "string",
@@ -99,6 +110,7 @@ export const organization = input({
   required: false,
   clean: cleanOrganizationInput,
 });
+
 export const user = input({
   label: "User",
   type: "string",
@@ -108,6 +120,7 @@ export const user = input({
   required: false,
   clean: cleanString,
 });
+
 export const startTime = input({
   label: "Start Time",
   type: "string",
@@ -118,6 +131,7 @@ export const startTime = input({
   placeholder: "Enter start time (ISO 8601)",
   clean: util.types.toString,
 });
+
 export const endTime = input({
   label: "End Time",
   type: "string",
@@ -128,6 +142,7 @@ export const endTime = input({
   placeholder: "Enter end time (ISO 8601)",
   clean: util.types.toString,
 });
+
 export const adminManaged = input({
   label: "Admin Managed",
   type: "boolean",
@@ -136,6 +151,7 @@ export const adminManaged = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const userAvailabilitySchedule = input({
   label: "User Availability Schedule",
   type: "string",
@@ -145,6 +161,7 @@ export const userAvailabilitySchedule = input({
   placeholder: "Enter user availability schedule",
   clean: cleanString,
 });
+
 export const active = input({
   label: "Active",
   type: "boolean",
@@ -153,6 +170,7 @@ export const active = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const eventType = input({
   label: "Event Type",
   type: "string",
@@ -162,6 +180,7 @@ export const eventType = input({
   dataSource: "eventTypes",
   clean: util.types.toString,
 });
+
 export const form = input({
   label: "Form",
   type: "string",
@@ -173,6 +192,7 @@ export const form = input({
   dataSource: "routingForms",
   clean: util.types.toString,
 });
+
 export const scope = input({
   label: "Scope",
   type: "string",
@@ -191,6 +211,7 @@ export const scope = input({
   ],
   clean: util.types.toString,
 });
+
 export const signingKey = input({
   label: "Signing Key",
   type: "password",
@@ -200,6 +221,7 @@ export const signingKey = input({
   placeholder: "Enter signing key",
   clean: cleanString,
 });
+
 export const returnUuidOnly = input({
   label: "Return UUID Only",
   type: "boolean",
@@ -209,6 +231,7 @@ export const returnUuidOnly = input({
   default: "false",
   clean: util.types.toBool,
 });
+
 export const triggerInviteeCreated = input({
   label: "Invitee Created",
   type: "boolean",
@@ -216,6 +239,7 @@ export const triggerInviteeCreated = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const triggerInviteeCanceled = input({
   label: "Invitee Canceled",
   type: "boolean",
@@ -223,6 +247,7 @@ export const triggerInviteeCanceled = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const triggerInviteeNoShowCreated = input({
   label: "Invitee No Show Created",
   type: "boolean",
@@ -230,6 +255,7 @@ export const triggerInviteeNoShowCreated = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const triggerRoutingFormSubmissionCreated = input({
   label: "Routing Form Submission Created",
   type: "boolean",
@@ -238,6 +264,7 @@ export const triggerRoutingFormSubmissionCreated = input({
   required: false,
   clean: util.types.toBool,
 });
+
 export const eventNamesInput = input({
   label: "Webhook Event Name",
   type: "string",
@@ -258,6 +285,7 @@ export const eventNamesInput = input({
       ? events.map((event) => util.types.toString(event))
       : [],
 });
+
 export const lookBackDate = input({
   label: "Look-Back Date",
   type: "string",
@@ -268,6 +296,7 @@ export const lookBackDate = input({
   placeholder: "Enter look-back date (YYYY-MM-DD)",
   clean: cleanString,
 });
+
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -277,6 +306,7 @@ export const showNewRecords = input({
     "When true, events created since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+
 export const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",

@@ -3,6 +3,7 @@ import { createClient } from "../../client";
 import { JOURNEYS_PATH } from "../../constants";
 import { deleteJourneyExamplePayload } from "../../examplePayloads";
 import { deleteJourneyInputs } from "../../inputs";
+
 export const deleteJourney = action({
   examplePayload: deleteJourneyExamplePayload,
   display: {
@@ -14,12 +15,12 @@ export const deleteJourney = action({
   performSafety: "notAllowed",
   perform: async (context, { connection, journeyId }) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.delete(`${JOURNEYS_PATH}/${journeyId}`);
+
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteJourneyExamplePayload.data,
   }),
 });

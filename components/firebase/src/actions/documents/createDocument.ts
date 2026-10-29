@@ -3,6 +3,7 @@ import { withFirestore } from "../../client";
 import { createDocumentExamplePayload } from "../../examplePayloads";
 import { createDocumentInputs } from "../../inputs";
 import { createDocumentOutputSchema } from "../../outputSchemas";
+
 export const createDocument = action({
   display: {
     label: "Create Document",
@@ -13,6 +14,7 @@ export const createDocument = action({
     const result = await withFirestore(params, (db) =>
       db.collection(params.collection).add(params.data),
     );
+
     return {
       data: { id: result.id, path: result.path },
     };
@@ -20,9 +22,7 @@ export const createDocument = action({
   examplePerform: async (
     _context,
     { collection },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...createDocumentExamplePayload.data,
       path: `${collection}/${createDocumentExamplePayload.data.id}`,

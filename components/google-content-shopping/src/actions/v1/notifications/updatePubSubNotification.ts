@@ -3,6 +3,7 @@ import { createClientMerchant } from "../../../client";
 import { updatePubSubNotificationExamplePayload } from "../../../examplePayloads/v1";
 import { updatePubSubNotificationInputs } from "../../../inputs/v1/notifications";
 import { accountResourceName } from "../../../util/resourceNames";
+
 export const updatePubSubNotificationMerchant = action({
   display: {
     description:
@@ -23,6 +24,7 @@ export const updatePubSubNotificationMerchant = action({
   ) => {
     const client = createClientMerchant(connectionInput, context.debug.enabled);
     const parent = accountResourceName(account);
+
     const requestBody = {
       registeredEvent,
       callBackUri,
@@ -30,10 +32,12 @@ export const updatePubSubNotificationMerchant = action({
         ? { targetAccount }
         : { allManagedAccounts: allManagedAccounts ?? true }),
     };
+
     const { data } = await client.post(
       `/notifications/v1/${parent}/notificationsubscriptions`,
       requestBody,
     );
+
     return { data };
   },
   examplePayload: updatePubSubNotificationExamplePayload,

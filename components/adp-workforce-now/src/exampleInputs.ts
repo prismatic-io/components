@@ -64,6 +64,7 @@ export const timeEntryPayload = [
     },
   },
 ];
+
 export const applicantOnboardingProcessPayload = {
   onboardingTemplateCode: {
     code: "{{onboardingTemplateCode}}",
@@ -98,6 +99,7 @@ export const applicantOnboardingProcessPayload = {
   },
   applicantTaxProfile: {},
 };
+
 export const paymentDistributionPayload = {
   effectiveDateTime: "2024-05-31",
   payDistribution: {
@@ -121,6 +123,7 @@ export const paymentDistributionPayload = {
     ],
   },
 };
+
 export const personalContactPayload = {
   personName: {
     formattedName: "Test Contact add",
@@ -208,6 +211,7 @@ export const personalContactPayload = {
     codeValue: "Primary",
   },
 };
+
 export const customFieldGroupPayload = {
   nameCode: {
     shortName: "National Gift of Life Donation Initiative - Organ Donor",

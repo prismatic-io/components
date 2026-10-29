@@ -5,6 +5,7 @@ import { listAppointmentsInputs } from "../../inputs";
 import { listAppointmentsOutputSchema } from "../../outputSchemas";
 import type { Appointment } from "../../types";
 import { fetchAllRecords } from "../../util";
+
 export const listAppointments = action({
   display: {
     label: "List Appointments",
@@ -21,6 +22,7 @@ export const listAppointments = action({
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
   ) => {
     const client = createClient(connection, "jpm", context.debug.enabled);
+
     if (fetchAll) {
       const data = await fetchAllRecords<Appointment>(client, "/appointments", {
         includeTotal,

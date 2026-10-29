@@ -11,6 +11,7 @@ import {
   trigger,
 } from "../../../inputs";
 import { getDestinationSubscriptionExamplePayload } from "../../../examplePayloads";
+
 export const updateDestinationSubscription = action({
   display: {
     label: "Update Destination Subscription",

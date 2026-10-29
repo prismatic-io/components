@@ -7,6 +7,7 @@ const topicSummarySchema = {
   },
   required: ["name", "partitions", "isInternal"],
 };
+
 export const listTopicsOutputSchema = {
   type: "object" as const,
   properties: {

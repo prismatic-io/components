@@ -9,6 +9,7 @@ import { listEntitiesAction } from "./listEntitiesAction";
 import { queryEntities } from "./queryEntities";
 import { updateEntity } from "./updateEntity";
 import { upsertEntity } from "./upsertEntity";
+
 export default {
   queryEntities,
   getEntity,

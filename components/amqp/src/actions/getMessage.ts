@@ -2,6 +2,7 @@ import { action, input, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { getMessageExamplePayload } from "../examplePayloads";
 import { queueName, connectionInput } from "../inputs";
+
 export const getMessage = action({
   display: {
     label: "Get Message",

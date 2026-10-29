@@ -2,13 +2,10 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import type { TableauRecord } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+
 const mockFetchTableauRecordsSince =
-  vi.fn<
-    () => Promise<{
-      records: TableauRecord[];
-      truncated: boolean;
-    }>
-  >();
+  vi.fn<() => Promise<{ records: TableauRecord[]; truncated: boolean }>>();
+
 vi.mock("../util", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../util")>();
   return {
@@ -17,13 +14,16 @@ vi.mock("../util", async (importOriginal) => {
     fetchTableauRecordsSince: () => mockFetchTableauRecordsSince(),
   };
 });
+
 const POLL_ONE_AT = "2026-06-01T12:00:00.000Z";
 const SEEDED_CURSOR = "2026-05-01T00:00:00.000Z";
+
 interface PollingStore {
   currentState: () => Record<string, unknown>;
   writes: Record<string, unknown>[];
   context: Partial<ActionContext>;
 }
+
 const createPollingStore = (
   seedState: Record<string, unknown> = {},
 ): PollingStore => {
@@ -48,25 +48,25 @@ const createPollingStore = (
     } as unknown as Partial<ActionContext>,
   };
 };
+
 const freezeClockAt = (iso: string): void => {
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(new Date(iso));
 };
+
 const triggerUnderTest = {
   perform: pollChangesTrigger.perform,
 } as unknown as Parameters<typeof invokeTrigger>[0];
+
 interface PollChanges {
   created: TableauRecord[];
   updated: TableauRecord[];
 }
 interface PollResult {
-  payload: {
-    body: {
-      data: PollChanges;
-    };
-  };
+  payload: { body: { data: PollChanges } };
   polledNoChanges: boolean;
 }
+
 const poll = async (
   store: PollingStore,
   overrides: Partial<{
@@ -91,6 +91,7 @@ const poll = async (
   );
   return result as unknown as PollResult;
 };
+
 const makeRecord = (
   id: string,
   createdAt: string,
@@ -101,13 +102,16 @@ const makeRecord = (
   createdAt,
   updatedAt,
 });
+
 describe("pollChangesTrigger", () => {
   afterEach(() => {
     vi.useRealTimers();
     mockFetchTableauRecordsSince.mockReset();
   });
+
   test("advances cursor and splits created/updated", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+
     freezeClockAt(POLL_ONE_AT);
     mockFetchTableauRecordsSince.mockResolvedValueOnce({
       records: [
@@ -116,12 +120,15 @@ describe("pollChangesTrigger", () => {
       ],
       truncated: false,
     });
+
     const result = await poll(store);
+
     expect(result.payload.body.data.created.map((r) => r.id)).toEqual(["r1"]);
     expect(result.payload.body.data.updated.map((r) => r.id)).toEqual(["r2"]);
     expect(result.polledNoChanges).toBe(false);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
+
   test("cold first poll without lookBackDate seeds cursor to now and emits nothing", async () => {
     const store = createPollingStore();
     freezeClockAt(POLL_ONE_AT);
@@ -129,12 +136,15 @@ describe("pollChangesTrigger", () => {
       records: [],
       truncated: false,
     });
+
     const result = await poll(store);
+
     expect(result.payload.body.data.created).toEqual([]);
     expect(result.payload.body.data.updated).toEqual([]);
     expect(result.polledNoChanges).toBe(true);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
+
   test("uses lookBackDate as initial cursor when no prior state exists", async () => {
     const store = createPollingStore();
     freezeClockAt(POLL_ONE_AT);
@@ -144,11 +154,14 @@ describe("pollChangesTrigger", () => {
       ],
       truncated: false,
     });
+
     const result = await poll(store, { lookBackDate: "2026-04-01" });
+
     expect(result.payload.body.data.created.map((r) => r.id)).toEqual(["r1"]);
     expect(result.polledNoChanges).toBe(false);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
+
   test("truncated response advances cursor to last record's updatedAt", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);
@@ -159,12 +172,15 @@ describe("pollChangesTrigger", () => {
       ],
       truncated: true,
     });
+
     const result = await poll(store);
+
     expect(store.currentState()).toEqual({
       lastPolledAt: "2026-05-20T00:00:00Z",
     });
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("polledNoChanges when empty results", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);
@@ -172,9 +188,11 @@ describe("pollChangesTrigger", () => {
       records: [],
       truncated: false,
     });
+
     const result = await poll(store);
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("initial sync with lookBackDate bypasses toggle suppression", async () => {
     const store = createPollingStore();
     freezeClockAt(POLL_ONE_AT);
@@ -185,15 +203,18 @@ describe("pollChangesTrigger", () => {
       ],
       truncated: false,
     });
+
     const result = await poll(store, {
       lookBackDate: "2026-04-01",
       showNewRecords: false,
       showUpdatedRecords: false,
     });
+
     expect(result.payload.body.data.created.map((r) => r.id)).toEqual(["r1"]);
     expect(result.payload.body.data.updated.map((r) => r.id)).toEqual(["r2"]);
     expect(result.polledNoChanges).toBe(false);
   });
+
   test("subsequent poll respects toggle suppression after initial sync", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);
@@ -203,12 +224,15 @@ describe("pollChangesTrigger", () => {
       ],
       truncated: false,
     });
+
     const result = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,
     });
+
     expect(result.polledNoChanges).toBe(true);
   });
+
   test("toggle suppression hides results but still advances cursor", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);
@@ -218,6 +242,7 @@ describe("pollChangesTrigger", () => {
       ],
       truncated: false,
     });
+
     const result = await poll(store, {
       showNewRecords: false,
       showUpdatedRecords: false,

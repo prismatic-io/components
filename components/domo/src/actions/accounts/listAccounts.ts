@@ -4,6 +4,7 @@ import { listAccountsExamplePayload } from "../../examplePayloads";
 import { listAccountsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 import type { ListAccountsQueryParams } from "../types/ListAccountsQueryParams";
+
 export const listAccounts = action({
   display: {
     label: "List Accounts",
@@ -25,4 +26,5 @@ export const listAccounts = action({
   },
   inputs: listAccountsInputs,
 });
+
 export default { listAccounts };

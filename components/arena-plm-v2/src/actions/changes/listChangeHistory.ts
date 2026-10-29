@@ -4,6 +4,7 @@ import { listChangeHistoryExamplePayload } from "../../examplePayloads";
 import { listChangeHistoryInputs } from "../../inputs";
 import { listChangeHistoryOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listChangeHistory = action({
   display: {
     label: "List Change History",

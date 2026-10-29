@@ -3,6 +3,7 @@ import { action } from "@prismatic-io/spectral";
 import { GEOCODE_EXAMPLE_PAYLOAD } from "../examplePayloads";
 import { addressSearch, connection } from "../inputs";
 import { getApiKeyManager } from "../utils";
+
 export const geocode = action({
   display: {
     label: "GeoCode",
@@ -15,6 +16,7 @@ export const geocode = action({
       authentication,
       singleLine: addressSearch,
     });
+
     return { data };
   },
   inputs: {

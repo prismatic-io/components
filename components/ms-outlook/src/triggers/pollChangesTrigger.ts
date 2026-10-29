@@ -15,6 +15,7 @@ import {
   resolvePollingStart,
   resolvePollingStream,
 } from "../util";
+
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Messages",
@@ -59,6 +60,7 @@ export const pollChangesTrigger = pollingTrigger({
       pollFolderId,
       sinceDate,
     );
+
     const skipFetch = !isBackfill && !showNewMessages && !showUpdatedMessages;
     const window = await readPollingWindow(connection, {
       position,
@@ -68,6 +70,7 @@ export const pollChangesTrigger = pollingTrigger({
       debug: context.debug.enabled,
       now,
     });
+
     const { created, updated } = partitionMessagesByTimestamp(
       window.messages,
       new Date(classifySince),
@@ -80,6 +83,7 @@ export const pollChangesTrigger = pollingTrigger({
     const next: PollingCursor | null = drained
       ? null
       : { ...window.position, classifySince, folderId: pollFolderId };
+
     context.polling.setState({
       ...window.position,
       ...(pollFolderId ? { folderId: pollFolderId } : {}),
@@ -87,11 +91,13 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt: drained ? window.position.watermark : classifySince,
       ...(isBackfill && !drained ? { backfillActive: true } : {}),
     } satisfies PollingState);
+
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Outlook messages from ${position.watermark}: ${window.messages.length} read → ${created.length} new, ${updated.length} updated, ${drained ? "stream drained" : "more pending"}`,
       );
     }
+
     return {
       payload: {
         ...payload,

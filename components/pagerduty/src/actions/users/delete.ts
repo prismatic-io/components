@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { NO_RESPONSE_SUCCESSFULL_PAYLOAD } from "../../examplePayloads";
 import { connectionInput, userId } from "../../inputs";
+
 export const deleteUser = action({
   display: {
     label: "Delete User",

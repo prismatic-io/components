@@ -16,12 +16,14 @@ const callLogRecord = {
   deal_id: 1,
   note: "<p>Discussed pricing options</p>",
 };
+
 export const addCallLogExamplePayload = {
   data: {
     success: true,
     data: callLogRecord,
   },
 };
+
 export const getUserCallLogsExamplePayload = {
   data: {
     success: true,
@@ -35,6 +37,7 @@ export const getUserCallLogsExamplePayload = {
     },
   },
 };
+
 export const deleteCallLogExamplePayload = {
   data: {
     success: true,
@@ -43,6 +46,7 @@ export const deleteCallLogExamplePayload = {
     },
   },
 };
+
 export const getCallLogExamplePayload = {
   data: {
     success: true,

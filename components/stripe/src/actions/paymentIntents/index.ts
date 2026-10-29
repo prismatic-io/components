@@ -6,6 +6,7 @@ import { getPaymentIntent } from "./getPaymentIntent";
 import { listPaymentIntents } from "./listPaymentIntents";
 import { searchPaymentIntent } from "./searchPaymentIntent";
 import { updatePaymentIntent } from "./updatePaymentIntent";
+
 export default {
   cancelPaymentIntent,
   capturePaymentIntent,

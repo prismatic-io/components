@@ -4,10 +4,12 @@ import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { WebhookVersion } from "../constants";
 import { selectPipelineExamplePayload } from "../examplePayloads";
+
 interface Pipeline {
   id: number;
   name: string;
 }
+
 export const selectPipeline = dataSource({
   display: {
     label: "Select Pipeline",
@@ -24,10 +26,12 @@ export const selectPipeline = dataSource({
       {},
       true,
     );
+
     const objects = sortRecords(data, "name").map<Element>((pipeline) => ({
       key: pipeline.id.toString(),
       label: pipeline.name,
     }));
+
     return { result: objects };
   },
   dataSourceType: "picklist",

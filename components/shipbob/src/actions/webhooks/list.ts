@@ -11,6 +11,7 @@ import {
 } from "../../inputs";
 import { generatePayload } from "../util";
 import { getAllPaginatedData } from "../../util";
+
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
@@ -26,10 +27,12 @@ export const listWebhooks = action({
       context.debug.enabled,
     );
     const params = generatePayload(inputs);
+
     if (doFetchAll) {
       const data = await getAllPaginatedData(client, "/webhook", params);
       return { data };
     }
+
     const { data } = await client.get(`/webhook`, {
       params,
     });

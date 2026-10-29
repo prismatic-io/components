@@ -4,6 +4,7 @@ import { listQualityProcessOwnersExamplePayload } from "../../examplePayloads";
 import { listQualityProcessOwnersInputs } from "../../inputs";
 import { listQualityProcessOwnersOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const listQualityProcessOwners = action({
   display: {
     label: "List Quality Process Owners",
@@ -19,7 +20,9 @@ export const listQualityProcessOwners = action({
   perform: async (context, params) => {
     try {
       const client = await createArenaClient(context, params.connection);
+
       const { data } = await client.get("/settings/qualityprocesses/owners");
+
       return { data };
     } catch (error) {
       handleArenaError(error, context.logger, "List Quality Process Owners");

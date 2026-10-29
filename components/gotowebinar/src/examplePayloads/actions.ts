@@ -1,5 +1,6 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { GENERAL_DELETE_MESSAGE } from "../constants";
+
 export const GET_WEBINARS_EXAMPLE_PAYLOAD = {
   data: {
     _embedded: {
@@ -38,14 +39,18 @@ export const GET_WEBINARS_EXAMPLE_PAYLOAD = {
     },
   },
 };
+
 export const DELETE_WEBINAR_EXAMPLE_PAYLOAD = GENERAL_DELETE_MESSAGE;
+
 export const CREATE_WEBINAR_EXAMPLE_PAYLOAD = {
   data: {
     webinarKey: "8978964909939938573",
     recurrenceKey: "5647382910564738291",
   },
 };
+
 export const UPDATE_WEBINAR_EXAMPLE_PAYLOAD = GENERAL_DELETE_MESSAGE;
+
 export const CREATE_REGISTRANT_EXAMPLE_PAYLOAD = {
   data: {
     registrantKey: "1234567890",
@@ -53,6 +58,7 @@ export const CREATE_REGISTRANT_EXAMPLE_PAYLOAD = {
       "https://global.gotowebinar.com/join/8978964909939938573/1234567890",
   },
 };
+
 export const GET_REGISTRANTS_EXAMPLE_PAYLOAD = {
   data: {
     lastName: "Doe",
@@ -90,6 +96,7 @@ export const GET_REGISTRANTS_EXAMPLE_PAYLOAD = {
     ],
   },
 };
+
 export const LIST_REGISTRANTS_EXAMPLE_PAYLOAD = {
   data: [
     {
@@ -116,6 +123,7 @@ export const LIST_REGISTRANTS_EXAMPLE_PAYLOAD = {
     },
   ],
 };
+
 export const LIST_ALL_ATTEENDEES_FOR_ALL_WEBINAR_SESSIONS_EXAMPLE_PAYLOAD = {
   data: {
     property1: {
@@ -176,6 +184,7 @@ export const LIST_ALL_ATTEENDEES_FOR_ALL_WEBINAR_SESSIONS_EXAMPLE_PAYLOAD = {
     },
   },
 };
+
 export const LIST_SESSION_ATTENDEES_EXAMPLE_PAYLOAD = {
   data: [
     {
@@ -194,6 +203,7 @@ export const LIST_SESSION_ATTENDEES_EXAMPLE_PAYLOAD = {
     },
   ],
 };
+
 export const GET_ATTENDEE_EXAMPLE_PAYLOAD = {
   data: {
     lastName: "Doe",
@@ -207,6 +217,7 @@ export const GET_ATTENDEE_EXAMPLE_PAYLOAD = {
     timeZone: "America/New_York",
   },
 };
+
 export const GET_USER_SUBSCRIPTION_EXAMPLE_PAYLOAD = {
   data: {
     callbackUrl: "https://hooks.example.com/gotowebinar/registrant-added",
@@ -220,6 +231,7 @@ export const GET_USER_SUBSCRIPTION_EXAMPLE_PAYLOAD = {
     createTime: "2024-08-20T10:30:00Z",
   },
 };
+
 export const CREATE_USER_SUBSCRIPTION_EXAMPLE_PAYLOAD = {
   data: {
     _embedded: {
@@ -239,6 +251,7 @@ export const CREATE_USER_SUBSCRIPTION_EXAMPLE_PAYLOAD = {
     },
   },
 };
+
 export const LIST_USER_SUBSCRIPTIONS_EXAMPLE_PAYLOAD = {
   data: {
     _embedded: {
@@ -258,9 +271,8 @@ export const LIST_USER_SUBSCRIPTIONS_EXAMPLE_PAYLOAD = {
     },
   },
 };
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+
+export const pollChangesTriggerExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -298,6 +310,7 @@ export const pollChangesTriggerExamplePayload: {
     globalDebug: false,
   },
 };
+
 export const userSubscriptionTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {

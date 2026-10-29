@@ -36,12 +36,15 @@ const productData = {
     },
   ],
 };
+
 export const getProductExamplePayload = {
   data: productData,
 };
+
 export const listProductExamplePayload = {
   data: [productData],
 };
+
 export const updateProductExamplePayload = {
   data: productData,
 };

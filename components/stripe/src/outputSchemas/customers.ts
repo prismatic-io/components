@@ -579,6 +579,7 @@ export const customerOutputSchema = {
   },
   required: ["created", "id", "livemode", "object"],
 };
+
 export const getCustomerOutputSchema = {
   ...customerOutputSchema,
   properties: {
@@ -587,6 +588,7 @@ export const getCustomerOutputSchema = {
   },
   required: ["id", "object"],
 };
+
 export const listCustomersOutputSchema = {
   type: "object" as const,
   properties: {
@@ -597,6 +599,7 @@ export const listCustomersOutputSchema = {
   },
   required: ["object", "data", "has_more", "url"],
 };
+
 export const deleteCustomerOutputSchema = {
   type: "object" as const,
   properties: {

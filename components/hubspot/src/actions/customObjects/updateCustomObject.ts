@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { updateCustomObjectExamplePayload } from "../../examplePayloads";
 import { updateCustomObjectInputs } from "../../inputs";
 import { hubspotPaths } from "../../constants";
+
 export const updateCustomObject = action({
   display: {
     label: "Update Custom Object",
@@ -30,6 +31,7 @@ export const updateCustomObject = action({
       timeout,
       debugRequest,
     });
+
     const { data } = await client.patch(
       hubspotPaths.schemas(`/${objectType}`),
       {
@@ -43,6 +45,7 @@ export const updateCustomObject = action({
         ...dynamicValues,
       },
     );
+
     return {
       data,
     };

@@ -4,6 +4,7 @@ import { createSalesforceClient } from "../../client";
 import { listWorkflowOutboundMessagesInputs } from "../../inputs";
 import { listWorkflowOutboundMessagesFunction } from "../../util";
 import { listWorkflowOutboundMessagesExamplePayload } from "../../examplePayloads";
+
 export const listWorkflowOutboundMessages = action({
   display: {
     label: "List Outbound Messages",
@@ -16,9 +17,8 @@ export const listWorkflowOutboundMessages = action({
     const result = await listWorkflowOutboundMessagesFunction(client);
     return { data: result };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => listWorkflowOutboundMessagesExamplePayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listWorkflowOutboundMessagesExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: listMetadataOutputSchema,

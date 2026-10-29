@@ -2,6 +2,7 @@ import { dataSource, util } from "@prismatic-io/spectral";
 import { createStripeClient } from "../client";
 import { selectPaymentIntentInputs } from "../inputs";
 import type { PaymentIntent, StripeResponse } from "../types";
+
 export const selectPaymentIntent = dataSource({
   display: {
     label: "Select Payment Intent",
@@ -21,6 +22,7 @@ export const selectPaymentIntent = dataSource({
       ...(startingAfter && { starting_after: startingAfter }),
       ...(endingBefore && { ending_before: endingBefore }),
     })) as StripeResponse<PaymentIntent>;
+
     return {
       result: data.map(({ id, description, amount, currency }) => ({
         key: util.types.toString(id),

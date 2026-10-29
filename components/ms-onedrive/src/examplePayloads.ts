@@ -34,6 +34,7 @@ export const webhookNotificationExamplePayload = {
     },
   },
 };
+
 export const createSubscriptionExamplePayload = {
   data: {
     "@odata.context":
@@ -48,6 +49,7 @@ export const createSubscriptionExamplePayload = {
     latestSupportedTlsVersion: "v1_2",
   },
 };
+
 export const listSubscriptionsExamplePayload = {
   data: {
     "@odata.context":
@@ -76,6 +78,7 @@ export const listSubscriptionsExamplePayload = {
     ],
   },
 };
+
 export const renewSubscriptionExamplePayload = {
   data: {
     "@odata.context":
@@ -90,12 +93,15 @@ export const renewSubscriptionExamplePayload = {
     latestSupportedTlsVersion: "v1_2",
   },
 };
+
 export const deleteSubscriptionExamplePayload = {
   data: {},
 };
+
 export const deleteAllSubscriptionsExamplePayload = {
   data: {},
 };
+
 export const getDriveExamplePayload = {
   data: {
     "@odata.context":
@@ -136,6 +142,7 @@ export const getDriveExamplePayload = {
     },
   },
 };
+
 export const listDrivesExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#drives",
@@ -189,6 +196,7 @@ export const listDrivesExamplePayload = {
     ],
   },
 };
+
 export const getDriveItemExamplePayload = {
   data: {
     "@odata.context":
@@ -238,6 +246,7 @@ export const getDriveItemExamplePayload = {
     },
   },
 };
+
 export const getFolderItemExamplePayload = {
   data: {
     "@odata.context":
@@ -281,6 +290,7 @@ export const getFolderItemExamplePayload = {
     },
   },
 };
+
 export const listChildrenExamplePayload = {
   data: {
     "@odata.context":
@@ -326,7 +336,9 @@ export const listChildrenExamplePayload = {
     ],
   },
 };
+
 export const uploadFileExamplePayload = getDriveItemExamplePayload;
+
 export const updateFileExamplePayload = {
   data: {
     ...getDriveItemExamplePayload.data,
@@ -334,6 +346,7 @@ export const updateFileExamplePayload = {
     name: "Quarterly Report Q4 2024 - Updated.xlsx",
   },
 };
+
 export const moveFileExamplePayload = {
   data: {
     ...getDriveItemExamplePayload.data,
@@ -347,12 +360,15 @@ export const moveFileExamplePayload = {
     },
   },
 };
+
 export const deleteFileExamplePayload = {
   data: {},
 };
+
 export const downloadFileExamplePayload = {
   data: Buffer.from("Sample file content..."),
 };
+
 export const searchDriveExamplePayload = {
   data: {
     "@odata.context":
@@ -383,6 +399,7 @@ export const searchDriveExamplePayload = {
     ],
   },
 };
+
 export const listSharedExamplePayload = {
   data: {
     "@odata.context":
@@ -425,7 +442,9 @@ export const listSharedExamplePayload = {
     ],
   },
 };
+
 export const listSharedFilesExamplePayload = listSharedExamplePayload;
+
 export const listChangesExamplePayload = {
   data: {
     "@odata.context":
@@ -462,6 +481,7 @@ export const listChangesExamplePayload = {
     ],
   },
 };
+
 export const listSitesExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites",
@@ -491,6 +511,7 @@ export const listSitesExamplePayload = {
     ],
   },
 };
+
 export const getSiteExamplePayload = {
   data: {
     "@odata.context":
@@ -507,6 +528,7 @@ export const getSiteExamplePayload = {
     },
   },
 };
+
 export const listGroupsExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#groups",
@@ -536,6 +558,7 @@ export const listGroupsExamplePayload = {
     ],
   },
 };
+
 export const findUserExamplePayload = {
   data: {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users",
@@ -567,6 +590,9 @@ export const findUserExamplePayload = {
     ],
   },
 };
+
 export const listDriveItemsExamplePayload = listChildrenExamplePayload;
+
 export const getItemByIdExamplePayload = getDriveItemExamplePayload;
+
 export const rawRequestExamplePayload = getDriveExamplePayload;

@@ -15,21 +15,26 @@ import type {
   PaginatedDataRequest,
   ParsedQuickBooksEvent,
 } from "../types";
+
 export const checkConnectionKey = (connection: Connection): void => {
   if (connection.key !== quickbooksConnection.key) {
     throw new ConnectionError(connection, "Unknown Connection type provided.");
   }
 };
+
 export const getRealmId = (connection: Connection): string => {
   return util.types.toString(connection.context?.realmId);
 };
+
 export const getBaseURL = (connection: Connection): string => {
   return util.types.toBool(connection.fields.useSandbox)
     ? QUICKBOOKS_BASE_URLS.sandbox
     : QUICKBOOKS_BASE_URLS.production;
 };
+
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+
 export const addStartPositionAndMaxResults = (
   queryString: string,
   startPosition?: string,
@@ -44,11 +49,13 @@ export const addStartPositionAndMaxResults = (
   }
   return result;
 };
+
 export const paginatedData = async (
   request: PaginatedDataRequest,
 ): Promise<Record<string, unknown>[]> => {
   const { client, objectName, fetchAll, params } = request;
   let queryString = request.queryString;
+
   if (fetchAll) {
     const allObjects: Record<string, unknown>[] = [];
     let keepFetching = true;
@@ -76,11 +83,13 @@ export const paginatedData = async (
   const objects = data.QueryResponse?.[objectName] || [];
   return objects;
 };
+
 export function isCloudEventsFormat(
   payload: unknown,
 ): payload is CloudEventsWebhook {
   if (!Array.isArray(payload)) return false;
   if (payload.length === 0) return false;
+
   const firstEvent = payload[0];
   return (
     typeof firstEvent === "object" &&
@@ -91,6 +100,7 @@ export function isCloudEventsFormat(
     "type" in firstEvent
   );
 }
+
 export function isLegacyFormat(payload: unknown): payload is LegacyWebhook {
   return (
     typeof payload === "object" &&
@@ -99,6 +109,7 @@ export function isLegacyFormat(payload: unknown): payload is LegacyWebhook {
     Array.isArray(payload?.eventNotifications)
   );
 }
+
 export function parseCloudEventsWebhook(
   webhook: CloudEventsWebhook,
 ): ParsedQuickBooksEvent[] {
@@ -106,6 +117,7 @@ export function parseCloudEventsWebhook(
     const typeMatch = event.type.match(/^qbo\.(\w+)\.(\w+)/);
     const entity = typeMatch?.[1] || "unknown";
     const operation = typeMatch?.[2] || "unknown";
+
     return {
       id: event.id,
       entityId: event.intuitentityid || "",
@@ -119,12 +131,15 @@ export function parseCloudEventsWebhook(
     };
   });
 }
+
 export function parseLegacyWebhook(
   webhook: LegacyWebhook,
 ): ParsedQuickBooksEvent[] {
   const events: ParsedQuickBooksEvent[] = [];
+
   for (const notification of webhook.eventNotifications) {
     const accountId = notification.realmId;
+
     if (notification.dataChangeEvent?.entities) {
       for (const entity of notification.dataChangeEvent.entities) {
         events.push({
@@ -140,8 +155,10 @@ export function parseLegacyWebhook(
       }
     }
   }
+
   return events;
 }
+
 export function parseQuickBooksWebhook(
   rawPayload: unknown,
   logger: ActionContext["logger"],
@@ -149,6 +166,7 @@ export function parseQuickBooksWebhook(
   if (isCloudEventsFormat(rawPayload)) {
     logger.info("Detected CloudEvents format webhook");
     const events = parseCloudEventsWebhook(rawPayload);
+
     return {
       format: "cloudevents",
       eventCount: events.length,
@@ -162,12 +180,14 @@ export function parseQuickBooksWebhook(
       timestamp: events[0]?.timestamp,
     };
   }
+
   if (isLegacyFormat(rawPayload)) {
     logger.warn(
       "Detected legacy webhook format (deprecated). QuickBooks will require CloudEvents format after May 15, 2026. " +
         "Please update your webhook configuration in the QuickBooks Developer Portal.",
     );
     const events = parseLegacyWebhook(rawPayload);
+
     return {
       format: "legacy",
       formatWarning:
@@ -184,6 +204,7 @@ export function parseQuickBooksWebhook(
       timestamp: events[0]?.timestamp,
     };
   }
+
   logger.error("Unable to parse QuickBooks webhook: unrecognized format", {
     payload: rawPayload,
   });
@@ -191,5 +212,6 @@ export function parseQuickBooksWebhook(
     "Unrecognized webhook payload format. Expected CloudEvents (array) or legacy (eventNotifications) format.",
   );
 }
+
 export const parseWebhookBody = (payload: TriggerPayload): unknown =>
   JSON.parse((payload.rawBody.data as unknown as Buffer).toString("utf-8"));

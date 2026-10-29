@@ -3,6 +3,7 @@ import { getAdGroupsByCampaignIdExamplePayload } from "../../examplePayloads";
 import { getAdGroupsByCampaignIdInputs } from "../../inputs/adGroups";
 import { getRestClient } from "../../restClient";
 import type { QueryRestResponse } from "../../types";
+
 export const getAdGroupsByCampaignId = action({
   display: {
     label: "Get Ad Groups By Campaign ID",
@@ -13,6 +14,7 @@ export const getAdGroupsByCampaignId = action({
     { connection, accountId, customerId, campaignId, returnAdditionalFields },
   ) => {
     const client = getRestClient({ connection, debug, accountId, customerId });
+
     const { data } = await client.post<QueryRestResponse>(
       "/AdGroups/QueryByCampaignId",
       {
@@ -20,6 +22,7 @@ export const getAdGroupsByCampaignId = action({
         ReturnAdditionalFields: returnAdditionalFields,
       },
     );
+
     return { data };
   },
   inputs: getAdGroupsByCampaignIdInputs,

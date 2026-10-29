@@ -3,6 +3,7 @@ import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import { getZendeskClient } from "../../client";
 import { getCustomFieldsStreamExamplePayload } from "../../examplePayloads";
 import { connection } from "../../inputs";
+
 export const getCustomFieldsStream = action({
   display: {
     label: "Get Custom Fields Stream",
@@ -16,6 +17,7 @@ export const getCustomFieldsStream = action({
         params,
         headers: { Accept: "application/json" },
       });
+
       return { data };
     } catch (error) {
       const handled = handleErrors(error);

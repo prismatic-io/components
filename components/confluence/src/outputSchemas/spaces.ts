@@ -1,4 +1,5 @@
 import { bodyRepresentationSchema } from "./common";
+
 export const spaceSingleSchema = {
   type: "object" as const,
   properties: {
@@ -49,6 +50,7 @@ export const spaceSingleSchema = {
   },
   required: ["id", "key", "name", "type", "status", "authorId", "createdAt"],
 };
+
 export const spaceBulkSchema = {
   type: "object" as const,
   properties: {
@@ -86,6 +88,7 @@ export const spaceBulkSchema = {
   },
   required: ["id", "key", "name", "type", "status", "authorId", "createdAt"],
 };
+
 export const listSpacesOutputSchema = {
   type: "object" as const,
   properties: {

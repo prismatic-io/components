@@ -3,7 +3,9 @@ import { getShopifyGraphQlClient } from "../../../client";
 import { deleteFulfillmentServiceExamplePayload as examplePayload } from "../../../examplePayloads";
 import { deleteFulfillmentServiceInputs as inputs } from "../../../inputsGql";
 import { deleteFulfillmentServiceGqlOutputSchema } from "../../../outputSchemas";
+
 import deleteFulfillmentServiceQuery from "../queries/fulfillmentServices/DeleteFulfillmentService.gql";
+
 export const deleteFulfillmentServiceGql = action({
   display: {
     label: "Delete Fulfillment Service",
@@ -22,11 +24,12 @@ export const deleteFulfillmentServiceGql = action({
       context.debug.enabled,
       context.logger,
     );
-    const data: {
-      fulfillmentServiceDelete: Record<string, unknown>;
-    } = await client.request(deleteFulfillmentServiceQuery, {
-      id: fulfillmentServiceId,
-    });
+
+    const data: { fulfillmentServiceDelete: Record<string, unknown> } =
+      await client.request(deleteFulfillmentServiceQuery, {
+        id: fulfillmentServiceId,
+      });
+
     return {
       data: data.fulfillmentServiceDelete,
     };

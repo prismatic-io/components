@@ -9,6 +9,7 @@ import type {
   RequestCategoryResultRep,
 } from "../types";
 import { handleArenaError } from "../util";
+
 export const categoriesPicklist = dataSource({
   display: {
     label: "Select Category",
@@ -23,17 +24,22 @@ export const categoriesPicklist = dataSource({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       const queryParams = { path, includeDeleted, assignable };
+
       context.logger.info(`Fetching ${objectType} categories for datasource`, {
         objectType,
         queryParamNames: Object.keys(queryParams),
       });
+
       const response = await client.get(`/settings/${objectType}/categories`, {
         params: queryParams,
       });
+
       context.logger.info(
         `Successfully retrieved ${response.data?.count || 0} ${objectType} categories for datasource`,
       );
+
       let responseData: CategoryResponse;
       switch (objectType) {
         case "changes":
@@ -48,11 +54,13 @@ export const categoriesPicklist = dataSource({
           responseData = response.data as CategoryFullResultRep;
           break;
       }
+
       const results =
         responseData.results?.map((category) => ({
           label: category.name || "Unnamed Category",
           key: category.guid,
         })) || [];
+
       return { result: results };
     } catch (error: unknown) {
       handleArenaError(

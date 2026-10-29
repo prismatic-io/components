@@ -8,6 +8,7 @@ import {
   subscribeToResource,
   triggerPerformFunction,
 } from "../util";
+
 export const resourceTrigger = trigger({
   display: {
     label: "Resource Change",
@@ -31,6 +32,7 @@ export const resourceTrigger = trigger({
       const endpoint = context.webhookUrls[context.flow.name];
       const client = createClient(connection, true);
       const currentExpirationDateTime = getExpirationDate(expirationDateTime);
+
       await subscribeToResource(
         client,
         endpoint,
@@ -42,6 +44,7 @@ export const resourceTrigger = trigger({
     delete: async (context, { connection }) => {
       const client = createClient(connection, true);
       const endpoint = context.webhookUrls[context.flow.name];
+
       await removeSubscriptions(client, new Set([endpoint]));
     },
   },

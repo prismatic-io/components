@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
 import { getTabularFieldsExamplePayload } from "../../examplePayloads";
 import { getTabularFieldsInputs } from "../../inputs";
+
 export const getTabularFields = action({
   display: {
     label: "List Tabular Fields",

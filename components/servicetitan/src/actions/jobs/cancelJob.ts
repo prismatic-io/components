@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { cancelJobExamplePayload } from "../../examplePayloads";
 import { cancelJobInputs } from "../../inputs";
+
 export const cancelJob = action({
   display: {
     label: "Cancel Job",

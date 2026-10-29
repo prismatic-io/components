@@ -4,6 +4,7 @@ import { deleteChangeFileAssociationExamplePayload } from "../../examplePayloads
 import { deleteChangeFileAssociationInputs } from "../../inputs";
 import { deleteChangeFileAssociationOutputSchema } from "../../outputSchemas";
 import { handleArenaError } from "../../util";
+
 export const deleteChangeFileAssociation = action({
   display: {
     label: "Delete Change File Association",
@@ -21,17 +22,21 @@ export const deleteChangeFileAssociation = action({
   ) => {
     try {
       const client = await createArenaClient(context, connection);
+
       context.logger.info("Deleting change file association", {
         changeGuid,
         changeFileAssociationGuid,
       });
+
       await client.delete(
         `/changes/${changeGuid}/files/${changeFileAssociationGuid}`,
       );
+
       context.logger.info("Change file association deleted successfully", {
         changeGuid,
         changeFileAssociationGuid,
       });
+
       return {
         data: {
           success: true,

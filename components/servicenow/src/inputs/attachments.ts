@@ -12,18 +12,21 @@ import {
   sysparmQuery,
   tableNameInput,
 } from "./common";
+
 export const getAttachmentInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   sysId,
 };
+
 export const getAttachmentFileInputs = {
   connection,
   instanceUrlInput,
   apiVersionInput,
   sysId,
 };
+
 export const deleteAttachmentInputs = {
   connection,
   instanceUrlInput,
@@ -33,6 +36,7 @@ export const deleteAttachmentInputs = {
     comments: "Sys_id value of the attachment to delete.",
   },
 };
+
 const listAttachmentsPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
@@ -46,6 +50,7 @@ const listAttachmentsPagination = structuredObjectInput({
     sysparmOffset,
   },
 });
+
 export const listAttachmentsInputs = {
   connection,
   instanceUrlInput,
@@ -54,6 +59,7 @@ export const listAttachmentsInputs = {
   fetchAll,
   pagination: listAttachmentsPagination,
 };
+
 export const uploadAttachmentInputs = {
   connection,
   instanceUrlInput,
@@ -70,6 +76,7 @@ export const uploadAttachmentInputs = {
       "Sys_id of the record in the table specified in table_name that you want to attach the file to.",
   },
 };
+
 export const multipartUploadAttachmentInputs = {
   connection,
   instanceUrlInput,

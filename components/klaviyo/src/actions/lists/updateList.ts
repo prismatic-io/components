@@ -5,6 +5,7 @@ import { ListEnum, type ListPartialUpdateQuery } from "klaviyo-api";
 import { updateListInputs as inputs } from "../../inputs";
 import { updateListExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
+
 export const updateList = action({
   display: {
     label: "Update List",

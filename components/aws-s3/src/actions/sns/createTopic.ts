@@ -7,6 +7,7 @@ import { createSNSClient } from "../../client";
 import { createTopicExamplePayload } from "../../examplePayloads";
 import { createTopicInputs } from "../../inputs";
 import { createTopicOutputSchema } from "../../outputSchemas";
+
 export const createTopic = action({
   display: {
     label: "Create SNS Topic for S3 Event Notification",
@@ -32,12 +33,14 @@ export const createTopic = action({
       dynamicSecretAccessKey,
       dynamicSessionToken,
     });
+
     const createTopicParams: CreateTopicCommandInput = {
       Name: name,
       Attributes: { FifoTopic: "false" },
     };
     const command = new CreateTopicCommand(createTopicParams);
     const response = await sns.send(command);
+
     return {
       data: response,
     };

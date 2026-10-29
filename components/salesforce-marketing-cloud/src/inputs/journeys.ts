@@ -2,6 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { JOURNEY_STATUS_OPTIONS } from "../constants";
 import { toNumberArray, toOptionalNumber, toOptionalString } from "../util";
 import { connection, fetchAll, pagination } from "./common";
+
 const journeyId = input({
   label: "Journey ID",
   type: "string",
@@ -12,6 +13,7 @@ const journeyId = input({
   dataSource: "selectJourney",
   clean: util.types.toString,
 });
+
 const journeyVersion = input({
   label: "Version",
   type: "string",
@@ -22,6 +24,7 @@ const journeyVersion = input({
   placeholder: "Enter version number",
   clean: toOptionalNumber,
 });
+
 const journeyKey = input({
   label: "Journey Key",
   type: "string",
@@ -32,6 +35,7 @@ const journeyKey = input({
   placeholder: "Enter journey key",
   clean: util.types.toString,
 });
+
 const journeyName = input({
   label: "Journey Name",
   type: "string",
@@ -41,6 +45,7 @@ const journeyName = input({
   placeholder: "Enter journey name",
   clean: util.types.toString,
 });
+
 const journeyDescription = input({
   label: "Journey Description",
   type: "string",
@@ -50,6 +55,7 @@ const journeyDescription = input({
   placeholder: "Enter journey description",
   clean: toOptionalString,
 });
+
 const workflowApiVersion = input({
   label: "Workflow API Version",
   type: "string",
@@ -64,6 +70,7 @@ const workflowApiVersion = input({
   default: "1.0",
   clean: util.types.toNumber,
 });
+
 const journeyStatus = input({
   label: "Status",
   type: "string",
@@ -72,6 +79,7 @@ const journeyStatus = input({
   comments: "Filter journeys by status.",
   clean: toOptionalString,
 });
+
 const journeyNameFilter = input({
   label: "Name Filter",
   type: "string",
@@ -81,6 +89,7 @@ const journeyNameFilter = input({
   placeholder: "Enter journey name to search",
   clean: toOptionalString,
 });
+
 const journeyExtraBody = input({
   label: "Extra Body",
   type: "code",
@@ -96,6 +105,7 @@ const journeyExtraBody = input({
   ),
   clean: util.types.toObject,
 });
+
 const eventDefinitionKey = input({
   label: "Event Definition Key",
   type: "string",
@@ -106,6 +116,7 @@ const eventDefinitionKey = input({
   placeholder: "Enter event definition key",
   clean: util.types.toString,
 });
+
 const eventContactKey = input({
   label: "Contact Key",
   type: "string",
@@ -116,6 +127,7 @@ const eventContactKey = input({
   placeholder: "Enter contact key",
   clean: util.types.toString,
 });
+
 const eventData = input({
   label: "Event Data",
   type: "code",
@@ -134,6 +146,7 @@ const eventData = input({
   ),
   clean: util.types.toObject,
 });
+
 const exitContactKey = input({
   label: "Contact Key",
   type: "string",
@@ -143,6 +156,7 @@ const exitContactKey = input({
   placeholder: "Enter contact key",
   clean: util.types.toString,
 });
+
 const exitDefinitionKey = input({
   label: "Definition Key",
   type: "string",
@@ -153,6 +167,7 @@ const exitDefinitionKey = input({
   placeholder: "Enter definition key",
   clean: util.types.toString,
 });
+
 const exitVersions = input({
   label: "Versions",
   type: "string",
@@ -163,6 +178,7 @@ const exitVersions = input({
   placeholder: "Enter version numbers (comma-separated)",
   clean: toNumberArray,
 });
+
 export const listJourneysInputs = {
   connection,
   journeyStatus,
@@ -170,15 +186,18 @@ export const listJourneysInputs = {
   fetchAll,
   pagination,
 };
+
 export const getJourneyInputs = {
   connection,
   journeyId,
   journeyVersion,
 };
+
 export const deleteJourneyInputs = {
   connection,
   journeyId,
 };
+
 export const createJourneyInputs = {
   connection,
   journeyKey,
@@ -187,6 +206,7 @@ export const createJourneyInputs = {
   workflowApiVersion,
   journeyExtraBody,
 };
+
 export const updateJourneyInputs = {
   connection,
   journeyId,
@@ -200,12 +220,14 @@ export const updateJourneyInputs = {
   },
   journeyExtraBody,
 };
+
 export const fireEntryEventInputs = {
   connection,
   eventDefinitionKey,
   eventContactKey,
   eventData,
 };
+
 export const exitContactFromJourneyInputs = {
   connection,
   exitContactKey,

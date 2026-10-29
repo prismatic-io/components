@@ -4,6 +4,7 @@ import { deleteWebhookSubscription } from "../actions/webhooks/deleteWebhookSubs
 import { listWebhookSubscriptions } from "../actions/webhooks/listWebhookSubscriptions";
 import { updateWebhookSubscription } from "../actions/webhooks/updateWebhookSubscription";
 import { webhookInputs } from "../inputs";
+
 export const webhook = trigger({
   display: {
     label: "Webhook Events",
@@ -24,13 +25,17 @@ export const webhook = trigger({
       { connection, webhookEventTypes, webhookActive, deliveryMode },
     ) => {
       const targetUrl = context.webhookUrls[context.flow.name];
+
       const { data } = await listWebhookSubscriptions.perform(context, {
         connection,
       });
+
       const existingWebhooks = data || [];
+
       const existingWebhook = existingWebhooks.find(
         (webhook) => webhook.targetUrl === targetUrl,
       );
+
       if (existingWebhook) {
         context.logger.info(
           `Reusing and updating existing webhook subscription with ID: ${existingWebhook.id}`,
@@ -78,13 +83,17 @@ export const webhook = trigger({
     },
     delete: async (context, { connection }) => {
       const targetUrl = context.webhookUrls[context.flow.name];
+
       const { data } = await listWebhookSubscriptions.perform(context, {
         connection,
       });
+
       const existingWebhooks = data || [];
+
       const existingWebhook = existingWebhooks.find(
         (webhook) => webhook.targetUrl === targetUrl,
       );
+
       if (existingWebhook) {
         try {
           const { data } = await deleteWebhookSubscription.perform(context, {

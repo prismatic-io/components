@@ -1,4 +1,5 @@
 import type { Element } from "@prismatic-io/spectral";
+
 export const toSortedPicklist = <T>(
   items: T[],
   mapper: (item: T) => Element,

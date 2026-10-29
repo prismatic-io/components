@@ -4,6 +4,7 @@ import { listMetricsExamplePayload } from "../../examplePayloads";
 import { listMetricsInputs } from "../../inputs";
 import { listMetricsOutputSchema } from "../../outputSchemas";
 import type { ListMetricsResponse } from "../../types";
+
 export const listMetrics = action({
   display: {
     label: "List Metrics",
@@ -21,22 +22,23 @@ export const listMetrics = action({
     { connection, metricsFrom, metricsHost, metricsTagFilter },
   ) => {
     const client = createClient(connection);
+
     const params: Record<string, unknown> = {
       from: metricsFrom,
       ...(metricsHost && { host: metricsHost }),
       ...(metricsTagFilter && { tag_filter: metricsTagFilter }),
     };
+
     const response = await client.get<ListMetricsResponse>("/api/v1/metrics", {
       params,
     });
+
     return { data: response.data };
   },
   examplePerform: async (
     _context,
     { metricsFrom },
-  ): Promise<{
-    data: unknown;
-  }> => ({
+  ): Promise<{ data: unknown }> => ({
     data: {
       ...listMetricsExamplePayload.data,
       from: String(metricsFrom),

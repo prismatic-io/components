@@ -10,6 +10,7 @@ import {
   userCompactSchema,
   workspaceCompactSchema,
 } from "./shared";
+
 export const taskResponseSchema = {
   type: "object" as const,
   properties: {
@@ -160,6 +161,7 @@ export const taskResponseSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listTasksOutputSchema = {
   type: "object" as const,
   properties: {
@@ -169,6 +171,7 @@ export const listTasksOutputSchema = {
   required: [] as string[],
   additionalProperties: true,
 };
+
 export const listSubtasksOutputSchema = {
   type: "object" as const,
   properties: {

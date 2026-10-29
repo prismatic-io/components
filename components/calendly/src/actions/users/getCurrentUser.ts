@@ -3,6 +3,7 @@ import { getCurrentUserOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
+
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -12,6 +13,7 @@ export const getCurrentUser = action({
   performSafety: "safe",
   perform: async (context, { connection }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
+
     const { data } = await client.get("/users/me");
     return { data };
   },

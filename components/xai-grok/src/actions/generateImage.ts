@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { generateImageExamplePayload } from "../examplePayloads";
 import { generateImageInputs } from "../inputs";
+
 export const generateImage = action({
   display: {
     label: "Generate Image",
@@ -13,12 +14,14 @@ export const generateImage = action({
     { connection, prompt, n, model, additionalFields },
   ) => {
     const client = createClient(connection, context.debug.enabled);
+
     const { data } = await client.createImage({
       prompt,
       n,
       model,
       ...additionalFields,
     });
+
     return { data };
   },
   examplePayload: generateImageExamplePayload,

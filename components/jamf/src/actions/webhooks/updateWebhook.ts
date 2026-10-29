@@ -3,6 +3,7 @@ import { createClassicClient } from "../../client";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
 import { toWebhookXml } from "../../util";
+
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",

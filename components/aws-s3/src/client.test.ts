@@ -1,9 +1,11 @@
 const { s3Mock } = vi.hoisted(() => ({ s3Mock: vi.fn<new () => object>() }));
+
 vi.mock("@aws-sdk/client-s3", () => {
   return {
     S3Client: s3Mock,
   };
 });
+
 vi.mock("aws-utils", () => {
   return {
     assumeRoleConnection: {
@@ -19,10 +21,12 @@ vi.mock("aws-utils", () => {
     })),
   };
 });
+
 import { ConnectionError } from "@prismatic-io/spectral";
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import { createS3Client } from "./client";
 import { accessKeySecretPair } from "./connections";
+
 describe("createS3Client", () => {
   describe("invalid credentials", () => {
     beforeAll(() => {
@@ -34,6 +38,7 @@ describe("createS3Client", () => {
         },
       );
     });
+
     test("throws error if invalid credentials provided", async () => {
       expect.assertions(1);
       const connection = createConnection(accessKeySecretPair, {
@@ -53,10 +58,12 @@ describe("createS3Client", () => {
       }
     });
   });
+
   describe("valid credentials", () => {
     beforeAll(() => {
       s3Mock.mockImplementation(class {});
     });
+
     test("returns S3 client with api key secret credentials", async () => {
       await createS3Client({
         awsConnection: createConnection(accessKeySecretPair, {
