@@ -2,7 +2,7 @@
 
 ### 2026-10-29
 
-Various modernizations and documentation updates
+Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
 ### 2026-09-18
 
