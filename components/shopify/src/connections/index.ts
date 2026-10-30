@@ -8,6 +8,6 @@ export { shopifyTemplatedConnection } from "./oauth2DynamicInputs";
 
 export default [
   shopifyTemplatedConnection,
-  shopifyConnection,
   adminApiAccessToken,
+  shopifyConnection,
 ];

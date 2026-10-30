@@ -5,6 +5,7 @@ import {
 } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { GraphQLClient } from "graphql-request";
+import { shopifyConnection as deprecatedOAuth2Connection } from "./connections/oauth2";
 import {
   DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
   DEFAULT_SHOPIFY_VERSION,
@@ -12,6 +13,19 @@ import {
 import { gqlErrorsCheck } from "./util";
 
 export const getShopifyHostname = (host: string): string => {
+  const trimmed = host.trim();
+  const hostnameRegex =
+    /^(?:https?:\/\/)?([a-z\d][a-z\d-]*)(?:\.myshopify\.com)?(?::\d+)?(?:[/?#].*)?$/i;
+  const result = hostnameRegex.exec(trimmed);
+  if (!result) {
+    throw new Error(
+      `Unable to parse hostname "${trimmed}". It should look like "YOUR-SHOPIFY-DOMAIN" or "YOUR-SHOPIFY-DOMAIN.myshopify.com".`,
+    );
+  }
+  return `${result[1].toLowerCase()}.myshopify.com`;
+};
+
+export const getLegacyShopifyHostname = (host: string): string => {
   const hostnameRegex = /(https:\/\/)?(.*\.myshopify.com)/;
   const result = hostnameRegex.exec(host);
   if (!result) {
@@ -20,6 +34,13 @@ export const getShopifyHostname = (host: string): string => {
     );
   }
   return result[2];
+};
+
+export const getConnectionHostname = (connection: Connection): string => {
+  const host = util.types.toString(connection.fields.host);
+  return connection.key === deprecatedOAuth2Connection.key
+    ? getLegacyShopifyHostname(host)
+    : getShopifyHostname(host);
 };
 
 const getApiVersion = (
@@ -50,9 +71,7 @@ export const getShopifyClient = (
   debug?: boolean,
   logger?: ActionLogger,
 ) => {
-  const shopifyHostname = getShopifyHostname(
-    util.types.toString(shopifyConnection.fields.host),
-  );
+  const shopifyHostname = getConnectionHostname(shopifyConnection);
   const version =
     apiVersion ??
     getApiVersion(shopifyConnection, DEFAULT_SHOPIFY_VERSION, logger);
@@ -77,9 +96,7 @@ export const getShopifyGraphQlClient = (
   debug: boolean,
   logger: ActionLogger,
 ) => {
-  const shopifyHostname = getShopifyHostname(
-    util.types.toString(shopifyConnection.fields.host),
-  );
+  const shopifyHostname = getConnectionHostname(shopifyConnection);
   const version =
     apiVersion ??
     getApiVersion(

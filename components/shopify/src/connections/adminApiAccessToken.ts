@@ -23,9 +23,9 @@ export const adminApiAccessToken = connection({
       placeholder: "Enter Shopify domain",
       type: "string",
       default: "YOUR-SHOPIFY-DOMAIN.myshopify.com",
-      example: "my-store.myshopify.com",
+      example: "my-store",
       comments:
-        "The domain of the Shopify store without https:// (e.g., my-store.myshopify.com).",
+        "The store handle (e.g., `my-store`). The full `my-store.myshopify.com` domain is also accepted, and any `https://` prefix or trailing path is ignored. Custom domains are not supported. Find the handle in the Shopify admin URL bar or under **Settings > Domains**.",
       required: true,
       shown: true,
     },

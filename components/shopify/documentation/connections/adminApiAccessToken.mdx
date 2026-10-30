@@ -34,6 +34,6 @@ Refer to [Shopify's admin-created custom apps documentation](https://shopify.dev
 Create a connection of type **Access Token** and configure the following fields:
 
 - Enter the **Admin API Access Token** into the connection configuration.
-- Enter the **Host** (the Shopify domain without `https://`, e.g., `example-store.myshopify.com`).
+- **Host**: the store handle (e.g., `example-store`). The full `example-store.myshopify.com` domain is also accepted, and any `https://` prefix or trailing path is ignored. Custom domains are not supported. Find the handle in the Shopify admin URL bar (`https://<handle>.myshopify.com/admin`) or under **Settings > Domains**.
 - Optionally set the **API Version**. It defaults to the version this component ships with, currently `2026-07`. Refer to [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning) for the versions Shopify currently accepts and how long each remains available.
 

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-30
+
+Updated the **Host** input on the **Access Token** connection to accept a bare store handle (such as `my-store`) or the full `my-store.myshopify.com` domain, ignoring letter case and any `http://` or `https://` prefix, port, or trailing path; a value that puts another domain in front of the store domain is now rejected instead of sending requests to that domain
+
 ### 2026-10-26
 
 Added API version guidance and configuration-time improvements:

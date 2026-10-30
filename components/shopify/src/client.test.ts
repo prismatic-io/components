@@ -1,11 +1,16 @@
 import type { ActionLogger } from "@prismatic-io/spectral";
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
 import {
+  getConnectionHostname,
   getShopifyClient,
   getShopifyGraphQlClient,
   getShopifyHostname,
 } from "./client";
-import { adminApiAccessToken } from "./connections";
+import {
+  adminApiAccessToken,
+  shopifyConnection,
+  shopifyTemplatedConnection,
+} from "./connections";
 import {
   DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
   DEFAULT_SHOPIFY_VERSION,
@@ -129,14 +134,70 @@ describe("Test getShopifyHostname", () => {
     "https://YOUR-SHOPIFY-DOMAIN.myshopify.com",
     "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/",
     "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/some/other/path",
-  ])("Verifies parsing of pasted in domain name", (value) => {
+    "  YOUR-SHOPIFY-DOMAIN.myshopify.com  ",
+    "http://YOUR-SHOPIFY-DOMAIN.myshopify.com",
+    "YOUR-SHOPIFY-DOMAIN.MYSHOPIFY.COM",
+    "https://YOUR-SHOPIFY-DOMAIN.myshopify.com:443/admin",
+    "https://YOUR-SHOPIFY-DOMAIN.myshopify.com?foo=1",
+    "https://YOUR-SHOPIFY-DOMAIN.myshopify.com#section",
+    "YOUR-SHOPIFY-DOMAIN",
+    "  your-shopify-domain  ",
+    "https://YOUR-SHOPIFY-DOMAIN",
+    "YOUR-SHOPIFY-DOMAIN/",
+  ])("parses valid hostname %j", (value) => {
     const result = getShopifyHostname(value);
-    expect(result).toEqual("YOUR-SHOPIFY-DOMAIN.myshopify.com");
+    expect(result).toEqual("your-shopify-domain.myshopify.com");
   });
 
-  test("Verify it throws errors when it doesn't match", () => {
-    expect(() => getShopifyHostname("some-bad-value")).toThrow(
-      'Unable to parse hostname "some-bad-value". It should look like "YOUR-SHOPIFY-DOMAIN.myshopify.com".',
+  test.each([
+    ["some bad value", "some bad value"],
+    [
+      "my-store.myshopify.com.example.com",
+      "my-store.myshopify.com.example.com",
+    ],
+    ["my-store.custom-domain.com", "my-store.custom-domain.com"],
+    [
+      "https://example.com/my-store.myshopify.com",
+      "https://example.com/my-store.myshopify.com",
+    ],
+    ["-bad-handle.myshopify.com", "-bad-handle.myshopify.com"],
+    ["", ""],
+  ])("throws for invalid hostname %j", (value, expectedInMessage) => {
+    expect(() => getShopifyHostname(value)).toThrow(
+      `Unable to parse hostname "${expectedInMessage}". It should look like "YOUR-SHOPIFY-DOMAIN" or "YOUR-SHOPIFY-DOMAIN.myshopify.com".`,
+    );
+  });
+});
+
+describe("Test getConnectionHostname", () => {
+  test("accepts a bare store handle on the Access Token connection", () => {
+    const connection = createConnection(adminApiAccessToken, {
+      host: "my-store",
+    });
+    expect(getConnectionHostname(connection)).toEqual("my-store.myshopify.com");
+  });
+
+  test("parses the host the OAuth 2.0 connection builds from its shop name", () => {
+    const connection = createConnection(shopifyTemplatedConnection, {
+      host: "my-store.myshopify.com",
+    });
+    expect(getConnectionHostname(connection)).toEqual("my-store.myshopify.com");
+  });
+
+  test.each([
+    ["https://My-Store.myshopify.com/admin", "My-Store.myshopify.com"],
+    ["my-store.myshopify.com.example.com", "my-store.myshopify.com"],
+  ])("keeps the original parsing on the deprecated OAuth 2.0 connection for %j", (host, expected) => {
+    const connection = createConnection(shopifyConnection, { host });
+    expect(getConnectionHostname(connection)).toEqual(expected);
+  });
+
+  test("still rejects a bare store handle on the deprecated OAuth 2.0 connection", () => {
+    const connection = createConnection(shopifyConnection, {
+      host: "my-store",
+    });
+    expect(() => getConnectionHostname(connection)).toThrow(
+      'Unable to parse hostname "my-store". It should look like "YOUR-SHOPIFY-DOMAIN.myshopify.com".',
     );
   });
 });

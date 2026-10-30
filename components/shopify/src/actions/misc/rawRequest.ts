@@ -1,6 +1,6 @@
 import { action, util } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
-import { getShopifyHostname } from "../../client";
+import { getConnectionHostname } from "../../client";
 import { rawRequestInputs as inputs } from "../../inputs";
 
 export const rawRequest = action({
@@ -15,9 +15,7 @@ export const rawRequest = action({
     _context,
     { connection, apiVersion, returnHeaders, ...httpClientInputs },
   ) => {
-    const shopifyHostname = getShopifyHostname(
-      util.types.toString(connection.fields.host),
-    );
+    const shopifyHostname = getConnectionHostname(connection);
     const { data, headers } = await sendRawRequest(
       `https://${shopifyHostname}/admin/api/${apiVersion}`,
       httpClientInputs,

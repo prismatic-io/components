@@ -10,8 +10,7 @@ export const shopifyTemplatedConnection = oauth2Connection({
   key: "oauth2-dynamic-inputs",
   display: {
     label: "OAuth 2.0",
-    description:
-      "Authenticate requests to Shopify using values obtained from the Developer Console. Allows for using a single domain input instead of entering separate authorization URLs.",
+    description: "Authenticate requests to Shopify using OAuth 2.0.",
   },
   inputs: templateConnectionInputs(
     {
@@ -23,7 +22,7 @@ export const shopifyTemplatedConnection = oauth2Connection({
         required: true,
         shown: true,
         comments:
-          "The Shopify shop name without the .myshopify.com suffix (e.g., my-store).",
+          "The myshopify.com subdomain handle (the part before `.myshopify.com` in the store URL). Do not paste the `.myshopify.com` suffix, `https://`, a full URL, or a custom domain. Find it in the Shopify admin URL bar (`https://<handle>.myshopify.com/admin`) or under **Settings > Domains**.",
       },
       scopes: {
         label: "Scopes",
