@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-22
 
 - Added inline action calling support to the **Get Record**, **List Records**, **Create Record**, **Update Record**, **Delete Record**, and **SuiteQL Query** actions for improved example output during configuration

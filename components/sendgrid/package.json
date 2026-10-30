@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.30.3",
+    "@prismatic-io/spectral": "10.34.1",
     "@sendgrid/eventwebhook": "^8.0.0",
     "@sendgrid/mail": "7.7.0"
   },

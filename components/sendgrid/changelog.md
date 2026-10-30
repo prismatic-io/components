@@ -4,6 +4,10 @@
 
 Fixed the **New and Updated Messages** trigger initial sync dropping records when **Show Updated Records** was disabled
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-17
 
 Restructured action inputs, improved the designer configuration experience, and expanded the polling trigger for large data syncs:

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-10-27
 
 Updated to GitHub REST API version 2026-03-10 and refined action labels, inputs, and webhook events:

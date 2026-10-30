@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-10-06
 
 Fixed several action and trigger defects, and added initial sync, batching, grouped inputs, output schemas, and inline action calling:

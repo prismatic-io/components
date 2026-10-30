@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-30
 
 - Grouped the pagination inputs on the **List Pages**, **List Pages in Space**, **List Spaces**, **List Attachments**, **Get Attachments for Page**, **List Content Properties for Page**, **List Content Properties for Attachments**, and **List Content Properties for Custom Content** actions into a **Pagination** object, and grouped the optional retrieval and expansion inputs on the **Get Page** action into an **Additional Fields** object

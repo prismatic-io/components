@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-15
 
 - Fixed optional JSON inputs, including **Address**, **Contacts**, **Custom Fields**, **External Data**, **Location**, **Attachments**, **Items**, **Payments**, and **Job Generated Lead Source**, which pre-filled a placeholder template and then submitted it as real data when the field was left untouched, so renaming a customer could replace their stored address with the template; the templates are now shown as examples only

@@ -4,6 +4,10 @@
 
 Fixed the **New and Updated Records** polling trigger initial sync silently dropping records when **Show New Records** or **Show Updated Records** was disabled; the backfill now delivers every matched record regardless of the visibility toggles
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-14
 
 Removed the **Raw Request (Deprecated)** action that is no longer in use; use **Raw Request** instead

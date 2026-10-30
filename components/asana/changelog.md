@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-25
 
 Updated the **New and Updated Tasks** polling trigger and added output schemas and inline action calling:

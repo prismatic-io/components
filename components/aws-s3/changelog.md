@@ -4,6 +4,10 @@
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-10-05
 
 Added new inputs and polling trigger capabilities, and fixed issues in file polling, bucket listing, and webhook message verification:

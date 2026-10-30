@@ -4,6 +4,10 @@
 
 Fixed the **New and Updated Items** trigger's initial sync dropping records when **Show New Records** or **Show Updated Records** was disabled; the initial sync now delivers every matched item regardless of those visibility toggles
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-10-01
 
 Added batching, initial sync, and configuration improvements to the Monday.com component:

@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.31.0",
+    "@prismatic-io/spectral": "10.34.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "node-rsa": "^1.1.1"

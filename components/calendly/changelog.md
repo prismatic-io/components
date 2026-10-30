@@ -4,6 +4,10 @@
 
 Fixed the **New and Updated Events** trigger's initial sync silently dropping records when **Show New Records** or **Show Updated Records** was disabled; the sync now delivers every matched record regardless of those toggles
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-15
 
 Updated the component with expanded connection defaults and improved configuration and polling capabilities:

@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.28.0",
+    "@prismatic-io/spectral": "10.34.1",
     "dynamics-web-api": "2.5.0"
   },
   "devDependencies": {

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-17
 
 Added ITAM asset and device management, expanded the **New and Updated Tickets** trigger, and deprecated the classic asset actions:

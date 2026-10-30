@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-25
 
 Expanded the **New and Updated Tickets** trigger and the **Create Webhook** event list, corrected several defects in published actions, and restructured action inputs into structured objects:

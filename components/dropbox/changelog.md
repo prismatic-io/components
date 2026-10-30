@@ -4,6 +4,10 @@
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-18
 
 Added an initial sync and opt-in batching to the **New and Updated Files** trigger, added output schemas and inline action calling across the component, grouped related action inputs into structured objects, and fixed path handling on the lock actions:

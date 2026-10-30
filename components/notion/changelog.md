@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-22
 
 Reworked the polling triggers and updated what the actions offer during step configuration:

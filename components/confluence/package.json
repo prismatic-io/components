@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.31.1",
+    "@prismatic-io/spectral": "10.34.1",
     "form-data": "^4.0.5",
     "graphql": "^16.8.1",
     "graphql-request": "5.0.0"

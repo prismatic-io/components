@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-28
+
+Various modernizations and documentation updates
+
 ### 2026-09-28
 
 Fixed missing vulnerability data in asset risk and remediation ticket results, and added inline action calling support:
