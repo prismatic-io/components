@@ -1,6 +1,7 @@
 import { pollingTrigger, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { DEFAULT_BATCH_SIZE } from "../constants";
+import { newFileCommentsExamplePayload } from "../examplePayloads";
 import { newFileCommentsInputs } from "../inputs";
 import type { BoxCommentChange, BoxCommentChangesObject } from "../types";
 import {
@@ -18,6 +19,7 @@ export const newFileComments = pollingTrigger({
       "Retrieves existing and ongoing comments on a specified Box file. Load history once, check for changes on a schedule, or both.",
   },
   inputs: newFileCommentsInputs,
+  examplePayload: newFileCommentsExamplePayload,
   allowsBranching: false,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },

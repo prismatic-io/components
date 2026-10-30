@@ -6,6 +6,7 @@ import {
   BOX_SIGNATURE_SECONDARY_HEADER,
   FILE_TYPE,
   FOLDER_TYPE,
+  HTTP_NOT_FOUND,
   MAX_PAGE_SIZE,
 } from "../constants";
 import type {
@@ -31,7 +32,7 @@ export const getAllWebhookEntries = async <T extends BoxRawEntry = BoxRawEntry>(
 
     initial = false;
     allEntries = allEntries.concat(
-      (response.entries ?? []).map((entry) => entry.rawData as T),
+      ((response.rawData as Record<string, unknown>)?.entries as T[]) ?? [],
     );
     marker = response.nextMarker;
   }
@@ -63,6 +64,10 @@ export const getInstanceWebhookIds = async (
       .map(({ id }) => id),
   );
 };
+
+export const getBoxErrorStatus = (error: unknown): number | undefined =>
+  (error as { responseInfo?: { statusCode?: number } } | undefined)
+    ?.responseInfo?.statusCode;
 
 export const assertTargetType = (targetType: string): BoxTargetType => {
   if (![FILE_TYPE, FOLDER_TYPE].includes(targetType)) {
@@ -112,6 +117,47 @@ export const createWebhookFN = async (
     webhookId,
   };
 };
+
+export const deleteWebhookIfPresent = async (
+  client: BoxClient,
+  webhookId: string,
+  logger: ActionLogger,
+): Promise<void> => {
+  try {
+    await client.webhooks.deleteWebhookById(webhookId);
+  } catch (error) {
+    if (getBoxErrorStatus(error) !== HTTP_NOT_FOUND) {
+      throw error;
+    }
+    logger.info(`Webhook ${webhookId} no longer exists in Box, skipping.`);
+  }
+};
+
+export const getTargetWebhookIdsForAddress = async (
+  client: BoxClient,
+  targetId: string,
+  targetType: string,
+  address: string,
+): Promise<Set<string>> => {
+  const { entries } = await getAllWebhookEntries(client);
+  const onTarget = entries.filter((entry) => {
+    const target = entry.target as BoxRawEntry | undefined;
+    return (
+      util.types.toString(target?.id) === targetId &&
+      util.types.toString(target?.type) === targetType
+    );
+  });
+  return getInstanceWebhookIds(client, onTarget, { address });
+};
+
+export const getStoreKey = (flowName: string): string =>
+  `boxTrigger-${flowName}`;
+
+export const getLegacyStoreKey = (
+  targetId: string,
+  targetType: string,
+  flowName: string,
+): string => `boxTrigger-${targetId}-${targetType}-${flowName}`;
 
 export const resolveStoreState = (
   crossFlowState: Record<string, unknown>,

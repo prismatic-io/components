@@ -29,9 +29,11 @@ export const listWebhooks = action({
       if (pagination.marker)
         options.marker = util.types.toString(pagination.marker);
       const result = await client.webhooks.getWebhooks(options);
-      entries = (result.entries ?? []).map(
-        (entry) => entry.rawData as Record<string, unknown>,
-      );
+      entries =
+        ((result.rawData as Record<string, unknown>)?.entries as Record<
+          string,
+          unknown
+        >[]) ?? [];
       extra = { limit: result.limit, next_marker: result.nextMarker };
     }
 

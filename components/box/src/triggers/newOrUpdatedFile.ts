@@ -1,11 +1,13 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { DEFAULT_BATCH_SIZE, FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
+import { newOrUpdatedFileExamplePayload } from "../examplePayloads";
 import { newOrUpdatedFileInputs } from "../inputs";
 import type { BoxChangesObject, BoxRecordChange, PollingState } from "../types";
 import {
   buildPollingResult,
   computeNewEntries,
+  computeUpdatedEntries,
   getFolderEntries,
   normalizeDatesBetweenEntries,
   resolvePollingRecordChanges,
@@ -18,6 +20,7 @@ export const newOrUpdatedFile = pollingTrigger({
       "Retrieves existing and ongoing files in a specified Box folder. Load history once, check for changes on a schedule, or both.",
   },
   inputs: newOrUpdatedFileInputs,
+  examplePayload: newOrUpdatedFileExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
@@ -39,7 +42,7 @@ export const newOrUpdatedFile = pollingTrigger({
       limit: MAX_PAGE_SIZE,
     });
 
-    context.logger.info("Polled entries: ", JSON.stringify(entries, null, 2));
+    context.logger.info(`Polled ${entries.length} entries`);
     context.logger.info("Normalizing entry dates...");
     const normalizedEntries = normalizeDatesBetweenEntries(
       entries.filter(({ type }) => type !== FOLDER_TYPE),
@@ -48,11 +51,11 @@ export const newOrUpdatedFile = pollingTrigger({
     context.logger.info("Computing new files...");
     const newFiles = computeNewEntries(normalizedEntries, lastPolledAt);
 
-    const newFilesKeys = newFiles.map((entry) => entry.id);
     context.logger.info("Computing updated files...");
-    const updatedFiles = normalizedEntries.filter(
-      ({ modified_at: modifiedAt, id: entryId }) =>
-        modifiedAt > lastPolledAt && !newFilesKeys.includes(entryId),
+    const updatedFiles = computeUpdatedEntries(
+      normalizedEntries,
+      lastPolledAt,
+      newFiles.map((entry) => entry.id),
     );
 
     context.logger.info("Setting polling state...");

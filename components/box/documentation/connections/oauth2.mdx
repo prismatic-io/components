@@ -6,6 +6,7 @@ Refer to the [Box OAuth 2.0 setup guide](https://developer.box.com/guides/authen
 
 - A [Box account](https://www.box.com/)
 - Access to the [Box Developer Console](https://app.box.com/developers/console)
+- A Box account on a plan that includes the Box features the integration uses (some features require an Enterprise account)
 
 #### Setup Steps
 
@@ -29,12 +30,9 @@ Refer to the [Box OAuth 2.0 setup guide](https://developer.box.com/guides/authen
 - Enter the **Client ID** and **Client Secret** from the Box app configuration
 - For **Scopes**, either:
   - Leave blank to use the **Application Scopes** configured in the Box app
+  - Keep the default value (`root_readwrite manage_webhook`)
   - Enter specific scopes as a space-separated list (e.g., `root_readwrite manage_webhook`)
   - Refer to [Box scopes documentation](https://developer.box.com/guides/api-calls/permissions-and-errors/scopes) for available scopes
-
-:::note[Box Enterprise Features]
-Some Box features require an Enterprise account. Ensure the Box account has appropriate subscription level for the required functionality.
-:::
 
 #### App Authorization
 
@@ -53,8 +51,4 @@ A Box enterprise administrator must authorize the app using the app's **Client I
 3. Enter the **Client ID** from the Box app's **Configuration** tab
 4. Click **Next**, review the requested scopes, and select **Authorize**
 
-Once authorized, users within the enterprise organization can authenticate with the integration.
-
-:::note[Re-authorization Required After App Recreation]
-If the Box app is deleted and recreated, a new Client ID is generated and admin authorization must be repeated.
-:::
+Once authorized, users within the enterprise organization can authenticate with the integration. If the Box app is deleted and recreated, a new Client ID is generated and the authorization steps above must be repeated.

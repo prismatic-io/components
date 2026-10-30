@@ -6,10 +6,7 @@ import {
 import { BoxClient, BoxDeveloperTokenAuth } from "box-node-sdk";
 import { apiKey, oauth2 } from "./connections";
 import { BASE_URL } from "./constants";
-
-interface CreateAuthorizedClientProps {
-  boxConnection: Connection;
-}
+import type { CreateAuthorizedClientProps } from "./types";
 
 export const getAccessToken = ({
   boxConnection,

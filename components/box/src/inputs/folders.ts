@@ -9,7 +9,7 @@ import {
   path,
 } from "./common";
 
-export const fields = input({
+const fields = input({
   label: "Fields/Metadata",
   type: "string",
   required: false,
@@ -20,7 +20,7 @@ export const fields = input({
   clean: cleanCommaSeparatedString,
 });
 
-export const folderPagination = structuredObjectInput({
+const folderPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Marker, limit, and offset controls for paging through results.",
@@ -35,7 +35,7 @@ export const createFolderInputs = {
 export const listFolderWithPaginationInputs = {
   path,
   fetchAll,
-  fields,
   pagination: folderPagination,
+  fields,
   boxConnection: connectionInput,
 };

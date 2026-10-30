@@ -37,8 +37,12 @@ export const downloadFile = action({
       contentType: util.types.toString(contentType),
     };
   },
-  examplePerform: async (): Promise<{ data: unknown }> => ({
+  examplePerform: async (): Promise<{
+    data: unknown;
+    contentType: string;
+  }> => ({
     data: downloadFileExamplePayload.data,
+    contentType: downloadFileExamplePayload.contentType,
   }),
   inputs: downloadFileInputs,
   examplePayload: downloadFileExamplePayload,

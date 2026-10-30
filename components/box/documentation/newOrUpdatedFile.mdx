@@ -39,7 +39,7 @@ With batching off a downstream step reads `body.data.newFiles.data` and `body.da
 
 #### Returned Data
 
-The trigger returns separate arrays for new and updated files with branch support. Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns separate arrays for new and updated files with branch support. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example returned data structure</summary>
@@ -76,6 +76,26 @@ The trigger returns separate arrays for new and updated files with branch suppor
         }
       ]
     }
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `newFiles` and `updatedFiles` objects are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "new",
+  "record": {
+    "id": "1234567890",
+    "type": "file",
+    "name": "report.pdf",
+    "created_at": "2024-11-10T18:07:45Z",
+    "modified_at": "2024-11-10T18:07:45Z"
   }
 }
 ```

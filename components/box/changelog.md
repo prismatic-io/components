@@ -1,5 +1,20 @@
 ## Changelog
 
+### 2026-10-30
+
+Fixed webhook, folder listing, and shared link errors, and tightened webhook signature validation:
+
+- Fixed the **List Webhooks** action and the **List Folder** action with **Fetch All** disabled, which returned blank entries instead of the webhooks or folder items
+- Fixed the **Delete Instance Webhooks** action, the **Select Webhook** data source, and **List Webhooks** with **Show Only Instance Webhooks** enabled, which failed whenever the Box account had a webhook
+- Fixed the **Create Webhook** action, which failed when a webhook for the same target already existed instead of skipping creation
+- Fixed the **Managed Webhook** trigger rejecting every signed delivery after its **Primary Signature Key** or **Secondary Signature Key** was changed without also changing the target or event types
+- Fixed the **Managed Webhook** trigger failing on instance deletion, or on a redeploy that changed its target or event types, when its webhook had already been removed from Box
+- Updated the **Managed Webhook** trigger to replace an existing webhook that delivers to the same flow when Box reports a conflict on deploy, and to fail with an error naming the conflict when the existing webhook delivers elsewhere
+- Updated the **Manual Webhook** and **Managed Webhook** triggers to reject an unsigned delivery whenever a signature key is configured; before, a delivery without signature headers skipped validation
+- Fixed the **Get Shared Link for File** and **Get Shared Link for Folder** actions, which failed with a type error when the item had no shared link; they now report that the file or folder has no shared link
+- Updated the **Find File for Shared Link** and **Find Folder for Shared Link** actions to omit the password when **Shared Link Password** is empty, instead of sending the text "null"
+- Added output schemas to the **Delete Object**, **Delete Webhook**, and **Delete Instance Webhooks** actions for improved field mapping during configuration
+
 ### 2026-10-13
 
 Fixed errors in the polling triggers and path-based actions, and added batching and initial sync support:

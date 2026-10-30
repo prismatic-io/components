@@ -1,9 +1,4 @@
-import {
-  type PollingContext,
-  type TriggerPayload,
-  util,
-} from "@prismatic-io/spectral";
-import { LOOK_BACK_DATE_PATTERN } from "../constants";
+import type { PollingContext, TriggerPayload } from "@prismatic-io/spectral";
 import type {
   BoxChangesObject,
   BoxCommentChange,
@@ -15,15 +10,6 @@ import type {
   PollingResult,
   PollingState,
 } from "../types";
-
-export const getStoreKey = (flowName: string): string =>
-  `boxTrigger-${flowName}`;
-
-export const getLegacyStoreKey = (
-  targetId: string,
-  targetType: string,
-  flowName: string,
-): string => `boxTrigger-${targetId}-${targetType}-${flowName}`;
 
 export const buildPollingResult = <T>(
   payload: TriggerPayload,
@@ -73,6 +59,19 @@ export const computeNewEntries = <
   return entries.filter((entry) => entry.created_at > lastPolledAt);
 };
 
+export const computeUpdatedEntries = <
+  T extends { id?: unknown; modified_at?: string },
+>(
+  entries: T[],
+  lastPolledAt: string,
+  excludeIds: unknown[],
+): T[] => {
+  return entries.filter(
+    ({ modified_at, id }) =>
+      modified_at > lastPolledAt && !excludeIds.includes(id),
+  );
+};
+
 export const resolvePollingRecordChanges = (
   data: BoxChangesObject | undefined,
 ): BoxRecordChange[] => {
@@ -103,32 +102,4 @@ export const resolveCommentChanges = (
   return (changesObject.newComments?.data ?? []).map(
     (record): BoxCommentChange => ({ changeType: "new", record }),
   );
-};
-
-export const lookBackDateClean = (value: unknown): string => {
-  const str = util.types.toString(value).trim();
-  if (!str) return "";
-
-  if (!LOOK_BACK_DATE_PATTERN.test(str)) {
-    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
-  }
-
-  const parts = str.split("-");
-  const year = util.types.toNumber(parts[0]);
-  const month = util.types.toNumber(parts[1]);
-  const day = util.types.toNumber(parts[2]);
-  const parsed = new Date(year, month - 1, day);
-  if (
-    parsed.getFullYear() !== year ||
-    parsed.getMonth() !== month - 1 ||
-    parsed.getDate() !== day
-  ) {
-    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
-  }
-
-  if (parsed > new Date()) {
-    throw new Error("Look-back Date cannot be a future date.");
-  }
-
-  return str;
 };

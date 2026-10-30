@@ -1,5 +1,4 @@
-import { action, outputSchema, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createBoxHttpClient } from "../../client";
 import { SHARED_LINK_FIELD } from "../../constants";
 import { removeSharedLinkFromFileExamplePayload } from "../../examplePayloads";
@@ -20,26 +19,20 @@ export const removeSharedLinkFromFile = action({
       context.debug.enabled,
     );
 
-    try {
-      const { data } = await client.put(
-        `/files/${fileId}`,
-        {
-          shared_link: null,
+    const { data } = await client.put(
+      `/files/${fileId}`,
+      {
+        shared_link: null,
+      },
+      {
+        params: {
+          fields: SHARED_LINK_FIELD,
         },
-        {
-          params: {
-            fields: SHARED_LINK_FIELD,
-          },
-        },
-      );
-      return {
-        data,
-      };
-    } catch (error) {
-      const handled = handleErrors(error);
-      const serialized = util.types.toJSON(handled);
-      throw new Error(serialized);
-    }
+      },
+    );
+    return {
+      data,
+    };
   },
   examplePerform: async (_context, { fileId }): Promise<{ data: unknown }> => ({
     data: {

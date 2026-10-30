@@ -10,7 +10,7 @@ import {
   triggerTypes,
 } from "./common";
 
-export const address = input({
+const address = input({
   label: "Webhook URL",
   placeholder: "Enter webhook URL",
   comments:
@@ -21,7 +21,7 @@ export const address = input({
   clean: util.types.toString,
 });
 
-export const webhookId = input({
+const webhookId = input({
   label: "Webhook ID",
   placeholder: "Enter webhook ID",
   comments: "The unique identifier of the webhook.",
@@ -32,7 +32,7 @@ export const webhookId = input({
   clean: util.types.toString,
 });
 
-export const showOnlyInstanceWebhooks = input({
+const showOnlyInstanceWebhooks = input({
   label: "Show Only Instance Webhooks",
   comments: "When true, returns only webhooks that point to this instance.",
   type: "boolean",
@@ -41,7 +41,7 @@ export const showOnlyInstanceWebhooks = input({
   clean: util.types.toBool,
 });
 
-export const webhookPagination = structuredObjectInput({
+const webhookPagination = structuredObjectInput({
   label: "Pagination",
   required: false,
   comments: "Marker and limit controls for paging through results.",

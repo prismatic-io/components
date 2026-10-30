@@ -1,10 +1,12 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { DEFAULT_BATCH_SIZE, FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
+import { newFolderExamplePayload } from "../examplePayloads";
 import { newFolderInputs } from "../inputs";
 import type { BoxFolderChange, BoxFolderChangesObject } from "../types";
 import {
   buildPollingResult,
+  computeNewEntries,
   getFolderEntries,
   getLastPolledAt,
   normalizeDatesBetweenEntries,
@@ -18,6 +20,7 @@ export const newFolder = pollingTrigger({
       "Retrieves existing and ongoing folders in a specified Box folder. Load history once, check for changes on a schedule, or both.",
   },
   inputs: newFolderInputs,
+  examplePayload: newFolderExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
   triggerResolver: {
@@ -38,16 +41,14 @@ export const newFolder = pollingTrigger({
       limit: MAX_PAGE_SIZE,
     });
 
-    context.logger.info("Polled entries: ", JSON.stringify(entries, null, 2));
+    context.logger.info(`Polled ${entries.length} entries`);
     context.logger.info("Normalizing entry dates...");
     const normalizedEntries = normalizeDatesBetweenEntries(
       entries.filter(({ type }) => type === FOLDER_TYPE),
     );
 
     context.logger.info("Computing new folders...");
-    const newFolders = normalizedEntries.filter(
-      (entry) => entry.created_at > lastPolledAt,
-    );
+    const newFolders = computeNewEntries(normalizedEntries, lastPolledAt);
 
     context.logger.info("Setting polling state...");
     context.polling.setState({ lastPolledAt: now });

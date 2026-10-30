@@ -6,7 +6,7 @@ const copiedOrMovedObjectSchema = {
     ...folderFullSchema.properties,
     type: { type: "string", enum: ["file", "folder"] },
   },
-  required: ["id", "type", "name"],
+  required: ["id", "type"],
   additionalProperties: true,
 };
 
@@ -25,4 +25,11 @@ export const pathDetailsOutputSchema = {
     },
     required: [],
   },
+};
+
+export const deleteObjectOutputSchema = {
+  type: "object" as const,
+  properties: {},
+  required: [] as string[],
+  additionalProperties: false,
 };

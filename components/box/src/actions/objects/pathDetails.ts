@@ -26,8 +26,9 @@ export const pathDetails = action({
 
     return {
       data: [
+        pathDetailsExamplePayload.data[0],
         {
-          ...pathDetailsExamplePayload.data[0],
+          ...pathDetailsExamplePayload.data[1],
           name,
           type: name.includes(".") ? FILE_TYPE : FOLDER_TYPE,
         },

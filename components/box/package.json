@@ -10,7 +10,7 @@
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.34.0",
+    "@prismatic-io/spectral": "10.36.2",
     "box-node-sdk": "10.12.0"
   },
   "devDependencies": {

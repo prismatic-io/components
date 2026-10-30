@@ -1,8 +1,8 @@
-The Instance Webhook trigger automatically creates and manages [Box webhook subscriptions](https://developer.box.com/guides/webhooks) for an instance. Unlike traditional webhook setups that require manual configuration in the Box Developer Console, this trigger handles the entire webhook lifecycle.
+The Managed Webhook trigger automatically creates and manages [Box webhook subscriptions](https://developer.box.com/guides/webhooks) for an instance. Unlike traditional webhook setups that require manual configuration in the Box Developer Console, this trigger handles the entire webhook lifecycle.
 
 When the trigger is used in a flow:
-- **On Instance Deploy**: The trigger automatically creates a V2 webhook subscription in Box pointing to the flow's unique webhook URL. The webhook monitors the specified target (file or folder) for the selected event types. If the webhook configuration changes between deployments, the trigger deletes the old webhook and creates a new one with the updated settings.
-- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Box, ensuring no orphaned webhooks remain.
+- **On Instance Deploy**: The trigger automatically creates a V2 webhook subscription in Box pointing to the flow's unique webhook URL. The webhook monitors the specified target (file or folder) for the selected event types. If the webhook configuration changes between deployments, the trigger deletes the old webhook and creates a new one with the updated settings. Box allows one webhook per target, application, and user: if one already exists for the target and delivers to this flow, the trigger replaces it; if it delivers to a different URL, deployment fails with an error and the existing webhook is left untouched.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Box, ensuring no orphaned webhooks remain. A subscription that was already deleted in Box (for example, by the Delete Instance Webhooks action) is treated as removed.
 
 #### Configuration
 
@@ -15,11 +15,14 @@ Configure the trigger with the following inputs:
 - **Primary Signature Key**: A signature key for webhook payload verification (optional but recommended)
 - **Secondary Signature Key**: A secondary signature key for webhook rotation scenarios (optional)
 
-#### Available Webhook Events
+A delivery is validated against the keys entered in these inputs first, then against the keys stored when the webhook subscription was created, and finally against the top-level keys written by the Create Webhook action. When any of these keys is set, a delivery without a signature header is rejected.
+
+#### Event Types
 
 The trigger supports monitoring over 30 different event types on Box files and folders.
 
 A full list of available webhook events is available in the [Box Webhooks documentation](https://developer.box.com/guides/webhooks/v2/create-v2).
+
 <details>
 <summary>View all available webhook events (39)</summary>
 

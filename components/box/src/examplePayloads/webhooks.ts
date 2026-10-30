@@ -28,7 +28,7 @@ export const createWebhookExamplePayload = {
     address: "https://example.com/webhook",
     triggers: ["FILE.DOWNLOADED", "FILE.UPLOADED"],
   },
-  crossFlowState: { primarySignatureKey: "3T2eTfOvJbAIRoBpXsXPmq0gn8CmF5Q7" },
+  crossFlowState: { primarySignatureKey: "example-primary-signature-key-0000" },
 };
 
 export const deleteWebhookExamplePayload = { data: null };

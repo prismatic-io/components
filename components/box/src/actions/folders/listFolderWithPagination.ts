@@ -62,7 +62,11 @@ export const listFolderWithPagination = action({
 
     return {
       data: {
-        entries: (result.entries ?? []).map((entry) => entry.rawData),
+        entries:
+          ((result.rawData as Record<string, unknown>)?.entries as Record<
+            string,
+            unknown
+          >[]) ?? [],
         pagination: {
           next_marker: result.nextMarker,
           limit: result.limit,

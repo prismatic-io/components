@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, path } from "./common";
 
-export const fromPath = input({
+const fromPath = input({
   label: "From Path",
   placeholder: "Enter source path",
   type: "string",
@@ -12,7 +12,7 @@ export const fromPath = input({
   clean: util.types.toString,
 });
 
-export const toPath = input({
+const toPath = input({
   label: "To Path",
   placeholder: "Enter destination path",
   type: "string",

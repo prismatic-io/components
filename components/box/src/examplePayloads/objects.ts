@@ -1,5 +1,8 @@
 export const pathDetailsExamplePayload = {
-  data: [{ id: "12345", type: "file", name: "Quarterly Report.pdf" }],
+  data: [
+    { id: "0", type: "folder", name: "" },
+    { id: "12345", type: "file", name: "Quarterly Report.pdf" },
+  ],
 };
 
 export const moveObjectExamplePayload = {

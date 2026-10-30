@@ -48,7 +48,36 @@ export const findFolderForSharedLinkExamplePayload = {
   data: {
     type: "folder",
     id: "84759261038",
+    etag: "1",
+    sequence_id: "3",
     name: "Shared Documents",
+    description: "Documents shared with partners",
+    created_at: "2012-12-12T10:53:43-08:00",
+    modified_at: "2012-12-12T10:53:43-08:00",
+    created_by: {
+      id: "11446498",
+      type: "user",
+      name: "Aaron Levie",
+      login: "ceo@example.com",
+    },
+    owned_by: {
+      id: "11446498",
+      type: "user",
+      name: "Aaron Levie",
+      login: "ceo@example.com",
+    },
+    item_status: "active",
+    shared_link: {
+      url: "https://app.box.com/s/9f2a1c7be4d84e0fa1b2c3d4e5f60718",
+      download_url: null,
+      access: "open",
+      effective_access: "company",
+      effective_permission: "can_download",
+      is_password_enabled: true,
+      permissions: { can_download: true, can_preview: true, can_edit: false },
+      download_count: 3,
+      preview_count: 3,
+    },
   },
 };
 

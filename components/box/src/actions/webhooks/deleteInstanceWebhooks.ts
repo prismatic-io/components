@@ -1,7 +1,8 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
+import { deleteInstanceWebhooksOutputSchema } from "../../outputSchemas";
 import { getAllWebhookEntries, getInstanceWebhookIds } from "../../util";
 
 export const deleteInstanceWebhooks = action({
@@ -31,6 +32,10 @@ export const deleteInstanceWebhooks = action({
   },
   examplePerform: async (): Promise<{ data: unknown }> => ({
     data: deleteInstanceWebhooksExamplePayload.data,
+  }),
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteInstanceWebhooksOutputSchema,
   }),
   examplePayload: deleteInstanceWebhooksExamplePayload,
 });

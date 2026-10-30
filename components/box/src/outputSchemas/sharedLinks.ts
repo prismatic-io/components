@@ -17,7 +17,7 @@ const fileSharedLinkProjectionSchema = {
     file_version: fileVersionMiniSchema,
     shared_link: nullableSharedLinkSchema,
   },
-  required: ["id", "type", "name", "shared_link"],
+  required: ["id", "type", "shared_link"],
 };
 
 const folderSharedLinkProjectionSchema = {
@@ -30,7 +30,7 @@ const folderSharedLinkProjectionSchema = {
     name: { type: "string" },
     shared_link: nullableSharedLinkSchema,
   },
-  required: ["id", "type", "name", "shared_link"],
+  required: ["id", "type", "shared_link"],
 };
 
 export const findFileForSharedLinkOutputSchema = {
@@ -39,7 +39,7 @@ export const findFileForSharedLinkOutputSchema = {
     ...fileFullSchema.properties,
     type: { type: "string" },
   },
-  required: ["id", "type", "name"],
+  required: ["id", "type"],
   additionalProperties: true,
 };
 
@@ -49,7 +49,7 @@ export const findFolderForSharedLinkOutputSchema = {
     ...folderFullSchema.properties,
     type: { type: "string" },
   },
-  required: ["id", "type", "name"],
+  required: ["id", "type"],
   additionalProperties: true,
 };
 

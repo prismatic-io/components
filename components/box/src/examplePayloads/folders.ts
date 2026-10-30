@@ -50,9 +50,28 @@ export const createFolderExamplePayload = {
   data: {
     type: "folder",
     id: "47892301654",
+    etag: "0",
+    sequence_id: "0",
     name: "New Project Folder",
     created_at: "2024-03-15T09:30:00-07:00",
+    modified_at: "2024-03-15T09:30:00-07:00",
     description: "",
+    path_collection: {
+      total_count: 1,
+      entries: [{ id: "0", type: "folder", name: "All Files" }],
+    },
+    created_by: {
+      id: "11446498",
+      type: "user",
+      name: "Aaron Levie",
+      login: "ceo@example.com",
+    },
+    owned_by: {
+      id: "11446498",
+      type: "user",
+      name: "Aaron Levie",
+      login: "ceo@example.com",
+    },
     item_status: "active",
     parent: { id: "0", type: "folder", name: "All Files" },
   },

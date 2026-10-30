@@ -13,7 +13,7 @@ export const findFolderForSharedLink = action({
   performSafety: "safe",
   perform: async (context, params) => {
     const sharedLink = params.sharedLink;
-    const sharedLinkPassword = params.sharedLinkPassword || null;
+    const sharedLinkPassword = params.sharedLinkPassword;
     const fields = params.fields || null;
 
     const client = createBoxHttpClient(
@@ -23,7 +23,9 @@ export const findFolderForSharedLink = action({
 
     const { data } = await client.get(SHARED_ITEMS_PATH, {
       headers: {
-        boxapi: `shared_link=${sharedLink}&shared_link_password=${sharedLinkPassword}`,
+        boxapi: sharedLinkPassword
+          ? `shared_link=${sharedLink}&shared_link_password=${sharedLinkPassword}`
+          : `shared_link=${sharedLink}`,
       },
       params: {
         fields,

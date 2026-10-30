@@ -5,7 +5,7 @@ import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import type { CreateWebhookBody } from "../../types";
-import { assertTargetType } from "../../util";
+import { assertTargetType, getBoxErrorStatus } from "../../util";
 
 export const createWebhook = action({
   display: {
@@ -41,7 +41,7 @@ export const createWebhook = action({
       });
       data = created.rawData;
     } catch (error) {
-      if ((error as Record<string, unknown>)?.statusCode === HTTP_CONFLICT) {
+      if (getBoxErrorStatus(error) === HTTP_CONFLICT) {
         logger.warn(
           `Skipping creation of webhook. A webhook with this target (${targetId}), application, and user already exists.`,
         );

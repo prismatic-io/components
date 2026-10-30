@@ -6,7 +6,6 @@ export const uploadFileOutputSchema = {
     total_count: { type: "integer" },
     entries: { type: "array", items: fileFullSchema },
   },
-  required: ["total_count", "entries"],
 };
 
 export const getFileDownloadUrlOutputSchema = {

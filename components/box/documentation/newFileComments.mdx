@@ -35,7 +35,7 @@ With batching off a downstream step reads `body.data.newComments.data`. With bat
 
 #### Returned Data
 
-The trigger returns an array of newly created comments. Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns an array of newly created comments. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example returned data structure</summary>
@@ -57,6 +57,24 @@ The trigger returns an array of newly created comments. Fields shown are represe
         }
       ]
     }
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `newComments` object is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "new",
+  "record": {
+    "id": "1234567890",
+    "message": "Please review the updated section on page 3",
+    "created_at": "2024-11-10T18:07:45Z"
   }
 }
 ```

@@ -4,7 +4,7 @@ Unlike the Managed Webhook trigger, this trigger does not create or delete the u
 
 #### How It Works
 
-If an incoming request carries a `box-signature-primary` or `box-signature-secondary` header, the trigger verifies the payload signature before the flow runs. Requests that fail validation are rejected with an error.
+When a signature key is configured, the trigger verifies the `box-signature-primary` or `box-signature-secondary` header of every incoming request before the flow runs. Requests that fail validation, including requests that carry no signature header at all, are rejected with an error.
 
 The signature keys used for validation can come from either of two places:
 
@@ -13,7 +13,7 @@ The signature keys used for validation can come from either of two places:
 
 The trigger prefers the values configured on its own inputs and falls back to cross-flow state when an input is left blank. This means a webhook created directly in the Box Developer Console, without ever running the **Create Webhook** action, can now be verified by pasting the signature keys straight into the trigger's inputs.
 
-If neither signature header is present, the payload is passed through without verification.
+If no signature key is configured on the trigger or in cross-flow state, an unsigned request is passed through without verification.
 
 #### Configuration
 

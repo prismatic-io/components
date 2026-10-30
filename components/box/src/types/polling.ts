@@ -14,30 +14,31 @@ export interface NewOrUpdatedFilesResult<T> {
   };
 }
 
-export interface BoxChangesObject {
-  newFiles?: { data: Record<string, unknown>[]; polledNoChanges: boolean };
-  updatedFiles?: { data: Record<string, unknown>[]; polledNoChanges: boolean };
+interface PolledCollection<T = Record<string, unknown>> {
+  data: T[];
+  polledNoChanges: boolean;
 }
 
-export interface BoxRecordChange {
-  changeType: "new" | "updated";
+interface BoxChange<TChange extends string> {
+  changeType: TChange;
   record: Record<string, unknown>;
 }
+
+export interface BoxChangesObject {
+  newFiles?: PolledCollection;
+  updatedFiles?: PolledCollection;
+}
+
+export type BoxRecordChange = BoxChange<"new" | "updated">;
 
 export interface BoxFolderChangesObject {
-  newFolders?: { data: Record<string, unknown>[]; polledNoChanges: boolean };
+  newFolders?: PolledCollection;
 }
 
-export interface BoxFolderChange {
-  changeType: "new";
-  record: Record<string, unknown>;
-}
+export type BoxFolderChange = BoxChange<"new">;
 
 export interface BoxCommentChangesObject {
-  newComments?: { data: Record<string, unknown>[] };
+  newComments?: Omit<PolledCollection, "polledNoChanges">;
 }
 
-export interface BoxCommentChange {
-  changeType: "new";
-  record: Record<string, unknown>;
-}
+export type BoxCommentChange = BoxChange<"new">;

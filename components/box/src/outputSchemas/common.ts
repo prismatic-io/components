@@ -18,7 +18,7 @@ export const folderMiniSchema = {
     sequence_id: { type: ["string", "null"] },
     name: { type: "string" },
   },
-  required: ["id", "type", "name"],
+  required: ["id", "type"],
 };
 
 export const fileVersionMiniSchema = {
@@ -42,7 +42,7 @@ export const fileMiniSchema = {
     sha1: { type: "string" },
     file_version: fileVersionMiniSchema,
   },
-  required: ["id", "type", "name"],
+  required: ["id", "type"],
 };
 
 export const pathCollectionSchema = {
@@ -82,8 +82,35 @@ export const sharedLinkSchema = {
     },
     download_count: { type: "integer" },
     preview_count: { type: "integer" },
+    one_time_passcode: {
+      type: "object",
+      properties: {
+        mode: { type: "string" },
+        allowlist: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              type: { type: "string", enum: ["email", "domain"] },
+              value: { type: "string" },
+              created_at: { type: "string", format: "date-time" },
+              created_by: {
+                type: "object",
+                properties: {
+                  id: { type: "string" },
+                  type: { type: "string", enum: ["user"] },
+                },
+                required: ["id", "type"],
+              },
+            },
+            required: ["type", "value", "created_at", "created_by"],
+          },
+        },
+      },
+      required: ["mode"],
+    },
   },
-  required: ["url", "access"],
+  required: ["url"],
 };
 
 export const nullableSharedLinkSchema = {
@@ -122,107 +149,6 @@ export const collectionSchema = {
 export const metadataSchema = {
   type: "object" as const,
   additionalProperties: true,
-};
-
-export const folderFullSchema = {
-  type: "object" as const,
-  properties: {
-    id: { type: "string" },
-    type: { type: "string", enum: ["folder"] },
-    etag: { type: ["string", "null"] },
-    sequence_id: { type: ["string", "null"] },
-    name: { type: "string" },
-    created_at: { type: ["string", "null"], format: "date-time" },
-    modified_at: { type: ["string", "null"], format: "date-time" },
-    description: { type: "string" },
-    size: { type: "integer" },
-    path_collection: pathCollectionSchema,
-    created_by: userMiniSchema,
-    modified_by: userMiniSchema,
-    trashed_at: { type: ["string", "null"], format: "date-time" },
-    purged_at: { type: ["string", "null"], format: "date-time" },
-    content_created_at: { type: ["string", "null"], format: "date-time" },
-    content_modified_at: { type: ["string", "null"], format: "date-time" },
-    owned_by: userMiniSchema,
-    shared_link: nullableSharedLinkSchema,
-    folder_upload_email: {
-      type: ["object", "null"],
-      properties: {
-        access: { type: "string", enum: ["open", "collaborators"] },
-        email: { type: "string", format: "email" },
-      },
-    },
-    parent: { ...folderMiniSchema, type: ["object", "null"] },
-    item_status: { type: "string", enum: ["active", "trashed", "deleted"] },
-    item_collection: {
-      type: "object",
-      properties: {
-        total_count: { type: "integer" },
-        offset: { type: "integer" },
-        limit: { type: "integer" },
-        entries: { type: "array", items: { type: "object" } },
-        order: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              by: { type: "string" },
-              direction: { type: "string", enum: ["ASC", "DESC"] },
-            },
-          },
-        },
-      },
-    },
-    sync_state: {
-      type: "string",
-      enum: ["synced", "not_synced", "partially_synced"],
-    },
-    has_collaborations: { type: "boolean" },
-    permissions: {
-      type: "object",
-      properties: {
-        can_delete: { type: "boolean" },
-        can_download: { type: "boolean" },
-        can_invite_collaborator: { type: "boolean" },
-        can_rename: { type: "boolean" },
-        can_set_share_access: { type: "boolean" },
-        can_share: { type: "boolean" },
-        can_upload: { type: "boolean" },
-        can_apply_watermark: { type: "boolean" },
-      },
-    },
-    tags: { type: "array", items: { type: "string" } },
-    can_non_owners_invite: { type: "boolean" },
-    is_externally_owned: { type: "boolean" },
-    metadata: metadataSchema,
-    is_collaboration_restricted_to_enterprise: { type: "boolean" },
-    allowed_shared_link_access_levels: {
-      type: "array",
-      items: { type: "string", enum: ["open", "company", "collaborators"] },
-    },
-    allowed_invitee_roles: {
-      type: "array",
-      items: {
-        type: "string",
-        enum: [
-          "editor",
-          "viewer",
-          "previewer",
-          "uploader",
-          "previewer uploader",
-          "viewer uploader",
-          "co-owner",
-        ],
-      },
-    },
-    watermark_info: watermarkInfoSchema,
-    is_accessible_via_shared_link: { type: "boolean" },
-    can_non_owners_view_collaborators: { type: "boolean" },
-    classification: classificationSchema,
-    is_associated_with_app_item: { type: "boolean" },
-    collections: { type: "array", items: collectionSchema },
-  },
-  required: ["id", "type", "name"],
 };
 
 export const fileFullSchema = {
@@ -300,16 +226,32 @@ export const fileFullSchema = {
           items: {
             type: "object",
             properties: {
-              scope: { type: "string" },
+              scope: {
+                type: "string",
+                enum: [
+                  "annotation_edit",
+                  "annotation_view_all",
+                  "annotation_view_self",
+                  "base_explorer",
+                  "base_picker",
+                  "base_preview",
+                  "base_upload",
+                  "item_delete",
+                  "item_download",
+                  "item_preview",
+                  "item_rename",
+                  "item_share",
+                  "item_upload",
+                  "item_read",
+                ],
+              },
               object: {
                 type: "object",
                 properties: {
-                  id: { type: "string" },
-                  type: { type: "string" },
-                  etag: { type: ["string", "null"] },
-                  sequence_id: { type: ["string", "null"] },
-                  name: { type: "string" },
+                  ...fileMiniSchema.properties,
+                  type: { type: "string", enum: ["folder", "file"] },
                 },
+                required: ["id", "type"],
               },
             },
           },
@@ -396,41 +338,121 @@ export const fileFullSchema = {
       items: { type: "string", enum: ["open", "company", "collaborators"] },
     },
   },
-  required: ["id", "type", "name"],
+  required: ["id", "type"],
 };
 
 export const folderItemSchema = {
   type: "object" as const,
   properties: {
-    id: { type: "string" },
+    ...fileFullSchema.properties,
     type: { type: "string", enum: ["file", "folder", "web_link"] },
+    url: { type: "string", format: "uri" },
+    created_at: { type: ["string", "null"], format: "date-time" },
+    modified_at: { type: ["string", "null"], format: "date-time" },
+  },
+  required: ["id", "type"],
+  additionalProperties: true,
+};
+
+export const folderFullSchema = {
+  type: "object" as const,
+  properties: {
+    id: { type: "string" },
+    type: { type: "string", enum: ["folder"] },
     etag: { type: ["string", "null"] },
     sequence_id: { type: ["string", "null"] },
     name: { type: "string" },
-    sha1: { type: "string" },
-    file_version: fileVersionMiniSchema,
-    url: { type: "string", format: "uri" },
+    created_at: { type: ["string", "null"], format: "date-time" },
+    modified_at: { type: ["string", "null"], format: "date-time" },
     description: { type: "string" },
     size: { type: "integer" },
     path_collection: pathCollectionSchema,
-    created_at: { type: ["string", "null"], format: "date-time" },
-    modified_at: { type: ["string", "null"], format: "date-time" },
+    created_by: userMiniSchema,
+    modified_by: userMiniSchema,
     trashed_at: { type: ["string", "null"], format: "date-time" },
     purged_at: { type: ["string", "null"], format: "date-time" },
     content_created_at: { type: ["string", "null"], format: "date-time" },
     content_modified_at: { type: ["string", "null"], format: "date-time" },
-    created_by: userMiniSchema,
-    modified_by: userMiniSchema,
     owned_by: userMiniSchema,
     shared_link: nullableSharedLinkSchema,
+    folder_upload_email: {
+      type: ["object", "null"],
+      properties: {
+        access: { type: "string", enum: ["open", "collaborators"] },
+        email: { type: "string", format: "email" },
+      },
+    },
     parent: { ...folderMiniSchema, type: ["object", "null"] },
     item_status: { type: "string", enum: ["active", "trashed", "deleted"] },
-    collections: { type: "array", items: collectionSchema },
+    item_collection: {
+      type: "object",
+      properties: {
+        total_count: { type: "integer" },
+        offset: { type: "integer" },
+        limit: { type: "integer" },
+        next_marker: { type: ["string", "null"] },
+        prev_marker: { type: ["string", "null"] },
+        entries: { type: "array", items: folderItemSchema },
+        order: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              by: { type: "string" },
+              direction: { type: "string", enum: ["ASC", "DESC"] },
+            },
+          },
+        },
+      },
+    },
+    sync_state: {
+      type: "string",
+      enum: ["synced", "not_synced", "partially_synced"],
+    },
+    has_collaborations: { type: "boolean" },
+    permissions: {
+      type: "object",
+      properties: {
+        can_delete: { type: "boolean" },
+        can_download: { type: "boolean" },
+        can_invite_collaborator: { type: "boolean" },
+        can_rename: { type: "boolean" },
+        can_set_share_access: { type: "boolean" },
+        can_share: { type: "boolean" },
+        can_upload: { type: "boolean" },
+        can_apply_watermark: { type: "boolean" },
+      },
+    },
+    tags: { type: "array", items: { type: "string" } },
+    can_non_owners_invite: { type: "boolean" },
+    is_externally_owned: { type: "boolean" },
+    metadata: metadataSchema,
+    is_collaboration_restricted_to_enterprise: { type: "boolean" },
     allowed_shared_link_access_levels: {
       type: "array",
       items: { type: "string", enum: ["open", "company", "collaborators"] },
     },
+    allowed_invitee_roles: {
+      type: "array",
+      items: {
+        type: "string",
+        enum: [
+          "editor",
+          "viewer",
+          "previewer",
+          "uploader",
+          "previewer uploader",
+          "viewer uploader",
+          "co-owner",
+        ],
+      },
+    },
+    watermark_info: watermarkInfoSchema,
+    is_accessible_via_shared_link: { type: "boolean" },
+    can_non_owners_view_collaborators: { type: "boolean" },
+    classification: classificationSchema,
+    is_associated_with_app_item: { type: "boolean" },
+    collections: { type: "array", items: collectionSchema },
   },
-  required: ["id", "type", "name"],
-  additionalProperties: true,
+  required: ["id", "type"],
 };

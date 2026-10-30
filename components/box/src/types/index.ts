@@ -1,3 +1,4 @@
+export * from "./client";
 export * from "./common";
 export * from "./folders";
 export * from "./polling";

@@ -63,5 +63,5 @@ export const getCurrentUserOutputSchema = {
     is_platform_access_only: { type: "boolean" },
     external_app_user_id: { type: "string" },
   },
-  required: ["id", "type", "name", "login"],
+  required: ["id", "type"],
 };

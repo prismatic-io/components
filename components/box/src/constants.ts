@@ -16,7 +16,12 @@ export const SHARED_LINK_FIELD = "shared_link";
 
 export const SHARED_ITEMS_PATH = "/shared_items";
 
+export const SHARED_LINK_PERMISSION_DOWNLOAD = "can_download";
+
+export const SHARED_LINK_PERMISSION_PREVIEW = "can_preview";
+
 export const HTTP_CONFLICT = 409;
+export const HTTP_NOT_FOUND = 404;
 
 export const BOX_SIGNATURE_PRIMARY_HEADER = "box-signature-primary";
 export const BOX_SIGNATURE_SECONDARY_HEADER = "box-signature-secondary";

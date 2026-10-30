@@ -3,6 +3,7 @@ import {
   BOX_SIGNATURE_PRIMARY_HEADER,
   BOX_SIGNATURE_SECONDARY_HEADER,
 } from "../constants";
+import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { validateBoxWebhookSignature } from "../util";
 
@@ -28,16 +29,19 @@ export const webhook = trigger({
     const primarySignature = lowerHeaders[BOX_SIGNATURE_PRIMARY_HEADER];
     const secondarySignature = lowerHeaders[BOX_SIGNATURE_SECONDARY_HEADER];
 
-    if (primarySignature || secondarySignature) {
+    const primaryKey =
+      primarySignatureKey ||
+      (context.crossFlowState.primarySignatureKey as string | undefined);
+    const secondaryKey =
+      secondarySignatureKey ||
+      (context.crossFlowState.secondarySignatureKey as string | undefined);
+
+    if (primaryKey || secondaryKey || primarySignature || secondarySignature) {
       const isValid = validateBoxWebhookSignature({
         body: util.types.toString(rawBody.data),
         headers: lowerHeaders,
-        primaryKey:
-          primarySignatureKey ||
-          (context.crossFlowState.primarySignatureKey as string | undefined),
-        secondaryKey:
-          secondarySignatureKey ||
-          (context.crossFlowState.secondarySignatureKey as string | undefined),
+        primaryKey,
+        secondaryKey,
       });
 
       if (!isValid) {
@@ -52,6 +56,7 @@ export const webhook = trigger({
     });
   },
   inputs: webhookInputs,
+  examplePayload: webhookExamplePayload,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });

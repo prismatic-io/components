@@ -1,8 +1,9 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { FILE_TYPE, FOLDER_TYPE } from "../../constants";
 import { deleteObjectExamplePayload } from "../../examplePayloads";
 import { deleteObjectInputs } from "../../inputs";
+import { deleteObjectOutputSchema } from "../../outputSchemas";
 import { getPathEntries } from "../../util";
 
 export const deleteObject = action({
@@ -33,5 +34,9 @@ export const deleteObject = action({
     data: deleteObjectExamplePayload.data,
   }),
   inputs: deleteObjectInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteObjectOutputSchema,
+  }),
   examplePayload: deleteObjectExamplePayload,
 });

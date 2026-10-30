@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, limit, marker, offset } from "./common";
 
-export const contentType = input({
+const contentType = input({
   label: "Content Type",
   placeholder: "Select content type",
   comments: "The type of content to select (files, folders, or both).",

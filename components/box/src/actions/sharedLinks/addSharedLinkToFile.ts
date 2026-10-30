@@ -4,7 +4,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { addSharedLinkToFileExamplePayload } from "../../examplePayloads";
 import { addSharedLinkToFileInputs } from "../../inputs";
 import { addSharedLinkToFileOutputSchema } from "../../outputSchemas";
-import { sharedLinkVanityUrl } from "../../util";
+import { sharedLinkEffectivePermission, sharedLinkVanityUrl } from "../../util";
 
 export const addSharedLinkToFile = action({
   display: {
@@ -14,7 +14,6 @@ export const addSharedLinkToFile = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const fileId = params.fileId;
-    const sharedLink = params.fields;
     const sharedLinkAccess = params.sharedLinkAccess;
     const sharedLinkPassword =
       params.additionalFields.sharedLinkPassword || null;
@@ -39,7 +38,6 @@ export const addSharedLinkToFile = action({
 
     const { data } = await client.put(`/files/${fileId}`, body, {
       params: {
-        sharedLink,
         fields: SHARED_LINK_FIELD,
       },
     });
@@ -72,9 +70,7 @@ export const addSharedLinkToFile = action({
           ...addSharedLinkToFileExamplePayload.data.shared_link,
           access: sharedLinkAccess,
           effective_access: sharedLinkAccess,
-          effective_permission: permissions.can_download
-            ? "can_download"
-            : "can_preview",
+          effective_permission: sharedLinkEffectivePermission(permissions),
           is_password_enabled: Boolean(sharedLinkPassword),
           permissions,
           vanity_url: sharedLinkVanityUrl(sharedLinkVanityName),

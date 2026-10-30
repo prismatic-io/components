@@ -1,4 +1,37 @@
 import { util } from "@prismatic-io/spectral";
+import {
+  LOOK_BACK_DATE_PATTERN,
+  SHARED_LINK_PERMISSION_DOWNLOAD,
+  SHARED_LINK_PERMISSION_PREVIEW,
+} from "../constants";
+
+export const lookBackDateClean = (value: unknown): string => {
+  const str = util.types.toString(value).trim();
+  if (!str) return "";
+
+  if (!LOOK_BACK_DATE_PATTERN.test(str)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+
+  const parts = str.split("-");
+  const year = util.types.toNumber(parts[0]);
+  const month = util.types.toNumber(parts[1]);
+  const day = util.types.toNumber(parts[2]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
+  }
+
+  if (parsed > new Date()) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+
+  return str;
+};
 
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
@@ -34,3 +67,10 @@ export const sharedLinkVanityUrl = (vanityName: unknown): string | null => {
   const name = util.types.toString(vanityName);
   return name ? `https://app.box.com/v/${name}` : null;
 };
+
+export const sharedLinkEffectivePermission = (
+  permissions: Record<string, unknown>,
+): string =>
+  permissions.can_download
+    ? SHARED_LINK_PERMISSION_DOWNLOAD
+    : SHARED_LINK_PERMISSION_PREVIEW;

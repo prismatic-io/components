@@ -4,7 +4,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { addSharedLinkToFolderExamplePayload } from "../../examplePayloads";
 import { addSharedLinkToFolderInputs } from "../../inputs";
 import { addSharedLinkToFolderOutputSchema } from "../../outputSchemas";
-import { sharedLinkVanityUrl } from "../../util";
+import { sharedLinkEffectivePermission, sharedLinkVanityUrl } from "../../util";
 
 export const addSharedLinkToFolder = action({
   display: {
@@ -14,7 +14,6 @@ export const addSharedLinkToFolder = action({
   performSafety: "notAllowed",
   perform: async (context, params) => {
     const folderId = params.folderId;
-    const sharedLink = params.sharedLink;
     const sharedLinkAccess = params.sharedLinkAccess;
     const sharedLinkPassword = params.additionalFields.sharedLinkPassword
       ? params.additionalFields.sharedLinkPassword
@@ -47,7 +46,6 @@ export const addSharedLinkToFolder = action({
       },
       {
         params: {
-          sharedLink,
           fields: SHARED_LINK_FIELD,
         },
       },
@@ -82,9 +80,7 @@ export const addSharedLinkToFolder = action({
           ...addSharedLinkToFolderExamplePayload.data.shared_link,
           access: sharedLinkAccess,
           effective_access: sharedLinkAccess,
-          effective_permission: permissions.can_download
-            ? "can_download"
-            : "can_preview",
+          effective_permission: sharedLinkEffectivePermission(permissions),
           is_password_enabled: Boolean(sharedLinkPassword),
           permissions,
           vanity_url: sharedLinkVanityUrl(sharedLinkVanityName),

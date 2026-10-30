@@ -35,7 +35,7 @@ export const moveObject = action({
     } = toPathEntries.slice(-1)[0];
 
     if (destType !== FOLDER_TYPE) {
-      throw Error(`'${destName} is not a folder`);
+      throw Error(`'${destName}' is not a folder`);
     }
 
     let data: unknown;

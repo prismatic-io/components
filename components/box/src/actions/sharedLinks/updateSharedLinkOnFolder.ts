@@ -4,7 +4,7 @@ import { SHARED_LINK_FIELD } from "../../constants";
 import { updateSharedLinkOnFolderExamplePayload } from "../../examplePayloads";
 import { updateSharedLinkOnFolderInputs } from "../../inputs";
 import { updateSharedLinkOnFolderOutputSchema } from "../../outputSchemas";
-import { sharedLinkVanityUrl } from "../../util";
+import { sharedLinkEffectivePermission, sharedLinkVanityUrl } from "../../util";
 
 export const updateSharedLinkOnFolder = action({
   display: {
@@ -82,9 +82,7 @@ export const updateSharedLinkOnFolder = action({
           url: sharedLink,
           access: sharedLinkAccess,
           effective_access: sharedLinkAccess,
-          effective_permission: permissions.can_download
-            ? "can_download"
-            : "can_preview",
+          effective_permission: sharedLinkEffectivePermission(permissions),
           is_password_enabled: Boolean(sharedLinkPassword),
           permissions,
           vanity_url: sharedLinkVanityUrl(sharedLinkVanityName),

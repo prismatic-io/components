@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { WEBHOOK_TRIGGER_TYPES } from "../types";
-import { humanizeEnumLabel, toStringList } from "../util";
+import { cleanString, humanizeEnumLabel, toStringList } from "../util";
 
 export const connectionInput = input({
   label: "Connection",
@@ -38,7 +38,7 @@ export const marker = input({
   comments:
     "The pagination marker returned by a previous request to retrieve the next page of results.",
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 
 export const offset = input({
@@ -108,7 +108,7 @@ export const signatureKey = input({
   comments:
     "A signature key used to validate webhook requests. See [Box Webhook Signatures](https://developer.box.com/guides/webhooks/v2/signatures-v2) for details.",
   type: "password",
-  example: "3T2eTfOvJbAIRoBpXsXPmq0gn8CmF5Q7",
+  example: "example-primary-signature-key-0000",
   required: false,
   clean: util.types.toString,
 });

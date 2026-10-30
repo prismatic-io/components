@@ -1,7 +1,7 @@
 import { input } from "@prismatic-io/spectral";
 import { connectionInput, path } from "./common";
 
-export const fileContents = input({
+const fileContents = input({
   label: "File Contents",
   placeholder: "Select file data from previous step",
   type: "data",

@@ -69,7 +69,6 @@ export const createWebhookOutputSchema = {
       },
     },
   },
-  required: ["id", "type"],
 };
 
 export const listWebhooksOutputSchema = {
@@ -86,9 +85,19 @@ export const listWebhooksOutputSchema = {
           type: { type: "string", enum: ["webhook"] },
           target: webhookTargetSchema,
         },
-        required: ["id", "type"],
       },
     },
   },
   required: ["entries"],
+};
+
+export const deleteWebhookOutputSchema = {
+  type: "null" as const,
+};
+
+export const deleteInstanceWebhooksOutputSchema = {
+  type: "object" as const,
+  properties: {},
+  required: [] as string[],
+  additionalProperties: false,
 };

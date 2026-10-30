@@ -19,6 +19,9 @@ export const getSharedLinkForFile = action({
         fields: SHARED_LINK_FIELD,
       },
     });
+    if (!data.shared_link) {
+      throw new Error(`File ${fileId} has no shared link.`);
+    }
     return {
       data: {
         sharedLink: data.shared_link.url,
