@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listIssueFieldsExamplePayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
+import { listIssueFieldsInputs } from "../../inputs";
+import { listIssueFieldsOutputSchema } from "../../outputSchemas";
 
 export const listIssueFields = action({
   display: {
     label: "List Issue Fields",
     description: "List all non-custom issue fields.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -16,8 +18,11 @@ export const listIssueFields = action({
     const { data } = await client.get("/field");
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-  },
+  examplePerform: async () => listIssueFieldsExamplePayload,
+  inputs: listIssueFieldsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listIssueFieldsOutputSchema,
+  }),
   examplePayload: listIssueFieldsExamplePayload,
 });

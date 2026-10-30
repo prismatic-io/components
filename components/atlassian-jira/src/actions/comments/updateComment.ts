@@ -1,20 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { updateCommentExamplePayload } from "../../examplePayloads";
-import {
-  comment,
-  commentId,
-  connectionInput,
-  dynamicValues,
-  fieldValues,
-  issueId,
-} from "../../inputs";
+import { updateCommentInputs } from "../../inputs";
+import { updateCommentOutputSchema } from "../../outputSchemas";
 
 export const updateComment = action({
   display: {
     label: "Update Comment",
     description: "Update the contents and metadata of an existing comment.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -44,13 +39,11 @@ export const updateComment = action({
     );
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    issueId,
-    commentId,
-    comment,
-    dynamicValues,
-    fieldValues,
-  },
+  examplePerform: async () => updateCommentExamplePayload,
+  inputs: updateCommentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCommentOutputSchema,
+  }),
   examplePayload: updateCommentExamplePayload,
 });

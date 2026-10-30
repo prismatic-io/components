@@ -1,18 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { queryV3ExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  expand,
-  maxResults,
-  searchString,
-} from "../../inputs";
+import { queryV3Inputs } from "../../inputs";
+import { queryV3OutputSchema } from "../../outputSchemas";
 
 export const queryV3 = action({
   display: {
     label: "Query",
     description: "Search the entire Jira site using a JQL query.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -27,14 +24,11 @@ export const queryV3 = action({
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    searchString: {
-      ...searchString,
-      example: `status IN ("To Do", "In Progress", "Closed")`,
-    },
-    expand,
-    maxResults,
-  },
+  examplePerform: async () => queryV3ExamplePayload,
+  inputs: queryV3Inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: queryV3OutputSchema,
+  }),
   examplePayload: queryV3ExamplePayload,
 });

@@ -1,19 +1,14 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { createV3Client } from "../connections/auth";
-import { connectionInput, projectId } from "../inputs";
+import { createV3Client } from "../client";
+import { selectVersionExamplePayload } from "../examplePayloads";
+import { selectVersionInputs } from "../inputs";
 
 const selectVersion = dataSource({
   display: {
     label: "Select Version",
     description: "Select a version from the specified project.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    projectId: {
-      ...projectId,
-      dataSource: undefined,
-    },
-  },
+  inputs: selectVersionInputs,
   perform: async (_context, { jiraConnection, projectId }) => {
     const client = await createV3Client(jiraConnection);
 
@@ -55,12 +50,7 @@ const selectVersion = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      { label: "New Version 1", key: "10000" },
-      { label: "New Version 5", key: "10005" },
-    ],
-  },
+  examplePayload: selectVersionExamplePayload,
 });
 
 export default {

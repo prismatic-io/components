@@ -1,6 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { createV3Client } from "../connections/auth";
-import { connectionInput } from "../inputs";
+import { createV3Client } from "../client";
+import { selectWebhookExamplePayload } from "../examplePayloads";
+import { selectWebhookInputs } from "../inputs";
 import type { WebhookData } from "../types";
 import { getPaginatedData, isBasicAuth } from "../util";
 
@@ -9,9 +10,7 @@ const selectWebhook = dataSource({
     label: "Select Webhook",
     description: "Select a webhook.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-  },
+  inputs: selectWebhookInputs,
   perform: async (_context, { jiraConnection }) => {
     const useBasicAuth = isBasicAuth(jiraConnection);
     const client = await createV3Client(jiraConnection, false, useBasicAuth);
@@ -31,6 +30,7 @@ const selectWebhook = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectWebhookExamplePayload,
 });
 
 export default {

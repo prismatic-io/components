@@ -1,43 +1,29 @@
-import { action, util } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { createVersionExamplePayload } from "../../examplePayloads";
-import {
-  archived,
-  connectionInput,
-  description,
-  dynamicValues,
-  fieldValues,
-  projectId,
-  projectKey,
-  releaseDate,
-  released,
-  startDate,
-  versionName,
-} from "../../inputs";
+import { createVersionInputs } from "../../inputs";
+import { createVersionOutputSchema } from "../../outputSchemas";
 
 export const createVersion = action({
   display: {
     label: "Create Version",
     description: "Create a new version.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
       context.debug.enabled,
     );
     const { data } = await client.post("/version", {
-      description: util.types.toString(params.description) || undefined,
-      name: util.types.toString(params.versionName),
-      archived: util.types.toBool(params.archived) || undefined,
-      released: util.types.toBool(params.released) || undefined,
-      startDate: params.startDate
-        ? util.types.toString(params.startDate)
-        : undefined,
-      releaseDate: params.releaseDate
-        ? util.types.toString(params.releaseDate)
-        : undefined,
-      project: util.types.toString(params.projectKey) || undefined,
-      projectId: util.types.toInt(params.projectId) || undefined,
+      description: params.description,
+      name: params.versionName,
+      archived: params.releaseDetails.archived,
+      released: params.releaseDetails.released,
+      startDate: params.releaseDetails.startDate,
+      releaseDate: params.releaseDetails.releaseDate,
+      project: params.projectKey,
+      projectId: util.types.toInt(params.projectId),
       ...params.dynamicValues,
       ...params.fieldValues,
     });
@@ -46,18 +32,11 @@ export const createVersion = action({
       data,
     };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    description,
-    versionName,
-    archived,
-    released,
-    startDate,
-    releaseDate,
-    projectKey,
-    projectId,
-    dynamicValues,
-    fieldValues,
-  },
+  examplePerform: async () => createVersionExamplePayload,
+  inputs: createVersionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createVersionOutputSchema,
+  }),
   examplePayload: createVersionExamplePayload,
 });

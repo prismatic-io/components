@@ -33,16 +33,17 @@ export const listIssueFieldsExamplePayload = {
 export const listIssueCustomFieldsExamplePayload = {
   data: [
     {
-      clauseNames: [],
+      clauseNames: ["cf[10000]", "Story Points", "Story Points[Number]"],
       custom: true,
-      id: "statuscategorychangedate",
-      key: "statuscategorychangedate",
-      name: "Status Category Changed",
+      id: "customfield_10000",
+      key: "customfield_10000",
+      name: "Story Points",
       navigable: true,
-      orderable: false,
+      orderable: true,
       schema: {
-        type: "datetime",
-        system: "statuscategorychangedate",
+        type: "number",
+        custom: "com.atlassian.jira.plugin.system.customfieldtypes:float",
+        customId: 10000,
       },
       searchable: true,
     },
@@ -51,10 +52,7 @@ export const listIssueCustomFieldsExamplePayload = {
 
 export const queryV3ExamplePayload = {
   data: {
-    expand: "names,schema",
-    startAt: 0,
-    maxResults: 50,
-    total: 2,
+    isLast: true,
     issues: [
       {
         expand: "",
@@ -227,4 +225,12 @@ export const listPrioritiesExamplePayload = {
       },
     ],
   },
+};
+
+export const selectPriorityExamplePayload = {
+  result: [
+    { label: "Highest", key: "1" },
+    { label: "High", key: "2" },
+    { label: "Medium", key: "3" },
+  ],
 };

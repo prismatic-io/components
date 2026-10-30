@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { getVersionExamplePayload } from "../../examplePayloads";
-import { connectionInput, versionId } from "../../inputs";
+import { getVersionInputs } from "../../inputs";
+import { getVersionOutputSchema } from "../../outputSchemas";
 
 export const getVersion = action({
   display: {
     label: "Get Version",
     description: "Get the information and metadata of an existing version.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -16,9 +18,10 @@ export const getVersion = action({
     const { data } = await client.get(`/version/${params.versionId}`);
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    versionId,
-  },
+  inputs: getVersionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getVersionOutputSchema,
+  }),
   examplePayload: getVersionExamplePayload,
 });

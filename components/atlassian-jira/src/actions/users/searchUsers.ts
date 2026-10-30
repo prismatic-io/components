@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { searchUsersExamplePayload } from "../../examplePayloads";
-import { connectionInput, searchString } from "../../inputs";
+import { searchUsersInputs } from "../../inputs";
+import { searchUsersOutputSchema } from "../../outputSchemas";
 
 export const searchUsers = action({
   display: {
     label: "Search Users",
-    description: "Return a single user that matches the given string of text.",
+    description: "Return a list of users that match the given string of text.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -21,9 +23,11 @@ export const searchUsers = action({
 
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    searchString,
-  },
+  examplePerform: async () => searchUsersExamplePayload,
+  inputs: searchUsersInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: searchUsersOutputSchema,
+  }),
   examplePayload: searchUsersExamplePayload,
 });

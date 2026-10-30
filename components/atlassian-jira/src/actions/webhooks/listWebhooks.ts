@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
-import { connectionInput, fetchAll } from "../../inputs";
+import { listWebhooksInputs } from "../../inputs";
+import { listWebhooksOutputSchema } from "../../outputSchemas";
 import { getPaginatedData, isBasicAuth } from "../../util";
 
 export const listWebhooks = action({
@@ -10,10 +11,8 @@ export const listWebhooks = action({
     description:
       "List all configured webhooks, including those for other integrations.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    fetchAll,
-  },
+  inputs: listWebhooksInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const useBasicAuth = isBasicAuth(params.jiraConnection);
     const client = await createV3Client(
@@ -30,5 +29,10 @@ export const listWebhooks = action({
     );
     return { data };
   },
+  examplePerform: async () => listWebhooksExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listWebhooksOutputSchema,
+  }),
   examplePayload: listWebhooksExamplePayload,
 });

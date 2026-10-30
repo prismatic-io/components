@@ -1,5 +1,7 @@
 The Issue Events trigger manages [Jira webhook subscriptions](https://developer.atlassian.com/cloud/jira/platform/webhooks/) for an instance. This trigger handles the entire webhook lifecycle automatically.
 
+#### How It Works
+
 When the trigger is used in a flow:
 - **On Instance Deploy**: The trigger automatically creates a webhook subscription in Jira for the selected issue events (issue creation, updates, deletions, etc.). The webhook target URL is set to the instance's unique webhook URL. For OAuth connections, the webhook is registered with an expiration date and is automatically refreshed by the trigger. For Basic Auth connections, the webhook persists indefinitely.
 - **On Instance Deletion**: The trigger automatically removes the webhook subscription from Jira to ensure no orphaned webhook configurations remain after instance cleanup.
@@ -10,7 +12,7 @@ This trigger supports both OAuth 2.0 and Basic Authentication, with different we
 
 **OAuth 2.0**:
 - Webhooks expire after 30 days and require periodic refresh
-- The trigger automatically refreshes the webhook on each invocation
+- On each invocation, the trigger refreshes the webhook when fewer than 7 days remain before it expires
 - Webhook payload structure uses the [Dynamic Webhooks format](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-webhooks/#api-rest-api-3-webhook-post)
 - Requires OAuth connection with appropriate scopes
 
@@ -32,7 +34,7 @@ This trigger requires a Jira connection configured in the Atlassian Jira compone
 When configuring the trigger, select which Jira issue events should trigger the flow.
 
 <details>
-<summary>Available Events (11)</summary>
+<summary>Available Events (8)</summary>
 
 | Event | Description |
 |-------|-------------|
@@ -41,12 +43,9 @@ When configuring the trigger, select which Jira issue events should trigger the 
 | `jira:issue_deleted` | Triggered when an issue is deleted |
 | `issue_property_set` | Triggered when an issue property is set or updated |
 | `issue_property_deleted` | Triggered when an issue property is deleted |
-| `jira:worklog_updated` | Triggered when work is logged on an issue |
 | `comment_created` | Triggered when a comment is added to an issue |
 | `comment_updated` | Triggered when a comment is modified |
 | `comment_deleted` | Triggered when a comment is removed |
-| `attachment_created` | Triggered when a file is attached to an issue |
-| `attachment_deleted` | Triggered when an attachment is removed |
 
 </details>
 

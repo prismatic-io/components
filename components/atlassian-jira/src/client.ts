@@ -9,9 +9,8 @@ import {
   resolveAtlassianHost,
   validateAtlassianConnection,
 } from "atlassian-utils";
-import JiraApi from "jira-client";
-import type { JiraApiCustomOptions } from "../types";
-import { CONNECTION_KEYS, jiraBasicConnection } from "./index";
+import type { JiraApiCustomOptions } from "./types";
+import { CONNECTION_KEYS, jiraBasicConnection } from "./connections";
 
 export const downloadFile = async (
   connection: Connection,
@@ -85,16 +84,5 @@ export const createV3Client = async (
     keys: CONNECTION_KEYS,
     apiPath: restApiPath(connection),
     debug,
-  });
-};
-
-export const createNodeClient = async (
-  jiraConnection: Connection,
-): Promise<JiraApi> => {
-  const config = await getPayload(jiraConnection);
-  return new JiraApi({
-    ...config,
-    protocol: "https",
-    strictSSL: true,
   });
 };

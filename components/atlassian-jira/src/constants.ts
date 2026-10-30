@@ -27,3 +27,9 @@ export const ENDPOINTS = {
 export const ARRAY_ERROR_MESSAGE = "Records must be an array of objects";
 export const EMPTY_INPUT_ERROR_MESSAGE = "JSON Records input must not be empty";
 export const EMPTY_ARRAY_ERROR_MESSAGE = "Records array must not be empty";
+
+export const DEFAULT_MAX_RESULTS = 50;
+export const DEFAULT_START_AT = 0;
+
+export const DEFAULT_ISSUE_FIELDS =
+  "summary,status,assignee,reporter,priority,issuetype,project,created,updated";

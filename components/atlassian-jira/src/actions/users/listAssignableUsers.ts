@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listAssignableUsersExamplePayload } from "../../examplePayloads";
-import { connectionInput, maxResults, projectKey, startAt } from "../../inputs";
+import { listAssignableUsersInputs } from "../../inputs";
+import { listAssignableUsersOutputSchema } from "../../outputSchemas";
 
 export const listAssignableUsers = action({
   display: {
     label: "List Assignable Users for Project",
     description: "Return a list of users assignable to the given project.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -16,17 +18,17 @@ export const listAssignableUsers = action({
     const { data } = await client.get("/user/assignable/search", {
       params: {
         project: params.projectKey,
-        startAt: params.startAt || 0,
-        maxResults: params.maxResults || 10000,
+        startAt: params.pagination.startAt,
+        maxResults: params.pagination.maxResults,
       },
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    projectKey: { ...projectKey, required: true },
-    startAt,
-    maxResults,
-  },
+  examplePerform: async () => listAssignableUsersExamplePayload,
+  inputs: listAssignableUsersInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listAssignableUsersOutputSchema,
+  }),
   examplePayload: listAssignableUsersExamplePayload,
 });

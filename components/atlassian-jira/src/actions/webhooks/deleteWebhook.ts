@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
-import { connectionInput, webhookIdInput } from "../../inputs";
+import { createV3Client } from "../../client";
+import { deleteWebhookExamplePayload } from "../../examplePayloads";
+import { deleteWebhookInputs } from "../../inputs";
 import { isBasicAuth } from "../../util";
 
 export const deleteWebhook = action({
@@ -8,10 +9,8 @@ export const deleteWebhook = action({
     label: "Delete Webhook",
     description: "Delete a webhook by ID.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    webhookId: webhookIdInput,
-  },
+  inputs: deleteWebhookInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const useBasicAuth = isBasicAuth(params.jiraConnection);
     const client = await createV3Client(
@@ -32,5 +31,6 @@ export const deleteWebhook = action({
     });
     return { data };
   },
-  examplePayload: { data: null },
+  examplePerform: async () => deleteWebhookExamplePayload,
+  examplePayload: deleteWebhookExamplePayload,
 });

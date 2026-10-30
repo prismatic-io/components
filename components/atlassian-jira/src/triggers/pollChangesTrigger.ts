@@ -1,8 +1,8 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { createV3Client } from "../connections/auth";
+import { createV3Client } from "../client";
 import { TRIGGER_BATCH_SIZE } from "../constants";
-import { pollChangesExamplePayload } from "../examplePayloads";
-import { pollChangesInputs } from "../inputs";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+import { pollChangesTriggerInputs } from "../inputs";
 import type {
   JiraIssueChange,
   JiraIssueChangesObject,
@@ -25,9 +25,9 @@ export const pollChangesTrigger = pollingTrigger({
     description:
       "Retrieves existing and ongoing issues from Jira. Load history once, check for changes on a schedule, or both.",
   },
-  inputs: pollChangesInputs,
+  inputs: pollChangesTriggerInputs,
   allowsBranching: false,
-  examplePayload: pollChangesExamplePayload,
+  examplePayload: pollChangesTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
   triggerResolver: {

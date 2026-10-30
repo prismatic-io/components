@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listPrioritiesExamplePayload } from "../../examplePayloads";
-import { connectionInput, maxResults, startAt } from "../../inputs";
+import { listPrioritiesInputs } from "../../inputs";
+import { listPrioritiesOutputSchema } from "../../outputSchemas";
 
 export const listPriorities = action({
   display: {
     label: "List Priorities",
     description: "Return a list of all priorities.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -15,16 +17,17 @@ export const listPriorities = action({
     );
     const { data } = await client.get("/priority/search", {
       params: {
-        maxResults: params.maxResults || 50,
-        startAt: params.startAt || 0,
+        maxResults: params.pagination.maxResults,
+        startAt: params.pagination.startAt,
       },
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    maxResults,
-    startAt,
-  },
+  examplePerform: async () => listPrioritiesExamplePayload,
+  inputs: listPrioritiesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listPrioritiesOutputSchema,
+  }),
   examplePayload: listPrioritiesExamplePayload,
 });

@@ -1,17 +1,16 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { refreshWebhookExamplePayload } from "../../examplePayloads";
-import { connectionInput, webhookIdInput } from "../../inputs";
+import { refreshWebhookInputs } from "../../inputs";
+import { refreshWebhookOutputSchema } from "../../outputSchemas";
 
 export const refreshWebhook = action({
   display: {
     label: "Refresh Webhook",
     description: "Refresh a webhook expiration by ID.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    webhookId: { ...webhookIdInput, comments: "ID of the webhook to refresh" },
-  },
+  inputs: refreshWebhookInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -22,5 +21,10 @@ export const refreshWebhook = action({
     });
     return { data };
   },
+  examplePerform: async () => refreshWebhookExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: refreshWebhookOutputSchema,
+  }),
   examplePayload: refreshWebhookExamplePayload,
 });

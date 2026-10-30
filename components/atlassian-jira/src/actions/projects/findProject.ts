@@ -1,40 +1,16 @@
-import { action, input, util } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { findProjectExamplePayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
+import { findProjectInputs } from "../../inputs";
+import { findProjectOutputSchema } from "../../outputSchemas";
 
 export const findProject = action({
   display: {
     label: "Find Project",
     description: "Find a project by attribute.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    searchType: input({
-      label: "Search Type",
-      type: "string",
-      required: true,
-      model: [
-        { label: "Name", value: "name" },
-        { label: "Key", value: "key" },
-      ],
-      comments: "Attribute to search",
-      clean: (rawValue) => {
-        const value = util.types.toString(rawValue);
-        if (!["name", "key"].includes(value)) {
-          throw new Error(`Invalid Search Type provided: ${value}`);
-        }
-        return value;
-      },
-    }),
-    searchValue: input({
-      label: "Search Value",
-      type: "string",
-      required: true,
-      comments: "Value to search for",
-      clean: (rawValue) => util.types.toString(rawValue).toLowerCase().trim(),
-    }),
-  },
+  inputs: findProjectInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -47,10 +23,23 @@ export const findProject = action({
         query: params.searchValue,
       },
     });
+    const field = params.searchType === "key" ? "key" : "name";
+    const matches = (values as Array<{ key?: string; name?: string }>).filter(
+      (project) =>
+        util.types
+          .toString(project[field])
+          .toLowerCase()
+          .includes(params.searchValue),
+    );
 
     return {
-      data: values,
+      data: matches,
     };
   },
+  examplePerform: async () => findProjectExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: findProjectOutputSchema,
+  }),
   examplePayload: findProjectExamplePayload,
 });

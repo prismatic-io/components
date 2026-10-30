@@ -6,9 +6,9 @@ import {
   deleteWebhookTrigger,
   deleteWebhookTriggerBasic,
 } from "atlassian-utils";
-import { createV3Client } from "../connections/auth";
+import { createV3Client } from "../client";
 import { webhookEventsExamplePayload } from "../examplePayloads";
-import { eventsWebhookInputs } from "../inputs";
+import { webhookEventsInputs } from "../inputs";
 import { isBasicAuth, toOptionalString } from "../util";
 
 export const webhookEvents = trigger({
@@ -19,7 +19,7 @@ export const webhookEvents = trigger({
   },
   scheduleSupport: "invalid",
   synchronousResponseSupport: "invalid",
-  inputs: eventsWebhookInputs,
+  inputs: webhookEventsInputs,
   examplePayload: webhookEventsExamplePayload,
   webhookLifecycleHandlers: {
     create: async (

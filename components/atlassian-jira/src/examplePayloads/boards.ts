@@ -62,9 +62,23 @@ export const getBoardExamplePayload = {
       userAccountId: "5b10a2844c20165700ede21g",
       displayName: "Example Project",
       projectName: "Example Project",
-      projectKey: "Example Project Key",
-      projectTypeKey: "KEY",
+      projectKey: "EX",
+      projectTypeKey: "software",
       name: "Example Project",
     },
   },
+};
+
+export const selectBoardExamplePayload = {
+  result: [
+    { label: "scrum board", key: "84" },
+    { label: "kanban board", key: "92" },
+  ],
+};
+
+export const selectBoardVersionExamplePayload = {
+  result: [
+    { label: "Version 1.0", key: "10000" },
+    { label: "Version 1.1", key: "10001" },
+  ],
 };

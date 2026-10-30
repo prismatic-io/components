@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listIssueLinkTypesExamplePayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
+import { listIssueLinkTypesInputs } from "../../inputs";
+import { listIssueLinkTypesOutputSchema } from "../../outputSchemas";
 
 export const listIssueLinkTypes = action({
   display: {
     label: "List Issue Link Types",
     description: "List all available issue link types.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -16,8 +18,11 @@ export const listIssueLinkTypes = action({
     const { data } = await client.get("/issueLinkType");
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-  },
+  examplePerform: async () => listIssueLinkTypesExamplePayload,
+  inputs: listIssueLinkTypesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listIssueLinkTypesOutputSchema,
+  }),
   examplePayload: listIssueLinkTypesExamplePayload,
 });

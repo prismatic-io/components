@@ -90,8 +90,8 @@ export interface Visibility {
 
 export interface Issuelink {
   id: string;
-  outwardIssue?: WardIssue;
   type: Type;
+  outwardIssue?: WardIssue;
   inwardIssue?: WardIssue;
 }
 

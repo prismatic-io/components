@@ -1,18 +1,42 @@
 export const listAssignableUsersExamplePayload = {
   data: [
     {
-      displayName: "exampleUser",
-      accountId: "example-483204",
+      self: "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g",
+      accountId: "5b10a2844c20165700ede21g",
       accountType: "atlassian",
-      emailAddress: "someone@example.com",
+      emailAddress: "mia.krystof@example.com",
+      avatarUrls: {
+        "48x48":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10a2844c20165700ede21g/48x48.png",
+        "24x24":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10a2844c20165700ede21g/24x24.png",
+        "16x16":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10a2844c20165700ede21g/16x16.png",
+        "32x32":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10a2844c20165700ede21g/32x32.png",
+      },
+      displayName: "Mia Krystof",
       active: true,
+      timeZone: "Australia/Sydney",
     },
     {
-      displayName: "exampleUser",
-      accountId: "example-483204",
+      self: "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10ac8d82e05b22cc7d4ef5",
+      accountId: "5b10ac8d82e05b22cc7d4ef5",
       accountType: "atlassian",
-      emailAddress: "someone@example.com",
+      emailAddress: "john.doe@example.com",
+      avatarUrls: {
+        "48x48":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10ac8d82e05b22cc7d4ef5/48x48.png",
+        "24x24":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10ac8d82e05b22cc7d4ef5/24x24.png",
+        "16x16":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10ac8d82e05b22cc7d4ef5/16x16.png",
+        "32x32":
+          "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b10ac8d82e05b22cc7d4ef5/32x32.png",
+      },
+      displayName: "John Doe",
       active: true,
+      timeZone: "America/Los_Angeles",
     },
   ],
 };
@@ -74,7 +98,9 @@ export const getCurrentUserExamplePayload = {
 
 export const createUserExamplePayload = {
   data: {
-    self: "https://your-domain.atlassian.net/rest/api/2/user?username=newuser",
+    self: "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede24j",
+    accountId: "5b10a2844c20165700ede24j",
+    accountType: "atlassian",
     key: "newuser",
     name: "newuser",
     emailAddress: "newuser@example.com",

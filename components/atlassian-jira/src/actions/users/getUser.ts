@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { getUserExamplePayload } from "../../examplePayloads";
-import { accountId, connectionInput, expand } from "../../inputs";
+import { getUserInputs } from "../../inputs";
+import { getUserOutputSchema } from "../../outputSchemas";
 
 export const getUser = action({
   display: {
     label: "Get User",
     description: "Get the information and metadata of a user by ID.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -21,6 +23,10 @@ export const getUser = action({
     });
     return { data };
   },
-  inputs: { jiraConnection: connectionInput, accountId, expand },
+  inputs: getUserInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getUserOutputSchema,
+  }),
   examplePayload: getUserExamplePayload,
 });

@@ -4,7 +4,7 @@ import { lookBackDateClean, resolveJiraIssueChanges, toJqlDate } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 
 const { createV3Client } = vi.hoisted(() => ({ createV3Client: vi.fn() }));
-vi.mock("../connections/auth", () => ({
+vi.mock("../client", () => ({
   createV3Client: (...args: unknown[]) => createV3Client(...args),
 }));
 

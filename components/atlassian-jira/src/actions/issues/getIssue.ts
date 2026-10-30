@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { getIssueExamplePayload } from "../../examplePayloads";
-import { connectionInput, issueId } from "../../inputs";
+import { getIssueInputs } from "../../inputs";
+import { getIssueOutputSchema } from "../../outputSchemas";
 import { getIssueById } from "../../util";
 
 export const getIssue = action({
@@ -17,11 +18,10 @@ export const getIssue = action({
     const data = await getIssueById(client, params.issueId);
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    issueId,
-  },
-  examplePayload: {
-    data: getIssueExamplePayload.data,
-  },
+  inputs: getIssueInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getIssueOutputSchema,
+  }),
+  examplePayload: getIssueExamplePayload,
 });

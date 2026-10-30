@@ -1,4 +1,6 @@
-export const getIssueExamplePayload = {
+import type { Issue } from "../types";
+
+export const getIssueExamplePayload: { data: Issue } = {
   data: {
     fields: {
       watcher: {
@@ -235,19 +237,13 @@ export const createIssueExamplePayload = {
 };
 
 export const updateIssueExamplePayload = {
-  data: {
-    id: "10001",
-    key: "HSP-25",
-    self: "https://your-domain.atlassian.net/rest/api/3/issue/10001",
-  },
+  data: {},
 };
 
 export const searchIssuesExamplePayload = {
   data: {
-    expand: "names,schema",
-    startAt: 0,
-    maxResults: 50,
-    total: 1,
+    isLast: false,
+    nextPageToken: "CAEaAggD",
     issues: [
       {
         expand: "",
@@ -256,7 +252,7 @@ export const searchIssuesExamplePayload = {
         key: "HSP-1",
         fields: {
           summary: "Bug in authorization process",
-          issueType: {
+          issuetype: {
             name: "Bug",
             id: "1",
           },
@@ -285,10 +281,8 @@ export const searchIssuesExamplePayload = {
 
 export const listIssuesExamplePayload = {
   data: {
-    expand: "names,schema",
-    startAt: 0,
-    maxResults: 50,
-    total: 3,
+    isLast: false,
+    nextPageToken: "CAEaAggD",
     issues: [
       {
         id: "10001",
@@ -366,10 +360,7 @@ export const deleteIssueExamplePayload = {
 
 export const findIssueExamplePayload = {
   data: {
-    expand: "names,schema",
-    startAt: 0,
-    maxResults: 50,
-    total: 1,
+    isLast: true,
     issues: [
       {
         expand: "",
@@ -378,7 +369,7 @@ export const findIssueExamplePayload = {
         key: "PROJ-123",
         fields: {
           summary: "Found issue matching criteria",
-          issueType: {
+          issuetype: {
             name: "Task",
             id: "10001",
           },
@@ -426,8 +417,7 @@ export const addIssueAttachmentExamplePayload = {
 export const downloadAttachmentExamplePayload = {
   data: [
     {
-      filename: "document.pdf",
-      data: Buffer.from("base64-encoded-file-data"),
+      data: Buffer.from("%PDF-1.7\n"),
       contentType: "application/pdf",
     },
   ],
@@ -436,37 +426,13 @@ export const downloadAttachmentExamplePayload = {
 export const listIssueAttachmentsExamplePayload = {
   data: [
     {
-      self: "https://your-domain.atlassian.net/rest/api/2/attachment/10001",
-      id: "10001",
-      filename: "screenshot.png",
-      author: {
-        self: "https://your-domain.atlassian.net/rest/api/2/user?accountId=5b10ac8d82e05b22cc7d4ef5",
-        accountId: "5b10ac8d82e05b22cc7d4ef5",
-        displayName: "Jane Smith",
-        active: true,
-      },
-      created: "2024-01-15T10:30:00.000+0000",
-      size: 256000,
+      id: 10001,
       mimeType: "image/png",
-      content:
-        "https://your-domain.atlassian.net/secure/attachment/10001/screenshot.png",
     },
     {
-      self: "https://your-domain.atlassian.net/rest/api/2/attachment/10002",
-      id: "10002",
-      filename: "requirements.docx",
-      author: {
-        self: "https://your-domain.atlassian.net/rest/api/2/user?accountId=5b10ac8d82e05b22cc7d4ef5",
-        accountId: "5b10ac8d82e05b22cc7d4ef5",
-        displayName: "Jane Smith",
-        active: true,
-      },
-      created: "2024-01-16T14:20:00.000+0000",
-      size: 512000,
+      id: 10002,
       mimeType:
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      content:
-        "https://your-domain.atlassian.net/secure/attachment/10002/requirements.docx",
     },
   ],
 };
@@ -538,4 +504,43 @@ export const listIssueWorklogsExamplePayload = {
       },
     ],
   },
+};
+
+export const selectIssueExamplePayload = {
+  result: [
+    { label: "HSP-1", key: "10001" },
+    { label: "HSP-2", key: "10002" },
+  ],
+};
+
+export const selectIssueTypeExamplePayload = {
+  result: [
+    { label: "Bug", key: "10001" },
+    { label: "Story", key: "10002" },
+    { label: "Task", key: "10000" },
+  ],
+};
+
+export const selectIssueTypeFromProjectExamplePayload = {
+  result: [
+    { label: "Bug", key: "10001" },
+    { label: "Story", key: "10002" },
+    { label: "Task", key: "10000" },
+  ],
+};
+
+export const selectIssueTypesExamplePayload = {
+  result: [
+    { object: { label: "Bug", key: "10001" } },
+    { object: { label: "Story", key: "10002" } },
+    { object: { label: "Task", key: "10000" } },
+  ],
+};
+
+export const issueFieldsExamplePayload = {
+  result: [
+    { label: "Description", key: "description" },
+    { label: "Story Points", key: "customfield_10000" },
+    { label: "Summary", key: "summary" },
+  ],
 };

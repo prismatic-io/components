@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listVersionsExamplePayload } from "../../examplePayloads";
-import { connectionInput, maxResults, projectId, startAt } from "../../inputs";
+import { listVersionsInputs } from "../../inputs";
+import { listVersionsOutputSchema } from "../../outputSchemas";
 
 export const listVersions = action({
   display: {
     label: "List Versions",
     description: "Return a list of all versions for a project.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -15,17 +17,17 @@ export const listVersions = action({
     );
     const { data } = await client.get(`/project/${params.projectId}/version`, {
       params: {
-        maxResults: params.maxResults || undefined,
-        startAt: params.startAt || undefined,
+        maxResults: params.pagination.maxResults,
+        startAt: params.pagination.startAt,
       },
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    projectId,
-    maxResults,
-    startAt,
-  },
+  examplePerform: async () => listVersionsExamplePayload,
+  inputs: listVersionsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listVersionsOutputSchema,
+  }),
   examplePayload: listVersionsExamplePayload,
 });

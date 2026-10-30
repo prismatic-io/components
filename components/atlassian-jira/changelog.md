@@ -1,5 +1,21 @@
 ## Changelog
 
+### 2026-10-30
+
+Restructured action inputs into structured objects, added output schemas and inline action calling, and fixed several issue, project, user, and version actions:
+
+- Updated the **Get Status List**, **List Assignable Users for Project**, **List Board Sprints**, **List Boards**, **List Issues by Project**, **List Priorities**, **List Projects**, and **List Versions** actions to group their paging inputs into **Pagination**
+- Updated **Create Issue** and **Update Issue** to group their due date and version inputs into **Additional Fields**
+- Updated **Create Version** and **Update Version** to group their status flags and schedule dates into **Release Details**
+- Added output schemas to 38 actions for improved field mapping during configuration
+- Added inline action calling support to 43 actions for improved example output during configuration
+- Fixed **Create Issue** and **Update Issue** failing when **Fix Versions** was set; the value is now sent as the list of versions Jira expects
+- Fixed **Create User** failing on every request; it now calls Jira's user endpoint
+- Fixed **Update Version** failing on every request; it now calls Jira's version update endpoint
+- Fixed **Search Issues** and the **Summary** search of **Find Issue** failing when the search text contained a double quote mark or a backslash
+- Fixed **Find Issue** returning an empty result when a **Number** search failed on authentication, permissions, rate limits, or a server error; these errors are now reported
+- Fixed **Find Project** ignoring **Search Type**, which returned projects whose key matched a **Name** search or whose name matched a **Key** search; it now matches only the selected attribute
+
 ### 2026-10-20
 
 - Added opt-in batching to the **New and Updated Issues** trigger, dispatching each changed issue individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives

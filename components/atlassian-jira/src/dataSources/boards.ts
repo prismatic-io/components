@@ -1,24 +1,17 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { createClient } from "../connections/auth";
+import { createClient } from "../client";
 import {
-  boardId,
-  connectionInput,
-  filter,
-  maxResults,
-  startAt,
-} from "../inputs";
+  selectBoardExamplePayload,
+  selectBoardVersionExamplePayload,
+} from "../examplePayloads";
+import { selectBoardInputs, selectBoardVersionInputs } from "../inputs";
 
 const selectBoard = dataSource({
   display: {
     label: "Select Board",
     description: "Select a board.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    startAt,
-    maxResults,
-    filter,
-  },
+  inputs: selectBoardInputs,
   perform: async (
     _context,
     { jiraConnection, startAt, maxResults, filter },
@@ -38,9 +31,9 @@ const selectBoard = dataSource({
       };
     } = await client.get("/board", {
       params: {
-        startAt: startAt || undefined,
-        maxResults: maxResults || undefined,
-        filter: filter || undefined,
+        startAt,
+        maxResults,
+        filter,
       },
     });
     const result = data.values.map<Element>(({ name, id }) => ({
@@ -50,6 +43,7 @@ const selectBoard = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectBoardExamplePayload,
 });
 
 const selectBoardVersion = dataSource({
@@ -57,15 +51,7 @@ const selectBoardVersion = dataSource({
     label: "Select Board Version",
     description: "Select a board version.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    boardId: {
-      ...boardId,
-      dataSource: undefined,
-    },
-    startAt,
-    maxResults,
-  },
+  inputs: selectBoardVersionInputs,
   perform: async (
     _context,
     { jiraConnection, boardId, startAt, maxResults },
@@ -83,8 +69,8 @@ const selectBoardVersion = dataSource({
       };
     } = await client.get(`/board/${boardId}/version`, {
       params: {
-        startAt: startAt || undefined,
-        maxResults: maxResults || undefined,
+        startAt,
+        maxResults,
       },
     });
     const result = data.values.map<Element>(({ name, id }) => ({
@@ -94,6 +80,7 @@ const selectBoardVersion = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectBoardVersionExamplePayload,
 });
 
 export default {

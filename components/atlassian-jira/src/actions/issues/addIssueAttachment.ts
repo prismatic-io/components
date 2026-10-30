@@ -1,32 +1,17 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import FormData from "form-data";
-import { createV3Client } from "../../connections/auth";
+import { createV3Client } from "../../client";
 import { addIssueAttachmentExamplePayload } from "../../examplePayloads";
-import { connectionInput, issueId } from "../../inputs";
+import { addIssueAttachmentInputs } from "../../inputs";
+import { addIssueAttachmentOutputSchema } from "../../outputSchemas";
 
 export const addIssueAttachment = action({
   display: {
     label: "Add Issue Attachment",
     description: "Add a file attachment to an issue.",
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    issueId,
-    file: input({
-      label: "File",
-      type: "data",
-      required: true,
-      comments: "The file to upload - either string contents or a binary file",
-      clean: util.types.toBufferDataPayload,
-    }),
-    fileName: input({
-      label: "File Name",
-      type: "string",
-      required: true,
-      comments: "The name of the file to upload",
-      clean: util.types.toString,
-    }),
-  },
+  inputs: addIssueAttachmentInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -46,5 +31,10 @@ export const addIssueAttachment = action({
     );
     return { data };
   },
+  examplePerform: async () => addIssueAttachmentExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addIssueAttachmentOutputSchema,
+  }),
   examplePayload: addIssueAttachmentExamplePayload,
 });

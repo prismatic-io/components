@@ -1,19 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { addCommentExamplePayload } from "../../examplePayloads";
-import {
-  comment,
-  connectionInput,
-  dynamicValues,
-  fieldValues,
-  issueId,
-} from "../../inputs";
+import { addCommentInputs } from "../../inputs";
+import { addCommentOutputSchema } from "../../outputSchemas";
 
 export const addComment = action({
   display: {
     label: "Add Comment",
     description: "Add a comment to an existing issue.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -41,12 +37,11 @@ export const addComment = action({
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    issueId,
-    comment,
-    dynamicValues,
-    fieldValues,
-  },
+  examplePerform: async () => addCommentExamplePayload,
+  inputs: addCommentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addCommentOutputSchema,
+  }),
   examplePayload: addCommentExamplePayload,
 });

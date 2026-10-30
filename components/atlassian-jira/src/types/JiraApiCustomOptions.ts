@@ -1,3 +1,8 @@
-import type { JiraApiOptions } from "jira-client";
-
-export type JiraApiCustomOptions = JiraApiOptions & { auth: string };
+export interface JiraApiCustomOptions {
+  host: string;
+  apiVersion: string;
+  auth: string;
+  username?: string;
+  password?: string;
+  bearer?: string;
+}

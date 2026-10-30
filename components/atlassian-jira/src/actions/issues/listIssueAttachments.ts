@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
-import { connectionInput, issueId } from "../../inputs";
+import { createV3Client } from "../../client";
+import { listIssueAttachmentsExamplePayload } from "../../examplePayloads";
+import { listIssueAttachmentsInputs } from "../../inputs";
 import { getAttachmentsFromIssue, getIssueById } from "../../util";
 
 export const listIssueAttachments = action({
@@ -14,8 +15,6 @@ export const listIssueAttachments = action({
     const data = getAttachmentsFromIssue(issue);
     return { data };
   },
-  inputs: {
-    issueId,
-    jiraConnection: connectionInput,
-  },
+  inputs: listIssueAttachmentsInputs,
+  examplePayload: listIssueAttachmentsExamplePayload,
 });

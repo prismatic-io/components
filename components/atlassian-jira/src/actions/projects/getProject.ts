@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { getProjectExamplePayload } from "../../examplePayloads";
-import { connectionInput, projectId } from "../../inputs";
+import { getProjectInputs } from "../../inputs";
+import { getProjectOutputSchema } from "../../outputSchemas";
 
 export const getProject = action({
   display: {
     label: "Get Project",
     description: "Get the information and metadata of a project.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -16,9 +18,10 @@ export const getProject = action({
     const { data } = await client.get(`/project/${params.projectId}`);
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    projectId,
-  },
+  inputs: getProjectInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getProjectOutputSchema,
+  }),
   examplePayload: getProjectExamplePayload,
 });

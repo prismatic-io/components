@@ -1,20 +1,16 @@
-import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { listIssuesExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  fields,
-  maxResults,
-  nextPageToken,
-  projectId,
-} from "../../inputs";
-import { DEFAULT_ISSUE_FIELDS } from "../constants";
+import { listIssuesInputs } from "../../inputs";
+import { DEFAULT_ISSUE_FIELDS } from "../../constants";
+import { listIssuesOutputSchema } from "../../outputSchemas";
 
 export const listIssues = action({
   display: {
     label: "List Issues by Project",
     description: "Return a list of issues for a specific project.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -23,12 +19,12 @@ export const listIssues = action({
 
     const requestParams: Record<string, unknown> = {
       jql: `project=${params.projectId}`,
-      maxResults: params.maxResults || 50,
+      maxResults: params.pagination.maxResults,
       fields: params.fields || DEFAULT_ISSUE_FIELDS,
     };
 
-    if (params.nextPageToken) {
-      requestParams.nextPageToken = params.nextPageToken;
+    if (params.pagination.nextPageToken) {
+      requestParams.nextPageToken = params.pagination.nextPageToken;
     }
 
     const { data } = await client.get("/search/jql", {
@@ -36,12 +32,11 @@ export const listIssues = action({
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    projectId,
-    nextPageToken,
-    maxResults,
-    fields,
-  },
+  examplePerform: async () => listIssuesExamplePayload,
+  inputs: listIssuesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listIssuesOutputSchema,
+  }),
   examplePayload: listIssuesExamplePayload,
 });

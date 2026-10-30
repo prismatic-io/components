@@ -1,13 +1,14 @@
 import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { createV3Client } from "../../client";
 import { deleteCommentExamplePayload } from "../../examplePayloads";
-import { commentId, connectionInput, issueId } from "../../inputs";
+import { deleteCommentInputs } from "../../inputs";
 
 export const deleteComment = action({
   display: {
     label: "Delete Comment",
     description: "Delete a comment from an issue.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
@@ -18,10 +19,7 @@ export const deleteComment = action({
     );
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    issueId,
-    commentId,
-  },
+  examplePerform: async () => deleteCommentExamplePayload,
+  inputs: deleteCommentInputs,
   examplePayload: deleteCommentExamplePayload,
 });

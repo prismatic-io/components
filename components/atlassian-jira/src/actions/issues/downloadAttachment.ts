@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { createV3Client } from "../../client";
 import { downloadAttachmentExamplePayload } from "../../examplePayloads";
-import { attachmentIds, connectionInput, issueId } from "../../inputs";
+import { downloadAttachmentInputs } from "../../inputs";
 import type { AttachmentResponse } from "../../types";
 import {
   downloadArrayOfAttachments,
@@ -14,6 +14,7 @@ export const downloadAttachment = action({
     label: "Download Issue Attachments",
     description: "Download the attachment data connected to an issue.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { issueId, jiraConnection, attachmentIds }) => {
     const client = await createV3Client(jiraConnection, context.debug.enabled);
     const baseUrl = client.defaults.baseURL;
@@ -34,15 +35,7 @@ export const downloadAttachment = action({
     }
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    issueId: {
-      ...issueId,
-      comments:
-        "Providing an Issue ID will return all attachments of an Issue.",
-      required: false,
-    },
-    attachmentIds,
-  },
+  examplePerform: async () => downloadAttachmentExamplePayload,
+  inputs: downloadAttachmentInputs,
   examplePayload: downloadAttachmentExamplePayload,
 });

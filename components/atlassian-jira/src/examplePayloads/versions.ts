@@ -85,3 +85,10 @@ export const getVersionExamplePayload = {
     project: "PROJ",
   },
 };
+
+export const selectVersionExamplePayload = {
+  result: [
+    { label: "New Version 1", key: "10000" },
+    { label: "New Version 5", key: "10005" },
+  ],
+};

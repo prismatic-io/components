@@ -1,16 +1,13 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 
-export const webhookEventsExamplePayload = {
+export const webhookEventsExamplePayload: { payload: TriggerPayload } = {
   payload: {
     headers: {
       "Content-Type": "application/json",
       "X-Atlassian-Webhook-Identifier": "8c1d3a36-9c7d-4f6e-9b50-3e8c4d9b1a2f",
     },
     queryParameters: {},
-    rawBody: {
-      data: "",
-      contentType: "application/json",
-    },
+    rawBody: { data: null },
     body: {
       data: {
         timestamp: 1747749600000,
@@ -93,40 +90,42 @@ export const webhookEventsExamplePayload = {
       contentType: "application/json",
     },
     pathFragment: "",
-    webhookUrls: {
-      "Issue Events": "https://hooks.example.com/trigger/EXAMPLE",
-    },
-    webhookApiKeys: {
-      "Issue Events": ["example-api-key"],
-    },
-    invokeUrl: "https://hooks.example.com/trigger/EXAMPLE",
-    executionId: "SW5zdGFuY2VFeGVjdXRpb246MTIzNDU=",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
     customer: {
-      id: "Q3VzdG9tZXI6MTIzNDU=",
-      externalId: "example-customer-external-id",
-      name: "Example Customer",
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
     },
-    instance: {
-      id: "SW5zdGFuY2U6MTIzNDU=",
-      name: "Example Instance",
-    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
-      id: "VXNlcjoxMjM0NQ==",
-      externalId: "example-user-external-id",
-      name: "Example User",
+      id: "testUserId",
       email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
     },
-  } as unknown as TriggerPayload,
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
 };
 
-export const pollChangesExamplePayload = {
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+  polledNoChanges: boolean;
+} = {
   payload: {
     headers: {},
     queryParameters: {},
-    rawBody: {
-      data: "",
-      contentType: "application/json",
-    },
+    rawBody: { data: null },
     body: {
       data: {
         created: [
@@ -165,29 +164,31 @@ export const pollChangesExamplePayload = {
       contentType: "application/json",
     },
     pathFragment: "",
-    webhookUrls: {
-      "New and Updated Issues": "https://hooks.example.com/trigger/EXAMPLE",
-    },
-    webhookApiKeys: {
-      "New and Updated Issues": ["example-api-key"],
-    },
-    invokeUrl: "https://hooks.example.com/trigger/EXAMPLE",
-    executionId: "SW5zdGFuY2VFeGVjdXRpb246MTIzNDU=",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
     customer: {
-      id: "Q3VzdG9tZXI6MTIzNDU=",
-      externalId: "example-customer-external-id",
-      name: "Example Customer",
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
     },
-    instance: {
-      id: "SW5zdGFuY2U6MTIzNDU=",
-      name: "Example Instance",
-    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
     user: {
-      id: "VXNlcjoxMjM0NQ==",
-      externalId: "example-user-external-id",
-      name: "Example User",
+      id: "testUserId",
       email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
     },
-  } as unknown as TriggerPayload,
-  polledNoChanges: false as boolean | undefined,
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+  polledNoChanges: false,
 };

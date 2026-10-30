@@ -1,63 +1,39 @@
-import { action, util } from "@prismatic-io/spectral";
-import { createV3Client } from "../../connections/auth";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createV3Client } from "../../client";
 import { updateVersionExamplePayload } from "../../examplePayloads";
-import {
-  archived,
-  connectionInput,
-  description,
-  dynamicValues,
-  fieldValues,
-  projectId,
-  projectKey,
-  releaseDate,
-  released,
-  startDate,
-  versionId,
-  versionName,
-} from "../../inputs";
+import { updateVersionInputs } from "../../inputs";
+import { updateVersionOutputSchema } from "../../outputSchemas";
 
 export const updateVersion = action({
   display: {
     label: "Update Version",
     description: "Update an existing version by ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createV3Client(
       params.jiraConnection,
       context.debug.enabled,
     );
-    const { data } = await client.put("/version", {
-      id: params.versionId,
-      description: util.types.toString(params.description) || undefined,
-      name: util.types.toString(params.versionName) || undefined,
-      archived: util.types.toBool(params.archived) || undefined,
-      released: util.types.toBool(params.released) || undefined,
-      startDate: params.startDate
-        ? util.types.toString(params.startDate)
-        : undefined,
-      releaseDate: params.releaseDate
-        ? util.types.toString(params.releaseDate)
-        : undefined,
-      project: util.types.toString(params.projectKey) || undefined,
-      projectId: params.projectId || undefined,
+    const { data } = await client.put(`/version/${params.versionId}`, {
+      description: params.description,
+      name: params.versionName,
+      archived: params.releaseDetails.archived,
+      released: params.releaseDetails.released,
+      startDate: params.releaseDetails.startDate,
+      releaseDate: params.releaseDetails.releaseDate,
+      project: params.projectKey,
+      projectId: params.projectId,
       ...params.dynamicValues,
       ...params.fieldValues,
     });
     return { data };
   },
-  inputs: {
-    jiraConnection: connectionInput,
-    versionId,
-    description,
-    versionName: { ...versionName, required: false },
-    archived,
-    released,
-    startDate,
-    releaseDate,
-    projectKey,
-    projectId,
-    dynamicValues,
-    fieldValues,
-  },
+  examplePerform: async () => updateVersionExamplePayload,
+  inputs: updateVersionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateVersionOutputSchema,
+  }),
   examplePayload: updateVersionExamplePayload,
 });

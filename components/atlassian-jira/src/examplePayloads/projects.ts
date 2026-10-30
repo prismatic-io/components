@@ -27,37 +27,28 @@ export const getProjectExamplePayload = {
 };
 
 export const listProjectsExamplePayload = {
-  data: {
-    self: "https://your-domain.atlassian.net/rest/api/3/project/search",
-    nextPage:
-      "https://your-domain.atlassian.net/rest/api/3/project/search?startAt=2",
-    maxResults: 2,
-    startAt: 0,
-    total: 7,
-    isLast: false,
-    values: [
-      {
-        expand: "description,lead,url,projectKeys",
-        self: "https://your-domain.atlassian.net/rest/api/3/project/EX",
-        id: "10000",
-        key: "EX",
-        name: "Example Project",
-        projectTypeKey: "software",
-        simplified: false,
-        style: "next-gen",
-      },
-      {
-        expand: "description,lead,url,projectKeys",
-        self: "https://your-domain.atlassian.net/rest/api/3/project/ABC",
-        id: "10001",
-        key: "ABC",
-        name: "Another Project",
-        projectTypeKey: "business",
-        simplified: true,
-        style: "classic",
-      },
-    ],
-  },
+  data: [
+    {
+      expand: "description,lead,url,projectKeys",
+      self: "https://your-domain.atlassian.net/rest/api/3/project/EX",
+      id: "10000",
+      key: "EX",
+      name: "Example Project",
+      projectTypeKey: "software",
+      simplified: false,
+      style: "next-gen",
+    },
+    {
+      expand: "description,lead,url,projectKeys",
+      self: "https://your-domain.atlassian.net/rest/api/3/project/ABC",
+      id: "10001",
+      key: "ABC",
+      name: "Another Project",
+      projectTypeKey: "business",
+      simplified: true,
+      style: "classic",
+    },
+  ],
 };
 
 export const findProjectExamplePayload = {
@@ -97,5 +88,19 @@ export const searchProjectsExamplePayload = {
       simplified: true,
       style: "classic",
     },
+  ],
+};
+
+export const selectProjectExamplePayload = {
+  result: [
+    { label: "ABC - Another Project", key: "10001" },
+    { label: "EX - Example Project", key: "10000" },
+  ],
+};
+
+export const selectProjectsExamplePayload = {
+  result: [
+    { object: { label: "ABC - Another Project", key: "10001" } },
+    { object: { label: "EX - Example Project", key: "10000" } },
   ],
 };
