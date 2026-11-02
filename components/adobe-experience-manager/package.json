@@ -1,0 +1,26 @@
+{
+  "name": "@prismatic-io/adobe-experience-manager",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.36.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26.6.5",
+    "nock": "14.0.5",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}

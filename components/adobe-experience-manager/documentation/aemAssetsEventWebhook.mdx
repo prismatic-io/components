@@ -1,0 +1,80 @@
+This trigger receives asset events from Adobe Experience Manager through Adobe I/O Events, from the environment's AEM Assets event provider. Content fragment and page events come from a separate AEM Sites provider and are received by the **AEM Sites Event Subscription** trigger. It automatically manages the Adobe I/O Events webhook registration, so no registration is created by hand.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger registers the flow's webhook URL with Adobe I/O Events for the selected **Event Types** in the given **Consumer Organization ID**, **Project ID**, **Workspace ID**, and **Event Provider ID**. If a registration with the same settings already exists for the flow, it is reused. If the settings changed, every registration in the workspace pointing at this URL is removed and a new one is created, so the subscription always matches the inputs.
+- **On Instance Deletion**: The trigger removes every registration in the workspace that points at the flow's webhook URL.
+
+Adobe I/O Events calls the webhook in two ways, and the trigger routes each to its own branch:
+
+- **URL Verification** branch: Adobe confirms a new registration with a request carrying a `challenge` value. The trigger echoes it back automatically, and the branch receives no event data.
+- **Notification** branch: Handles each delivered event. The trigger verifies Adobe's RSA-SHA256 digital signature on the raw request body against Adobe's published public keys, and rejects an event whose recipient client ID differs from the connection's client ID. Signature verification is skipped only in test runs from the integration designer.
+
+Each event is normalized to the same `{ "changeType": ..., "record": ... }` envelope the polling triggers return, plus the original event's `eventId`, `eventSource`, and `eventType`. Asset events have no created event, so **Asset Processing Completed** is reported as **created** and **Asset Metadata Updated** as **modified**.
+
+#### Event Types
+
+<details>
+<summary>Available Events (5)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `aem.assets.asset.processing_completed` | An uploaded asset finished processing |
+| `aem.assets.asset.metadata_updated` | An asset's metadata was updated |
+| `aem.assets.asset.published` | An asset was published |
+| `aem.assets.asset.unpublished` | An asset was unpublished |
+| `aem.assets.asset.deleted` | An asset was deleted |
+
+</details>
+
+Refer to [AEM Events as a Cloud Service](https://developer.adobe.com/experience-cloud/experience-manager-apis/guides/events/) for the complete and up-to-date list.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "changeType": "modified",
+  "record": {
+    "resourceType": "asset",
+    "id": "urn:aaid:aem:5b8f3e2a-9c1d-4e7f-a6b2-3d4c5e6f7a8b",
+    "path": "/content/dam/wknd/en/adventures/surf-camp/surf-camp-hero.jpg",
+    "url": "https://www.example.com/content/dam/wknd/en/adventures/surf-camp/surf-camp-hero.jpg",
+    "title": "Surf Camp Hero",
+    "tags": [],
+    "created": null,
+    "modified": "2026-09-18T09:31:47.364Z",
+    "published": null,
+    "scope": "4566206088344853970",
+    "data": {
+      "type": "aem.assets.asset.metadata_updated",
+      "time": "2026-09-18T09:31:47.364Z",
+      "data": {
+        "repositoryMetadata": {
+          "repo:assetId": "urn:aaid:aem:5b8f3e2a-9c1d-4e7f-a6b2-3d4c5e6f7a8b",
+          "repo:path": "/content/dam/wknd/en/adventures/surf-camp/surf-camp-hero.jpg",
+          "dc:format": "image/jpeg"
+        },
+        "assetMetadata": { "dc:title": "Surf Camp Hero" }
+      }
+    }
+  },
+  "eventId": "7c2e9a41-5d3b-4f6a-8e1c-2b9d0f4a6c83",
+  "eventSource": "acct:aem-p12345-e123456@adobe.com",
+  "eventType": "aem.assets.asset.metadata_updated"
+}
+```
+
+</details>
+
+Fields shown are representative. The full event is available under `record.data`.
+
+#### Notes
+
+- **Asset Metadata Updated** reports metadata-only edits, which the **New and Updated Assets** polling trigger cannot detect because they leave an asset's modify date unchanged
+- This trigger requires the **OAuth 2.0 Client Credentials** connection, whose credential must include the I/O Management API for the given project and workspace, and AEM Events must be enabled for the environment. It refuses the **OAuth 2.0** (Web App) connection at deploy, because Adobe documents Adobe I/O Events registrations for OAuth Server-to-Server credentials only
+- Events for deleted and unpublished content are only available through this trigger; the polling triggers report records that still exist

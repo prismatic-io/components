@@ -1,0 +1,99 @@
+This trigger polls Adobe Experience Manager for new and updated assets using the AEM Assets Author API. It reports assets in the selected **Folders** (or the whole DAM when none are selected) that match the configured MIME types.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. Each recurrence reads a time window that starts where the previous window ended and ends two minutes before the recurrence began. The two-minute lag lets changes that the search index has not yet picked up settle, and the window's upper bound is fixed while it is read
+3. It searches assets whose repository modify date falls inside the window, oldest first, so an asset on a window boundary is delivered by exactly one window. AEM moves that date when an asset is uploaded or a new version of its file is uploaded, but not when only its metadata is edited, so a metadata-only change is not reported. Use the **AEM Assets Event Subscription** trigger's **Asset Metadata Updated** event for those
+4. Each asset is tagged with a `changeType`: **initialSync** while the initial sync runs, otherwise **created** when it was created inside the window, **published** when it was published inside the window, and **modified** for any other change
+5. The window's end becomes the trigger's stored position only once every page of the window has been read
+
+**Initial Sync**
+
+An initial sync seeds every asset modified on or after the **Look-back Date** (`YYYY-MM-DD`) exactly once. It begins on the first recurrence, when the trigger has no stored position. Unlike a change feed, it ignores no inputs: **Folders** and **MIME Types** narrow the sync the same way they narrow later recurrences. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The sync window's upper bound is fixed when the sync begins, so an asset modified mid-drain is picked up by the first incremental recurrence rather than by the sync. Once the window is fully read, the trigger stores that bound as its position and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff other than `changeType` changing from **initialSync**. With batching off each recurrence reads at most 20 pages of 50 assets, so a large window spans several recurrences; with batching on the window drains within one recurrence.
+
+**Folders** and **MIME Types** still apply throughout, and **Publish Base URL** still builds each record's `url`.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Adobe Experience Manager.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+A batched flow drains the backlog within one recurrence; an unbatched flow drains it up to 20 pages per recurrence.
+
+With batching off a downstream step reads `body.data.items`, an array of every changed asset in the recurrence. With batching on that array does not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading `body.data.items` must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an `items` array. Each item carries a `changeType` and a `record` in the same envelope every Adobe Experience Manager trigger uses; `record.data` holds the full API object. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "items": [
+      {
+        "changeType": "modified",
+        "record": {
+          "resourceType": "asset",
+          "id": "urn:aaid:aem:4f2b6c1e-8d3a-4b5c-9e7f-0a1b2c3d4e5f",
+          "path": "/content/dam/wknd-shared/en/city.jpeg",
+          "url": "https://www.example.com/content/dam/wknd-shared/en/city.jpeg",
+          "title": "City Skyline",
+          "tags": [],
+          "created": "2026-04-14T06:31:07.174Z",
+          "modified": "2026-09-18T09:21:44.000Z",
+          "published": null,
+          "scope": "urn:aaid:aem:abcd1234-ab12-ab12-ab12-abcdef123456",
+          "data": {
+            "assetId": "urn:aaid:aem:4f2b6c1e-8d3a-4b5c-9e7f-0a1b2c3d4e5f"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item, or an array of items when the batch size is greater than 1. The `items` wrapper is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "modified",
+  "record": {
+    "resourceType": "asset",
+    "id": "urn:aaid:aem:4f2b6c1e-8d3a-4b5c-9e7f-0a1b2c3d4e5f",
+    "path": "/content/dam/wknd-shared/en/city.jpeg",
+    "url": "https://www.example.com/content/dam/wknd-shared/en/city.jpeg",
+    "title": "City Skyline",
+    "tags": [],
+    "created": "2026-04-14T06:31:07.174Z",
+    "modified": "2026-09-18T09:21:44.000Z",
+    "published": null,
+    "scope": "urn:aaid:aem:abcd1234-ab12-ab12-ab12-abcdef123456",
+    "data": {
+      "assetId": "urn:aaid:aem:4f2b6c1e-8d3a-4b5c-9e7f-0a1b2c3d4e5f"
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Deleted assets are not reported by polling; use the **AEM Assets Event Subscription** trigger to receive delete and unpublish events

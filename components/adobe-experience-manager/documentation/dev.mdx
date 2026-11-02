@@ -1,0 +1,15 @@
+#### Pages
+
+[List Sitemap URLs](#listsitemapurls) reads the site's public sitemap, and [Get Published Page HTML](#getpublishedpagehtml) fetches each page's published HTML: exactly what visitors see. This needs no Adobe Experience Manager setup beyond a published sitemap. Pages arrive without Adobe Experience Manager tags or authors, and page changes come from the page events of the [AEM Sites Event Subscription](#aemsiteseventwebhook) trigger rather than a polling trigger.
+
+Get Published Page HTML accepts the `loc` of a List Sitemap URLs result or the `url` of an AEM Sites Event Subscription page event.
+
+#### Asynchronous Jobs
+
+[Import Asset from URL](#importassetfromurl) starts a job in Adobe Experience Manager and returns before the work finishes; check its progress with [Get Import Job Status](#getimportjobstatus). [Create Folders](#createfolders), [Delete Folders](#deletefolders), and [Delete Asset](#deleteasset) either finish within the request or start a job, depending on how Adobe Experience Manager handles the request. When one returns a `jobId`, check it with [Get Folder Job Status](#getfolderjobstatus) or [Get Asset Job Status](#getassetjobstatus). Create Folders and Delete Folders fail when no folder could be created or deleted; when only some fail, the failures are listed in the result's `failedFolders`.
+
+[Update Asset Metadata](#updateassetmetadata) reads the asset's current metadata first and sends its version with the update, so a change made by someone else in between fails with a precondition error rather than being overwritten.
+
+#### Not Yet Supported
+
+Direct binary upload, replacing an asset's binary, creating or updating renditions, comments, and copying or moving assets and folders are not covered by Adobe's stable Experience Manager APIs. Use [Raw Request](#rawrequest) for these.

@@ -1,0 +1,113 @@
+This trigger polls Adobe Experience Manager for new and updated content fragments using the AEM Sites API. It reports content fragments under a **Path** (or the whole DAM when omitted) that match the configured filters.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. Each recurrence reads a time window that starts where the previous window ended and ends two minutes before the recurrence began. The two-minute lag lets changes that the search index has not yet picked up settle, and the window's upper bound is fixed while it is read
+3. It searches content fragments created or modified inside the window, oldest first, and keeps only those whose change time falls inside the window, so a fragment on a window boundary is delivered by exactly one window
+4. Each content fragment is tagged with a `changeType`: **initialSync** while the initial sync runs, otherwise **created** when it was created inside the window, **published** when it was published inside the window, and **modified** for any other change
+5. The window's end becomes the trigger's stored position only once every page of the window has been read
+
+**Initial Sync**
+
+An initial sync seeds every content fragment modified on or after the **Look-back Date** (`YYYY-MM-DD`) exactly once. It begins on the first recurrence, when the trigger has no stored position. Unlike a change feed, it ignores no inputs: **Path**, **Statuses**, **Content Fragment Models**, **Tags**, and **Locales** narrow the sync the same way they narrow later recurrences. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The sync window's upper bound is fixed when the sync begins, so a content fragment modified mid-drain is picked up by the first incremental recurrence rather than by the sync. Once the window is fully read, the trigger stores that bound as its position and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff other than `changeType` changing from **initialSync**. With batching off each recurrence reads at most 20 pages of 50 content fragments, so a large window spans several recurrences; with batching on the window drains within one recurrence.
+
+**Path**, **Statuses**, **Content Fragment Models**, **Tags**, and **Locales** still apply throughout, and **Publish Base URL** still builds each record's `url`.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Adobe Experience Manager.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+A batched flow drains the backlog within one recurrence; an unbatched flow drains it up to 20 pages per recurrence.
+
+With batching off a downstream step reads `body.data.items`, an array of every changed content fragment in the recurrence. With batching on that array does not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading `body.data.items` must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an `items` array. Each item carries a `changeType` and a `record` in the same envelope every Adobe Experience Manager trigger uses; `record.data` holds the full API object. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "items": [
+      {
+        "changeType": "modified",
+        "record": {
+          "resourceType": "contentFragment",
+          "id": "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+          "path": "/content/dam/wknd-shared/en/adventures/surf-camp/surf-camp",
+          "url": "https://www.example.com/content/dam/wknd-shared/en/adventures/surf-camp/surf-camp",
+          "title": "Surf Camp",
+          "tags": [
+            {
+              "id": "wknd-shared:activity/surfing",
+              "title": "Surfing",
+              "titlePath": "WKND Shared : Activity / Surfing"
+            }
+          ],
+          "created": "2026-03-02T15:04:11.000Z",
+          "modified": "2026-09-18T09:21:44.000Z",
+          "published": null,
+          "scope": "/content/dam/wknd-shared/en",
+          "data": {
+            "id": "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "title": "Surf Camp"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item, or an array of items when the batch size is greater than 1. The `items` wrapper is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "modified",
+  "record": {
+    "resourceType": "contentFragment",
+    "id": "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+    "path": "/content/dam/wknd-shared/en/adventures/surf-camp/surf-camp",
+    "url": "https://www.example.com/content/dam/wknd-shared/en/adventures/surf-camp/surf-camp",
+    "title": "Surf Camp",
+    "tags": [
+      {
+        "id": "wknd-shared:activity/surfing",
+        "title": "Surfing",
+        "titlePath": "WKND Shared : Activity / Surfing"
+      }
+    ],
+    "created": "2026-03-02T15:04:11.000Z",
+    "modified": "2026-09-18T09:21:44.000Z",
+    "published": null,
+    "scope": "/content/dam/wknd-shared/en",
+    "data": {
+      "id": "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "title": "Surf Camp"
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Deleted content fragments are not reported by polling; use the **AEM Sites Event Subscription** trigger to receive delete and unpublish events

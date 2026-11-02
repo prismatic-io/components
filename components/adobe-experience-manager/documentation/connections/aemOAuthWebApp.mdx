@@ -1,0 +1,38 @@
+The OAuth 2.0 connection authenticates to Adobe Experience Manager as a Cloud Service as an Adobe user, with an [OAuth Web App credential](https://experienceleague.adobe.com/en/docs/experience-manager-learn/cloud-service/aem-apis/openapis/invoke-api-using-oauth-web-app) from the Adobe Developer Console. Requests run with that user's AEM permissions, so a user without access to an asset, folder, or content fragment gets a 403 for it.
+
+Use this connection for the asset, folder, and page actions and the **New and Updated Assets** trigger. The content fragment actions and the **New and Updated Fragments** trigger need the **OAuth 2.0 Client Credentials** connection: the Developer Console grants a Web App credential only the Assets Author API scopes, and AEM answers content fragment requests made with it with `403 The access token is missing required scopes`. The **AEM Sites Event Subscription** and **AEM Assets Event Subscription** triggers also require the **OAuth 2.0 Client Credentials** connection: Adobe documents Adobe I/O Events registrations for OAuth Server-to-Server credentials only, so the trigger refuses this connection at deploy.
+
+#### Prerequisites
+
+- An Adobe Experience Manager as a Cloud Service environment with [OpenAPI-based APIs](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/implementing/developing/open-api-based-apis) available
+- Administrator access to the Adobe Developer Console for the organization
+- Access to the environment's AEM code repository, to allow the credential's client ID in `config/api.yaml`
+- An Adobe user with AEM access to the content the integration reads or changes
+
+#### Setup Steps
+
+1. In the **Adobe Developer Console**, open or create a project and click **Add API**
+2. Filter by **Experience Cloud**, select the **AEM Assets Author API** card, and click **Next**
+3. Select **User Authentication**, then **OAuth Web App**, and click **Next**
+4. Enter <OauthCallbackUrl /> as both the **Default redirect URI** and the **Redirect URI pattern**. The pattern is a regular expression, so escape each `.` in it with a backslash
+5. Review the scopes and click **Save configured API**. The Assets Author API grants both the `aem.assets.author` and `aem.folders` scopes, so one credential covers asset and folder requests
+6. From the credential's page, copy the **Client ID** and **Client Secret**
+7. Add the **Client ID** to `allowedClientIDs.author` in the environment's `config/api.yaml` and deploy it through the Cloud Manager Config Pipeline, as described in Adobe's [OpenAPI setup guide](https://experienceleague.adobe.com/en/docs/experience-manager-learn/cloud-service/aem-apis/openapis/setup). Until this is deployed, AEM rejects every request with a 403
+
+#### Configure the Connection
+
+- **AEM Author Host**: The author host from Cloud Manager, without `https://` (for example `author-p12345-e123456.adobeaemcloud.com`)
+- **Client ID** and **Client Secret**: From the OAuth Web App credential. The client ID is also sent as the `X-Api-Key` header
+- **Scopes**: Enter the scopes exactly as the credential's **Scopes** tab lists them. Adobe rejects the authorization with `invalid_scope` when a scope the credential does not list is requested. The default matches an Assets Author API credential:
+  ```
+  openid,AdobeID,aem.assets.author,aem.folders
+  ```
+- **Authorize URL** and **Token URL**: Keep the default Adobe IMS endpoints unless Adobe directs different ones
+
+Save the configuration and authorize the connection by signing in with the Adobe user the integration acts as.
+
+#### Verify Connection
+
+Run **List Folder Contents** against the connection. A 403 response means either the client ID is not yet allowed in `config/api.yaml` (step 7) or the signed-in user lacks access to the content requested.
+
+Adobe issues a refresh token only when `offline_access` is requested and the user consents to it ([Adobe IMS user authentication](https://developer.adobe.com/developer-console/docs/guides/authentication/UserAuthentication/ims)). The Developer Console does not list `offline_access` for an AEM Web App credential and IMS rejects a request that includes it, so no refresh token is issued and the connection must be re-authorized each time its access token expires, after 24 hours by default.
