@@ -13,8 +13,8 @@
   },
   "dropbox": {
     "name": "@prismatic-io/components-dropbox",
-    "version": "0.1.0",
-    "build": "5943e980c71590efc74be48a1930019415bff4d7b9e86e18fd1c0160fce2d914",
+    "version": "0.1.1",
+    "build": "edcbf865061821902d3df7164d6f343ce694fc3c24c71224e4489625f05f5d37",
     "spectral": "^10.36.0"
   }
 }

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Fixed the **List Folders**, **List Shared Folders**, and **List Team's Folders** data sources failing with `Value length must be greater than or equal to 1` when **Cursor** was left empty; they now read the first page unless a cursor is given
+
 ### 2026-10-29
 
 Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types

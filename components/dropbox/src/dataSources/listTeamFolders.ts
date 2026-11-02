@@ -15,14 +15,13 @@ export const listTeamFolders = dataSource({
     try {
       const {
         result: { team_folders },
-      } =
-        params.cursor !== ""
-          ? await dbx.teamTeamFolderListContinue({
-              cursor: util.types.toString(params.cursor),
-            })
-          : await dbx.teamTeamFolderList({
-              limit: util.types.toInt(params.limit) || undefined,
-            });
+      } = params.cursor
+        ? await dbx.teamTeamFolderListContinue({
+            cursor: util.types.toString(params.cursor),
+          })
+        : await dbx.teamTeamFolderList({
+            limit: util.types.toInt(params.limit) || undefined,
+          });
 
       const result = team_folders.map<Element>((folder) => ({
         label: folder.name,

@@ -15,15 +15,14 @@ export const listSharedFolders = dataSource({
     try {
       const {
         result: { entries },
-      } =
-        params.cursor !== ""
-          ? await dbx.sharingListFoldersContinue({
-              cursor: util.types.toString(params.cursor),
-            })
-          : await dbx.sharingListFolders({
-              limit: util.types.toInt(params.limit) || undefined,
-              actions: params.folderActions,
-            });
+      } = params.cursor
+        ? await dbx.sharingListFoldersContinue({
+            cursor: util.types.toString(params.cursor),
+          })
+        : await dbx.sharingListFolders({
+            limit: util.types.toInt(params.limit) || undefined,
+            actions: params.folderActions,
+          });
 
       const result = entries.map<Element>((folder) => ({
         label: folder.name,

@@ -16,16 +16,15 @@ export const listFolders = dataSource({
     try {
       const {
         result: { entries },
-      } =
-        params.cursor !== ""
-          ? await dbx.filesListFolderContinue({
-              cursor: util.types.toString(params.cursor),
-            })
-          : await dbx.filesListFolder({
-              path: util.types.toString(params.path),
-              limit: util.types.toInt(params.limit) || undefined,
-              recursive: util.types.toBool(params.recursive),
-            });
+      } = params.cursor
+        ? await dbx.filesListFolderContinue({
+            cursor: util.types.toString(params.cursor),
+          })
+        : await dbx.filesListFolder({
+            path: util.types.toString(params.path),
+            limit: util.types.toInt(params.limit) || undefined,
+            recursive: util.types.toBool(params.recursive),
+          });
 
       const filteredEntries =
         params.entryFilter === BOTH_ENTRY_FILTER
