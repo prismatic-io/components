@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-29
 
 Updated the **New and Updated Indices** polling trigger so the initial sync delivers every matched index regardless of the **Show New Records** and **Show Updated Records** visibility settings; later recurrences apply those settings normally

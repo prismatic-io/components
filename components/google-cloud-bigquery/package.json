@@ -10,7 +10,7 @@
     "publish": "npm run build && prism components:publish --no-confirm"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "googleapis": "^118.0.0"
   },
   "devDependencies": {

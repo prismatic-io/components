@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-07
 
 Updated the component for Google's developer token sunset, added an initial sync to the change history triggers, and fixed several trigger, action, and data source issues:

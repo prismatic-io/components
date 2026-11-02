@@ -11,7 +11,7 @@
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

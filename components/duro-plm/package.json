@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0"
   },

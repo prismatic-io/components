@@ -11,7 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "lodash": "4.18.1"
   },
   "devDependencies": {

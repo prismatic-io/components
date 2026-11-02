@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-29
 
 Updated the **New and Updated Orders** trigger so the initial sync ignores the **Show New Orders** and **Show Updated Orders** visibility toggles, seeding every matched order regardless of those settings; later recurrences apply the toggles normally

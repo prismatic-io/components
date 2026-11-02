@@ -1,10 +1,10 @@
 import { mutateCampaignCriteriaInputs, mutateCampaignInputs } from "./campaign";
+import { pageSizeInput } from "./common";
 import {
   ingestOfflineConversionsInputs,
   uploadCallConversionsInputs,
   uploadClickConversionsInputs,
 } from "./conversions";
-import { pageSizeInput } from "./common";
 import { customerEntityInputs } from "./customer";
 import {
   accountReportsInputs,

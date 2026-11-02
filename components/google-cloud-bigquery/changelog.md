@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-21
 
 - Added batching support to the **New Jobs** polling trigger; enabling it changes the shape a downstream step receives
