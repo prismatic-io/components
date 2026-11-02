@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+
 ### 2026-06-11
 
 Added **Fetch All** toggle to list actions (List Queues, List Topics By Namespace, List Subscriptions By Topic, List Rules, List Namespaces, List Namespaces By Resource Group) that automatically follows `nextLink` pagination to retrieve all pages of results in a single call; when disabled, existing single-page behavior with Skip and Top inputs is preserved

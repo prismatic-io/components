@@ -6,7 +6,6 @@ export const connectionString = connection({
     description: "Authenticate using a connection string.",
     label: "Connection String",
   },
-  comments: "Authenticates requests to Azure Files with a connection string.",
   inputs: {
     connectionString: {
       label: "Connection String",

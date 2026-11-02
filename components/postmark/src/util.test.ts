@@ -1,15 +1,16 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { fetchAllServers } from "./util";
+import type { Mock } from "vitest";
 
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
+const createMockClient = (getMock: Mock): Pick<HttpClient, "get"> => ({
   get: getMock,
 });
 
 describe("fetchAllServers", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
 
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
 
   it("single page: returns servers when TotalCount <= pageSize", async () => {

@@ -3,17 +3,17 @@ import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
 import type { SlackMessage } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 
-const mockFetchSlackMessagesSince = jest.fn<
-  Promise<{ messages: SlackMessage[]; truncated: boolean }>,
-  []
->();
+const mockFetchSlackMessagesSince =
+  vi.fn<() => Promise<{ messages: SlackMessage[]; truncated: boolean }>>();
 
-jest.mock("../util/fetchSlackMessagesSince", () => ({
+vi.mock("../util/fetchSlackMessagesSince", () => ({
   fetchSlackMessagesSince: () => mockFetchSlackMessagesSince(),
 }));
 
-jest.mock("../util/resolvePollingRecordChanges", () => {
-  const actual = jest.requireActual("../util/resolvePollingRecordChanges");
+vi.mock("../util/resolvePollingRecordChanges", async () => {
+  const actual = await vi.importActual<
+    typeof import("../util/resolvePollingRecordChanges")
+  >("../util/resolvePollingRecordChanges");
   return { ...actual };
 });
 
@@ -46,14 +46,14 @@ const createPollingStore = (
         },
       },
       debug: { enabled: false },
-      logger: { debug: jest.fn(), warn: jest.fn() },
+      logger: { debug: vi.fn(), warn: vi.fn() },
     } as unknown as Partial<ActionContext>,
   };
 };
 
 const freezeClockAt = (iso: string): void => {
-  jest.useFakeTimers({ doNotFake: [] });
-  jest.setSystemTime(new Date(iso));
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date(iso));
 };
 
 const triggerUnderTest = {
@@ -100,7 +100,7 @@ const makeMessage = (ts: string): SlackMessage => ({
 
 describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
     mockFetchSlackMessagesSince.mockReset();
   });
 

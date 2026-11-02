@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+
 ### 2026-08-03
 
 Updated to Facebook Graph API v25

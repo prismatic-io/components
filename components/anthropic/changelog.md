@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+
 ### 2026-08-14
 
 - Corrected the **Limit** range on the **List Models** action from 1-3 to 1-1000 to match Anthropic's documented maximum; **Fetch All** now pages at 1000 records instead of 3

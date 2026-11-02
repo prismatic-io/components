@@ -6,8 +6,6 @@ export const storageSharedKey = connection({
     description: "Authenticate using a storage shared key.",
     label: "Storage Shared Key",
   },
-  comments:
-    "Authenticates requests to Azure Files with a Storage Shared Key consisting of an account name and account key.",
   inputs: {
     accountName: {
       label: "Account Name",

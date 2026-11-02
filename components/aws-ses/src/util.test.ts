@@ -1,14 +1,16 @@
 // biome-ignore-all lint/suspicious/noExplicitAny: test mocks use any
 import { ListIdentitiesCommand } from "@aws-sdk/client-ses";
+import type { Mock } from "vitest";
+import { vi } from "vitest";
 
-jest.mock("aws-utils", () => ({
-  paginateAwsResults: jest.fn(),
+vi.mock("aws-utils", () => ({
+  paginateAwsResults: vi.fn(),
 }));
 
 import { paginateAwsResults } from "aws-utils";
 import { getAllIdentities } from "./util";
 
-const mockedPaginate = paginateAwsResults as jest.Mock;
+const mockedPaginate = paginateAwsResults as Mock;
 
 describe("getAllIdentities", () => {
   beforeEach(() => {
@@ -22,7 +24,7 @@ describe("getAllIdentities", () => {
       lastResponse: { Identities: identities, $metadata: {} },
     });
 
-    const client = { send: jest.fn() } as any;
+    const client = { send: vi.fn() } as any;
     const result = await getAllIdentities({
       client,
       identityType: "EmailAddress" as any,
@@ -40,7 +42,7 @@ describe("getAllIdentities", () => {
       lastResponse: { Identities: ["test.com"], $metadata: {} },
     });
 
-    const client = { send: jest.fn() } as any;
+    const client = { send: vi.fn() } as any;
     const result = await getAllIdentities({
       client,
       identityType: undefined,
@@ -55,7 +57,7 @@ describe("getAllIdentities", () => {
       lastResponse: { Identities: [], $metadata: {} },
     });
 
-    const client = { send: jest.fn() } as any;
+    const client = { send: vi.fn() } as any;
     await getAllIdentities({
       client,
       identityType: "Domain" as any,

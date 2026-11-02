@@ -11,8 +11,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
     "@aws-sdk/client-sqs": "3.1088.0",
+    "@prismatic-io/spectral": "10.34.1",
     "aws-utils": "file:../../packages/aws-utils"
   },
   "devDependencies": {

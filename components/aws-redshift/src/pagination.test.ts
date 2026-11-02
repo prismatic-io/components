@@ -1,14 +1,16 @@
 import { ListStatementsCommand } from "@aws-sdk/client-redshift-data";
+import type { Mock } from "vitest";
+import { vi } from "vitest";
 
-jest.mock("aws-utils", () => ({
+vi.mock("aws-utils", () => ({
   assumeRoleConnection: { key: "assume-role" },
-  paginateAwsResults: jest.fn(),
+  paginateAwsResults: vi.fn(),
 }));
 
 import { getAllStatements } from "./util";
 import { paginateAwsResults } from "aws-utils";
 
-const mockedPaginate = paginateAwsResults as jest.Mock;
+const mockedPaginate = paginateAwsResults as Mock;
 
 describe("getAllStatements", () => {
   beforeEach(() => {
@@ -22,7 +24,7 @@ describe("getAllStatements", () => {
       lastResponse: { Statements: statements, $metadata: {} },
     });
 
-    const client = { send: jest.fn() } as any;
+    const client = { send: vi.fn() } as any;
     const result = await getAllStatements({
       client,
       databaseName: "analytics",
@@ -43,7 +45,7 @@ describe("getAllStatements", () => {
       lastResponse: { Statements: [{ Id: "s1" }] },
     });
 
-    const client = { send: jest.fn() } as any;
+    const client = { send: vi.fn() } as any;
     const result = await getAllStatements({
       client,
       databaseName: "db",
@@ -64,7 +66,7 @@ describe("getAllStatements", () => {
       lastResponse: { Statements: [] },
     });
 
-    const client = { send: jest.fn() } as any;
+    const client = { send: vi.fn() } as any;
     await getAllStatements({
       client,
       databaseName: "mydb",

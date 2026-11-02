@@ -1,15 +1,16 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { fetchAllPages, fetchAllCursorEvents } from "./util";
+import type { Mock } from "vitest";
 
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
+const createMockClient = (getMock: Mock): Pick<HttpClient, "get"> => ({
   get: getMock,
 });
 
 describe("fetchAllPages", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
 
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
 
   it("single page: returns items when x-total-pages equals x-page", async () => {
@@ -82,10 +83,10 @@ describe("fetchAllPages", () => {
 });
 
 describe("fetchAllCursorEvents", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
 
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
 
   it("single page: stops when x-has-next-page is false", async () => {

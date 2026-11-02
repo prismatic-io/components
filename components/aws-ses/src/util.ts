@@ -9,8 +9,7 @@ import { paginateAwsResults } from "aws-utils";
 
 export const cleanStringList = (value: unknown): string[] =>
   (value as unknown[])
-    .map((item) => util.types.toString(item).split(","))
-    .flat()
+    .flatMap((item) => util.types.toString(item).split(","))
     .filter(Boolean);
 
 export const getAllIdentities = async ({

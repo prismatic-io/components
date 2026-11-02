@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+
 ### 2026-08-11
 
 - Added EU region support with a **Region** dropdown on the **API Key** connection for routing requests to the correct US or EU data center

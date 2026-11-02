@@ -12,7 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "aws-utils": "file:../../packages/aws-utils",
     "form-data": "^4.0.1",
     "qs": "^6.13.1"

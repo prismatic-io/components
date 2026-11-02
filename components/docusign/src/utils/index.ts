@@ -1,4 +1,4 @@
-import { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import crypto from "crypto";
 type AnyObject = Record<string, unknown>;
 export const cleanObject = (obj: AnyObject): AnyObject => {

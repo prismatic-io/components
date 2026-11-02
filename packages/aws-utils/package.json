@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-sts": "3.1088.0",
-    "@prismatic-io/spectral": "10.22.1"
+    "@prismatic-io/spectral": "10.34.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.8",

@@ -1,8 +1,13 @@
-jest.mock("@slack/webhook", () => {
+import { vi } from "vitest";
+
+vi.mock("@slack/webhook", () => {
   return {
-    IncomingWebhook: jest.fn(() => ({
-      send: jest.fn().mockResolvedValue("Mock message sent successfully."),
-    })),
+    // biome-ignore lint/complexity/useArrowFunction: must stay constructible, see comment above
+    IncomingWebhook: vi.fn(function () {
+      return {
+        send: vi.fn().mockResolvedValue("Mock message sent successfully."),
+      };
+    }),
   };
 });
 

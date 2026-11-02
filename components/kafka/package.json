@@ -16,7 +16,7 @@
   "dependencies": {
     "@aws-sdk/credential-providers": "3.1143.0",
     "@kafkajs/confluent-schema-registry": "^3.9.0",
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "aws-msk-iam-sasl-signer-js": "1.0.3",
     "aws-utils": "file:../../packages/aws-utils",
     "kafkajs": "2.2.4"

@@ -1,17 +1,16 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { MockedFunction } from "vitest";
 import {
   accountIsActiveFn,
   assertTeamIdForOrgToken,
   getApiBaseUrl,
 } from "./client";
 
-jest.mock("@prismatic-io/spectral/dist/clients/http", () => ({
-  createClient: jest.fn(),
+vi.mock("@prismatic-io/spectral/dist/clients/http", () => ({
+  createClient: vi.fn(),
 }));
-const mockCreateClient = createClient as jest.MockedFunction<
-  typeof createClient
->;
+const mockCreateClient = createClient as MockedFunction<typeof createClient>;
 
 const conn = (
   token: Record<string, unknown>,
@@ -85,7 +84,7 @@ describe("accountIsActiveFn", () => {
   });
 
   it("uses the commercial host for a commercial connection", async () => {
-    const mockGet = jest.fn().mockResolvedValue({ data: { ok: true } });
+    const mockGet = vi.fn().mockResolvedValue({ data: { ok: true } });
     mockCreateClient.mockReturnValue({ get: mockGet } as any);
 
     const result = await accountIsActiveFn(
@@ -100,7 +99,7 @@ describe("accountIsActiveFn", () => {
   });
 
   it("uses the gov host for a gov connection", async () => {
-    const mockGet = jest.fn().mockResolvedValue({ data: { ok: true } });
+    const mockGet = vi.fn().mockResolvedValue({ data: { ok: true } });
     mockCreateClient.mockReturnValue({ get: mockGet } as any);
 
     const result = await accountIsActiveFn(

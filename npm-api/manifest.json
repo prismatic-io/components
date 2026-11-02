@@ -7,8 +7,8 @@
   },
   "aws-s3": {
     "name": "@prismatic-io/components-aws-s3",
-    "version": "0.1.0",
-    "build": "105448ce46f6cf9e948924bcfc80ef828863d70548334df9d1e67576d5bb3171",
+    "version": "0.1.1",
+    "build": "459ab25dc5a7dc757e3eace91600613a49606da8b258f92deb4e561ed17e714d",
     "spectral": "^10.36.0"
   },
   "dropbox": {

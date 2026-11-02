@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+
 ### 2026-05-21
 
 Added **Fetch All** input to the **List Servers** action to retrieve all servers across all pages in a single execution

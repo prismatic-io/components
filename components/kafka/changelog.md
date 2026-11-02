@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-08
 
 Added Amazon MSK IAM authentication, along with connection and trigger updates:

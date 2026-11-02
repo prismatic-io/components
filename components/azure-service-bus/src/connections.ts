@@ -11,7 +11,6 @@ export const oauth = oauth2Connection({
     label: "OAuth 2.0",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
-  comments: "OAuth 2.0 Connectivity for Azure Service Bus",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

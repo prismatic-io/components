@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1 and switched the build from webpack to tsdown
+
 ### 2026-06-11
 
 Added **Fetch All** toggle to list actions (List Templates, List Folders, List Folder Items) that automatically paginates through all results using `startPosition`/`count` pagination; when disabled, existing single-page behavior is preserved

@@ -1,4 +1,4 @@
-import { Connection, ConnectionError, util } from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { docusignOauthConnection } from "./connections";
 import { DEVELOPMENT_API_URL, LIVE_API_URL } from "./constants";

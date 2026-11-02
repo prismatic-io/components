@@ -7,7 +7,6 @@ import {
 
 export const oauth = oauth2Connection({
   key: "oauth",
-  label: "OAuth 2.0",
   display: {
     label: "OAuth 2.0",
     description: "OAuth 2.0 flow",
@@ -64,7 +63,6 @@ export const oauth = oauth2Connection({
 
 export const serverToServerConnection = oauth2Connection({
   key: "serverToServer",
-  label: "Server to Server",
   oauth2Type: OAuth2Type.ClientCredentials,
   display: {
     label: "Server to Server",
