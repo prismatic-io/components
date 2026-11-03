@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../auth";
 import { unshareFileExamplePayload } from "../../examplePayloads";
-import { shared_folder_id, unshareFileInputs } from "../../inputs";
+import { unshareFileInputs } from "../../inputs";
 import { checkDebug, handleDropboxError } from "../../util";
 
 export const unshareFile = action({
@@ -29,7 +29,7 @@ export const unshareFile = action({
         data: result,
       };
     } catch (err) {
-      handleDropboxError(err, [shared_folder_id]);
+      handleDropboxError(err, [fileId]);
     }
   },
   examplePerform: async (): Promise<{ data: unknown }> => ({

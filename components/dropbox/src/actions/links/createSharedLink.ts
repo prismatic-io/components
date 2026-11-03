@@ -1,7 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../auth";
 import { createSharedLinkExamplePayload } from "../../examplePayloads";
-import { createSharedLinkInputs, shared_folder_id } from "../../inputs";
+import { createSharedLinkInputs } from "../../inputs";
 import { createSharedLinkOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError, pathBasename } from "../../util";
 
@@ -48,7 +48,7 @@ export const createSharedLink = action({
         data: result,
       };
     } catch (err) {
-      handleDropboxError(err, [shared_folder_id]);
+      handleDropboxError(err, [path]);
     }
   },
   examplePerform: async (_context, { path }): Promise<{ data: unknown }> => ({

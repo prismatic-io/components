@@ -1,7 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../auth";
 import { getSharedMetadataForFileExamplePayload } from "../../examplePayloads";
-import { getSharedMetadataForFileInputs, shared_folder_id } from "../../inputs";
+import { getSharedMetadataForFileInputs } from "../../inputs";
 import { getSharedMetadataForFileOutputSchema } from "../../outputSchemas";
 import { checkDebug, handleDropboxError } from "../../util";
 
@@ -29,7 +29,7 @@ export const getSharedMetadataForFile = action({
         data: result,
       };
     } catch (err) {
-      handleDropboxError(err, [shared_folder_id]);
+      handleDropboxError(err, [fileId]);
     }
   },
   inputs: getSharedMetadataForFileInputs,
