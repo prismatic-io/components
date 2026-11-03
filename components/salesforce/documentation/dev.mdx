@@ -10,32 +10,3 @@ When a Salesforce Flow is created, the conditions that cause the rule to run are
 When those conditions are met, Salesforce sends an outbound message to the URL specified in the outbound message.
 
 The **Flow Outbound Message Webhook** trigger can be used to run on instance deploy and will configure the necessary Flows and outbound messages automatically.
-
-#### Example integration
-
-An example integration is available in the GitHub examples repo and can be imported and tested.
-
-<ExampleIntegrationLink
-  href="https://github.com/prismatic-io/examples/blob/main/integrations/salesforce-example.yml"
-  text="Salesforce Example Integration"
-/>
-
-The integration has three flows:
-
-- **Initial Account Import** runs when an instance is first deployed.
-  It uses SOQL to query pages of Account records, and for each page it loops over results and posts those results to "Acme".
-  Account records are translated using the field mapping values the customer selected with a code step.
-- **Process Salesforce Outbound Messages** receives notifications when an Account is changed.
-  It fetches the modified account, maps data from SFDC to a format that "Acme Corp" understands, and sends the request to Acme.
-  The subscription to a Salesforce Outbound Message and Workflow Rule are performed on instance deploy automatically. Those resource are deleted on instance removal.
-- **Create Account from Acme** provides bi-directional data flow from SFDC and Acme.
-  A webhook request can be sent to this flow via its webhook URL, and a corresponding Account will be created in SFDC. A payload should look like this:
-  ```
-  {
-  "acct_name": "My New Account",
-  "revenue": 12345
-  }
-  ```
-
-The integration also has a custom field mapper, which fetches fields on the Account object and allows the user to map them to fields on the Acme object.
-The field mapper in the example integration is built using the Code component, but it is recommended to build a custom field mapper in a custom component so it can be tested locally and dynamically pull data from the app, as well.

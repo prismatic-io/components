@@ -1,25 +1,6 @@
 A common integration pattern involves listing files in a file store, and performing a series of actions on the array of files that are returned.
 See our [looping over files](integrations/common-patterns/loop-over-files.mdx) quickstart for information about how to create a loop over an array of files.
 
-### Listening for file changes
-
-Amazon Simple Notification Service (SNS) can be used to listen for file changes in S3.
-Our GitHub examples repo contains an example integration that illustrates how to listen for file changes in S3 and perform an action when a file is added or updated; it can be [imported](configure-prismatic/integrations-multiple-regions.mdx#importing-an-integrations-yaml-definition) and tried out.
-
-<ExampleIntegrationLink
-  href="https://github.com/prismatic-io/examples/blob/main/integrations/amazon-s3-events.yml"
-  text="Amazon S3/SNS Events Integration"
-/>
-
-The example integration contains three flows:
-
-- **Create and configure SNS topic** runs when an instance is deployed and will create an SNS topic and configure it to listen for new files added to S3.
-  It instructs SNS to notify the **Receive SNS Notifications** flow when a new file is added to an S3 bucket that a user selected as part of the configuration wizard.
-- **Receive SNS Notifications** will receive the SNS notification and extract the S3 bucket and key from the message.
-  It will fetch the file that was added.
-  From there, the file can be processed or sent to another system.
-- **Remove SNS Topic** will remove the SNS topic that was created in the first flow when an instance is deleted.
-
 ### Streaming large files to S3
 
 Amazon S3 offers a feature called [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) that allows uploading large files in parts.
