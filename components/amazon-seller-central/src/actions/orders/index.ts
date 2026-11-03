@@ -1,10 +1,10 @@
-import { confirmOrderShipment } from "./confirmShipment";
-import { getOrder } from "./get";
-import { getOrderAddress } from "./getAddress";
-import { getOrderBuyerInfo } from "./getBuyerInfo";
-import { getOrderItems } from "./getItems";
-import { getOrderItemsBuyerInfo } from "./getOrderItemBuyereInfo";
-import { listOrders } from "./list";
+import { confirmOrderShipment } from "./confirmOrderShipment";
+import { getOrder } from "./getOrder";
+import { getOrderAddress } from "./getOrderAddress";
+import { getOrderBuyerInfo } from "./getOrderBuyerInfo";
+import { getOrderItems } from "./getOrderItems";
+import { getOrderItemsBuyerInfo } from "./getOrderItemsBuyerInfo";
+import { listOrders } from "./listOrders";
 
 export default {
   confirmOrderShipment,

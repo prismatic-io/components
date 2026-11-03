@@ -1,9 +1,9 @@
-import { cancelFeed } from "./cancel";
-import { createFeed } from "./create";
-import { createFeedDocument } from "./createDocument";
-import { getFeed } from "./get";
-import { getFeedDocument } from "./getDocument";
-import { listFeeds } from "./list";
+import { cancelFeed } from "./cancelFeed";
+import { createFeed } from "./createFeed";
+import { createFeedDocument } from "./createFeedDocument";
+import { getFeed } from "./getFeed";
+import { getFeedDocument } from "./getFeedDocument";
+import { listFeeds } from "./listFeeds";
 
 export default {
   cancelFeed,

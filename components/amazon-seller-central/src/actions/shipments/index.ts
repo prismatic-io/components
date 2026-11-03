@@ -1,6 +1,6 @@
-import { cancelShipment } from "./cancel";
-import { createShipment } from "./create";
-import { getShipment } from "./get";
+import { cancelShipment } from "./cancelShipment";
+import { createShipment } from "./createShipment";
+import { getShipment } from "./getShipment";
 
 export default {
   getShipment,

@@ -1,7 +1,7 @@
-import { createDestination } from "./create";
-import { deleteDestination } from "./delete";
-import { getDestination } from "./get";
-import { listDestinations } from "./list";
+import { createDestination } from "./createDestination";
+import { deleteDestination } from "./deleteDestination";
+import { getDestination } from "./getDestination";
+import { listDestinations } from "./listDestinations";
 
 export default {
   createDestination,

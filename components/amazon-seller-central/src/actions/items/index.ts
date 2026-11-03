@@ -1,9 +1,9 @@
-import { createListingsItem } from "./createListings";
-import { deleteListingsItem } from "./deleteListings";
-import { getCatalogItem } from "./getCatalog";
-import { getListingsItem } from "./getListings";
-import { searchCatalogItem } from "./searchCatalog";
-import { updateListingsItem } from "./updateListings";
+import { createListingsItem } from "./createListingsItem";
+import { deleteListingsItem } from "./deleteListingsItem";
+import { getCatalogItem } from "./getCatalogItem";
+import { getListingsItem } from "./getListingsItem";
+import { searchCatalogItem } from "./searchCatalogItem";
+import { updateListingsItem } from "./updateListingsItem";
 
 export default {
   createListingsItem,

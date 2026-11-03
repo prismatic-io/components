@@ -1,8 +1,8 @@
 import destinations from "./destinations";
 import feeds from "./feeds";
 import items from "./items";
+import misc from "./misc";
 import orders from "./orders";
-import rawRequest from "./rawRequest";
 import shipments from "./shipments";
 import subscriptions from "./subscriptions";
 
@@ -13,5 +13,5 @@ export default {
   ...orders,
   ...shipments,
   ...subscriptions,
-  rawRequest,
+  ...misc,
 };

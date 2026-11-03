@@ -1,13 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import {
-  connectionInput,
-  lookBackDate,
-  MarketplaceIds,
-  pollResourceType,
-  showNewRecords,
-  showUpdatedRecords,
-} from "../inputs";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads/triggers";
+import { pollChangesTriggerInputs } from "../inputs";
 import type {
   PollingChangesObject,
   PollingRecordChange,
@@ -19,16 +13,10 @@ export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Retrieves existing and ongoing orders or feeds for a specified Amazon Seller Central resource type. Load history once, check for changes on a schedule, or both.",
+      "Checks for new and updated orders or feeds in Amazon Seller Central on a schedule.",
   },
-  inputs: {
-    connection: connectionInput,
-    resourceType: pollResourceType,
-    marketplaceIds: MarketplaceIds,
-    showNewRecords,
-    showUpdatedRecords,
-    lookBackDate,
-  },
+  inputs: pollChangesTriggerInputs,
+  examplePayload: pollChangesTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50 },
   triggerResolver: {

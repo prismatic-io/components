@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-11-03
+
+Updated action configuration for an improved user experience.
+- Updated **List Orders** to group its page-size and continuation token into **Pagination** and its date-boundary, email, and fulfillment filters into **Filters**
+- Updated **List Feeds** and **Search Catalog Items** to group their pagination controls into **Pagination**
+- Updated **Confirm Order Shipment** and **Create Shipment** to group their optional configuration inputs into **Additional Fields**
+- Updated **Create Subscription** to require **Payload Version**
+- Added inline action calling support to 30 actions for improved example output during configuration
+- Added output schemas to 28 actions for improved field mapping during configuration
+
 ### 2026-11-02
 
 Updated spectral to 10.34.1

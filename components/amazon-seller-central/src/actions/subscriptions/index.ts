@@ -1,7 +1,7 @@
-import { createSubscription } from "./create";
-import { deleteSubscription } from "./delete";
-import { getSubscriptionById } from "./getById";
-import { listSubscriptions } from "./list";
+import { createSubscription } from "./createSubscription";
+import { deleteSubscription } from "./deleteSubscription";
+import { getSubscriptionById } from "./getSubscriptionById";
+import { listSubscriptions } from "./listSubscriptions";
 
 export default {
   createSubscription,

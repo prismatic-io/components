@@ -20,7 +20,8 @@ To register the application for public or private seller use:
 #### Configure the Connection
 
 - Enter the **Client ID** and **Client Secret** from the LWA Credentials section
-- Select the appropriate **Region** for the Seller Central account
+- Select the **SP-API Endpoint** that corresponds to the seller's Amazon marketplace region
+- For the **Client Credentials** connection, enter the required **Scopes** (e.g., `sellingpartnerapi::migration`). Scopes are space-delimited
 - Configure the **Authorize URL** based on the Seller Central region:
   - For the Seller Central URL, refer to [Amazon's region URLs](https://developer-docs.amazon.com/sp-api/docs/seller-central-urls)
   - Replace `{YOUR_APPLICATION_ID}` with the application ID from the Developer Central page
