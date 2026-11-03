@@ -2,6 +2,10 @@
 
 ### 2026-11-03
 
+Updated spectral to 10.38.3
+
+### 2026-11-03
+
 Fixed **Get Metadata for File or Folder**, **Create Shared Link**, **Get Shared Metadata for File**, **Get Shared Metadata for Folder**, and **Unshare File** showing `[object Object]` in place of the file path or ID when Dropbox reported a path error; the error now names the path or ID that was given
 
 ### 2026-11-02

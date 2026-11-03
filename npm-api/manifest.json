@@ -1,20 +1,20 @@
 {
   "adobe-io-events": {
     "name": "@prismatic-io/components-adobe-io-events",
-    "version": "0.1.0",
-    "build": "193af1cb249158666c7999aa91a1631d4e567de8d9579eb868658c62527920e6",
-    "spectral": "^10.36.0"
+    "version": "0.2.0",
+    "build": "72023dc0ab571d2a1cd3e26edc2cee9bbc457b2cc1c20a2196f6090ed78d8bdf",
+    "spectral": "^10.38.3"
   },
   "aws-s3": {
     "name": "@prismatic-io/components-aws-s3",
-    "version": "0.1.1",
-    "build": "459ab25dc5a7dc757e3eace91600613a49606da8b258f92deb4e561ed17e714d",
-    "spectral": "^10.36.0"
+    "version": "0.2.0",
+    "build": "eaca927fb9484af2c1604b687127fddd89601e12c3e731eefbaf4e1382530615",
+    "spectral": "^10.38.3"
   },
   "dropbox": {
     "name": "@prismatic-io/components-dropbox",
-    "version": "0.1.2",
-    "build": "4fb565c9dc151a275458c183fc5b80b48e0122dcdb4833d84123ea5a12dfc7c8",
-    "spectral": "^10.36.0"
+    "version": "0.2.0",
+    "build": "974249b3dc841c05eed6556717c1525d5dcdb40a1cee1d636408ab91e1a56f79",
+    "spectral": "^10.38.3"
   }
 }
