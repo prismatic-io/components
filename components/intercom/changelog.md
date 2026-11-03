@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-19
 
 - Added an optional **Look-back Date** input to the **New and Updated Records** trigger for performing an initial sync of records. The initial sync begins on the first recurrence and backfills every record modified on or after the specified date, seeding each once and ignoring the trigger's filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill

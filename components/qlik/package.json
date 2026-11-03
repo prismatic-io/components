@@ -14,7 +14,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.34.0",
+    "@prismatic-io/spectral": "10.34.1",
     "jsonwebtoken": "^9.0.2",
     "uid-safe": "^2.1.5"
   },

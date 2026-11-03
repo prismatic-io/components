@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-12
 
 - List and search actions group their page-size, offset, and cursor inputs into **Pagination**; **Fetch All** stays a top-level toggle where applicable

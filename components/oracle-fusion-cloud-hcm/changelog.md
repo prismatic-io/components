@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-13
 
 Added batching, initial sync, and a pagination fix to the polling triggers:

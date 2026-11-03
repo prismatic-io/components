@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-09
 
 - Added opt-in batching to the **New Registrants** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives

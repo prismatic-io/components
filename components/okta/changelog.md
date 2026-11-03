@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-20
 
 - Added opt-in batching to the **New System Logs** trigger, dispatching each event individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives

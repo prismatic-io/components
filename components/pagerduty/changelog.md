@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-02
+
+Updated spectral to 10.34.1
+
 ### 2026-10-29
 
 Updated the **New Incidents** trigger so the initial sync ignores the **Show New Incidents** toggle while it runs; later recurrences apply it normally
