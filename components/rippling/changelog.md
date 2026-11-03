@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Updated spectral to 10.34.1
+
 ### 2026-10-29
 
 Updated the **New and Updated Records** trigger so the initial sync ignores the **Show New Records** and **Show Updated Records** visibility toggles, delivering every matched record during the backfill; later recurrences apply them normally

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Updated spectral to 10.34.1
+
 ### 2026-10-13
 
 Added an initial sync and opt-in batching to the **New and Updated Payments** trigger, and capped how many payments one recurrence returns without batching:

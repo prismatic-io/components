@@ -11,7 +11,7 @@
     "format": "npx @biomejs/biome format --write ."
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
+    "@prismatic-io/spectral": "10.34.1",
     "url-join": "4.0.1"
   },
   "devDependencies": {

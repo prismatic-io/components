@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Updated spectral to 10.34.1
+
 ### 2026-10-13
 
 Added batching and initial sync support to the **New and Updated Records** polling trigger:

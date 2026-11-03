@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Updated spectral to 10.34.1
+
 ### 2026-10-19
 
 - Added an optional **Look-back Date** input to the **New and Updated Orders**, **New and Updated Products**, and **New and Updated Shipments** triggers for performing an initial sync of orders, products, and shipments. The initial sync begins on the first recurrence and backfills every record on or after the specified date, seeding each once; recurrences after the sync completes are unaffected. Leave it empty to start from the first recurrence with no backfill
