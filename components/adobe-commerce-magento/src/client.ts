@@ -1,8 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { adobeCommerceApiKey } from "./connections/adobeCommerceApiKey";
 import { adobeCommerceOauth1 } from "./connections/adobeCommerceOauth1";
 import { DEFAULT_STORE_CODE, productionUrl, sandboxUrl } from "./constants";

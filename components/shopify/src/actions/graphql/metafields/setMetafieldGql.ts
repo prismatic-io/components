@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { setMetafieldExamplePayload as examplePayload } from "../../../examplePayloads";
+import { setMetafieldGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { setMetafieldInputs as inputs } from "../../../inputsGql";
 import { setMetafieldGqlOutputSchema } from "../../../outputSchemas";
 import type { Metafield, UserError } from "../../../types";

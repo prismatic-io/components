@@ -1,8 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import {
-  handleErrors,
-  sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors, sendRawRequest } from "@prismatic-io/spectral/http";
 import { API_VERSION, BASE_URL } from "../../constants";
 import { rawRequestInputs } from "../../inputs";
 import { validateConnection } from "../../util";

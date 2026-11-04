@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { BASE_URL, BASE_URL_V3 } from "./constants";
 
 export const getZendeskClient = (

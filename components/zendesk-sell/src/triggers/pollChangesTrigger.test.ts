@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { listDealsExamplePayload } from "../examplePayloads";
 import type { PollingState, ZendeskSellRecord } from "../types";
 import { lookBackDateClean, resolveZendeskSellRecordChanges } from "../util";

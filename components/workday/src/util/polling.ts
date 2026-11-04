@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import type { ActionLogger } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   DAY_MS,
   EVENT_STEPS_MAX_PAGES,

@@ -1,6 +1,6 @@
 import type { ActionContext } from "@prismatic-io/spectral";
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { IO_EVENTS_REGISTRATION_NAME_MAX_LENGTH } from "../constants";
 import type {
   AemWebhookFlowState,

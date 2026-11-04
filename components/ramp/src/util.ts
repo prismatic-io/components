@@ -4,7 +4,7 @@ import {
   type KeyValuePair,
   util,
 } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { oauth2 } from "./connections";
 import { INVALID_CONNECTION, LOOK_BACK_DATE_PATTERN } from "./constants";
 import type { GenericListData } from "./interfaces/general";

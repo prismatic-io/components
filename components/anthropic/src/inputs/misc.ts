@@ -1,4 +1,4 @@
-import { inputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs } from "@prismatic-io/spectral/http";
 import { BASE_URL, DEFAULT_RAW_REQUEST_URL } from "../constants";
 import { connectionInput } from "./common";
 

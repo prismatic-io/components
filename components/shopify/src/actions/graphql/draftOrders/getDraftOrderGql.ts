@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { getDraftOrderExamplePayload as examplePayload } from "../../../examplePayloads";
+import { getDraftOrderGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { getDraftOrderInputs as inputs } from "../../../inputsGql";
 import { getDraftOrderGqlOutputSchema } from "../../../outputSchemas";
 import getDraftOrderQuery from "../queries/draftOrders/GetDraftOrder.gql";

@@ -1,4 +1,4 @@
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import {
   getDepartmentResponse,
   listDepartmentsResponse,

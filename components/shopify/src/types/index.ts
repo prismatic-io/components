@@ -8,6 +8,7 @@ export * from "./metafields";
 export * from "./orders";
 export * from "./pagination";
 export * from "./polling";
+export * from "./productImages";
 export * from "./products";
 export * from "./rest";
 export * from "./shops";

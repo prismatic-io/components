@@ -1,6 +1,6 @@
 import { util } from "@prismatic-io/spectral";
 import { FALSE, MAX_PAGE_SIZE, MAX_POLL_PAGES, TRUE } from "../constants";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type {
   GoToWebinarResponse,
   ParsedRegistrant,

@@ -1,14 +1,14 @@
 import { action, outputSchema, util } from "@prismatic-io/spectral";
-import {
-  createCustomerPayload,
-  customerExamplePayload,
-} from "../../examplePayloads";
+import { createCustomerExamplePayload } from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
 import { createCustomerOutputSchema } from "../../outputSchemas";
 import type { RestAddress } from "../../types";
-import { cleanArrayCodeInput, cleanValueListInput } from "../../util";
+import {
+  addressMapper,
+  cleanArrayCodeInput,
+  cleanValueListInput,
+} from "../../util";
 import { createCustomerGql } from "../graphql/customers/createCustomerGql";
-import { addressMapper } from "../graphql/mappers/addressMapper";
 
 export const createCustomer = action({
   display: {
@@ -53,8 +53,7 @@ export const createCustomer = action({
     type: "actionOutput",
     schema: createCustomerOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> => ({
-    data: customerExamplePayload,
-  }),
-  examplePayload: createCustomerPayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    createCustomerExamplePayload,
+  examplePayload: createCustomerExamplePayload,
 });

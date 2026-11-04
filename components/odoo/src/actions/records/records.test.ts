@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { odooApiKey } from "../../connections/odooApiKey";
 import {

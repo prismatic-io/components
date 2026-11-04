@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from "vitest";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { POLL_PAGE_SIZE } from "../constants";
 import {
   fetchAgreementsModifiedSince,

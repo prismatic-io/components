@@ -3,12 +3,17 @@ import {
   type Connection,
   util,
 } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import {
+  createClient,
+  type HttpClient,
+} from "@prismatic-io/spectral/dist/clients/http";
 import { GraphQLClient } from "graphql-request";
 import { shopifyConnection as deprecatedOAuth2Connection } from "./connections/oauth2";
 import {
+  ADMIN_API_PATH,
   DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
   DEFAULT_SHOPIFY_VERSION,
+  SHOPIFY_ACCESS_TOKEN_HEADER,
 } from "./constants";
 import { gqlErrorsCheck } from "./util";
 
@@ -70,7 +75,7 @@ export const getShopifyClient = (
   apiVersion?: string,
   debug?: boolean,
   logger?: ActionLogger,
-) => {
+): HttpClient => {
   const shopifyHostname = getConnectionHostname(shopifyConnection);
   const version =
     apiVersion ??
@@ -78,9 +83,9 @@ export const getShopifyClient = (
 
   return createClient({
     debug,
-    baseUrl: `https://${shopifyHostname}/admin/api/${version}`,
+    baseUrl: `https://${shopifyHostname}${ADMIN_API_PATH}/${version}`,
     headers: {
-      "X-Shopify-Access-Token": util.types.toString(
+      [SHOPIFY_ACCESS_TOKEN_HEADER]: util.types.toString(
         shopifyConnection.token?.access_token ||
           shopifyConnection.fields.adminApiAccessToken,
       ),
@@ -95,7 +100,7 @@ export const getShopifyGraphQlClient = (
   apiVersion: string | undefined,
   debug: boolean,
   logger: ActionLogger,
-) => {
+): GraphQLClient => {
   const shopifyHostname = getConnectionHostname(shopifyConnection);
   const version =
     apiVersion ??
@@ -104,10 +109,10 @@ export const getShopifyGraphQlClient = (
       DEFAULT_SHOPIFY_GRAPHQL_API_VERSION,
       logger,
     );
-  const url = `https://${shopifyHostname}/admin/api/${version}/graphql.json`;
+  const url = `https://${shopifyHostname}${ADMIN_API_PATH}/${version}/graphql.json`;
   return new GraphQLClient(url, {
     headers: {
-      "X-Shopify-Access-Token": util.types.toString(
+      [SHOPIFY_ACCESS_TOKEN_HEADER]: util.types.toString(
         shopifyConnection.token?.access_token ||
           shopifyConnection.fields.adminApiAccessToken,
       ),

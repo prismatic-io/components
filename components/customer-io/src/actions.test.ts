@@ -1,5 +1,5 @@
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { createCustomerClient } from "./client";
 import { apiKeyConnection } from "./connections";
 

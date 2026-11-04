@@ -2,7 +2,7 @@ import type { TriggerPayload } from "@prismatic-io/spectral";
 import {
   defaultTriggerPayload,
   loggerMock,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 import { fetchMessagesSince, resolvePollingRecordChanges } from "../util";
 import type { TwilioChangesObject, TwilioMessage } from "../types";

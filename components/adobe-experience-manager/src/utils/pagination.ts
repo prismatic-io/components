@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { MAX_FETCH_ALL_PAGES, MAX_PAGE_LIMIT } from "../constants";
 import type { CursorPageResponse, PaginationParams } from "../types";
 

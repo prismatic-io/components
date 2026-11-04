@@ -1,20 +1,46 @@
 {
-  "name": "qlik",
-  "private": true,
+  "name": "@prismatic-io/components-qlik",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Qlik is a business analytics platform. Use the Qlik component to manage your Data Sets, Assets, and Apps.",
   "license": "Apache-2.0",
-  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/qlik"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.34.1",
     "jsonwebtoken": "^9.0.2",
     "uid-safe": "^2.1.5"
   },
@@ -25,6 +51,7 @@
     "form-data": "^4.0.0",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "@prismatic-io/spectral": "^10.38.5"
   }
 }

@@ -1,4 +1,4 @@
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { createAuthorizedClient } from "./client";
 import { apiKey, oauth2 } from "./connections";
 

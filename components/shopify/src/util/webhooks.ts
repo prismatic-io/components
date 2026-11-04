@@ -1,11 +1,25 @@
 import * as crypto from "node:crypto";
-import { type TriggerPayload, util } from "@prismatic-io/spectral";
+import {
+  type ActionContext,
+  type ActionInputParameters,
+  type TriggerPayload,
+  type TriggerResult,
+  util,
+} from "@prismatic-io/spectral";
 import type { GraphQLClient } from "graphql-request";
 import createWebhookQuery from "../actions/graphql/queries/webhooks/CreateWebhook.gql";
 import deleteWebhookQuery from "../actions/graphql/queries/webhooks/DeleteWebhook.gql";
 import listWebhooksQuery from "../actions/graphql/queries/webhooks/ListWebhooks.gql";
-import { MAX_LIMIT } from "../constants";
-import type { PageInfo, Webhookinput, WebhookSubscription } from "../types";
+import { MAX_LIMIT, SHOPIFY_HMAC_HEADER } from "../constants";
+import type { eventTopicWebhookGqlInputs } from "../inputs";
+import type {
+  CreateWebhookParams,
+  CreateWebhookResponse,
+  DeleteWebhookResponse,
+  ListWebhooksResponse,
+  PageInfo,
+  WebhookSubscription,
+} from "../types";
 import { fetchData } from "./pagination";
 
 export const signaturesMatch = (
@@ -23,14 +37,14 @@ export const signaturesMatch = (
   );
 };
 
-export const performFunction = async (
-  context,
+export const webhookPerformFn = async (
+  context: ActionContext,
   payload: TriggerPayload,
-  { secret_key },
-) => {
+  { secret_key }: ActionInputParameters<typeof eventTopicWebhookGqlInputs>,
+): Promise<TriggerResult<false, TriggerPayload>> => {
   if (secret_key) {
     const headers = util.types.lowerCaseHeaders(payload.headers);
-    const SHOPIFY_HMAC = headers["x-shopify-hmac-sha256"];
+    const SHOPIFY_HMAC = headers[SHOPIFY_HMAC_HEADER.toLowerCase()];
     if (SHOPIFY_HMAC) {
       const requestBody = payload.rawBody.data;
       if (!context.isSimulatedTestExecution) {
@@ -47,7 +61,7 @@ export const performFunction = async (
         response: {
           headers: {
             ...headers,
-            "X-Shopify-Hmac-SHA256": SHOPIFY_HMAC,
+            [SHOPIFY_HMAC_HEADER]: SHOPIFY_HMAC,
           },
           statusCode: 200,
           contentType: "application/json",
@@ -71,22 +85,22 @@ export const performFunction = async (
 
 export const createWebhook = async (
   client: GraphQLClient,
-  input: Webhookinput,
-) => {
-  const data: {
-    webhookSubscriptionCreate: {
-      webhookSubscription: WebhookSubscription;
-      userErrors: Record<string, unknown>[];
-    };
-  } = await client.request(createWebhookQuery, input);
+  input: CreateWebhookParams,
+): Promise<CreateWebhookResponse> => {
+  const data: CreateWebhookResponse = await client.request(
+    createWebhookQuery,
+    input,
+  );
   return data;
 };
 
-export const deleteWebhookById = async (client: GraphQLClient, id: string) => {
-  const data: { webhookSubscriptionDelete: Record<string, unknown> } =
-    await client.request(deleteWebhookQuery, {
-      id,
-    });
+export const deleteWebhookById = async (
+  client: GraphQLClient,
+  id: string,
+): Promise<DeleteWebhookResponse> => {
+  const data: DeleteWebhookResponse = await client.request(deleteWebhookQuery, {
+    id,
+  });
 
   return data;
 };
@@ -99,7 +113,7 @@ export const listWebhooks = async (
   instanceWebhookUrls: string[],
   endCursor: string | undefined,
   callbackUrl?: string,
-) => {
+): Promise<ListWebhooksResponse> => {
   const shouldFetchAll = onlyInstanceWebhooks || getAlldata;
 
   const data = (await fetchData<WebhookSubscription>(

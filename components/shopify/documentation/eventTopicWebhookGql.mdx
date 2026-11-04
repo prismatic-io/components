@@ -3,15 +3,15 @@
 The Event Topic Webhook trigger manages [Shopify webhook subscriptions](https://shopify.dev/docs/api/admin-graphql/latest/mutations/webhookSubscriptionCreate) for an instance. Unlike manual webhook configuration, this trigger handles the entire webhook lifecycle automatically using the Shopify GraphQL API.
 
 When the trigger is used in a flow:
-- **On Instance Deploy**: The trigger automatically creates webhook subscriptions in the Shopify store for the selected event topics (customer creation, order updates, product changes, etc.). The webhook callback URL is set to the instance's unique webhook URL. If subscriptions for the same topics and URL already exist, they are reused to prevent duplication.
+- **On Instance Deploy**: The trigger automatically creates webhook subscriptions in the Shopify store for the selected event topics (customer creation, order updates, product changes, etc.). The webhook callback URL is set to the instance's unique webhook URL.
 - **On Instance Deletion**: The trigger automatically removes webhook subscriptions from the Shopify store that match the instance's webhook URL. This ensures no orphaned webhook configurations remain after instance cleanup.
 
 #### Configuration Requirements
 
 This trigger requires:
 - **Connection**: A Shopify connection with appropriate API access permissions
-- **Secret Key**: The Shopify app's client secret for HMAC signature verification, viewable from the app's Configuration section in the [Shopify Partner Dashboard](https://www.shopify.com/partners)
-- **Webhook Topics**: One or more event types to subscribe to (see Event Topics below)
+- **Secret Key**: The Shopify app's client secret for HMAC signature verification, viewable from **App settings** in the [Dev Dashboard](https://shopify.dev/docs/apps/build/dev-dashboard/create-apps-using-dev-dashboard)
+- **Webhook Topics**: One or more event types to subscribe to (see **Event Types** below)
 
 #### Signature Verification
 
@@ -46,7 +46,7 @@ The trigger automatically returns a 200 OK response with the parsed JSON body fo
 Select which Shopify events should trigger the flow.
 
 <details>
-<summary>Available Event Topics (67)</summary>
+<summary>Available Event Topics (76)</summary>
 
 **Customer Events:**
 - `CUSTOMERS_CREATE`, `CUSTOMERS_UPDATE`, `CUSTOMERS_DELETE`

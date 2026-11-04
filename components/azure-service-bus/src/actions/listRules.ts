@@ -1,5 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { getAzureServiceBusClient } from "../client";
 import { listRulesExamplePayload } from "../examplePayloads";
 import { paginateResults } from "../helpers/pagination";

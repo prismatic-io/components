@@ -1,8 +1,5 @@
 import { type Connection, util } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { ANTHROPIC_VERSION, BASE_URL } from "./constants";
 import { validateConnection } from "./util";
 

@@ -1,4 +1,4 @@
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import type { BigCommerceOrder, PollingState } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 

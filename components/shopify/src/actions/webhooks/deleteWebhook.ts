@@ -1,5 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { deleteWebhookPayload } from "../../examplePayloads";
+import { SHOPIFY_GID_PREFIX } from "../../constants";
+import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
 import { deleteWebhookOutputSchema } from "../../outputSchemas";
 import { deleteWebhookGql } from "../graphql/webhooks/deleteWebhookGql";
@@ -18,7 +19,7 @@ export const deleteWebhook = action({
   perform: async (context, params) => {
     const { data } = await deleteWebhookGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
-      webhookId: `gid://shopify/WebhookSubscription/${params.webhookId}`,
+      webhookId: `${SHOPIFY_GID_PREFIX}WebhookSubscription/${params.webhookId}`,
     });
 
     return { data };
@@ -26,5 +27,5 @@ export const deleteWebhook = action({
   examplePerform: async () => ({
     data: {},
   }),
-  examplePayload: deleteWebhookPayload,
+  examplePayload: deleteWebhookExamplePayload,
 });

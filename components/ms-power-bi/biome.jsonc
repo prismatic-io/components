@@ -18,5 +18,8 @@
       "quoteStyle": "double",
       "trailingCommas": "es5"
     }
+  },
+  "files": {
+    "includes": ["**", "!**/npm-dist"]
   }
 }

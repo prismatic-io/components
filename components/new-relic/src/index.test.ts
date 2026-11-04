@@ -1,5 +1,5 @@
 import sendLogs from "./actions/logs/sendLogs";
-import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
+import { invoke, createConnection } from "@prismatic-io/spectral/testing";
 import { apiKeySecret } from "./connections";
 
 describe("test Send Logs", () => {

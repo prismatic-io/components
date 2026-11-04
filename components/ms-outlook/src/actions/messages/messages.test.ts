@@ -1,5 +1,5 @@
 import outlookComponent from "../..";
-import { createHarness } from "@prismatic-io/spectral/dist/testing";
+import { createHarness } from "@prismatic-io/spectral/testing";
 
 const harness = createHarness(outlookComponent);
 

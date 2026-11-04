@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { V1_MAX_PER_PAGE } from "../constants";
 import type { Application } from "../types";
 

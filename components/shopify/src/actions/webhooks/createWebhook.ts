@@ -1,9 +1,6 @@
 import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { WEBHOOK_TOPICS_MAP } from "../../constants";
-import {
-  createWebhookExamplePayload,
-  createWebhookPayload,
-} from "../../examplePayloads";
+import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import { createWebhookGql } from "../graphql/webhooks/createWebhookGql";
@@ -34,8 +31,6 @@ export const createWebhook = action({
     type: "actionOutput",
     schema: createWebhookOutputSchema,
   }),
-  examplePerform: async () => ({
-    data: createWebhookExamplePayload,
-  }),
-  examplePayload: createWebhookPayload,
+  examplePerform: async () => createWebhookExamplePayload,
+  examplePayload: createWebhookExamplePayload,
 });

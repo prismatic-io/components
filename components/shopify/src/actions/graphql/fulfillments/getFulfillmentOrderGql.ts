@@ -4,7 +4,7 @@ import { getFulfillmentOrderExamplePayload } from "../../../examplePayloads";
 import { getFulfillmentOrderInputs as inputs } from "../../../inputsGql";
 import { getFulfillmentOrderGqlOutputSchema } from "../../../outputSchemas";
 import type { FulfillmentOrder } from "../../../types";
-import { fulfillmentOrderMapper } from "../mappers/fulfillmentOrderMapper";
+import { fulfillmentOrderMapper } from "../../../util";
 import getFulfillmentOrderQuery from "../queries/fulfillments/GetFulfillmentOrder.gql";
 
 export const getFulfillmentOrderGql = action({

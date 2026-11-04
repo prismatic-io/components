@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { createProductImageExamplePayload as examplePayload } from "../../../examplePayloads";
+import { createProductImageGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { createProductImageInputs as inputs } from "../../../inputsGql";
 import { createProductImageGqlOutputSchema } from "../../../outputSchemas";
 import createProductImageQuery from "../queries/productImage/CreateProductImage.gql";

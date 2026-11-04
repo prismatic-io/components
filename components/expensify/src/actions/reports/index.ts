@@ -1,7 +1,7 @@
-import { createReport } from "./create";
-import { downloadReport } from "./download";
-import { exportReport } from "./export";
-import { updateReportStatus } from "./updateStatus";
+import { createReport } from "./createReport";
+import { downloadReport } from "./downloadReport";
+import { exportReport } from "./exportReport";
+import { updateReportStatus } from "./updateReportStatus";
 
 export default {
   createReport,

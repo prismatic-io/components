@@ -1,7 +1,7 @@
 import {
   createConnection,
   defaultTriggerPayload,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { calendlyOauth2Connection } from "../connections";

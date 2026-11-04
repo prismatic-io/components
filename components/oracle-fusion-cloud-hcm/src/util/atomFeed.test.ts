@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { fetchAtomEntries } from "./atomFeed";
 
 const makeAtomXml = (entries: { id: string; updated: string }[]): string => {

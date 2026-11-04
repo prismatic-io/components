@@ -2,7 +2,7 @@ import { SchemaRegistry } from "@kafkajs/confluent-schema-registry";
 import {
   createConnection,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { Kafka } from "kafkajs";
 import { type Mock, vi } from "vitest";
 import { awsAccessKeySecret } from "../connections/awsAccessKeySecret";

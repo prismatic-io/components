@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { Kafka } from "kafkajs";
 import { type Mock, vi } from "vitest";
 import { awsAccessKeySecret } from "../../connections/awsAccessKeySecret";

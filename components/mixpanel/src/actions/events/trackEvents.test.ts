@@ -1,4 +1,4 @@
-import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
+import { invoke, createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, describe, expect, test } from "vitest";
 import { trackEvents } from "./trackEvents";

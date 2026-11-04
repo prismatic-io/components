@@ -1,1 +1,5 @@
-export { getOrder } from "./getOrder";
+import { getOrder } from "./getOrder";
+
+export default {
+  getOrder,
+};

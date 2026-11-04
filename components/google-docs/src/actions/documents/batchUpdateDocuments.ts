@@ -3,7 +3,7 @@ import { getClient } from "../../client";
 import { batchUpdateDocumentsInputs } from "../../inputs";
 import { batchUpdateDocumentsExamplePayload } from "../../examplePayloads";
 import type { docs_v1 } from "@googleapis/docs";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const batchUpdateDocuments = action({
   display: {

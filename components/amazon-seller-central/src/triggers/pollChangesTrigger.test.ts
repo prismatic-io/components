@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { createClient } from "../client";
 import type { AmazonRecord, PollingState } from "../types";

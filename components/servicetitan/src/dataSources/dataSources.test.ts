@@ -1,4 +1,4 @@
-import { invokeDataSource } from "@prismatic-io/spectral/dist/testing";
+import { invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { api, connection, prefix } from "../testHelpers";
 import { selectCustomerContact } from "./selectCustomerContact";

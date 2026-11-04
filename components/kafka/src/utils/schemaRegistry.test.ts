@@ -1,5 +1,5 @@
 import { SchemaRegistry } from "@kafkajs/confluent-schema-registry";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { type Mock, vi } from "vitest";
 import { basic } from "../connections/basic";
 import {

@@ -1,5 +1,5 @@
 import { type Mock, vi } from "vitest";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { DriveItem } from "./interfaces";
 import { getFilesFromDriveFN, paginateResults } from "./utils";
 

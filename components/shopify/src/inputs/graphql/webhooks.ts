@@ -1,28 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
-import { WEBHOOK_TOPICS } from "../../constants";
-import {
-  cleanStringInput,
-  cleanValueListInput,
-  generateModelFromSnakeCaseArray,
-} from "../../util";
+import { cleanStringInput } from "../../util";
 import {
   callbackUrl,
   getAlldata,
   pagination,
   shopifyConnection,
+  webhookTopic,
 } from "./common";
-
-const webhookTopic = input({
-  label: "Webhook Topic",
-  type: "string",
-  required: true,
-  example: "APP_PURCHASES_ONE_TIME_UPDATE",
-  placeholder: "Select webhook topic",
-  model: generateModelFromSnakeCaseArray(WEBHOOK_TOPICS),
-  comments:
-    "The topic for the webhook. This is the event that will trigger the webhook.",
-  clean: util.types.toString,
-});
 
 const callbackWebhookUrl = input({
   label: "Callback URL",
@@ -45,6 +29,7 @@ const webhookFormat = input({
   ],
   default: "JSON",
   comments: "Provide a string value for the format the webhook returns.",
+  clean: util.types.toString,
 });
 
 const showOnlyInstanceWebhooks = input({
@@ -62,22 +47,6 @@ const webhookId = input({
   comments: "The unique identifier for the webhook.",
   example: "gid://shopify/WebhookSubscription/525699895",
   placeholder: "Enter webhook ID",
-  clean: util.types.toString,
-});
-
-const webhookTopics = input({
-  ...webhookTopic,
-  collection: "valuelist",
-  clean: cleanValueListInput,
-});
-
-const secretKey = input({
-  label: "Secret Key",
-  type: "password",
-  required: true,
-  comments:
-    "The Shopify app's client secret, viewable from the Partner Dashboard.",
-  placeholder: "Enter secret key",
   clean: util.types.toString,
 });
 
@@ -107,9 +76,3 @@ export const deleteWebhookInputs = {
 };
 
 export const deleteInstanceWebhooksInputs = { shopifyConnection };
-
-export const eventTopicWebhookInputs = {
-  shopifyConnection,
-  secret_key: secretKey,
-  webhookTopics,
-};

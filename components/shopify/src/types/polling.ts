@@ -1,10 +1,11 @@
+import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { DocumentNode } from "graphql";
 
 export interface PollingCursor extends Record<string, unknown> {
   windowStart: string;
   windowEnd: string;
-  after?: string;
   isBackfill: boolean;
+  after?: string;
 }
 
 export interface PollingState {
@@ -25,4 +26,15 @@ export interface PollingRecordChange<T> {
 export interface PollingResource {
   listKey: string;
   query: DocumentNode;
+}
+
+export interface PollingPage<T> {
+  records: T[];
+  hasNextPage: boolean;
+  endCursor: string | null;
+}
+
+export interface PollingCycleResult {
+  payload: TriggerPayload<PollingCursor>;
+  polledNoChanges: boolean;
 }

@@ -7,16 +7,19 @@ import {
 import type { GraphQLClient } from "graphql-request";
 import { getShopifyGraphQlClient } from "../client";
 import { LOOK_BACK_DATE_PATTERN, POLLING_LIMIT } from "../constants";
-import type { pollingTriggerInputs } from "../inputsGql";
+import type { customersPollingTriggerInputs } from "../inputs";
 import type {
   PageInfo,
   PollingChangesObject,
   PollingCursor,
+  PollingCycleResult,
+  PollingPage,
   PollingRecordChange,
   PollingResource,
   PollingState,
 } from "../types";
 import { fetchData } from "./pagination";
+import { buildPollingWindowQuery, resolvePollingCursor } from "./pollingWindow";
 
 export const categorizeByChangeType = <T extends { createdAt: string }>(
   items: T[],
@@ -88,45 +91,11 @@ export const lookBackDateClean = (value: unknown): string => {
   return parsed.toISOString();
 };
 
-export const resolvePollingCursor = (params: {
-  incoming: PollingCursor | undefined;
-  state: PollingState;
-  lookBackDate: string;
-  now: string;
-}): PollingCursor => {
-  const { incoming, state, lookBackDate, now } = params;
-
-  if (incoming?.windowStart && incoming?.windowEnd) {
-    return incoming;
-  }
-
-  if (state?.cursor?.windowStart && state?.cursor?.windowEnd) {
-    return state.cursor;
-  }
-
-  if (state?.lastPolledAt) {
-    return {
-      windowStart: state.lastPolledAt,
-      windowEnd: now,
-      isBackfill: false,
-    };
-  }
-
-  if (lookBackDate) {
-    return { windowStart: lookBackDate, windowEnd: now, isBackfill: true };
-  }
-
-  return { windowStart: now, windowEnd: now, isBackfill: false };
-};
-
-export const buildPollingWindowQuery = (cursor: PollingCursor): string =>
-  `updated_at:>='${cursor.windowStart}' updated_at:<'${cursor.windowEnd}'`;
-
 const fetchPollingPage = async <T>(
   client: GraphQLClient,
   resource: PollingResource,
   cursor: PollingCursor,
-) => {
+): Promise<PollingPage<T>> => {
   const data = (await fetchData<T>(
     client,
     [resource.listKey],
@@ -150,9 +119,9 @@ const fetchPollingPage = async <T>(
 export const runPollingCycle = async <T extends { createdAt: string }>(
   context: PollingContext,
   payload: TriggerPayload,
-  params: ActionInputParameters<typeof pollingTriggerInputs>,
+  params: ActionInputParameters<typeof customersPollingTriggerInputs>,
   resource: PollingResource,
-) => {
+): Promise<PollingCycleResult> => {
   const now = new Date().toISOString();
   const state = (context.polling.getState() ?? {}) as PollingState;
 
@@ -203,6 +172,7 @@ export const runPollingCycle = async <T extends { createdAt: string }>(
       paginationState: nextCursor,
       body: { data: categorizeByChangeType(page.records, cursor.windowStart) },
     },
-    polledNoChanges: page.records.length === 0,
+    polledNoChanges:
+      page.records.length === 0 && !nextCursor && !payload.paginationState,
   };
 };

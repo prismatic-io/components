@@ -1,1 +1,5 @@
-export { listProductImages } from "./listProductImages";
+import { listProductImages } from "./listProductImages";
+
+export default {
+  listProductImages,
+};

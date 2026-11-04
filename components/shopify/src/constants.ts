@@ -1,6 +1,11 @@
 export const DEFAULT_SHOPIFY_VERSION = "2026-07";
 export const DEFAULT_SHOPIFY_GRAPHQL_API_VERSION = "2026-07";
 
+export const ADMIN_API_PATH = "/admin/api";
+export const SHOPIFY_ACCESS_TOKEN_HEADER = "X-Shopify-Access-Token";
+export const SHOPIFY_HMAC_HEADER = "X-Shopify-Hmac-SHA256";
+export const SHOPIFY_GID_PREFIX = "gid://shopify/";
+
 export const GRAPHQL_EXAMPLE = `{
     products(first: 3) {
       edges {
@@ -13,6 +18,8 @@ export const GRAPHQL_EXAMPLE = `{
   }`;
 
 export const MAX_LIMIT = 250;
+export const DEFAULT_REST_PAGE_LIMIT = 50;
+export const MAX_FULFILLMENTS_PER_ORDER = 10000;
 export const POLLING_LIMIT = 50;
 
 export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
@@ -354,6 +361,15 @@ export const WEBHOOK_TOPICS_MAP = {
   "themes/delete": "THEMES_DELETE",
   "themes/publish": "THEMES_PUBLISH",
   "themes/update": "THEMES_UPDATE",
+};
+
+export const METAFIELD_TYPE_CONVERTERS: Record<
+  string,
+  "toString" | "toInt" | "toBool"
+> = {
+  single_line_text_field: "toString",
+  number_integer: "toInt",
+  boolean: "toBool",
 };
 
 export const LIST_PRODUCTS_DATASOURCE_REFERENCE = "listProducts";

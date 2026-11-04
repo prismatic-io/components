@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import type { CrossFlowState } from "./types";
 import { getBaseUrl, getToken, refreshCachedToken } from "./util";
 import { validateConnection } from "./util/validateConnection";

@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { stubAxiosAdapter } from "../../../tests/axiosAdapter";
 import { apiKey } from "../../connections";
 import { rawRequest } from "./rawRequest";

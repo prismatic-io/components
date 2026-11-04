@@ -1,4 +1,4 @@
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import { myTrigger } from "./myTrigger";
 
 describe("myTrigger", () => {

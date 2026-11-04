@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { getLocationsExamplePayload as examplePayload } from "../../../examplePayloads";
+import { getLocationsGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { getLocationInputs as inputs } from "../../../inputsGql";
 import { getLocationsGqlOutputSchema } from "../../../outputSchemas";
 import getLocationsQuery from "../queries/locations/GetLocations.gql";

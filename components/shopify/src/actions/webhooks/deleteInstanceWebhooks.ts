@@ -1,4 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstanceWebhooksInputs } from "../../inputs";
 import { deleteInstanceWebhooksOutputSchema } from "../../outputSchemas";
 import { deleteInstanceWebhooksgql } from "../graphql/webhooks/deleteInstanceWebhooksgql";
@@ -21,4 +22,6 @@ export const deleteInstanceWebhooks = action({
 
     return { data };
   },
+  examplePerform: async () => deleteInstanceWebhooksExamplePayload.restMap,
+  examplePayload: deleteInstanceWebhooksExamplePayload.restMap,
 });

@@ -1,5 +1,5 @@
 import { createAuthorizedClient } from "./client";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { twilioApiKeyConnection, twilioBasicConnection } from "./connections";
 
 describe("createAuthorizedClient", () => {

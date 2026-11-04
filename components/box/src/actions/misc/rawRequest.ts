@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 import { getAccessToken } from "../../client";
 import { API_ROOT_URL } from "../../constants";
 import { rawRequestInputs } from "../../inputs";

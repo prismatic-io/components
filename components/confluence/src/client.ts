@@ -1,6 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { basicConnection, confluenceOauth } from "./connections";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { GraphQLClient } from "graphql-request";
 import axios from "axios";
 import type { AccessibleResource } from "./types";

@@ -1,6 +1,6 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { shipStationConnection } from "./connections";
 import { BASE_URL, INVALID_CONNECTION_ERROR } from "./constants";
 

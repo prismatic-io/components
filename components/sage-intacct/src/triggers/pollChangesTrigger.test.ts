@@ -1,5 +1,5 @@
 import type { ActionContext } from "@prismatic-io/spectral";
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import { afterEach, describe, expect, it, test, vi } from "vitest";
 import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";

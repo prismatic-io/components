@@ -2,7 +2,7 @@ import {
   createConnection,
   invoke,
   loggerMock,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getApi } from "../../api";
 import { klaviyoApiKeyConnection } from "../../connections/klaviyoApiKeyConnection";

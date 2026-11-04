@@ -1,5 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { MAX_LIMIT } from "../../constants";
+import { MAX_LIMIT, SHOPIFY_GID_PREFIX } from "../../constants";
 import { listFulfillmentOrdersExamplePayload } from "../../examplePayloads";
 import { listFulfillmentOrdersInputs } from "../../inputs";
 import { listFulfillmentOrdersOutputSchema } from "../../outputSchemas";
@@ -15,11 +15,11 @@ export const listFulfillmentOrders = action({
     type: "actionOutput",
     schema: listFulfillmentOrdersOutputSchema,
   }),
-  performSafety: "safe",
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await listFulfillmentOrdersGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
-      orderId: `gid://shopify/Order/${params.orderId}`,
+      orderId: `${SHOPIFY_GID_PREFIX}Order/${params.orderId}`,
       pagination: {
         limit: MAX_LIMIT,
         endCursor: undefined,
@@ -28,5 +28,6 @@ export const listFulfillmentOrders = action({
     });
     return { data };
   },
+  examplePerform: async () => listFulfillmentOrdersExamplePayload.restMap,
   examplePayload: listFulfillmentOrdersExamplePayload.restMap,
 });

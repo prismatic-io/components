@@ -5,8 +5,7 @@ import { listProductImagesExamplePayload } from "../../../examplePayloads";
 import { listProductImagesInputs as inputs } from "../../../inputsGql";
 import { listProductImagesGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo, ProductImage } from "../../../types";
-import { fetchData, getNumericId } from "../../../util";
-import { productImageMapper } from "../mappers/productImageMapper";
+import { fetchData, getNumericId, productImageMapper } from "../../../util";
 import listProductImagesQuery from "../queries/productImage/ListProductImages.gql";
 
 export const listProductImagesGql = action({

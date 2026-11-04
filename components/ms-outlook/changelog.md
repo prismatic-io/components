@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
+
 ### 2026-10-20
 
 - Added opt-in batching to the **New and Updated Messages** trigger, dispatching each changed message individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives

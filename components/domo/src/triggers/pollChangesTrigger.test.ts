@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { getDomoClient } from "../client";
 import type { DomoRecord, PollingState } from "../types";
 import { lookBackDateClean, resolvePollingRecordChanges } from "../util";

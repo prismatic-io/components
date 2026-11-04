@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { CONFLICT_STATUSES, ETAG_RETRY_LIMIT } from "../constants";
 import type { Etagged } from "../types";
 

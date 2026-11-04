@@ -8,7 +8,7 @@ import {
 import { type ActionContext, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "aws-utils";
 import MessageValidator from "sns-validator";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import type { Store } from "./interfaces/Store";
 import { STORE_KEY } from "./constants";
 

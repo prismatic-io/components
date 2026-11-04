@@ -1,13 +1,11 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
 import { MAX_LIMIT } from "../../../constants";
-import { listProductsExamplePayload } from "../../../examplePayloads";
+import { listProductsGqlExamplePayload } from "../../../examplePayloads";
 import { listProducstInputs as inputs } from "../../../inputsGql";
 import { listProductsGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo, Product } from "../../../types";
-import { fetchData } from "../../../util";
-import { paginationMapper } from "../mappers/paginationMapper";
-import { productMapper } from "../mappers/productMapper";
+import { fetchData, paginationMapper, productMapper } from "../../../util";
 import listProductsQuery from "../queries/products/ListProducts.gql";
 
 export const listProductsGql = action({
@@ -15,6 +13,7 @@ export const listProductsGql = action({
     label: "List Products",
     description: "Lists all products.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { shopifyConnection, getAlldata, pagination = {} },
@@ -52,5 +51,6 @@ export const listProductsGql = action({
     type: "actionOutput",
     schema: listProductsGqlOutputSchema,
   }),
-  examplePayload: listProductsExamplePayload.restMap,
+  examplePerform: async () => listProductsGqlExamplePayload.restMap,
+  examplePayload: listProductsGqlExamplePayload.restMap,
 });

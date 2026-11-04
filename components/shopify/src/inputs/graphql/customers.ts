@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanArrayCodeInput,
   cleanStringInput,
@@ -59,6 +59,7 @@ const addressListGql = input({
   label: "Address List",
   type: "code",
   language: "json",
+  placeholder: "Enter address list JSON",
   comments: "Provide a JSON array containing address objects.",
   required: false,
   example: JSON.stringify([
@@ -92,6 +93,7 @@ const metafields = input({
   label: "Metafields",
   type: "code",
   language: "json",
+  placeholder: "Enter metafields JSON",
   comments: "Provide a JSON array containing metadata objects.",
   required: false,
   example: JSON.stringify([
@@ -128,26 +130,41 @@ export const createCustomerInputs = {
   additionalFields,
 };
 
+const updateFirstName = input({
+  ...firstName,
+  required: false,
+  clean: cleanStringInput,
+});
+
+const updateLastName = input({
+  ...lastName,
+  required: false,
+  clean: cleanStringInput,
+});
+
+const updateEmail = input({
+  ...email,
+  required: false,
+  clean: cleanStringInput,
+});
+
+const contactInfo = structuredObjectInput({
+  label: "Name & Contact Information",
+  required: false,
+  comments: "First and last name, email, and phone.",
+  inputs: {
+    firstName: updateFirstName,
+    lastName: updateLastName,
+    email: updateEmail,
+    phone,
+  },
+});
+
 export const updateCustomerInputs = {
   shopifyConnection,
   customerIdGql,
-  firstName: input({
-    ...firstName,
-    required: false,
-    clean: cleanStringInput,
-  }),
-  lastName: input({
-    ...lastName,
-    required: false,
-    clean: cleanStringInput,
-  }),
-  email: input({
-    ...email,
-    required: false,
-    clean: cleanStringInput,
-  }),
+  contactInfo,
   addressListGql,
-  phone,
   notes,
   tags: input({
     ...tags,

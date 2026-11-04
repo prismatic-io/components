@@ -1,4 +1,4 @@
-import { buildRawRequestAction } from "@prismatic-io/spectral/dist/clients/http";
+import { buildRawRequestAction } from "@prismatic-io/spectral/http";
 import { BASE_URL } from "../constants";
 import changeEvents from "./changeEvents";
 import events from "./events";

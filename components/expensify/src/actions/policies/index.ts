@@ -1,7 +1,7 @@
-import { createPolicy } from "./create";
-import { getPolicy } from "./get";
-import { listPolicies } from "./list";
-import { updatePolicy } from "./update";
+import { createPolicy } from "./createPolicy";
+import { getPolicy } from "./getPolicy";
+import { listPolicies } from "./listPolicies";
+import { updatePolicy } from "./updatePolicy";
 
 export default {
   getPolicy,

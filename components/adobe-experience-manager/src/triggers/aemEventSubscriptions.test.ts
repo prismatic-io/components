@@ -1,5 +1,5 @@
 import { createSign, generateKeyPairSync } from "node:crypto";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer, aemOAuthWebApp } from "../connections";
 import { AEM_ASSETS_EVENT_TYPES, AEM_SITES_EVENT_TYPES } from "../constants";

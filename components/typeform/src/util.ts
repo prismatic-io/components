@@ -7,7 +7,7 @@ import {
   util,
 } from "@prismatic-io/spectral";
 import type { AxiosResponse } from "axios";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { oauth2, personalToken } from "./connections";
 import { INVALID_CONNECTION } from "./constants";
 import { createClient } from "./client";

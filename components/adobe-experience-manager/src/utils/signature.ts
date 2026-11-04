@@ -1,6 +1,6 @@
 import { createVerify } from "node:crypto";
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   IO_EVENTS_PUBLIC_KEY_BASE_URL,
   PUBLIC_KEY_CACHE_TTL_MS,

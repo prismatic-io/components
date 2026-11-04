@@ -2,7 +2,7 @@ import type { ActionContext, Connection } from "@prismatic-io/spectral";
 import {
   createConnection,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import Odoo from "odoo-await";
 import { odooApiKey } from "../connections/odooApiKey";

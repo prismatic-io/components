@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { createAccountActivationURLExamplePayload as examplePayload } from "../../../examplePayloads";
+import { createAccountActivationURLGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { createAccountActivationURLInputs as inputs } from "../../../inputsGql";
 import { createAccountActivationURLGqlOutputSchema } from "../../../outputSchemas";
 import createAccountActivationURLQuery from "../queries/customers/CreateAccountActivationURL.gql";

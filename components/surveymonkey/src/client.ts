@@ -3,7 +3,7 @@ import { getBaseUrl, getAccessToken, validateConnection } from "./util";
 import {
   type HttpClient,
   createClient as createHttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 
 export const createClient = (
   connection: Connection,

@@ -1,6 +1,11 @@
-export { createWebhook } from "./createWebhook";
-export { deleteInstanceWebhooks } from "./deleteInstanceWebhooks";
-export { deleteWebhook } from "./deleteWebhook";
-export { listWebhooks } from "./listWebhooks";
+import { createWebhook } from "./createWebhook";
+import { deleteInstanceWebhooks } from "./deleteInstanceWebhooks";
+import { deleteWebhook } from "./deleteWebhook";
+import { listWebhooks } from "./listWebhooks";
 
-export type { ShopifyWebhook } from "./types";
+export default {
+  createWebhook,
+  deleteInstanceWebhooks,
+  deleteWebhook,
+  listWebhooks,
+};

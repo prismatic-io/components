@@ -1,7 +1,7 @@
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { stripeConnection } from "../connections/apiKey";
 import { listBalanceTransactionsExamplePayload } from "../examplePayloads/balanceTransactions";

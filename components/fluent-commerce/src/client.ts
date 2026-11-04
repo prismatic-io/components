@@ -4,7 +4,7 @@ import {
   ConnectionError,
   util,
 } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { GraphQLClient } from "graphql-request";
 import urlJoin from "url-join";
 import { fluentCommerceOAuthPassword } from "./connections";

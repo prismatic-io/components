@@ -1,6 +1,6 @@
 import rawRequest from "./actions/rawRequest";
 import { postmarkConnection } from "./connections";
-import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
+import { invoke, createConnection } from "@prismatic-io/spectral/testing";
 
 describe("test Postmark rawRequest action", () => {
   test("verify the return value of rawRequest action", async () => {

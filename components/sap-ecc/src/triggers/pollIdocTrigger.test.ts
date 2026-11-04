@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { fetchNewIdocs, resolveIdocChanges } from "../util";
 import { DEFAULT_DOCNUM, MAX_BATCHED_PAGE_SIZE } from "../constants";
 import type { IdocRecord } from "../types";

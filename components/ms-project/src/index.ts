@@ -1,5 +1,5 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { createDraftAssignment } from "./actions/assignments/createDraftAssignment";
 import { getAssignments } from "./actions/assignments/getAssignment";
 import listAssignments from "./actions/assignments/listAssignments";

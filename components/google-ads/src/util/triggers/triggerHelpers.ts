@@ -1,5 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { createClient } from "../../client";
 import type {
   BasePollingState,

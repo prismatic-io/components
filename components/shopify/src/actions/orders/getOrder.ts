@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyClient } from "../../client";
-import { getOrderPayload } from "../../examplePayloads";
+import { getOrderExamplePayload } from "../../examplePayloads";
 import { getOrderInputs } from "../../inputs";
 import { getOrderOutputSchema } from "../../outputSchemas";
 
@@ -28,5 +28,5 @@ export const getOrder = action({
     type: "actionOutput",
     schema: getOrderOutputSchema,
   }),
-  examplePayload: getOrderPayload,
+  examplePayload: getOrderExamplePayload,
 });

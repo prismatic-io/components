@@ -1,7 +1,7 @@
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../connections";
 import { MAX_DATA_SOURCE_ITEMS, MAX_PAGE_LIMIT } from "../constants";

@@ -1,21 +1,47 @@
 {
-  "name": "amazon-seller-central",
-  "private": true,
+  "name": "@prismatic-io/components-amazon-seller-central",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage product listings, orders, inventory, and fulfillment in Amazon Seller Central.",
   "license": "Apache-2.0",
-  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/amazon-seller-central"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome check ./src",
     "format": "biome check --write ./src",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.37.0",
-    "aws-utils": "file:../../packages/aws-utils",
     "form-data": "^4.0.1",
-    "qs": "^6.13.1"
+    "qs": "^6.13.1",
+    "@aws-sdk/client-sts": "3.1088.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
@@ -23,6 +49,8 @@
     "@types/qs": "^6.9.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5",
+    "aws-utils": "file:../../packages/aws-utils"
   }
 }

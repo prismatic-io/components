@@ -1,5 +1,5 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { serviceTitanConnection } from "../connections";
 import { connection, TENANT } from "../testHelpers";
 import {

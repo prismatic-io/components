@@ -9,7 +9,8 @@
       "**/*.tsx",
       "**/*.json",
       "**/*.jsonc",
-      "!!**/dist"
+      "!!**/dist",
+      "!!**/npm-dist"
     ]
   },
   "formatter": {

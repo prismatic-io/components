@@ -19,6 +19,6 @@
     "lineWidth": 100
   },
   "files": {
-    "includes": ["**", "!**/dist"]
+    "includes": ["**", "!**/dist", "!**/npm-dist"]
   }
 }

@@ -2,7 +2,7 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { apiKey, oauth } from "./connections";
 import { BASE_URL, EVENTS_URL } from "./constants";
 

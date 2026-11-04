@@ -1,10 +1,7 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { OnlineClient, ClientConfig } from "@intacct/intacct-sdk";
 import { sageIntacctConnection } from "./connections";
-import {
-  type ClientProps,
-  createClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { type ClientProps, createClient } from "@prismatic-io/spectral/http";
 import { API_URL } from "./constants";
 
 export const validateConnection = (connection: Connection) => {

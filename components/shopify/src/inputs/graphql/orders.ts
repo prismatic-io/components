@@ -84,6 +84,7 @@ const orderData = input({
   label: "Order Data",
   type: "code",
   language: "json",
+  placeholder: "Enter order data JSON",
   comments: "JSON data to be sent as the Order payload.",
   required: true,
   example: JSON.stringify(
@@ -147,8 +148,9 @@ export const listOrdersInputs = {
   getAlldata,
   query: input({
     ...query,
-    comments: "The query to filter the orders.",
-    placeholder: "updated_at:>2019-12-01",
+    comments:
+      "The query to filter the orders. From API version 2026-10, filtering by a metafield that is not set up for filtering returns an error.",
+    placeholder: "Enter search query",
     example: "updated_at:>2019-12-01",
   }),
   pagination,

@@ -1,5 +1,5 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import connections from "./connections";
 import { API_VERSION, BASE_URL_V1, BASE_URL_V2 } from "./constants";
 import type {

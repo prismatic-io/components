@@ -1,25 +1,53 @@
 {
-  "name": "azure-service-bus",
-  "private": true,
+  "name": "@prismatic-io/components-azureservicebus",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Interact with message queues and publish-subscribe topics (in a namespace)",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/azure-service-bus"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
-    "publish": "npm run build && prism components:publish",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "format": "biome format --write .",
     "lint": "biome lint --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
   "dependencies": {
     "@azure/identity": "^4.0.0",
-    "@azure/service-bus": "^7.9.3",
-    "@prismatic-io/spectral": "10.34.1"
+    "@azure/service-bus": "^7.9.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.6.4",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5"
   }
 }

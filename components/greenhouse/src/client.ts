@@ -2,7 +2,7 @@ import type { Connection } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { HARVEST_BASE_URL, V3_BASE_URL } from "./constants";
 import { generateBasicAuth, getV3Token } from "./util";
 

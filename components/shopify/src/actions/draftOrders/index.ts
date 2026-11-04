@@ -1,1 +1,5 @@
-export { listDraftOrders } from "./listDraftOrders";
+import { listDraftOrders } from "./listDraftOrders";
+
+export default {
+  listDraftOrders,
+};

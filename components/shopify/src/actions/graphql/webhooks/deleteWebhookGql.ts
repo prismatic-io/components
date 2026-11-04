@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { deleteWebhookExamplePayload } from "../../../examplePayloads";
+import { deleteWebhookGqlExamplePayload } from "../../../examplePayloads";
 import { deleteWebhookInputs as inputs } from "../../../inputsGql";
 import { deleteWebhookGqlOutputSchema } from "../../../outputSchemas";
 import { deleteWebhookById } from "../../../util";
@@ -28,6 +28,6 @@ export const deleteWebhookGql = action({
 
     return { data: {} };
   },
-  examplePerform: async () => deleteWebhookExamplePayload.restMap,
-  examplePayload: deleteWebhookExamplePayload.restMap,
+  examplePerform: async () => deleteWebhookGqlExamplePayload.restMap,
+  examplePayload: deleteWebhookGqlExamplePayload.restMap,
 });

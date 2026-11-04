@@ -1,5 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { createHttpClient, validateConnection } from "../../client";
 import { RAW_REQUEST_EXAMPLE } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";

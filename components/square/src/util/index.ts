@@ -1,6 +1,6 @@
 import { URL } from "node:url";
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { squareConnection } from "../connections";
 import {
   BATCHED_MAX_PAGES_PER_POLL,

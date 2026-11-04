@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { LOOK_BACK_DATE_PATTERN, POLL_RESOURCE_CONFIG } from "./constants";
 import type {
   GA4ChangesObject,

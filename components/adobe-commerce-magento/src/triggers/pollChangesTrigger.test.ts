@@ -1,4 +1,4 @@
-import { invokeTrigger as invokeTriggerUntyped } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger as invokeTriggerUntyped } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { STORE_HOST, storeConnection } from "../testHelpers";
 import type { MagentoRecord } from "../types";

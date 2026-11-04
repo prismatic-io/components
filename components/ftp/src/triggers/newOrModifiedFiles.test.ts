@@ -1,5 +1,5 @@
 import type { ActionContext } from "@prismatic-io/spectral";
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import type { FileEntry, FileMap } from "../types";
 import { newOrModifiedFiles } from "./newOrModifiedFiles";
 

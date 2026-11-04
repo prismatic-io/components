@@ -1,4 +1,4 @@
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import type { Connection } from "@prismatic-io/spectral";
 import { getCredentialsFromConnection, validateConnection } from "./utils";
 import { BASE_URL } from "./constants";

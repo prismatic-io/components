@@ -1,4 +1,4 @@
-import { invokeDataSource } from "@prismatic-io/spectral/dist/testing";
+import { invokeDataSource } from "@prismatic-io/spectral/testing";
 import { listLocationsResponse } from "../examplePayloads/locations";
 import {
   apiPath,

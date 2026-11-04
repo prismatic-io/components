@@ -1,10 +1,9 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { listWebhooksExamplePayload } from "../../../examplePayloads";
+import { listWebhooksGqlExamplePayload } from "../../../examplePayloads";
 import { listWebhooksInputs as inputs } from "../../../inputsGql";
 import { listWebhooksGqlOutputSchema } from "../../../outputSchemas";
-import { listWebhooks } from "../../../util";
-import { webhookMapper } from "../mappers/webhookMapper";
+import { listWebhooks, webhookMapper } from "../../../util";
 
 export const listWebhooksGql = action({
   display: {
@@ -48,6 +47,6 @@ export const listWebhooksGql = action({
       data: webhookSubscriptions.map(webhookMapper),
     };
   },
-  examplePerform: async () => listWebhooksExamplePayload.restMap,
-  examplePayload: listWebhooksExamplePayload.restMap,
+  examplePerform: async () => listWebhooksGqlExamplePayload.restMap,
+  examplePayload: listWebhooksGqlExamplePayload.restMap,
 });

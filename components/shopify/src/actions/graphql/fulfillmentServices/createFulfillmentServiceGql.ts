@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { createFulfillmentServiceExamplePayload as examplePayload } from "../../../examplePayloads";
+import { createFulfillmentServiceGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { createFulfillmentServiceInputs as inputs } from "../../../inputsGql";
 import { createFulfillmentServiceGqlOutputSchema } from "../../../outputSchemas";
 

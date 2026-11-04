@@ -1,8 +1,8 @@
 import { oauth } from "../connections";
 
 import component from "..";
-import { createHarness } from "@prismatic-io/spectral/dist/testing";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createHarness } from "@prismatic-io/spectral/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 
 const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   ? describe

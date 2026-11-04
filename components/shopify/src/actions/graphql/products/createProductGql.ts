@@ -1,10 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { createProductExamplePayload } from "../../../examplePayloads";
+import { createProductGqlExamplePayload } from "../../../examplePayloads";
 import { createProductInputs as inputs } from "../../../inputsGql";
 import { createProductGqlOutputSchema } from "../../../outputSchemas";
 import type { Product } from "../../../types";
-import { productMapper } from "../mappers/productMapper";
+import { productMapper } from "../../../util";
 import createProductQuery from "../queries/products/CreateProduct.gql";
 
 export const createProductGql = action({
@@ -70,6 +70,6 @@ export const createProductGql = action({
     type: "actionOutput",
     schema: createProductGqlOutputSchema,
   }),
-  examplePerform: async () => createProductExamplePayload.restMap,
-  examplePayload: createProductExamplePayload.restMap,
+  examplePerform: async () => createProductGqlExamplePayload.restMap,
+  examplePayload: createProductGqlExamplePayload.restMap,
 });

@@ -2,7 +2,7 @@ import { component } from "@prismatic-io/spectral";
 import connections from "./connections";
 import actions from "./actions";
 import dataSources from "./dataSources";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export default component({
   key: "mixpanel",

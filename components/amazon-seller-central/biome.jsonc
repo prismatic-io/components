@@ -25,5 +25,8 @@
       "quoteStyle": "double",
       "semicolons": "always"
     }
+  },
+  "files": {
+    "includes": ["**", "!**/npm-dist"]
   }
 }

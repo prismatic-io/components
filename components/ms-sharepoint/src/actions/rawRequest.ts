@@ -3,7 +3,7 @@ import { connection } from "../inputs";
 import {
   inputs as httpClientInputs,
   sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { getAccessToken } from "../utils";
 import { rawRequestExamplePayload } from "../examplePayloads/actions";
 

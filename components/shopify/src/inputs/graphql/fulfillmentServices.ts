@@ -28,7 +28,8 @@ const fulfillmentServiceName = input({
   label: "Fulfillment Service Name",
   type: "string",
   required: true,
-  comments: "The name of the fulfillment service.",
+  comments:
+    "The display name of the fulfillment service, shown to merchants in the Shopify admin.",
   example: "MyFulfillmentService",
   placeholder: "Enter fulfillment service name",
   clean: util.types.toString,

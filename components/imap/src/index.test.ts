@@ -12,7 +12,7 @@ import { searchMailbox } from "./actions/searchMailbox";
 import { setFlags } from "./actions/setFlags";
 
 import { imapConnection } from "./connections";
-import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
+import { invoke, createConnection } from "@prismatic-io/spectral/testing";
 import type { ConnectionDefinition } from "@prismatic-io/spectral";
 
 const connection = createConnection(imapConnection as ConnectionDefinition, {

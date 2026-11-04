@@ -13,7 +13,7 @@ import type {
   PollingStream,
   PollingWindowRequest,
 } from "../types";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import connections, { oauthClientCredentials } from "../connections";
 import { createClient } from "../client";
 import { createMsWebhookPerformFN } from "ms-utils";

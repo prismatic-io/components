@@ -1,11 +1,7 @@
-import {
-  type Connection,
-  ConnectionError,
-  util,
-} from "@prismatic-io/spectral/dist/";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { getTenant } from "./getTenant";
 import connections from "../connections";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { XeroResponse } from "../interfaces/XeroResponse";
 import { LOOK_BACK_DATE_PATTERN, MAX_PAGE_SIZE } from "../constants";
 import type { XeroRecord } from "../types";

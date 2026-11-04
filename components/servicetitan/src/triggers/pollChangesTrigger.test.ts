@@ -1,7 +1,7 @@
 import {
   defaultTriggerPayload,
   loggerMock,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { vi } from "vitest";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";

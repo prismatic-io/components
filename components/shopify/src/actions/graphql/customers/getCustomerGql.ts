@@ -3,7 +3,7 @@ import { getShopifyGraphQlClient } from "../../../client";
 import { getCustomerExamplePayload } from "../../../examplePayloads";
 import { getCustomerInputs as inputs } from "../../../inputsGql";
 import type { Customer } from "../../../types";
-import { customerMapper } from "../mappers/customerMapper";
+import { customerMapper } from "../../../util";
 import getCustomerQuery from "../queries/customers/GetCustomer.gql";
 
 export const getCustomerGql = action({
@@ -11,6 +11,7 @@ export const getCustomerGql = action({
     label: "Get Customer",
     description: "Retrieves a customer by ID.",
   },
+  performSafety: "safe",
   perform: async (context, { customerIdGql, shopifyConnection }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,

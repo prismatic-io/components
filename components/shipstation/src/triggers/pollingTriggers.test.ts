@@ -1,5 +1,5 @@
 import type { ActionContext, Connection } from "@prismatic-io/spectral";
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import { afterEach, beforeEach, vi } from "vitest";
 import type { PollingChangesObject, TimestampedRecord } from "../types";
 import { lookBackDateClean } from "../util";

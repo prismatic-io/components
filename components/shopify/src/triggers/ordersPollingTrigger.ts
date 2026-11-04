@@ -1,7 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import pollOrdersQuery from "../actions/graphql/queries/orders/PollOrders.gql";
 import { ordersPollingTriggerExamplePayload } from "../examplePayloads";
-import { pollingTriggerInputs } from "../inputsGql";
+import { ordersPollingTriggerInputs } from "../inputs";
 import type {
   Order,
   PollingChangesObject,
@@ -22,7 +22,7 @@ export const ordersPollingTrigger = pollingTrigger({
     description:
       "Retrieves existing and ongoing order changes from Shopify. Load history once, check for changes on a schedule, or both.",
   },
-  inputs: pollingTriggerInputs,
+  inputs: ordersPollingTriggerInputs,
   examplePayload: ordersPollingTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50, concurrentBatchLimit: 1 },

@@ -1,6 +1,6 @@
 import FormData from "form-data";
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { DEFAULT_PAGE_LIMIT } from "../constants";
 import type {
   PageRecordChange,

@@ -7,7 +7,7 @@ export const imageURL = input({
   required: true,
   example: "https://example.com/image.jpg",
   placeholder: "Enter image URL",
-  comments: "Provide the URL of the image.",
+  comments: "The publicly accessible URL of the image to add to the product.",
   clean: util.types.toString,
 });
 
@@ -17,7 +17,8 @@ export const imageAlt = input({
   required: true,
   example: "Alt text",
   placeholder: "Enter alt text",
-  comments: "Provide the alt text for the image.",
+  comments:
+    "Alternative text displayed when the image cannot be loaded. Used for accessibility and SEO.",
   clean: util.types.toString,
 });
 

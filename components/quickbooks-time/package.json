@@ -1,17 +1,44 @@
 {
-  "name": "@prismatic-io/quickbooks-time",
-  "private": true,
+  "name": "@prismatic-io/components-quickbooks-time",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage Employee Time Tracking within Intuit QuickBooks Time",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/quickbooks-time"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "test": "vitest run",
     "lint": "npx @biomejs/biome check --write --unsafe .",
-    "format": "npx @biomejs/biome format --write ."
+    "format": "npx @biomejs/biome format --write .",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.34.1",
     "url-join": "4.0.1"
   },
   "devDependencies": {
@@ -21,6 +48,7 @@
     "nock": "^14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5"
   }
 }

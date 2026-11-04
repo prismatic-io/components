@@ -1,5 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { MAX_LIMIT } from "../../constants";
+import { MAX_LIMIT, SHOPIFY_GID_PREFIX } from "../../constants";
 import { listProductImagesExamplePayload } from "../../examplePayloads";
 import { listProductImagesInputs } from "../../inputs";
 import { listProductImagesOutputSchema } from "../../outputSchemas";
@@ -14,7 +14,7 @@ export const listProductImages = action({
   perform: async (context, params) => {
     const { data } = await listProductImagesGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
-      productId: `gid://shopify/Product/${params.productId}`,
+      productId: `${SHOPIFY_GID_PREFIX}Product/${params.productId}`,
       getAlldata: true,
       pagination: {
         limit: MAX_LIMIT,

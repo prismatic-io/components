@@ -11,6 +11,7 @@ import {
   cleanCodeInput,
   cleanKeyValueListInput,
   cleanStringInput,
+  toArray,
 } from "../util";
 import shopifyEvents from "../webhook_events.json";
 
@@ -35,8 +36,9 @@ export const apiVersion = input({
   type: "string",
   required: true,
   default: DEFAULT_SHOPIFY_VERSION,
+  placeholder: "Enter API version",
   comments:
-    "Shopify versions its API. See [Shopify API release notes](https://shopify.dev/docs/api/release-notes) for a list of available versions.",
+    "Shopify versions its API. See [Shopify API release notes](https://shopify.dev/changelog/release-notes) for a list of available versions.",
   clean: util.types.toString,
 });
 
@@ -45,7 +47,7 @@ export const getAlldata = input({
   type: "boolean",
   required: false,
   comments:
-    "When true, fetches all pages of results instead of a single page. The API returns up to 250 records per page, and the Limit input is ignored.",
+    "When true, automatically fetches all pages of results instead of a single page. The API returns up to 250 records per page, and the Limit input is ignored.",
   clean: util.types.toBool,
 });
 
@@ -207,12 +209,7 @@ export const webhookTopic = input({
   })),
   comments:
     "The event topic for the webhook. See [Shopify webhook topics](https://shopify.dev/docs/api/webhooks/latest) for all available topics.",
-  clean: (value: unknown) => {
-    if (Array.isArray(value)) {
-      return value;
-    }
-    return [value];
-  },
+  clean: toArray,
 });
 
 const query = input({
@@ -223,6 +220,7 @@ const query = input({
   comments:
     "GraphQL query or mutation. See Shopify's GraphQL API documentation for examples. Ex: { shop { name } }",
   example: GRAPHQL_EXAMPLE,
+  placeholder: "Enter GraphQL query or mutation",
   clean: util.types.toString,
 });
 
@@ -233,7 +231,7 @@ const variables = input({
   collection: "keyvaluelist",
   comments: "Variables to pass to the query or mutation.",
   example: "key1: value1, key2: value2",
-  placeholder: "key1: value1, key2: value2",
+  placeholder: "Enter query variables",
   clean: cleanKeyValueListInput,
 });
 
@@ -242,6 +240,7 @@ const variablesObject = input({
   type: "code",
   comments: "Variables to pass to the query or mutation.",
   example: JSON.stringify({ key1: "value1", key2: "value2" }, null, 2),
+  placeholder: "Enter variables JSON object",
   language: "json",
   required: false,
   clean: cleanCodeInput,

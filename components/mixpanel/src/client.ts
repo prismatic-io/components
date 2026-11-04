@@ -1,7 +1,7 @@
 import {
   type HttpClient,
   createClient as createHttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import type { AuthorizationType } from "./types";
 import { getAuthorization, validateConnection } from "./util";
 import type { Connection } from "@prismatic-io/spectral";

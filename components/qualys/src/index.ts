@@ -3,7 +3,7 @@ import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export default component({
   key: "qualys",

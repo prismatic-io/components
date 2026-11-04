@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { afterEach, beforeEach, vi } from "vitest";
 import type { PollingChangesObject, TimestampedRecord } from "../types";
 import { pollOrders } from "./pollOrders";

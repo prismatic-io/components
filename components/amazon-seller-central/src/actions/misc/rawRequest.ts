@@ -1,5 +1,5 @@
 import { action, PerformSafety } from "@prismatic-io/spectral";
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 import { validateConnection } from "../../client";
 import { rawRequestInputs } from "../../inputs";
 import { getAccessToken, getBaseUrl, getHeaders } from "../../util";

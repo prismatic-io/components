@@ -3,14 +3,73 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { DocumentNode } from "graphql";
 import type { GraphQLClient, Variables } from "graphql-request";
 import parseLinkHeader from "parse-link-header";
-import type { ObjectNodes, PageInfo, PaginationResponse } from "../types";
+import type {
+  ObjectNodes,
+  PageInfo,
+  PaginationResponse,
+  RestPageInformation,
+} from "../types";
+
+const getPaginatedObject = <T>(
+  attributePath: string[],
+  data: unknown,
+): ObjectNodes<T> => {
+  const object = attributePath.reduce<unknown>((acc, attribute) => {
+    const node = acc as Record<string, unknown>;
+    if (!node[attribute]) {
+      throw new Error(`Attribute ${attribute} not found in data.`);
+    }
+    return node[attribute];
+  }, data) as ObjectNodes<T>;
+  return object;
+};
+
+export const fetchData = async <T>(
+  client: GraphQLClient,
+  attributePath: string[],
+  listKey: string,
+  getAlldata: boolean,
+  query: DocumentNode,
+  variables: Variables,
+): Promise<Record<string, T[]> & { pageInfo: PageInfo }> => {
+  const data = await client.request(query, variables);
+  const object = getPaginatedObject<T>(attributePath, data);
+
+  const allData = {
+    [listKey]: object.nodes,
+    pageInfo: object.pageInfo,
+  } as Record<string, T[]> & { pageInfo: PageInfo };
+
+  if (!getAlldata) {
+    return allData;
+  }
+
+  let hasNextPage = object.pageInfo.hasNextPage;
+  let cursor = object.pageInfo.endCursor;
+  while (hasNextPage) {
+    const newData = await client.request(query, {
+      ...variables,
+      cursor,
+    });
+
+    const newObject = getPaginatedObject<T>(attributePath, newData);
+
+    allData[listKey] = allData[listKey].concat(newObject.nodes);
+    allData.pageInfo = newObject.pageInfo;
+
+    hasNextPage = newObject.pageInfo.hasNextPage;
+    cursor = newObject.pageInfo.endCursor;
+  }
+
+  return allData;
+};
 
 export const computePageInformation = async (
   client: HttpClient,
   url: string,
   params: Record<string, string>,
   getAlldata = false,
-) => {
+): Promise<RestPageInformation> => {
   const toReturnData: Record<string, unknown[]> = {};
   let toReturnHeaders: unknown;
   let pagination: PaginationResponse;
@@ -48,54 +107,4 @@ export const computePageInformation = async (
     rel: pagination?.next?.page_info ? 'rel="next"' : null,
     headers: toReturnHeaders,
   };
-};
-
-const getPaginatedObject = <T>(attributePath: string[], data) => {
-  const object: ObjectNodes<T> = attributePath.reduce((acc, attribute) => {
-    if (!acc[attribute]) {
-      throw new Error(`Attribute ${attribute} not found in data.`);
-    }
-    return acc[attribute];
-  }, data);
-  return object;
-};
-
-export const fetchData = async <T>(
-  client: GraphQLClient,
-  attributePath: string[],
-  listKey: string,
-  getAlldata: boolean,
-  query: DocumentNode,
-  variables: Variables,
-) => {
-  const data = await client.request(query, variables);
-  const object = getPaginatedObject<T>(attributePath, data);
-
-  const allData = {
-    [listKey]: object.nodes,
-    pageInfo: object.pageInfo,
-  } as Record<string, T[]> & { pageInfo: PageInfo };
-
-  if (!getAlldata) {
-    return allData;
-  }
-
-  let hasNextPage = object.pageInfo.hasNextPage;
-  let cursor = object.pageInfo.endCursor;
-  while (hasNextPage) {
-    const newData = await client.request(query, {
-      ...variables,
-      cursor,
-    });
-
-    const newObject = getPaginatedObject<T>(attributePath, newData);
-
-    allData[listKey] = allData[listKey].concat(newObject.nodes);
-    allData.pageInfo = newObject.pageInfo;
-
-    hasNextPage = newObject.pageInfo.hasNextPage;
-    cursor = newObject.pageInfo.endCursor;
-  }
-
-  return allData;
 };

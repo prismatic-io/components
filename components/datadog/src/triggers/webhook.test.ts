@@ -3,7 +3,7 @@ import {
   defaultTriggerPayload,
   invokeTrigger,
   loggerMock,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { apiKeyConnection } from "../connections";
 import {

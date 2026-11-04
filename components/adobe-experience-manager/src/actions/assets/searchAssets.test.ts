@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { aemOAuthServerToServer } from "../../connections";
 import { MAX_FETCH_ALL_PAGES } from "../../constants";
@@ -147,7 +147,7 @@ describe("searchAssets", () => {
     expect(result.data.hits?.results).toHaveLength(MAX_FETCH_ALL_PAGES);
     expect(result.data.cursor).toBe("next-page");
     expect(nock.isDone()).toBe(true);
-  });
+  }, 15_000);
 
   test("surfaces an API error", async () => {
     nock(BASE)

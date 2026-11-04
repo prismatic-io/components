@@ -1,5 +1,5 @@
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { Kafka, logLevel as kafkaLogLevel } from "kafkajs";
 import { type Mock, vi } from "vitest";
 import { createClient, getPayload } from "./client";

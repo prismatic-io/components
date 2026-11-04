@@ -1,5 +1,5 @@
 import type { BatchInfo } from "@prismatic-io/spectral";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { createAsanaClient } from "../client";
 import { MAX_BATCHED_PAGE_SIZE } from "../constants";
 import type { PollingChangesObject, PollingState } from "../types/polling";
@@ -147,7 +147,9 @@ describe("unbatched path", () => {
     ];
     const { context, getState } = createContext({ lastPolledAt: T0 }, batch);
 
-    const { data, result } = await poll(context, { showUpdatedRecords: false });
+    const { data, result } = await poll(context, {
+      showUpdatedRecords: false,
+    });
 
     expect(sentSince).toEqual([T0]);
     expect(data.created.map((t) => t.gid)).toEqual(["new"]);

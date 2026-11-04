@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { MAX_ITEMS_PER_PAGE } from "../constants";
 import type {
   FreshserviceChangesObject,

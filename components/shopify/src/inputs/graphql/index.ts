@@ -13,6 +13,5 @@ export * from "./orders";
 export * from "./productImages";
 export * from "./products";
 export * from "./shops";
-export * from "./triggers";
 export * from "./variants";
 export * from "./webhooks";

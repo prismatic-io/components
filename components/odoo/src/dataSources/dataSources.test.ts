@@ -2,7 +2,7 @@ import type { Connection, Element } from "@prismatic-io/spectral";
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { odooApiKey } from "../connections/odooApiKey";
 import {

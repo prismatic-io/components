@@ -106,7 +106,7 @@ const genericHeaders = {
   },
 };
 
-export const orderExamplePayload = {
+const orderExamplePayload = {
   order: {
     orders: [
       {
@@ -1140,7 +1140,7 @@ export const orderExamplePayload = {
   },
 };
 
-export const customerExamplePayload = {
+const customerExamplePayload = {
   customer: {
     id: 207119551,
     email: "bob.norman@mail.example.com",
@@ -1315,21 +1315,21 @@ const getProductExamplePayload = {
   },
 };
 
-export const restListProductsExamplePayload = {
+const restListProductsExamplePayload = {
   data: {
     products: [getProductExamplePayload.product],
   },
   ...paginationExtraPayloadData,
 };
 
-const countProductsExamplePayload = {
+const restCountProductsExamplePayload = {
   data: {
     count: 5,
   },
   ...genericHeaders,
 };
 
-export const restListWebhooksExamplePayload = [
+const restListWebhooksExamplePayload = [
   {
     id: 4759306,
     address: "https://apple.com",
@@ -1344,7 +1344,7 @@ export const restListWebhooksExamplePayload = [
   },
 ];
 
-export const createWebhookExamplePayload = {
+const restCreateWebhookExamplePayload = {
   webhook: {
     id: 8099884584,
     address: "pubsub://projectName:topicName",
@@ -1359,12 +1359,20 @@ export const createWebhookExamplePayload = {
   },
 };
 
-export const createCustomerPayload = { data: customerExamplePayload };
-export const countProductsPayload = { data: countProductsExamplePayload };
-export const listProductsPayload = { data: restListProductsExamplePayload };
-export const listWebhooksPayload = { data: restListWebhooksExamplePayload };
-export const createWebhookPayload = { data: createWebhookExamplePayload };
-export const deleteWebhookPayload = { data: {} };
-export const getOrderPayload = {
+export const createCustomerExamplePayload = { data: customerExamplePayload };
+export const countProductsExamplePayload = {
+  data: restCountProductsExamplePayload,
+};
+export const listProductsExamplePayload = {
+  data: restListProductsExamplePayload,
+};
+export const listWebhooksExamplePayload = {
+  data: restListWebhooksExamplePayload,
+};
+export const createWebhookExamplePayload = {
+  data: restCreateWebhookExamplePayload,
+};
+export const deleteWebhookExamplePayload = { data: {} };
+export const getOrderExamplePayload = {
   data: { order: orderExamplePayload.order.orders[0] },
 };

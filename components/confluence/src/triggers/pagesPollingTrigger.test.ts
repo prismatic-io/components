@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { describe, expect, test } from "vitest";
 import type { Page } from "../types";
 import { resolvePageRecordChanges } from "../util";

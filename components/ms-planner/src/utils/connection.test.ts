@@ -1,5 +1,5 @@
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { describe, expect, test } from "vitest";
 import { oauthClientCredentials, templatedOauth } from "../connections";
 import { PLANNER_ENDPOINTS } from "../constants";

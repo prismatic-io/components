@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
+
 ### 2026-10-29
 
 Fixed the initial sync on the **New and Updated Campaigns** and **New and Updated Profiles and Lists** triggers dropping records when **Show New Records** or **Show Updated Records** was disabled; the sync now ignores those visibility filters and seeds every record in range

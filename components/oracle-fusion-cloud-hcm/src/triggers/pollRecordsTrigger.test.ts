@@ -1,5 +1,5 @@
 import type { ActionContext } from "@prismatic-io/spectral";
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import { pollRecordsTrigger } from "./pollRecordsTrigger";
 
 const mockGet = vi.fn();

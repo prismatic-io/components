@@ -11,7 +11,7 @@ vi.mock("@slack/webhook", () => {
   };
 });
 
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { postSlackMessage } from "./actions/messages";
 import { webhookUrlConnection } from "./connections";
 

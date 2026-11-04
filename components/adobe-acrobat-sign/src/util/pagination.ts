@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { MAX_PAGE_SIZE_BY_ITEMS_KEY } from "../constants";
 import type { PageInfo } from "../types";
 

@@ -1,5 +1,5 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import createDataset from "./actions/createDataset";
 import createRow from "./actions/createRow";
 import deleteRows from "./actions/deleteRows";

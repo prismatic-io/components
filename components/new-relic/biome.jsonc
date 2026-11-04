@@ -8,7 +8,13 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/node_modules", "!**/*.js"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/npm-dist",
+      "!**/node_modules",
+      "!**/*.js"
+    ]
   },
   "formatter": {
     "enabled": true,

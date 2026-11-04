@@ -2,7 +2,7 @@ import {
   createConnection,
   invoke,
   loggerMock,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import type { GetCampaignResponseCollectionCompoundDocument } from "klaviyo-api";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getApi } from "../../api";

@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { ENDPOINTS } from "../constants";
 import type { PagerDutyIncident } from "../types";
 import { fetchAllWithPagination } from "./fetchAllWithPagination";

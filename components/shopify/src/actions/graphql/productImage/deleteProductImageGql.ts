@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { deleteProductImageExamplePayload as examplePayload } from "../../../examplePayloads";
+import { deleteProductImageGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { deleteProductImageInputs as inputs } from "../../../inputsGql";
 import { deleteProductImageGqlOutputSchema } from "../../../outputSchemas";
 import deleteProductImageQuery from "../queries/productImage/DeleteProductImage.gql";

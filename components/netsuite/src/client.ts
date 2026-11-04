@@ -3,7 +3,7 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { oauth, oauthClientCredentials } from "./connections";
 import { ACCOUNT_REGEX } from "./constants";
 import { createDynamicJWTToken } from "./utils";

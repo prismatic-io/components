@@ -12,7 +12,7 @@
     "indentWidth": 2
   },
   "files": {
-    "includes": ["**", "!**/dist"],
+    "includes": ["**", "!**/dist", "!**/npm-dist"],
     "ignoreUnknown": true
   }
 }

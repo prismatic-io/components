@@ -1,4 +1,4 @@
-import { invokeDataSource } from "@prismatic-io/spectral/dist/testing";
+import { invokeDataSource } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { listCompaniesExamplePayload } from "../examplePayloads";
 import { CANNY_HOST, captureBody, testConnection, V2 } from "../testHelpers";

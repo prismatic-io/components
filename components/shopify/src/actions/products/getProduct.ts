@@ -1,4 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { SHOPIFY_GID_PREFIX } from "../../constants";
 import { getProductExamplePayload } from "../../examplePayloads";
 import { getProductInputs } from "../../inputs";
 import { getProductOutputSchema } from "../../outputSchemas";
@@ -12,7 +13,7 @@ export const getProduct = action({
   performSafety: "safe",
   perform: async (context, { productId, shopifyConnection }) => {
     const { data } = await getProductGql.perform(context, {
-      productId: `gid://shopify/Product/${productId}`,
+      productId: `${SHOPIFY_GID_PREFIX}Product/${productId}`,
       shopifyConnection,
     });
     return {

@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { FETCH_ALL_PAGE_SIZE } from "../constants";
 import type { OracleHcmListResponse } from "../types";
 

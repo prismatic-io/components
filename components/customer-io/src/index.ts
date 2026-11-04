@@ -1,5 +1,5 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { destroy, identify, track, trackPageView, rawRequest } from "./actions";
 import connections from "./connections";
 

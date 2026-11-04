@@ -4,9 +4,7 @@ import { MAX_LIMIT } from "../../../constants";
 import { listCustomersExamplePayload } from "../../../examplePayloads";
 import { listCustomersInputs as inputs } from "../../../inputsGql";
 import type { Customer } from "../../../types";
-import { fetchData } from "../../../util";
-import { customerMapper } from "../mappers/customerMapper";
-import { paginationMapper } from "../mappers/paginationMapper";
+import { customerMapper, fetchData, paginationMapper } from "../../../util";
 import listCustomersQuery from "../queries/customers/ListCustomers.gql";
 
 export const listCustomersGql = action({
@@ -14,6 +12,7 @@ export const listCustomersGql = action({
     label: "List Customers",
     description: "Lists all customers.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { shopifyConnection, getAlldata, pagination = {} },
@@ -47,5 +46,6 @@ export const listCustomersGql = action({
     };
   },
   inputs,
+  examplePerform: async () => listCustomersExamplePayload.restMap,
   examplePayload: listCustomersExamplePayload.restMap,
 });

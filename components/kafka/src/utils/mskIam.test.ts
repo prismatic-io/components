@@ -1,6 +1,6 @@
 import { fromTemporaryCredentials } from "@aws-sdk/credential-providers";
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { generateAuthTokenFromCredentialsProvider } from "aws-msk-iam-sasl-signer-js";
 import { type Mock, vi } from "vitest";
 import { awsAccessKeySecret } from "../connections/awsAccessKeySecret";

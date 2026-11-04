@@ -1,6 +1,6 @@
 import { stringify } from "node:querystring";
 import { action, util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import urljoin from "url-join";
 import { createClient } from "./client";
 import {

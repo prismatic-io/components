@@ -1,10 +1,11 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
+import { MAX_FULFILLMENTS_PER_ORDER } from "../../../constants";
 import { listFulfillmentsExamplePayload } from "../../../examplePayloads";
 import { listFulfillmentsInputs as inputs } from "../../../inputsGql";
 import { listFulfillmentsGqlOutputSchema } from "../../../outputSchemas";
 import type { Fulfillment } from "../../../types";
-import { fulfillmentMapper } from "../mappers/fulfillmentMapper";
+import { fulfillmentMapper } from "../../../util";
 import listFulfillmentsQuery from "../queries/fulfillments/ListFulfillments.gql";
 
 export const listFulfillmentsGql = action({
@@ -12,6 +13,7 @@ export const listFulfillmentsGql = action({
     label: "List Fulfillments",
     description: "Lists all fulfillments for a specified order.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { shopifyConnection, orderId }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
@@ -22,7 +24,7 @@ export const listFulfillmentsGql = action({
     const data: { order: { fulfillments: Fulfillment[] } } =
       await client.request(listFulfillmentsQuery, {
         orderId,
-        first: 10000,
+        first: MAX_FULFILLMENTS_PER_ORDER,
       });
 
     return {
@@ -38,5 +40,6 @@ export const listFulfillmentsGql = action({
     type: "actionOutput",
     schema: listFulfillmentsGqlOutputSchema,
   }),
+  examplePerform: async () => listFulfillmentsExamplePayload.restMap,
   examplePayload: listFulfillmentsExamplePayload.restMap,
 });

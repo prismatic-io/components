@@ -22,7 +22,7 @@ import {
   deleteWebhook,
   deleteInstancedWebhooks,
 } from "./actions/webhook";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export default component({
   key: "postmark",

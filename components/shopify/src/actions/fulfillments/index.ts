@@ -1,3 +1,9 @@
-export { getFulfillmentOrder } from "./getFulfillmentOrder";
-export { listFulfillmentOrders } from "./listFulfillmentOrders";
-export { listFulfillments } from "./listFulfillments";
+import { getFulfillmentOrder } from "./getFulfillmentOrder";
+import { listFulfillmentOrders } from "./listFulfillmentOrders";
+import { listFulfillments } from "./listFulfillments";
+
+export default {
+  getFulfillmentOrder,
+  listFulfillmentOrders,
+  listFulfillments,
+};

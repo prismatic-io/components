@@ -1,5 +1,5 @@
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createClient } from "@prismatic-io/spectral/http";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { tableauConnection } from "../connections";
 import { getTableauClient } from "./auth";
 import { signIn } from "./signIn";

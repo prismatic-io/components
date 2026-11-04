@@ -1,8 +1,6 @@
 import { action, outputSchema, util } from "@prismatic-io/spectral";
-import {
-  listProductsPayload,
-  restListProductsExamplePayload,
-} from "../../examplePayloads";
+import { DEFAULT_REST_PAGE_LIMIT } from "../../constants";
+import { listProductsExamplePayload } from "../../examplePayloads";
 import { listProductsInputs } from "../../inputs";
 import { listProductsOutputSchema } from "../../outputSchemas";
 import { listProductsGql } from "../graphql/products/listProductsGql";
@@ -19,7 +17,7 @@ export const listProducts = action({
       pagination: {
         limit: params.pagination.limit
           ? util.types.toInt(params.pagination.limit)
-          : 50,
+          : DEFAULT_REST_PAGE_LIMIT,
         endCursor: params.pagination.pageInfo || undefined,
       },
       getAlldata: params.getAlldata,
@@ -34,8 +32,7 @@ export const listProducts = action({
     type: "actionOutput",
     schema: listProductsOutputSchema,
   }),
-  examplePerform: async (): Promise<{ data: unknown }> => ({
-    data: restListProductsExamplePayload,
-  }),
-  examplePayload: listProductsPayload,
+  examplePerform: async (): Promise<{ data: unknown }> =>
+    listProductsExamplePayload,
+  examplePayload: listProductsExamplePayload,
 });

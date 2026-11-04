@@ -2,7 +2,7 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   type HttpClient,
   createClient as createHttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { notionInternalIntegration } from "./connections/notionInternalIntegration";
 import { notionOauth } from "./connections/notionOauth";
 import { BASE_URL, NOTION_VERSION, OLD_NOTION_VERSION } from "./constants";

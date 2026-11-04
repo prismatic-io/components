@@ -1,4 +1,4 @@
-import { loggerMock } from "@prismatic-io/spectral/dist/testing";
+import { loggerMock } from "@prismatic-io/spectral/testing";
 import {
   GOOGLE_ADS_API_VERSION,
   GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION,

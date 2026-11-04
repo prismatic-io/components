@@ -1,9 +1,9 @@
 import { component } from "@prismatic-io/spectral";
+import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions";
 import connections from "./connections";
-import dataSources from "./datasources";
+import dataSources from "./dataSources";
 import triggers from "./triggers";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 
 export default component({
   key: "Expensify",
@@ -12,7 +12,7 @@ export default component({
   display: {
     label: "Expensify",
     description:
-      "Expensify provides an industry leading expense management system. Use the Expensify component to programmatically download expense report data for analysis or insertion into your accounting package, provision accounts for new hires, and much more.",
+      "Expensify provides an industry leading expense management system. Use the Expensify component to programmatically download expense report data for analysis or insertion into an accounting package, provision accounts for new hires, and much more.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

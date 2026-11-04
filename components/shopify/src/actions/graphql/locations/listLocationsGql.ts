@@ -1,7 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
 import { MAX_LIMIT } from "../../../constants";
-import { listLocationsExamplePayload as examplePayload } from "../../../examplePayloads";
+import { listLocationsGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { listLocationsInputs as inputs } from "../../../inputsGql";
 import { listLocationsGqlOutputSchema } from "../../../outputSchemas";
 import type { PageInfo } from "../../../types";

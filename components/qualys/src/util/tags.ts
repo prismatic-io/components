@@ -1,5 +1,5 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { DEFAULT_QPS_PAGE_SIZE, TEXT_XML_HEADERS } from "../constants";
 import type {
   FilterCriteria,

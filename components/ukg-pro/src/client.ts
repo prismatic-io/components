@@ -3,7 +3,7 @@ import { util } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { ukgProBasicAuth } from "./connections";
 import {
   getAuthHeaders,

@@ -1,9 +1,9 @@
 import { action } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { createCustomerExamplePayload } from "../../../examplePayloads";
+import { createCustomerGqlExamplePayload } from "../../../examplePayloads";
 import { createCustomerInputs as inputs } from "../../../inputsGql";
 import type { Customer } from "../../../types";
-import { customerMapper } from "../mappers/customerMapper";
+import { customerMapper } from "../../../util";
 import createCustomerQuery from "../queries/customers/CreateCustomer.gql";
 
 export const createCustomerGql = action({
@@ -11,6 +11,7 @@ export const createCustomerGql = action({
     label: "Create Customer",
     description: "Creates a new customer.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -57,5 +58,6 @@ export const createCustomerGql = action({
     };
   },
   inputs,
-  examplePayload: createCustomerExamplePayload.restMap,
+  examplePerform: async () => createCustomerGqlExamplePayload.restMap,
+  examplePayload: createCustomerGqlExamplePayload.restMap,
 });

@@ -3,7 +3,7 @@ import type {
   PollingChangesObject,
   PollingRecordChange,
 } from "../types";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { paginator } from "./common";
 
 export const getEvents = async (

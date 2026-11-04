@@ -1,5 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { GOOGLE_ANALYTICS_COLLECT_EVENTS_URL } from "../consts";
 import { sendMeasurementProtocolEventsExamplePayload } from "../examplePayloads";
 import { apiSecret, appInstanceId, events, firebaseAppId } from "../inputs";

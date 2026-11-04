@@ -19,7 +19,7 @@ export interface Sage200RecordChange {
 }
 
 export interface PaginateOptions {
-  client: import("@prismatic-io/spectral/dist/clients/http").HttpClient;
+  client: import("@prismatic-io/spectral/http").HttpClient;
   endpoint: string;
   fetchAll: boolean;
   pageSize?: number;

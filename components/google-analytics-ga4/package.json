@@ -1,23 +1,51 @@
 {
-  "name": "@prismatic-io/google-analytics-ga4",
-  "private": true,
+  "name": "@prismatic-io/components-google-analytics-ga4",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage Google Analytics GA4 accounts and data",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/google-analytics-ga4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
     "test": "vitest run",
     "lint": "biome check --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
   },
-  "dependencies": {
-    "@prismatic-io/spectral": "10.34.1"
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
+  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26",
     "nock": "^15.0.1",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "@prismatic-io/spectral": "^10.38.5"
   }
 }

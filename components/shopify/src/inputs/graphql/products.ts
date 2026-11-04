@@ -36,7 +36,8 @@ const productType = input({
   required: true,
   example: "T-shirt",
   placeholder: "Enter product type",
-  comments: "Provide a value for the type of product.",
+  comments:
+    "A product classification used for filtering, such as T-shirt, Shoes, or Accessories.",
   clean: util.types.toString,
 });
 

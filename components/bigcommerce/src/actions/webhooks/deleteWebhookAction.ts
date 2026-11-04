@@ -1,5 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { createAuthorizedClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { bigCommerceConnection, storeHash, webhookIdInput } from "../../inputs";

@@ -4,7 +4,7 @@ import {
   type KeyValuePair,
   util,
 } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { URL } from "url";
 import { basic } from "./connections";
 import {

@@ -1,5 +1,5 @@
 import { action, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { getZendeskClient } from "../../client";
 import { deleteOrderExamplePayload } from "../../examplePayloads";
 import { deleteOrderInputs } from "../../inputs";

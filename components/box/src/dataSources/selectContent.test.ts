@@ -1,7 +1,7 @@
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { itemsResponse } from "../../tests/boxSdkResponses";
 import { apiKey } from "../connections";
 import { selectContentExamplePayload } from "../examplePayloads";

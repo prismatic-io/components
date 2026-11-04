@@ -1,4 +1,4 @@
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { BASE_PRODUCTION_URL } from "../constants";
 import { connectionInput } from "./common";
 

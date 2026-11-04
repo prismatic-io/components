@@ -1,15 +1,17 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
+import {
+  createClient as createHttpClient,
+  type HttpClient,
+} from "@prismatic-io/spectral/dist/clients/http";
 import { basicConnection } from "./connections";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
-
-export const baseUrl =
-  "https://integrations.expensify.com/Integration-Server/ExpensifyIntegrations";
+import { BASE_URL, SUCCESS_RESPONSE_CODE } from "./constants";
+import type { JobResponseEnvelope } from "./types";
 
 export const validateConnection = (connection: Connection): void => {
-  if (![basicConnection.key].includes(connection.key)) {
+  if (connection.key !== basicConnection.key) {
     throw new ConnectionError(
       connection,
-      `The Connection you provided is not supported for this component`,
+      `The Connection you provided (${connection.key}) is not supported for this component`,
     );
   }
   if (
@@ -23,14 +25,36 @@ export const validateConnection = (connection: Connection): void => {
   }
 };
 
-export const createClient = (connection: Connection, debug: boolean) => {
+export const assertJobSucceeded = <T extends { data?: unknown }>(
+  response: T,
+): T => {
+  const body = response.data as JobResponseEnvelope;
+  if (
+    body &&
+    typeof body === "object" &&
+    typeof body.responseCode === "number" &&
+    body.responseCode !== SUCCESS_RESPONSE_CODE
+  ) {
+    const message = body.responseMessage ? `: ${body.responseMessage}` : "";
+    throw new Error(
+      `Expensify request failed with responseCode ${body.responseCode}${message}`,
+    );
+  }
+  return response;
+};
+
+export const createClient = (
+  connection: Connection,
+  debug = false,
+): HttpClient => {
   validateConnection(connection);
   const client = createHttpClient({
-    baseUrl,
+    baseUrl: BASE_URL,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     debug,
   });
+  client.interceptors.response.use(assertJobSucceeded);
   return client;
 };

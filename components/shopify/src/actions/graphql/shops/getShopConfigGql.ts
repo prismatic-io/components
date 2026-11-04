@@ -4,7 +4,7 @@ import { getShopConfigExamplePayload } from "../../../examplePayloads";
 import { getShopConfigInputs as inputs } from "../../../inputsGql";
 import { getShopConfigGqlOutputSchema } from "../../../outputSchemas";
 import type { Shop } from "../../../types";
-import { shopMapper } from "../mappers/shopMapper";
+import { shopMapper } from "../../../util";
 import getShopConfigQuery from "../queries/shops/GetShopConfig.gql";
 
 export const getShopConfigGql = action({

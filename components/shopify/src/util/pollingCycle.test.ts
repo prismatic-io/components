@@ -228,6 +228,32 @@ describe("runPollingCycle", () => {
     );
   });
 
+  test("a platform-driven round never reports no changes, even on an empty page", async () => {
+    const incoming: PollingCursor = {
+      windowStart: "2026-08-20T00:00:00.000Z",
+      windowEnd: "2026-08-24T00:00:00.000Z",
+      after: "CURSOR-9",
+      isBackfill: false,
+    };
+    mockPage({ nodes: [], hasNextPage: false, endCursor: null });
+
+    const result = await run({ lastPolledAt: "2026-08-19T00:00:00.000Z" }, "", {
+      ...defaultTriggerPayload(),
+      paginationState: incoming,
+    } as TriggerPayload);
+
+    expect(result.polledNoChanges).toBe(false);
+    expect(result.payload.body.data).toEqual({ created: [], updated: [] });
+  });
+
+  test("a scheduled round with an empty final page still reports no changes", async () => {
+    mockPage({ nodes: [], hasNextPage: false, endCursor: null });
+
+    const result = await run({ lastPolledAt: "2026-08-19T00:00:00.000Z" });
+
+    expect(result.polledNoChanges).toBe(true);
+  });
+
   test("classification anchors on the window start, not on the page", async () => {
     const priorState: PollingState = {
       lastPolledAt: "2026-08-24T00:00:00.000Z",

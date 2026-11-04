@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { deleteOrderExamplePayload as examplePayload } from "../../../examplePayloads";
+import { deleteOrderGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { deleteOrderInputs as inputs } from "../../../inputsGql";
 import { deleteOrderGqlOutputSchema } from "../../../outputSchemas";
 

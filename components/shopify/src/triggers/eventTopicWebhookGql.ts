@@ -2,12 +2,12 @@ import { trigger } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../client";
 import { MAX_LIMIT } from "../constants";
 import { eventTopicWebhookGqlExamplePayload } from "../examplePayloads";
-import { eventTopicWebhookInputs as inputs } from "../inputsGql";
+import { eventTopicWebhookGqlInputs } from "../inputs";
 import {
   createWebhook,
   deleteWebhookById,
   listWebhooks,
-  performFunction,
+  webhookPerformFn,
 } from "../util";
 
 export const eventTopicWebhookGql = trigger({
@@ -16,11 +16,11 @@ export const eventTopicWebhookGql = trigger({
     description:
       "Receive event notifications from Shopify. Automatically creates and manages a webhook subscription for selected event topics when the instance is deployed, and removes the subscription when the instance is deleted.",
   },
-  inputs,
+  inputs: eventTopicWebhookGqlInputs,
   examplePayload: eventTopicWebhookGqlExamplePayload,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
-  perform: performFunction,
+  perform: webhookPerformFn,
   webhookLifecycleHandlers: {
     create: async (context, { shopifyConnection, webhookTopics }) => {
       const endpoint = context.webhookUrls[context.flow.name];

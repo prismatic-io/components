@@ -6,10 +6,6 @@ Shopify uses OAuth 2.0 for app authentication. This connection type simplifies c
 - Access to the [Dev Dashboard](https://dev.shopify.com/dashboard) or [Shopify CLI](https://shopify.dev/docs/apps/build/scaffold-app) for app creation
 - A [development store](https://shopify.dev/docs/apps/build/stores/development-stores) for testing
 
-:::caution[Legacy Custom App Deprecation]
-As of January 1, 2026, merchants can no longer create new legacy custom apps. Existing apps are not affected. Partners can still create new custom apps and transfer stores to merchants, but once transferred, new custom app creation is disabled on the store. Use the Partner Dashboard or Shopify CLI to create apps going forward.
-:::
-
 #### Setup Steps
 
 Choose one of the following methods to create a Shopify app.
@@ -20,8 +16,8 @@ For backend-focused apps (API utilities, webhook handlers, sync jobs), create an
 
 1. Log in to the [Dev Dashboard](https://dev.shopify.com/dashboard), or navigate from the [Partner Dashboard](https://www.shopify.com/partners) via **App Distribution** > **Visit Dev Dashboard**.
 2. Click **Create app**.
-3. Select **Create app manually** and provide an app name.
-4. Navigate to the **Configuration** section of the created app.
+3. Select **Start from Dev Dashboard**, enter an app name, and click **Create**.
+4. Navigate to the **Versions** page of the created app.
 5. Under **App URL**, enter a valid URL (this is required but can be a placeholder).
 6. Under **Allowed redirection URL(s)**, enter:
 
@@ -56,10 +52,9 @@ Refer to [Shopify's scaffold app documentation](https://shopify.dev/docs/apps/bu
 Regardless of the creation method, retrieve the OAuth credentials:
 
 1. Open the app in the [Dev Dashboard](https://dev.shopify.com/dashboard).
-2. Navigate to the **Configuration** section.
-3. Scroll to the **Client credentials** section.
-4. Copy the **Client ID** (labeled as **API key** in Shopify).
-5. Copy the **Client secret** (labeled as **API secret key** in Shopify).
+2. Select **App settings**.
+3. Copy the **Client ID** (labeled as **API key** in Shopify).
+4. Copy the **Client secret** (labeled as **API secret key** in Shopify).
 
 #### Configure the Connection
 

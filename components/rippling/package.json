@@ -1,26 +1,51 @@
 {
-  "name": "@prismatic-io/rippling",
-  "private": true,
-  "license": "Apache-2.0",
-  "version": "1.0.0",
+  "name": "@prismatic-io/components-rippling",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
   "description": "Rippling integration component for HR, payroll, and workforce management",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/rippling"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
     "test": "vitest run",
-    "publish": "npm run build && prism components:publish --no-confirm"
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish --no-confirm"
   },
-  "dependencies": {
-    "@prismatic-io/spectral": "10.34.1"
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
+  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.0.1",
     "nock": "14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5"
   }
 }

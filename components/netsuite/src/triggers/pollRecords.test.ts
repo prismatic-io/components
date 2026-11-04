@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { describe, expect, test } from "vitest";
 import type { PollingTriggerObject } from "../types/PollingTriggerObject";
 import { resolvePollingRecordChanges } from "../utils";

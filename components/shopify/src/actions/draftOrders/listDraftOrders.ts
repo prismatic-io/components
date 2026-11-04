@@ -1,4 +1,5 @@
 import { action, outputSchema, util } from "@prismatic-io/spectral";
+import { DEFAULT_REST_PAGE_LIMIT } from "../../constants";
 import { listDraftOrdersExamplePayload } from "../../examplePayloads";
 import { listDraftOrdersInputs } from "../../inputs";
 import { listDraftOrdersOutputSchema } from "../../outputSchemas";
@@ -16,7 +17,7 @@ export const listDraftOrders = action({
       pagination: {
         limit: params.pagination.limit
           ? util.types.toInt(params.pagination.limit)
-          : 50,
+          : DEFAULT_REST_PAGE_LIMIT,
         endCursor: params.pagination.pageInfo || undefined,
       },
       getAlldata: params.getAlldata,

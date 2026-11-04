@@ -1,10 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { createWebhookSubscriptionExamplePayload } from "../../../examplePayloads";
+import { createWebhookGqlExamplePayload } from "../../../examplePayloads";
 import { createWebhookInputs as inputs } from "../../../inputsGql";
 import { createWebhookGqlOutputSchema } from "../../../outputSchemas";
-import { createWebhook } from "../../../util";
-import { webhookMapper } from "../mappers/webhookMapper";
+import type { WebhookSubscriptionFormat } from "../../../types";
+import { createWebhook, webhookMapper } from "../../../util";
 
 export const createWebhookGql = action({
   display: {
@@ -27,7 +27,7 @@ export const createWebhookGql = action({
       topic: webhookTopic,
       webhookSubscription: {
         callbackUrl: callbackWebhookUrl,
-        format: webhookFormat,
+        format: webhookFormat as WebhookSubscriptionFormat,
       },
     });
 
@@ -42,6 +42,6 @@ export const createWebhookGql = action({
     type: "actionOutput",
     schema: createWebhookGqlOutputSchema,
   }),
-  examplePerform: async () => createWebhookSubscriptionExamplePayload.restMap,
-  examplePayload: createWebhookSubscriptionExamplePayload.restMap,
+  examplePerform: async () => createWebhookGqlExamplePayload.restMap,
+  examplePayload: createWebhookGqlExamplePayload.restMap,
 });

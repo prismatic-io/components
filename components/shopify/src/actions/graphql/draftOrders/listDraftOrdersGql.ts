@@ -5,9 +5,7 @@ import { listDraftOrdersExamplePayload } from "../../../examplePayloads";
 import { listDraftOrdersInputs as inputs } from "../../../inputsGql";
 import { listDraftOrdersGqlOutputSchema } from "../../../outputSchemas";
 import type { DraftOrder } from "../../../types";
-import { fetchData } from "../../../util";
-import { draftOrderMapper } from "../mappers/draftOrderMapper";
-import { paginationMapper } from "../mappers/paginationMapper";
+import { draftOrderMapper, fetchData, paginationMapper } from "../../../util";
 import listDraftOrdersQuery from "../queries/draftOrders/ListDraftOrders.gql";
 
 export const listDraftOrdersGql = action({
@@ -15,6 +13,7 @@ export const listDraftOrdersGql = action({
     label: "List Draft Orders",
     description: "Lists all draft orders.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { shopifyConnection, getAlldata, pagination = {} },
@@ -51,5 +50,6 @@ export const listDraftOrdersGql = action({
     type: "actionOutput",
     schema: listDraftOrdersGqlOutputSchema,
   }),
+  examplePerform: async () => listDraftOrdersExamplePayload.restMap,
   examplePayload: listDraftOrdersExamplePayload.restMap,
 });

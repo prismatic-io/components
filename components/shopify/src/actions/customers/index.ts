@@ -1,3 +1,9 @@
-export { createCustomer } from "./createCustomer";
-export { getCustomer } from "./getCustomer";
-export { listCustomers } from "./listCustomers";
+import { createCustomer } from "./createCustomer";
+import { getCustomer } from "./getCustomer";
+import { listCustomers } from "./listCustomers";
+
+export default {
+  createCustomer,
+  getCustomer,
+  listCustomers,
+};

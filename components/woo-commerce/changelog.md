@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
+
 ### 2026-10-19
 
 - Added an optional **Look-back Date** input to the **New Records** trigger for performing an initial sync of records. The initial sync begins on the first recurrence and backfills every record created on or after the specified date, seeding each once; recurrences after the sync completes are unaffected. Leave it empty to start from the first recurrence with no backfill

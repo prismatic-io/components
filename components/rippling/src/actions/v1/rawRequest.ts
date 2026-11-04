@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 import { BASE_URL_V1 } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestV1Inputs } from "../../inputs";

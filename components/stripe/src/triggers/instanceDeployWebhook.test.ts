@@ -2,7 +2,7 @@ import {
   createConnection,
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import Stripe from "stripe";
 import { stripeConnection } from "../connections/apiKey";
 import { instanceDeployWebhook } from "./instanceDeployWebhook";

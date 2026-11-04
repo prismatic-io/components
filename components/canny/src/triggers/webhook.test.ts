@@ -3,7 +3,7 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import {
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { TEST_API_KEY, testConnection } from "../testHelpers";
 import { webhook } from "./webhook";
 

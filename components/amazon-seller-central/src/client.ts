@@ -1,5 +1,5 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 import { amazonClientCredentials, amazonOauth } from "./connections";
 import { getAccessToken, getBaseUrl, getHeaders } from "./util";
 

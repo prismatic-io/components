@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   CHANGE_EVENT_MAX_WINDOW_DAYS,
   googleAdsSearchPath,

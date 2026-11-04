@@ -1,10 +1,10 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
-import type { Policy } from "../interfaces";
+import { INPUT_SETTINGS_TYPES } from "../constants";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+import { pollChangesTriggerInputs } from "../inputs";
+import type { PoliciesResponse, PollingState } from "../types";
 import { generatePayload } from "../util";
-import { showNewRecords } from "../inputs";
-import type { PollingState } from "../types";
 
 export const pollChangesTrigger = pollingTrigger({
   display: {
@@ -12,17 +12,14 @@ export const pollChangesTrigger = pollingTrigger({
     description:
       "Checks for new policies in Expensify on a configured schedule.",
   },
-  inputs: {
-    connection: connectionInput,
-    showNewRecords,
-  },
+  inputs: pollChangesTriggerInputs,
   perform: async (context, payload, { connection, showNewRecords }) => {
     const client = createClient(connection, context.debug.enabled);
     const body = generatePayload(
-      { inputSettings: { type: "policyList" } },
+      { inputSettings: { type: INPUT_SETTINGS_TYPES.POLICY_LIST } },
       connection,
     );
-    const { data } = await client.post<{ policyList: Policy[] }>("", body);
+    const { data } = await client.post<PoliciesResponse>("", body);
     const policies = data.policyList ?? [];
 
     const lastState = context.polling.getState() as PollingState;
@@ -65,4 +62,5 @@ export const pollChangesTrigger = pollingTrigger({
       polledNoChanges: filteredCreated.length === 0,
     };
   },
+  examplePayload: pollChangesTriggerExamplePayload,
 });

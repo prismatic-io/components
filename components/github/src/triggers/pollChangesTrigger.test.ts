@@ -2,7 +2,7 @@ import type { TriggerPayload } from "@prismatic-io/spectral";
 import {
   createConnection,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { oauth2 } from "../connections";
 import type {

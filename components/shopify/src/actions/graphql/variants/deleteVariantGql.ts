@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { deleteVariantExamplePayload as examplePayload } from "../../../examplePayloads";
+import { deleteVariantGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { deleteVariantInputs as inputs } from "../../../inputsGql";
 import { deleteVariantGqlOutputSchema } from "../../../outputSchemas";
 import deleteVariantQuery from "../queries/variants/DeleteVariant.gql";

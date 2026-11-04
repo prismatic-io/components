@@ -16,7 +16,7 @@ const examplePaginationMapRest = {
   pageInfo: "YXJyYXljb25uZWN0aW9uOjA=",
   rel: 'rel="next"',
 };
-export const listCurrenciesExamplePayload = {
+export const listCurrenciesGqlExamplePayload = {
   data: {
     currencies: [
       {
@@ -29,13 +29,13 @@ export const listCurrenciesExamplePayload = {
   },
 };
 
-export const countCustomersExamplePayload = {
+export const countCustomersGqlExamplePayload = {
   data: {
     count: 20,
   },
 };
 
-export const createAccountActivationURLExamplePayload = {
+export const createAccountActivationURLGqlExamplePayload = {
   data: {
     accountActivationUrl: "https://activation.example.com",
     userErrors: [],
@@ -123,7 +123,7 @@ const exampleCustomerMapRest = {
   phone: "+18000000000",
   addresses: [
     {
-      id: null,
+      id: 9000000000000,
       customer_id: 8000000000000,
       first_name: "Jane",
       last_name: "Smith",
@@ -155,7 +155,7 @@ const exampleCustomerMapRest = {
   },
   admin_graphql_api_id: "gid://shopify/Customer/8000000000000",
   default_address: {
-    id: null,
+    id: 9000000000000,
     customer_id: 8000000000000,
     first_name: "Jane",
     last_name: "Smith",
@@ -174,7 +174,7 @@ const exampleCustomerMapRest = {
   },
 };
 
-export const createCustomerExamplePayload = {
+export const createCustomerGqlExamplePayload = {
   graphql: {
     data: {
       userErrors: [],
@@ -201,7 +201,7 @@ export const getCustomerExamplePayload = {
   },
 };
 
-export const deleteCustomerExamplePayload = {
+export const deleteCustomerGqlExamplePayload = {
   graphql: {
     data: {
       userErrors: [],
@@ -228,7 +228,7 @@ export const listCustomersExamplePayload = {
   },
 };
 
-export const updateCustomerExamplePayload = {
+export const updateCustomerGqlExamplePayload = {
   data: {
     userErrors: [],
     customer: exampleCustomer,
@@ -522,28 +522,28 @@ const exampleDraftOrderMapRest = {
   admin_graphql_api_id: "gid://shopify/DraftOrder/1234567890",
 };
 
-export const completeDraftOrderExamplePayload = {
+export const completeDraftOrderGqlExamplePayload = {
   data: {
     draftOrder: exampleDraftOrder,
     userErrors: [],
   },
 };
 
-export const createDraftOrderExamplePayload = {
+export const createDraftOrderGqlExamplePayload = {
   data: {
     userErrors: [],
     draftOrder: exampleDraftOrder,
   },
 };
 
-export const deleteDraftOrderExamplePayload = {
+export const deleteDraftOrderGqlExamplePayload = {
   data: {
     deletedId: "gid://shopify/DraftOrder/276395349",
     userErrors: [],
   },
 };
 
-export const getDraftOrderExamplePayload = {
+export const getDraftOrderGqlExamplePayload = {
   data: {
     draftOrder: exampleDraftOrder,
   },
@@ -720,7 +720,7 @@ const exampleFulfillment = {
   name: "F-1001",
 };
 
-export const getFulfillmentExamplePayload = {
+export const getFulfillmentGqlExamplePayload = {
   data: {
     fulfillment: exampleFulfillment,
   },
@@ -999,33 +999,33 @@ const exampleFulfillmentService = {
   permitsSkuSharing: false,
 };
 
-export const createFulfillmentServiceExamplePayload = {
+export const createFulfillmentServiceGqlExamplePayload = {
   data: {
     fulfillmentService: exampleFulfillmentService,
     userErrors: [],
   },
 };
 
-export const deleteFulfillmentServiceExamplePayload = {
+export const deleteFulfillmentServiceGqlExamplePayload = {
   data: {
     deletedId: "gid://shopify/FulfillmentService/198258461",
     userErrors: [],
   },
 };
 
-export const getFulfillmentServiceExamplePayload = {
+export const getFulfillmentServiceGqlExamplePayload = {
   data: {
     fulfillmentService: exampleFulfillmentService,
   },
 };
 
-export const listFulfillmentServicesExamplePayload = {
+export const listFulfillmentServicesGqlExamplePayload = {
   data: {
     fulfillmentServices: [exampleFulfillmentService],
   },
 };
 
-export const updateFulfillmentServiceExamplePayload = {
+export const updateFulfillmentServiceGqlExamplePayload = {
   data: {
     fulfillmentService: exampleFulfillmentService,
     userErrors: [],
@@ -1051,23 +1051,25 @@ const exampleInventoryItem = {
   },
 };
 
-export const getInventoryItemsExamplePayload = {
+export const getInventoryItemsGqlExamplePayload = {
   data: {
     inventoryItem: exampleInventoryItem,
   },
 };
 
-export const listInventoryItemsExamplePayload = {
+export const listInventoryItemsGqlExamplePayload = {
   data: {
     inventoryItems: [exampleInventoryItem],
     pageInfo,
   },
 };
 
-export const updateInventoryItemsExamplePayload = {
+export const updateInventoryItemsGqlExamplePayload = {
   data: {
-    inventoryItem: exampleInventoryItem,
-    userErrors: [],
+    inventoryItemUpdate: {
+      inventoryItem: exampleInventoryItem,
+      userErrors: [],
+    },
   },
 };
 
@@ -1089,33 +1091,33 @@ const exampleInventoryLevel = {
   updatedAt: "2024-11-07T20:59:45Z",
 };
 
-export const connectInventoryLevelExamplePayload = {
+export const connectInventoryLevelGqlExamplePayload = {
   data: {
     inventoryLevel: exampleInventoryLevel,
     userErrors: [],
   },
 };
 
-export const deleteInventoryLevelsExamplePayload = {
+export const deleteInventoryLevelsGqlExamplePayload = {
   data: {
     userErrors: [],
   },
 };
 
-export const getInventoryLevelsExamplePayload = {
+export const getInventoryLevelsGqlExamplePayload = {
   data: {
     inventoryLevel: exampleInventoryLevel,
   },
 };
 
-export const listInventoryLevelsExamplePayload = {
+export const listInventoryLevelsGqlExamplePayload = {
   data: {
     inventoryLevels: [exampleInventoryLevel],
     pageInfo,
   },
 };
 
-export const countLocationsExamplePayload = {
+export const countLocationsGqlExamplePayload = {
   data: {
     count: 10,
   },
@@ -1140,20 +1142,20 @@ const exampleLocation = {
   isActive: true,
 };
 
-export const getLocationsExamplePayload = {
+export const getLocationsGqlExamplePayload = {
   data: {
     location: exampleLocation,
   },
 };
 
-export const listLocationsExamplePayload = {
+export const listLocationsGqlExamplePayload = {
   data: {
     locations: [exampleLocation],
     pageInfo,
   },
 };
 
-export const cancelOrderExamplePayload = {
+export const cancelOrderGqlExamplePayload = {
   data: {
     job: {
       id: "gid://shopify/Job/d3dcd8af-2cb6-4995-ab04-634a21891234",
@@ -1450,47 +1452,47 @@ const exampleOrder = {
   },
 };
 
-export const closeOrderExamplePayload = {
+export const closeOrderGqlExamplePayload = {
   data: {
     order: exampleOrder,
     userErrors: [],
   },
 };
 
-export const countOrdersExamplePayload = {
+export const countOrdersGqlExamplePayload = {
   data: {
     count: 58,
   },
 };
 
-export const createOrderExamplePayload = {
+export const createOrderGqlExamplePayload = {
   data: {
     order: exampleOrder,
     userErrors: [],
   },
 };
 
-export const deleteOrderExamplePayload = {
+export const deleteOrderGqlExamplePayload = {
   data: {
     deletedId: "gid://shopify/Order/776341364",
     userErrors: [],
   },
 };
 
-export const getOrderExamplePayload = {
+export const getOrderGqlExamplePayload = {
   data: {
     order: exampleOrder,
   },
 };
 
-export const listOrdersExamplePayload = {
+export const listOrdersGqlExamplePayload = {
   data: {
     orders: [exampleOrder],
     pageInfo,
   },
 };
 
-export const countProductImagesExamplePayload = {
+export const countProductImagesGqlExamplePayload = {
   data: {
     count: 5,
   },
@@ -1633,7 +1635,7 @@ const exampleProductMapRest = {
   },
 };
 
-export const createProductExamplePayload = {
+export const createProductGqlExamplePayload = {
   graphql: {
     data: {
       product: exampleProductGql,
@@ -1647,18 +1649,16 @@ export const createProductExamplePayload = {
   },
 };
 
-export const countProductsExamplePayload = {
+export const countProductsGqlExamplePayload = {
   data: {
     data: { count: 58 },
   },
 };
 
-export const deleteProductExamplePayload = {
+export const deleteProductGqlExamplePayload = {
   data: {
-    productDelete: {
-      deletedProductId: "gid://shopify/Product/108828309",
-      userErrors: [],
-    },
+    deletedProductId: "gid://shopify/Product/108828309",
+    userErrors: [],
   },
 };
 
@@ -1675,7 +1675,7 @@ export const getProductExamplePayload = {
   },
 };
 
-export const listProductsExamplePayload = {
+export const listProductsGqlExamplePayload = {
   graphql: {
     data: {
       products: [exampleProductGql],
@@ -1738,7 +1738,7 @@ const exampleWebhookSubscriptionMapRest = {
   private_metafield_namespaces: [],
 };
 
-export const createWebhookSubscriptionExamplePayload = {
+export const createWebhookGqlExamplePayload = {
   graphql: {
     data: {
       userErrors: [],
@@ -1752,7 +1752,7 @@ export const createWebhookSubscriptionExamplePayload = {
   },
 };
 
-export const listWebhooksExamplePayload = {
+export const listWebhooksGqlExamplePayload = {
   graphql: {
     data: {
       webhookSubscriptions: [exampleWebhookSubscription],
@@ -1764,7 +1764,7 @@ export const listWebhooksExamplePayload = {
   },
 };
 
-export const deleteWebhookExamplePayload = {
+export const deleteWebhookGqlExamplePayload = {
   graphql: {
     data: {
       userErrors: [],
@@ -1911,7 +1911,7 @@ export const listProductImagesExamplePayload = {
   },
 };
 
-export const createProductImageExamplePayload = {
+export const createProductImageGqlExamplePayload = {
   data: {
     media: [
       {
@@ -1925,7 +1925,7 @@ export const createProductImageExamplePayload = {
   },
 };
 
-export const deleteProductImageExamplePayload = {
+export const deleteProductImageGqlExamplePayload = {
   data: {
     deletedMediaIds: ["gid://shopify/MediaImage/730211239"],
     deletedProductImageIds: ["gid://shopify/ProductImage/916933471"],
@@ -1933,7 +1933,7 @@ export const deleteProductImageExamplePayload = {
   },
 };
 
-export const getProductImageExamplePayload = {
+export const getProductImageGqlExamplePayload = {
   data: {
     image: {
       alt: "image",
@@ -1957,7 +1957,7 @@ export const getProductImageExamplePayload = {
   },
 };
 
-export const updateProductExamplePayload = {
+export const updateProductGqlExamplePayload = {
   data: {
     product: {
       id: "gid://shopify/Product/912855135",
@@ -1978,13 +1978,13 @@ export const updateProductExamplePayload = {
   },
 };
 
-export const countVariantsExamplePayload = {
+export const countVariantsGqlExamplePayload = {
   data: {
     count: 12,
   },
 };
 
-export const createVariantExamplePayload = {
+export const createVariantGqlExamplePayload = {
   data: {
     productVariants: [
       {
@@ -2002,7 +2002,7 @@ export const createVariantExamplePayload = {
   },
 };
 
-export const deleteVariantExamplePayload = {
+export const deleteVariantGqlExamplePayload = {
   data: {
     product: {
       id: "gid://shopify/Product/20995642",
@@ -2012,7 +2012,7 @@ export const deleteVariantExamplePayload = {
   },
 };
 
-export const getVariantExamplePayload = {
+export const getVariantGqlExamplePayload = {
   data: {
     productVariant: {
       id: "gid://shopify/ProductVariant/43729076",
@@ -2025,7 +2025,7 @@ export const getVariantExamplePayload = {
   },
 };
 
-export const listVariantsExamplePayload = {
+export const listVariantsGqlExamplePayload = {
   data: {
     productVariants: [
       {
@@ -2040,7 +2040,7 @@ export const listVariantsExamplePayload = {
   },
 };
 
-export const updateVariantExamplePayload = {
+export const updateVariantGqlExamplePayload = {
   data: {
     product: {
       id: "gid://shopify/Product/20995642",
@@ -2115,26 +2115,26 @@ const exampleCollection = {
   title: "Example Collection Title",
 };
 
-export const listCollectionsExamplePayload = {
+export const listCollectionsGqlExamplePayload = {
   data: {
     collections: [exampleCollection],
     pageInfo,
   },
 };
 
-export const getCollectionExamplePayload = {
+export const getCollectionGqlExamplePayload = {
   data: {
     collection: exampleCollection,
   },
 };
 
-export const countCollectionsExamplePayload = {
+export const countCollectionsGqlExamplePayload = {
   data: {
     count: 5,
   },
 };
 
-export const deleteCollectionExamplePayload = {
+export const deleteCollectionGqlExamplePayload = {
   data: {
     deletedCollectionId: "gid://shopify/Collection/123456789012",
     userErrors: [],
@@ -2153,21 +2153,21 @@ const exampleMetafield = {
   updatedAt: "2025-01-28T20:52:51Z",
 };
 
-export const listMetafieldsExamplePayload = {
+export const listMetafieldsGqlExamplePayload = {
   data: {
     metafields: [exampleMetafield],
     pageInfo,
   },
 };
 
-export const setMetafieldExamplePayload = {
+export const setMetafieldGqlExamplePayload = {
   data: {
     metafields: [exampleMetafield],
     userErrors: [],
   },
 };
 
-export const deleteMetafieldExamplePayload = {
+export const deleteMetafieldGqlExamplePayload = {
   data: {
     deletedMetafields: [
       {
@@ -2180,7 +2180,7 @@ export const deleteMetafieldExamplePayload = {
   },
 };
 
-export const countDraftOrdersExamplePayload = {
+export const countDraftOrdersGqlExamplePayload = {
   data: {
     count: 5,
   },

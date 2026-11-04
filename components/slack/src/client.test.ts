@@ -1,5 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import type { MockedFunction } from "vitest";
 import {
   accountIsActiveFn,
@@ -7,7 +7,7 @@ import {
   getApiBaseUrl,
 } from "./client";
 
-vi.mock("@prismatic-io/spectral/dist/clients/http", () => ({
+vi.mock("@prismatic-io/spectral/http", () => ({
   createClient: vi.fn(),
 }));
 const mockCreateClient = createClient as MockedFunction<typeof createClient>;

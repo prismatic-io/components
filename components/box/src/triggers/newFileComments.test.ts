@@ -1,7 +1,7 @@
 import {
   createConnection,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { apiKey } from "../connections";
 import type { PollingState } from "../types";
 import { newFileComments } from "./newFileComments";

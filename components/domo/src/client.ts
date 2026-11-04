@@ -1,8 +1,5 @@
 import { type Connection, util } from "@prismatic-io/spectral";
-import {
-  createClient,
-  handleErrors,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, handleErrors } from "@prismatic-io/spectral/http";
 import { BASE_URL, OAUTH_URL } from "./constants";
 
 export async function getToken(domoConnection: Connection, debug: boolean) {

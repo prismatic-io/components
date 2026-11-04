@@ -1,4 +1,4 @@
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/http";
 import { action } from "@prismatic-io/spectral";
 import { rawRequestInputs } from "../../inputs";
 import { getHeaders } from "../../util";

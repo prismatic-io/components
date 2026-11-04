@@ -1,27 +1,27 @@
-import { listCollections } from "./listCollections";
-import { listCustomers } from "./listCustomers";
-import { listDraftOrders } from "./listDraftOrders";
-import { listFulfillmentOrders } from "./listFulfillmentOrders";
-import { listFulfillmentServices } from "./listFulfillmentServices";
-import { listFulfillments } from "./listFulfillments";
-import { listInventoryItems } from "./listInventoryItems";
-import { listLocations } from "./listLocations";
-import { listOrders } from "./listOrders";
-import { listProductImages } from "./listProductImages";
-import { listProducts } from "./listProducts";
-import { listVariants } from "./listVariants";
+import { selectCollections } from "./selectCollections";
+import { selectCustomers } from "./selectCustomers";
+import { selectDraftOrders } from "./selectDraftOrders";
+import { selectFulfillmentOrders } from "./selectFulfillmentOrders";
+import { selectFulfillmentServices } from "./selectFulfillmentServices";
+import { selectFulfillments } from "./selectFulfillments";
+import { selectInventoryItems } from "./selectInventoryItems";
+import { selectLocations } from "./selectLocations";
+import { selectOrders } from "./selectOrders";
+import { selectProductImages } from "./selectProductImages";
+import { selectProducts } from "./selectProducts";
+import { selectVariants } from "./selectVariants";
 
 export default {
-  listCollections,
-  listCustomers,
-  listDraftOrders,
-  listFulfillmentOrders,
-  listFulfillmentServices,
-  listFulfillments,
-  listInventoryItems,
-  listLocations,
-  listOrders,
-  listProductImages,
-  listProducts,
-  listVariants,
+  listCollections: selectCollections,
+  listCustomers: selectCustomers,
+  listDraftOrders: selectDraftOrders,
+  listFulfillmentOrders: selectFulfillmentOrders,
+  listFulfillmentServices: selectFulfillmentServices,
+  listFulfillments: selectFulfillments,
+  listInventoryItems: selectInventoryItems,
+  listLocations: selectLocations,
+  listOrders: selectOrders,
+  listProductImages: selectProductImages,
+  listProducts: selectProducts,
+  listVariants: selectVariants,
 };

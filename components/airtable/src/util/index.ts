@@ -3,7 +3,7 @@ import {
   type KeyValuePair,
   util,
 } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import type { AirtableChangesObject, AirtableRecordChange } from "../types";
 
 export const getBaseId = (airtableConnection: Connection, baseId: string) => {

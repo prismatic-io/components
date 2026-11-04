@@ -1,5 +1,5 @@
 import { Readable } from "node:stream";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { stubAxiosAdapter } from "../../../tests/axiosAdapter";
 import { filesResponse, itemsResponse } from "../../../tests/boxSdkResponses";
 import { apiKey } from "../../connections";

@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import type { PollingState, Sage200Record } from "../types";
 import { lookBackDateClean, resolveSage200RecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";

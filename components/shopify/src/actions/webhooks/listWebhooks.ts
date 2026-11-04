@@ -1,9 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { MAX_LIMIT } from "../../constants";
-import {
-  listWebhooksPayload,
-  restListWebhooksExamplePayload,
-} from "../../examplePayloads";
+import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
 import { listWebhooksOutputSchema } from "../../outputSchemas";
 import { listWebhooksGql } from "../graphql/webhooks/listWebhooksGql";
@@ -33,8 +30,6 @@ export const listWebhooks = action({
 
     return { data };
   },
-  examplePerform: async () => ({
-    data: restListWebhooksExamplePayload,
-  }),
-  examplePayload: listWebhooksPayload,
+  examplePerform: async () => listWebhooksExamplePayload,
+  examplePayload: listWebhooksExamplePayload,
 });

@@ -2,10 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { rawRequestInputs } from "../../inputs";
 import { createCustomerClient } from "../../client";
 
-import {
-  handleErrors,
-  sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors, sendRawRequest } from "@prismatic-io/spectral/http";
 
 const rawRequest = action({
   display: {

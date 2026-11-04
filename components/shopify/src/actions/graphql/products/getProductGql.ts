@@ -4,7 +4,7 @@ import { getProductExamplePayload } from "../../../examplePayloads";
 import { getProductInputs as inputs } from "../../../inputsGql";
 import { getProductGqlOutputSchema } from "../../../outputSchemas";
 import type { Product } from "../../../types";
-import { productMapper } from "../mappers/productMapper";
+import { productMapper } from "../../../util";
 import getProductQuery from "../queries/products/GetProduct.gql";
 
 export const getProductGql = action({

@@ -1,4 +1,4 @@
-import type { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { createClient as createHttpClient } from "@prismatic-io/spectral/http";
 
 export const paginateResults = async <T>(
   client: ReturnType<typeof createHttpClient>,

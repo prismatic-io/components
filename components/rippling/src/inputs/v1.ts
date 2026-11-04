@@ -1,5 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { BASE_URL_V1 } from "../constants";
 import { toOptionalNumber, toOptionalString } from "../utils";
 import { connection, fetchAll } from "./general";

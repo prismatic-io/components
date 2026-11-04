@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-03
+
+Published the component as an npm package, so code-native integrations can install it and call its actions, triggers and data sources from code with TypeScript types
+
 ### 2026-11-02
 
 Initial release of the Adobe Experience Manager component for working with content in Adobe Experience Manager as a Cloud Service:

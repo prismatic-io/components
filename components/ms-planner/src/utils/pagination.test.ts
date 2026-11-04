@@ -1,5 +1,5 @@
 import type { PlannerTask } from "@microsoft/microsoft-graph-types";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { afterEach, beforeAll, describe, expect, test } from "vitest";
 import { createClient } from "../client";

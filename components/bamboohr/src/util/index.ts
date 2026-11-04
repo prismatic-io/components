@@ -89,7 +89,7 @@ export const filterFalseyValues = (obj: Record<string, unknown>) =>
   Object.fromEntries(Object.entries(obj).filter(([, value]) => Boolean(value)));
 
 export const fetchChangedEmployeesSince = async (
-  client: import("@prismatic-io/spectral/dist/clients/http").HttpClient,
+  client: import("@prismatic-io/spectral/http").HttpClient,
   since: string,
 ): Promise<import("../types").EmployeeChange[]> => {
   const { data } = await client.get(

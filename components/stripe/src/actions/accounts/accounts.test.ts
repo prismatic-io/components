@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { stripeConnection } from "../../connections/apiKey";
 import { listAccountsExamplePayload } from "../../examplePayloads/accounts";

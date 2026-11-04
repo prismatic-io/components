@@ -2,7 +2,7 @@ import {
   createConnection,
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { cannyApiKey } from "./connections/apiKey";
 import { pollChangesTrigger } from "./triggers/pollChangesTrigger";
 import type { PollingState, Post } from "./types";

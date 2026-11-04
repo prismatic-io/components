@@ -1,4 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { SHOPIFY_GID_PREFIX } from "../../constants";
 import { getFulfillmentOrderExamplePayload } from "../../examplePayloads";
 import { getFulfillmentOrderInputs } from "../../inputs";
 import { getFulfillmentOrderOutputSchema } from "../../outputSchemas";
@@ -18,7 +19,7 @@ export const getFulfillmentOrder = action({
   perform: async (context, params) => {
     const { data } = await getFulfillmentOrderGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
-      fulfillmentOrderId: `gid://shopify/FulfillmentOrder/${params.fulfillmentOrderId}`,
+      fulfillmentOrderId: `${SHOPIFY_GID_PREFIX}FulfillmentOrder/${params.fulfillmentOrderId}`,
     });
     return { data };
   },

@@ -1,6 +1,6 @@
 import type { WebhookSubscriptionPayload, Webhook } from "../types";
 import { WEBHOOK_PAGE_SIZE, WEBHOOK_SUBSCRIPTIONS_URL } from "../constants";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 
 export const getUuidFromUri = (url: string): string =>
   url.replace(WEBHOOK_SUBSCRIPTIONS_URL, "");

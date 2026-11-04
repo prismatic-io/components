@@ -5,9 +5,11 @@ import { listFulfillmentOrdersExamplePayload } from "../../../examplePayloads";
 import { listFulfillmentOrdersInputs as inputs } from "../../../inputsGql";
 import { listFulfillmentOrdersGqlOutputSchema } from "../../../outputSchemas";
 import type { FulfillmentOrder, PageInfo } from "../../../types";
-import { fetchData } from "../../../util";
-import { fulfillmentOrderMapper } from "../mappers/fulfillmentOrderMapper";
-import { paginationMapper } from "../mappers/paginationMapper";
+import {
+  fetchData,
+  fulfillmentOrderMapper,
+  paginationMapper,
+} from "../../../util";
 import listFulfillmentOrdersQuery from "../queries/fulfillments/ListFulfillmentOrders.gql";
 
 export const listFulfillmentOrdersGql = action({
@@ -20,6 +22,7 @@ export const listFulfillmentOrdersGql = action({
     type: "actionOutput",
     schema: listFulfillmentOrdersGqlOutputSchema,
   }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { shopifyConnection, orderId, getAlldata, pagination = {} },
@@ -56,5 +59,6 @@ export const listFulfillmentOrdersGql = action({
       },
     };
   },
+  examplePerform: async () => listFulfillmentOrdersExamplePayload.restMap,
   examplePayload: listFulfillmentOrdersExamplePayload.restMap,
 });

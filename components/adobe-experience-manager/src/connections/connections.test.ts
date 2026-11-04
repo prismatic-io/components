@@ -1,5 +1,5 @@
 import { OAuth2Type } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { createAemClient } from "../client";
 import connections, { aemOAuthServerToServer, aemOAuthWebApp } from ".";

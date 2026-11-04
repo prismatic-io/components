@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import {
   inputs as httpClientInputs,
   sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { getToken } from "../../client";
 import { BASE_URL } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";

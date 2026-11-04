@@ -1,8 +1,5 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { bigCommerceConnection } from "./connections";
 
 export const createAuthorizedClient = async (

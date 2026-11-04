@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   WQL_DEFAULT_FETCH_ALL_LIMIT,
   WQL_MAX_CACHED_ROWS,

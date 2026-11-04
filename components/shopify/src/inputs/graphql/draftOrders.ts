@@ -31,6 +31,7 @@ const lineItems = input({
   type: "code",
   required: true,
   language: "json",
+  placeholder: "Enter line items JSON",
   example: JSON.stringify(
     [
       {

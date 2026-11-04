@@ -1,23 +1,51 @@
 {
-  "name": "@prismatic-io/github",
-  "private": true,
+  "name": "@prismatic-io/components-github",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage repositories, issues, pull requests, and workflows in GitHub.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/github"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome check . --write",
     "format": "biome check . --write",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "publish": "npm run build && prism components:publish"
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
   },
-  "dependencies": {
-    "@prismatic-io/spectral": "10.34.1"
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
+  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^22.20.3",
     "nock": "^14.0.10",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5"
   }
 }

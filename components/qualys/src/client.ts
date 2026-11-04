@@ -2,7 +2,7 @@ import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import type { HttpErrorResponse } from "./types";
 import { validateConnection } from "./util";
 

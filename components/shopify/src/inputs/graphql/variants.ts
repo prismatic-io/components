@@ -9,6 +9,7 @@ const variant = input({
   label: "Variant",
   type: "code",
   language: "json",
+  placeholder: "Enter variant JSON",
   required: true,
   comments: "Provide a JSON object containing the variant data.",
   example: JSON.stringify(
@@ -42,6 +43,7 @@ const updateVariant = input({
   label: "Update Variant",
   type: "code",
   language: "json",
+  placeholder: "Enter variant update JSON",
   required: true,
   comments: "Provide a JSON object containing the variant data to update.",
   example: JSON.stringify(

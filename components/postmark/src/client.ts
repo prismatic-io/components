@@ -1,6 +1,6 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { postmarkConnection as postmarkOAuth } from "./connections";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { BASE_URL } from "./constants";
 
 interface CreateClientProps {

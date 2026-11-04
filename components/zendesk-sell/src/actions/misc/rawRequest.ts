@@ -3,7 +3,7 @@ import {
   handleErrors,
   inputs as httpClientInputs,
   sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { BASE_URL, BASE_URL_V3 } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { connection } from "../../inputs";

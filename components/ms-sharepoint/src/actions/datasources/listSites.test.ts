@@ -3,7 +3,7 @@ import component from "../..";
 import {
   createConnection,
   createHarness,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 
 const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   ? describe

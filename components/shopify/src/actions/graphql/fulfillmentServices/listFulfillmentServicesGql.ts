@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { listFulfillmentServicesExamplePayload as examplePayload } from "../../../examplePayloads";
+import { listFulfillmentServicesGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { listFulfillmentServicesInputs as inputs } from "../../../inputsGql";
 import { listFulfillmentServicesGqlOutputSchema } from "../../../outputSchemas";
 import listFulfillmentServicesQuery from "../queries/fulfillmentServices/ListFulfillmentServices.gql";
@@ -15,7 +15,7 @@ export const listFulfillmentServicesGql = action({
     type: "actionOutput",
     schema: listFulfillmentServicesGqlOutputSchema,
   }),
-  performSafety: "safe",
+  performSafety: "notAllowed",
   perform: async (context, { shopifyConnection }) => {
     const client = getShopifyGraphQlClient(
       shopifyConnection,
@@ -32,5 +32,6 @@ export const listFulfillmentServicesGql = action({
       data: data.shop,
     };
   },
+  examplePerform: async () => examplePayload,
   examplePayload,
 });

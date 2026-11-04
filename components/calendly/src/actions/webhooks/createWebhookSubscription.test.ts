@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { createWebhookSubscription } from "./createWebhookSubscription";
 import { calendlyOauth2Connection } from "../../connections";

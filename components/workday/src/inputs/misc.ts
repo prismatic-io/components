@@ -1,5 +1,5 @@
 import { input } from "@prismatic-io/spectral";
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { SERVICES } from "../constants";
 import { cleanStringInput } from "../util";
 import { connection, reportUrl } from "./common";

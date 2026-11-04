@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { deleteCustomerExamplePayload } from "../../../examplePayloads";
+import { deleteCustomerGqlExamplePayload } from "../../../examplePayloads";
 import { deleteCustomerInputs as inputs } from "../../../inputsGql";
 import { deleteCustomerGqlOutputSchema } from "../../../outputSchemas";
 import deleteCustomerQuery from "../queries/customers/DeleteCustomer.gql";
@@ -31,6 +31,6 @@ export const deleteCustomerGql = action({
     type: "actionOutput",
     schema: deleteCustomerGqlOutputSchema,
   }),
-  examplePerform: async () => deleteCustomerExamplePayload.restMap,
-  examplePayload: deleteCustomerExamplePayload.restMap,
+  examplePerform: async () => deleteCustomerGqlExamplePayload.restMap,
+  examplePayload: deleteCustomerGqlExamplePayload.restMap,
 });

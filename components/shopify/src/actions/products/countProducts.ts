@@ -1,5 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { countProductsPayload } from "../../examplePayloads";
+import { countProductsExamplePayload } from "../../examplePayloads";
 import { countProductsInputs } from "../../inputs";
 import { countProductsOutputSchema } from "../../outputSchemas";
 import { countProductsGql } from "../graphql/products/countProductsGql";
@@ -22,5 +22,5 @@ export const countProducts = action({
     type: "actionOutput",
     schema: countProductsOutputSchema,
   }),
-  examplePayload: countProductsPayload,
+  examplePayload: countProductsExamplePayload,
 });

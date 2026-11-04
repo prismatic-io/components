@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { updateCustomerExamplePayload as examplePayload } from "../../../examplePayloads";
+import { updateCustomerGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { updateCustomerInputs as inputs } from "../../../inputsGql";
 import { updateCustomerGqlOutputSchema } from "../../../outputSchemas";
 
@@ -17,11 +17,8 @@ export const updateCustomerGql = action({
     {
       customerIdGql,
       shopifyConnection,
-      firstName,
-      lastName,
-      email,
+      contactInfo = {},
       addressListGql,
-      phone,
       notes,
       additionalFields,
       tags,
@@ -40,10 +37,10 @@ export const updateCustomerGql = action({
       await client.request(updateCustomerQuery, {
         input: {
           id: customerIdGql,
-          email,
-          phone,
-          firstName,
-          lastName,
+          email: contactInfo.email,
+          phone: contactInfo.phone,
+          firstName: contactInfo.firstName,
+          lastName: contactInfo.lastName,
           note: notes,
           addresses: addressListGql,
           tags,

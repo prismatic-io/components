@@ -8,7 +8,7 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/dist"]
+    "includes": ["**", "!**/dist", "!**/npm-dist"]
   },
   "linter": {
     "enabled": true,

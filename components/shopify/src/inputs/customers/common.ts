@@ -175,6 +175,7 @@ export const addressList = input({
   label: "Address List",
   type: "code",
   language: "json",
+  placeholder: "Enter address list JSON",
   comments:
     "A JSON array of address objects for the customer. Each object should include fields like address1, city, province, country, and zip.",
   required: true,

@@ -1,5 +1,5 @@
 import { type Mock, vi } from "vitest";
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import type { DriveItem } from "../interfaces";
 import { drivePollingTrigger } from "./drivePollingTrigger";
 import { folderPollingTrigger } from "./folderPollingTrigger";

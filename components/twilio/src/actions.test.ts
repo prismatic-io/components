@@ -1,4 +1,4 @@
-import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
+import { invoke, createConnection } from "@prismatic-io/spectral/testing";
 import { sendSMS } from "./actions/sms";
 import { twilioApiKeyConnection } from "./connections";
 

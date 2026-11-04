@@ -1,4 +1,4 @@
-import { invoke, invokeDataSource } from "@prismatic-io/spectral/dist/testing";
+import { invoke, invokeDataSource } from "@prismatic-io/spectral/testing";
 import {
   boxApiError,
   webhookResponse,

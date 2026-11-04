@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import { MAX_PAGE_SIZE, WATERMARK_SKEW_MARGIN_MS } from "../constants";
 import type {
   ComputerDrainRound,

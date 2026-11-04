@@ -1,19 +1,46 @@
 {
-  "name": "ms-outlook",
-  "private": true,
+  "name": "@prismatic-io/components-ms-outlook",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage emails, calendar events, and subscriptions in Microsoft Outlook.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/ms-outlook"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "test": "vitest run",
-    "publish": "npm run build && prism components:publish"
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
     "lodash.isempty": "^4.4.0",
-    "mailparser": "3.6.4",
-    "ms-utils": "file:../../packages/ms-utils"
+    "mailparser": "3.6.4"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
@@ -23,6 +50,8 @@
     "@types/node": "^26.6.5",
     "typescript": "6.0.3",
     "tsdown": "0.22.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5",
+    "ms-utils": "file:../../packages/ms-utils"
   }
 }

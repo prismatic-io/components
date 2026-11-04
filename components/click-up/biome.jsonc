@@ -39,6 +39,6 @@
     }
   },
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.js", "!**/dist"]
+    "includes": ["src/**/*.ts", "src/**/*.js", "!**/dist", "!**/npm-dist"]
   }
 }

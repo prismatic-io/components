@@ -1,3 +1,9 @@
-export { countProducts } from "./countProducts";
-export { getProduct } from "./getProduct";
-export { listProducts } from "./listProducts";
+import { countProducts } from "./countProducts";
+import { getProduct } from "./getProduct";
+import { listProducts } from "./listProducts";
+
+export default {
+  countProducts,
+  getProduct,
+  listProducts,
+};

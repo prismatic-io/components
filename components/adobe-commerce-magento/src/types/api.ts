@@ -5,7 +5,7 @@ export interface MagentoListResponse<T = unknown> {
 }
 
 export interface PaginateOptions {
-  client: import("@prismatic-io/spectral/dist/clients/http").HttpClient;
+  client: import("@prismatic-io/spectral/http").HttpClient;
   endpoint: string;
   queryParams?: Record<string, unknown>;
   fetchAll: boolean;

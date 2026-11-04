@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { closeOrderExamplePayload as examplePayload } from "../../../examplePayloads";
+import { closeOrderGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { closeOrderInputs as inputs } from "../../../inputsGql";
 import { closeOrderGqlOutputSchema } from "../../../outputSchemas";
 import closeOrderQuery from "../queries/orders/CloseOrder.gql";

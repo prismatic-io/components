@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated customer inputs, inline action calling, and polling trigger batching:
+
+- Fixed polling triggers with batching enabled leaving a batch incomplete when records in a large backlog were updated again or deleted while the backlog was being delivered
+- Updated **Update Customer** to group its **First Name**, **Last Name**, **Email**, and **Phone** inputs into a **Name & Contact Information** structured object
+- Added inline action calling support to the **Delete Instance Webhooks** action for improved example output during configuration
+
 ### 2026-10-30
 
 Updated the **Host** input on the **Access Token** connection to accept a bare store handle (such as `my-store`) or the full `my-store.myshopify.com` domain, ignoring letter case and any `http://` or `https://` prefix, port, or trailing path; a value that puts another domain in front of the store domain is now rejected instead of sending requests to that domain

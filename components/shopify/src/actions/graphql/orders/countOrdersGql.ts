@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { countOrdersExamplePayload as examplePayload } from "../../../examplePayloads";
+import { countOrdersGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { countOrdersInputs as inputs } from "../../../inputsGql";
 import { countOrdersGqlOutputSchema } from "../../../outputSchemas";
 import type { Count } from "../../../types";

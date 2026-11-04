@@ -1,4 +1,4 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import { defaultTriggerPayload } from "@prismatic-io/spectral/testing";
 import { createClient } from "../client";
 import type { IntercomRecord, PollingState } from "../types";
 import { pollChangesTrigger } from "./pollChangesTrigger";

@@ -1,5 +1,5 @@
 import { component } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 import { browseIndex } from "./actions/browseIndex";
 import indexes from "./actions/index";
 import rawRequest from "./actions/rawRequest";

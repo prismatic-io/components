@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { createAuthorizedClient } from "../../client";
 import { saveFromUrlInputs } from "../../inputs";
 import { saveFromUrlExamplePayload } from "../../examplePayloads";

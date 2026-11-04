@@ -1,4 +1,4 @@
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { ANALYTICS_ENDPOINTS } from "./constants";
 import type { CreateAnalyticsClientProps } from "./types";
 

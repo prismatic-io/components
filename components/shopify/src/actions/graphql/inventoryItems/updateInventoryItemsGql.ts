@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
-import { updateInventoryItemsExamplePayload as examplePayload } from "../../../examplePayloads";
+import { updateInventoryItemsGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { updateInventoryItemsInputs as inputs } from "../../../inputsGql";
 import { updateInventoryItemsGqlOutputSchema } from "../../../outputSchemas";
 import updateInventoryItemQuery from "../queries/inventoryItems/UpdateInventoryItems.gql";

@@ -4,7 +4,7 @@ import {
   type TriggerPayload,
   util,
 } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { HttpClient } from "@prismatic-io/spectral/http";
 import {
   ENDPOINTS,
   MAX_MINUTES_EXPIRATION_USERS_GROUPS_SUBSCRIPTION,

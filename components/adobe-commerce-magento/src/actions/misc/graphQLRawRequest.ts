@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { getConfig } from "../../client";
 import { graphQLRawRequestInputs } from "../../inputs";
 

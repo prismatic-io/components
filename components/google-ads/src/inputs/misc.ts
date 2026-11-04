@@ -1,4 +1,4 @@
-import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/http";
 import { GOOGLE_ADS_API_VERSION, GOOGLE_ADS_BASE_URL } from "../constants";
 import { connectionInput } from "./common";
 

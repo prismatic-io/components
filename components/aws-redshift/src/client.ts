@@ -2,7 +2,7 @@ import { RedshiftDataClient } from "@aws-sdk/client-redshift-data";
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
 import { getClientParams } from "aws-utils";
 import { connectionKeys, validateConnection } from "./util";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import type { RedshiftDataApiClientResult } from "./types";
 
 export const createRedshiftClient = async (

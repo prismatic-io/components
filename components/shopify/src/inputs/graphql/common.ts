@@ -4,8 +4,8 @@ import {
   LIST_LOCATIONS_DATASOURCE_REFERENCE,
   LIST_ORDERS_DATASOURCE_REFERENCE,
   LIST_PRODUCTS_DATASOURCE_REFERENCE,
+  WEBHOOK_TOPICS,
 } from "../../constants";
-import { connectionInput } from "../../inputs";
 import {
   cleanCodeInputEmptyObject,
   cleanCustomerId,
@@ -15,7 +15,10 @@ import {
   cleanProductId,
   cleanStringInput,
   cleanValueListInput,
+  generateModelFromSnakeCaseArray,
+  lookBackDateClean,
 } from "../../util";
+import { connectionInput } from "../common";
 
 export const shopifyConnection = connectionInput;
 
@@ -124,6 +127,7 @@ export const additionalFields = input({
   label: "Additional Fields",
   type: "code",
   language: "json",
+  placeholder: "Enter additional fields JSON",
   required: false,
   comments:
     "Additional fields that might not be covered by the standard inputs. This is a JSON object.",
@@ -165,7 +169,8 @@ export const query = input({
   label: "Query",
   type: "string",
   required: false,
-  comments: "The query to filter the inventory items.",
+  comments:
+    "The query to filter the inventory items. From API version 2026-10, filtering by a metafield that is not set up for filtering returns an error.",
   example: "id:>=30322695",
   placeholder: "Enter query filter",
   clean: cleanStringInput,
@@ -190,4 +195,33 @@ export const itemId = input({
   example: "gid://shopify/InventoryItem/43933612241234",
   placeholder: "Enter inventory item ID",
   clean: util.types.toString,
+});
+
+export const lookBackDate = input({
+  label: "Look-back Date",
+  type: "string",
+  required: false,
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  example: "2026-01-01",
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync reports every record updated on or after this date.",
+  clean: lookBackDateClean,
+});
+
+export const webhookTopic = input({
+  label: "Webhook Topic",
+  type: "string",
+  required: true,
+  example: "APP_PURCHASES_ONE_TIME_UPDATE",
+  placeholder: "Select webhook topic",
+  model: generateModelFromSnakeCaseArray(WEBHOOK_TOPICS),
+  comments:
+    "The topic for the webhook. This is the event that will trigger the webhook.",
+  clean: util.types.toString,
+});
+
+export const webhookTopics = input({
+  ...webhookTopic,
+  collection: "valuelist",
+  clean: cleanValueListInput,
 });

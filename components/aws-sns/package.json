@@ -1,20 +1,47 @@
 {
-  "name": "@prismatic-io/aws-sns",
-  "private": true,
+  "name": "@prismatic-io/components-aws-sns",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Manage topics, subscriptions, and messages in Amazon SNS.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/aws-sns"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
-    "publish": "npm run build && prism components:publish",
-    "test": "echo 'no tests'"
+    "test": "echo 'no tests'",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
+  },
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.38.5"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "3.1088.0",
-    "@prismatic-io/spectral": "10.34.1",
-    "aws-utils": "file:../../packages/aws-utils",
-    "sns-validator": "^0.3.5"
+    "sns-validator": "^0.3.5",
+    "@aws-sdk/client-sts": "3.1088.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
@@ -22,6 +49,8 @@
     "@types/sns-validator": "0.3.3",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.38.5",
+    "aws-utils": "file:../../packages/aws-utils"
   }
 }

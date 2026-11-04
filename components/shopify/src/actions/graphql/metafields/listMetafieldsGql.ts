@@ -1,7 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getShopifyGraphQlClient } from "../../../client";
 import { MAX_LIMIT } from "../../../constants";
-import { listMetafieldsExamplePayload as examplePayload } from "../../../examplePayloads";
+import { listMetafieldsGqlExamplePayload as examplePayload } from "../../../examplePayloads";
 import { listMetafieldsInputs as inputs } from "../../../inputsGql";
 import { listMetafieldsGqlOutputSchema } from "../../../outputSchemas";
 import type { Metafield, PageInfo } from "../../../types";

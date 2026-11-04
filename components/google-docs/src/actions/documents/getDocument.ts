@@ -2,7 +2,7 @@ import { action, util } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { getDocumentInputs } from "../../inputs";
 import { getDocumentExamplePayload } from "../../examplePayloads";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors } from "@prismatic-io/spectral/http";
 
 export const getDocument = action({
   display: {

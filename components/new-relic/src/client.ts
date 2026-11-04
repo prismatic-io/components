@@ -1,9 +1,5 @@
-import {
-  type Connection,
-  ConnectionError,
-  util,
-} from "@prismatic-io/spectral/dist/";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
+import { createClient } from "@prismatic-io/spectral/http";
 import { BASE_URLS, type Service } from "./constants";
 import type { Region } from "./types";
 

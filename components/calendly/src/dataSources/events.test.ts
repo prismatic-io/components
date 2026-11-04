@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test } from "vitest";
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import nock from "nock";
 import { events } from "./events";
 import { calendlyOauth2Connection } from "../connections";

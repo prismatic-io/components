@@ -3,7 +3,7 @@ import {
   handleErrors,
   inputs as httpClientInputs,
   sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+} from "@prismatic-io/spectral/http";
 import { algoliaApiKey } from "../connections";
 import { connectionInput } from "../inputs";
 

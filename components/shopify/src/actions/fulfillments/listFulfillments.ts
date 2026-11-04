@@ -1,4 +1,5 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { SHOPIFY_GID_PREFIX } from "../../constants";
 import { listFulfillmentsExamplePayload } from "../../examplePayloads";
 import { listFulfillmentsInputs } from "../../inputs";
 import { listFulfillmentsOutputSchema } from "../../outputSchemas";
@@ -9,11 +10,11 @@ export const listFulfillments = action({
     label: "List Fulfillments",
     description: "Lists all fulfillments for a specified order.",
   },
-  performSafety: "safe",
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await listFulfillmentsGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
-      orderId: `gid://shopify/Order/${params.orderId}`,
+      orderId: `${SHOPIFY_GID_PREFIX}Order/${params.orderId}`,
     });
     return { data };
   },
@@ -22,5 +23,6 @@ export const listFulfillments = action({
     type: "actionOutput",
     schema: listFulfillmentsOutputSchema,
   }),
+  examplePerform: async () => listFulfillmentsExamplePayload.restMap,
   examplePayload: listFulfillmentsExamplePayload.restMap,
 });

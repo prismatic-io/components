@@ -4,10 +4,7 @@ import {
   type DataSourceContext,
   util,
 } from "@prismatic-io/spectral";
-import {
-  createClient,
-  type HttpClient,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { createClient, type HttpClient } from "@prismatic-io/spectral/http";
 import { validateConnection } from "./utils";
 
 export const getMsBusinessCentralClient = (
