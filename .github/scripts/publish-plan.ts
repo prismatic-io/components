@@ -195,6 +195,12 @@ export const trustConfigsIn = (output: string): z.infer<typeof TrustConfigSchema
   return parseAs(z.array(TrustConfigSchema), listed, "`npm trust list --json`");
 };
 
+/** npm's error codes for a login or one-time password it needs and did not get. */
+const AUTH_ERROR = /^npm (?:error|ERR!) code (?:EOTP|E401|ENEEDAUTH)\b/m;
+
+/** Whether npm's error output says it needs the user to log in or authenticate again. */
+export const needsNpmAuth = (stderr: string): boolean => AUTH_ERROR.test(stderr);
+
 /** Looks a package up on the registry; `fetchImpl` is a seam for tests. */
 export const fetchPublished = async (
   name: string,
