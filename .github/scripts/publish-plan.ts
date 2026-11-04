@@ -145,8 +145,8 @@ export type FirstPublish =
 /**
  * Decides what a developer's first publish of `key` does. A package npm has
  * never seen gets the bootstrap version, then its trusted publisher. One with
- * only the bootstrap version, as when a first publish stopped partway, gets its
- * trusted publisher. Any other package on npm is the workflow's to publish.
+ * nothing above the bootstrap version, as when a first publish stopped partway,
+ * gets its trusted publisher. Any other package on npm is the workflow's to publish.
  */
 export const planFirstPublish = (
   key: string,
@@ -172,7 +172,9 @@ export const planFirstPublish = (
   if (published.versions.includes(entry.version)) {
     return { action: "skip", entry, reason: `npm already has ${entry.version}` };
   }
-  if (published.versions.every((version) => version === BOOTSTRAP_VERSION)) {
+  // npm also lists a placeholder it makes when it creates a package, such as
+  // 0.0.0-stage; nothing at or below the bootstrap version is a real release.
+  if (published.versions.every((version) => !semver.gt(version, BOOTSTRAP_VERSION))) {
     return { action: "trust", entry };
   }
   return {

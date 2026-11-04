@@ -200,6 +200,14 @@ describe("planFirstPublish", () => {
     });
   });
 
+  test("sets the trusted publisher alongside npm's placeholder for a new package", () => {
+    const published = onNpm(["0.0.0-stage", BOOTSTRAP_VERSION]);
+    expect(planFirstPublish("slack", entry("0.1.0"), pkg("0.1.0"), published)).toEqual({
+      action: "trust",
+      entry: entry("0.1.0"),
+    });
+  });
+
   test("leaves a package npm already has the manifest version of", () => {
     expect(
       planFirstPublish("slack", entry("0.1.0"), pkg("0.1.0"), onNpm([BOOTSTRAP_VERSION, "0.1.0"])),
