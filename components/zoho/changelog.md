@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated spectral to 10.38.5
+
 ### 2026-10-20
 
 - Added opt-in batching to the **New and Updated CRM Contacts** and **New and Updated CRM Leads** triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
