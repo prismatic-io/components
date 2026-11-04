@@ -32,6 +32,7 @@ import {
   MANIFEST_FILE,
   ManifestSchema,
   NPM_CI_ARGS,
+  needsNpmAuth,
   type PackageJson,
   PackageJsonSchema,
   parseAs,
@@ -49,19 +50,73 @@ const WORKFLOW = "npm-publish.yml";
 /** The registry every npm command uses, so it publishes where the plan looked. */
 const ON_REGISTRY = ["--registry", REGISTRY];
 
-/** Runs npm attached to the terminal, so it can prompt for a login or a one-time password. */
-const npm = async (cwd: string, args: string[]): Promise<void> => {
-  const proc = Bun.spawn(["npm", ...args], { cwd, stdio: ["inherit", "inherit", "inherit"] });
-  const code = await proc.exited;
-  if (code !== 0) throw new Error(`\`npm ${args.join(" ")}\` in ${cwd} exited with ${code}`);
+/** npm wants the developer to authenticate, and they cannot or chose to stop. */
+class NpmAuthError extends Error {}
+
+/** Copies npm's error output to the terminal as it comes, and returns it. */
+const passThrough = async (stream: ReadableStream<Uint8Array>): Promise<string> => {
+  const decoder = new TextDecoder();
+  let text = "";
+  for await (const chunk of stream) {
+    process.stderr.write(chunk);
+    text += decoder.decode(chunk, { stream: true });
+  }
+  return text + decoder.decode();
 };
 
-/** Like {@link npm}, returning what it prints, or null when it fails. */
-const npmOutput = async (args: string[]): Promise<string | null> => {
-  const proc = Bun.spawn(["npm", ...args], { stdio: ["inherit", "pipe", "inherit"] });
-  const output = await new Response(proc.stdout).text();
-  return (await proc.exited) === 0 ? output : null;
+/**
+ * Waits for the developer to authenticate with npm before a command runs again. npm
+ * stops accepting a one-time password a few minutes after it was given, so a long
+ * run asks again partway through. Without a terminal to answer from, the run stops,
+ * since every package after this one would fail the same way.
+ */
+const waitForAuth = (command: string): void => {
+  if (!process.stdin.isTTY) {
+    throw new NpmAuthError(`\`${command}\` needs you to authenticate with npm, and there is no terminal to wait in`);
+  }
+  console.error(
+    `\n\`${command}\` needs you to authenticate with npm. Open the URL npm printed above, or run \`npm login\` ` +
+      "in another terminal if it asked for a login. If npm offers to skip one-time passwords for a few minutes, " +
+      "accept, so the packages after this one don't ask again.",
+  );
+  const answer = prompt("Press Enter to try again, or type q and Enter to stop:");
+  if (answer === null || answer.trim().toLowerCase() === "q") {
+    throw new NpmAuthError("stopped to authenticate with npm");
+  }
 };
+
+/**
+ * Runs npm attached to the terminal, so it can prompt for a login or a one-time
+ * password itself, and returns what it prints when `capture` is set. When npm fails
+ * because it needs the developer to authenticate, which it does without prompting
+ * when it cannot, this waits for them and runs the command again.
+ */
+const runNpm = async (cwd: string, args: string[], capture: boolean): Promise<string> => {
+  const command = `npm ${args.join(" ")}`;
+  for (;;) {
+    const proc = Bun.spawn(["npm", ...args], {
+      cwd,
+      stdin: "inherit",
+      stdout: capture ? "pipe" : "inherit",
+      stderr: "pipe",
+    });
+    const [output, errors] = await Promise.all([
+      proc.stdout instanceof ReadableStream ? new Response(proc.stdout).text() : "",
+      passThrough(proc.stderr),
+    ]);
+    const code = await proc.exited;
+    if (code === 0) return output;
+    if (!needsNpmAuth(errors)) throw new Error(`\`${command}\` in ${cwd} exited with ${code}`);
+    waitForAuth(command);
+  }
+};
+
+const npm = async (cwd: string, args: string[]): Promise<void> => {
+  await runNpm(cwd, args, false);
+};
+
+/** Like {@link npm}, returning what it prints. */
+const npmOutput = (args: string[]): Promise<string> => runNpm(".", args, true);
 
 const readJson = async (path: string): Promise<unknown> => JSON.parse(await readFile(path, "utf8"));
 
@@ -97,13 +152,18 @@ interface Job {
 
 const errorText = (err: unknown): string => (err instanceof Error ? err.message : String(err));
 
-/** Runs `work` for each job still going, recording a failure and moving on. */
+/**
+ * Runs `work` for each job still going, recording a failure and moving on. An npm
+ * authentication that did not happen stops the run, since it would fail every job
+ * after it too.
+ */
 const eachJob = async (jobs: Job[], work: (job: Job, label: string) => Promise<void>) => {
   for (const job of jobs) {
     if (job.failed) continue;
     try {
       await work(job, job.step.entry.name);
     } catch (err) {
+      if (err instanceof NpmAuthError) throw err;
       job.failed = true;
       job.result = `failed, ${errorText(err)}`;
     }
@@ -113,7 +173,6 @@ const eachJob = async (jobs: Job[], work: (job: Job, label: string) => Promise<v
 /** Revokes every trusted publisher `name` has, returning how many it had. */
 const replaceTrust = async (name: string, dryRun: boolean): Promise<number> => {
   const listed = await npmOutput(["trust", "list", name, "--json", ...ON_REGISTRY]);
-  if (listed === null) throw new Error(`\`npm trust list ${name}\` failed`);
   const configs = trustConfigsIn(listed);
   for (const { id } of configs) {
     const revoke = ["trust", "revoke", name, "--id", id, ...ON_REGISTRY];
@@ -122,13 +181,21 @@ const replaceTrust = async (name: string, dryRun: boolean): Promise<number> => {
   return configs.length;
 };
 
-/** Packs a component as main builds it and unpacks it at the bootstrap version, ready to publish. */
-const packBootstrap = async (key: string, into: string): Promise<string> => {
+/**
+ * Packs a component as main builds it and unpacks it at the bootstrap version, ready
+ * to publish. When `restore` is set, the component's tracked files are put back
+ * afterwards, since its build formats and lints its source in place.
+ */
+const packBootstrap = async (key: string, into: string, restore: boolean): Promise<string> => {
   const dir = join("components", key);
   // `npm pack` runs `prepare`, which builds both outputs; the unpacked copy is
   // published with scripts off, so nothing builds twice.
   await npm(dir, NPM_CI_ARGS);
-  await npm(dir, ["pack", "--pack-destination", into]);
+  try {
+    await npm(dir, ["pack", "--pack-destination", into]);
+  } finally {
+    if (restore) await $`git checkout -- ${dir}`.quiet();
+  }
   const tarball = (await readdir(into)).find((file) => file.endsWith(".tgz"));
   if (!tarball) throw new Error(`npm pack left no tarball in ${into}`);
   await $`tar -xzf ${join(into, tarball)} -C ${into}`;
@@ -153,6 +220,9 @@ const main = async () => {
     throw new Error(`npm ${npmVersion} is too old; run \`npm install --global npm@^${MINIMUM_NPM}\``);
   }
 
+  // A build formats its component's source in place; a tree that starts clean is put
+  // back after each pack, so no change of the developer's is lost.
+  const clean = !(await $`git status --porcelain`.text()).trim();
   const checkout = await checkoutProblem();
   if (checkout && !dryRun) throw new Error(checkout);
   if (checkout) console.warn(`Warning: ${checkout}. Continuing because this is a dry run.`);
@@ -211,7 +281,7 @@ const main = async () => {
       await npm(join("packages", shared), ["run", "build"]);
       builtShared.add(shared);
     }
-    job.bootstrap = await packBootstrap(job.key, await mkdtemp(join(packDir, `${job.key}-`)));
+    job.bootstrap = await packBootstrap(job.key, await mkdtemp(join(packDir, `${job.key}-`)), clean);
   });
 
   console.log(`\nPublishing ${toBootstrap.filter((job) => !job.failed).length} package(s) at ${BOOTSTRAP_VERSION}`);
@@ -235,8 +305,8 @@ const main = async () => {
     // npm has only the bootstrap version, so the workflow has never published
     // through whatever trust a stopped run left. npm cannot say whether that
     // trust has expired, and allows one per package, so it is replaced, which
-    // also restarts the two days.
-    const replaced = await replaceTrust(job.step.entry.name, dryRun);
+    // also restarts the two days. A package this run created has none.
+    const replaced = job.step.action === "trust" ? await replaceTrust(job.step.entry.name, dryRun) : 0;
     await npm(".", dryRun ? [...trust, "--dry-run"] : trust);
     job.result = dryRun
       ? replaced > 0
@@ -259,9 +329,14 @@ const main = async () => {
   if (created.length > 0 && !dryRun) {
     console.log(`\nWaiting for npm to finish reviewing ${created.length} new package(s), for up to 15 minutes`);
     let reported = created.length;
+    let waits = 0;
     inReview = await waitForPackages(created, {
       onWait: (pending) => {
-        if (pending.length !== reported) console.log(`  ${pending.length} still in review`);
+        waits++;
+        // The lookups run every 15 seconds; a line each minute shows the wait is alive.
+        if (pending.length !== reported || waits % 4 === 0) {
+          console.log(`  ${pending.length} still in review after ${Math.round(waits / 4)} minute(s)`);
+        }
         reported = pending.length;
       },
     });

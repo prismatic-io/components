@@ -5,6 +5,7 @@ import {
   type Manifest,
   type ManifestEntry,
   ManifestSchema,
+  needsNpmAuth,
   PackageJsonSchema,
   type Published,
   parseAs,
@@ -273,6 +274,30 @@ describe("trustConfigsIn", () => {
 
   test("rejects a configuration without an id", () => {
     expect(() => trustConfigsIn('{ "type": "github" }')).toThrow("npm trust list --json");
+  });
+});
+
+describe("needsNpmAuth", () => {
+  test("spots a one-time password npm asked for", () => {
+    const stderr = [
+      "npm error code EOTP",
+      "npm error This operation requires a one-time password.",
+      "npm error Open this URL in your browser to authenticate:",
+    ].join("\n");
+    expect(needsNpmAuth(stderr)).toBe(true);
+  });
+
+  test("spots a missing or expired login", () => {
+    expect(needsNpmAuth("npm error code E401\nnpm error Unable to authenticate")).toBe(true);
+    expect(needsNpmAuth("npm error code ENEEDAUTH\nnpm error need auth")).toBe(true);
+    expect(needsNpmAuth("npm ERR! code EOTP")).toBe(true);
+  });
+
+  test("leaves other failures alone", () => {
+    expect(needsNpmAuth("npm error code E403\nnpm error You do not have permission")).toBe(false);
+    expect(needsNpmAuth("npm error code EPUBLISHCONFLICT")).toBe(false);
+    expect(needsNpmAuth("npm notice mentions code EOTP in passing")).toBe(false);
+    expect(needsNpmAuth("")).toBe(false);
   });
 });
 

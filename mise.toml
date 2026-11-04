@@ -31,6 +31,8 @@ arg "[component]" var=#true help="Each component's directory under components/"
 flag "--all" help="Every component in npm-api/manifest.json that npm has never seen"
 flag "--dry-run" help="Check and pack without publishing"
 '''
+# npm prompts for a login or a one-time password only when it has the terminal.
+raw = true
 run = """
 bun install --cwd .github/scripts --frozen-lockfile --silent
 bun .github/scripts/publish-first.ts $usage_component \\
