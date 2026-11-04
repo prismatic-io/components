@@ -10,5 +10,5 @@ The best way to handle these Dropbox requests is to create a "Router Integration
 - When an instance of the Dropbox integration is created, it notifies the "Router Integration" of a new mapping between the authenticated user's Dropbox Account ID and the instance's flow's webhook URL.
 - When a webhook request comes from Dropbox with a list of Dropbox Account IDs with changes, the "Router Integration" loops over the account IDs, looks up the mapping of account ID to webhook URL, and makes a request to the webhook URL of the appropriate instance, causing it to run a flow that queries for changes.
 
-An example "Router Integration" and a Dropbox integration that register itself with the router integration is available in [GitHub](https://github.com/prismatic-io/examples/tree/main/integrations/dropbox).
+An example "Router Integration" and a Dropbox integration that register itself with the router integration is available in [GitHub](https://github.com/prismatic-io/examples/tree/main/integrations/low-code/dropbox).
 The integrations can be [imported](configure-prismatic/integrations-multiple-regions.mdx#importing-an-integrations-yaml-definition) and extended as needed.
