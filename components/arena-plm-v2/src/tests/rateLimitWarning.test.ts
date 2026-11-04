@@ -4,7 +4,7 @@ import { createArenaClient } from "../client";
 import { arenaApiKey } from "../connections";
 import { createTestContext } from "./testContext";
 
-jest.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 describe("Arena rate-limit quota warning", () => {
   let server: http.Server;

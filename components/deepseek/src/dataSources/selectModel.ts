@@ -1,7 +1,11 @@
-import { Connection, dataSource, Element } from "@prismatic-io/spectral";
+import {
+  type Connection,
+  dataSource,
+  type Element,
+} from "@prismatic-io/spectral";
 import { createDeepSeekClient } from "../client";
 import { connection } from "../inputs/general";
-import { ListModelsResponse } from "../interfaces";
+import type { ListModelsResponse } from "../interfaces";
 
 export const selectModel = dataSource({
   display: {

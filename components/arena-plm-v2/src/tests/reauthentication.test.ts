@@ -4,7 +4,7 @@ import { createArenaClient } from "../client";
 import { arenaApiKey, arenaOAuth, arenaUsernamePassword } from "../connections";
 import { createTestContext } from "./testContext";
 
-jest.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 describe("credential expiry re-authentication", () => {
   let server: http.Server;

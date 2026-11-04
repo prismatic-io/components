@@ -36,7 +36,7 @@ const cursor = (overrides: Partial<PollingCursor> = {}): PollingCursor => ({
   ...overrides,
 });
 
-const warnLogger = () => ({ warn: jest.fn() });
+const warnLogger = () => ({ warn: vi.fn() });
 
 describe("arenaEventsPath", () => {
   it("builds the path under the outbound integrations collection", () => {

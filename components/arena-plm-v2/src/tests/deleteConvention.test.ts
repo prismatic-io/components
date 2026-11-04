@@ -7,7 +7,7 @@ import { arenaApiKey } from "../connections";
 import * as examplePayloads from "../examplePayloads";
 import { createTestContext } from "./testContext";
 
-jest.setTimeout(15000);
+vi.setConfig({ testTimeout: 15000 });
 
 const DELETE_PAYLOAD_PATTERN = /^(delete|remove)\w*ExamplePayload$/;
 

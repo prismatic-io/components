@@ -3,7 +3,8 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "build": "webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
@@ -12,17 +13,13 @@
     "format": "biome format . --write"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.38.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/jest": "29.5.14",
-    "copy-webpack-plugin": "13.0.0",
-    "jest": "29.7.0",
-    "ts-jest": "29.3.4",
-    "ts-loader": "9.5.2",
-    "typescript": "5.8.3",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1"
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26.6.4",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

@@ -1,8 +1,8 @@
-import { action, Connection } from "@prismatic-io/spectral";
+import { action, type Connection } from "@prismatic-io/spectral";
 import { connection } from "../../inputs/general";
 import { LIST_MODELS_EXAMPLE_PAYLOAD } from "../../examplePayloads";
 import { createDeepSeekClient } from "../../client";
-import { ListModelsResponse } from "../../interfaces";
+import type { ListModelsResponse } from "../../interfaces";
 
 export const listModels = action({
   display: {

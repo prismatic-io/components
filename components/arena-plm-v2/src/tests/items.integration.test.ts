@@ -8,7 +8,7 @@ import component from "../index";
 import { getErrorMessage, getHttpStatus, getNestedValue } from "../util";
 import { guidOf, resultData, resultList } from "./resultHelpers";
 
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 const harness = createHarness(component);
 const testConnection = createConnection(arenaUsernamePassword, {

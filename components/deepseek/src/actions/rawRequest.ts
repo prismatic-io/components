@@ -1,4 +1,4 @@
-import { action, Connection } from "@prismatic-io/spectral";
+import { action, type Connection } from "@prismatic-io/spectral";
 import {
   sendRawRequest,
   inputs as httpClientInputs,

@@ -4,7 +4,7 @@ import { createArenaClient } from "../client";
 import { arenaApiKey, arenaOAuth, arenaUsernamePassword } from "../connections";
 import { createTestContext } from "./testContext";
 
-jest.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 describe("connection reset retry", () => {
   let server: http.Server;

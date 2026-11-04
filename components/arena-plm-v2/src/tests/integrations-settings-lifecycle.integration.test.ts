@@ -12,7 +12,7 @@ import {
   resultList,
 } from "./resultHelpers";
 
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 const harness = createHarness(component);
 

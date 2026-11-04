@@ -2,7 +2,7 @@ import * as http from "node:http";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { fetchArenaList } from "../util/pagination";
 
-jest.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 interface Row {
   id: number;

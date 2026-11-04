@@ -4,7 +4,7 @@ import { rawRequest } from "../actions/misc/rawRequest";
 import { arenaApiKey } from "../connections";
 import { type CapturedLog, createTestContext } from "./testContext";
 
-jest.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 type RawRequestParams = Parameters<typeof rawRequest.perform>[1];
 

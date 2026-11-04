@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-07-30
 
 Updated example payloads to reference current model names (deepseek-v4-flash, deepseek-v4-pro) ahead of the legacy model name sunset, and cleaned up an internal connection parameter name

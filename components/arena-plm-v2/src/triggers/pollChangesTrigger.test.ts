@@ -27,10 +27,10 @@ const createPollingContext = (initialState: PollingState = {}) => {
   let state: PollingState = initialState;
   const context = {
     logger: {
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn(),
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
     },
     executionState: {},
     debug: { enabled: false },
