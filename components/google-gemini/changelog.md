@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-07-21
 
 Restructured action inputs into structured objects for an improved user experience.

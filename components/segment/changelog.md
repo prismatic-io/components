@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-06-11
 
 Added **Fetch All** toggle to all list actions (List Sources, List Destinations, List Warehouses, List Users, List Transformations, List Functions, List Destination Subscriptions, Get Destination Catalog, Get Sources Catalog, Get Warehouses Catalog, Get Events Volume From Workspace) that automatically follows cursor-based pagination to retrieve all pages of results in a single call; when disabled, existing single-page behavior with Count and Cursor inputs is preserved

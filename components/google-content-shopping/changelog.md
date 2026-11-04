@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-07-24
 
 Added new Google Merchant API actions ahead of the Content API for Shopping v2.1 shutdown on August 18, 2026. Existing actions are unchanged:

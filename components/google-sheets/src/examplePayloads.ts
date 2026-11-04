@@ -139,6 +139,7 @@ export const spreadsheetChangeEventsPayload = {
     flow: {
       id: "SW50ZWdyYXRpb25GbG93OmM4Y2IzY2UwLTFjYTUtNDVhZC04Yjc1LWNmNDc4YWE1Y2RlYQ==",
       name: "Spreadsheet Change Events",
+      stableId: "5f0e2c7a-3d4b-4e8f-9a1c-2b6d7e8f9a0b",
     },
     startedAt: "2026-01-06 07:22:38.313677+00",
     globalDebug: false,

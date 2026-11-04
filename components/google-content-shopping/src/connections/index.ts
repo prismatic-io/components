@@ -7,7 +7,6 @@ export const googleConnection = oauth2Connection({
     description: "Authenticate using OAuth 2.0.",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
-  iconPath: "oauth-button.png",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

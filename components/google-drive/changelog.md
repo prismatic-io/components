@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-04
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-09-17
 
 - Added opt-in batching to the **New and Updated Files** and **Drive Activity** triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
