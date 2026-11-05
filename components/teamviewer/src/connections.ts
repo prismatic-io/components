@@ -7,7 +7,6 @@ export const teamviewerOauth = oauth2Connection({
     label: "OAuth 2.0",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
-  comments: "OAuth 2.0 Connectivity for TeamViewer",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

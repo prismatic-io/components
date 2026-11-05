@@ -11,9 +11,7 @@ export const oauth = oauth2Connection({
     description:
       "OAuth 2.0 Authorization Code Connectivity for Microsoft Teams",
   },
-  label: "OAuth 2.0 Authorization Code",
   oauth2Type: OAuth2Type.AuthorizationCode,
-  comments: "OAuth 2.0 Authorization Code Connectivity for Microsoft Teams",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",
@@ -68,9 +66,7 @@ export const clientCredentials = oauth2Connection({
     description:
       "OAuth 2.0 Client Credentials Connectivity for Microsoft Teams",
   },
-  label: "OAuth 2.0 Client Credentials",
   oauth2Type: OAuth2Type.ClientCredentials,
-  comments: "OAuth 2.0 Client Credentials Connectivity for Microsoft Teams",
   inputs: {
     tokenUrl: {
       label: "Token URL",
@@ -114,8 +110,6 @@ export const webhook = connection({
     label: "Incoming Webhook",
     description: "Use Incoming Webhooks to send messages to Microsoft Teams.",
   },
-  label: "Incoming Webhook",
-  comments: "Use Incoming Webhooks to send messages",
   inputs: {
     webhookUrl: {
       label: "Webhook URL",
@@ -136,10 +130,7 @@ export const adminConsent = oauth2Connection({
     description:
       "OAuth 2.0 Client Credentials Connectivity with admin consent screen for Microsoft Teams",
   },
-  label: "OAuth 2.0 Admin Consent Client Credentials",
   oauth2Type: OAuth2Type.AuthorizationCode,
-  comments:
-    "OAuth 2.0 Client Credentials Connectivity with admin consent screen for Microsoft Teams",
   inputs: {
     authorizeUrl: {
       label: "Admin Consent URL",

@@ -5,7 +5,7 @@ import { listRecords } from "./actions/records/listRecords";
 import { createClient } from "./client";
 import { apiKeyAuthentication } from "./connections";
 
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 const cert = fs.readFileSync("public.pem").toString("utf-8");
 

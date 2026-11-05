@@ -6,14 +6,15 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "strictNullChecks": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

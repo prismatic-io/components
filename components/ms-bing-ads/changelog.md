@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-05
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-07-02
 
 Rebranded the Bing Ads component to Microsoft Advertising to reflect current branding and added Campaign Management REST actions:

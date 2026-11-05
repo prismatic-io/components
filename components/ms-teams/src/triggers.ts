@@ -114,6 +114,7 @@ export const webhook = trigger({
       flow: {
         id: "123",
         name: "Example Flow",
+        stableId: "8d1c3b2a-6f4e-4a7d-9c5b-1e2f3a4b5c6d",
       },
       startedAt: "2021-01-01T00:00:00Z",
       globalDebug: false,

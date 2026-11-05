@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-05
+
+Updated spectral to 10.38.5 and switched the build from webpack to tsdown
+
 ### 2026-06-23
 
 Notice of Deprecation for the **Basic Authentication** connection. SAP SuccessFactors will be deactivating HTTP Basic Authentication on November 20, 2026:
