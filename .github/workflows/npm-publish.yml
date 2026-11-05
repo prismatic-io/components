@@ -7,7 +7,8 @@
 # `mise run publish-first <component>`: it publishes 0.0.1, makes this
 # workflow the package's trusted publisher, and starts this workflow, which
 # publishes the manifest's version. This workflow skips packages npm has
-# never seen, with a warning.
+# never seen, with a warning, and checks that each other package has a
+# trusted publisher naming this workflow before building it.
 #
 # Start it by hand with `mise run release`, or `mise run release --dry-run` to
 # see what would publish. Only main publishes; a dry run works from any branch. To pause publishing,

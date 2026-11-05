@@ -186,22 +186,82 @@ export const planFirstPublish = (
 
 const TrustConfigSchema = z.object({ id: z.string() }).passthrough();
 
+/** Terminal escape sequences, which npm writes when its output is a terminal. */
+const ESCAPES = /\u001b\[[0-?]*[ -/]*[@-~]|\u001b\][^\u0007]*(?:\u0007|\u001b\\)/g;
+
 /**
- * Reads the configurations `npm trust list --json` prints. npm prints one JSON
- * object per configuration, back to back, and nothing when there are none.
+ * The top-level JSON objects in `text`, in order, skipping any other text around
+ * them, such as npm's prompt to authenticate. Braces inside strings do not count.
  */
-export const trustConfigsIn = (output: string): z.infer<typeof TrustConfigSchema>[] => {
-  const trimmed = output.trim();
-  if (!trimmed) return [];
-  const listed = JSON.parse(`[${trimmed.replace(/}\s*{/g, "},{")}]`);
-  return parseAs(z.array(TrustConfigSchema), listed, "`npm trust list --json`");
+export const jsonObjectsIn = (text: string): unknown[] => {
+  const clean = text.replace(ESCAPES, "").replace(/\r/g, "");
+  const objects: unknown[] = [];
+  let depth = 0;
+  let start = -1;
+  let inString = false;
+  for (let i = 0; i < clean.length; i++) {
+    const char = clean[i];
+    if (inString) {
+      if (char === "\\") i++;
+      else if (char === '"') inString = false;
+    } else if (depth > 0 && char === '"') {
+      inString = true;
+    } else if (char === "{") {
+      if (depth++ === 0) start = i;
+    } else if (char === "}" && depth > 0 && --depth === 0) {
+      objects.push(JSON.parse(clean.slice(start, i + 1)));
+    }
+  }
+  if (depth > 0) throw new Error("the output ends inside a JSON object");
+  return objects;
 };
+
+/**
+ * Reads the configurations `npm trust list --json` prints: one JSON object per
+ * configuration, back to back, nothing when there are none, and possibly npm's
+ * prompt to authenticate before them when it ran in a terminal.
+ */
+export const trustConfigsIn = (output: string): z.infer<typeof TrustConfigSchema>[] =>
+  parseAs(z.array(TrustConfigSchema), jsonObjectsIn(output), "`npm trust list --json`");
 
 /** npm's error codes for a login or one-time password it needs and did not get. */
 const AUTH_ERROR = /^npm (?:error|ERR!) code (?:EOTP|E401|ENEEDAUTH)\b/m;
 
 /** Whether npm's error output says it needs the user to log in or authenticate again. */
 export const needsNpmAuth = (stderr: string): boolean => AUTH_ERROR.test(stderr);
+
+/** The audience npm accepts on a CI identity token it exchanges for a publish token. */
+export const NPM_OIDC_AUDIENCE = `npm:${new URL(REGISTRY).hostname}`;
+
+/**
+ * Why npm does not recognize this workflow as `name`'s trusted publisher, or null when
+ * it does. npm exchanges the workflow's identity token for a token only when the
+ * package has a trusted publisher naming this repository and workflow, so asking for
+ * one finds a missing or mismatched trusted publisher without building or publishing
+ * anything; the token is discarded. It does not prove `npm publish` will be allowed:
+ * npm grants publishing and staged publishing separately, and a trusted publisher
+ * allowed only to stage still exchanges. publish-first always allows publishing.
+ * A registry failure is an error rather than a reason, like {@link fetchPublished}.
+ */
+export const trustProblem = async (
+  name: string,
+  idToken: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string | null> => {
+  const res = await fetchImpl(
+    `${REGISTRY}/-/npm/v1/oidc/token/exchange/package/${name.replace("/", "%2F")}`,
+    { method: "POST", headers: { accept: "application/json", authorization: `Bearer ${idToken}` } },
+  );
+  if (res.status >= 500) throw new Error(`${name}: registry answered ${res.status} to the token exchange`);
+  const body: unknown = await res.json().catch(() => null);
+  const field = (key: string): string | undefined => {
+    const value = body !== null && typeof body === "object" ? (body as Record<string, unknown>)[key] : undefined;
+    return typeof value === "string" && value ? value : undefined;
+  };
+  if (res.ok) return field("token") ? null : "npm accepted the exchange but sent no token";
+  const message = field("message") ?? field("error");
+  return `npm answered ${res.status}${message ? `: ${message}` : ""}`;
+};
 
 /** Looks a package up on the registry; `fetchImpl` is a seam for tests. */
 export const fetchPublished = async (
