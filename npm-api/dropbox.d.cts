@@ -1797,7 +1797,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       polledNoChanges?: boolean;
     }, import("@prismatic-io/spectral").Inputs>;
   };
-  connections: ({
+  connections: import("@prismatic-io/spectral").KeyedConnection<{
     key: "oauth";
     display: {
       label: string;
@@ -1849,9 +1849,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     };
-  } & {
-    key: "oauth";
-  })[];
+  }, "oauth">[];
   dataSources: {
     listFolders: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {

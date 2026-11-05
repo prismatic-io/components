@@ -1,4 +1,5 @@
 import { defineConfig } from "tsdown";
+import { callableEntryHooks } from "@prismatic-io/spectral/tsdown";
 
 const sharedPackages = ["aws-utils"];
 
@@ -42,24 +43,6 @@ export default defineConfig([
     fixedExtension: true,
     loader: { ".md": "text" },
     copy: [{ from: "assets/**/*", to: "npm-dist", flatten: false }],
-    hooks: {
-      "build:before": async () => {
-        const { mkdir, writeFile } = await import("node:fs/promises");
-        await mkdir("npm-dist", { recursive: true });
-        await writeFile(
-          "npm-dist/.entry.ts",
-          [
-            'import { callableComponent } from "@prismatic-io/spectral";',
-            'import component from "../src/index";',
-            "export default callableComponent(component);",
-            "",
-          ].join("\n"),
-        );
-      },
-      "build:done": async ({ options }) => {
-        const { rm } = await import("node:fs/promises");
-        if (!options.watch) await rm("npm-dist/.entry.ts", { force: true });
-      },
-    },
+    hooks: callableEntryHooks(),
   },
 ]);

@@ -56,7 +56,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
     iconPath: string;
     category: "Data Platforms";
   };
-  connections: (import("@prismatic-io/spectral").DefaultConnectionDefinition | ({
+  connections: (import("@prismatic-io/spectral").DefaultConnectionDefinition | import("@prismatic-io/spectral").KeyedConnection<{
     key: "apiKeySecret";
     display: {
       label: string;
@@ -82,9 +82,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         example: string;
       };
     };
-  } & {
-    key: "apiKeySecret";
-  }))[];
+  }, "apiKeySecret">)[];
   actions: {
     closeUploadStream: import("@prismatic-io/spectral").ActionDefinition<{
       uploadId: {

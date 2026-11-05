@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-11-05
+
+Updated to the latest spectral
+
 ### 2026-11-03
 
 Updated spectral to 10.38.3

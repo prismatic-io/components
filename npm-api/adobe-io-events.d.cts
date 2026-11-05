@@ -528,7 +528,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
       data: any;
     } | undefined>;
   };
-  connections: ({
+  connections: import("@prismatic-io/spectral").KeyedConnection<{
     key: "adobeIOConnection";
     display: {
       label: string;
@@ -580,9 +580,7 @@ declare const _default: import("@prismatic-io/spectral").CallableComponent<{
         comments: string;
       };
     };
-  } & {
-    key: "adobeIOConnection";
-  })[];
+  }, "adobeIOConnection">[];
   dataSources: {
     selectProvider: import("@prismatic-io/spectral").DataSourceDefinition<{
       connection: {

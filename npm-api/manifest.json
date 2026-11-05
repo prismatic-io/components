@@ -1,608 +1,608 @@
 {
   "adobe-acrobat-sign": {
     "name": "@prismatic-io/components-adobe-acrobat-sign",
-    "version": "0.1.0",
-    "build": "1dddd40e85c05dcaf14b075be52b6ce0f1522559ee90243b46a4c3a0b7b97a91",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "07448584e099c25a7d6e467d97ce46c6cbd0239316a07f167894b55959e9febd",
+    "spectral": "^10.39.0"
   },
   "adobe-analytics": {
     "name": "@prismatic-io/components-adobe-analytics",
-    "version": "0.1.0",
-    "build": "4fcd5595ed8a9d60f7697dd30c42861d1edcfa6fde5799e6020887941089ef2b",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "af047629577d398f5d07adabd96b9404b44c4a1b9bfaf88650b070e4c1fd5714",
+    "spectral": "^10.39.0"
   },
   "adobe-commerce-magento": {
     "name": "@prismatic-io/components-adobe-commerce-magento",
-    "version": "0.1.0",
-    "build": "ad7d92a09223ec4ec8a69994f1cd07b025bb4b6d9497e2c2808f9c06e262488d",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "5ac5702b4479243677e589b169c0f2f6b1470d526256ec919137d51fc6f607c1",
+    "spectral": "^10.39.0"
   },
   "adobe-experience-manager": {
     "name": "@prismatic-io/components-adobe-experience-manager",
-    "version": "0.1.0",
-    "build": "2fb58c311c1b062158b2b4313264514a74a1a297d57f99d1ac2dc88d3f81ff78",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "8fdec9826ad8437fc997fa36c730f3e2f044efe4b314a9b3885c6cbb24677341",
+    "spectral": "^10.39.0"
   },
   "adobe-io-events": {
     "name": "@prismatic-io/components-adobe-io-events",
-    "version": "0.2.0",
-    "build": "72023dc0ab571d2a1cd3e26edc2cee9bbc457b2cc1c20a2196f6090ed78d8bdf",
-    "spectral": "^10.38.3"
+    "version": "0.3.0",
+    "build": "83d4bd4aa4251e1573f29cb9764f11f26ac7c32645ae32fa1ed4a03251a35cbe",
+    "spectral": "^10.39.0"
   },
   "airtable": {
     "name": "@prismatic-io/components-airtable",
-    "version": "0.1.0",
-    "build": "4b33086cb122944c221d08f498d80cbd3afb3c381ef88101f2ce241c84944f52",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "0b7d8cb2a1a784e0cf681493c96e7c593e1055076306d5e06d63e2ea7eb3dd5c",
+    "spectral": "^10.39.0"
   },
   "algolia": {
     "name": "@prismatic-io/components-algolia",
-    "version": "0.1.0",
-    "build": "8b4599df330066ded81ec0be28c01bdc1900745a29544e54b9d2a5a3bd78e91b",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "6166e9d457bf1bb4722114abda1fd60b489026aeb1cfbf75ecfc70c84ea58973",
+    "spectral": "^10.39.0"
   },
   "amazon-seller-central": {
     "name": "@prismatic-io/components-amazon-seller-central",
-    "version": "0.1.0",
-    "build": "ac7a44a7969acf538c88be5eec6eb74582baf9b353b1931b5238a85d5bd24800",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "cccdcd8d338c4dbbea8a8ded1613707604c2fba3ef2e61afc82def56c8b7fc65",
+    "spectral": "^10.39.0"
   },
   "anthropic": {
     "name": "@prismatic-io/components-anthropic",
-    "version": "0.1.0",
-    "build": "03781a176f96282407fddc395179fa112d802390c8e91ff1840d2003cafbb681",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "173cab497dbf440471d479732110f8f17c5bf26a150937ea64299237271b1717",
+    "spectral": "^10.39.0"
   },
   "arcgis": {
     "name": "@prismatic-io/components-arcgis",
-    "version": "0.1.0",
-    "build": "3df3a5aa4fd717b901816980b4e20762de0517dd167f1d527cae7cbe14a25a05",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "7d21f885068a9a8e99c770541003ac316ef621b37a0f38bab17e390eb5028b71",
+    "spectral": "^10.39.0"
   },
   "asana": {
     "name": "@prismatic-io/components-asana",
-    "version": "0.1.0",
-    "build": "344a02921e0cc9e6fb4636c486efc794cd0e633fe8acb9586b791dc632c1e119",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "75e21d6a71f717e86b8e3604a46a58a5d7a64751a3f41439bc0c2c4e7379940f",
+    "spectral": "^10.39.0"
   },
   "aws-dynamodb": {
     "name": "@prismatic-io/components-aws-dynamodb",
-    "version": "0.1.0",
-    "build": "62675ab6401af94b37f8b186b235b06f738d4daed3d620f74b84b6e104fc4e85",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "4ac772e1ea6982b543da2f59e50cfe371fd5036d7e9e8d172ae0dcb44d08c6be",
+    "spectral": "^10.39.0"
   },
   "aws-glue": {
     "name": "@prismatic-io/components-aws-glue",
-    "version": "0.1.0",
-    "build": "d4d5a0c63bd8a5c77f09ba90688d4f3c7dcd76d9e3ab3060b6aa5342466d8304",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "aaf58cbb4ccad51db5b91a8b6bdc0a88d11cc671c1abaa351cc325043e10d3fc",
+    "spectral": "^10.39.0"
   },
   "aws-redshift": {
     "name": "@prismatic-io/components-aws-redshift",
-    "version": "0.1.0",
-    "build": "0580f915ef20fcbc64b013a638bfb51212bfbfd797d8f3f0fb5ed1d8903eeac6",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "f72b614056ced681735b588c26e035514f75727b9b30cc1f9ccf62a73d6b9d5c",
+    "spectral": "^10.39.0"
   },
   "aws-s3": {
     "name": "@prismatic-io/components-aws-s3",
-    "version": "0.2.0",
-    "build": "eaca927fb9484af2c1604b687127fddd89601e12c3e731eefbaf4e1382530615",
-    "spectral": "^10.38.3"
+    "version": "0.3.0",
+    "build": "bfe9cdbd5328826ee2fec0b7b176311c3821f5490ea4d4af787390122ec9a2cf",
+    "spectral": "^10.39.0"
   },
   "aws-sns": {
     "name": "@prismatic-io/components-aws-sns",
-    "version": "0.1.0",
-    "build": "feb8a11602f94073452d7443b39d2fd3d5baa0b05552c02590ca8b34df04de8a",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "e49c0fa6be95674016b0abeb667079aeab026c2ffe7675a79dcabfbcaeafd9f5",
+    "spectral": "^10.39.0"
   },
   "azure-files": {
     "name": "@prismatic-io/components-azure-files",
-    "version": "0.1.0",
-    "build": "0298c4d4bb48f174363bce795196b471055e3f361c111e9ab0f869d9e1b05d23",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "5f35cbd1c0bd0b9c5e9f347ad08f64d4bf6774dc3079b3be9b1c767cae74a641",
+    "spectral": "^10.39.0"
   },
   "azure-service-bus": {
     "name": "@prismatic-io/components-azureservicebus",
-    "version": "0.1.0",
-    "build": "6394540c915a774a4401fe6b7302501ce161922f13cfb9410d68aac96a64df01",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "1b72489cecd33886ea9aacdad80170533fcbaf848979406d2774d5f837733cd3",
+    "spectral": "^10.39.0"
   },
   "bamboohr": {
     "name": "@prismatic-io/components-bamboohr",
-    "version": "0.1.0",
-    "build": "143593efdf2f6484dc9bd15f846cac9471491d9fdd1c1079d9a505a0ca14b347",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "8495c04d6ba171bff237a75387ade87a3e5b04fa625b1ba55f9329292721c772",
+    "spectral": "^10.39.0"
   },
   "bigcommerce": {
     "name": "@prismatic-io/components-bigcommerce",
-    "version": "0.1.0",
-    "build": "33ee06595d21c27f655825e4658bed6964acf84149827e7d17302272e7db9502",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "4df3ecfa3def92dd41dcb941f9f3c297e71c560c3b8ad797603b1b5bb3744027",
+    "spectral": "^10.39.0"
   },
   "box": {
     "name": "@prismatic-io/components-box",
-    "version": "0.1.0",
-    "build": "b7f416f103d1b2a346ce19c17143ba2c0dbf1937207c472ceb1e5dc1301619a8",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "64d7262f38279e1e72bcb9d17a2fb23baca9c6d511329e2a1cafc7441bc8245c",
+    "spectral": "^10.39.0"
   },
   "calendly": {
     "name": "@prismatic-io/components-calendly",
-    "version": "0.1.0",
-    "build": "51a72ec28bb1cd50f0345fb220384752023e272b3aadbb71219ba5dc4fab62ca",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "9c98889f87a1733c04387f83f845d9e5ec45d44283a9be839cfc6043cfb639f1",
+    "spectral": "^10.39.0"
   },
   "canny": {
     "name": "@prismatic-io/components-canny",
-    "version": "0.1.0",
-    "build": "365eb93a4974bb0d5455da90c72e4b8d30818cc4eac44bfad987d93d624add16",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "55027b639f4aa896cf600f1221dc7c629c2255ce1deba880299cdf5eba0940ae",
+    "spectral": "^10.39.0"
   },
   "click-up": {
     "name": "@prismatic-io/components-click-up",
-    "version": "0.1.0",
-    "build": "e5bc36175ce7c2b49d664a652eba0f9d24688f74cc2abd2622b8dfe742a2792a",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "29244333588e4a863be09103e563572b9953aafee0997a00b2e408f8f8c2e2f2",
+    "spectral": "^10.39.0"
   },
   "confluence": {
     "name": "@prismatic-io/components-confluence",
-    "version": "0.1.0",
-    "build": "0a04ff224ea4a122cba5eeaf902fe017939ae45df8dac5acc23c833fb55c3246",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "56b22b4b6a6e46c8de8f405798088ea702779944008972d828ea786570b556a0",
+    "spectral": "^10.39.0"
   },
   "customer-io": {
     "name": "@prismatic-io/components-customer-io",
-    "version": "0.1.0",
-    "build": "95cea9e382e3ea8ede0a80058d21bb86e058659a6f428ee08f295fad134701e9",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "12d3813977cf645635d78f0dc16a57b3e7da6c82a4da0eeb862c3b50acf1939c",
+    "spectral": "^10.39.0"
   },
   "datadog": {
     "name": "@prismatic-io/components-datadog",
-    "version": "0.1.0",
-    "build": "f5ac3cc17f8467a916c4b9f221811c14a67a48bf27d23ae6e50b390fc3a108b8",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "24431a6ab79a4c6746a218342011f879fd2fd1e7f121c91f3cf775aa0aa48876",
+    "spectral": "^10.39.0"
   },
   "docusign": {
     "name": "@prismatic-io/components-docusign",
-    "version": "0.1.0",
-    "build": "857597fa60712d031aebcd0c1f9da3be0a806e2c43485e8e2d5370f55a869527",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "09cb848de788e35675d2a83171563fe05b5f9d66a78ca51c7ae463d43785c3b3",
+    "spectral": "^10.39.0"
   },
   "domo": {
     "name": "@prismatic-io/components-domo",
-    "version": "0.1.0",
-    "build": "dbd5764232b85c1f0a2eb8e0bae4c9b0d92f25ef26a4a53bc0e8826dea45f985",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "db682caa6436a5adf2bfb4947278626bb0440bb6bde67e651cb248af60bf088d",
+    "spectral": "^10.39.0"
   },
   "dropbox": {
     "name": "@prismatic-io/components-dropbox",
-    "version": "0.2.0",
-    "build": "974249b3dc841c05eed6556717c1525d5dcdb40a1cee1d636408ab91e1a56f79",
-    "spectral": "^10.38.3"
+    "version": "0.3.0",
+    "build": "ab90449b9926957337d1ea8f91c6f51751b11eded8a7f55e1e058d68ae5ee24c",
+    "spectral": "^10.39.0"
   },
   "duro-plm": {
     "name": "@prismatic-io/components-duro-plm",
-    "version": "0.1.0",
-    "build": "fc9f50102180837eefe0d0a67220e78f0f2c085e1e7b9f5c712f7cbf5960da29",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "64246132494d43ed4ee84f98c5e97ecad75f0974fe1af691fee235dfc0467d3f",
+    "spectral": "^10.39.0"
   },
   "facebook-marketing": {
     "name": "@prismatic-io/components-facebook-marketing",
-    "version": "0.1.0",
-    "build": "d6c5704397d61dffd04ebcd87f7d620c9b7189158b6ce1ae65874b272addc05f",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "caceba0ab38d6ad19ea94b897124117fd5dc54225351a161159d81cdce81650c",
+    "spectral": "^10.39.0"
   },
   "fluent-commerce": {
     "name": "@prismatic-io/components-fluent-commerce",
-    "version": "0.1.0",
-    "build": "1584c4b8711cbe067bf7a22e87f4615f41809f333bf17ab3d83248e43a5495c2",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "705cbeb90ede1b2e826e94390e2855f459a0859903b649253746a665f117cbd8",
+    "spectral": "^10.39.0"
   },
   "freshservice": {
     "name": "@prismatic-io/components-freshservice",
-    "version": "0.1.0",
-    "build": "9cb730ed508f8f779f1315843402090781eaf3ebb607e90025723b8dd7040fd9",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "2698454835411ef5c16367ca86395e880eaaba764df34a7d5fe030482f859715",
+    "spectral": "^10.39.0"
   },
   "frontify": {
     "name": "@prismatic-io/components-frontify",
-    "version": "0.1.0",
-    "build": "b3efc2438fa8f101167218b15e13dfb730c5f8087ffe0acb34b1d16b2a79bea5",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "505f49372f6bb82757aadb47f5be5cd69ff3da8adb27db5ee7f7efa4eb765529",
+    "spectral": "^10.39.0"
   },
   "ftp": {
     "name": "@prismatic-io/components-ftp",
-    "version": "0.1.0",
-    "build": "7f8a094a7ccd6e4266f464ac3a5ee2a45a3781fd8210e9b3b3ebb923ab3dcb92",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "c54e8c895177762ff038b248052a70c53755e6212e81baf13cf2a0b636b26083",
+    "spectral": "^10.39.0"
   },
   "github": {
     "name": "@prismatic-io/components-github",
-    "version": "0.1.0",
-    "build": "319184599dd7f85e503604132288262705614825f2cecec23e141d89c148ea2b",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "47031988a17c3e30d219682e7f65210816fec2e740443b8b699abb6eb49273f8",
+    "spectral": "^10.39.0"
   },
   "gong": {
     "name": "@prismatic-io/components-gong",
-    "version": "0.1.0",
-    "build": "e3d4e89b3da60ddbbcd5e95bd558396d75d8a9acae525a40cf7280ad87beb656",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "b4bb21c4ac1bf994ff031297eea419127af21a57ae28549e9a13d6431f2356cb",
+    "spectral": "^10.39.0"
   },
   "google-ads": {
     "name": "@prismatic-io/components-google-ads",
-    "version": "0.1.0",
-    "build": "572b7cdee56319483bc999231b885bf0040d151a364d86f41f37e2af55250bfb",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "f2a8d8a95dc56cb5f927d1747ed23b95849c9d8dc00fed56fd18ced4752f4fa1",
+    "spectral": "^10.39.0"
   },
   "google-analytics-ga4": {
     "name": "@prismatic-io/components-google-analytics-ga4",
-    "version": "0.1.0",
-    "build": "b1f79ee46415c5f4875ac2d99574cb2a30385b207ffed8010c045ea3d7b167c5",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "30f8897c16d426c2eff2f93acb7a2b8cd30da324831f28b8a31885154aab46d0",
+    "spectral": "^10.39.0"
   },
   "google-calendar": {
     "name": "@prismatic-io/components-google-calendar",
-    "version": "0.1.0",
-    "build": "30b46bc7bb0382ed59ab474972c28d2fe20a1db81f42238e0ce4bdf5219053a9",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "e2b7a55c5060e9d30a7612b696b899b9cc3d519344fd68cca55ba7b997fd7cd4",
+    "spectral": "^10.39.0"
   },
   "google-cloud-bigquery": {
     "name": "@prismatic-io/components-google-cloud-bigquery",
-    "version": "0.1.0",
-    "build": "e0f4ec68dc7b2481a9b9eaf3f7561515af959704640fd97d563ee0733e7cb5f6",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "a74ec2e1050a1dec36e77f171afa95a20d87ea2aba6267061a3be821b3b4e601",
+    "spectral": "^10.39.0"
   },
   "google-docs": {
     "name": "@prismatic-io/components-google-docs",
-    "version": "0.1.0",
-    "build": "a2330f3bb95896600584d03974c4ea27ec5ff4e13762a2f6b6279848887450d3",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "4ecd8e38aab92671ebb1483938acbf685cfe4f6dae2e263bb522a22e9badd659",
+    "spectral": "^10.39.0"
   },
   "google-gmail": {
     "name": "@prismatic-io/components-google-gmail",
-    "version": "0.1.0",
-    "build": "7cdc5faa4f19807e94e8e9d5ca13e3ba06ec57518d01c1fa089725a6172ebcb8",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "8b2173a96d9ef54c9c7a845b9f5d75c694720c446cb2b9b45efbc768dd097825",
+    "spectral": "^10.39.0"
   },
   "gotowebinar": {
     "name": "@prismatic-io/components-gotowebinar",
-    "version": "0.1.0",
-    "build": "b58ae2d86068e884233e8b832bb11c5f898931d9f958ab097f4224bffadb7541",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "ee1d2083fee38625ae4be813b1da746d1b8c5203cb38573f2fcf448f25837ecb",
+    "spectral": "^10.39.0"
   },
   "greenhouse": {
     "name": "@prismatic-io/components-greenhouse",
-    "version": "0.1.0",
-    "build": "51f3f929d38d5c7e429c61464af4027c29e7357cba57fb982bb16987e6e8bfcb",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "666c4644cd6380a62d1801933064e595fdbd2bd0debd2f7488270878a116ea3c",
+    "spectral": "^10.39.0"
   },
   "guru": {
     "name": "@prismatic-io/components-guru",
-    "version": "0.1.0",
-    "build": "05e2fa46f115915d0e75584081f05c1d4ac8df6cf5a2eff2b75d89d11e2c3e23",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "f168f9e6a476d61e66b59f83f51b5e75e9b9b63b7d62d3b11d260472c63e4dc6",
+    "spectral": "^10.39.0"
   },
   "imap": {
     "name": "@prismatic-io/components-imap",
-    "version": "0.1.0",
-    "build": "3c709bfcb3158a9db4f50162091aa1cf0102dc5f577c5cc0ab5c34da2b7e5df5",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "7beb244f2042e1efc604286ae3147793558f983bc63e2c34f2dca3e17c939100",
+    "spectral": "^10.39.0"
   },
   "intercom": {
     "name": "@prismatic-io/components-intercom",
-    "version": "0.1.0",
-    "build": "7059e6b19f94d28aa48363654b5fef1b3f3025fe9478db27fa368fc19942e856",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "6c6d4095bcb96584ca783a2afeafbf7cc955b18fc7585dd3be994daf2370915a",
+    "spectral": "^10.39.0"
   },
   "jamf": {
     "name": "@prismatic-io/components-jamf",
-    "version": "0.1.0",
-    "build": "fae8aa8bd4f2104eeba25a21c877cbabf827693dc0998f02aae4388c9fd44d50",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "5161c4ab082ce9b1408b65594b7a88f3515de4bfb91ed2fb7e192e3e58b82414",
+    "spectral": "^10.39.0"
   },
   "kafka": {
     "name": "@prismatic-io/components-kafka",
-    "version": "0.1.0",
-    "build": "c6b65f5e63ce2bff928383c01c1c8d047918981845cff8269e5c861a1408a0a2",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "0ed719722c2542b97d952a8b886fca65a72b20b0e7ce1cffbb3ff6dabfcebbb7",
+    "spectral": "^10.39.0"
   },
   "karbon": {
     "name": "@prismatic-io/components-karbon",
-    "version": "0.1.0",
-    "build": "409a012efc6548e77978d3eb0d8324f45036551e335dd204324f31949a7d2303",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "beb92a153d8382a618b33ad284f4ac94fc95921e2ae2c730987f6597bb34ae57",
+    "spectral": "^10.39.0"
   },
   "klaviyo": {
     "name": "@prismatic-io/components-klaviyo",
-    "version": "0.1.0",
-    "build": "81cf20e7b8e7790da7771202b2383501ceb315c39482a0bcb3870fc1002c3c4b",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "6105890d93bf41e35a456f37bb6fd69521437c580e35ffd4111b08e1caa86076",
+    "spectral": "^10.39.0"
   },
   "mixpanel": {
     "name": "@prismatic-io/components-mixpanel",
-    "version": "0.1.0",
-    "build": "65dff117eb70c3cc89a10d53f88578e1e53740cab2b0596559f2fa0e88458084",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "dd4f38419d52affce91c9a0c24664e890d28eeaad6969686f3d7adec6b870e36",
+    "spectral": "^10.39.0"
   },
   "ms-business-central": {
     "name": "@prismatic-io/components-ms-business-central",
-    "version": "0.1.0",
-    "build": "ecdb0fc64142336dcbcee34bb9f43a32b911e8e510f3fd43ffb1181a7ea414e0",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "d4cc693098cc1ce54866df69b87014f5da0d0a0ef655a9a083ab82521a51597e",
+    "spectral": "^10.39.0"
   },
   "ms-intune": {
     "name": "@prismatic-io/components-ms-intune",
-    "version": "0.1.0",
-    "build": "a7469d5a036fb650dcec87a8615fc45773cb89a845f8b7091c9130d2a3a1c288",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "078fc6bf04eb8cd85dad5b42244e8ef1102830de913668775f521c65dceca930",
+    "spectral": "^10.39.0"
   },
   "ms-outlook": {
     "name": "@prismatic-io/components-ms-outlook",
-    "version": "0.1.0",
-    "build": "a1c81d69df7bdc157167013d10a036d4e8153ea3c8516d229f4a0cfca641993c",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "ece59ac28b22f78e60191817565cef6626eb57448e041cb0b8cc25e67fdcd702",
+    "spectral": "^10.39.0"
   },
   "ms-planner": {
     "name": "@prismatic-io/components-ms-planner",
-    "version": "0.1.0",
-    "build": "4c2a5598e57460649999132b8dea72c9ab033768d478d1604b92e24d1376ef40",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "cd817d21711fb06340d34db3230c110c0f5bc329f76235dca9a3a2800635ed95",
+    "spectral": "^10.39.0"
   },
   "ms-power-bi": {
     "name": "@prismatic-io/components-ms-power-bi",
-    "version": "0.1.0",
-    "build": "cc11eee99ced2488d420c7abb91cbe759f4fad7884c24fa933773ec52065ebe5",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "3080c114d9e1f2c4469f82dc8e757f40dcf5ef64c99dad4323e5df298e19e21b",
+    "spectral": "^10.39.0"
   },
   "ms-project": {
     "name": "@prismatic-io/components-ms-project",
-    "version": "0.1.0",
-    "build": "9ec69863f7f7337167a0cd68853d39c4212e0a46ff7b3f40231f450812bad1d4",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "99decb7461cf8f2d249c63d66a317fd9cfb5fdeec3e3db363aa0ab7560fae261",
+    "spectral": "^10.39.0"
   },
   "ms-sharepoint": {
     "name": "@prismatic-io/components-ms-sharepoint",
-    "version": "0.1.0",
-    "build": "9932d71e24f21cc2a62b693613adf89216df66075e545a429052980751fa184d",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "6c27191b08a1c9563677e4b4ceb74ac00e31bae25ee9d06933a7d759cc212272",
+    "spectral": "^10.39.0"
   },
   "netsuite": {
     "name": "@prismatic-io/components-netsuite",
-    "version": "0.1.0",
-    "build": "4fbcbe9230235059426322ad1b05a65f1d45aeaa55bdaf31f4e8a050ab1dd23d",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "0c0c9337ac1c6384de0fb4640463a5567edb70678b93868547390855384f8063",
+    "spectral": "^10.39.0"
   },
   "new-relic": {
     "name": "@prismatic-io/components-new-relic",
-    "version": "0.1.0",
-    "build": "2cd44fd6fd222ac060a5bba4ad8db3b19bf2f2e86f6af5b4e3cc580bd59db28e",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "102147867c510f8952a06be74ef0e9c2a7100e9dd2a9121dfe2426ee4926ba01",
+    "spectral": "^10.39.0"
   },
   "notion": {
     "name": "@prismatic-io/components-notion",
-    "version": "0.1.0",
-    "build": "d33a26f46e2fefa2fb6eb315d4ee1e61c87da93a0fcc5ca2ff960a0b89d895e0",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "ef8a37cf6bb88db6230924cba5b374295ab826662e8bd59456797041165ecf77",
+    "spectral": "^10.39.0"
   },
   "odoo": {
     "name": "@prismatic-io/components-odoo",
-    "version": "0.1.0",
-    "build": "e03cae3ed5d6248014b239838a93cfa87384e3550fc9e1cf325f610fa6ec244c",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "542640e0a1998327fad9c3ec6b6b117c2625747ff00c518a667c473d05ec8c18",
+    "spectral": "^10.39.0"
   },
   "oracle-fusion-cloud-hcm": {
     "name": "@prismatic-io/components-oracle-fusion-cloud-hcm",
-    "version": "0.1.0",
-    "build": "1c207589555a81a6caedffd2d2d58440f6ba00d7dc1a0496f4d9a2528a935f9a",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "b8d1c3144f03b9056670d44af637ec5a2e6dd6d581bbc7a652652f50b5484483",
+    "spectral": "^10.39.0"
   },
   "pagerduty": {
     "name": "@prismatic-io/components-pagerduty",
-    "version": "0.1.0",
-    "build": "b557642b904d06b206fdec42685415373d83c56b824a81092a80bebfa7fac336",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "c1a21468224f611e40e7dfea099bd85e2a3ef55b62a7a2bebbb557ddea94acab",
+    "spectral": "^10.39.0"
   },
   "pdq": {
     "name": "@prismatic-io/components-pdq",
-    "version": "0.1.0",
-    "build": "8059849884e60cd21be0309cc5ff015a9e198934755ef5de73859d02816cee24",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "ae291d22b472365ca489dc36fe5ed45fda87a64a057ced966bf1ece7f49d72c1",
+    "spectral": "^10.39.0"
   },
   "postmark": {
     "name": "@prismatic-io/components-postmark",
-    "version": "0.1.0",
-    "build": "3059dd125b065b518b1c7395171969f0d836d87f399e07762ff61e452b89da15",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "5d6826101c509ffe403e0d32c390596745ebbf0dd27f99cfc4cd02de8e96b689",
+    "spectral": "^10.39.0"
   },
   "qlik": {
     "name": "@prismatic-io/components-qlik",
-    "version": "0.1.0",
-    "build": "0499e0ad848fcbc2728d7b4352ab9e547602f24c5fc5ff5eab201bca878de57a",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "b9f8481ab4425aacf1e5d59ade0f385cf43b1680b7dfc2e95f09e2d671577c50",
+    "spectral": "^10.39.0"
   },
   "qualys": {
     "name": "@prismatic-io/components-qualys",
-    "version": "0.1.0",
-    "build": "e81df8e606b13b6e4bf14d2f6b93d63cd8a083c7e3d7e231e340864242ded08c",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "75616585e9eb82068d84ba5b24828b5da8136160dad673792dd65619749a01f3",
+    "spectral": "^10.39.0"
   },
   "quickbooks": {
     "name": "@prismatic-io/components-quickbooks",
-    "version": "0.1.0",
-    "build": "fd97c1e223ca6abfc2cf466e605cc4fd313f3e6c461a5265f4b93617c31d9a6e",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "2f6a4ce75e9807b5ec2c27dc0f3ae8c6931509a9058ccfc08efa5dc58487f6ee",
+    "spectral": "^10.39.0"
   },
   "quickbooks-time": {
     "name": "@prismatic-io/components-quickbooks-time",
-    "version": "0.1.0",
-    "build": "13e32517c19766471eba3bd28a5582ef82e7f6600ec060aaace7e9624e600ef3",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "0ca7e1c76432388dd9257c37ba281f2ebfe2a17e008b0c75e86249c95940b994",
+    "spectral": "^10.39.0"
   },
   "ramp": {
     "name": "@prismatic-io/components-ramp",
-    "version": "0.1.0",
-    "build": "232ea678bf9f2b841974fc95d1ae36424d2817e30a076e9cf7e1c2d2e6a689ad",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "3e9d2aa613bb4ffde3371f5b30f7593cd74fc5a5548bd10931672da743cafae7",
+    "spectral": "^10.39.0"
   },
   "rippling": {
     "name": "@prismatic-io/components-rippling",
-    "version": "0.1.0",
-    "build": "8d59179dd341a31b4463e40cebdf1b529b6aa14c01657bb28162199ea4164ff5",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "c0ecf977d62087cd1049d6b8766c663e6e5739959d2fc6d4419ed0d4d9c1fb26",
+    "spectral": "^10.39.0"
   },
   "sage": {
     "name": "@prismatic-io/components-sage",
-    "version": "0.1.0",
-    "build": "8ef356bf828757b6828bf8460ec7ecd8097abc198f676578039b42dbaff0ba74",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "51d498a88dad933338fb03caf379d6c7e85782b746ad98fdf2d471087452305d",
+    "spectral": "^10.39.0"
   },
   "sage-200": {
     "name": "@prismatic-io/components-sage-200",
-    "version": "0.1.0",
-    "build": "3aed4d702797365456899f255694ae26c4959067b0cdbb916e1277b7a5291411",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "8ec3a2a01819f54eaebdcf5be20c4195463785a114fbf2718e7e4cc3c2a7b35c",
+    "spectral": "^10.39.0"
   },
   "sage-hr": {
     "name": "@prismatic-io/components-sage-hr",
-    "version": "0.1.0",
-    "build": "d3f13c3fe6c7b4eedd0c71053c181aaf8e4c413eae86e2671e83978f7bbe5007",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "def1f6072716f23f7bef370093f105867857f24633bd567f09142ee7314e1437",
+    "spectral": "^10.39.0"
   },
   "sage-intacct": {
     "name": "@prismatic-io/components-sage-intacct",
-    "version": "0.1.0",
-    "build": "8bbf98a39323b5e94d8e73b0f5386ce6d8361594dc291546cc20c6c454e60081",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "2249fe2b8c3348f57a44d81949e5619c1bf298276dccdd2e256e5e7ecd8262f2",
+    "spectral": "^10.39.0"
   },
   "sap-ecc": {
     "name": "@prismatic-io/components-sap-ecc",
-    "version": "0.1.0",
-    "build": "33a0ef8b934616128f5f00c2f2ae099bbc7bf1ddd2c7d518e1ca11a45076c688",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "f8c02db4380200aa97c92c142910b9c2bad56d188b6a99d3c6f5bf1bfff8cccb",
+    "spectral": "^10.39.0"
   },
   "sendgrid": {
     "name": "@prismatic-io/components-sendgrid",
-    "version": "0.1.0",
-    "build": "5b89a53f2aa7c2844ff028ca5b0d92b6e3037e05359a13ac19c9a56d31434b9b",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "e85c6046c01e2741a00d65718098bad7000698a18067085d6e7576ae159ea2db",
+    "spectral": "^10.39.0"
   },
   "servicedesk-plus": {
     "name": "@prismatic-io/components-servicedesk-plus",
-    "version": "0.1.0",
-    "build": "9f4d15deb4d38f625ac5e39fc8fd0acff466da291b7ba2658e25161e2d159810",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "6e419c14e39a6d5403d9ba31e170c79d9199026b7e0fe2629257e538caca02c0",
+    "spectral": "^10.39.0"
   },
   "servicetitan": {
     "name": "@prismatic-io/components-servicetitan",
-    "version": "0.1.0",
-    "build": "f27e7e6dc27cf06a35e3f46d3bb39499fda0dc1dc5564a507231cca1f9ff0be0",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "a3c3cc56e39063bfc7af2fb89676b858c6221968421fc06c46c1299b4b7241a4",
+    "spectral": "^10.39.0"
   },
   "shipbob": {
     "name": "@prismatic-io/components-shipbob",
-    "version": "0.1.0",
-    "build": "56fe3ea4f7bec579b71d6eca542449da44caf64df785076a5116b38f089f8d67",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "a117b80e33dea3d7adde7e4e0fc56a50af35790880e07b629d2b62c57e4bed60",
+    "spectral": "^10.39.0"
   },
   "shipstation": {
     "name": "@prismatic-io/components-shipstation",
-    "version": "0.1.0",
-    "build": "efdc0495e9b509f4267ea1317f69da28505b7bdc857423efacf7f18169976c26",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "281a5e892afb66130bb2c57d1136c1ebbff65e3dbb691ca0bf230400014f5eea",
+    "spectral": "^10.39.0"
   },
   "slack": {
     "name": "@prismatic-io/components-slack",
-    "version": "0.1.0",
-    "build": "5eb43e739caf1803d9b46b4dd27dba192aa75c72bda455d055239aa4441e34e0",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "1cbf47fa021a571f868c27abe9a9962c299ec4512cbe9987bb67607aed1cb96a",
+    "spectral": "^10.39.0"
   },
   "square": {
     "name": "@prismatic-io/components-square",
-    "version": "0.1.0",
-    "build": "05184200a37f6c13eeeae308cd56ad7be14f62a6212aaff5e8cc4d46c609f24f",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "c181313b64b45825ae8acd26706f4b068e267795ffa3390a003bd73269da1976",
+    "spectral": "^10.39.0"
   },
   "stripe": {
     "name": "@prismatic-io/components-stripe",
-    "version": "0.1.0",
-    "build": "7ae25a39ea996389e9447ef476383c483d011eee65f498cbf4f4a65788cc4b66",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "260989cb2c451c3528d6328393428d09f8b0595bf809475861d74c5e32abf852",
+    "spectral": "^10.39.0"
   },
   "surveymonkey": {
     "name": "@prismatic-io/components-surveymonkey",
-    "version": "0.1.0",
-    "build": "837f4ea2811b77d1e0ccd8f995f7ff2bb526232637828768c643d4814dbf1a53",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "72fa5e3ecfdb22abcdb6da604349ae7bb7a17eea2a383c694465c3bbe98a9589",
+    "spectral": "^10.39.0"
   },
   "system-surveyor": {
     "name": "@prismatic-io/components-ssv",
-    "version": "0.1.0",
-    "build": "53c1946cf77f289cf059f214e6c7bed49512d16a8b3e3a69035225618aa98e1e",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "98e32cf8c1b6e5adce611a0ad567b2ea23af120a6e76b73bf74857766bab70e9",
+    "spectral": "^10.39.0"
   },
   "tableau": {
     "name": "@prismatic-io/components-tableau",
-    "version": "0.1.0",
-    "build": "50bae5c9779fecdc3c7cecf8e315e032b1bd29c2d566d82856ff1d439cc2916f",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "0f49f08c8ab9c790574cf6947219987ceb4e2eb9d50a4c1f69d31bad96bb2dbc",
+    "spectral": "^10.39.0"
   },
   "toast": {
     "name": "@prismatic-io/components-toast",
-    "version": "0.1.0",
-    "build": "96ec102d501e9a3331f3acf198633b58e862675a521499a928e8290e698d150c",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "34cb73071cc5a49e049fba811e0d2feae7743229d54f4391fd78a0ba5a92718e",
+    "spectral": "^10.39.0"
   },
   "twilio": {
     "name": "@prismatic-io/components-twilio",
-    "version": "0.1.0",
-    "build": "05d999837673d41fd21ed34a74570dfd886b222ec45d0f2bad5729acba6e5646",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "f49d120723367fe2239b2c1cd6226724eb4f8010149f9f1fbd6ada81bb04a8f1",
+    "spectral": "^10.39.0"
   },
   "typeform": {
     "name": "@prismatic-io/components-typeform",
-    "version": "0.1.0",
-    "build": "a30313427486e00f314d6d23ddfba5493fe206c0d77292f47c805450496a651a",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "d967bf26a04758bbe602aa9052418842bc18c59562616680c7d5610e94be0172",
+    "spectral": "^10.39.0"
   },
   "ukg-pro": {
     "name": "@prismatic-io/components-ukg-pro",
-    "version": "0.1.0",
-    "build": "8caa49ddff3e9a53ed4b0c16edcad93795d67c0f68edcdb486defe1f8e44d7b8",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "0b757088bfba487c7066b9f0da4cbe918eaf3f2e4d5a72a5c36ff1e5c21ac913",
+    "spectral": "^10.39.0"
   },
   "whatsapp": {
     "name": "@prismatic-io/components-whatsapp",
-    "version": "0.1.0",
-    "build": "3a6e726353fa9bcdf2def4f5a8f54a8edb45e7f6872e601f95fe18e7f8ca0a46",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "5e13ef22ab4c9deac44c23d95e6c75096dd90c455a94301d94b2b7ba7aef696c",
+    "spectral": "^10.39.0"
   },
   "woo-commerce": {
     "name": "@prismatic-io/components-woo-commerce",
-    "version": "0.1.0",
-    "build": "cf324d8ceccb49e836f14382d94bd899e7c8a53a234ace3a33e27cf3226c783e",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "4cc374d2223fbb297c3dd954a6403218cf35fc63ac883f47272bb46b2f7410fd",
+    "spectral": "^10.39.0"
   },
   "workday": {
     "name": "@prismatic-io/components-workday",
-    "version": "0.1.0",
-    "build": "2a1b9dcf6b163259b42a8cdf2ca9b913cf8e5879fff1df64956bc418baf5c99e",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "bfb43c1ba858e80016cad2c3dd585e382a22fb97f0c60c24adac54d5111d28c9",
+    "spectral": "^10.39.0"
   },
   "xero": {
     "name": "@prismatic-io/components-xero",
-    "version": "0.1.0",
-    "build": "3f594e5944cf3953ea18c1c4f9bc14b61799a2c76fccc127669037acd2793197",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "232065dd2dea663b764b990f4f9119b1128b61549c98657c4b461dc41ee721b9",
+    "spectral": "^10.39.0"
   },
   "yoti-sign": {
     "name": "@prismatic-io/components-yoti-sign",
-    "version": "0.1.0",
-    "build": "8288d88f7503449151c939da9c031db19970c4c78bf6a8ae1ca4f72d24820eca",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "2d121702509a12d3d3c432479797debe6a8091a5c232cea0379b3b6e58bf41ba",
+    "spectral": "^10.39.0"
   },
   "zendesk-sell": {
     "name": "@prismatic-io/components-zendesk-sell",
-    "version": "0.1.0",
-    "build": "9574a4278dbff51170e3d47e1236cc06f8fa681e195e6abaa1832f5eb2ad9f03",
-    "spectral": "^10.38.5"
+    "version": "0.2.0",
+    "build": "b7ef474824e1138546814f4f11eaec0883b32fbd5a45689806189538ce9d5246",
+    "spectral": "^10.39.0"
   }
 }

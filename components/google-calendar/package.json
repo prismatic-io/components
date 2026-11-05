@@ -1,6 +1,6 @@
 {
   "name": "@prismatic-io/components-google-calendar",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "./npm-dist/index.cjs",
   "types": "./npm-dist/index.d.cts",
   "exports": {
@@ -36,7 +36,7 @@
     "publish:platform": "npm run build && prism components:publish"
   },
   "peerDependencies": {
-    "@prismatic-io/spectral": "^10.38.5"
+    "@prismatic-io/spectral": "^10.39.0"
   },
   "dependencies": {
     "@googleapis/calendar": "^9.7.9",
@@ -51,6 +51,6 @@
     "@types/uuid": "^9.0.0",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "@prismatic-io/spectral": "^10.38.5"
+    "@prismatic-io/spectral": "^10.39.0"
   }
 }
