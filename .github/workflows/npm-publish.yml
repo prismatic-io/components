@@ -10,6 +10,8 @@
 # never seen, with a warning, and checks that each other package has a
 # trusted publisher naming this workflow before building it.
 #
+# A real publish that fails posts to Slack.
+#
 # Start it by hand with `mise run release`, or `mise run release --dry-run` to
 # see what would publish. Only main publishes; a dry run works from any branch. To pause publishing,
 # disable the workflow from the Actions tab.
@@ -62,4 +64,27 @@ jobs:
         working-directory: .github/scripts
       - run: bun test
         working-directory: .github/scripts
+      # A hung publish fails at the timeout rather than at the job's, which would cancel
+      # the job and skip the notification below. A full publish takes about 15 minutes.
       - run: bun .github/scripts/npm-publish.ts ${{ inputs.dry_run && '--dry-run' || '' }}
+        timeout-minutes: 60
+      - name: Notify Slack of the failure
+        if: failure() && github.ref == 'refs/heads/main' && !inputs.dry_run
+        timeout-minutes: 1
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPOSITORY: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          ACTOR: ${{ github.actor }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "::warning::SLACK_WEBHOOK_URL is not set; not notifying Slack."
+            exit 0
+          fi
+          text=$(printf ':x: npm publish failed for %s (%s by %s, %s)\n<%s|View the run>' \
+            "$REPOSITORY" "$EVENT" "$ACTOR" "${SHA:0:7}" "$RUN_URL")
+          body=$(jq -n --arg text "$text" '{text: $text}')
+          curl --silent --show-error --fail --max-time 10 --retry 2 \
+            -H 'Content-Type: application/json' --data "$body" "$SLACK_WEBHOOK_URL"
