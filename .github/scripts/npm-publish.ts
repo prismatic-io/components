@@ -22,11 +22,13 @@ import {
   MANIFEST_FILE,
   ManifestSchema,
   NPM_CI_ARGS,
+  NPM_OIDC_AUDIENCE,
   PackageJsonSchema,
   type PackageJson,
   parseAs,
   planPublish,
   sharedPackagesOf,
+  trustProblem,
 } from "./publish-plan.ts";
 
 /** Runs a command, streaming its output; false (with an annotation) when it fails. */
@@ -58,6 +60,14 @@ const main = async () => {
     ),
   );
   const plan = planPublish(manifest, packages, published);
+  // Every package to publish is checked for a trusted publisher naming this
+  // workflow before anything builds, so one without fails in seconds rather than
+  // after its build. One allowed only to stage still fails at `npm publish`.
+  const toPublish = plan.flatMap((step) => (step.action === "publish" ? [step.entry.name] : []));
+  const idToken = toPublish.length > 0 ? await core.getIDToken(NPM_OIDC_AUDIENCE) : "";
+  const untrusted = Object.fromEntries(
+    await Promise.all(toPublish.map(async (name) => [name, await trustProblem(name, idToken)] as const)),
+  );
   const builtShared = new Map<string, Promise<boolean>>();
   const buildShared = (name: string): Promise<boolean> => {
     const cwd = join("packages", name);
@@ -79,6 +89,17 @@ const main = async () => {
       }
       if (step.action === "manual") core.warning(`${label}: ${step.reason}`);
       rows.push([step.entry.name, step.entry.version, `${step.action}: ${step.reason}`]);
+      continue;
+    }
+
+    const problem = untrusted[step.entry.name];
+    if (problem) {
+      core.error(
+        `${label}: npm does not recognize this workflow as its trusted publisher (${problem}); ` +
+          `run \`mise run publish-first ${step.key}\` to set its trusted publisher`,
+      );
+      failures++;
+      rows.push([step.entry.name, step.entry.version, `no trusted publisher for this workflow: ${problem}`]);
       continue;
     }
 

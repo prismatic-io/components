@@ -64,51 +64,88 @@ const passThrough = async (stream: ReadableStream<Uint8Array>): Promise<string> 
   return text + decoder.decode();
 };
 
+/** Whether the developer is at a terminal npm can prompt them through. */
+const atTerminal = (): boolean => Boolean(process.stdin.isTTY && process.stdout.isTTY);
+
 /**
- * Waits for the developer to authenticate with npm before a command runs again. npm
- * stops accepting a one-time password a few minutes after it was given, so a long
- * run asks again partway through. Without a terminal to answer from, the run stops,
- * since every package after this one would fail the same way.
+ * Runs npm in a pseudo-terminal, so it can ask for a one-time password while its
+ * output is still read: it sees a terminal, its output is shown to the developer and
+ * kept, and what they type reaches it. Returns the exit code and everything npm
+ * printed, its errors included.
  */
-const waitForAuth = (command: string): void => {
-  if (!process.stdin.isTTY) {
-    throw new NpmAuthError(`\`${command}\` needs you to authenticate with npm, and there is no terminal to wait in`);
-  }
-  console.error(
-    `\n\`${command}\` needs you to authenticate with npm. Open the URL npm printed above, or run \`npm login\` ` +
-      "in another terminal if it asked for a login. If npm offers to skip one-time passwords for a few minutes, " +
-      "accept, so the packages after this one don't ask again.",
-  );
-  const answer = prompt("Press Enter to try again, or type q and Enter to stop:");
-  if (answer === null || answer.trim().toLowerCase() === "q") {
-    throw new NpmAuthError("stopped to authenticate with npm");
+const runInTerminal = async (cwd: string, args: string[]): Promise<{ code: number; output: string }> => {
+  const decoder = new TextDecoder();
+  let output = "";
+  let closed!: () => void;
+  const drained = new Promise<void>((resolve) => {
+    closed = resolve;
+  });
+  const proc = Bun.spawn(["npm", ...args], {
+    cwd,
+    terminal: {
+      cols: process.stdout.columns || 80,
+      rows: process.stdout.rows || 24,
+      data: (_terminal, data) => {
+        process.stdout.write(data);
+        output += decoder.decode(data, { stream: true });
+      },
+      exit: () => closed(),
+    },
+  });
+  const forward = (chunk: Uint8Array) => proc.terminal?.write(chunk);
+  process.stdin.on("data", forward);
+  try {
+    const code = await proc.exited;
+    // Output can arrive after the process exits, until the terminal reaches its end.
+    await Promise.race([drained, Bun.sleep(1_000)]);
+    return { code, output: output + decoder.decode() };
+  } finally {
+    process.stdin.off("data", forward);
+    process.stdin.pause();
+    proc.terminal?.close();
   }
 };
 
 /**
- * Runs npm attached to the terminal, so it can prompt for a login or a one-time
- * password itself, and returns what it prints when `capture` is set. When npm fails
- * because it needs the developer to authenticate, which it does without prompting
- * when it cannot, this waits for them and runs the command again.
+ * Runs npm with the terminal as its input and output, and returns what it prints
+ * when `capture` is set. npm asks for a one-time password itself, in the browser,
+ * only when both are the terminal; otherwise it fails with EOTP and masks the
+ * authentication URL, so there is nothing to answer. A captured command runs in a
+ * pseudo-terminal for that reason, when the developer is at a terminal. A failure to
+ * authenticate stops the run, since every package after this one would fail the
+ * same way.
  */
 const runNpm = async (cwd: string, args: string[], capture: boolean): Promise<string> => {
   const command = `npm ${args.join(" ")}`;
-  for (;;) {
+  let code: number;
+  let output = "";
+  let errors: string;
+  if (capture && atTerminal()) {
+    ({ code, output } = await runInTerminal(cwd, args));
+    errors = output;
+  } else {
     const proc = Bun.spawn(["npm", ...args], {
       cwd,
       stdin: "inherit",
       stdout: capture ? "pipe" : "inherit",
       stderr: "pipe",
     });
-    const [output, errors] = await Promise.all([
+    [output, errors] = await Promise.all([
       proc.stdout instanceof ReadableStream ? new Response(proc.stdout).text() : "",
       passThrough(proc.stderr),
     ]);
-    const code = await proc.exited;
-    if (code === 0) return output;
-    if (!needsNpmAuth(errors)) throw new Error(`\`${command}\` in ${cwd} exited with ${code}`);
-    waitForAuth(command);
+    code = await proc.exited;
   }
+  if (code === 0) return output;
+  if (needsNpmAuth(errors)) {
+    throw new NpmAuthError(
+      atTerminal()
+        ? `\`${command}\` was not authenticated; run \`npm login\` if npm asked for a login`
+        : `\`${command}\` needs a one-time password, and npm can only ask for one at a terminal; ` +
+            "run `mise run publish-first` straight from a terminal, without piping its output",
+    );
+  }
+  throw new Error(`\`${command}\` in ${cwd} exited with ${code}`);
 };
 
 const npm = async (cwd: string, args: string[]): Promise<void> => {
@@ -302,12 +339,21 @@ const main = async () => {
       return;
     }
     console.log(`\n== ${label}`);
-    // npm has only the bootstrap version, so the workflow has never published
-    // through whatever trust a stopped run left. npm cannot say whether that
-    // trust has expired, and allows one per package, so it is replaced, which
-    // also restarts the two days. A package this run created has none.
-    const replaced = job.step.action === "trust" ? await replaceTrust(job.step.entry.name, dryRun) : 0;
-    await npm(".", dryRun ? [...trust, "--dry-run"] : trust);
+    const command = dryRun ? [...trust, "--dry-run"] : trust;
+    let replaced = 0;
+    try {
+      await npm(".", command);
+    } catch (err) {
+      // npm allows one trusted publisher per package. npm has only the bootstrap
+      // version, so the workflow has never published through one a stopped run
+      // left, and npm cannot say whether it has expired; it is replaced, which
+      // also restarts the two days. Listing comes only after a set that failed,
+      // rather than before every one.
+      if (err instanceof NpmAuthError || job.step.action !== "trust") throw err;
+      replaced = await replaceTrust(job.step.entry.name, dryRun);
+      if (replaced === 0) throw err;
+      await npm(".", command);
+    }
     job.result = dryRun
       ? replaced > 0
         ? `dry run; would revoke ${replaced} trusted publisher(s) and set it again`

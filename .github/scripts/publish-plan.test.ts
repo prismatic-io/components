@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "bun:test";
 import {
   BOOTSTRAP_VERSION,
   fetchPublished,
+  jsonObjectsIn,
   type Manifest,
   type ManifestEntry,
   ManifestSchema,
@@ -13,6 +14,7 @@ import {
   planPublish,
   sharedPackagesOf,
   trustConfigsIn,
+  trustProblem,
   waitForPackages,
 } from "./publish-plan.ts";
 
@@ -160,6 +162,47 @@ describe("fetchPublished", () => {
   });
 });
 
+describe("trustProblem", () => {
+  const requests: { url: string; init?: RequestInit }[] = [];
+  const fake = (status: number, body?: unknown) => {
+    requests.length = 0;
+    return (async (url: string | URL | Request, init?: RequestInit) => {
+      requests.push({ url: String(url), init });
+      return new Response(body === undefined ? "" : JSON.stringify(body), { status });
+    }) as unknown as typeof fetch;
+  };
+
+  test("finds nothing wrong when npm exchanges the identity token", async () => {
+    expect(await trustProblem("@prismatic-io/components-slack", "id", fake(201, { token: "t" }))).toBeNull();
+    expect(requests).toHaveLength(1);
+    expect(requests[0]?.url).toBe(
+      "https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/@prismatic-io%2Fcomponents-slack",
+    );
+    expect(requests[0]?.init?.method).toBe("POST");
+    expect(new Headers(requests[0]?.init?.headers).get("authorization")).toBe("Bearer id");
+  });
+
+  test("reports npm's reason when the package does not trust the workflow", async () => {
+    const body = { message: "No matching trusted publisher" };
+    expect(await trustProblem("@prismatic-io/components-slack", "id", fake(404, body))).toBe(
+      "npm answered 404: No matching trusted publisher",
+    );
+    expect(await trustProblem("@prismatic-io/components-slack", "id", fake(401))).toBe("npm answered 401");
+  });
+
+  test("an exchange without a token is a problem", async () => {
+    expect(await trustProblem("@prismatic-io/components-slack", "id", fake(200, {}))).toBe(
+      "npm accepted the exchange but sent no token",
+    );
+  });
+
+  test("a registry failure is an error, never a missing trusted publisher", async () => {
+    await expect(trustProblem("@prismatic-io/components-slack", "id", fake(503))).rejects.toThrow(
+      "registry answered 503",
+    );
+  });
+});
+
 describe("parseAs", () => {
   test("accepts a well-formed manifest", () => {
     const manifest = { slack: entry("0.1.0") };
@@ -247,6 +290,20 @@ describe("planFirstPublish", () => {
 });
 
 
+describe("jsonObjectsIn", () => {
+  test("finds each top-level object and skips the text around them", () => {
+    expect(jsonObjectsIn('note {"a": 1}\n{"b": {"c": 2}} done')).toEqual([{ a: 1 }, { b: { c: 2 } }]);
+  });
+
+  test("ignores braces inside strings", () => {
+    expect(jsonObjectsIn('{"a": "}{\\"}"}')).toEqual([{ a: '}{"}' }]);
+  });
+
+  test("rejects an object the output cuts off", () => {
+    expect(() => jsonObjectsIn('{"a": 1')).toThrow("ends inside a JSON object");
+  });
+});
+
 describe("trustConfigsIn", () => {
   test("reads nothing from empty output", () => {
     expect(trustConfigsIn("")).toEqual([]);
@@ -278,6 +335,16 @@ describe("trustConfigsIn", () => {
   test("reads configurations printed back to back", () => {
     const output = '\n{\n  "id": "a1",\n  "type": "github"\n}\n\n{\n  "id": "b2",\n  "type": "circleci"\n}\n';
     expect(trustConfigsIn(output).map((config) => config.id)).toEqual(["a1", "b2"]);
+  });
+
+  test("reads the configurations after npm's prompt to authenticate, in a terminal", () => {
+    const output = [
+      "Authenticate your account at:\r",
+      "\u001b[4mhttps://www.npmjs.com/auth/cli/abc\u001b[24m\r",
+      "Press ENTER to open in the browser...\r",
+      '{\r\n  "id": "a1",\r\n  "type": "github"\r\n}\r',
+    ].join("\n");
+    expect(trustConfigsIn(output).map((config) => config.id)).toEqual(["a1"]);
   });
 
   test("rejects a configuration without an id", () => {
